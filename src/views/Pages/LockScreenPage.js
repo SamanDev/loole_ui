@@ -41,6 +41,10 @@ import {
   getCode
 } from "components/include";
 import { UPLOADURL,POSTURLTest } from "const";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+
 var firstLoad = true;
 
 const API_URL_TEST = POSTURLTest;
@@ -51,6 +55,8 @@ class LockScreenPage extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.handleLeaveMatch = this.handleLeaveMatch.bind(this);
     this.handlechangeReadyEvent = this.handlechangeReadyEvent.bind(this);
+    this.handlecAlertLost = this.handlecAlertLost.bind(this);
+    this.handlecAlertWin = this.handlecAlertWin.bind(this);
     this.fileUpload = React.createRef();
     
     this.setProgress = this.setProgress.bind(this);
@@ -69,7 +75,9 @@ class LockScreenPage extends Component {
       progressLable:'I Win',
     };
   }
+  
   componentDidMount() {
+    Swal.close()
     this._isMounted = true;
     if (this._isMounted) {
       eventBus.on("eventsData", (event) => {
@@ -177,7 +185,56 @@ userService.changeReadyEvent(this.state.eventid).then(
   (error) => {}
 );
   }
+  handlecAlertLost(checked) {
+    const MySwal = withReactContent(Swal)
+  
+  MySwal.fire({
+    title: 'Are you sure? ',
+    icon: 'question',
+    text:'Please confirm your lose.',
+    showCancelButton: true,
+    focusConfirm: false,
+    confirmButtonText:
+      'Yes, I lost.',
+    
+    cancelButtonText:
+      'Back',
+      confirmButtonColor: '#FB404B',
+      cancelButtonColor: '#d33',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire(
+        'Deleted!',
+        'Your file has been deleted.',
+        'success'
+      )
+    }
+  })
+    }
+    handlecAlertWin(checked) {
+      const MySwal = withReactContent(Swal)
+    
+    MySwal.fire({
+      title: 'Confirm needed',
+      text:'Upload a  video to approve  your win.',
+      icon:'info',
+      showCancelButton: true,
+      focusConfirm: false,
+      confirmButtonText:
+        'Upload video',
+      
+      cancelButtonText:
+        'Back',
+        confirmButtonColor: '#87CB16',
+        cancelButtonColor: '#d33',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.fileUpload.current.click();
+      }
+    })
+      }
   render() {
+    
     let { progress,isUpLoading,progressLable } = this.state;
     if (!this.state.events.length ){
       userService.getEvents();
@@ -215,7 +272,7 @@ userService.changeReadyEvent(this.state.eventid).then(
       
       
     }
-
+    
     const currentUser = AuthService.getCurrentUser();
     let { events,eventid } = this.state;
     events = JSON.parse(events);
@@ -261,6 +318,7 @@ userService.changeReadyEvent(this.state.eventid).then(
     var activePlayer = 0;
     return (
       <>
+      
         <div className="wrapper">
           <Chatbar eventID={eventid} eventstatus={item.status} masterplayer={item.matchTables[0].matchPlayers[0].username} secondplayer={item.matchTables[0].matchPlayers[1].username} eventchats={item.chats} chats={item.matchTables[0].matchChats } />
           <div className="main-panel">
@@ -409,24 +467,26 @@ userService.changeReadyEvent(this.state.eventid).then(
                               <Row>
                           <Col xs="6">
                             <Button
-                              className="btn-fill btn-block btn-sm"
+                              className="btn-fill btn-block btn-lg"
                               type="button"
                               variant="danger"
                               style={{position:'relative',zIndex:1}}
-                              
+                              onClick={this.handlecAlertLost}
                             >
                               I Lost.
                             </Button>
-                           
+                            
                           </Col>
+                          
                           <Col xs="6">
                           <input type="file" id="uploadfile" accept="video/*" name="file" className="hide" ref={this.fileUpload} onChange={this.onChangeHandler}/>
                             <Button
-                              className="btn-fill btn-block btn-sm"
+                              className="btn-fill btn-block btn-lg"
                               type="button"
                               variant="success"
                               style={{position:'relative',zIndex:1}}
-                              onClick={this.showFileUpload}
+                              onClick={this.handlecAlertWin}
+                              
                               disabled={isUpLoading}
                             >
                               {progressLable}
