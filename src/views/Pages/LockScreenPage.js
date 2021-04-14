@@ -15,8 +15,13 @@ import {
   Row,
   Form,
   FormCheck,
+  ProgressBar,
   Spinner
 } from "react-bootstrap";
+import axios from "axios";
+
+import uploadHeader from "services/upload-header";
+import PropTypes from "prop-types";
 import AdminNavbar from "components/Navbars/ChatNavbar.js";
 import Switch from 'react-bootstrap-switch';
 import Chatbar from "components/Sidebar/Chat.js";
@@ -35,8 +40,10 @@ import {
   getQueryVariable,
   getCode
 } from "components/include";
-
+import { UPLOADURL,POSTURLTest } from "const";
 var firstLoad = true;
+
+const API_URL_TEST = POSTURLTest;
 class LockScreenPage extends Component {
   constructor(props) {
     super(props);
@@ -44,11 +51,22 @@ class LockScreenPage extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.handleLeaveMatch = this.handleLeaveMatch.bind(this);
     this.handlechangeReadyEvent = this.handlechangeReadyEvent.bind(this);
+    this.fileUpload = React.createRef();
+    
+    this.setProgress = this.setProgress.bind(this);
 
+    this.handleChatUpload = this.handleChatUpload.bind(this);
+    this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.showFileUpload = this.showFileUpload.bind(this);
     this.state = {
       events: [], //JSON.parse(localStorage.getItem('events')),
       eventid: getQueryVariable("id"),
-      curPlayerReady: false
+      curPlayerReady: false,
+      progress:0,
+      selectedFile: null,
+      
+      isUpLoading:false,
+      progressLable:'I Win',
     };
   }
   componentDidMount() {
@@ -65,6 +83,25 @@ class LockScreenPage extends Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
+  setProgress(e) {
+    
+    this.setState({
+      progress: e,
+      progressLable:e+'%'
+    });
+  }
+  showFileUpload() {
+    this.fileUpload.current.click();
+  }
+  onChangeHandler=event=>{
+    this.setState({
+      selectedFile: this.fileUpload.current.files[0],
+      
+    })
+    
+    setTimeout(() =>{this.handleChatUpload()},500)
+    
+  }
   handleJoinMatch(e) {
     e.preventDefault();
 
@@ -74,6 +111,41 @@ class LockScreenPage extends Component {
       },
       (error) => {}
     );
+  }
+  handleChatUpload = () => {
+   
+    this.setState({
+          progress:1,
+          progressLable:'Uploading...',
+      isUpLoading:true
+    });
+    let uploadInfo = new FormData()
+    uploadInfo.append('id', this.state.eventid)
+    uploadInfo.append('file', this.state.selectedFile)
+    console.log(uploadInfo)
+    axios
+      .post(
+        API_URL_TEST + "uploadFile",
+        uploadInfo,
+        { headers:uploadHeader(),
+          onUploadProgress: data => {
+          //Set the progress value to show the progress bar
+          this.setProgress(Math.round((100 * data.loaded) / data.total))
+        }}
+      )
+      .then((response) => {
+        this.setState({
+          progress: 0,
+          progressLable:'I win',
+          isUpLoading:false
+        });
+      }).catch(error => {
+        alert(error.response.data.error);
+        this.setState({
+          progressLable:'I win',
+          isUpLoading:false
+        });
+     });
   }
   handleDelete(e) {
     e.preventDefault();
@@ -106,7 +178,7 @@ userService.changeReadyEvent(this.state.eventid).then(
 );
   }
   render() {
-    
+    let { progress,isUpLoading,progressLable } = this.state;
     if (!this.state.events.length ){
       userService.getEvents();
       
@@ -334,6 +406,34 @@ userService.changeReadyEvent(this.state.eventid).then(
                               <p >Match  Code</p>
                               
                               <Card.Title as="h1" className="matchcode">{getCode('7723')}</Card.Title>
+                              <Row>
+                          <Col xs="6">
+                            <Button
+                              className="btn-fill btn-block btn-sm"
+                              type="button"
+                              variant="danger"
+                              style={{position:'relative',zIndex:1}}
+                              
+                            >
+                              I Lost.
+                            </Button>
+                           
+                          </Col>
+                          <Col xs="6">
+                          <input type="file" id="uploadfile" accept="video/*" name="file" className="hide" ref={this.fileUpload} onChange={this.onChangeHandler}/>
+                            <Button
+                              className="btn-fill btn-block btn-sm"
+                              type="button"
+                              variant="success"
+                              style={{position:'relative',zIndex:1}}
+                              onClick={this.showFileUpload}
+                              disabled={isUpLoading}
+                            >
+                              {progressLable}
+                            </Button>
+                            {progress>0 && <div className="prosbar"><ProgressBar variant="success" now={progress} label={''} /></div>}
+                          </Col>
+                          </Row>
                               <p>
                                       
                                       <small className="text-muted">

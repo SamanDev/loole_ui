@@ -6,11 +6,11 @@ import axios from "axios";
 import uploadHeader from "services/upload-header";
 import PropTypes from "prop-types";
 import AuthService from "services/auth.service";
-import { POSTURLTest } from "const";
+import { UPLOADURL,POSTURLTest } from "const";
 
 import eventBus from "views/eventBus";
 
-const API_URL_TEST = POSTURLTest;
+
 
 import userService from "services/user.service";
 import {
@@ -34,7 +34,7 @@ import {
   Nav,
   Pagination,
   Container,
-  ProgressBar,
+  
   Row,
   Col,
 } from "react-bootstrap";
@@ -46,19 +46,12 @@ class Chatbar extends Component {
   constructor(props) {
     super(props);
     this.changeMessageBox = this.changeMessageBox.bind(this);
-    this.fileUpload = React.createRef();
     this.handleChat = this.handleChat.bind(this);
-    this.setProgress = this.setProgress.bind(this);
-
-    this.handleChatUpload = this.handleChatUpload.bind(this);
-    this.onChangeHandler = this.onChangeHandler.bind(this);
-    this.showFileUpload = this.showFileUpload.bind(this);
+    
+    
     this.state = {
       messageBox: "",
-      selectedFile: null,
-      progress:0,
-      progressLable:'Upload',
-      isUpLoading:false,
+      
       isLoading: false,
       eventID: this.props.eventID,
       eventstatus: this.props.eventstatus,
@@ -70,12 +63,13 @@ class Chatbar extends Component {
   }
   
   componentWillReceiveProps(newProps) {
+    
     this.setState({ eventchats: newProps.eventchats });
     this.setState({ chats: newProps.chats });
     this.setState({ eventstatus: newProps.eventstatus });
     this.setState({ masterplayer: newProps.masterplayer });
     this.setState({ secondplayer: newProps.secondplayer });
-    
+    console.log('Props updated')
   }
   changeMessageBox(e) {
     console.log(e.target.value)
@@ -83,13 +77,7 @@ class Chatbar extends Component {
       messageBox: e.target.value,
     });
   }
-  setProgress(e) {
-    
-    this.setState({
-      progress: e,
-      progressLable:e+'%'
-    });
-  }
+  
   handleChat(e) {
     e.preventDefault();
     if(this.state.messageBox==''){return false}
@@ -113,57 +101,12 @@ this.setState({
       }
     );
   }
-  showFileUpload() {
-    this.fileUpload.current.click();
-  }
-  onChangeHandler=event=>{
-    this.setState({
-      selectedFile: this.fileUpload.current.files[0],
-      
-    })
-    
-    setTimeout(() =>{this.handleChatUpload()},500)
-    
-  }
   
-  handleChatUpload = () => {
-   
-    this.setState({
-          progress:1,
-          progressLable:'Uploading...',
-      isUpLoading:true
-    });
-    let uploadInfo = new FormData()
-    uploadInfo.append('id', this.state.eventID)
-    uploadInfo.append('file', this.state.selectedFile)
-    console.log(uploadInfo)
-    axios
-      .post(
-        API_URL_TEST + "uploadFile",
-        uploadInfo,
-        { headers:uploadHeader(),
-          onUploadProgress: data => {
-          //Set the progress value to show the progress bar
-          this.setProgress(Math.round((100 * data.loaded) / data.total))
-        }}
-      )
-      .then((response) => {
-        this.setState({
-          progress: 0,
-          progressLable:'Upload',
-          isUpLoading:false
-        });
-      }).catch(error => {
-        alert(error.response.data.error);
-        this.setState({
-          progressLable:'Upload',
-          isUpLoading:false
-        });
-     });
-  }
+  
+  
   render() {
     const currentUser = AuthService.getCurrentUser();
-    let { chats, eventchats, masterplayer, eventstatus,secondplayer,isLoading,progress,isUpLoading,progressLable } = this.state;
+    let { chats, eventchats, masterplayer, eventstatus,secondplayer,isLoading } = this.state;
     // this is for the rest of the collapses
     var finalChat = []
     {chats.map((item, i) => {
@@ -191,7 +134,7 @@ this.setState({
           <div className="sidebar-wrapper" style={{ padding: 0 }}>
             <Card
               className="card-lock card-plain card-chat"
-              style={{ color: "#fff", margin: 0, height: "90vh" }}
+              style={{ color: "#fff", margin: 0, height: "100vh" }}
             >
               <Card.Header>
                 <Link to={"/panel/dashboard"}  onClick={() =>
@@ -260,7 +203,8 @@ this.setState({
                           
                             {(item.mode == "CHAT" && (masterplayer == item.username || secondplayer == item.username)) ? (
                               <>
-                              <p
+                             
+                              <div
                             key={i}
                             className={
                               masterplayer != item.username
@@ -296,19 +240,19 @@ this.setState({
                             >
                               {dateExpired}
                             </div>
-                                </p>
+                                </div>
                               </>
                             ):(
                               <>
                               {(item.mode != "SYSTEM" && item.mode != "ALERT" && item.mode != "FILE") &&  (
-                              <p
+                              <div
                             key={i}
                             className={classChat}
                             
                               style={{opacity:.7}}
                             >
                               <Avatar
-                                  size="25"
+                                  size="15"
                                   className="chatavatar"
                                   round={true}
                                   title={item.username}
@@ -325,29 +269,30 @@ this.setState({
                             >
                             {dateExpired}
                             </div>
-                            <div className="text-muted text-left">{item.username}: </div>
+                            <div style={{padding: 4}}>
+                            <div className="text-warning text-left">{item.username}: </div>
                                 <small>
                                  
                                   <div  className="text-justify" style={{color:'#fff',maxHeight:50,overflow:'auto'}}>{item.message}</div>
                                   </small>
                                   
-                         
+                                  </div>
                                   
-                                  </p>
+                                  </div>
                               )}
                               
                               </>
                             )}
                             {item.mode == "SYSTEM" &&  (
                               <>
-                              
+                               
                               <p
                             key={i}
                             className={classChat}
                             style={(masterplayer != item.username && secondplayer != item.username) ? ({opacity:.5}):({opacity:1})}
                             >
                               <Avatar
-                                  size="25"
+                                  size="15"
                                   className="chatavatar"
                                   round={true}
                                   title={item.username}
@@ -404,6 +349,7 @@ this.setState({
                                 
                             <small className="text-warning">{item.username} uploaded.</small><br/>
                             <video preload="none" controls>
+                                     
                                       <source
                                       
                                         src={item.message}
@@ -432,8 +378,27 @@ this.setState({
                                    
                                   </>
                                 )}
+                        
+                           {i == finalChat.length-1 &&  (
+                              <>
+                              
+                              <p
+                            key={i}
+                            className="sys-quote alertmsg text-center alert-danger ">
                            
-                          
+                             
+                                    Match Created.
+                         
+                                  <div
+                              className="chatdate"
+                            
+                            >
+                              {dateExpired}
+                            </div>
+                            </p>
+                              </>
+
+                            )}
                         </>
                       );
                     })}
@@ -469,22 +434,7 @@ this.setState({
                             Send
                           </Button>
                         </Col>
-                        {(eventstatus == "InPlay" && (masterplayer == currentUser.username || secondplayer == currentUser.username)) && (
-                          <Col>
-                          <input type="file" id="uploadfile" accept="video/*" name="file" className="hide" ref={this.fileUpload} onChange={this.onChangeHandler}/>
-                            <Button
-                              className="btn-fill btn-block btn-sm"
-                              type="button"
-                              variant="warning"
-                              style={{position:'relative',zIndex:1}}
-                              onClick={this.showFileUpload}
-                              disabled={isUpLoading}
-                            >
-                              {progressLable}
-                            </Button>
-                            {progress>0 && <div className="prosbar"><ProgressBar variant="warning" now={progress} label={''} /></div>}
-                          </Col>
-                        )}
+                        
                       </Row>
                     </Form>
                   </Card.Body>
