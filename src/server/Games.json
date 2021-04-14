@@ -1,0 +1,160 @@
+{
+    "games": [
+        {
+            "id": 1,
+            "name": "8Pool",
+            "gameconsole": [
+                {
+                    "id": 1,
+                    "consolename": "Mobile"
+                }
+            ],
+            "modes": [
+                {
+                    "id": 1,
+                    "modename": "Duel"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "ClashRoyale",
+            "gameconsole": [
+                {
+                    "id": 1,
+                    "consolename": "Mobile"
+                }
+            ],
+            "modes": [
+                {
+                    "id": 1,
+                    "modename": "Duel"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "CallOfDuty",
+            "gameconsole": [
+                {
+                    "id": 1,
+                    "consolename": "Mobile"
+                }
+            ],
+            "modes": [
+                {
+                    "id": 1,
+                    "modename": "Duel"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "SoccerStars",
+            "gameconsole": [
+                {
+                    "id": 1,
+                    "consolename": "Mobile"
+                }
+            ],
+            "modes": [
+                {
+                    "id": 1,
+                    "modename": "Duel"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Fifa2021",
+            "gameconsole": [
+                {
+                    "id": 1,
+                    "consolename": "PS4"
+                },
+                {
+                    "id": 2,
+                    "consolename": "PS5"
+                },{
+                    "id": 3,
+                    "consolename": "XBox"
+                },{
+                    "id": 4,
+                    "consolename": "PC"
+                }
+            ],
+            "modes": [
+                {
+                    "id": 1,
+                    "modename": "Duel"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "name": "RainbowSix",
+            "gameconsole": [
+                {
+                    "id": 1,
+                    "consolename": "PS4"
+                },
+                {
+                    "id": 2,
+                    "consolename": "PC"
+                }
+            ],
+            "modes": [
+                {
+                    "id": 1,
+                    "modename": "KillRace"
+                },
+                {
+                    "id": 2,
+                    "modename": "Duel"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "name": "CallOfDuty Warzone",
+            "gameconsole": [
+                {
+                    "id": 1,
+                    "consolename": "PS4"
+                },
+                {
+                    "id": 2,
+                    "consolename": "PC"
+                }
+            ],
+            "modes": [
+                {
+                    "id": 1,
+                    "modename": "KillRace"
+                }
+            ]
+        }
+        ,
+        {
+            "id": 8,
+            "name": "Fortnite",
+            "gameconsole": [
+                {
+                    "id": 1,
+                    "consolename": "PS4"
+                },
+                {
+                    "id": 2,
+                    "consolename": "PC"
+                }
+            ],
+            "modes": [
+                {
+                    "id": 1,
+                    "modename": "KillRace"
+                }
+            ]
+        }
+       
+    ]
+}
