@@ -97,6 +97,16 @@ class UserService {
         return response.data;
       });
   }
+  loseEvent(id) {
+    return axios
+      .put(API_URL_TEST + "loseEvent", { id }, { headers: authHeader() })
+      .then((response) => {
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
+        return response.data;
+      });
+  }
   leaveEvent(id) {
     return axios
       .put(API_URL_TEST + "leaveEvent", { id }, { headers: authHeader() })

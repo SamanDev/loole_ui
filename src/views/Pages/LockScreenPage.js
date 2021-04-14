@@ -120,6 +120,16 @@ class LockScreenPage extends Component {
       (error) => {}
     );
   }
+  handleLoseMatch(e) {
+    
+
+    userService.loseEvent(this.state.eventid).then(
+      (response) => {
+        //this.props.history.push("/panel/dashboard");
+      },
+      (error) => {}
+    );
+  }
   handleChatUpload = () => {
    
     this.setState({
@@ -204,11 +214,7 @@ userService.changeReadyEvent(this.state.eventid).then(
       cancelButtonColor: 'rgba(255, 255, 255,.2)',
   }).then((result) => {
     if (result.isConfirmed) {
-      Swal.fire(
-        'Deleted!',
-        'Your file has been deleted.',
-        'success'
-      )
+      this.handleLoseMatch()
     }
   })
     }
@@ -475,7 +481,7 @@ userService.changeReadyEvent(this.state.eventid).then(
                               style={{position:'relative',zIndex:1}}
                               onClick={this.handlecAlertLost}
                             >
-                              I Lost.
+                              I Lost
                             </Button>
                             
                           </Col>
