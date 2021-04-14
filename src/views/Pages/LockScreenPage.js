@@ -625,7 +625,7 @@ userService.changeReadyEvent(this.state.eventid).then(
                                       {(item.amount * 2 * 90) / 100}, let's get
                                       it! Match open for limited time.
                                     </p>
-                                    {(parseInt(item.totalPlayer) > activePlayer || 1==1) && (
+                                    {parseInt(item.totalPlayer) > activePlayer && (
                                       <Button
                                       className="btn-round"
                                       onClick={this.handleJoinMatch}

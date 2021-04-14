@@ -67,7 +67,7 @@ var routes = [
     path: "/mymatches",
     layout: "/panel",
     name: "My Matches",
-    icon: "nc-icon nc-chart-pie-35",
+    icon: "nc-icon nc-controller-modern",
     component: MyMatches,
     show:true
   },
@@ -93,7 +93,7 @@ var routes = [
     name: "Match Lobby",
     icon: "nc-icon nc-simple-add",
     component: LockScreenPage,
-    show:true
+    show:false
   },
   
   {

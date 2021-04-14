@@ -192,12 +192,14 @@ this.setState({
                           today.getMinutes() +
                           ":" +
                           today.getSeconds();
+                          var classAlert = "alert-primary"
                           var classChat = "sys-quote text-center text-muted"
                           if (item.message.indexOf(' is  ready ')>-1){classChat = "sys-quote text-center text-success"}
                           if (item.message.indexOf(' join ')>-1 ){classChat = "sys-quote text-center text-info"}
                           if (item.message.indexOf(' leave ')>-1 ){classChat = "sys-quote text-center text-warning"}
                           if (item.message.indexOf(' not ready')>-1 ){classChat = "sys-quote text-center text-danger"}
                           if (item.message.indexOf(' accepted')>-1 ){classChat = "sys-quote text-center text-danger"}
+                          if (item.message.indexOf(' Finished')>-1 ){classAlert = "alert-danger"}
                       return (
                         <>
                         
@@ -322,7 +324,7 @@ this.setState({
                               
                               <p
                             key={i}
-                            className="sys-quote alertmsg text-center alert-primary ">
+                            className={classAlert+" sys-quote alertmsg text-center  "}>
                            
                              
                                     {item.message}

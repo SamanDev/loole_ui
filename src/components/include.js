@@ -170,7 +170,7 @@ var dateNow = now.toISOString();
             </div>
             <div className="text-center"   style={{position:'absolute',right:0,left:0,marginTop:-50}}>
               {item.matchTables[0].winner !== null ? (
-                <Avatar size="80" textSizeRatio={6} style={{boxShadow: '0px 0px 20px 20px rgba(0,0,0,0.2)'}}  round={true} name={_mode} />
+                <Avatar size="80"  style={{boxShadow: '0px 0px 20px 20px rgba(0,0,0,0.2)'}}  round={true} name={_mode} />
               ):(
                 <Avatar size="80" textSizeRatio={6} style={{boxShadow: '0px 0px 20px 20px rgba(0,0,0,0.2)'}} color={_color} round={true} value={_mode} />
               )}
