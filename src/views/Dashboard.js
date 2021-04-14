@@ -120,7 +120,7 @@ class Dashboard extends Component {
     return (
       <>
 
-        <Row>
+<Row>
           <Col lg="3" xs="6">
             <Card className="card-stats">
               <Card.Body>
@@ -141,8 +141,8 @@ class Dashboard extends Component {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="nc-icon nc-app icon-bold mr-1"></i>
-                  <Link to={'/panel/games'}>Start a  Match</Link>
+                  <i className="nc-icon nc-simple-add icon-bold mr-1"></i>
+                  <Link to={'/panel/create'}>Create a Match</Link>
 
                 </div>
               </Card.Footer>
@@ -168,7 +168,7 @@ class Dashboard extends Component {
               <Card.Footer>
                 <hr></hr>
                 <div className="stats">
-                  <i className="far fa-calendar-alt mr-1"></i>
+                  <i className="nc-icon nc-bank icon-bold mr-1"></i>
                   <Link to={'/panel/cashier'}>Go to Cashier</Link>
                 </div>
               </Card.Footer>
@@ -229,13 +229,14 @@ class Dashboard extends Component {
         </Row>
 
         <Row>
-          <Col md="12">
+          <Col md="12" style={{overflow:'hidden'}}>
             <Tab.Container
               id="matches-tabs"
               defaultActiveKey="all-match"
 
             >
-              <Nav role="tablist" variant="tabs">
+              <div style={{width:'90vw',overflow:'auto'}}>
+              <Nav role="tablist" variant="tabs" style={{minWidth:600}}>
                 <Nav.Item>
                   <Nav.Link eventKey="all-match">All</Nav.Link>
                 </Nav.Item>
@@ -248,7 +249,9 @@ class Dashboard extends Component {
                 <Nav.Item>
                   <Nav.Link eventKey="tour-match">Tournament</Nav.Link>
                 </Nav.Item>
+               
               </Nav>
+              </div>
               <Card>
 
                 <Card.Body  >

@@ -544,11 +544,12 @@ userService.changeReadyEvent(this.state.eventid).then(
                               </>
                             ) : (
                               <>
-                            
-                                {item.players[0].username ==
+                            {(item.status == 'Pending' || item.status == 'Ready') && (
+                              <>
+                                {(item.players[0].username ==
                                   currentUser.username ||
                                 item.players[1].username ==
-                                  currentUser.username ? (
+                                  currentUser.username) ? (
                                   <>
                                     <p>
                                       
@@ -562,7 +563,7 @@ userService.changeReadyEvent(this.state.eventid).then(
                                       />
                                     </p>
                                     {item.players[0].username &&
-                                    item.players[1].username ? (
+                                    item.players[1].username && item.status == 'Ready' ? (
                                       <>
                                         <p
                                           style={{
@@ -576,6 +577,7 @@ userService.changeReadyEvent(this.state.eventid).then(
                                       </>
                                     ) : (
                                       <>
+                                       
                                         <p
                                           style={{
                                             color: "#fff",
@@ -585,8 +587,10 @@ userService.changeReadyEvent(this.state.eventid).then(
                                         >
                                           Waiting for another player...
                                         </p>
+                                    
                                       </>
                                     )}
+                                    
                                     {
                                 item.matchTables[0].matchPlayers[0].username !=
                                   currentUser.username && (
@@ -638,7 +642,10 @@ userService.changeReadyEvent(this.state.eventid).then(
                                   </>
                                 )}
                               </>
+
                             )}
+                            </>
+                                  )}
                             </>
                             ):(
                               <>
