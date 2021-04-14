@@ -1056,4 +1056,16 @@ background:#222;
 }
 }
   /*# sourceMappingURL=style.css.map */
-  
+  .swal2-popup {
+    box-shadow: 0 0 50px 20px rgba(255, 217, 0,.5);
+    background: rgb(36, 36, 36) !important;
+    
+  }
+  .swal2-popup h2{
+    color: rgba(255, 255, 255,.8) !important;
+    
+  }
+  .swal2-popup .swal2-html-container{
+    color: #fff !important;
+    
+  }

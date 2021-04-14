@@ -191,6 +191,7 @@ userService.changeReadyEvent(this.state.eventid).then(
   MySwal.fire({
     title: 'Are you sure? ',
     icon: 'question',
+    iconColor:'#FB404B',
     text:'Please confirm your lose.',
     showCancelButton: true,
     focusConfirm: false,
@@ -200,7 +201,7 @@ userService.changeReadyEvent(this.state.eventid).then(
     cancelButtonText:
       'Back',
       confirmButtonColor: '#FB404B',
-      cancelButtonColor: '#d33',
+      cancelButtonColor: 'rgba(255, 255, 255,.2)',
   }).then((result) => {
     if (result.isConfirmed) {
       Swal.fire(
@@ -218,6 +219,7 @@ userService.changeReadyEvent(this.state.eventid).then(
       title: 'Confirm needed',
       text:'Upload a  video to approve  your win.',
       icon:'info',
+      iconColor:'#87CB16',
       showCancelButton: true,
       focusConfirm: false,
       confirmButtonText:
@@ -226,7 +228,7 @@ userService.changeReadyEvent(this.state.eventid).then(
       cancelButtonText:
         'Back',
         confirmButtonColor: '#87CB16',
-        cancelButtonColor: '#d33',
+        cancelButtonColor: 'rgba(255, 255, 255,.2)',
     }).then((result) => {
       if (result.isConfirmed) {
         this.fileUpload.current.click();
