@@ -157,6 +157,7 @@ class LockScreenPage extends Component {
           progressLable:'I win',
           isUpLoading:false
         });
+        document.documentElement.classList.toggle("nav-open")
       }).catch(error => {
         alert(error.response.data.error);
         this.setState({
@@ -469,6 +470,11 @@ userService.changeReadyEvent(this.state.eventid).then(
                             <h2>{item.status}</h2>
                             {(item.status == "InPlay") && (
                               <>
+                              {(item.players[0].username ==
+                                  currentUser.username ||
+                                item.players[1].username ==
+                                  currentUser.username) && (
+                              <>
                               <p >Match  Code</p>
                               
                               <Card.Title as="h1" className="matchcode">{getCode('7723')}</Card.Title>
@@ -502,6 +508,9 @@ userService.changeReadyEvent(this.state.eventid).then(
                             {progress>0 && <div className="prosbar"><ProgressBar variant="success" now={progress} label={''} /></div>}
                           </Col>
                           </Row>
+                          </>
+                          )}
+                          
                               <p>
                                       
                                       <small className="text-muted">
@@ -515,10 +524,9 @@ userService.changeReadyEvent(this.state.eventid).then(
                                     </p>
                               </>
                             )}
-                            {(item.status == "Pending" ||item.status == "Ready") ? (
+                            {(item.status == "Finished") ? (
                               <>
-                            {item.winner[0].username &&
-                            item.winner[0].username ? (
+                            {item.matchTables[0].winner ? (
                               <>
                                 <div
                                   className=" winner avatar"
@@ -528,11 +536,11 @@ userService.changeReadyEvent(this.state.eventid).then(
                                   <Avatar
                                     size="92"
                                     round={true}
-                                    title={item.winner[0].username}
-                                    name={setAvatar(item.winner[0].username)}
+                                    title={item.matchTables[0].winner}
+                                    name={setAvatar(item.matchTables[0].winner)}
                                   />
                                 </div>
-                                <h4>{item.winner[0].username} is winner</h4>
+                                <h4>{item.matchTables[0].winner} is winner</h4>
                               </>
                             ) : (
                               <>

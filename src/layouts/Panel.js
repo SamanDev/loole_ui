@@ -57,6 +57,9 @@ if (!currentUser) {
   return <Redirect to="/home"/>
 }else{
   UserWebsocket.connect(currentUser.accessToken+"&user="+currentUser.username);
+  setInterval(function(){
+    UserWebsocket.connect(currentUser.accessToken+"&user="+currentUser.username);
+  },2000)
 }
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {

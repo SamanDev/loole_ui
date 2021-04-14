@@ -1,6 +1,7 @@
 import { USERSOCKETURL } from 'const';
 //import Dashboard from 'views/Dashboard'
 import eventBus from "views/eventBus";
+import userService from "services/user.service";
 var ws;
 
 class UserWebsocket {
@@ -10,15 +11,17 @@ class UserWebsocket {
     connect(token) {
         if (ws == null) {
             ws = new WebSocket(USERSOCKETURL + token);
-           // console.log(ws);
+            userService.getEvents();
+            console.log("Websocket is connect");
             ws.onmessage = function (data) {
                 new UserWebsocket().serverMessage(data.data);
             }
             ws.onerror = function (e) {
                 console.log(e.type);
                 if(e.type === 'error'){
-                    localStorage.clear();
-                    window.location.reload();
+                    //ws=null;
+                    //localStorage.clear();
+                    //window.location.reload();
                 }
             }
         }
@@ -39,16 +42,18 @@ class UserWebsocket {
             }
         } else {
             if (message === 'closeConnection') {
-                new UserWebsocket().disconnect();
+                //new UserWebsocket().disconnect();
             }
         }
-        // console.log("message: " + message);
+        console.log("message: " + message);
 
     }
     disconnect() {
 
         if (ws != null) {
+            
             ws.close();
+            ws = null
         }
         console.log("Websocket is in disconnected state");
 

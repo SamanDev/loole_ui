@@ -156,6 +156,7 @@ var dateNow = now.toISOString();
           _mode = " $"+(item.totalPlayer * item.amount)*90/100+' '
           //_color = 'orange'
         }
+        if (item.matchTables[0].winner !== null)  {_mode = setAvatar(item.matchTables[0].winner)}
         return (
           <Link  to={'/panel/lobby?id='+item.id}>
           <Card className="card-user chall" >
@@ -168,7 +169,12 @@ var dateNow = now.toISOString();
                         ></img>
             </div>
             <div className="text-center"   style={{position:'absolute',right:0,left:0,marginTop:-50}}>
-            <Avatar size="80" textSizeRatio={6} style={{boxShadow: '0px 0px 20px 20px rgba(0,0,0,0.2)'}} color={_color} round={true} value={_mode} />
+              {item.matchTables[0].winner !== null ? (
+                <Avatar size="80" textSizeRatio={6} style={{boxShadow: '0px 0px 20px 20px rgba(0,0,0,0.2)'}}  round={true} name={_mode} />
+              ):(
+                <Avatar size="80" textSizeRatio={6} style={{boxShadow: '0px 0px 20px 20px rgba(0,0,0,0.2)'}} color={_color} round={true} value={_mode} />
+              )}
+            
             </div>
           </Card.Header>
           <Card.Body>

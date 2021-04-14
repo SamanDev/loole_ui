@@ -15,6 +15,7 @@
 
 */
 import Dashboard from "views/Dashboard.js";
+import MyMatches from "views/MyMatches.js";
 import Cashier from "views/Cashier.js";
 import CreateMatch from "views/Add.js";
 import Buttons from "views/Components/Buttons.js";
@@ -60,6 +61,14 @@ var routes = [
     name: "Dashboard",
     icon: "nc-icon nc-chart-pie-35",
     component: Dashboard,
+    show:true
+  },
+  {
+    path: "/mymatches",
+    layout: "/panel",
+    name: "My Matches",
+    icon: "nc-icon nc-chart-pie-35",
+    component: MyMatches,
     show:true
   },
   {
