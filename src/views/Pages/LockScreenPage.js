@@ -524,7 +524,7 @@ userService.changeReadyEvent(this.state.eventid).then(
                                     </p>
                               </>
                             )}
-                            {(item.status == "Finished") ? (
+                            {(item.status !== "") ? (
                               <>
                             {item.matchTables[0].winner ? (
                               <>
@@ -625,7 +625,7 @@ userService.changeReadyEvent(this.state.eventid).then(
                                       {(item.amount * 2 * 90) / 100}, let's get
                                       it! Match open for limited time.
                                     </p>
-                                    {parseInt(item.totalPlayer) > activePlayer&& (
+                                    {(parseInt(item.totalPlayer) > activePlayer || 1==1) && (
                                       <Button
                                       className="btn-round"
                                       onClick={this.handleJoinMatch}

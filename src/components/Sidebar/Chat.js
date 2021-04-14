@@ -197,6 +197,7 @@ this.setState({
                           if (item.message.indexOf(' join ')>-1 ){classChat = "sys-quote text-center text-info"}
                           if (item.message.indexOf(' leave ')>-1 ){classChat = "sys-quote text-center text-warning"}
                           if (item.message.indexOf(' not ready')>-1 ){classChat = "sys-quote text-center text-danger"}
+                          if (item.message.indexOf(' accepted')>-1 ){classChat = "sys-quote text-center text-danger"}
                       return (
                         <>
                         
