@@ -141,11 +141,21 @@ class UserService {
         return response.data;
       });
   }
-  getEvents() {
+  getEvents(token) {
     return axios.get(API_URL_TEST + "getEvents").then((response) => {
       //console.log(response.data.data)
+     
+        
+        
+      
       eventBus.dispatch("eventsData", response.data.data);
-    });
+    }).catch(error => {
+      var _this = this;
+      setTimeout(function(){
+        _this.getEvents(token)
+      },2000)
+      
+   });
   }
   createTournament(gamename, gameconsole, tournamentmode, bet, time) {
     return axios

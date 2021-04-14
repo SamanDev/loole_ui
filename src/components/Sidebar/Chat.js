@@ -119,8 +119,8 @@ this.setState({
     // this creates the intial state of this component based on the collapse routes
     // that it gets through routes prop
 
-    finalChat.sort((a, b) => ((a.time <= b.time) ? 1 : -1));
-    finalChat.sort((a, b) => ((a.time <= b.time) ? 1 : -1));
+    finalChat.sort((a, b) => ((a.time < b.time ||  a.id < b.id) ? 1 : -1));
+    
     
 
     return (

@@ -134,7 +134,7 @@ class LockScreenPage extends Component {
    
     this.setState({
           progress:1,
-          progressLable:'Uploading...',
+          progressLable:'0%',
       isUpLoading:true
     });
     let uploadInfo = new FormData()

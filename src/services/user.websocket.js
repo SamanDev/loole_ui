@@ -11,7 +11,7 @@ class UserWebsocket {
     connect(token) {
         if (ws == null) {
             ws = new WebSocket(USERSOCKETURL + token);
-            userService.getEvents();
+            //userService.getEvents();
             console.log("Websocket is connect");
             ws.onmessage = function (data) {
                 new UserWebsocket().serverMessage(data.data);
