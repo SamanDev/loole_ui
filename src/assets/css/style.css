@@ -575,26 +575,18 @@ border-radius: 3px;
         flex-wrap: wrap;
         overflow: hidden;
         max-height: 0;
-        -moz-transition-duration: 0.4s;
-        -webkit-transition-duration: 0.4s;
-        -o-transition-duration: 0.4s;
-        transition-duration: 0.4s;
-        -moz-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-        -webkit-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
-        -o-transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+      
+        transition-duration: 0.1s;
+       
         transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
     }
     ul.is-expanded {
         overflow: hidden;
         max-height: 500px;
         /* approximate max height */
-        -moz-transition-duration: 0.4s;
-        -webkit-transition-duration: 0.4s;
-        -o-transition-duration: 0.4s;
-        transition-duration: 0.4s;
-        -moz-transition-timing-function: ease-in;
-        -webkit-transition-timing-function: ease-in;
-        -o-transition-timing-function: ease-in;
+      
+        transition-duration: 0.1s;
+       
         transition-timing-function: ease-in;
     }
     li {

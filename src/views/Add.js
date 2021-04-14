@@ -366,7 +366,7 @@ const required = (value) => {
         var _color = '#404040'
   return (
     <>
-      <Container fluid>
+      
       <Tab.Container
               id="plain-tabs-example"
               defaultActiveKey="info-plain"
@@ -394,7 +394,7 @@ const required = (value) => {
               this.form = c;
             }}
           >
-                      <Card >
+                      <Card className="card-plain" style={{margin: -10}}>
                       <Card.Header>
                          <Card.Title>Create 1v1 Match</Card.Title></Card.Header>
                         <Card.Body>
@@ -560,7 +560,7 @@ const required = (value) => {
               this.form = c;
             }}
           >
-                      <Card >
+                      <Card className="card-plain" style={{margin: -10}}>
                       <Card.Header>
                          <Card.Title>Create Tournament</Card.Title></Card.Header>
                         <Card.Body>
@@ -766,7 +766,7 @@ const required = (value) => {
             </Card>
             </Tab.Container>
 
-      </Container>
+     
     </>
   );
                             }
