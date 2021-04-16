@@ -204,6 +204,7 @@ userService.changeReadyEvent(this.state.eventid).then(
     icon: 'question',
     iconColor:'#FB404B',
     text:'Please confirm your lose.',
+    customClass:'dark',
     showCancelButton: true,
     focusConfirm: false,
     confirmButtonText:
@@ -227,6 +228,7 @@ userService.changeReadyEvent(this.state.eventid).then(
       text:'Upload a  video to approve  your win.',
       icon:'info',
       iconColor:'#87CB16',
+      customClass:'dark',
       showCancelButton: true,
       focusConfirm: false,
       confirmButtonText:

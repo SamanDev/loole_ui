@@ -604,7 +604,25 @@ border-radius: 3px;
 .sidebar .logo .simple-text {
     text-transform: none;
 }
-
+.form-div{
+    border-bottom: 1px gray solid;
+    padding-top: 5px;
+    margin-bottom: 5px;
+}
+.card-social .card{
+    
+    margin-bottom: 5px;
+}
+.card-social .card-body{
+    line-height:35px;
+    padding:15px;
+    
+}
+.card-social svg{
+    height: 17px;
+    width: 40px !important;
+    transform:scale(1.6)
+}
 .l-quote .chatdate{
 color: rgba(255, 255, 255, .6);
 position: absolute;
@@ -1048,16 +1066,16 @@ background:#222;
 }
 }
   /*# sourceMappingURL=style.css.map */
-  .swal2-popup {
+  .swal2-popup.dark {
     box-shadow: 0 0 50px 20px rgba(255, 217, 0,.5);
     background: rgb(36, 36, 36) !important;
     
   }
-  .swal2-popup h2{
+  .swal2-popup.dark h2{
     color: rgba(255, 255, 255,.8) !important;
     
   }
-  .swal2-popup .swal2-html-container{
+  .swal2-popup.dark .swal2-html-container{
     color: #fff !important;
     
   }

@@ -38,6 +38,7 @@ import VectorMap from "views/Maps/VectorMap.js";
 import Charts from "views/Charts.js";
 import Calendar from "views/Calendar.js";
 import UserPage from "views/Pages/UserPage.js";
+import Profile from "views/Profile.js";
 import LoginPage from "views/Pages/LoginPage.js";
 import ForgetPassPage from "views/Pages/ForgetPassPage.js";
 import RegisterPage from "views/Pages/RegisterPage.js";
@@ -52,7 +53,7 @@ var routes = [
     layout: "/panel",
     name: "Profile",
     icon: "nc-icon nc-circle-09",
-    component: UserPage,
+    component: Profile,
     show:false
   },
   {
