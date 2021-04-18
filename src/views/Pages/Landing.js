@@ -72,11 +72,11 @@ export default class Landing extends Component {
           
             
             return (
-  
-              <Col md="4" xl="4" key={i}>
+             
+              <Carousel.Item key={i}>
               {printGameBlock(item)}
   
-              </Col>
+              </Carousel.Item>
             )
             
         }
@@ -223,15 +223,15 @@ export default class Landing extends Component {
                 </div>
             </div>
             <div className="section " style={{padding: 0}}>
-                <div className="parallax filter-gradient orange" data-color="orange" style={{height:'1000px'}}>
+                <div className="parallax filter-gradient orange" data-color="orange" style={{height:'800px'}}>
                     <div className="parallax-background">
                         <img className="parallax-background-image" src="assets/img/bg.jpg"/>
                     </div>
                     <div className="container" style={{marginTop:100}}>
-                    <h4 className="header-text text-center" style={{color: '#fff'}}>How it works</h4>
-                    <Row>
+                    <h4 className="header-text text-center" style={{color: '#fff'}}>GAMES YOU CAN PLAY</h4>
+                    <Carousel>
                     {getBlockGames()}
-                    </Row>
+                    </Carousel>
                     </div>
                 </div>
             </div>

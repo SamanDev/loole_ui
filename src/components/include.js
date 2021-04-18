@@ -22,6 +22,7 @@ import {
   Container,
   Row,
   Col,
+  Carousel,
   TabContent,
   TabPane,
   Tab
@@ -283,33 +284,22 @@ export const  setAvatar  = (name) =>{
         }
         export const  printGameBlock = (item) => {
           return(
-            <Card className="card-user chall  text-left" >
-            <Card.Header className="no-padding">
-              <div className="card-image">
-              <img
-                            alt={item.name}
-                           
-                            src={require("assets/images/games/"+item.name+".jpg").default}
-                          ></img>
-              </div>
+           <>
+            <img
+              className="d-block w-100"
+              src={require("assets/images/games/"+item.name+".jpg").default}
+              alt={item.name}
+            />
+            <Carousel.Caption>
+              <h3>{item.name}</h3>
+              <p>Play {item.name} for Real Money.</p>
+              <p>Avalable for: {item.gameconsole.map((consolename, z) => (
+    <small className="text-muted"><FontAwesomeIcon fixedWidth icon={getIcon(consolename.consolename)}  /> {(consolename.consolename)} </small>
+  ))}</p>
               
-            </Card.Header>
-            <Card.Body style={{minHeight:30,paddingTop:10}}>
-              
-   
-  <Card.Title as="h5" >{item.name}</Card.Title>
- 
-   
-              
-            </Card.Body>
-            <Card.Footer className="no-padding  text-right">
-              
-  
-  {item.gameconsole.map((consolename, z) => (
-    <small className="text-muted"><FontAwesomeIcon fixedWidth icon={getIcon(consolename.consolename)}  /> {consolename.consolename} </small>
-  ))}
-              
-            </Card.Footer>
-          </Card>
+            </Carousel.Caption>
+          </>
+         
+          
           )
         }
