@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Switch, Redirect,useHistory } from "react-router-
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
-import "assets/css/style.css";
+
 
 
 // sections for this page
@@ -25,6 +25,7 @@ ReactDOM.render(
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
       <Route path="/lock" render={(props) => <LockLayout {...props} />} />
       <Route path="/home" render={(props) => <LandLayout {...props} />} />
+      <Route path="/user" render={(props) => <LandLayout {...props} />} />
       <Redirect from="/" to="/auth/login-page" />
       
     </Switch>

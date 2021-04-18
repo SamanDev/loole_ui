@@ -510,12 +510,12 @@ const required = (value) => {
                             <div className="form-group">
                               <label>Country</label>
                              
-<CountryList/>
+<CountryList  />
                               
                             </div>
                             <div className="form-group">
                               <label>Birthday</label>
-                             <Birthday/>
+                             <Birthday value={new Date("01-01-1990")}/>
                             </div>
                             
                             

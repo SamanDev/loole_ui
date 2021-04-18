@@ -31,7 +31,7 @@ function RegisterPage() {
       >
         <div className="content d-flex align-items-center">
           <Container>
-            <Card className="card-register card-plain text-center">
+            <Card className="card-register card-plain text-center" style={{marginTop: 100}}>
               <Card.Header>
                 <Row className="justify-content-center">
                   <Col md="8">

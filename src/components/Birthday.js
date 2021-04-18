@@ -11,6 +11,10 @@ export default function RainbowDatepicker() {
   return (
     <DatePicker
       id="datePicker-1"
+      
+      className="picker form-control"
+      minDate={new Date("01-01-1960")}
+      maxDate={new Date("01-01-2002")}
       value={date}
       onChange={onChange}
       

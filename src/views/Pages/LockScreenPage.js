@@ -79,6 +79,8 @@ class LockScreenPage extends Component {
   componentDidMount() {
     Swal.close()
     this._isMounted = true;
+
+
     if (this._isMounted) {
       eventBus.on("eventsData", (event) => {
         // console.log("socket events: "+events);
@@ -284,10 +286,10 @@ userService.changeReadyEvent(this.state.eventid).then(
       
     }
     
-    const currentUser = AuthService.getCurrentUser();
+    var currentUser = AuthService.getCurrentUser();
     let { events,eventid } = this.state;
     events = JSON.parse(events);
-    
+   
     var nullplayer = {
       id: 100000,
       username: false,

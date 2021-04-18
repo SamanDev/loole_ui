@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@500&display=swap');
 .tim-row {
     margin-bottom: 20px;
 }
@@ -1079,3 +1080,24 @@ background:#222;
     color: #fff !important;
     
   }
+  .picker *{
+    border-radius: 3px !important;
+    border-color: #E3E3E3 !important;
+}
+.picker {
+    padding: 0 !important;
+    border:  0 !important;
+}
+.picker span{
+    display:none;
+}
+.form-control,.form-control *{
+    font-weight:500 !important;
+    font-size:13px !important;
+    color:#000 !important;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif !important;
+}
+.iLstjR {
+    
+    margin: 30px 0 0 0 !important;
+}

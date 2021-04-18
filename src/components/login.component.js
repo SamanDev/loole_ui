@@ -119,7 +119,7 @@ class Login extends Component {
 
             <div className="form-group" style={{marginTop: 45}}>
               <button
-                className="btn btn-danger btn-wd btn-outline btn-block"
+                className="btn btn-danger btn-wd  btn-block"
                 disabled={this.state.loading}
               >
                 {this.state.loading && (

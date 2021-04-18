@@ -170,7 +170,7 @@ const required = (value) => {
       
     return gamemaplocal[0]
   };
-  const currentUser = AuthService.getCurrentUser();
+  
   class CreateMatch extends Component {
     constructor(props) {
       super(props);
@@ -362,6 +362,7 @@ const required = (value) => {
     
   }
   render() {
+    const currentUser = AuthService.getCurrentUser();
     var _mode=' 1 v 1 '
         var _color = '#404040'
   return (

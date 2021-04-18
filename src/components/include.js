@@ -137,147 +137,179 @@ export const  setAvatar  = (name) =>{
      
         
         };
-      export const  printMatchBlock = (item) => {
-        var _mode=' 1 v 1 '
-        var _color = '#404040'
-       
-        var timestamp = item.expire
-var date = new Date(timestamp);
-//date.setMinutes(date.getMinutes() + item.timeMinute);
-var now = new Date();
-var dateExpired = date.toISOString();
-
- 
-var dateNow = now.toISOString();
-
-
-        if(item.gameMode == 'Tournament'){_mode = item.gameMode}
-        if(item.gameMode == 'Tournament'){
-          _mode = " $"+(item.totalPlayer * item.amount)*90/100+' '
-          //_color = 'orange'
-        }
-        if (item.matchTables[0].winner !== null)  {_mode = setAvatar(item.matchTables[0].winner)}
-        return (
-          <Link  to={'/panel/lobby?id='+item.id}>
-          <Card className="card-user chall" >
-          <Card.Header className="no-padding">
-            <div className="card-image">
-            <img
-                          alt={item.gameName}
-                         
-                          src={require("assets/images/games/"+item.gameName+".jpg").default}
-                        ></img>
-            </div>
-            <div className="text-center"   style={{position:'absolute',right:0,left:0,marginTop:-50}}>
-              {item.matchTables[0].winner !== null ? (
-                <Avatar size="80"  style={{boxShadow: '0px 0px 20px 20px rgba(0,0,0,0.2)'}}  round={true} name={_mode} />
-              ):(
-                <Avatar size="80" textSizeRatio={6} style={{boxShadow: '0px 0px 20px 20px rgba(0,0,0,0.2)'}} color={_color} round={true} value={_mode} />
-              )}
-            
-            </div>
-          </Card.Header>
-          <Card.Body>
-            
-  <Row>
-<Col style={{lineHeight:'33px'}} xs="7">
-<Card.Title as="h5" style={{fontSize:15}} >{item.gameName}</Card.Title>
-<small className="text-muted">{item.gameMode}</small><br/>
-{item.players[0] ? (
-              <span>
-              {item.players.map((user, z) => (
-                <span key={z}>
-                {(z<5)?(
-                  <>
-          {(z<4)?(
-            <Avatar size="25"  title={user.username} round={true} name={setAvatar(user.username)} />
-          ):(
-<Avatar  size="25"  round={true} value={"+"+(item.players.length-4)} color="gray" />
-          )}
-           
-          </>
-          ):(null)}
-         </span>
-
-))}
-</span>
-  ):(
-    <span>
-<Avatar size="25" round={true} name="?" src="https://graph.facebook.com/100008343750912/picture?width=200&height=200" color="lightgray" />
-<Avatar size="25" round={true} name="?" src="https://graph.facebook.com/100008343750912/picture?width=200&height=200" color="gray" />
-</span>
-  )}
-  <br/>
-  {item.gameMode=='Tournament' ? (
-    <span>
-  <small className="text-muted">Start Time</small>
-  {item.totalPlayer == "4" ? (
-    <>
-            <br/>
-            <small className="text-muted">Final Match</small>
-            </>
+        export const  printMatchBlock = (item) => {
+          var _mode=' 1 v 1 '
+          var _color = '#404040'
+         
+          var timestamp = item.expire
+  var date = new Date(timestamp);
+  //date.setMinutes(date.getMinutes() + item.timeMinute);
+  var now = new Date();
+  var dateExpired = date.toISOString();
+  
+   
+  var dateNow = now.toISOString();
+  
+  
+          if(item.gameMode == 'Tournament'){_mode = item.gameMode}
+          if(item.gameMode == 'Tournament'){
+            _mode = " $"+(item.totalPlayer * item.amount)*90/100+' '
+            //_color = 'orange'
+          }
+          if (item.matchTables[0].winner !== null)  {_mode = setAvatar(item.matchTables[0].winner)}
+          return (
+            <Link  to={'/panel/lobby?id='+item.id}>
+            <Card className="card-user chall" >
+            <Card.Header className="no-padding">
+              <div className="card-image">
+              <img
+                            alt={item.gameName}
+                           
+                            src={require("assets/images/games/"+item.gameName+".jpg").default}
+                          ></img>
+              </div>
+              <div className="text-center"   style={{position:'absolute',right:0,left:0,marginTop:-50}}>
+                {item.matchTables[0].winner !== null ? (
+                  <Avatar size="80"  style={{boxShadow: '0px 0px 20px 20px rgba(0,0,0,0.2)'}}  round={true} name={_mode} />
+                ):(
+                  <Avatar size="80" textSizeRatio={6} style={{boxShadow: '0px 0px 20px 20px rgba(0,0,0,0.2)'}} color={_color} round={true} value={_mode} />
+                )}
+              
+              </div>
+            </Card.Header>
+            <Card.Body>
+              
+    <Row>
+  <Col style={{lineHeight:'33px'}} xs="7">
+  <Card.Title as="h5" style={{fontSize:15}} >{item.gameName}</Card.Title>
+  <small className="text-muted">{item.gameMode}</small><br/>
+  {item.players[0] ? (
+                <span>
+                {item.players.map((user, z) => (
+                  <span key={z}>
+                  {(z<5)?(
+                    <>
+            {(z<4)?(
+              <Avatar size="25"  title={user.username} round={true} name={setAvatar(user.username)} />
             ):(
-              <>
-              <br/>
-              <small className="text-muted">SemiFinal Match</small>
+  <Avatar  size="25"  round={true} value={"+"+(item.players.length-4)} color="gray" />
+            )}
+             
+            </>
+            ):(null)}
+           </span>
+  
+  ))}
+  </span>
+    ):(
+      <span>
+  <Avatar size="25" round={true} name="?" src="https://graph.facebook.com/100008343750912/picture?width=200&height=200" color="lightgray" />
+  <Avatar size="25" round={true} name="?" src="https://graph.facebook.com/100008343750912/picture?width=200&height=200" color="gray" />
+  </span>
+    )}
+    <br/>
+    {item.gameMode=='Tournament' ? (
+      <span>
+    <small className="text-muted">Start Time</small>
+    {item.totalPlayer == "4" ? (
+      <>
               <br/>
               <small className="text-muted">Final Match</small>
               </>
-            )}
-                   </span>
-                    ):(
-                      <small className="text-muted">Avalable until</small>
-                    )}
-  <br/><small className="text-muted">Status</small>
-  
-</Col>
-<Col style={{lineHeight:'30px'}} className="text-muted text-right" xs="5">
-<small className="text-muted"><FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)}  /> {item.gameConsole}</small><br/>
-<Badge variant={getColor(item.amount)}>${item.amount}</Badge><br/>
-<small className="text-muted">{item.players.length}/{item.totalPlayer}</small> <br/>
-{item.gameMode=='Tournament' ? (
-    <span>
- 
-<small className="text-muted"> <Countdown renderer={renderer} date={addTime(dateExpired,0)} /></small>
-  {item.totalPlayer == "4" ? (
-    <>
-            <br/>
-            <small className="text-muted">
-              <Countdown renderer={renderer} date={addTime(dateExpired,1)} />
-              </small>
-            </>
-            ):(
-              
-               <>
-             <br/>
-            <small className="text-muted">
-              <Countdown renderer={renderer} date={addTime(dateExpired,1)} />
-              </small>
-              <br/>
-            <small className="text-muted">
-              <Countdown renderer={renderer} date={addTime(dateExpired,2)}/>
-              </small>
-              
-              </>
-            )}
-                   </span>
-                    ):(
-                      <small className="text-muted"> {dateExpired? (
-                        <div ><Countdown renderer={renderer} date={addTime(dateExpired,0)} /></div>
-                        ):(
-                          <div> No  limit</div>
-                        )}</small>
-                    )}
-
-<small className="text-muted">{item.status}</small>
-
+              ):(
+                <>
+                <br/>
+                <small className="text-muted">SemiFinal Match</small>
+                <br/>
+                <small className="text-muted">Final Match</small>
+                </>
+              )}
+                     </span>
+                      ):(
+                        <small className="text-muted">Avalable until</small>
+                      )}
+    <br/><small className="text-muted">Status</small>
+    
   </Col>
-</Row>
- 
+  <Col style={{lineHeight:'30px'}} className="text-muted text-right" xs="5">
+  <small className="text-muted"><FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)}  /> {item.gameConsole}</small><br/>
+  <Badge variant={getColor(item.amount)}>${item.amount}</Badge><br/>
+  <small className="text-muted">{item.players.length}/{item.totalPlayer}</small> <br/>
+  {item.gameMode=='Tournament' ? (
+      <span>
+   
+  <small className="text-muted"> <Countdown renderer={renderer} date={addTime(dateExpired,0)} /></small>
+    {item.totalPlayer == "4" ? (
+      <>
+              <br/>
+              <small className="text-muted">
+                <Countdown renderer={renderer} date={addTime(dateExpired,1)} />
+                </small>
+              </>
+              ):(
+                
+                 <>
+               <br/>
+              <small className="text-muted">
+                <Countdown renderer={renderer} date={addTime(dateExpired,1)} />
+                </small>
+                <br/>
+              <small className="text-muted">
+                <Countdown renderer={renderer} date={addTime(dateExpired,2)}/>
+                </small>
+                
+                </>
+              )}
+                     </span>
+                      ):(
+                        <small className="text-muted"> {dateExpired? (
+                          <div ><Countdown renderer={renderer} date={addTime(dateExpired,0)} /></div>
+                          ):(
+                            <div> No  limit</div>
+                          )}</small>
+                      )}
+  
+  <small className="text-muted">{item.status}</small>
+  
+    </Col>
+  </Row>
+   
+              
+            </Card.Body>
             
-          </Card.Body>
-          
-        </Card>
-        </Link>
-        )
-      }
+          </Card>
+          </Link>
+          )
+        }
+        export const  printGameBlock = (item) => {
+          return(
+            <Card className="card-user chall  text-left" >
+            <Card.Header className="no-padding">
+              <div className="card-image">
+              <img
+                            alt={item.name}
+                           
+                            src={require("assets/images/games/"+item.name+".jpg").default}
+                          ></img>
+              </div>
+              
+            </Card.Header>
+            <Card.Body style={{minHeight:30,paddingTop:10}}>
+              
+   
+  <Card.Title as="h5" >{item.name}</Card.Title>
+ 
+   
+              
+            </Card.Body>
+            <Card.Footer className="no-padding  text-right">
+              
+  
+  {item.gameconsole.map((consolename, z) => (
+    <small className="text-muted"><FontAwesomeIcon fixedWidth icon={getIcon(consolename.consolename)}  /> {consolename.consolename} </small>
+  ))}
+              
+            </Card.Footer>
+          </Card>
+          )
+        }

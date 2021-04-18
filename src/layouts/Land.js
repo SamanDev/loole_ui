@@ -28,8 +28,7 @@ function Auth() {
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
-      if (prop.layout === "/home") {
-        //alert(prop.name )
+   
         return (
           <Route
             path={prop.layout + prop.path}
@@ -38,20 +37,21 @@ function Auth() {
             page={prop.name}
           />
         );
-      } else {
-        return null;
-      }
+      
     });
   };
   
   return (
     <>
-      <div className="wrapper wrapper-full-page">
+   
+    <link href="/assets/css/landing-page.css" rel="stylesheet"/>
+   
+      <div className="landing-page landing-page1">
         {/* Navbar */}
         <LandNavbar/>
         {/* End Navbar */}
         <Switch>{getRoutes(routes)}</Switch>
-        <AuthFooter />
+      
       </div>
     
     </>

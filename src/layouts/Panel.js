@@ -2,6 +2,7 @@ import React from "react";
 import { Switch, Route,Redirect } from "react-router-dom";
 import Avatar, { ConfigProvider } from "react-avatar";
 import $ from "jquery";
+import "bootstrap/dist/css/bootstrap.min.css";
 // react-bootstrap components
 import {
   Badge,
@@ -53,14 +54,17 @@ function Panel() {
   const [sidebarBackground, setSidebarBackground] = React.useState("blue");
   const currentUser = AuthService.getCurrentUser();
  // userService.getEvents();
-if (!currentUser) {
-  return <Redirect to="/home"/>
-}else{
-  UserWebsocket.connect(currentUser.accessToken+"&user="+currentUser.username);
-  setInterval(function(){
+ 
+  if (!currentUser) {
+    return <Redirect to="/auth/login-page"/>
+  }else{
     UserWebsocket.connect(currentUser.accessToken+"&user="+currentUser.username);
-  },2000)
-}
+    setInterval(function(){
+      UserWebsocket.connect(currentUser.accessToken+"&user="+currentUser.username);
+    },2000)
+  }
+ 
+
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       
@@ -95,6 +99,9 @@ if (!currentUser) {
   
   return (
     <>
+    <link href="/assets/css/style.css" rel="stylesheet"/>
+   
+    
    <ConfigProvider colors={DEFCOLORS}>
       
       {getPage(routes).indexOf('Match Lobby') > -1 ? (

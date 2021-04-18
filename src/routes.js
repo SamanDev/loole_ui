@@ -15,6 +15,7 @@
 
 */
 import Dashboard from "views/Dashboard.js";
+import Rewards from "views/Rewards.js";
 import MyMatches from "views/MyMatches.js";
 import Cashier from "views/Cashier.js";
 import CreateMatch from "views/Add.js";
@@ -45,6 +46,7 @@ import RegisterPage from "views/Pages/RegisterPage.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 import LockScreen from "views/LockScreen.js";
 import Landing from "views/Pages/Landing.js";
+import User from "views/Pages/User.js";
 
 var routes = [
   
@@ -57,11 +59,27 @@ var routes = [
     show:false
   },
   {
+    path: "/profile",
+    layout: "/user",
+    name: "User",
+    icon: "nc-icon nc-circle-09",
+    component: User,
+    show:true
+  },
+  {
     path: "/dashboard",
     layout: "/panel",
     name: "Dashboard",
     icon: "nc-icon nc-chart-pie-35",
     component: Dashboard,
+    show:true
+  },
+  {
+    path: "/rewards",
+    layout: "/panel",
+    name: "Rewards",
+    icon: "nc-icon nc-notification-70",
+    component: Rewards,
     show:true
   },
   {

@@ -54,13 +54,6 @@ function LoginPage() {
                   <Card.Body>
                   <Login/>
                   </Card.Body>
-                  
-                </Card>
-                    
-                  </Col>
-                </Row>
-                  
-                  </Card.Body>
                   <Card.Footer>
                   <Link
                     to="/auth/forget-page"
@@ -69,6 +62,13 @@ function LoginPage() {
                     Forget your password?
                   </Link>
                 </Card.Footer>
+                </Card>
+                    
+                  </Col>
+                </Row>
+                  
+                  </Card.Body>
+                  
                 </Card>
       
           </Container>

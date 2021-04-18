@@ -178,8 +178,8 @@ function Sidebar({ routes, image, background }) {
               </div>
               </Link>
           
-               <Link to={'/home'} className="simple-text logo-normal">
-              Loole
+               <Link to={'/home'} className="simple-text logo-normal" style={{fontFamily: 'Work Sans',textTransform:'none'}}>
+              Loole.gg
               </Link>
           </div>
           <div className="user">

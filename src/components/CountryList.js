@@ -10,7 +10,7 @@ function CountrySelector() {
     setValue(value)
   }
 
-  return <Select options={options} value={value} onChange={changeHandler} />
+  return <Select className="picker form-control" options={options} value={value} onChange={changeHandler} />
 }
 
 export default CountrySelector
