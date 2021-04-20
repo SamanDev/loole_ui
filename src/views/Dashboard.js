@@ -43,7 +43,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      events: [], //JSON.parse(localStorage.getItem('events')),
+      events: userService.getCurrentEvent()
     };
 
   }
@@ -55,7 +55,7 @@ class Dashboard extends Component {
       // console.log("socket events: "+events);
     
       this.setState({ events: event, isLoading: false });
-      console.log("change state: " + this.state.isLoading);
+     // console.log("change state: " + this.state.isLoading);
       
     });
 
@@ -64,7 +64,7 @@ class Dashboard extends Component {
 
   render() {
     
-    if (!this.state.events.length){
+    if (!this.state.events){
       userService.getEvents();
       
       return <h4 style={{textAlign: "center"}}>Loading 

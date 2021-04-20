@@ -34,7 +34,7 @@ class UserWebsocket {
             
             if (msg.Command === 'event') {
                
-                  
+                localStorage.setItem("events", JSON.stringify(msg.data));
                    eventBus.dispatch("eventsData", msg.data);
                 
             } else if (message.Command === 'startTick') {
@@ -55,6 +55,7 @@ class UserWebsocket {
             ws.close();
             ws = null
         }
+        localStorage.removeItem("events");
         console.log("Websocket is in disconnected state");
 
     }

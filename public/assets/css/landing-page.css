@@ -1703,7 +1703,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de8e0009', e
   padding-bottom: 0;
   }
   .landing-page .carousel-indicators li{
-border-color:transparent  !important;
+
+border-width:2px !important;
   }
   .card-stats h3{
     font-family: "Helvetica Neue","Open Sans",Arial,sans-serif;

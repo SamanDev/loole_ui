@@ -65,7 +65,7 @@ class LockScreenPage extends Component {
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.showFileUpload = this.showFileUpload.bind(this);
     this.state = {
-      events: [], //JSON.parse(localStorage.getItem('events')),
+      events: userService.getCurrentEvent(),
       eventid: getQueryVariable("id"),
       curPlayerReady: false,
       progress:0,

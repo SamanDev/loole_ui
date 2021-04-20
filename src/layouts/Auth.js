@@ -49,8 +49,7 @@ if (currentUser) {
   
   return (
     <>
-    <link href="/assets/css/landing-page.css" rel="stylesheet"/>
-   
+      
    <div className="landing-page landing-page1">
         {/* Navbar */}
         <AuthNavbar/>

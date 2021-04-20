@@ -3,6 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 import { Redirect, Route } from "react-router";
 import AuthService from "services/auth.service";
 import {  withRouter} from 'react-router-dom';
+
 import $ from "jquery";
 // import { BurgerIcon } from './'
 import styled from "styled-components";

@@ -171,7 +171,7 @@ class Register extends Component {
                 </div>
                 <div className="form-group" style={{marginTop: 45}}>
               <button
-                className="btn btn-warning btn-wd btn-outline btn-block"
+                className="btn btn-warning btn-wd btn-block"
                 disabled={this.state.loading}
               >
                 {this.state.loading && (

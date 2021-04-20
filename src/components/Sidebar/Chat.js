@@ -10,7 +10,7 @@ import { UPLOADURL,POSTURLTest } from "const";
 
 import eventBus from "views/eventBus";
 
-
+import BackButton from 'components/Back'
 
 import userService from "services/user.service";
 import {
@@ -137,8 +137,9 @@ this.setState({
               style={{ color: "#fff", margin: 0, height: "100vh" }}
             >
               <Card.Header>
+               
                 <Link to={"/panel/dashboard"}  onClick={() =>
-      document.documentElement.classList.toggle("nav-open")
+      window.history.back()
     }>Back</Link>
                 <h4 style={{ margin: "10px 0px" }}>Match Lobby</h4>
                 <h4 style={{ margin: "10px 0px" }}>{currentUser.username}</h4>

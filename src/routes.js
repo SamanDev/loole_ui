@@ -46,6 +46,7 @@ import RegisterPage from "views/Pages/RegisterPage.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 import LockScreen from "views/LockScreen.js";
 import Landing from "views/Pages/Landing.js";
+import Games from "views/Pages/Games.js";
 import User from "views/Pages/User.js";
 
 var routes = [
@@ -146,6 +147,14 @@ var routes = [
     icon: "nc-icon nc-chart-pie-35",
     component: Landing,
     show:false
+  },
+  {
+    path: "/*",
+    layout: "/game",
+    name: "User",
+    icon: "nc-icon nc-circle-09",
+    component: Games,
+    show:true
   },
 ];
 export default routes;

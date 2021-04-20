@@ -142,20 +142,39 @@ class UserService {
       });
   }
   getEvents(token) {
-    return axios.get(API_URL_TEST + "getEvents").then((response) => {
-      //console.log(response.data.data)
+    if (localStorage.getItem('events')){
+    const event = this.getCurrentEvent(token);
+    //alert(event)
+   
      
-        
-        
+      eventBus.dispatch("eventsData", event);
       
-      eventBus.dispatch("eventsData", response.data.data);
-    }).catch(error => {
-      var _this = this;
-      setTimeout(function(){
-        _this.getEvents(token)
-      },2000)
       
-   });
+    }else{
+      return axios.get(API_URL_TEST + "getEvents").then((response) => {
+        //console.log(response.data.data)
+       
+          
+        localStorage.setItem("events", JSON.stringify(response.data.data));
+        
+        eventBus.dispatch("eventsData", response.data.data);
+      }).catch(error => {
+        var _this = this;
+        setTimeout(function(){
+          _this.getEvents(token)
+        },2000)
+        
+     });
+    }
+    
+  }
+  getCurrentEvent(token) {
+    if (localStorage.getItem('events')){
+    return  JSON.parse(localStorage.getItem('events'));
+    }else{
+      localStorage.removeItem("events");
+      this.getEvents(token)
+    }
   }
   createTournament(gamename, gameconsole, tournamentmode, bet, time) {
     return axios

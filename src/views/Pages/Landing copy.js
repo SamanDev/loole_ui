@@ -46,7 +46,7 @@ export default class Landing extends Component {
   }
   
   render() {
-    if (!this.state.events){
+    if (!this.state.events.length){
       userService.getEvents();
       
       return  <div className="parallax filter-gradient gray section-gray" data-color="red">

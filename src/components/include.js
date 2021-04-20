@@ -287,14 +287,15 @@ export const  setAvatar  = (name) =>{
            <>
             <img
               className="d-block w-100"
-              src={require("assets/images/games/"+item.name+".jpg").default}
+              src={"/assets/images/games/"+item.name+".jpg"}
               alt={item.name}
             />
             <Carousel.Caption>
               <h3>{item.name}</h3>
               <p>Play {item.name} for Real Money.</p>
+              <Button to={"/game/"+item.name} as={Link} variant="danger" className="btn-fill">Play {item.name} for Cash now!</Button>
               <p>Avalable for: {item.gameconsole.map((consolename, z) => (
-    <small className="text-muted"><FontAwesomeIcon fixedWidth icon={getIcon(consolename.consolename)}  /> {(consolename.consolename)} </small>
+    <small className="text-muted" key={z}><FontAwesomeIcon fixedWidth icon={getIcon(consolename.consolename)}  /> {(consolename.consolename)} </small>
   ))}</p>
               
             </Carousel.Caption>

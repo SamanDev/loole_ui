@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, Route,Redirect } from "react-router-dom";
 import Avatar, { ConfigProvider } from "react-avatar";
 import $ from "jquery";
-import "bootstrap/dist/css/bootstrap.min.css";
+
 // react-bootstrap components
 import {
   Badge,
@@ -72,6 +72,7 @@ function Panel() {
         return getRoutes(prop.views);
       }
       if (prop.layout === "/panel" ) {
+        
         scrollToTop();
         
         return (
@@ -79,6 +80,7 @@ function Panel() {
             path={prop.layout + prop.path}
             key={key}
             component={prop.component}
+            
           />
         );
       } else {
@@ -98,8 +100,8 @@ function Panel() {
   };
   
   return (
+    
     <>
-    <link href="/assets/css/style.css" rel="stylesheet"/>
    
     
    <ConfigProvider colors={DEFCOLORS}>
