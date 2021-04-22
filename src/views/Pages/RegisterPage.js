@@ -35,7 +35,7 @@ function RegisterPage() {
               <Card.Header>
                 <Row className="justify-content-center">
                   <Col md="8">
-                    <div className="header-text">
+                    <div >
                       <Card.Title as="h2">
                         Create Loole Account for Free
                       </Card.Title>

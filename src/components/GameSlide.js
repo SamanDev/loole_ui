@@ -53,7 +53,7 @@ export default function GameSlide() {
     <>
      <div className="container" style={{marginTop:60}}>
     <h4 className="header-text text-center" style={{color: '#fff'}}>GAMES YOU CAN PLAY</h4>
-                    <div className="info " style={{maxWidth:700,margin:'auto'}}>
+                    <div className="info " style={{maxWidth:800,margin:'auto'}}>
                    
                     <Carousel>
                     {getBlockGames()}

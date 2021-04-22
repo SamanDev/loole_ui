@@ -36,7 +36,7 @@ function LoginPage() {
                 <Card.Header>
                 <Row className="justify-content-center">
                   <Col md="6">
-                    <div className="header-text">
+                    <div>
                       <Card.Title as="h2">
                         Login
                       </Card.Title>
