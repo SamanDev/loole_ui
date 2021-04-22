@@ -1,6 +1,7 @@
-import React from "react";
+import React, { Component }from "react";
 import { Switch, Route,Redirect } from "react-router-dom";
 
+import $ from "jquery";
 // react-bootstrap components
 import {
   Badge,
@@ -18,48 +19,69 @@ import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 import AuthService from "services/auth.service";
 // dinamically create auth routes
 import routes from "routes.js";
+function scrollToTop() {
 
-function Auth() {
-  const currentUser = AuthService.getCurrentUser();
-if (currentUser) {
-  return <Redirect to="/panel/dashboard"/>
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+    });
+    
+    
+  
+
+
+};
+const getRoutes = (routes) => {
+  return routes.map((prop, key) => {
+    
+    if (prop.collapse) {
+      return getRoutes(prop.views);
+    }
+    if (prop.layout === "/auth") {
+      //alert(prop.name )
+      scrollToTop()
+      return (
+        <Route
+          path={prop.layout + prop.path}
+          key={key}
+          component={prop.component}
+          page={prop.name}
+        />
+      );
+    } else {
+      return null;
+    }
+  });
+};
+  class Auth extends Component {
+  
+componentDidMount() {
+  
+  
+      var responsive = $(window).width();
+      if (responsive >= 768) {
+        $('.landing-page').removeClass('landing-mobile')
+    }
+    
+
 }
   
-  const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
+  render() {
+    return (
+      <>
+        
+     <div className="landing-page landing-page1 landing-mobile">
+          {/* Navbar */}
+          <AuthNavbar/>
+          {/* End Navbar */}
+          <Switch>{getRoutes(routes)}</Switch>
+        
+        </div>
       
-      if (prop.collapse) {
-        return getRoutes(prop.views);
-      }
-      if (prop.layout === "/auth") {
-        //alert(prop.name )
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            key={key}
-            component={prop.component}
-            page={prop.name}
-          />
-        );
-      } else {
-        return null;
-      }
-    });
-  };
-  
-  return (
-    <>
-      
-   <div className="landing-page landing-page1">
-        {/* Navbar */}
-        <AuthNavbar/>
-        {/* End Navbar */}
-        <Switch>{getRoutes(routes)}</Switch>
-      
-      </div>
-    
-    </>
-  );
+      </>
+    );
+  }
+ 
 }
 
 export default (Auth);

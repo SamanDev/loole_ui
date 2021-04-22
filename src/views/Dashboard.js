@@ -81,7 +81,7 @@ class Dashboard extends Component {
     if (!Balance) { Balance = 0 }
     //console.log("dash = "+EventList)
     
-    console.log('e-l : ' + events);
+    //console.log('e-l : ' + events);
     const getBlockChallenge = (filtermode) => {
       
       if (events != []) {

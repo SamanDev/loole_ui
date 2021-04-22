@@ -304,3 +304,25 @@ export const  setAvatar  = (name) =>{
           
           )
         }
+        export const  printGameBlockMobile = (item) => {
+          return(
+           <>
+            <img
+              className="d-block w-100"
+              src={"/assets/images/games/"+item.name+".jpg"}
+              alt={item.name}
+            />
+            <Carousel.Caption>
+              <h3>{item.name}</h3>
+              <p>Play {item.name} for Real Money.</p>
+              <Button to={"/game/"+item.name} as={Link} variant="danger" className="btn-fill btn-sm">Play {item.name} now!</Button>
+              <p>{item.gameconsole.map((consolename, z) => (
+    <small  key={z}><FontAwesomeIcon fixedWidth icon={getIcon(consolename.consolename)}  /> {(consolename.consolename)} </small>
+  ))}</p>
+              
+            </Carousel.Caption>
+          </>
+         
+          
+          )
+        }

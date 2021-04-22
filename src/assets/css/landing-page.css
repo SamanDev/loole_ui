@@ -1320,7 +1320,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de8e0009', e
     top: 0;
     width: 220px;
   }
-  .nav > li{
+  .landing-mobile .nav > li{
     text-align: center;
   }
   .navbar-toggle .icon-bar{
@@ -1400,3 +1400,203 @@ border-width:2px !important;
     border-radius: 10px;
     background: rgba(0,0,0,.8);
     }
+    @media (max-width: 768px){
+      .landing-mobile .navbar{
+        width: 100%;
+  overflow: hidden;
+  padding: 5px 25px 0 25px;
+      }
+      .landing-mobile  .navbar-nav {
+        margin: 9px 0 0 0;
+        padding-left: 2px;
+        background: transparent;
+        }
+      .landing-mobile .navbar-brand{
+        padding-bottom: 0px;
+      }
+      .landing-mobile .navbar > div{
+        padding: 0px;
+        left:0
+      }
+      .landing-mobile .navbar .navbar-toggler{
+  width: auto;
+  height: auto;
+  top: 6px;
+  position: relative;
+      }
+      .landing-mobile  .card{
+        margin-bottom: 0px;
+      }
+      .landing-mobile .card-register{
+        margin-top: 60px;
+  padding-bottom: 70px;
+      }
+      .landing-mobile  .wrapper{
+        
+      }
+      .landing-mobile .section-game .parallax {
+        height: 540px;
+        }
+      .landing-mobile .parallax .description {
+        margin-top: 115px;
+        }
+        .landing-mobile .header-text {
+          
+          font-size: 25px;
+          
+          line-height: 28px;
+          }
+          .landing-mobile .section p {
+           
+            font-size: 15px;
+           
+            }
+          .landing-mobile .section-game .carousel-caption{
+           
+            line-height:20px;
+            top: 130px;
+  position: absolute;
+  bottom: -110px;
+  right: 10%;
+  left: 10%;
+          }
+          .landing-mobile .section-game h3{
+            font-size: 25px;
+            
+          }
+          .landing-mobile .section-game p{
+            font-size: 16px;
+            margin: 10px;
+            color: #fff;
+          }
+          .landing-mobile .section-game .carousel-inner  {
+            overflow: visible;
+               }
+          .landing-mobile .section-game .carousel-indicators  {
+            bottom: -100px;
+               }
+               .landing-mobile .carousel-indicators li {
+                position: relative;
+                   top: 10px;
+                   padding: 0;
+                   }
+            
+            .landing-mobile .carousel-indicators .active{
+              background-color: #fff
+            }
+          }
+          @media (min-width: 600px){
+            .landing-mobile .navbar{
+              width: 100%;
+        overflow: hidden;
+        padding: 5px 25px 0 25px;
+            }
+            .landing-mobile  .navbar-nav {
+              margin: 9px 0 0 0;
+              padding-left: 2px;
+              background: transparent;
+              }
+            .landing-mobile .navbar-brand{
+              padding-bottom: 0px;
+            }
+            .landing-mobile .navbar > div{
+              padding: 0px;
+              left:0
+            }
+            .landing-mobile .navbar .navbar-toggler{
+        width: auto;
+        height: auto;
+        top: 6px;
+        position: relative;
+            }
+            .landing-mobile  .card{
+              margin-bottom: 0px;
+            }
+            .landing-mobile .card-register{
+              margin-top: 60px;
+        padding-bottom: 70px;
+            }
+            .landing-mobile  .wrapper{
+              
+            }
+            .landing-mobile .section-game .parallax {
+              height: 480px;
+              }
+            .landing-mobile .parallax .description {
+              margin-top: 115px;
+              }
+              .landing-mobile .header-text {
+                
+                font-size: 25px;
+                
+                line-height: 28px;
+                }
+                .landing-mobile .section p {
+                 
+                  font-size: 15px;
+                 
+                  }
+                .landing-mobile .section-game .carousel-caption{
+                  padding: 0;
+                  line-height:20px;
+                  top: 130px;
+        position: absolute;
+        bottom: -110px;
+        right: 10%;
+        left: 10%;
+                }
+                .landing-mobile .section-game h3{
+                  font-size: 20px;
+                  
+                }
+                .landing-mobile .section-game p{
+                  font-size: 14px;
+                  margin: 10px;
+                  color: #fff;
+                }
+                .landing-mobile .section-game .carousel-inner  {
+                  overflow: visible;
+                     }
+                .landing-mobile .section-game .carousel-indicators  {
+                  bottom: -100px;
+                     }
+                     .landing-mobile .carousel-indicators li {
+                      position: relative;
+                         top: 10px;
+                         padding: 0;
+                         }
+                  
+                  .landing-mobile .carousel-indicators .active{
+                    background-color: #fff
+                  }
+                }
+          @media (max-width: 414px){
+            .landing-mobile .parallax {
+              height: 540px;
+              }
+              .landing-mobile  .carousel-caption{
+                padding: 0;
+                line-height:20px;
+                top: 100px;
+      position: absolute;
+      bottom: -70px;
+      right: 10%;
+      left: 10%;
+              }
+              .landing-mobile .carousel-indicators  {
+                bottom: -70px;
+                   }
+            .landing-mobile .section-game h3{
+              font-size: 17px;
+              
+            }
+            .landing-mobile .section-game p{
+              font-size: 12px;
+              margin: 5px;
+              color: #fff;
+            }
+            .landing-mobile .section-game .btn{
+              
+              margin: 0;
+            }
+          }

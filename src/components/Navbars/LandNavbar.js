@@ -24,18 +24,59 @@ class LandNavbar extends Component {
     constructor(props) {
         super(props);
         this.logOut = this.logOut.bind(this);
-
+        this.setNavExpanded = this.setNavExpanded.bind(this);
+        this.closeNav = this.closeNav.bind(this);
+        this.setNavbarColor = this.setNavbarColor.bind(this);
         this.state = {
             showModeratorBoard: false,
             showAdminBoard: false,
             currentUser: undefined,
             collapseOpen: false,
           
-            isExpanded: false
+            navExpanded: false
         };
 
     }
+    
+    setNavbarColor(expanded) {
+        if($('.landing-page').length>0){
+            $('nav.navbar').removeClass('bg-light bg-dark navbar-light navbar-dark bg-transparent')
+        
+            if (!expanded) {
+                if ($(window).scrollTop() < 60) {
+                 
+                    $('nav.navbar').addClass('bg-transparent navbar-dark');
+                    
+                }else{
+                    $('nav.navbar').addClass('bg-light navbar-light')
+                }
+              }else{
+                $('nav.navbar').addClass('bg-dark navbar-dark')
+            }
+        }
+        
+    }
+      setNavExpanded(expanded) {
+        this.setState({ navExpanded: expanded });
+        this.setNavbarColor(expanded)
+      }
+    
+      closeNav() {
+        this.setState({ navExpanded: false });
+        this.setNavbarColor(false)
+      }
+      _handleScroll() {
+        this.closeNav()
+        
+      }
     componentDidMount() {
+        window.onscroll = () => {
+            this._handleScroll();
+            var responsive = $(window).width();
+            if (responsive >= 768) {
+                parallax();
+            }
+        }
         var big_image;
         $().ready(function() {
             $('.selector').click(function() {
@@ -49,24 +90,10 @@ class LandNavbar extends Component {
             }
     
         });
-    
-        $(window).on('scroll', function() {
-            var responsive = $(window).width();
-            if (responsive >= 768) {
-              parallax();
-          }
-          
-          if ($(window).scrollTop() >= 100) {
-            if (!$('nav.navbar').hasClass('bg-light')) {
-              $('nav.navbar').addClass('bg-light navbar-light').removeClass('bg-transparent navbar-dark');
-            }
-        }else{
-          if ($('nav.navbar').hasClass('bg-light')) {
-            $('nav.navbar').removeClass('bg-light navbar-light').addClass('bg-transparent navbar-dark');
-          }
-        }
-        });
+       
+       
         $('nav').removeClass('bg-light navbar-light').addClass('bg-transparent navbar-dark');
+       
         function SelectColor(btn) {
             oldColor = $('.filter-gradient').attr('data-color');
             newColor = $(btn).attr('data-color');
@@ -104,8 +131,8 @@ class LandNavbar extends Component {
             
             $('.parallax').each(function() {
                 var $elem = $(this);
-    
-                if (isElementInViewport($elem) ||1==1) {
+                var responsive = $(window).width();
+                if (isElementInViewport($elem) || responsive >= 768) {
                     var parent_top = $elem.offset().top;
                     var window_bottom = $(window).scrollTop();
                     var $image = $elem.find('.parallax-background-image')
@@ -154,18 +181,20 @@ class LandNavbar extends Component {
               showAdminBoard: user.roles.includes("ROLE_ADMIN"),
              
           });
+         
           if (window.location.href.indexOf('auth') > -1 && window.location.href.indexOf('lock') == -1) { 
             //this.props.history.push("/panel/dashboard");
             //window.location.href="/panel/dashboard";
           }
       } else {
           //window.location.href = "/";
+         
           if (window.location.href.indexOf('lock') > -1) { 
             //window.location.href="/home";
           //this.props.history.push("/home");
           }
       }
-
+      
     }
 
     logOut() {
@@ -178,23 +207,29 @@ class LandNavbar extends Component {
             isExpanded: !this.state.isExpanded
         });
     }
+     OpenMenu(){
+         
+        
+         
+    }
     render() {
         const { currentUser, showModeratorBoard, showAdminBoard, collapseOpen, currPage, isExpanded } = this.state;
        
         return (
             
-            <Navbar bg="transparent" expand="lg" fixed="top" >
+            <Navbar bg="transparent" expand="lg" fixed="top" onToggle={this.setNavExpanded}
+            expanded={this.state.navExpanded} >
                 <Container>
   <Navbar.Brand to="/home" as={Link} style={{fontFamily: 'Work Sans',paddingLeft:0}}>
                 <img
                   src={require("assets/img/logoloole.svg").default}
                   alt="loole.gg logo"
-                  style={{height:50,marginRight:10}}
+                  style={{height:50, width: 50,marginRight:10}}
                 />
                Loole.gg</Navbar.Brand>
-  <Navbar.Toggle aria-controls="basic-navbar-nav" />
+  <Navbar.Toggle id="myCheck" aria-controls="basic-navbar-nav" />
   <Navbar.Collapse id="basic-navbar-nav">
-    <Nav className="ml-auto navbar-dark">
+    <Nav className="ml-auto navbar-dark" onClick={this.closeNav}>
     {currentUser ? (
     <Nav.Link to="/panel/dashboard" as={Link}>Dashboard
 </Nav.Link>

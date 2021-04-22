@@ -51,7 +51,7 @@ function scrollToTop() {
 function Panel() {
   
   const [sidebarImage, setSidebarImage] = React.useState(image3);
-  const [sidebarBackground, setSidebarBackground] = React.useState("blue");
+  const [sidebarBackground, setSidebarBackground] = React.useState("orange");
   const currentUser = AuthService.getCurrentUser();
  // userService.getEvents();
  

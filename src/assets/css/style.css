@@ -788,7 +788,32 @@ list-style: none;
 }
 
 }
+.main-panel .navbar.fixed-top{
+    line-height: 30px;
+}
+.main-panel .navbar.fixed-top *{
+    
+    font-size: 14px;
+}
+.main-panel::before{
+   
+    width: 0px;
+    height: 0px;
+    display: block;
+    z-index: 1;
+    content: "";
+    opacity: .7;
+    margin-bottom: 60px;
+}
 @media only screen and (max-width: 600px){
+    .main-panel .navbar.fixed-top{
+        width: 100%;
+       
+    }
+    .main-panel .navbar.fixed-top *{
+       
+        font-size: 18px;
+    }
 .mynav .fa-bars{
 display: block;
 position: absolute;

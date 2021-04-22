@@ -4,7 +4,6 @@ import { Switch, Route,Redirect } from "react-router-dom";
 import Avatar, { ConfigProvider } from "react-avatar";
 import { DEFCOLORS } from "const";
 
-import $ from "jquery";
 // react-bootstrap components
 import {
   Badge,
@@ -22,14 +21,29 @@ import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 import AuthService from "services/auth.service";
 // dinamically create auth routes
 import routes from "routes.js";
+function scrollToTop() {
 
-const currentUser = AuthService.getCurrentUser();
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+    });
+    try {
+      document.getElementById("myCheck").click();
+    } catch (error) {
+      
+    }
+  
+
+
+};
+function Auth() {
+  const currentUser = AuthService.getCurrentUser();
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout !== "/panel" ) {
      
-      
+      scrollToTop();
         return (
           <Route
             path={prop.layout + prop.path}
@@ -42,37 +56,12 @@ const currentUser = AuthService.getCurrentUser();
         }
     });
   };
-class Auth extends Component {
-  scrollToTop() {
-   
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-      });
-    
-    
-  
-  
-  };
-  componentDidMount() {
-    
-    
-        var responsive = $(window).width();
-        if (responsive >= 768) {
-          $('.landing-page').removeClass('landing-mobile')
-      }
-     
-  
-  }
-    
-    render() {
-      this.scrollToTop();
   
   return (
     <>
    
     <ConfigProvider colors={DEFCOLORS}>
-      <div className="landing-page landing-page1 landing-mobile">
+      <div className="landing-page landing-mobile">
         {/* Navbar */}
         <LandNavbar/>
         {/* End Navbar */}
@@ -83,7 +72,6 @@ class Auth extends Component {
       </ConfigProvider>
     </>
   );
-    }
 }
 
 export default (Auth);

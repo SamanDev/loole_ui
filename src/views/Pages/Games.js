@@ -20,7 +20,7 @@ import {
   Spinner,
   Carousel
 } from "react-bootstrap";
-import Games from "server/Games";
+import GameSlide from "components/GameSlide";
 
 export default class Landing extends Component {
   
@@ -156,6 +156,7 @@ export default class Landing extends Component {
               
                                 <br/>
                                 <p>Play {_game} for Real Money.</p>
+                                <p>Play {_game} for Real Money.</p>
                             </div>
                             <div className="buttons">
                                 <button className="btn btn-fill btn-danger" style={{marginRight:10}}>
@@ -186,17 +187,14 @@ export default class Landing extends Component {
                  
                     </div>
             </div>
-            <div className="section " style={{padding: 0}}>
-                <div className="parallax filter-gradient orange" data-color="orange" style={{height:'800px'}}>
+            <div className="section section-game " style={{padding: 0}}>
+                <div className="parallax filter-gradient red" data-color="orange"  >
                     <div className="parallax-background">
-                        <img className="parallax-background-image" src="/assets/img/bg.jpg"/>
+                        <img className="parallax-background-image" src="assets/img/bg.jpg"/>
                     </div>
-                    <div className="container" style={{marginTop:100}}>
-                    <h4 className="header-text text-center" style={{color: '#fff'}}>GAMES YOU CAN PLAY</h4>
-                    <Carousel>
-                    {getBlockGames()}
-                    </Carousel>
-                    </div>
+                    
+                    <GameSlide/>
+                    
                 </div>
             </div>
             

@@ -62,30 +62,10 @@ class AdminNavbar extends Component {
         const { currentUser, showModeratorBoard, showAdminBoard, collapseOpen, isExpanded } = this.state;
      
         return (
-          <Navbar expand="lg" className="fixed-top2 ">
+          <Navbar expand="lg" fixed="top" bg="primary" variant="dark">
           <Container fluid>
             <div className="navbar-wrapper">
-              <div className="navbar-minimize">
-              <Button
-                  className="btn-fill btn-round btn-icon d-none d-lg-block "
-                  variant="outline"
-                  onClick={() => document.body.classList.toggle("sidebar-mini")}
-                >
-                  <i className="fas fa-ellipsis-v visible-on-sidebar-regular"></i>
-                  <i className="fas fa-bars visible-on-sidebar-mini"></i>
-                </Button>
-                
-                <Button
-                  className="btn-fill btn-round btn-icon d-block d-lg-none bg-dark border-dark hide"
-                  variant="dark"
-                  onClick={() =>
-                    document.documentElement.classList.toggle("nav-open")
-                  }
-                >
-                  <i className="fas fa-ellipsis-v visible-on-sidebar-regular"></i>
-                  <i className="fas fa-bars visible-on-sidebar-mini"></i>
-                </Button>
-              </div>
+            
               <Navbar.Brand onClick={(e) => e.preventDefault()}>
               <span className={this.props.page.indexOf('Profile')>-1 ? "hide" : ""}>{this.props.page }</span>
               <span className={this.props.page.indexOf('Profile')==-1 ? "hide" : ""}>{currentUser.username} Profile</span>
