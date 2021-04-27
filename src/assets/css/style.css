@@ -1007,8 +1007,12 @@ min-height: 140px;
 padding-bottom: 0;
 }
 .chall.card-user .card-body .col small{
-line-height:30px;
-}
+    line-height:30px;
+    }
+
+    .card-user  .row small,.card-user  .row h5{
+        line-height:30px !important;
+        }
 .card-user .card-image {
 height: 200px;
 }

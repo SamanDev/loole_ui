@@ -181,11 +181,11 @@ export const  setAvatar  = (name) =>{
             <Card.Body>
               
     <Row>
-  <Col style={{lineHeight:'33px'}} xs="7">
+  <Col  xs="7">
   <Card.Title as="h5" style={{fontSize:15}} >{item.gameName}</Card.Title>
-  <small className="text-muted">{item.gameMode}</small><br/>
+  <small className="text-muted">{item.gameMode}<br/></small>
   {item.players[0] ? (
-                <span>
+                <small>
                 {item.players.map((user, z) => (
                   <span key={z}>
                   {(z<5)?(
@@ -201,7 +201,7 @@ export const  setAvatar  = (name) =>{
            </span>
   
   ))}
-  </span>
+  </small>
     ):(
       <span>
   <Avatar size="25" round={true} name="?" src="https://graph.facebook.com/100008343750912/picture?width=200&height=200" color="lightgray" />
@@ -232,10 +232,10 @@ export const  setAvatar  = (name) =>{
     <br/><small className="text-muted">Status</small>
     
   </Col>
-  <Col style={{lineHeight:'30px'}} className="text-muted text-right" xs="5">
-  <small className="text-muted"><FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)}  /> {item.gameConsole}</small><br/>
-  <Badge variant={getColor(item.amount)}>${item.amount}</Badge><br/>
-  <small className="text-muted">{item.players.length}/{item.totalPlayer}</small> <br/>
+  <Col className="text-muted text-right" xs="5">
+  <small className="text-muted"><FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)}  /> {item.gameConsole}<br/></small>
+  <small><i className="fas  fa-dollar-sign text-success"></i></small><Badge variant={getColor(item.amount)}>{item.amount}</Badge>
+  <small className="text-muted"><br/>{item.players.length}/{item.totalPlayer}<br/></small>
   {item.gameMode=='Tournament' ? (
       <span>
    

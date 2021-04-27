@@ -119,6 +119,11 @@ class Register extends Component {
           });
         }
       );
+    }else {
+      this.setState({
+        successful: false,
+        loading: false
+      });
     }
   }
 
@@ -171,7 +176,7 @@ class Register extends Component {
                 </div>
                 <div className="form-group" style={{marginTop: 45}}>
               <button
-                className="btn btn-warning btn-wd btn-block"
+                className="btn btn-warning btn-wd  btn-outline  btn-block"
                 disabled={this.state.loading}
               >
                 {this.state.loading && (
