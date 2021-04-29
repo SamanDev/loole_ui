@@ -160,7 +160,11 @@ class Dashboard extends Component {
                   <Col xs="8">
                     <div className="numbers">
                       <p className="card-category">Balance</p>
-                      <Card.Title as="h4"><i className="fas  fa-dollar-sign text-success"></i> {Balance}</Card.Title>
+                      <Card.Title as="h4"><img
+                            alt="loole coin"
+                           
+                            src="/assets/images/dollar.svg"
+                          ></img> {Balance}</Card.Title>
                     </div>
                   </Col>
                 </Row>
@@ -179,13 +183,18 @@ class Dashboard extends Component {
               <Card.Body>
                 <Row>
                   <Col xs="5">
-                    <div className="icon-big text-center icon-warning"><i className="fab  fa-connectdevelop text-danger" style={{width: 'auto',textAlign: 'left'}}></i>
+                  <div className="icon-big text-center icon-warning">
+                      <i className="nc-icon nc-bank text-muted"></i>
                     </div>
                   </Col>
                   <Col xs="7">
                     <div className="numbers">
                       <p className="card-category">Points</p>
-                      <Card.Title as="h4"><i className="fab  fa-connectdevelop text-danger"></i> 1,000</Card.Title>
+                      <Card.Title as="h4"><img
+                            alt="loole coin"
+                           
+                            src="/assets/images/coin.svg"
+                          ></img> 1,000</Card.Title>
                     </div>
                   </Col>
                 </Row>

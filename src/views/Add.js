@@ -234,7 +234,7 @@ const getModalTag = (filtermode) => {
   }
   return tagsof
 }
-const currentUser = AuthService.getCurrentUser();
+
 class CreateMatch extends Component {
   constructor(props) {
     super(props);
@@ -315,59 +315,9 @@ class CreateMatch extends Component {
 
   handleCreateMatch(e) {
     e.preventDefault();
-
+    
     if (allValid) {
-      if (!this.state.GameTag) {
-        const resetPw = async () => {
-          const swalval = await Swal.fire(getModalTag(this.state.GameName));
-
-          let v = (swalval && swalval.value) || swalval.dismiss;
-          console.log(swalval);
-          if (v) {
-            if (v.tagid) {
-              var tags = v.tagid.split("@@");
-              if(tags.length==0){
-                if (tags[0] != "") {
-                  this.setState({
-                    GameTag: v.tagid,
-                  });
-                  console.log(this.state);
-                  this.handleSaveTags();
-                }
-              }
-              if(tags.length==1){
-                if (tags[0] != "" && tags[1] != "") {
-                  this.setState({
-                    GameTag: v.tagid,
-                  });
-                  console.log(this.state);
-                  this.handleSaveTags();
-                }
-              }
-              //setformdata(swalval);
-              
-            }
-          }
-        };
-
-        resetPw();
-      } else if (this.state.BetAmount.value > currentUser.balance &&  1==2) {
-        var resMessage = "To enter this tournament you need $1.00, and only have $0.00"
-        Swal.fire({
-          title: 'Error!',
-          text:resMessage,
-          icon:"error",
-          showCancelButton: true,
-          confirmButtonText: `Go to Cashier`,
-          canceleButtonText: `Back`,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            this.props.history.push("/panel/cashier");
-          }
-        })
-       
-      } else {
+     
         this.setState({
           message: "",
           loading: true,
@@ -381,12 +331,72 @@ class CreateMatch extends Component {
             this.state.AvalableFor.value
           )
           .then(
+            
             (response) => {
-              Swal.fire("", "Data saved successfully.", "success").then(
-                (result) => {
-                  this.props.history.push("/panel/dashboard");
-                }
-              );
+              if (response=='Create event successful'){
+                Swal.fire("", "Data saved successfully.", "success").then(
+                  (result) => {
+                    this.props.history.push("/panel/dashboard");
+                  }
+                );
+              }else{
+                this.setState({
+                  successful: false,
+                  message: "",
+                  submit: false,
+                  loading: false,
+                });
+                if (response=='balanceError'){
+                var resMessage = "To enter this event you need to have more balance!"
+        Swal.fire({
+          title: 'Error!',
+          text:resMessage,
+          icon:"error",
+          showCancelButton: true,
+          confirmButtonText: `Go to Cashier`,
+          canceleButtonText: `Back`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            this.props.history.push("/panel/cashier");
+          }
+        })
+              }else if (response=='tagError'){
+                const resetPw = async () => {
+                  const swalval = await Swal.fire(getModalTag(this.state.GameName));
+        
+                  let v = (swalval && swalval.value) || swalval.dismiss;
+                  console.log(swalval);
+                  if (v) {
+                    if (v.tagid) {
+                      var tags = v.tagid.split("@@");
+                      if(tags.length==0){
+                        if (tags[0] != "") {
+                          this.setState({
+                            GameTag: v.tagid,
+                          });
+                          console.log(this.state);
+                          this.handleSaveTags();
+                        }
+                      }
+                      if(tags.length==1){
+                        if (tags[0] != "" && tags[1] != "") {
+                          this.setState({
+                            GameTag: v.tagid,
+                          });
+                          console.log(this.state);
+                          this.handleSaveTags();
+                        }
+                      }
+                      //setformdata(swalval);
+                      
+                    }
+                  }
+                };
+        
+                resetPw();
+              }
+            }
             },
             (error) => {
               const resMessage =
@@ -395,7 +405,7 @@ class CreateMatch extends Component {
                   error.response.data.message) ||
                 error.message ||
                 error.toString();
-              localStorage.clear();
+            
 
               this.setState({
                 successful: false,
@@ -405,7 +415,7 @@ class CreateMatch extends Component {
               });
             }
           );
-      }
+      
     } else {
       this.setState({
         submit: true,
@@ -483,7 +493,7 @@ class CreateMatch extends Component {
     }
   }
   render() {
-    
+    const currentUser = AuthService.getCurrentUser();
     var _mode = " 1 v 1 ";
     var _color = "#404040";
     return (

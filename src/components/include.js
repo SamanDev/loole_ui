@@ -63,6 +63,20 @@ export const  setAvatar  = (name) =>{
       else if(amount>=50){return 'danger'}
      
     }
+    export const  getGroupBadge  = (sign,amount,classes) =>{
+    
+      return (
+        <div style={{height:30,padding:'2px 0'}}><Badge variant={getColor(amount)} className={"badgegroup "+classes}>
+                                      <span className="cur"><img
+                            alt={"loole "+sign}
+                           
+                            src={"/assets/images/"+sign+".svg"}
+                          ></img></span>
+                                      <span className="lable">{amount}</span>
+                                      </Badge></div>
+      )
+     
+    }
     export const  addTime = (datetime, hours) => {
       var result = new Date(datetime);
     
@@ -234,8 +248,11 @@ export const  setAvatar  = (name) =>{
   </Col>
   <Col className="text-muted text-right" xs="5">
   <small className="text-muted"><FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)}  /> {item.gameConsole}<br/></small>
-  <small><i className="fas  fa-dollar-sign text-success"></i></small><Badge variant={getColor(item.amount)}>{item.amount}</Badge>
-  <small className="text-muted"><br/>{item.players.length}/{item.totalPlayer}<br/></small>
+ 
+  {getGroupBadge('dollar',item.amount,'small right')}
+                                     
+  
+  <small className="text-muted">{item.players.length}/{item.totalPlayer}<br/></small>
   {item.gameMode=='Tournament' ? (
       <span>
    

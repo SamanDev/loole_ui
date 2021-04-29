@@ -38,7 +38,8 @@ import {
   getIcon,
   renderer,
   getQueryVariable,
-  getCode
+  getCode,
+  getGroupBadge
 } from "components/include";
 import { UPLOADURL,POSTURLTest } from "const";
 import Swal from 'sweetalert2'
@@ -368,9 +369,9 @@ userService.changeReadyEvent(this.state.eventid).then(
                                       fontSize: "20px",
                                     }}
                                   >
-                                    <Badge variant={getColor(item.amount)}>
-                                      ${item.amount}
-                                    </Badge>
+                                   
+                                 
+  {getGroupBadge('dollar',item.amount,'')}
                                     <h5 style={{ marginTop: 5 }}>
                                       {item.gameName} <br />
                                       <small>{item.gameMode}</small> <br />
