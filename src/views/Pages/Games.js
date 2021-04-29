@@ -190,7 +190,7 @@ export default class Landing extends Component {
             <div className="section section-game " style={{padding: 0}}>
                 <div className="parallax filter-gradient red" data-color="orange"  >
                     <div className="parallax-background">
-                        <img className="parallax-background-image" src="assets/img/bg.jpg"/>
+                        <img className="parallax-background-image" src="/assets/img/bg.jpg"/>
                     </div>
                     
                     <GameSlide/>

@@ -17,7 +17,7 @@ import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timel
 import 'react-vertical-timeline-component/style.min.css';
 import userService from "services/user.service";
 
-import CountryList from 'components/CountryList'
+import MyMatches from 'views/UserMatches.js'
 import Birthday from 'components/Birthday'
 // react-bootstrap components
 import {
@@ -414,40 +414,88 @@ const required = (value) => {
     
   return (
     <>
-      <Row>
+    <div className="wrapper">
+            <div className="parallax filter-gradient gray section-gray" data-color="red">
+                <div className="parallax-background">
+                    <img className="parallax-background-image" src="/assets/img/showcases/showcase-1/bg.jpg"/>
+                </div>
+                <div className= "container">
+                <div className="row">
+                            <div className="col-md-12">
+                                <div className="description">
+                                <div
+                                  className=" winner avatar"
+                                  style={{ width: 92, height: 92 }}
+                                ></div>
+                                <div className="author  avatar text-center">
+                      
+                      <Avatar size="114" round={true} name={res} />
               
-              <Col>
-                <Card className="card-user">
-                  <Card.Header className="no-padding">
-                    <div className="card-image">
-                      <img
-                        alt="..."
-                        src={
-                          require("assets/img/bg.jpg").default
-                        }
-                      ></img>
+                          
+                      </div>
+                      <div className="card-description text-center" style={{marginBottom:30}}>
+                      <Card.Title as="h5" style={{marginBottom:0,marginTop:15}}>{currentUser.username} <img src="/assets/images/famfamfam_flag_icons/png/tr.png" /></Card.Title>
+                        <small style={{fontSize:10}}>Last Login 5 hours ago</small>
+                        </div>
+                      <div className="row card-stats card-profile">
+<div className="col-lg-3 col-md-6 col-xs-12 ">
+<div className="counter-box bg-color-1 card">
+<div className="fact-count">
+<h3>5,285</h3>
+<p>Total Match</p>
+</div>
+<div className="icon-o"><i className="lni-users"></i></div>
+</div>
+</div>
+<div className="col-lg-3 col-md-6 col-xs-12">
+<div className="counter-box bg-color-2 card">
+<div className="fact-count">
+<h3>%76</h3>
+<p>% Win</p>
+</div>
+<div className="icon-o"><i className="lni-thumbs-up"></i></div>
+</div>
+</div>
+<div className="col-lg-3 col-md-6 col-xs-12">
+<div className="counter-box bg-color-3 card">
+<div className="fact-count">
+<h3>%100</h3>
+<p>% Trust</p>
+</div>
+<div className="icon-o"><i className="lni-eye"></i></div>
+</div>
+</div>
+<div className="col-lg-3 col-md-6 col-xs-12">
+<div className="counter-box bg-color-4 card">
+<div className="fact-count">
+<h3>$83.08</h3>
+<p>Total Earn</p>
+</div>
+<div className="icon-o"><i className="lni-emoji-smile"></i></div>
+</div>
+</div>
+
                     </div>
-                  </Card.Header>
-                  <Card.Body>
-                    <div className="author  avatar">
-                      
-                    <Avatar size="114" round={true} name={res} />
-            
-                        
-                    </div>
+
+                                </div>
+                                
+                            </div>
+                           
+                        </div>
+                
+                </div>
+            </div>
+            <div className="section section-gray section-clients section-no-padding">
+                <div className="container">
+                    <h4 className="header-text  text-center">Last Activity</h4>
+                    <MyMatches/>
                    
-                    <Card.Title as="h5" className="card-description text-center">{currentUser.username}</Card.Title>
-                      
-                    <div className="card-description text-center">{currentUser.email}</div>
-                    {(currentUser.instagram) ?
-                    <div className="card-description text-center"> <i className="nc-icon nc-single-02" />{currentUser.instagram}</div>
-                    : null}
-                    
-                  </Card.Body>
                   
-                </Card>
-              </Col>
-            </Row>
+                </div>
+            </div>
+           
+        </div>
+      
      
     </>
   );

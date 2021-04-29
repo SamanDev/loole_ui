@@ -62,7 +62,7 @@ class AdminNavbar extends Component {
         const { currentUser, showModeratorBoard, showAdminBoard, collapseOpen, isExpanded } = this.state;
      
         return (
-          <Navbar expand="lg" fixed="top" bg="primary" variant="dark">
+          <Navbar expand="lg" fixed="top" bg="primary" variant="dark" style={{background:'#111'}}>
           <Container fluid>
             <div className="navbar-wrapper">
             

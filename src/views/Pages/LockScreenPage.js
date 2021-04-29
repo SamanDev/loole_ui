@@ -433,7 +433,8 @@ userService.changeReadyEvent(this.state.eventid).then(
                                     )}
                                   </div>
                                   {!player.username && <>...</>}
-                                  <small> {player.username}</small>
+                                  <small> {player.username}</small> 
+                                  <small><a href="https://link.clashroyale.com/?playerInfo?id=GPGPCQCP">{player.username}</a></small>
 
                                   {(item.status == "Pending" || item.status == "Ready") && (
                                     <>

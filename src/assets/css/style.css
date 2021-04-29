@@ -1006,6 +1006,11 @@ width: 100%;
 min-height: 140px;
 padding-bottom: 0;
 }
+.card-profile .card{
+text-align: center;
+background-color:rgba(0,0,0,0.35);
+border-color: rgba(0,0,0,0);
+}
 .chall.card-user .card-body .col small{
     line-height:30px;
     }
@@ -1095,6 +1100,10 @@ background:#222;
   transform: translateX(-50%) scale(.3);
 }
 }
+.swal2-title{
+    font-weight: 400 !important;
+    line-height:70px
+}
   /*# sourceMappingURL=style.css.map */
   .swal2-popup.dark {
     box-shadow: 0 0 50px 20px rgba(255, 217, 0,.5);
@@ -1120,7 +1129,7 @@ background:#222;
 .picker span{
     display:none;
 }
-.form-control,.form-control *{
+.form-control,.form-control *,.form-group div{
     font-weight:500 !important;
     font-size:13px !important;
     color:#000 !important;
