@@ -11,7 +11,8 @@ import { UPLOADURL,POSTURLTest } from "const";
 import eventBus from "views/eventBus";
 
 import BackButton from 'components/Back'
-
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 import userService from "services/user.service";
 import {
   setAvatar,
@@ -91,6 +92,22 @@ this.setState({
           messageBox: "",
           isLoading:false
         });
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+        
+        Toast.fire({
+          icon: 'success',
+          title: 'Saved.'
+        })
       },
       (error) => {
         alert(error.message)
@@ -138,9 +155,7 @@ this.setState({
             >
               <Card.Header>
                
-                <Link to={"/panel/dashboard"}  onClick={() =>
-      window.history.back()
-    }>Back</Link>
+                <Link to={"/panel/dashboard"}  >Back</Link>
                 <h4 style={{ margin: "10px 0px" }}>Match Lobby</h4>
                 <h4 style={{ margin: "10px 0px" }}>{currentUser.username}</h4>
               </Card.Header>

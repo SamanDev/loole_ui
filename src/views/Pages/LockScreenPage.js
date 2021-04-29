@@ -32,6 +32,7 @@ import eventBus from "views/eventBus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "react-countdown";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
+
 import {
   setAvatar,
   getColor,
@@ -39,7 +40,8 @@ import {
   renderer,
   getQueryVariable,
   getCode,
-  getGroupBadge
+  getGroupBadge,
+  getModalTag
 } from "components/include";
 import { UPLOADURL,POSTURLTest } from "const";
 import Swal from 'sweetalert2'
@@ -49,6 +51,17 @@ import withReactContent from 'sweetalert2-react-content'
 var firstLoad = true;
 
 const API_URL_TEST = POSTURLTest;
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
 class LockScreenPage extends Component {
   constructor(props) {
     super(props);
@@ -118,9 +131,76 @@ class LockScreenPage extends Component {
 
     userService.joinEvent(this.state.eventid).then(
       (response) => {
-        //this.props.history.push("/panel/dashboard");
+        if (response=='Join event successful'){
+          
+          
+          Toast.fire({
+            icon: 'success',
+            title: 'Joined.'
+          })
+        }else{
+          
+          if (response=='balanceError'){
+          var resMessage = "To enter this event you need to have more balance!"
+  Swal.fire({
+    title: 'Error!',
+    text:resMessage,
+    icon:"error",
+    showCancelButton: true,
+    confirmButtonText: `Go to Cashier`,
+    canceleButtonText: `Back`,
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      this.props.history.push("/panel/cashier");
+    }
+  })
+        }else if (response=='tagError'){
+          const resetPw = async () => {
+            const swalval = await Swal.fire(getModalTag(this.state.GameName));
+  
+            let v = (swalval && swalval.value) || swalval.dismiss;
+            console.log(swalval);
+            if (v) {
+              if (v.tagid) {
+                var tags = v.tagid.split("@@");
+                if(tags.length==0){
+                  if (tags[0] != "") {
+                    this.setState({
+                      GameTag: v.tagid,
+                    });
+                    console.log(this.state);
+                    this.handleSaveTags();
+                  }
+                }
+                if(tags.length==1){
+                  if (tags[0] != "" && tags[1] != "") {
+                    this.setState({
+                      GameTag: v.tagid,
+                    });
+                    console.log(this.state);
+                    this.handleSaveTags();
+                  }
+                }
+                //setformdata(swalval);
+                
+              }
+            }
+          };
+  
+          resetPw();
+        }
+      }
       },
-      (error) => {}
+      (error) => {
+        const resMessage =
+                (error.response &&
+                  error.response.data &&
+                  error.response.data.message) ||
+                error.message ||
+                error.toString();
+                Swal.fire("", resMessage, "error");
+      }
     );
   }
   handleLoseMatch(e) {
@@ -184,6 +264,14 @@ class LockScreenPage extends Component {
 
     userService.leaveEvent(this.state.eventid).then(
       (response) => {
+        if (response=='Leave event successful'){
+          
+          
+          Toast.fire({
+            icon: 'success',
+            title: 'UnJoined.'
+          })
+        }
         //this.props.history.push("/panel/dashboard");
       },
       (error) => {}

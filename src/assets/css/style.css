@@ -1173,3 +1173,7 @@ background:#222;
     font-weight: 400;
     min-width: 35px;
 }
+.swal2-popup.swal2-toast{
+    padding: 0 20px !important;
+    font-size: 14px;
+}

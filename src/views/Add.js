@@ -42,6 +42,7 @@ import {
   getIcon,
   renderer,
   printMatchBlock,
+  getModalTag
 } from "components/include";
 import Games from "server/Games";
 var allValid = true;
@@ -154,86 +155,7 @@ const getBlockGameModesVal = (filtermode) => {
   return gamemaplocal[0];
 };
 const MySwal = withReactContent(Swal);
-const getModalTag = (filtermode) => {
-  var filter = filtermode.value.split(" - ")[0];
-  var controlname = filtermode.value.split(" - ")[1];
-  let tagsof = {}
-  
-  if(filter=='8Pool'){
-     tagsof = {
-      title: "Connect Your 8Pool Account",
-      focusConfirm: false,
-      html: `<div class="card-plain card text-left" >
-      <div className="form-group">
-      <label>Enter your Unique ID</label>
-        <input class="form-control" id="tagid" type="tel" pattern="[0-9]" placeholder="Enter your Unique ID" /></div>
-        <div className="form-group">
-      <label>Enter your Unique ID</label>
-      <input class="form-control" id="tagname" type="text" placeholder="Enter your Nickname" /></div></div>
-      
-      `,
-      icon: "warning",
-      showCancelButton: true,
-      cancelButtonColor: "grey",
-      confirmButtonText: "Update!",
-    
-      showLoaderOnConfirm: true,
-      preConfirm: (login) => {
-        if (
-          document.getElementById("tagid").value &&
-          document.getElementById("tagname").value
-        ) {
-          return {
-            tagid:
-              document.getElementById("tagid").value +
-              "@@" +
-              document.getElementById("tagname").value,
-          };
-        } else {
-          Swal.showValidationMessage(`All fields are required!!`);
-        }
-      },
-    
-      allowOutsideClick: () => !Swal.isLoading(),
-    };
-  }
-  if(controlname=='PS4'||controlname=='PS5'||controlname=='XBOX'){
-    if(controlname=='PS4'||controlname=='PS5'){var tagMode = 'PSN'}
-    
-     tagsof = {
-      title: "Connect Your PSN Account",
-      focusConfirm: false,
-      html: `<div class="card-plain card text-left" >
-      <div className="form-group">
-      <label>Enter your PSN ID</label>
-        <input class="form-control" id="tagid" type="text" /></div>
-        </div>
-      
-      `,
-      icon: "warning",
-      showCancelButton: true,
-      cancelButtonColor: "grey",
-      confirmButtonText: "Update!",
-    
-      showLoaderOnConfirm: true,
-      preConfirm: (login) => {
-        if (
-          document.getElementById("tagid").value
-        ) {
-          return {
-            tagid:
-              document.getElementById("tagid").value
-          };
-        } else {
-          Swal.showValidationMessage(`All fields are required!!`);
-        }
-      },
-    
-      allowOutsideClick: () => !Swal.isLoading(),
-    };
-  }
-  return tagsof
-}
+
 
 class CreateMatch extends Component {
   constructor(props) {
