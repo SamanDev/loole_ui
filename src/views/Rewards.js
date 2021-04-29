@@ -8,7 +8,7 @@ import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import eventBus from "views/eventBus";
-import { printMatchBlock } from "components/include";
+import { printMatchBlock,getGroupBadge } from "components/include";
 
 // react-bootstrap components
 import {
@@ -29,6 +29,7 @@ import {
   TabPane,
   Tab,
   Spinner,
+  ListGroup
 } from "react-bootstrap";
 
 //const EventList = JSON.parse(userService.getEvents());
@@ -123,8 +124,14 @@ class Dashboard extends Component {
         <Row>
         <Col sm="12">
             <Card>
-              <Card.Header>
-                <Card.Title as="h4">Earn Free Coins!</Card.Title>
+              <Card.Header >
+              <img
+                            alt="loole coin"
+                           
+                            src="/assets/images/coin.svg"
+                            style={{float:'left',marginRight:10,width:80}}
+                          ></img>
+                <Card.Title as="h4"> Earn Free Coins!</Card.Title>
                 <p className="card-category">
                 Maximise your daily earning by taking advantage of Repeat.gg's bonuses and start earning free coins every day. You can earn coins by logging in, playing games, inviting friends and many other ways. Then all you have to do is go to the market place and spend your spare coins on plenty of great things. It's that simple!
                 </p>
@@ -142,8 +149,23 @@ class Dashboard extends Component {
                 <Card.Title as="h4">Invite A Friend</Card.Title>
                 <p className="card-category">
                   When a friend you have invited plays their first challenge you
-                  will receive 1,000 and they will receive 500. Then for every
-                  challenge they play on the site you get an extra 20 per game
+                  will receive <img
+                            alt="loole coin"
+                           
+                            src="/assets/images/coin.svg"
+                            className="coinicon"
+                          ></img> 1,000 and they will receive <img
+                          alt="loole coin"
+                         
+                          src="/assets/images/coin.svg"
+                          className="coinicon"
+                        ></img> 500. Then for every
+                  challenge they play on the site you get an extra <img
+                            alt="loole coin"
+                           
+                            src="/assets/images/coin.svg"
+                            className="coinicon"
+                          ></img> 20 per game
                   they play for life.
                 </p>
               </Card.Header>
@@ -153,7 +175,7 @@ class Dashboard extends Component {
 https://www.repeat.gg/i/salidesign
 
 </p>
-<button className="btn-outline btn btn-primary" variant="danger">VIEW DETAILED EARNINGS</button>
+<button className="btn-outline btn-block btn-primary" variant="danger">VIEW DETAILED EARNINGS</button>
               </Card.Body>
             </Card>
           </Col>
@@ -166,7 +188,11 @@ https://www.repeat.gg/i/salidesign
                 </p>
               </Card.Header>
 
-              <Card.Body></Card.Body>
+              <ListGroup variant="flush">
+    <ListGroup.Item className="d-flex justify-content-between align-items-center">Compete in a coins tournament {getGroupBadge('coin','20','small right')}</ListGroup.Item>
+    <ListGroup.Item className="d-flex justify-content-between align-items-center">Compete in a real money tournament {getGroupBadge('coin','100','small right')}</ListGroup.Item>
+    <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+  </ListGroup>
             </Card>
           </Col>
         </Row>
