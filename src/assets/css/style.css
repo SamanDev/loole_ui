@@ -1102,7 +1102,8 @@ background:#222;
 }
 .swal2-title{
     font-weight: 400 !important;
-    line-height:70px
+    font-size: 20px !important;
+    padding: 20px 0;
 }
   /*# sourceMappingURL=style.css.map */
   .swal2-popup.dark {

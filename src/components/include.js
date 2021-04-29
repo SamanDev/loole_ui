@@ -120,16 +120,25 @@ export const  setAvatar  = (name) =>{
           allowOutsideClick: () => !Swal.isLoading(),
         };
       }
-      if(controlname=='PS4'||controlname=='PS5'||controlname=='XBOX'){
-        if(controlname=='PS4'||controlname=='PS5'){var tagMode = 'PSN'}
+      if(controlname=='PS4'||controlname=='PS5'||controlname=='XBOX'||filter=='ClashRoyale'){
+        if(controlname=='PS4'||controlname=='PS5'){
+          var accMode = 'PSN Account'
+          var tagMode = 'PSN ID'
+          var holderMode = ''
+        }
+        if(filter=='ClashRoyale'){
+          var accMode = 'ClashRoyale Account'
+          var tagMode = 'ClashRoyale PlayerTag'
+          var holderMode = '#123456'
+        }
         
          tagsof = {
-          title: "Connect Your PSN Account",
+          title: 'Connect Your '+accMode+'',
           focusConfirm: false,
           html: `<div class="card-plain card text-left" >
           <div className="form-group">
-          <label>Enter your PSN ID</label>
-            <input class="form-control" id="tagid" type="text" /></div>
+          <label>Enter your `+tagMode+`</label>
+            <input class="form-control" id="tagid" type="text" placeholder="`+holderMode+`" /></div>
             </div>
           
           `,

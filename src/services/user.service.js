@@ -87,12 +87,12 @@ class UserService {
         return response.data;
       });
   }
-  saveTags(gameName, gameTag) {
+  saveTags(tagId, tagName) {
     
     return axios
-      .post(
+      .put(
         API_URL_TEST + "saveTags",
-        { gameName, gameTag },
+        { tagId, tagName },
         { headers: authHeader() }
       )
       .then((response) => {

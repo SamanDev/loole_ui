@@ -282,6 +282,14 @@ class LockScreenPage extends Component {
     this.setState({ curPlayerReady: checked })
 userService.changeReadyEvent(this.state.eventid).then(
   (response) => {
+    if (response=='changeReadyEvent successful'){
+          
+          
+      Toast.fire({
+        icon: 'success',
+        title: 'Updated.'
+      })
+    }
     //this.props.history.push("/panel/dashboard");
   },
   (error) => {}

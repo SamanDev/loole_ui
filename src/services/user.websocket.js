@@ -42,14 +42,14 @@ class UserWebsocket {
             }
         } else {
             if (message === 'closeConnection') {
-                //new UserWebsocket().disconnect();
+                localStorage.removeItem("events");
             }
         }
         console.log("message: " + message);
 
     }
     disconnect() {
-
+        localStorage.clear();
         if (ws != null) {
             
             ws.close();
