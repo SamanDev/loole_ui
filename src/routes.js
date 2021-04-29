@@ -17,6 +17,7 @@
 import Dashboard from "views/Dashboard.js";
 import Rewards from "views/Rewards.js";
 import MyMatches from "views/MyMatches.js";
+import Market from "views/Market.js";
 import Cashier from "views/Cashier.js";
 import CreateMatch from "views/Add.js";
 import Buttons from "views/Components/Buttons.js";
@@ -90,6 +91,14 @@ var routes = [
     name: "My Matches",
     icon: "nc-icon nc-controller-modern",
     component: MyMatches,
+    show:true
+  },
+  {
+    path: "/market",
+    layout: "/panel",
+    name: "MarketPlace",
+    icon: "nc-icon nc-refresh-02",
+    component: Market,
     show:true
   },
   {

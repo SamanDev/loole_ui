@@ -388,6 +388,41 @@ export const  setAvatar  = (name) =>{
           </Link>
           )
         }
+        export const  printProductBlock = (item) => {
+          var _mode=' 1 v 1 '
+          var _color = '#404040'
+         
+          return (
+            <Link  to={'/panel/lobby?id='+item.id}>
+            <Card className="card-user chall" >
+            <Card.Header className="no-padding">
+              <div className="card-image">
+              <img
+                            alt={item.name}
+                           
+                            src={item.image}
+                          ></img>
+              </div>
+             
+            </Card.Header>
+            <Card.Body>
+            <Card.Title as="h5" style={{fontSize:15}} >{item.name}</Card.Title>
+    <Row>
+  
+  <Col className="text-muted text-right">
+ 
+  {getGroupBadge('coin',item.cost,'small right')}
+      
+    </Col>
+  </Row>
+   
+              
+            </Card.Body>
+            
+          </Card>
+          </Link>
+          )
+        }
         export const  printGameBlock = (item) => {
           return(
            <>
