@@ -518,12 +518,7 @@ const required = (value) => {
                 </Tab.Pane>
                 <Tab.Pane eventKey="tags">
                
-                    <Form
-            onSubmit={this.handleCreateTournament}
-            ref={c => {
-              this.form = c;
-            }}
-          >
+                  
                       <Card className="card-plain" style={{margin: -10}}>
                       <Card.Header>
                          <Card.Title>Game Tags</Card.Title></Card.Header>
@@ -552,87 +547,12 @@ const required = (value) => {
 
                     </Row>
 
-                            <div className="form-group">
-                              <label>PlayStation  Network ID</label>
-                              <Input
-                    type="text"
-                    className="form-control"
-                   
-                  />
-                               
-                            </div>
-                            <div className="form-div"></div>
-                            <div className="form-group">
-                              <label>XBox ID</label>
-                              <Input
-                    type="text"
-                    className="form-control"
-                   
-                  />
-                            </div>
-                            <div className="form-div"></div>
-                            <div className="form-group">
-                              <label>Epic ID</label>
-                              <Input
-                    type="text"
-                    className="form-control"
-                   
-                  />
-                            </div>
-                            <div className="form-div"></div>
-                            <div className="form-group">
-                              <label>Activition ID</label>
-                              <Input
-                    type="text"
-                    className="form-control"
-                   
-                  />
-                            </div>
-                            <div className="form-div"></div>
-                            <div className="form-group">
-                              <label>8Pool ID</label>
-                              <Input
-                    type="text"
-                    className="form-control"
-                   
-                  />
-                            </div>
-                            <div className="form-group">
-                              <label>8Pool Name</label>
-                              <Input
-                    type="text"
-                    className="form-control"
-                   
-                  />
-                            </div>
-                            <div className="form-div"></div>
-                            
-                            
-                            {this.state.message && (
-              <div className="form-group">
-                <div className="alert alert-danger" role="alert">
-                  {this.state.message}
-                </div>
-              </div>
-            )}
-            
+                          
                           
                         </Card.Body>
-                        <Card.Footer>
-                        <div className="form-group">
-              <button
-                className="btn btn-primary btn-wd "
-                disabled={this.state.loading}
-              >
-                {this.state.loading && (
-                  <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                )}
-                <span> Create Tournament</span>
-              </button>
-            </div>
-                        </Card.Footer>
+                        
                       </Card>
-                      </Form>
+                     
                   
                 </Tab.Pane>
                 <Tab.Pane eventKey="social">
@@ -717,7 +637,13 @@ const required = (value) => {
                      
                     <div className="card-description text-center" style={{marginBottom:30}}>
                       <Card.Title as="h5" style={{marginBottom:0,marginTop:15}}>{currentUser.username} <img src="/assets/images/famfamfam_flag_icons/png/tr.png" /></Card.Title>
-                        <small style={{fontSize:10}}>Last Login 5 hours ago</small>
+                      <small style={{fontSize:10}}>Last Login 5 hours ago</small><br/>
+                        <ListGroup horizontal style={{display:'inline-flex',marginTop:10}}>
+  <ListGroup.Item action><FontAwesomeIcon  icon={faInstagram} style={{color: '#e95950'}}/></ListGroup.Item>
+  <ListGroup.Item action><FontAwesomeIcon  icon={faTwitch} style={{color: '#6441a5'}} /></ListGroup.Item>
+  <ListGroup.Item action><FontAwesomeIcon  icon={faYoutube} style={{color: '#FF0000'}}/></ListGroup.Item>
+  <ListGroup.Item action><FontAwesomeIcon  icon={faTwitter} style={{color: '#00acee'}} /></ListGroup.Item>
+</ListGroup>
                         </div>
                     
                   </Card.Body>

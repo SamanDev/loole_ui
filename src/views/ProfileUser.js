@@ -435,7 +435,15 @@ const required = (value) => {
                       </div>
                       <div className="card-description text-center" style={{marginBottom:30}}>
                       <Card.Title as="h5" style={{marginBottom:0,marginTop:15}}>{currentUser.username} <img src="/assets/images/famfamfam_flag_icons/png/tr.png" /></Card.Title>
-                        <small style={{fontSize:10}}>Last Login 5 hours ago</small>
+                        <small style={{fontSize:10}}>Last Login 5 hours ago</small><br/>
+                        <ListGroup horizontal style={{display:'inline-flex',marginTop:10}}>
+  <ListGroup.Item action><FontAwesomeIcon  icon={faInstagram} style={{color: '#e95950'}}/></ListGroup.Item>
+  <ListGroup.Item action><FontAwesomeIcon  icon={faTwitch} style={{color: '#6441a5'}} /></ListGroup.Item>
+  <ListGroup.Item action><FontAwesomeIcon  icon={faYoutube} style={{color: '#FF0000'}}/></ListGroup.Item>
+  <ListGroup.Item action><FontAwesomeIcon  icon={faTwitter} style={{color: '#00acee'}} /></ListGroup.Item>
+</ListGroup>
+                        
+                      
                         </div>
                       <div className="row card-stats card-profile">
 <div className="col-lg-3 col-md-6 col-xs-12 ">
