@@ -353,7 +353,7 @@ const required = (value) => {
     var res = str.substring(0, 1);
     res  = res + ' '+ str.substring(1, 2);
    var arrLogos = ['psn.svg','xbox.svg','8pool.png','clashroyale.png','activition.png','epic.svg']
-    var arrTagMode = ['PS4','XBOX','8Pool','ClashRoyale','Activition','EpicGames']
+    var arrTagMode = ['PS4','XBOX','8Pool','ClashRoyale','CallOfDuty','EpicGames']
     var arrPlatform = ['PSN','XBOX','Mobile','Mobile','Activition','EpicGames']
     
   return (

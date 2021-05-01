@@ -225,7 +225,7 @@ export const  setAvatar  = (name) =>{
           allowOutsideClick: () => !Swal.isLoading(),
         };
       }
-      if(filter=='Activition'){
+      if(filter=='CallOfDuty'){
         
         
         tagsof = {
@@ -277,7 +277,7 @@ export const  setAvatar  = (name) =>{
        allowOutsideClick: () => !Swal.isLoading(),
      };
    }
-   if(filter=='Activition2'){
+   if(filter=='CallOfDuty2'){
         
         
     tagsof = {
