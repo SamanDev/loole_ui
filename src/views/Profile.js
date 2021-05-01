@@ -301,14 +301,15 @@ const required = (value) => {
                       if (v.tagid) {
                         var tags = v.tagid.split("@@");
                         if(tags.length==1){
-                          if (tags[0] == electedtag+"2") {
-                            this.handleTagForm(electedtag+'2')
-                          }else if (tags[0] == electedtag+"3") {
-                            this.handleTagForm(electedtag+'3')
+                          if (tags[0] == game+"2") {
+                            this.handleTagForm(game+'2')
+                          }else if (tags[0] == game+"3") {
+                            this.handleTagForm(game+'3')
                           }else{
                             if (tags[0] != "") {
                               this.setState({
                                 gameID: v.tagid,
+                                gameNickname: '',
                               });
                               console.log(this.state);
                               this.handleSaveTags();
