@@ -90,7 +90,7 @@ class UserService {
   saveTags(gameName, gamePlatform, id, nickName) {
     
     return axios
-      .put(
+      .post(
         API_URL_TEST + "saveTags",
         { gameName, gamePlatform, id, nickName },
         { headers: authHeader() }
