@@ -186,13 +186,16 @@ const required = (value) => {
     constructor(props) {
       super(props);
       
+      this.handleSaveTags = this.handleSaveTags.bind(this);
       this.handleTagForm = this.handleTagForm.bind(this);
       this.setSelectedTag = this.setSelectedTag.bind(this);
       this.selectrequired = this.selectrequired.bind(this);
       this.handlecSetInstagram = this.handlecSetInstagram.bind(this);
       
       this.state = {
+        
         selectedtag: '',
+        enteredgameid: '',
         loading: false,
         submit:false,
         message: ""
@@ -261,9 +264,9 @@ const required = (value) => {
     handleSaveTags() {
       userService
         .saveTags(
-          this.state.GameName.value.split(" - ")[0],
+          this.state.selectedtag,
+          this.state.enteredgameid
   
-          this.state.GameTag
         )
         .then(
           (response) => {
@@ -282,7 +285,9 @@ const required = (value) => {
         );
     }
     handleTagForm(electedtag) {
-     
+      this.setState({
+        selectedgame: electedtag,
+      });
                   const resetPw = async () => {
                     const swalval = await Swal.fire(getModalTag(electedtag));
           
@@ -299,7 +304,7 @@ const required = (value) => {
                           }else{
                             if (tags[0] != "") {
                               this.setState({
-                                GameTag: v.tagid,
+                                enteredgameid: v.tagid,
                               });
                               console.log(this.state);
                               this.handleSaveTags();
@@ -310,7 +315,7 @@ const required = (value) => {
                         if(tags.length==2){
                           if (tags[0] != "" && tags[1] != "") {
                             this.setState({
-                              GameTag: v.tagid,
+                              enteredgameid: v.tagid,
                             });
                             console.log(this.state);
                             this.handleSaveTags();
