@@ -66,7 +66,8 @@ export const  setAvatar  = (name) =>{
      
     }
     export const  getGroupBadge  = (sign,amount,classes) =>{
-    
+    var nAmount = amount;
+   
       return (
         <div style={{height:30,padding:'2px 0'}}><Badge variant={getColor(amount)} className={"badgegroup "+classes}>
                                       <span className="cur"><img
@@ -74,7 +75,7 @@ export const  setAvatar  = (name) =>{
                            
                             src={"/assets/images/"+sign+".svg"}
                           ></img></span>
-                          <CurrencyFormat value={amount.split('.')[0]} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">{value}</span>} />
+                          <CurrencyFormat value={nAmount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">{value}</span>} />
                                      
                                       </Badge></div>
       )
