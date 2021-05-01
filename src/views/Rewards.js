@@ -175,6 +175,7 @@ class Dashboard extends Component {
 https://www.repeat.gg/i/salidesign
 
 </p>
+
 <button className="btn-outline btn-block btn-primary" variant="danger">VIEW DETAILED EARNINGS</button>
               </Card.Body>
             </Card>

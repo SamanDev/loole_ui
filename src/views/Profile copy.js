@@ -48,7 +48,7 @@ import {
   getModalTag
 } from "components/include";
 var allValid = true;
-
+const MySwal = withReactContent(Swal)
 const required = (value) => {
   
     if (!value) {
@@ -59,133 +59,10 @@ const required = (value) => {
       );
     }
   };
-  const getBlockGames = (filtermode) => {
-    var gamemap = [];
-    Games.games.map((item, i) => {
-        item.gameconsole.map((consoles, j) => {
-            if (
-              'All' == filtermode || consoles.consolename == filtermode ||
-              (consoles.consolename != "Mobile" && filtermode == "NoMobile")
-            ) {
-              
-                gamemap.push({
-                value: item.name + " - " + consoles.consolename,
-                label: item.name + " - " + consoles.consolename,
-              });
-              
-            }
-          });
-        
-        
-        });
-     
-    return gamemap;
-  };
-  const getBlockTournament = (betval) => {
-    var tourmap = [
-      { value: "4", label: "4 Players - Prize: $" + (4 * betval)*90/100 },
-      { value: "8", label: "8 Players - Prize: $" + (8 * betval)*90/100 }
- 
-    
-     
-    ];
-    
-     
-    return tourmap;
-  };
-  
-  const getBlockTournamentVal = (betval,tourmode) => {
-    var tourmap = { value: tourmode, label: tourmode+" Players - Prize: $" + (tourmode * betval)*90/100 };
-  
-    return tourmap;
-  };
-  const getBlockGamesVal = (filtermode) => {
-    var gamemap = [];
-    Games.games.slice(0, 5).map((item, i) => {
-        item.gameconsole.slice(0, 5).map((consoles, j) => {
-            if (
-              'All' == filtermode || consoles.consolename == filtermode ||
-              (consoles.consolename != "Mobile" && filtermode == "NoMobile")
-            ) {
-              
-              if(j==0){
-                gamemap.push({
-                  value: item.name + " - " + consoles.consolename,
-                  label: item.name + " - " + consoles.consolename,
-                });
-                
-              }
-                
-              
-            }
-          });
-        
-        
-        });
-     
-    return gamemap[0];
-  };
-  const getBlockGameModes = (filtermode) => {
-    var gamemaplocal = [];
-    
-      if(filtermode!=''){
-        
-        var filter = filtermode.value.split(' - ')[0]
-        
-        Games.games.map((item, i) => {
-            if (
-                item.name == filter 
-                ) {
-          item.modes.map((mode, j) => {
-            
-            gamemaplocal.push({
-                value: mode.modename ,
-                label: mode.modename ,
-              });
-             
-          });
-        }
-        });
-      
-      }
-        
-     
-      
-    return gamemaplocal
-  };
-  const getBlockGameModesVal = (filtermode) => {
-    var gamemaplocal = [];
-    
-      if(filtermode!=''){
-        
-        var filter = filtermode.value.split(' - ')[0]
-        
-        Games.games.map((item, i) => {
-            if (
-                item.name == filter 
-                ) {
-          item.modes.map((mode, j) => {
-            if(j==0){
-            gamemaplocal.push({
-                value: mode.modename ,
-                label: mode.modename ,
-              });
-            }
-          });
-        }
-        });
-      
-      }
-        
-     
-      
-    return gamemaplocal[0]
-  };
   
   class CreateMatch extends Component {
     constructor(props) {
       super(props);
-      
       this.handleTagForm = this.handleTagForm.bind(this);
       this.setSelectedTag = this.setSelectedTag.bind(this);
       this.selectrequired = this.selectrequired.bind(this);
@@ -203,10 +80,9 @@ const required = (value) => {
         selectedtag: e,
       });
       
-      this.handleTagForm(e)
     }
     handlecSetInstagram(checked) {
-      const MySwal = withReactContent(Swal)
+     
     
       Swal.fire({
         title: 'Connect your Instagram',
@@ -258,37 +134,26 @@ const required = (value) => {
         //allValid = true;
       }
     }
-    handleTagForm(electedtag) {
-     
+    handleTagForm(e) {
+      e.preventDefault();
                   const resetPw = async () => {
-                    const swalval = await Swal.fire(getModalTag(electedtag));
+                    const swalval = await Swal.fire(getModalTag(this.state.selectedtag));
           
                     let v = (swalval && swalval.value) || swalval.dismiss;
                     console.log(swalval);
                     if (v) {
                       if (v.tagid) {
                         var tags = v.tagid.split("@@");
-                        if(tags.length==1){
-                          if (tags[0] == electedtag+"2") {
-                            this.handleTagForm(electedtag+'2')
-                          }else if (tags[0] == electedtag+"3") {
-                            this.handleTagForm(electedtag+'3')
-                          }else{
-                            if (tags[0] != "") {
-                              this.setState({
-                                GameTag: v.tagid,
-                              });
-                              console.log(this.state);
-                              this.handleSaveTags();
-                            }
+                        if(tags.length==0){
+                          if (tags[0] != "") {
+                            
+                            console.log(this.state);
+                            this.handleSaveTags();
                           }
-                          
                         }
-                        if(tags.length==2){
+                        if(tags.length==1){
                           if (tags[0] != "" && tags[1] != "") {
-                            this.setState({
-                              GameTag: v.tagid,
-                            });
+                            
                             console.log(this.state);
                             this.handleSaveTags();
                           }
@@ -310,9 +175,10 @@ const required = (value) => {
         var str = currentUser.username;
     var res = str.substring(0, 1);
     res  = res + ' '+ str.substring(1, 2);
-   var arrLogos = ['psn.svg','xbox.svg','8pool.png','clashroyale.png','activition.png','epic.svg']
-    var arrPlatform = ['PS4','XBOX','8Pool','ClashRoyale','Activition','EpicGames']
-    
+    //var arrLogos = ['psn.svg','xbox.svg','8pool.png','clashroyale.png']
+    //var arrPlatform = ['PS4','XBOX','8Pool','ClashRoyale']
+    var arrLogos = ['psn.svg']
+    var arrPlatform = ['PS4']
   return (
     <>
       <Row>
@@ -326,7 +192,7 @@ const required = (value) => {
                   <Nav.Link eventKey="profile">Profile</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="tags">Game Tags</Nav.Link>
+                  <Nav.Link eventKey="tags">Tags</Nav.Link>
                 </Nav.Item>
                 
                 <Nav.Item>
@@ -361,7 +227,7 @@ const required = (value) => {
   
 </VerticalTimeline>
 <Form
-            onSubmit={this.handleCreateMatch}
+            
             ref={c => {
               this.form = c;
             }}
@@ -446,7 +312,7 @@ const required = (value) => {
                       </Card>
                       </Form>
                       <Form
-            onSubmit={this.handleCreateMatch}
+            
             ref={c => {
               this.form = c;
             }}
@@ -518,23 +384,17 @@ const required = (value) => {
                 </Tab.Pane>
                 <Tab.Pane eventKey="tags">
                
-                    <Form
-            onSubmit={this.handleCreateTournament}
-            ref={c => {
-              this.form = c;
-            }}
-          >
+                    
                       <Card className="card-plain" style={{margin: -10}}>
                       <Card.Header>
                          <Card.Title>Game Tags</Card.Title></Card.Header>
                         <Card.Body>
                          
-                        <Row className="card-tags">
+                        <div className="row  card-tags">
                         {arrLogos.map((number,i) =>
-                        <>
-                         <Col lg="4" xl="3" key={i} onClick={() => this.setSelectedTag(arrPlatform[i])}>
+                        <div className="col-lg-3 col-md-6 col-xs-12 " onClick={this.setSelectedTag(arrPlatform[i])}>
                         <div className="counter-box bg-color-1 card">
-                        <div className="img">
+                        <div className="fact-count">
                         <img
                                                     alt={number}
                                                    
@@ -544,13 +404,12 @@ const required = (value) => {
                         </div>
                        
                         </div>
-                        
-                        </Col>
-</>
+                        </div>
+
 )}
 
 
-                    </Row>
+                    </div>
 
                             <div className="form-group">
                               <label>PlayStation  Network ID</label>
@@ -632,17 +491,11 @@ const required = (value) => {
             </div>
                         </Card.Footer>
                       </Card>
-                      </Form>
-                  
+                     
                 </Tab.Pane>
                 <Tab.Pane eventKey="social">
                
-                    <Form
-            onSubmit={this.handleCreateTournament}
-            ref={c => {
-              this.form = c;
-            }}
-          >
+                    
                       <Card className="card-plain card-social" style={{margin: -10}}>
                       <Card.Header>
                          <Card.Title>Game Tags</Card.Title></Card.Header>
@@ -688,7 +541,7 @@ const required = (value) => {
             </div>
                         </Card.Footer>
                       </Card>
-                      </Form>
+                   
                   
                 </Tab.Pane>
               </Tab.Content>
