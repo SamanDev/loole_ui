@@ -66,7 +66,7 @@ export const  setAvatar  = (name) =>{
      
     }
     export const  getGroupBadge  = (sign,amount,classes) =>{
-    var nAmount = amount;
+    var nAmount = parseInt(amount, 10);
    
       return (
         <div style={{height:30,padding:'2px 0'}}><Badge variant={getColor(amount)} className={"badgegroup "+classes}>

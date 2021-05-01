@@ -194,19 +194,22 @@ const required = (value) => {
       
       this.state = {
         
-        selectedtag: '',
-        enteredgameid: '',
+        gameName: '',
+        gamePlatform: '',
+        gameID: '',
+        gameNickname: '',
         loading: false,
         submit:false,
         message: ""
       };
     }
-    setSelectedTag(e) {
+    setSelectedTag(e,p) {
       this.setState({
-        selectedtag: e,
+        gameName: e,
+        gamePlatform: p
       });
       
-      this.handleTagForm(e)
+      this.handleTagForm(e,p)
     }
     handlecSetInstagram(checked) {
       const MySwal = withReactContent(Swal)
@@ -264,8 +267,11 @@ const required = (value) => {
     handleSaveTags() {
       userService
         .saveTags(
-          this.state.selectedtag,
-          this.state.enteredgameid
+         
+          this.state.gameName,
+          this.state.gamePlatform,
+          this.state.gameID,
+          this.state.gameNickname,
   
         )
         .then(
@@ -284,12 +290,10 @@ const required = (value) => {
           }
         );
     }
-    handleTagForm(electedtag) {
-      this.setState({
-        selectedgame: electedtag,
-      });
+    handleTagForm(game,platform) {
+     
                   const resetPw = async () => {
-                    const swalval = await Swal.fire(getModalTag(electedtag));
+                    const swalval = await Swal.fire(getModalTag(game));
           
                     let v = (swalval && swalval.value) || swalval.dismiss;
                     console.log(swalval);
@@ -304,7 +308,7 @@ const required = (value) => {
                           }else{
                             if (tags[0] != "") {
                               this.setState({
-                                enteredgameid: v.tagid,
+                                gameID: v.tagid,
                               });
                               console.log(this.state);
                               this.handleSaveTags();
@@ -315,7 +319,8 @@ const required = (value) => {
                         if(tags.length==2){
                           if (tags[0] != "" && tags[1] != "") {
                             this.setState({
-                              enteredgameid: v.tagid,
+                              gameID: tags[0],
+                              gameNickname: tags[1],
                             });
                             console.log(this.state);
                             this.handleSaveTags();
@@ -339,7 +344,8 @@ const required = (value) => {
     var res = str.substring(0, 1);
     res  = res + ' '+ str.substring(1, 2);
    var arrLogos = ['psn.svg','xbox.svg','8pool.png','clashroyale.png','activition.png','epic.svg']
-    var arrPlatform = ['PS4','XBOX','8Pool','ClashRoyale','Activition','EpicGames']
+    var arrTagMode = ['PS4','XBOX','8Pool','ClashRoyale','Activition','EpicGames']
+    var arrPlatform = ['PSN','XBOX','Mobile','Mobile','Activition','EpicGames']
     
   return (
     <>
@@ -555,7 +561,7 @@ const required = (value) => {
                         <Row className="card-tags">
                         {arrLogos.map((number,i) =>
                         <>
-                         <Col lg="4" xl="3" key={i} onClick={() => this.setSelectedTag(arrPlatform[i])}>
+                         <Col lg="4" xl="3" key={i} onClick={() => this.setSelectedTag(arrTagMode[i],arrPlatform[i])}>
                         <div className="counter-box bg-color-1 card">
                         <div className="img">
                         <img
