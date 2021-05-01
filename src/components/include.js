@@ -251,7 +251,7 @@ export const  setAvatar  = (name) =>{
          allowOutsideClick: () => !Swal.isLoading(),
        };
      }
-     if(filter=='EpicGames'){
+     if(filter=='Fortnite'){
         
         
       tagsof = {
@@ -326,7 +326,7 @@ export const  setAvatar  = (name) =>{
      allowOutsideClick: () => !Swal.isLoading(),
    };
  }
- if(filter=='EpicGames2'){
+ if(filter=='Fortnite2'){
         
         
   tagsof = {
