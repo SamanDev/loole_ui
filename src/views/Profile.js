@@ -299,37 +299,45 @@ const required = (value) => {
                     console.log(swalval);
                     if (v) {
                       if (v.tagid) {
-                        var tags = v.tagid.split("@@");
-                        if(tags.length==1){
-                          if (tags[0] == game+"2") {
+                        
+                          if (v.tagid == game+"2") {
                             this.handleTagForm(game+'2')
-                          }else if (tags[0] == game+"3") {
+                          }else if (v.tagid == game+"3") {
                             this.handleTagForm(game+'3')
                           }else{
-                            if (tags[0] != "") {
+                            this.setState({
+                              gameID: '',
+                              gameNickname: '',
+                            });
+                            if (v.tagid != "") {
                               this.setState({
                                 gameID: v.tagid,
-                                gameNickname: '',
+                                
                               });
+                            }
+                            if (v.tagname != "") {
+                              this.setState({
+                                gameNickname: v.tagname,
+                                
+                              });
+                            }
+                            if (v.tagplatform != "") {
+                              this.setState({
+                                gamePlatform: v.tagplatform,
+                                
+                              });
+                            }
+                            
                               console.log(this.state);
                               this.handleSaveTags();
-                            }
+                            
                           }
                           
                         }
-                        if(tags.length==2){
-                          if (tags[0] != "" && tags[1] != "") {
-                            this.setState({
-                              gameID: tags[0],
-                              gameNickname: tags[1],
-                            });
-                            console.log(this.state);
-                            this.handleSaveTags();
-                          }
-                        }
+                        
                         //setformdata(swalval);
                         
-                      }
+                      
                     }
                   };
           

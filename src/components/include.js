@@ -288,14 +288,14 @@ export const  setAvatar  = (name) =>{
      <ol><li>Click/hover on your username and click "Account" or <a href="https://profile.callofduty.com/cod/profile" target="_blank" rel="noreferrer noopener">go here</a></li><li>Under "Account" copy the long string that appears after "ID"</li><li>Paste your ID below
      <div className="form-group">
      <label>ACTIVISION ID</label>
-     <input class="form-control" id="tagname" type="text" placeholder="XXXXXX#00000" /></div>
+     <input class="form-control" id="tagid" type="text" placeholder="XXXXXX#00000" /></div>
      <div className="form-group">
      <label>Platform</label>
-     <select class="form-control" id="tagid">
-     <option>Playstation Network</option>
-     <option>Xbox Live</option>
-     <option>Steam</option>
-     <option>Battle.net</option>
+     <select class="form-control" id="tagplatform">
+     <option value="PSN">Playstation Network</option>
+     <option value="XBOX">Xbox Live</option>
+     <option value="PC">Steam</option>
+     <option value="PC">Battle.net</option>
      </select>
      </div>
      </li></ol>
@@ -315,7 +315,8 @@ export const  setAvatar  = (name) =>{
       ) {
         return {
           tagid:
-            document.getElementById("tagid").value
+            document.getElementById("tagid").value,
+            tagplatform:document.getElementById("tagplatform").value,
         };
       } else {
         Swal.showValidationMessage(`All fields are required!!`);
