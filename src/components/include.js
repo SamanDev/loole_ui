@@ -7,6 +7,7 @@ import Countdown from "react-countdown";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link, useLocation } from "react-router-dom";
+import CurrencyFormat from 'react-currency-format';
 // react-bootstrap components
 import {
   Badge,
@@ -73,7 +74,8 @@ export const  setAvatar  = (name) =>{
                            
                             src={"/assets/images/"+sign+".svg"}
                           ></img></span>
-                                      <span className="lable">{amount}</span>
+                          <CurrencyFormat value={amount.split('.')[0]} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">{value}</span>} />
+                                     
                                       </Badge></div>
       )
      
