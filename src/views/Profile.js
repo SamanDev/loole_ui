@@ -258,6 +258,29 @@ const required = (value) => {
         //allValid = true;
       }
     }
+    handleSaveTags() {
+      userService
+        .saveTags(
+          this.state.GameName.value.split(" - ")[0],
+  
+          this.state.GameTag
+        )
+        .then(
+          (response) => {
+            Swal.fire("", "Data saved successfully.", "success");
+            //this.props.history.push("/panel/dashboard");
+          },
+          (error) => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+            Swal.fire("Error!", resMessage, "error");
+          }
+        );
+    }
     handleTagForm(electedtag) {
      
                   const resetPw = async () => {
