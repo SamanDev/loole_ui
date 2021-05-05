@@ -24,7 +24,7 @@ function AdminFooter() {
             
             <p className="copyright text-center">
               © <script>document.write(new Date().getFullYear())</script>
-              <a href="http://www.creative-tim.com">Loole</a>, Allright reserved.
+              <a href="https://loole.gg">Loole.gg</a>, Allright reserved.
             </p>
           </nav>
        

@@ -44,6 +44,9 @@ class AuthService {
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));
   }
+  getCurrentUserTest() {
+    return JSON.parse(localStorage.getItem('userTest'));
+  }
 }
 
 export default new AuthService();

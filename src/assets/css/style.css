@@ -1183,10 +1183,11 @@ background:#222;
 }
 .card-tags .card{
     text-align: center;
-    margin-bottom:10px
+    margin-bottom:10px;
+    cursor: pointer;
 }
 .card-tags .card .img{
-    height: 120px;
+    height: 140px;
     padding: 10px 0;
     line-height:70px;
 }

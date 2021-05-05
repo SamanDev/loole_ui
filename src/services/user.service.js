@@ -99,6 +99,7 @@ class UserService {
         console.log("ok");
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("userTest", JSON.stringify(response.data));
         return response.data;
       });
   }

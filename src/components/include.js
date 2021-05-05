@@ -136,8 +136,8 @@ export const  setAvatar  = (name) =>{
           allowOutsideClick: () => !Swal.isLoading(),
         };
       }
-      if(controlname=='PS4'||controlname=='PS5'||controlname=='XBOX'){
-        if(controlname=='PS4'||controlname=='PS5'){
+      if(controlname=='PS4'||controlname=='PS5'||controlname=='PSN'||controlname=='XBOX'){
+        if(controlname=='PS4'||controlname=='PS5'||controlname=='PSN'){
           var accMode = 'PSN Account'
           var tagMode = 'PSN ID'
           var holderMode = ''
@@ -432,16 +432,40 @@ export const  setAvatar  = (name) =>{
       export const getCode = ( code ) => {
         
        
-          return(
-              <span >
-              {code.split("").map(function(char, index){
-                  return <span className="char" key={index}>{char}</span>;
-              })}
-              </span>
-          );
-     
-        
-        };
+        return(
+            <span >
+            {code.split("").map(function(char, index){
+                return <span className="char" key={index}>{char}</span>;
+            })}
+            </span>
+        );
+   
+      
+      };
+      export const getGameTag = ( game,userTags ) => {
+        var res = 'Not Connected'
+        var resName = ''
+if(userTags){
+  userTags.map(function(tag){
+          
+    if (tag.gameName==game){
+res=tag.tagId
+resName = tag.nickname
+    }
+
+   
+})
+}
+if(res== 'Not Connected') {
+  return ( <p style={{opacity:.5}}><small className="text-muted"><b>{res}</b><br/>Click to connect</small></p>)
+}else{
+  return (<p><small><b>{resName}</b><br/>{res}</small></p>)
+}
+  
+
+   
+      
+      };
         export const  printMatchBlock = (item) => {
           var _mode=' 1 v 1 '
           var _color = '#404040'

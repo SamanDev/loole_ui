@@ -45,7 +45,8 @@ import {
   getIcon,
   renderer,
   printMatchBlock,
-  getModalTag
+  getModalTag,
+  getGameTag
 } from "components/include";
 var allValid = true;
 
@@ -348,7 +349,7 @@ const required = (value) => {
   render() {
     var _mode=' 1 v 1 '
         var _color = '#404040'
-        const currentUser = AuthService.getCurrentUser();
+        const currentUser = AuthService.getCurrentUserTest();
         var str = currentUser.username;
     var res = str.substring(0, 1);
     res  = res + ' '+ str.substring(1, 2);
@@ -570,6 +571,7 @@ const required = (value) => {
                         <Row className="card-tags">
                         {arrLogos.map((number,i) =>
                         <>
+                       
                          <Col lg="4" xl="3" key={i} onClick={() => this.setSelectedTag(arrTagMode[i],arrPlatform[i])}>
                         <div className="counter-box bg-color-1 card">
                         <div className="img">
@@ -578,7 +580,8 @@ const required = (value) => {
                                                    
                                                     src={"/assets/images/logos/"+number}
                                                   ></img>
-                        <p>Not Connected</p>
+                                                  {getGameTag(arrTagMode[i],currentUser.userTags)}
+                       
                         </div>
                        
                         </div>
