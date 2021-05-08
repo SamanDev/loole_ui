@@ -12,6 +12,8 @@ class UserWebsocket {
         if (ws == null) {
             ws = new WebSocket(USERSOCKETURL + token);
             //userService.getEvents();
+            //localStorage.removeItem("events");
+            userService.getEvents();
             console.log("Websocket is connect");
             ws.onmessage = function (data) {
                 new UserWebsocket().serverMessage(data.data);
@@ -19,12 +21,13 @@ class UserWebsocket {
             ws.onerror = function (e) {
                 console.log(e.type);
                 if(e.type === 'error'){
+                    
                     //ws=null;
                     //localStorage.clear();
                     //window.location.reload();
                 }
             }
-        }
+        }else{userService.getEvents();}
     }
     serverMessage(message) {
        
@@ -34,7 +37,7 @@ class UserWebsocket {
             
             if (msg.Command === 'event') {
                
-                localStorage.setItem("events", JSON.stringify(msg.data));
+                localStorage.setItem("events", msg.data);
                    eventBus.dispatch("eventsData", msg.data);
                 
             } else if (message.Command === 'startTick') {
@@ -45,18 +48,19 @@ class UserWebsocket {
                 localStorage.removeItem("events");
             }
         }
-        console.log("message: " + message);
+        //console.log("message: " + message);
 
     }
     disconnect() {
-        localStorage.clear();
+       // localStorage.clear();
         if (ws != null) {
             
             ws.close();
             ws = null
-        }
-        localStorage.removeItem("events");
+            localStorage.removeItem("events");
         console.log("Websocket is in disconnected state");
+        }
+        
 
     }
 

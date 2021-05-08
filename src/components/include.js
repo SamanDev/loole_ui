@@ -124,8 +124,8 @@ export const  setAvatar  = (name) =>{
             ) {
               return {
                 tagid:
-                  document.getElementById("tagid").value +
-                  "@@" +
+                  document.getElementById("tagid").value,
+                 tagname:
                   document.getElementById("tagname").value,
               };
             } else {
@@ -193,6 +193,7 @@ export const  setAvatar  = (name) =>{
           customClass:'tag',
           title: 'Connect Your '+accMode+'',
           focusConfirm: false,
+         
           html: `<div class="card-plain card text-left" >
           <ol><li>Open player profile in Clash Royale</li> <li>Long-press on your player tag</li> <li>Tap “Copy Tag”</li><li>Paste the Player Tag below
           <div className="form-group">
@@ -282,6 +283,7 @@ export const  setAvatar  = (name) =>{
         
     tagsof = {
       customClass:'tag',
+      
      title: 'Connect Your Activition Account',
      focusConfirm: false,
      html: `<div class="card-plain card text-left" >
@@ -450,7 +452,9 @@ if(userTags){
           
     if (tag.gameName==game){
 res=tag.tagId
-resName = tag.nickname
+resName = tag.nickName
+if(resName=='')resName='Connected'
+if(res!=''&&game=='ClashRoyale')res='#'+res
     }
 
    
@@ -460,6 +464,30 @@ if(res== 'Not Connected') {
   return ( <p style={{opacity:.5}}><small className="text-muted"><b>{res}</b><br/>Click to connect</small></p>)
 }else{
   return (<p><small><b>{resName}</b><br/>{res}</small></p>)
+}
+  
+
+   
+      
+      };
+      export const haveGameTag = ( game,userTags ) => {
+        var res = 'Not Connected'
+        var resName = ''
+if(userTags){
+  userTags.map(function(tag){
+          
+    if (tag.gameName==game){
+res=tag.tagId
+
+    }
+
+   
+})
+}
+if(res== 'Not Connected') {
+  return false
+}else{
+  return true
 }
   
 

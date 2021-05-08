@@ -216,6 +216,7 @@ this.setState({
                           if (item.message.indexOf(' not ready')>-1 ){classChat = "sys-quote text-center text-danger"}
                           if (item.message.indexOf(' accepted')>-1 ){classChat = "sys-quote text-center text-danger"}
                           if (item.message.indexOf(' Finished')>-1 ){classAlert = "alert-danger"}
+                          if (item.message.indexOf(': ')>-1 ){classChat = "alert-warning sys-quote text-center"}
                       return (
                         <>
                         

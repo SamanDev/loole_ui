@@ -45,7 +45,12 @@ class AuthService {
     return JSON.parse(localStorage.getItem('user'));
   }
   getCurrentUserTest() {
-    return JSON.parse(localStorage.getItem('userTest'));
+    if(localStorage.getItem('userTest')){
+      return JSON.parse(localStorage.getItem('userTest'));
+    }else{
+      return JSON.parse(localStorage.getItem('user'));
+    }
+    
   }
 }
 

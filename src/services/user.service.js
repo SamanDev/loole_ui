@@ -96,11 +96,33 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        console.log("ok");
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
-        localStorage.setItem("userTest", JSON.stringify(response.data));
-        return response.data;
+
+  console.log("ok");
+  // localStorage.setItem("events", JSON.stringify(response.data));
+  //localStorage.setItem("user", JSON.stringify(response.data));
+  
+  return response.data;
+
+        
+      });
+  }
+  finishClashRoyale(eventID) {
+    
+    return axios
+      .post(
+        API_URL_TEST + "finishClashRoyale",
+        { eventID },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+
+  console.log("ok");
+  // localStorage.setItem("events", JSON.stringify(response.data));
+  //localStorage.setItem("user", JSON.stringify(response.data));
+  
+  return response.data;
+
+        
       });
   }
   joinEvent(id) {
@@ -171,7 +193,7 @@ class UserService {
         //console.log(response.data.data)
        
           
-        localStorage.setItem("events", JSON.stringify(response.data.data));
+        localStorage.setItem("events", response.data.data);
         
         eventBus.dispatch("eventsData", response.data.data);
       }).catch(error => {
@@ -186,7 +208,7 @@ class UserService {
   }
   getCurrentEvent(token) {
     if (localStorage.getItem('events')){
-    return  JSON.parse(localStorage.getItem('events'));
+    return  localStorage.getItem('events');
     }else{
       localStorage.removeItem("events");
       this.getEvents(token)
@@ -206,5 +228,15 @@ class UserService {
       });
   }
 }
-
+function isJson(str) {
+    // alert("str = "+str)
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        // alert('no JSON')
+        return false;
+    }
+    // alert('yes JSON')
+    return true;
+}
 export default new UserService();

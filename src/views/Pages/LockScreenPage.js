@@ -41,7 +41,8 @@ import {
   getQueryVariable,
   getCode,
   getGroupBadge,
-  getModalTag
+  getModalTag,
+  getGameTag
 } from "components/include";
 import { UPLOADURL,POSTURLTest } from "const";
 import Swal from 'sweetalert2'
@@ -71,6 +72,7 @@ class LockScreenPage extends Component {
     this.handlechangeReadyEvent = this.handlechangeReadyEvent.bind(this);
     this.handlecAlertLost = this.handlecAlertLost.bind(this);
     this.handlecAlertWin = this.handlecAlertWin.bind(this);
+    this.handleClashFinished = this.handleClashFinished.bind(this);
     this.fileUpload = React.createRef();
     
     this.setProgress = this.setProgress.bind(this);
@@ -80,11 +82,13 @@ class LockScreenPage extends Component {
     this.showFileUpload = this.showFileUpload.bind(this);
     this.state = {
       events: userService.getCurrentEvent(),
+      currentUserTag: AuthService.getCurrentUserTest(),
+      tag:'R0P0C8R89',
       eventid: getQueryVariable("id"),
       curPlayerReady: false,
       progress:0,
       selectedFile: null,
-      
+      isloading: false,
       isUpLoading:false,
       progressLable:'I Win',
     };
@@ -128,9 +132,15 @@ class LockScreenPage extends Component {
   }
   handleJoinMatch(e) {
     e.preventDefault();
-
+    this.setState({
+      isloading: true,
+    });
     userService.joinEvent(this.state.eventid).then(
+      
       (response) => {
+        this.setState({
+          isloading: false,
+        });
         if (response=='Join event successful'){
           
           
@@ -203,9 +213,33 @@ class LockScreenPage extends Component {
       }
     );
   }
+  handleClashFinished(e) {
+    this.setState({
+      isloading: true,
+    });
+    userService
+        .saveTags(
+         
+          'ClashRoyale',
+          'finish',
+          this.state.tag,
+          this.state.eventid,
+  
+        ).then(
+      (response) => {
+        this.setState({
+          isloading: false,
+        });
+        //this.props.history.push("/panel/dashboard");
+      },
+      (error) => {}
+    );
+  }
   handleLoseMatch(e) {
     
-
+    this.setState({
+      isloading: true,
+    });
     userService.loseEvent(this.state.eventid).then(
       (response) => {
         //this.props.history.push("/panel/dashboard");
@@ -261,11 +295,15 @@ class LockScreenPage extends Component {
   }
   handleLeaveMatch(e) {
     e.preventDefault();
-
+    this.setState({
+      isloading: true,
+    });
     userService.leaveEvent(this.state.eventid).then(
       (response) => {
         if (response=='Leave event successful'){
-          
+          this.setState({
+            isloading: false,
+          });
           
           Toast.fire({
             icon: 'success',
@@ -531,7 +569,7 @@ userService.changeReadyEvent(this.state.eventid).then(
                                   </div>
                                   {!player.username && <>...</>}
                                   <small> {player.username}</small> 
-                                  <small><a href="https://link.clashroyale.com/?playerInfo?id=GPGPCQCP">{player.username}</a></small>
+                                  
 
                                   {(item.status == "Pending" || item.status == "Ready") && (
                                     <>
@@ -560,6 +598,9 @@ userService.changeReadyEvent(this.state.eventid).then(
                                       
                                     </>
                                   )}
+                                  <p>---------</p>
+                                  {getGameTag(item.gameName,this.state.currentUserTag.userTags)}
+                                  <small><a href="https://link.clashroyale.com/?playerInfo?id=GPGPCQCP">{player.username}</a></small>
                                 </Col>
                               </>
                             );
@@ -570,12 +611,27 @@ userService.changeReadyEvent(this.state.eventid).then(
                         <Row>
                           <Col xs="12">
                             <h2>{item.status}</h2>
-                            {(item.status == "InPlay") && (
+                            {(item.gameName == "ClashRoyale" && item.status == "InPlay") ? (
+                              <>
+                              <Button
+                              className="btn-fill btn-block btn-lg"
+                              type="button"
+                              variant="danger"
+                              style={{position:'relative',zIndex:1}}
+                              onClick={this.handleClashFinished}
+                              disabled={this.state.isloading}
+                            >
+                              Game finished
+                            </Button>
+                              </>
+                            ):(
                               <>
                               {(item.players[0].username ==
                                   currentUser.username ||
                                 item.players[1].username ==
                                   currentUser.username) && (
+                              <>
+                              {(item.status == "InPlay") && (
                               <>
                               <p >Match  Code</p>
                               
@@ -612,7 +668,8 @@ userService.changeReadyEvent(this.state.eventid).then(
                           </Row>
                           </>
                           )}
-                          
+                          {(item.status == "InPlay") && (
+                              <>
                               <p>
                                       
                                       <small className="text-muted">
@@ -624,8 +681,13 @@ userService.changeReadyEvent(this.state.eventid).then(
                                         date={dateExpired}
                                       />
                                     </p>
+                                    </>
+                          )}
                               </>
                             )}
+                              </>
+                            )}
+                              
                             {(item.status !== "") ? (
                               <>
                             {item.matchTables[0].winner ? (
@@ -700,7 +762,7 @@ userService.changeReadyEvent(this.state.eventid).then(
                                       className="btn-round"
                                       onClick={this.handleLeaveMatch}
                                       variant="warning"
-                                      disabled={this.state.curPlayerReady}
+                                      disabled={this.state.isloading}
                                     >
                                       Leave Match
                                     </Button>
@@ -709,7 +771,7 @@ userService.changeReadyEvent(this.state.eventid).then(
                                 ) : (
                                   <>
                                     <p>
-                                      {" "}
+                                      
                                       <small className="text-muted">
                                         Avalable until
                                       </small>
@@ -736,6 +798,7 @@ userService.changeReadyEvent(this.state.eventid).then(
                                       className="btn-round"
                                       onClick={this.handleJoinMatch}
                                       variant="danger"
+                                      disabled={this.state.isloading}
                                     >
                                       Join Match ${item.amount}
                                     </Button>

@@ -46,7 +46,8 @@ import {
   renderer,
   printMatchBlock,
   getModalTag,
-  getGameTag
+  getGameTag,
+  haveGameTag
 } from "components/include";
 var allValid = true;
 
@@ -182,7 +183,17 @@ const required = (value) => {
       
     return gamemaplocal[0]
   };
-  
+  function isJson(str) {
+    // alert("str = "+str)
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        // alert('no JSON')
+        return false;
+    }
+    // alert('yes JSON')
+    return true;
+}
   class CreateMatch extends Component {
     constructor(props) {
       super(props);
@@ -190,11 +201,12 @@ const required = (value) => {
       this.handleSaveTags = this.handleSaveTags.bind(this);
       this.handleTagForm = this.handleTagForm.bind(this);
       this.setSelectedTag = this.setSelectedTag.bind(this);
+      this.setUserTag = this.setUserTag.bind(this);
       this.selectrequired = this.selectrequired.bind(this);
       this.handlecSetInstagram = this.handlecSetInstagram.bind(this);
       
       this.state = {
-        
+        currentUserTag: AuthService.getCurrentUserTest(),
         gameName: '',
         gamePlatform: '',
         gameID: '',
@@ -211,6 +223,12 @@ const required = (value) => {
       });
       
       this.handleTagForm(e,p)
+    }
+    setUserTag(e) {
+      this.setState({
+        currentUserTag: e
+      });
+      
     }
     handlecSetInstagram(checked) {
       const MySwal = withReactContent(Swal)
@@ -266,6 +284,18 @@ const required = (value) => {
       }
     }
     handleSaveTags() {
+      Swal.fire({
+        title: '<br/>Please Wait...',
+        text: 'Is working..',
+        customClass:'tag',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    })
+    
       userService
         .saveTags(
          
@@ -277,7 +307,14 @@ const required = (value) => {
         )
         .then(
           (response) => {
-            Swal.fire("", "Data saved successfully.", "success");
+           
+            
+              localStorage.setItem("userTest", JSON.stringify(response));
+              this.setUserTag(response)
+              Swal.fire("", "Data saved successfully.", "success");
+            
+            
+           
             //this.props.history.push("/panel/dashboard");
           },
           (error) => {
@@ -312,7 +349,7 @@ const required = (value) => {
                             });
                             if (v.tagid != "") {
                               this.setState({
-                                gameID: v.tagid,
+                                gameID: v.tagid.replace('#',''),
                                 
                               });
                             }
@@ -341,15 +378,14 @@ const required = (value) => {
                       
                     }
                   };
-          
-                  resetPw();
+          if(!haveGameTag(game,this.state.currentUserTag.userTags))                  resetPw();
                 }
               
     
   render() {
     var _mode=' 1 v 1 '
         var _color = '#404040'
-        const currentUser = AuthService.getCurrentUserTest();
+        const currentUser = AuthService.getCurrentUser();
         var str = currentUser.username;
     var res = str.substring(0, 1);
     res  = res + ' '+ str.substring(1, 2);
@@ -580,7 +616,7 @@ const required = (value) => {
                                                    
                                                     src={"/assets/images/logos/"+number}
                                                   ></img>
-                                                  {getGameTag(arrTagMode[i],currentUser.userTags)}
+                                                  {getGameTag(arrTagMode[i],this.state.currentUserTag.userTags)}
                        
                         </div>
                        
