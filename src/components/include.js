@@ -295,9 +295,9 @@ export const  setAvatar  = (name) =>{
      <label>Platform</label>
      <select class="form-control" id="tagplatform">
      <option value="PSN">Playstation Network</option>
-     <option value="XBOX">Xbox Live</option>
+     <option value="xbl">Xbox Live</option>
      <option value="PC">Steam</option>
-     <option value="PC">Battle.net</option>
+     <option value="battle">Battle.net</option>
      </select>
      </div>
      </li></ol>

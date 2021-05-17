@@ -1208,3 +1208,28 @@ background:#222;
     background: #f0f0f0;
    
 }
+.card-league .list-group-item{
+    background:transparent !important;
+    text-align:left;
+    font-size: 13px;
+}
+.card-league .list-group-item .badge{
+    float: right;
+    font-size: 14px;
+    width:110px;
+}
+.card-league .vertical-timeline-element-subtitle{
+    padding: 15px;
+    
+}
+.card-league .vertical-timeline-element-subtitle,.card-league .vertical-timeline-element-subtitle *{
+    
+    font-size: 16px;
+    color: #fff  !important;
+}
+.card-league td{
+   line-height: 40px;
+    font-size: 10px;
+    padding: 0 !important;
+  
+}

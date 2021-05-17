@@ -93,7 +93,7 @@ class AdminNavbar extends Component {
               <span className="navbar-toggler-bar burger-lines"></span>
             </button>
             </Container>
-            <div className="d-none d-lg-block d-xs-none">
+            <div className="d-non2e d-lg-block d-xs-non2e">
                     <Nav.Item
                       className={
                         location.pathname === "/panel/dashboard"

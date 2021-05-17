@@ -1,0 +1,2573 @@
+{
+    "user": [],
+    "user_entry": [],
+    "user_position": "-",
+    "entries": [
+        {
+            "id": "b5c7fcb7-aead-11eb-9160-0a8c1782b549",
+            "when_created": 1620334666,
+            "score": "1,847.30",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "361163262",
+                "id": 361163262,
+                "battletag": "iNewwz#1635",
+                "game_key": "cod-warzone",
+                "username": "iNewwz#1635",
+                "externalGameIdentity": "iNewwz#1635",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "iNewwz#1635"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "e98a4106-ae24-11eb-9160-0a8c1782b549",
+            "when_created": 1620275912,
+            "score": "1,831.48",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "name": "European Union",
+                "regionCode": "eu",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "415785209",
+                "id": 415785209,
+                "battletag": "KABAN#22575",
+                "game_key": "cod-warzone",
+                "username": "KABAN#22575",
+                "externalGameIdentity": "KABAN#22575",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "playerName": "KABAN#22575"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "a33ce91f-adf8-11eb-9160-0a8c1782b549",
+            "when_created": 1620256896,
+            "score": "1,655.11",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "814093108",
+                "id": 814093108,
+                "battletag": "ElArabe#11187",
+                "game_key": "cod-warzone",
+                "username": "ElArabe#11187",
+                "externalGameIdentity": "ElArabe#11187",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "ElArabe#11187"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "8d5689e2-af65-11eb-9160-0a8c1782b549",
+            "when_created": 1620413626,
+            "score": "1,597.00",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "name": "Global",
+                "regionCode": "global",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "psn",
+                    "name": "Playstation Network",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084480d-7197-11e5-924a-02123ba98fbb",
+                    "name": "Playstation4",
+                    "abbreviation": "ps4",
+                    "tag": "ps4",
+                    "iconTiny": null,
+                    "iconSmall": "/img/platforms/ps4/ps4_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "username": "Mayappo",
+                "platform": "psn",
+                "playerName": "Mayappo",
+                "uno": "14217534",
+                "game_key": "cod-warzone",
+                "lookupValue": "Mayappo",
+                "regionId": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "platformTag": "ps4",
+                "gameServiceKey": "psn",
+                "externalGameIdentity": "Mayappo"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "cf485dac-ae01-11eb-9160-0a8c1782b549",
+            "when_created": 1620260836,
+            "score": "1,561.76",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "85424387",
+                "id": 85424387,
+                "battletag": "Lipzz#1699",
+                "game_key": "cod-warzone",
+                "username": "Lipzz#1699",
+                "externalGameIdentity": "Lipzz#1699",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "Lipzz#1699"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "5af4ecb5-ae36-11eb-9160-0a8c1782b549",
+            "when_created": 1620283404,
+            "score": "1,519.44",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "name": "Global",
+                "regionCode": "global",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "psn",
+                    "name": "Playstation Network",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084480d-7197-11e5-924a-02123ba98fbb",
+                    "name": "Playstation4",
+                    "abbreviation": "ps4",
+                    "tag": "ps4",
+                    "iconTiny": null,
+                    "iconSmall": "/img/platforms/ps4/ps4_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "username": "Clutchbelk",
+                "platform": "psn",
+                "playerName": "ClutchBelk",
+                "uno": "4989468223369273294",
+                "game_key": "cod-warzone",
+                "lookupValue": "Clutchbelk",
+                "regionId": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "platformTag": "ps4",
+                "gameServiceKey": "psn",
+                "externalGameIdentity": "Clutchbelk"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "87293daf-adfd-11eb-9160-0a8c1782b549",
+            "when_created": 1620258997,
+            "score": "1,463.41",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "name": "European Union",
+                "regionCode": "eu",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "403313835",
+                "id": 403313835,
+                "battletag": "alexxx#22646",
+                "game_key": "cod-warzone",
+                "username": "alexxx#22646",
+                "externalGameIdentity": "alexxx#22646",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "playerName": "alexxx#22646"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "6958c50b-af9f-11eb-9160-0a8c1782b549",
+            "when_created": 1620438476,
+            "score": "1,460.31",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "name": "Global",
+                "regionCode": "global",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "psn",
+                    "name": "Playstation Network",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084480d-7197-11e5-924a-02123ba98fbb",
+                    "name": "Playstation4",
+                    "abbreviation": "ps4",
+                    "tag": "ps4",
+                    "iconTiny": null,
+                    "iconSmall": "/img/platforms/ps4/ps4_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "username": "fukluvey",
+                "platform": "psn",
+                "playerName": "Luvey",
+                "uno": "13660823804223712582",
+                "game_key": "cod-warzone",
+                "lookupValue": "fukluvey",
+                "regionId": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "platformTag": "ps4",
+                "gameServiceKey": "psn",
+                "externalGameIdentity": "fukluvey"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "b3332716-ae0e-11eb-9160-0a8c1782b549",
+            "when_created": 1620266372,
+            "score": "1,411.44",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "2591c6d1-0cf7-11eb-ae3f-06b29c596189",
+                "name": "Global",
+                "regionCode": "global",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "xboxlive",
+                    "name": "Xbox Live",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6083ab8f-7197-11e5-924a-02123ba98fbb",
+                    "name": "XboxOne",
+                    "abbreviation": "xboxOne",
+                    "tag": "xboxOne",
+                    "iconTiny": null,
+                    "iconSmall": "/img/platforms/xbox_one/xbox_one_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "username": "Tommey",
+                "platform": "xbl",
+                "playerName": "TOMMEY",
+                "uno": "13604064444778927709",
+                "game_key": "cod-warzone",
+                "lookupValue": "Tommey",
+                "regionId": "2591c6d1-0cf7-11eb-ae3f-06b29c596189",
+                "platformTag": "xboxOne",
+                "gameServiceKey": "xboxlive",
+                "externalGameIdentity": "Tommey"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "6ebdae13-af87-11eb-9160-0a8c1782b549",
+            "when_created": 1620428177,
+            "score": "1,411.30",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "name": "European Union",
+                "regionCode": "eu",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "483605770",
+                "id": 483605770,
+                "battletag": "ghostdkrim#2568",
+                "game_key": "cod-warzone",
+                "username": "ghostdkrim#2568",
+                "externalGameIdentity": "ghostdkrim#2568",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "playerName": "ghostdkrim#2568"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "313ae28f-ae10-11eb-9160-0a8c1782b549",
+            "when_created": 1620267013,
+            "score": "1,348.37",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "803042890",
+                "id": 803042890,
+                "battletag": "Opak#11396",
+                "game_key": "cod-warzone",
+                "username": "Opak#11396",
+                "externalGameIdentity": "Opak#11396",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "Opak#11396"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "1e83a8e0-ae16-11eb-9160-0a8c1782b549",
+            "when_created": 1620269558,
+            "score": "1,342.24",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "333489330",
+                "id": 333489330,
+                "battletag": "konajx#1707",
+                "game_key": "cod-warzone",
+                "username": "konajx#1707",
+                "externalGameIdentity": "konajx#1707",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "konajx#1707"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "35b6a3d3-ae3e-11eb-9160-0a8c1782b549",
+            "when_created": 1620286777,
+            "score": "1,331.64",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "805100750",
+                "id": 805100750,
+                "battletag": "MrTurbi#1536",
+                "game_key": "cod-warzone",
+                "username": "MrTurbi#1536",
+                "externalGameIdentity": "MrTurbi#1536",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "MrTurbi#1536"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "5d4130df-ae11-11eb-9160-0a8c1782b549",
+            "when_created": 1620267516,
+            "score": "1,306.77",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "name": "Global",
+                "regionCode": "global",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "psn",
+                    "name": "Playstation Network",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084480d-7197-11e5-924a-02123ba98fbb",
+                    "name": "Playstation4",
+                    "abbreviation": "ps4",
+                    "tag": "ps4",
+                    "iconTiny": null,
+                    "iconSmall": "/img/platforms/ps4/ps4_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "username": "PrxdigyEU-",
+                "platform": "psn",
+                "playerName": "PrxdigyEU_",
+                "uno": "9695252824705932576",
+                "game_key": "cod-warzone",
+                "lookupValue": "PrxdigyEU-",
+                "regionId": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "platformTag": "ps4",
+                "gameServiceKey": "psn",
+                "externalGameIdentity": "PrxdigyEU-"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "20445e07-ae2a-11eb-9160-0a8c1782b549",
+            "when_created": 1620278151,
+            "score": "1,295.47",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "383941045",
+                "id": 383941045,
+                "battletag": "GHP#11849",
+                "game_key": "cod-warzone",
+                "username": "GHP#11849",
+                "externalGameIdentity": "GHP#11849",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "GHP#11849"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "8746fdd9-adfa-11eb-9160-0a8c1782b549",
+            "when_created": 1620257708,
+            "score": "1,263.79",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "397584778",
+                "id": 397584778,
+                "battletag": "francarosia#1588",
+                "game_key": "cod-warzone",
+                "username": "francarosia#1588",
+                "externalGameIdentity": "francarosia#1588",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "francarosia#1588"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "0b26a6cd-ae71-11eb-9160-0a8c1782b549",
+            "when_created": 1620308610,
+            "score": "1,262.21",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "803204276",
+                "id": 803204276,
+                "battletag": "KillerZblack#1345",
+                "game_key": "cod-warzone",
+                "username": "KillerZblack#1345",
+                "externalGameIdentity": "KillerZblack#1345",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "KillerZblack#1345"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "91d99740-ae23-11eb-9160-0a8c1782b549",
+            "when_created": 1620275335,
+            "score": "1,261.81",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "312256252",
+                "id": 312256252,
+                "battletag": "KL7KEVIN#1599",
+                "game_key": "cod-warzone",
+                "username": "KL7KEVIN#1599",
+                "externalGameIdentity": "KL7KEVIN#1599",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "KL7KEVIN#1599"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "efb35461-aead-11eb-9160-0a8c1782b549",
+            "when_created": 1620334763,
+            "score": "1,260.56",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "801862711",
+                "id": 801862711,
+                "battletag": "COROLHO#11331",
+                "game_key": "cod-warzone",
+                "username": "COROLHO#11331",
+                "externalGameIdentity": "COROLHO#11331",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "COROLHO#11331"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "c5b4e423-adfb-11eb-9160-0a8c1782b549",
+            "when_created": 1620258243,
+            "score": "1,257.81",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "353586053",
+                "id": 353586053,
+                "battletag": "jouk#11344",
+                "game_key": "cod-warzone",
+                "username": "jouk#11344",
+                "externalGameIdentity": "jouk#11344",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "jouk#11344"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "cd64060d-adfa-11eb-9160-0a8c1782b549",
+            "when_created": 1620257826,
+            "score": "1,239.18",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "359178474",
+                "id": 359178474,
+                "battletag": "DeadlyKitten#1194760",
+                "game_key": "cod-warzone",
+                "username": "DeadlyKitten#1194760",
+                "externalGameIdentity": "DeadlyKitten#1194760",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "DeadlyKitten#1194760"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "f4e4d04a-adfc-11eb-9160-0a8c1782b549",
+            "when_created": 1620258751,
+            "score": "1,194.58",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "312704572",
+                "id": 312704572,
+                "battletag": "Nando#12121",
+                "game_key": "cod-warzone",
+                "username": "Nando#12121",
+                "externalGameIdentity": "Nando#12121",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "Nando#12121"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "4790ee40-adfb-11eb-9160-0a8c1782b549",
+            "when_created": 1620258031,
+            "score": "1,192.22",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "309764976",
+                "id": 309764976,
+                "battletag": "Dees#11907",
+                "game_key": "cod-warzone",
+                "username": "Dees#11907",
+                "externalGameIdentity": "Dees#11907",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "Dees#11907"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "a3851213-ae91-11eb-9160-0a8c1782b549",
+            "when_created": 1620322610,
+            "score": "1,183.68",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "name": "European Union",
+                "regionCode": "eu",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "416711035",
+                "id": 416711035,
+                "battletag": "ReDHawK#22813",
+                "game_key": "cod-warzone",
+                "username": "ReDHawK#22813",
+                "externalGameIdentity": "ReDHawK#22813",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "playerName": "ReDHawK#22813"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "10cb6c3b-ae0c-11eb-9160-0a8c1782b549",
+            "when_created": 1620265240,
+            "score": "1,170.58",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "382878356",
+                "id": 382878356,
+                "battletag": "Driko#11904",
+                "game_key": "cod-warzone",
+                "username": "Driko#11904",
+                "externalGameIdentity": "Driko#11904",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "Driko#11904"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "07939a1d-ae0b-11eb-9160-0a8c1782b549",
+            "when_created": 1620264795,
+            "score": "1,152.63",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "name": "Global",
+                "regionCode": "global",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "psn",
+                    "name": "Playstation Network",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084480d-7197-11e5-924a-02123ba98fbb",
+                    "name": "Playstation4",
+                    "abbreviation": "ps4",
+                    "tag": "ps4",
+                    "iconTiny": null,
+                    "iconSmall": "/img/platforms/ps4/ps4_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "username": "frihe99",
+                "platform": "psn",
+                "playerName": "frihe99",
+                "uno": "4259595863727325602",
+                "game_key": "cod-warzone",
+                "lookupValue": "frihe99",
+                "regionId": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "platformTag": "ps4",
+                "gameServiceKey": "psn",
+                "externalGameIdentity": "frihe99"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "234a755a-b222-11eb-9160-0a8c1782b549",
+            "when_created": 1620714525,
+            "score": "1,145.04",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "388033473",
+                "id": 388033473,
+                "battletag": "Gianlak#1700",
+                "game_key": "cod-warzone",
+                "username": "Gianlak#1700",
+                "externalGameIdentity": "Gianlak#1700",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "Gianlak#1700"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "09e51b9b-ae03-11eb-9160-0a8c1782b549",
+            "when_created": 1620261363,
+            "score": "1,133.59",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "394668134",
+                "id": 394668134,
+                "battletag": "Stanberg#11702",
+                "game_key": "cod-warzone",
+                "username": "Stanberg#11702",
+                "externalGameIdentity": "Stanberg#11702",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "Stanberg#11702"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "af1ead9d-ae11-11eb-9160-0a8c1782b549",
+            "when_created": 1620267654,
+            "score": "1,129.49",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "391620016",
+                "id": 391620016,
+                "battletag": "Tom4zi#1109",
+                "game_key": "cod-warzone",
+                "username": "Tom4zi#1109",
+                "externalGameIdentity": "Tom4zi#1109",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "Tom4zi#1109"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "dd71811a-b1c2-11eb-9160-0a8c1782b549",
+            "when_created": 1620673606,
+            "score": "1,122.04",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "314535664",
+                "id": 314535664,
+                "battletag": "ProWizzir#1881",
+                "game_key": "cod-warzone",
+                "username": "ProWizzir#1881",
+                "externalGameIdentity": "ProWizzir#1881",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "ProWizzir#1881"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "302b7b89-aeab-11eb-9160-0a8c1782b549",
+            "when_created": 1620333583,
+            "score": "1,115.84",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "386435667",
+                "id": 386435667,
+                "battletag": "iDyNasty#11238",
+                "game_key": "cod-warzone",
+                "username": "iDyNasty#11238",
+                "externalGameIdentity": "iDyNasty#11238",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "iDyNasty#11238"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "bf2f4699-aee7-11eb-9160-0a8c1782b549",
+            "when_created": 1620359593,
+            "score": "1,109.81",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "375889605",
+                "id": 375889605,
+                "battletag": "ChapuLP#1160",
+                "game_key": "cod-warzone",
+                "username": "ChapuLP#1160",
+                "externalGameIdentity": "ChapuLP#1160",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "ChapuLP#1160"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "75654a51-ae32-11eb-9160-0a8c1782b549",
+            "when_created": 1620281730,
+            "score": "1,095.85",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "name": "European Union",
+                "regionCode": "eu",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "483313057",
+                "id": 483313057,
+                "battletag": "withnr#2644",
+                "game_key": "cod-warzone",
+                "username": "withnr#2644",
+                "externalGameIdentity": "withnr#2644",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "playerName": "withnr#2644"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "fc855986-ae70-11eb-9160-0a8c1782b549",
+            "when_created": 1620308586,
+            "score": "1,088.39",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "389302897",
+                "id": 389302897,
+                "battletag": "ElMaxoMaxo#1822",
+                "game_key": "cod-warzone",
+                "username": "ElMaxoMaxo#1822",
+                "externalGameIdentity": "ElMaxoMaxo#1822",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "ElMaxoMaxo#1822"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "94a53055-ae36-11eb-9160-0a8c1782b549",
+            "when_created": 1620283501,
+            "score": "1,088.13",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "804479170",
+                "id": 804479170,
+                "battletag": "PalleresV#1427",
+                "game_key": "cod-warzone",
+                "username": "PalleresV#1427",
+                "externalGameIdentity": "PalleresV#1427",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "PalleresV#1427"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "bce0d285-afa6-11eb-9160-0a8c1782b549",
+            "when_created": 1620441623,
+            "score": "1,068.13",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "395937019",
+                "id": 395937019,
+                "battletag": "XxtotoxXWEED#1420",
+                "game_key": "cod-warzone",
+                "username": "XxtotoxXWEED#1420",
+                "externalGameIdentity": "XxtotoxXWEED#1420",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "XxtotoxXWEED#1420"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "3ddcbabb-b07a-11eb-9160-0a8c1782b549",
+            "when_created": 1620532463,
+            "score": "1,065.23",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "name": "Global",
+                "regionCode": "global",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "psn",
+                    "name": "Playstation Network",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084480d-7197-11e5-924a-02123ba98fbb",
+                    "name": "Playstation4",
+                    "abbreviation": "ps4",
+                    "tag": "ps4",
+                    "iconTiny": null,
+                    "iconSmall": "/img/platforms/ps4/ps4_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "username": "JKS_zWos",
+                "platform": "psn",
+                "playerName": "w0si ツ",
+                "uno": "7568891932760419887",
+                "game_key": "cod-warzone",
+                "lookupValue": "JKS_zWos",
+                "regionId": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "platformTag": "ps4",
+                "gameServiceKey": "psn",
+                "externalGameIdentity": "JKS_zWos"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "32a35dad-b32e-11eb-9160-0a8c1782b549",
+            "when_created": 1620829656,
+            "score": "1,054.52",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "name": "European Union",
+                "regionCode": "eu",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "131447175",
+                "id": 131447175,
+                "battletag": "Yanki#2974",
+                "game_key": "cod-warzone",
+                "username": "Yanki#2974",
+                "externalGameIdentity": "Yanki#2974",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "playerName": "Yanki#2974"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "7e662df0-ae0a-11eb-9160-0a8c1782b549",
+            "when_created": 1620264565,
+            "score": "1,052.34",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "119486582",
+                "id": 119486582,
+                "battletag": "Speectroo#2122",
+                "game_key": "cod-warzone",
+                "username": "Speectroo#2122",
+                "externalGameIdentity": "Speectroo#2122",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "Speectroo#2122"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "8658e627-aec2-11eb-9160-0a8c1782b549",
+            "when_created": 1620343606,
+            "score": "1,039.19",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "name": "European Union",
+                "regionCode": "eu",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "490460400",
+                "id": 490460400,
+                "battletag": "Liletly#2809",
+                "game_key": "cod-warzone",
+                "username": "Liletly#2809",
+                "externalGameIdentity": "Liletly#2809",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "playerName": "Liletly#2809"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "e4e802c0-adfd-11eb-9160-0a8c1782b549",
+            "when_created": 1620259154,
+            "score": "1,035.96",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "396881480",
+                "id": 396881480,
+                "battletag": "pedraaum#1710",
+                "game_key": "cod-warzone",
+                "username": "pedraaum#1710",
+                "externalGameIdentity": "pedraaum#1710",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "pedraaum#1710"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "8254db2c-ae23-11eb-9160-0a8c1782b549",
+            "when_created": 1620275309,
+            "score": "1,034.07",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "395289514",
+                "id": 395289514,
+                "battletag": "Zikkz#1302",
+                "game_key": "cod-warzone",
+                "username": "Zikkz#1302",
+                "externalGameIdentity": "Zikkz#1302",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "Zikkz#1302"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "7d23ebaf-afeb-11eb-9160-0a8c1782b549",
+            "when_created": 1620471151,
+            "score": "1,032.19",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "811464132",
+                "id": 811464132,
+                "battletag": "TheNowh3re#1572",
+                "game_key": "cod-warzone",
+                "username": "TheNowh3re#1572",
+                "externalGameIdentity": "TheNowh3re#1572",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "TheNowh3re#1572"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "b31d1af9-ae2a-11eb-9160-0a8c1782b549",
+            "when_created": 1620278398,
+            "score": "1,022.38",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "name": "European Union",
+                "regionCode": "eu",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "422326307",
+                "id": 422326307,
+                "battletag": "KotikGaf#2770",
+                "game_key": "cod-warzone",
+                "username": "KotikGaf#2770",
+                "externalGameIdentity": "KotikGaf#2770",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "playerName": "KotikGaf#2770"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "143138df-ae02-11eb-9160-0a8c1782b549",
+            "when_created": 1620260951,
+            "score": "1,017.82",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "395443675",
+                "id": 395443675,
+                "battletag": "Morilla1#1740",
+                "game_key": "cod-warzone",
+                "username": "Morilla1#1740",
+                "externalGameIdentity": "Morilla1#1740",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "Morilla1#1740"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "22928ae3-b57c-11eb-9160-0a8c1782b549",
+            "when_created": 1621083032,
+            "score": "1,013.73",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc4e6d-d646-11ea-9d58-06b29c596189",
+                "name": "Asia Pacific",
+                "regionCode": "apac",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "14043440",
+                "id": 14043440,
+                "battletag": "Aria#31542",
+                "game_key": "cod-warzone",
+                "username": "Aria#31542",
+                "externalGameIdentity": "Aria#31542",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc4e6d-d646-11ea-9d58-06b29c596189",
+                "playerName": "Aria#31542"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "879871e8-ae80-11eb-9160-0a8c1782b549",
+            "when_created": 1620315261,
+            "score": "1,010.57",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "name": "European Union",
+                "regionCode": "eu",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "412268507",
+                "id": 412268507,
+                "battletag": "ТемаБУЛЛЕТ#2450",
+                "game_key": "cod-warzone",
+                "username": "ТемаБУЛЛЕТ#2450",
+                "externalGameIdentity": "ТемаБУЛЛЕТ#2450",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "playerName": "ТемаБУЛЛЕТ#2450"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "b00137aa-ae10-11eb-9160-0a8c1782b549",
+            "when_created": 1620267226,
+            "score": "1,010.46",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "name": "Global",
+                "regionCode": "global",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "psn",
+                    "name": "Playstation Network",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084480d-7197-11e5-924a-02123ba98fbb",
+                    "name": "Playstation4",
+                    "abbreviation": "ps4",
+                    "tag": "ps4",
+                    "iconTiny": null,
+                    "iconSmall": "/img/platforms/ps4/ps4_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "username": "EODBruz",
+                "platform": "psn",
+                "playerName": "Twitch EODBruz",
+                "uno": "12805097627532522509",
+                "game_key": "cod-warzone",
+                "lookupValue": "EODBruz",
+                "regionId": "25af6f02-0cf7-11eb-ae3f-06b29c596189",
+                "platformTag": "ps4",
+                "gameServiceKey": "psn",
+                "externalGameIdentity": "EODBruz"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "911cb885-b0d4-11eb-9160-0a8c1782b549",
+            "when_created": 1620571257,
+            "score": "1,008.17",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "name": "European Union",
+                "regionCode": "eu",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "124441710",
+                "id": 124441710,
+                "battletag": "SPANCIU#2865",
+                "game_key": "cod-warzone",
+                "username": "SPANCIU#2865",
+                "externalGameIdentity": "SPANCIU#2865",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc517d-d646-11ea-9d58-06b29c596189",
+                "playerName": "SPANCIU#2865"
+            },
+            "resultsLength": 0
+        },
+        {
+            "id": "93d05425-ae1c-11eb-9160-0a8c1782b549",
+            "when_created": 1620272332,
+            "score": "1,006.74",
+            "eligible": true,
+            "rank": null,
+            "paidOutValue": null,
+            "region": {
+                "id": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "name": "Americas",
+                "regionCode": "us",
+                "enabled": true,
+                "game": {
+                    "name": "Call of Duty: Warzone",
+                    "gameKey": "cod-warzone"
+                },
+                "gameService": {
+                    "gameServiceKey": "battlenet",
+                    "name": "Battle.net",
+                    "banner": null
+                },
+                "platform": {
+                    "id": "6084be3a-7197-11e5-924a-02123ba98fbb",
+                    "name": "PC",
+                    "abbreviation": "PC",
+                    "tag": "PC",
+                    "iconTiny": "/img/platforms/pc/pc_Icon_20x20.png",
+                    "iconSmall": "/img/platforms/pc/pc_icon_40x40.png",
+                    "iconMedium": null,
+                    "iconLarge": null,
+                    "banner": null
+                }
+            },
+            "user_game_region": {
+                "sub": "301032493",
+                "id": 301032493,
+                "battletag": "SeteMeiaDois#1712",
+                "game_key": "cod-warzone",
+                "username": "SeteMeiaDois#1712",
+                "externalGameIdentity": "SeteMeiaDois#1712",
+                "platform": "battle",
+                "gameServiceKey": "battlenet",
+                "platformTag": "PC",
+                "regionId": "38fc5214-d646-11ea-9d58-06b29c596189",
+                "playerName": "SeteMeiaDois#1712"
+            },
+            "resultsLength": 0
+        }
+    ],
+    "last_update": "2021-05-17 14:46:12",
+    "current_brackets": [
+        {
+            "prize": 100,
+            "number": "1"
+        },
+        {
+            "prize": 50,
+            "number": "1"
+        },
+        {
+            "prize": 30,
+            "number": "1"
+        },
+        {
+            "prize": 20,
+            "number": "1"
+        },
+        {
+            "prize": 10,
+            "number": "1"
+        },
+        {
+            "prize": 8,
+            "number": "1"
+        },
+        {
+            "prize": 7,
+            "number": "1"
+        },
+        {
+            "prize": 6,
+            "number": "2"
+        },
+        {
+            "prize": 5,
+            "number": "2"
+        },
+        {
+            "prize": 4.5,
+            "number": "3"
+        },
+        {
+            "prize": 3.75,
+            "number": "4"
+        },
+        {
+            "prize": 3,
+            "number": "4"
+        },
+        {
+            "prize": 2.5,
+            "number": "6"
+        },
+        {
+            "prize": 2,
+            "number": "8"
+        },
+        {
+            "prize": 0.65,
+            "number": "10"
+        },
+        {
+            "prize": 0.5,
+            "number": "24"
+        },
+        {
+            "prize": 0.45,
+            "number": "44"
+        },
+        {
+            "prize": 0.4,
+            "number": "88"
+        },
+        {
+            "prize": 0.3,
+            "number": "150"
+        },
+        {
+            "prize": 0.25,
+            "number": "252"
+        }
+    ],
+    "potential_brackets": [
+        {
+            "prize": 100,
+            "number": "1"
+        },
+        {
+            "prize": 50,
+            "number": "1"
+        },
+        {
+            "prize": 30,
+            "number": "1"
+        },
+        {
+            "prize": 20,
+            "number": "1"
+        },
+        {
+            "prize": 10,
+            "number": "1"
+        },
+        {
+            "prize": 8,
+            "number": "1"
+        },
+        {
+            "prize": 7,
+            "number": "1"
+        },
+        {
+            "prize": 6,
+            "number": "2"
+        },
+        {
+            "prize": 5,
+            "number": "2"
+        },
+        {
+            "prize": 4.5,
+            "number": "3"
+        },
+        {
+            "prize": 3.75,
+            "number": "4"
+        },
+        {
+            "prize": 3,
+            "number": "4"
+        },
+        {
+            "prize": 2.5,
+            "number": "6"
+        },
+        {
+            "prize": 2,
+            "number": "8"
+        },
+        {
+            "prize": 0.65,
+            "number": "10"
+        },
+        {
+            "prize": 0.5,
+            "number": "24"
+        },
+        {
+            "prize": 0.45,
+            "number": "44"
+        },
+        {
+            "prize": 0.4,
+            "number": "88"
+        },
+        {
+            "prize": 0.3,
+            "number": "150"
+        },
+        {
+            "prize": 0.25,
+            "number": "252"
+        }
+    ],
+    "info": {
+        "conditions": [
+            "Thank you for participating in our COD: Warzone Beta tournament",
+            "During the Beta scores may be altered, removed or updated as we test the implementation of our scoring systems",
+            "Only games played after you join the tournament are counted",
+            "SMURF accounts are not allowed on Repeat.gg and will be banned"
+        ]
+    },
+    "rules": "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>"
+}
