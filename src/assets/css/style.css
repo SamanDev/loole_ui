@@ -1208,10 +1208,16 @@ background:#222;
     background: #f0f0f0;
    
 }
-.card-league .list-group-item{
+.card-league .my-list .list-group-item{
     background:transparent !important;
     text-align:left;
     font-size: 13px;
+    border-color: rgba(255, 255, 255,.3)!important;
+}
+.card-league table .list-group-item{
+    background:rgba(255, 255, 255, .0) !important;
+    font-size: 15px;
+    border-color: rgba(255, 255, 255,.0)!important;
 }
 .card-league .list-group-item .badge{
     float: right;

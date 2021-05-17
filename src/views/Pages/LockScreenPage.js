@@ -602,7 +602,7 @@ All Servers
                                     </Button>
   </VerticalTimelineElement>
   <VerticalTimelineElement
-    className="vertical-timeline-element--education"
+    className="vertical-timeline-element--education my-list"
     contentStyle={{ background: 'rgb(233, 30, 99)', color: '#fff' }}
     contentArrowStyle={{ borderRight: '7px solid  rgb(233, 30, 99)' }}
   
@@ -645,18 +645,18 @@ All Servers
     <h5>Nobody is currently live</h5>
 <p>
 By connecting your Twitch account you will automatically be shown on the Watch Live pages of the tournaments you are playing in</p>
-
+<br/>
 <Button
                                       className="btn-round"
                                       onClick={this.handleHowStream}
-                                      variant="danger"
+                                      variant="warning"
                                       disabled={this.state.isloading}
                                     >
                                       How to Stream
                                     </Button>
   </VerticalTimelineElement>
   <VerticalTimelineElement
-    className="vertical-timeline-element--education"
+    className="vertical-timeline-element--education  my-list"
     contentStyle={{ background: '#2a9d8f', color: '#fff' }}
     contentArrowStyle={{ borderRight: '7px solid #2a9d8f' }}
    
@@ -733,14 +733,14 @@ By connecting your Twitch account you will automatically be shown on the Watch L
     <tr>
       <td>#{icStartL}</td>
       <td style={{textAlign:'left'}}><Avatar
-                                        size="20"
+                                        size="25"
                                         round={true}
                                         title={item.user_game_region.username}
                                         name={setAvatar(item.user_game_region.username)}
                                       /> {item.user_game_region.username}
                                        <ListGroup horizontal style={{display:'inline-flex',marginTop:0,lineHeight:'20px',float:'right'}}>
   <ListGroup.Item action><FontAwesomeIcon  icon={faInstagram} style={{color: '#e95950'}}/></ListGroup.Item>
-  <ListGroup.Item action><FontAwesomeIcon  icon={faTwitch} style={{color: '#6441a5'}} /></ListGroup.Item>
+  <ListGroup.Item action><FontAwesomeIcon  icon={faTwitch} style={{color: '#fff'}} /></ListGroup.Item>
   <ListGroup.Item action><FontAwesomeIcon  icon={faYoutube} style={{color: '#FF0000'}}/></ListGroup.Item>
   <ListGroup.Item action><FontAwesomeIcon  icon={faTwitter} style={{color: '#00acee'}} /></ListGroup.Item>
 </ListGroup>
