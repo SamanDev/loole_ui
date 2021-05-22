@@ -508,8 +508,8 @@ if(res== 'Not Connected') {
   var dateNow = now.toISOString();
   
   
-          if(item.gameMode == 'Tournament'){_mode = item.gameMode}
-          if(item.gameMode == 'Tournament'){
+          if(item.gameMode == 'Tournament'||item.gameMode == 'League'){_mode = item.gameMode}
+          if(item.gameMode == 'Tournament'||item.gameMode == 'League'){
             _mode = " $"+(item.totalPlayer * item.amount)*90/100+' '
             //_color = 'orange'
           }
@@ -565,7 +565,7 @@ if(res== 'Not Connected') {
   </span>
     )}
     <br/>
-    {item.gameMode=='Tournament' ? (
+    {item.gameMode=='Tournament3' ? (
       <span>
     <small className="text-muted">Start Time</small>
     {item.totalPlayer == "4" ? (
@@ -595,7 +595,7 @@ if(res== 'Not Connected') {
                                      
   
   <small className="text-muted">{item.players.length}/{item.totalPlayer}<br/></small>
-  {item.gameMode=='Tournament' ? (
+  {item.gameMode=='Tournament3' ? (
       <span>
    
   <small className="text-muted"> <Countdown renderer={renderer} date={addTime(dateExpired,0)} /></small>

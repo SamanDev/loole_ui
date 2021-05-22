@@ -1077,7 +1077,7 @@ animation: rte 3s infinite linear;
  z-index: -1;
 left:50%;
 }
-.lock-page .card-header .avatar{height:79px   !important}
+.lock-page .card-match .card-header .avatar{height:79px   !important}
 
 .card-chat p{
 line-height: 18px;
