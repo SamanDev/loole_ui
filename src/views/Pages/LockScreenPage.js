@@ -212,7 +212,7 @@ class LockScreenPage extends Component {
               const swalval = await Swal.fire(getModalTag(this.state.GameName));
 
               let v = (swalval && swalval.value) || swalval.dismiss;
-              console.log(swalval);
+              //console.log(swalval);
               if (v) {
                 if (v.tagid) {
                   var tags = v.tagid.split("@@");
@@ -290,7 +290,7 @@ class LockScreenPage extends Component {
     let uploadInfo = new FormData();
     uploadInfo.append("id", this.state.eventid);
     uploadInfo.append("file", this.state.selectedFile);
-    console.log(uploadInfo);
+    //console.log(uploadInfo);
     axios
       .post(API_URL_TEST + "uploadFile", uploadInfo, {
         headers: uploadHeader(),
@@ -513,7 +513,7 @@ class LockScreenPage extends Component {
         } else {
           nullmatch.matches.push(matchSample);
         }
-        console.log(item.players[index].username)
+        //e.log(item.players[index].username)
         if(index<9){
          // nullmatch.matches.matchPlayers[0].push(item.players[index])
         }
@@ -591,7 +591,7 @@ class LockScreenPage extends Component {
         item.matchLevel.push(genMatch(1, 1, "Final"));
       }
     }
-    console.log(item);
+    //console.log(item);
     function addDays(date, days) {
       var result = new Date(date);
       result.setDate(result.getDate() + days);
@@ -681,6 +681,7 @@ class LockScreenPage extends Component {
                               <VerticalTimeline
                                 layout="1-column-left"
                                 className="hide2"
+                                style={{marginLeft: '-30px',marginRight:'-30px',width:'110%' }}
                               >
                                 <VerticalTimelineElement
                                   className="vertical-timeline-element--work"
@@ -1178,6 +1179,7 @@ class LockScreenPage extends Component {
                                   <VerticalTimeline
                                     layout="1-column-left"
                                     className="hide2"
+                                    style={{marginLeft: '-30px',marginRight:'-30px',width:'110%' }}
                                   >
                                     <VerticalTimelineElement
                                       className="vertical-timeline-element--work"
