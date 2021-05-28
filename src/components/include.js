@@ -296,7 +296,7 @@ export const  setAvatar  = (name) =>{
      <select class="form-control" id="tagplatform">
      <option value="PSN">Playstation Network</option>
      <option value="xbl">Xbox Live</option>
-     <option value="PC">Steam</option>
+     <option value="steam">Steam</option>
      <option value="battle">Battle.net</option>
      </select>
      </div>
@@ -513,7 +513,9 @@ if(res== 'Not Connected') {
             _mode = " $"+(item.totalPlayer * item.amount)*90/100+' '
             //_color = 'orange'
           }
+          if (item.matchTables[0])  {
           if (item.matchTables[0].winner !== null)  {_mode = setAvatar(item.matchTables[0].winner)}
+          }
           return (
             <Link  to={'/panel/lobby?id='+item.id}>
             <Card className="card-user chall" >
@@ -526,7 +528,7 @@ if(res== 'Not Connected') {
                           ></img>
               </div>
               <div className="text-center"   style={{position:'absolute',right:0,left:0,marginTop:-50}}>
-                {item.matchTables[0].winner !== null ? (
+                {item.matchTables[0] && item.matchTables[0].winner !== null ? (
                   <Avatar size="80"  style={{boxShadow: '0px 0px 20px 20px rgba(0,0,0,0.2)'}}  round={true} name={_mode} />
                 ):(
                   <Avatar size="80" textSizeRatio={6} style={{boxShadow: '0px 0px 20px 20px rgba(0,0,0,0.2)'}} color={_color} round={true} value={_mode} />

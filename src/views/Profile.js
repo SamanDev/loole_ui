@@ -206,7 +206,7 @@ const required = (value) => {
       this.handlecSetInstagram = this.handlecSetInstagram.bind(this);
       
       this.state = {
-        currentUserTag: AuthService.getCurrentUserTest(),
+        currentUserTag: AuthService.getCurrentUser(),
         gameName: '',
         gamePlatform: '',
         gameID: '',

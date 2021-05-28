@@ -528,7 +528,7 @@ class LockScreenPage extends Component {
     if (typeof item === "undefined") {
       this.props.history.push("/panel/dashboard");
     }
-    if (!item.matchTables[0].matchPlayers[1]) {
+    if (item.matchTables[0] && !item.matchTables[0].matchPlayers[1]) {
       item.matchTables[0].matchPlayers.push(nullplayer);
     }
     if (!item.players[1]) {
@@ -607,14 +607,17 @@ class LockScreenPage extends Component {
     var dateExpiredTest3 = addDays(date.toISOString(), 5);
 
     var dateNow = now.toISOString();
-
-    item.matchTables[0].matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
-    console.log(item.matchTables[0].matchChats);
+if(item.matchTables[0]){
+  item.matchTables[0].matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
+}
+    
+   
     var activePlayer = 0;
     return (
       <>
         <div className="wrapper">
-          <Chatbar
+          {(item.matchTables[0])?(
+            <Chatbar
             eventID={eventid}
             eventstatus={item.status}
             masterplayer={item.matchTables[0].matchPlayers[0].username}
@@ -622,6 +625,10 @@ class LockScreenPage extends Component {
             eventchats={item.chats}
             chats={item.matchTables[0].matchChats}
           />
+          ):(
+<></>
+          )}
+          
           <div className="main-panel">
             <div
               className="full-page lock-page"

@@ -162,6 +162,7 @@ class CreateMatch extends Component {
     super(props);
     this.handleCreateMatch = this.handleCreateMatch.bind(this);
     this.handleCreateTournament = this.handleCreateTournament.bind(this);
+    this.handleCreateLeague = this.handleCreateLeague.bind(this);
     this.setGameName = this.setGameName.bind(this);
     this.setGameMode = this.setGameMode.bind(this);
     this.setTournamentMode = this.setTournamentMode.bind(this);
@@ -183,6 +184,10 @@ class CreateMatch extends Component {
       submit: false,
       GameTag: "",
       message: "",
+      StartTimeLeague:"2021-05-28T19:55:10.0000",
+      EndTimeLeague:"2021-06-28T19:55:10.0000",
+      TotalPlayer:200,
+      TournamentPayout:"2-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00"
     };
   }
 
@@ -234,6 +239,22 @@ class CreateMatch extends Component {
       StartTime: e,
     });
   }
+  setStartTimeLeague(e) {
+    this.setState({
+      StartTimeLeague: e,
+    });
+  }
+  setEndTimeLeague(e) {
+    this.setState({
+      EndTimeLeague: e,
+    });
+  }
+  setTotalPlayer(e) {
+    this.setState({
+      TotalPlayer: e,
+    });
+  }
+  
 
   handleCreateMatch(e) {
     e.preventDefault();
@@ -414,25 +435,142 @@ class CreateMatch extends Component {
       this.form.validateAll();
     }
   }
+  handleCreateLeague(e) {
+    e.preventDefault();
+    
+    if (allValid) {
+     
+        this.setState({
+          message: "",
+          loading: true,
+        });
+        userService
+          .createLeague(
+            this.state.GameName.value.split(" - ")[0],
+            this.state.GameName.value.split(" - ")[1],
+            'League',
+            this.state.BetAmount.value,
+            this.state.StartTimeLeague,
+            this.state.EndTimeLeague,
+            this.state.TotalPlayer,
+            this.state.TournamentPayout
+          )
+          .then(
+            
+            (response) => {
+              if (response=='Create event successful'){
+                Swal.fire("", "Data saved successfully.", "success").then(
+                  (result) => {
+                    this.props.history.push("/panel/dashboard");
+                  }
+                );
+              }else{
+                this.setState({
+                  successful: false,
+                  message: "",
+                  submit: false,
+                  loading: false,
+                });
+                if (response=='balanceError'){
+                var resMessage = "To enter this event you need to have more balance!"
+        Swal.fire({
+          title: 'Error!',
+          text:resMessage,
+          icon:"error",
+          showCancelButton: true,
+          confirmButtonText: `Go to Cashier`,
+          canceleButtonText: `Back`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            this.props.history.push("/panel/cashier");
+          }
+        })
+              }else if (response=='tagError'){
+                const resetPw = async () => {
+                  const swalval = await Swal.fire(getModalTag(this.state.GameName));
+        
+                  let v = (swalval && swalval.value) || swalval.dismiss;
+                  console.log(swalval);
+                  if (v) {
+                    if (v.tagid) {
+                      var tags = v.tagid.split("@@");
+                      if(tags.length==0){
+                        if (tags[0] != "") {
+                          this.setState({
+                            GameTag: v.tagid,
+                          });
+                          console.log(this.state);
+                          this.handleSaveTags();
+                        }
+                      }
+                      if(tags.length==1){
+                        if (tags[0] != "" && tags[1] != "") {
+                          this.setState({
+                            GameTag: v.tagid,
+                          });
+                          console.log(this.state);
+                          this.handleSaveTags();
+                        }
+                      }
+                      //setformdata(swalval);
+                      
+                    }
+                  }
+                };
+        
+                resetPw();
+              }
+            }
+            },
+            (error) => {
+              const resMessage =
+                (error.response &&
+                  error.response.data &&
+                  error.response.data.message) ||
+                error.message ||
+                error.toString();
+            
+
+              this.setState({
+                successful: false,
+                message: resMessage,
+                submit: false,
+                loading: false,
+              });
+            }
+          );
+      
+    } else {
+      this.setState({
+        submit: true,
+      });
+
+      this.form.validateAll();
+    }
+  }
   render() {
     const currentUser = AuthService.getCurrentUser();
     var _mode = " 1 v 1 ";
     var _color = "#404040";
     return (
       <>
-        <Tab.Container id="plain-tabs-example" defaultActiveKey="info-plain">
+        <Tab.Container id="plain-tabs-example" defaultActiveKey="match">
           <Nav role="tablist" variant="tabs">
             <Nav.Item>
-              <Nav.Link eventKey="info-plain">1v1 Match</Nav.Link>
+              <Nav.Link eventKey="match">1v1 Match</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="account-plain">Tournament</Nav.Link>
+              <Nav.Link eventKey="tournsment">Tournament</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="league">League</Nav.Link>
             </Nav.Item>
           </Nav>
           <Card>
             <Card.Body>
               <Tab.Content>
-                <Tab.Pane eventKey="info-plain">
+                <Tab.Pane eventKey="match">
                   <Row>
                     <Col sm="7" md="8">
                       <Form
@@ -651,7 +789,7 @@ class CreateMatch extends Component {
                     </Col>
                   </Row>
                 </Tab.Pane>
-                <Tab.Pane eventKey="account-plain">
+                <Tab.Pane eventKey="tournsment">
                   <Row>
                     <Col md="9">
                       <Form
@@ -663,6 +801,286 @@ class CreateMatch extends Component {
                         <Card className="card-plain" style={{ margin: -10 }}>
                           <Card.Header>
                             <Card.Title>Create Tournament</Card.Title>
+                          </Card.Header>
+                          <Card.Body>
+                            <div className="form-group">
+                              <label>Game</label>
+                              <Select
+                                className="react-select default"
+                                classNamePrefix="react-select"
+                                name="GameName"
+                                value={this.state.GameName}
+                                onChange={this.setGameName}
+                                options={getBlockGames("All")}
+                                placeholder=""
+                              />
+                              {this.selectrequired(this.state.GameName)}
+                            </div>
+
+                            <div className="form-group">
+                              <label>Bet</label>
+                              <Select
+                                className="react-select default"
+                                classNamePrefix="react-select"
+                                name="BetAmount"
+                                value={this.state.BetAmount}
+                                onChange={this.setBetAmount}
+                                options={[
+                                  { value: "5", label: "$5" },
+                                  { value: "10", label: "$10" },
+                                  { value: "25", label: "$25" },
+                                  { value: "50", label: "$50" },
+                                  { value: "100", label: "$100" },
+                                ]}
+                                placeholder=""
+                                isSearchable={false}
+                              />
+                              {this.selectrequired(this.state.BetAmount)}
+                            </div>
+                            <div className="form-group">
+                              <label>Mode</label>
+                              <Select
+                                className="react-select default"
+                                classNamePrefix="react-select"
+                                name="TournamentMode"
+                                value={this.state.TournamentMode}
+                                onChange={this.setTournamentMode}
+                                options={getBlockTournament(
+                                  this.state.BetAmount.value
+                                )}
+                                placeholder=""
+                                isSearchable={false}
+                              />
+                              {this.selectrequired(this.state.TournamentMode)}
+                            </div>
+                            <div className="form-group">
+                              <label>Start Time</label>
+
+                              <Select
+                                className="react-select default"
+                                classNamePrefix="react-select"
+                                name="StartTime"
+                                value={this.state.StartTime}
+                                onChange={this.setStartTime}
+                                options={[
+                                  { value: "30", label: "30 Minutes Later" },
+                                  { value: "60", label: "1 Hour Later" },
+                                  { value: "120", label: "2 Hours Later" },
+                                  { value: "360", label: "6 Hours Later" },
+                                ]}
+                                placeholder=""
+                                isSearchable={false}
+                              />
+                              {this.selectrequired(this.state.GameMode)}
+                            </div>
+
+                            {this.state.message && (
+                              <div className="form-group">
+                                <div
+                                  className="alert alert-danger"
+                                  role="alert"
+                                >
+                                  {this.state.message}
+                                </div>
+                              </div>
+                            )}
+                          </Card.Body>
+                          <Card.Footer>
+                            <div className="form-group">
+                              <button
+                                className="btn btn-primary btn-wd "
+                                disabled={this.state.loading}
+                              >
+                                {this.state.loading && (
+                                  <span className="spinner-border spinner-border-sm  fa-wd"></span>
+                                )}
+                                <span> Create Tournament</span>
+                              </button>
+                            </div>
+                          </Card.Footer>
+                        </Card>
+                      </Form>
+                    </Col>
+                    <Col md="3">
+                      <Card className="card-user chall">
+                        <Card.Header className="no-padding">
+                          <div className="card-image">
+                            <img
+                              src={
+                                require("assets/images/games/" +
+                                  this.state.GameName.value.split(" - ")[0] +
+                                  ".jpg").default
+                              }
+                            ></img>
+                          </div>
+                        </Card.Header>
+                        <Card.Body>
+                          <Row>
+                            <Col style={{ lineHeight: "30px" }}>
+                              <Card.Title as="h4">
+                                {this.state.GameName.value.split(" - ")[0]}
+                              </Card.Title>
+                              <small className="text-muted">Tournament</small>
+                              <br />
+
+                              <span>
+                                <Avatar
+                                  size="30"
+                                  title={currentUser.username}
+                                  round={true}
+                                  name={setAvatar(currentUser.username)}
+                                />
+                                {(() => {
+                                  const rows = [];
+                                  for (
+                                    let i = 0;
+                                    i < this.state.TournamentMode.value - 1;
+                                    i++
+                                  ) {
+                                    if (i < 3) {
+                                      rows.push(
+                                        <Avatar
+                                          size="20"
+                                          key={i}
+                                          round={true}
+                                          name="?"
+                                          src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
+                                          color="lightgray"
+                                        />
+                                      );
+                                    } else {
+                                      rows.push(
+                                        <Avatar
+                                          size="22"
+                                          key={i}
+                                          round={true}
+                                          name="+ 4"
+                                          color="gray"
+                                        />
+                                      );
+                                      break;
+                                    }
+                                  }
+                                  return rows;
+                                })()}
+                              </span>
+
+                              <br />
+                              <small className="text-muted">Start Time</small>
+                              {this.state.TournamentMode.value == "4" ? (
+                                <>
+                                  <br />
+                                  <small className="text-muted">
+                                    Final Match
+                                  </small>
+                                </>
+                              ) : (
+                                <>
+                                  <br />
+                                  <small className="text-muted">
+                                    SemiFinal Match
+                                  </small>
+                                  <br />
+                                  <small className="text-muted">
+                                    Final Match
+                                  </small>
+                                </>
+                              )}
+                            </Col>
+                            <Col
+                              style={{ lineHeight: "30px" }}
+                              className="text-muted text-right"
+                            >
+                              <small className="text-muted">
+                                <FontAwesomeIcon
+                                  fixedWidth
+                                  icon={getIcon(
+                                    this.state.GameName.value.split(" - ")[1]
+                                  )}
+                                />{" "}
+                                {this.state.GameName.value.split(" - ")[1]}
+                              </small>
+                              <br />
+                              <Badge
+                                variant={getColor(this.state.BetAmount.value)}
+                              >
+                                ${this.state.BetAmount.value}
+                              </Badge>
+                              <br />
+                              <small className="text-muted">
+                                1/{this.state.TournamentMode.value}{" "}
+                              </small>
+                              <br />
+
+                              <small className="text-muted">
+                                {" "}
+                                <Countdown
+                                  renderer={renderer}
+                                  date={
+                                    Date.now() +
+                                    this.state.StartTime.value * 1000 * 60
+                                  }
+                                />
+                              </small>
+                              {this.state.TournamentMode.value == "4" ? (
+                                <>
+                                  <br />
+                                  <small className="text-muted">
+                                    <Countdown
+                                      renderer={renderer}
+                                      date={
+                                        Date.now() +
+                                        this.state.StartTime.value * 1000 * 60 +
+                                        60 * 1000 * 60
+                                      }
+                                    />
+                                  </small>
+                                </>
+                              ) : (
+                                <>
+                                  <br />
+                                  <small className="text-muted">
+                                    <Countdown
+                                      renderer={renderer}
+                                      date={
+                                        Date.now() +
+                                        this.state.StartTime.value * 1000 * 60 +
+                                        60 * 1000 * 60
+                                      }
+                                    />
+                                  </small>
+                                  <br />
+                                  <small className="text-muted">
+                                    <Countdown
+                                      renderer={renderer}
+                                      date={
+                                        Date.now() +
+                                        this.state.StartTime.value * 1000 * 60 +
+                                        120 * 1000 * 60
+                                      }
+                                    />
+                                  </small>
+                                </>
+                              )}
+                            </Col>
+                          </Row>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  </Row>
+                </Tab.Pane>
+                <Tab.Pane eventKey="league">
+                  <Row>
+                    <Col md="9">
+                      <Form
+                        onSubmit={this.handleCreateLeague}
+                        ref={(c) => {
+                          this.form = c;
+                        }}
+                      >
+                        <Card className="card-plain" style={{ margin: -10 }}>
+                          <Card.Header>
+                            <Card.Title>Create League</Card.Title>
                           </Card.Header>
                           <Card.Body>
                             <div className="form-group">

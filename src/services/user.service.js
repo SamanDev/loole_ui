@@ -38,17 +38,17 @@ class UserService {
         }
       });
   }
-  sendChat( message,id) {
-   
+  sendChat(message, id) {
+
     return axios
       .put(
         API_URL_TEST + "sendChat",
-        { message, id},
+        { message, id },
         { headers: authHeader() }
       )
       .then((response) => {
         if (response.data.accessToken) {
-          
+
         }
       });
   }
@@ -59,36 +59,21 @@ class UserService {
       .post(
         API_URL_TEST + "uploadFile",
         uploadInfo,
-        { headers:uploadHeader(),
+        {
+          headers: uploadHeader(),
           onUploadProgress: data => {
-          //Set the progress value to show the progress bar
-          setProgress(Math.round((100 * data.loaded) / data.total))
-        }}
+            //Set the progress value to show the progress bar
+            setProgress(Math.round((100 * data.loaded) / data.total))
+          }
+        }
       )
       .then((response) => {
-       console.log(response);
+        console.log(response);
       });
   }
-  createEvent(gameName, gameConsole, gameMode, amount, timeMinute) {
-    console.log(
-      { gameName, gameConsole, gameMode, amount, timeMinute },
-      { headers: authHeader() }
-    );
-    return axios
-      .post(
-        API_URL_TEST + "createEvent",
-        { gameName, gameConsole, gameMode, amount, timeMinute },
-        { headers: authHeader() }
-      )
-      .then((response) => {
-        console.log("ok");
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
-        return response.data;
-      });
-  }
+  
   saveTags(gameName, gamePlatform, tagId, nickName) {
-    
+
     return axios
       .post(
         API_URL_TEST + "saveTags",
@@ -97,17 +82,17 @@ class UserService {
       )
       .then((response) => {
 
-  console.log("ok");
-  // localStorage.setItem("events", JSON.stringify(response.data));
-  //localStorage.setItem("user", JSON.stringify(response.data));
-  
-  return response.data;
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
 
-        
+        return response.data;
+
+
       });
   }
   finishClashRoyale(eventID) {
-    
+
     return axios
       .post(
         API_URL_TEST + "finishClashRoyale",
@@ -116,13 +101,13 @@ class UserService {
       )
       .then((response) => {
 
-  console.log("ok");
-  // localStorage.setItem("events", JSON.stringify(response.data));
-  //localStorage.setItem("user", JSON.stringify(response.data));
-  
-  return response.data;
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
 
-        
+        return response.data;
+
+
       });
   }
   joinEvent(id) {
@@ -157,7 +142,7 @@ class UserService {
   }
   deleteEvent(id) {
     return axios
-      .delete(API_URL_TEST + "deleteEvent?id="+id, { headers: authHeader() })
+      .delete(API_URL_TEST + "deleteEvent?id=" + id, { headers: authHeader() })
       .then((response) => {
         console.log("ok");
         // localStorage.setItem("events", JSON.stringify(response.data));
@@ -180,36 +165,36 @@ class UserService {
       });
   }
   getEvents(token) {
-    if (localStorage.getItem('events')){
-    const event = this.getCurrentEvent(token);
-    //alert(event)
-   
-     
+    if (localStorage.getItem('events')) {
+      const event = this.getCurrentEvent(token);
+      //alert(event)
+
+
       eventBus.dispatch("eventsData", event);
-      
-      
-    }else{
+
+
+    } else {
       return axios.get(API_URL_TEST + "getEvents").then((response) => {
         //console.log(response.data.data)
-       
-          
+
+
         localStorage.setItem("events", response.data.data);
-        
+
         eventBus.dispatch("eventsData", response.data.data);
       }).catch(error => {
         var _this = this;
-        setTimeout(function(){
+        setTimeout(function () {
           _this.getEvents(token)
-        },2000)
-        
-     });
+        }, 2000)
+
+      });
     }
-    
+
   }
   getCurrentEvent(token) {
-    if (localStorage.getItem('events')){
-    return  localStorage.getItem('events');
-    }else{
+    if (localStorage.getItem('events')) {
+      return localStorage.getItem('events');
+    } else {
       localStorage.removeItem("events");
       this.getEvents(token)
     }
@@ -227,16 +212,48 @@ class UserService {
         }
       });
   }
+  createEvent(gameName, gameConsole, gameMode, amount, timeMinute) {
+    console.log(
+      { gameName, gameConsole, gameMode, amount, timeMinute },
+      { headers: authHeader() }
+    );
+    return axios
+      .post(
+        API_URL_TEST + "createEvent",
+        { gameName, gameConsole, gameMode, amount, timeMinute },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
+        return response.data;
+      });
+  }
+  createLeague(gameName, gameConsole, gameMode, amount, start, finished,totalPlayer,tournamentPayout) {
+    return axios
+      .post(
+        API_URL_TEST + "createEvent",
+        { gameName, gameConsole, gameMode, amount, start, finished,totalPlayer,tournamentPayout },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
+        return response.data;
+      });
+  }
 }
 function isJson(str) {
-    // alert("str = "+str)
-    try {
-        JSON.parse(str);
-    } catch (e) {
-        // alert('no JSON')
-        return false;
-    }
-    // alert('yes JSON')
-    return true;
+  // alert("str = "+str)
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    // alert('no JSON')
+    return false;
+  }
+  // alert('yes JSON')
+  return true;
 }
 export default new UserService();
