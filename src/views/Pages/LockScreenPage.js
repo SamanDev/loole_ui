@@ -94,9 +94,10 @@ class LockScreenPage extends Component {
 
     this.handleChatUpload = this.handleChatUpload.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.setEvent = this.setEvent.bind(this);
     this.showFileUpload = this.showFileUpload.bind(this);
     this.state = {
-      events: userService.getCurrentEvent(),
+      events: userService.getEventById(getQueryVariable("id")),
       currentUserTag: AuthService.getCurrentUserTest(),
       tag: "R0P0C8R89",
       eventid: getQueryVariable("id"),
@@ -113,13 +114,12 @@ class LockScreenPage extends Component {
   componentDidMount() {
     Swal.close();
     this._isMounted = true;
-
     if (this._isMounted) {
-      eventBus.on("eventsData", (event) => {
+      eventBus.on("eventsDataEvent", (event) => {
         // console.log("socket events: "+events);
 
-        this.setState({ events: event });
-        //console.log("change state: " + this.state.events);
+       this.setEvent(event);
+        
       });
     }
   }
@@ -130,6 +130,12 @@ class LockScreenPage extends Component {
     this.setState({
       progress: e,
       progressLable: e + "%",
+    });
+  }
+  setEvent(e) {
+    this.setState({
+      events: e,
+      
     });
   }
   showFileUpload() {
@@ -409,8 +415,9 @@ class LockScreenPage extends Component {
   }
   render() {
     let { progress, isUpLoading, progressLable } = this.state;
-    if (!this.state.events.length) {
-      userService.getEvents();
+    console.log(this.state.events)
+    if (!this.state.events.id) {
+      //userService.getEvents();
 
       return (
         <>
@@ -523,7 +530,7 @@ class LockScreenPage extends Component {
       return nullmatch;
     }
 
-    var item = events.find((match) => match.id === parseInt(eventid));
+    var item = events;
 
     if (typeof item === "undefined") {
       this.props.history.push("/panel/dashboard");

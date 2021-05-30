@@ -151,7 +151,7 @@ class UserService {
       });
   }
   changeReadyEvent(id) {
-    return axios
+      return axios
       .put(
         API_URL_TEST + "changeReadyEvent",
         { id },
@@ -165,7 +165,7 @@ class UserService {
       });
   }
   getEvents(token) {
-    if (localStorage.getItem('events')) {
+    if (localStorage.getItem('events')&&1==2) {
       const event = this.getCurrentEvent(token);
       //alert(event)
 
@@ -175,28 +175,38 @@ class UserService {
 
     } else {
       return axios.get(API_URL_TEST + "getEvents").then((response) => {
-        //console.log(response.data.data)
-
-
-        localStorage.setItem("events", response.data.data);
+        
 
         eventBus.dispatch("eventsData", response.data.data);
       }).catch(error => {
         var _this = this;
         setTimeout(function () {
-          _this.getEvents(token)
+          //_this.getEvents(token)
         }, 2000)
 
       });
     }
 
   }
+  getEventById(id) {
+    return axios
+      .post(
+        API_URL_TEST + "getEventById",
+        { id },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        eventBus.dispatch("eventsDataEvent", response.data);
+        return response.data;
+      });
+
+  }
   getCurrentEvent(token) {
-    if (localStorage.getItem('events')) {
+    if (localStorage.getItem('events')&&1==2) {
       return localStorage.getItem('events');
     } else {
-      localStorage.removeItem("events");
-      this.getEvents(token)
+      //localStorage.removeItem("events");
+      //this.getEvents(token)
     }
   }
   createTournament(gamename, gameconsole, tournamentmode, bet, time) {

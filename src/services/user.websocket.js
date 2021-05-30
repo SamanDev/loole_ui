@@ -27,7 +27,7 @@ class UserWebsocket {
                     //window.location.reload();
                 }
             }
-        }else{userService.getEvents();}
+        }
     }
     serverMessage(message) {
        
