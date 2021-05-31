@@ -126,9 +126,12 @@ this.setState({
     let { chats, eventchats, masterplayer, eventstatus,secondplayer,isLoading } = this.state;
     // this is for the rest of the collapses
     var finalChat = []
-    {chats.map((item, i) => {
-      finalChat.push(item)
-    })}
+    if(chats!='null'){
+      {chats.map((item, i) => {
+        finalChat.push(item)
+      })}
+    }
+    
     {eventchats.map((item, i) => {
       finalChat.push(item)
     })}

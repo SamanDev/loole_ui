@@ -43,7 +43,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      events: userService.getCurrentEvent()
+      events: null
     };
 
   }

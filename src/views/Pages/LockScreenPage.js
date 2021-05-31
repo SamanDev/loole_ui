@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Avatar from "react-avatar";
-
+import $ from "jquery";
 import { NavLink, Link } from "react-router-dom";
 import {
   VerticalTimeline,
@@ -88,6 +88,7 @@ class LockScreenPage extends Component {
     this.handlecAlertWin = this.handlecAlertWin.bind(this);
     this.handleClashFinished = this.handleClashFinished.bind(this);
     this.handleHowStream = this.handleHowStream.bind(this);
+    this.reGetevents = this.reGetevents.bind(this);
     this.fileUpload = React.createRef();
 
     this.setProgress = this.setProgress.bind(this);
@@ -97,7 +98,7 @@ class LockScreenPage extends Component {
     this.setEvent = this.setEvent.bind(this);
     this.showFileUpload = this.showFileUpload.bind(this);
     this.state = {
-      events: userService.getEventById(getQueryVariable("id")),
+      events: null,
       currentUserTag: AuthService.getCurrentUserTest(),
       tag: "R0P0C8R89",
       eventid: getQueryVariable("id"),
@@ -112,16 +113,23 @@ class LockScreenPage extends Component {
   }
 
   componentDidMount() {
+    
     Swal.close();
     this._isMounted = true;
     if (this._isMounted) {
       eventBus.on("eventsDataEvent", (event) => {
-        // console.log("socket events: "+events);
-
-       this.setEvent(event);
-        
-      });
+       
+        //console.log("socket events: "+JSON.stringify(event));
+        this.setEvent(event);
+      //console.log("socket events: "+event);
+     
+     });
+     eventBus.on("eventsData", (event) => {
+      this.reGetevents()
+   
+   });
     }
+    
   }
   componentWillUnmount() {
     this._isMounted = false;
@@ -137,6 +145,8 @@ class LockScreenPage extends Component {
       events: e,
       
     });
+    
+    $('#jsonhtml').html($('#jsonhtml2').text())
   }
   showFileUpload() {
     this.fileUpload.current.click();
@@ -181,6 +191,12 @@ class LockScreenPage extends Component {
       }
     });
   }
+  reGetevents(){
+    if(getQueryVariable("id")){
+      userService.getEventById(getQueryVariable("id"))
+    }
+   
+  }
   handleJoinMatch(e) {
     e.preventDefault();
     this.setState({
@@ -191,7 +207,9 @@ class LockScreenPage extends Component {
         this.setState({
           isloading: false,
         });
-        if (response == "Join event successful") {
+        //this.setEvent(response)
+        if (response.indexOf('successful') >-1) {
+          //sthis.reGetevents();
           Toast.fire({
             icon: "success",
             title: "Joined.",
@@ -227,7 +245,7 @@ class LockScreenPage extends Component {
                       this.setState({
                         GameTag: v.tagid,
                       });
-                      console.log(this.state);
+                      //console.log(this.state);
                       this.handleSaveTags();
                     }
                   }
@@ -236,7 +254,7 @@ class LockScreenPage extends Component {
                       this.setState({
                         GameTag: v.tagid,
                       });
-                      console.log(this.state);
+                      //console.log(this.state);
                       this.handleSaveTags();
                     }
                   }
@@ -338,11 +356,11 @@ class LockScreenPage extends Component {
     });
     userService.leaveEvent(this.state.eventid).then(
       (response) => {
-        if (response == "Leave event successful") {
+        if (response.indexOf('successful') >-1) {
           this.setState({
             isloading: false,
           });
-
+          
           Toast.fire({
             icon: "success",
             title: "UnJoined.",
@@ -359,6 +377,7 @@ class LockScreenPage extends Component {
     userService.changeReadyEvent(this.state.eventid).then(
       (response) => {
         if (response == "changeReadyEvent successful") {
+         
           Toast.fire({
             icon: "success",
             title: "Updated.",
@@ -414,11 +433,12 @@ class LockScreenPage extends Component {
     });
   }
   render() {
-    let { progress, isUpLoading, progressLable } = this.state;
-    console.log(this.state.events)
-    if (!this.state.events.id) {
-      //userService.getEvents();
-
+    let { progress, isUpLoading, progressLable,events ,eventid} = this.state;
+    var currentUser = AuthService.getCurrentUser();
+  
+    if (!events) {
+      this.reGetevents()
+      
       return (
         <>
           <div
@@ -457,9 +477,7 @@ class LockScreenPage extends Component {
       );
     }
 
-    var currentUser = AuthService.getCurrentUser();
-    let { events, eventid } = this.state;
-    events = JSON.parse(events);
+    //events = JSON.parse(events);
     var icEnd = 0;
     var icStart = 0;
     var icStartL = 0;
@@ -535,53 +553,69 @@ class LockScreenPage extends Component {
     if (typeof item === "undefined") {
       this.props.history.push("/panel/dashboard");
     }
-    if (item.matchTables[0] && !item.matchTables[0].matchPlayers[1]) {
-      item.matchTables[0].matchPlayers.push(nullplayer);
+    
+    
+    item.current_brackets = [];
+    item.potential_brackets = [];
+    if (!item.tournamentPayout) {
+      item.tournamentPayout='2-200, 65.00, 35.00'
     }
-    if (!item.players[1]) {
-      item.players.push(nullplayer);
-      item.players.push(
-        {
-            "ready": false,
-            "username": "vahid"
-            
-        },
-        {
-            "ready": false,
-            "username": "Yaran12"
-            
-        },
-        {
-            "ready": false,
-            "username": "salar"
-            
-        },
-        {
-            "ready": false,
-            "username": "shayan"
-            
-        },
-        {
-            "ready": false,
-            "username": "mamad"
-            
-        },
-        {
-            "ready": false,
-            "username": "Yaran12"
-            
-        }
-        ,
-        {
-            "ready": false,
-            "username": "shayan"
-            
-        }
-    );
-    }
+    if (item.tournamentPayout) {
+      var payArr=item.tournamentPayout.split('|')
+      var  totalPay = (item.totalPlayer * item.amount)*90/100;
+      for (var i = 0; i < payArr.length; i++) {
+        var paylvl = payArr[i].split(", ");
+        var payplyer = paylvl[0].split("-");
 
+       // console.log(payplyer[0])
+        if (parseInt(payplyer[0]) <= item.players.length && parseInt(payplyer[1]) >= item.players.length) {
+          for (var j = 1; j < paylvl.length; j++) {
+            item.current_brackets.push({
+              "prize": paylvl[j]*totalPay/100,
+              "number": 1
+          });
+        }
+      
+        
+        }
+          
+     
+      
+    }
+    for (var i = payArr.length-1; i < payArr.length; i++) {
+      var paylvl = payArr[i].split(", ");
+      var payplyer = paylvl[0].split("-");
+
+     
+        for (var j = 1; j < paylvl.length; j++) {
+          item.potential_brackets.push({
+            "prize": paylvl[j]*totalPay/100,
+            "number": 1
+        });
+      
+    
+      
+      }
+        
+   
+    
+  }
+  }
+    
     if (!item.winner) {
       item.winner = [];
+      item.winner.push(nullplayer);
+    }
+    if (!item.rules) {
+      item.info = {
+        "conditions": [
+            "Thank you for participating in our COD: Warzone Beta tournament",
+            "During the Beta scores may be altered, removed or updated as we test the implementation of our scoring systems",
+            "Only games played after you join the tournament are counted",
+            "SMURF accounts are not allowed on Repeat.gg and will be banned"
+        ]
+    }
+    item.rules = "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>"
       item.winner.push(nullplayer);
     }
     if (!item.matchLevel) {
@@ -604,7 +638,17 @@ class LockScreenPage extends Component {
       result.setDate(result.getDate() + days);
       return result;
     }
+    function toTimestamp(strDate){
+      var datum = Date.parse(strDate);
+      return datum/1000;
+   }
     var timestamp = item.expire;
+   // console.log(timestamp);
+    if(timestamp.indexOf('-')>-1) {
+    
+var timestamp = toTimestamp(timestamp);
+   }
+   //console.log(timestamp);
     var date = new Date(timestamp);
 
     var now = new Date();
@@ -614,16 +658,23 @@ class LockScreenPage extends Component {
     var dateExpiredTest3 = addDays(date.toISOString(), 5);
 
     var dateNow = now.toISOString();
-if(item.matchTables[0]){
+   
+if(item.matchTables[0] && item.gameMode!='Tournament'){
+  if (!item.players[1]) {
+    item.players.push(nullplayer);
+  }
+  if (item.matchTables[0] && !item.matchTables[0].matchPlayers[1]) {
+    item.matchTables[0].matchPlayers.push(nullplayer);
+  }
   item.matchTables[0].matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
 }
-    
-   
+
+   var isJoin=false;
     var activePlayer = 0;
     return (
       <>
         <div className="wrapper">
-          {(item.matchTables[0])?(
+          {(item.matchTables[0] &&  item.gameMode!='Tournament')?(
             <Chatbar
             eventID={eventid}
             eventstatus={item.status}
@@ -633,7 +684,14 @@ if(item.matchTables[0]){
             chats={item.matchTables[0].matchChats}
           />
           ):(
-<></>
+<Chatbar
+            eventID={eventid}
+            eventstatus={item.status}
+            masterplayer="null"
+            secondplayer="null"
+            eventchats={item.chats}
+            chats="null"
+          />
           )}
           
           <div className="main-panel">
@@ -679,6 +737,9 @@ if(item.matchTables[0]){
                               <small>
                 {item.players.map((user, z) => (
                   <span key={z}>
+                    {(currentUser.username==user.username)&&(
+                      isJoin=true
+                      )}
                   {(z<5)?(
                     <>
             {(z<4)?(
@@ -754,14 +815,28 @@ if(item.matchTables[0]){
                                   <ProgressBar
                                     animated
                                     variant="warning"
-                                    now={45}
+                                    now={item.players.length/item.totalPlayer*100}
                                     style={{
                                       marginLeft: "auto",
                                       marginRight: "auto",
                                       maxWidth: "70%",
                                     }}
                                   />
-                                  <Button
+                                  {isJoin ? (
+                                                    <Button
+                                                      className="btn-round"
+                                                      onClick={
+                                                        this.handleLeaveMatch
+                                                      }
+                                                      variant="warning"
+                                                      disabled={
+                                                        this.state.isloading
+                                                      }
+                                                    >
+                                                      Leave Match
+                                                    </Button>
+                                                  ):(
+<Button
                                     className="btn-round"
                                     onClick={this.handleJoinMatch}
                                     variant="danger"
@@ -769,6 +844,8 @@ if(item.matchTables[0]){
                                   >
                                     Join Match ${item.amount}
                                   </Button>
+                                                  )}
+                                  
                                 </VerticalTimelineElement>
                                 <VerticalTimelineElement
                                   className="vertical-timeline-element--education my-list"
@@ -867,7 +944,7 @@ if(item.matchTables[0]){
                                     className="btn-round"
                                     onClick={this.handleHowStream}
                                     variant="warning"
-                                    disabled={this.state.isloading}
+                                  
                                   >
                                     How to Stream
                                   </Button>
@@ -900,7 +977,7 @@ if(item.matchTables[0]){
                                     style={{ height: 230, overflow: "auto" }}
                                   >
                                     <ListGroup>
-                                      {this.state.league.current_brackets.map(
+                                      {events.current_brackets.map(
                                         (item, i) => {
                                           icStart = icStart + 1;
                                           icEnd = icEnd + parseInt(item.number);
@@ -979,7 +1056,7 @@ if(item.matchTables[0]){
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        {this.state.league.entries.map(
+                                        {item.players.map(
                                           (item, i) => {
                                             icStartL = icStartL + 1;
                                             if (icStartL <= 225) {
@@ -995,16 +1072,16 @@ if(item.matchTables[0]){
                                                       size="25"
                                                       round={true}
                                                       title={
-                                                        item.user_game_region
+                                                        item
                                                           .username
                                                       }
                                                       name={setAvatar(
-                                                        item.user_game_region
+                                                        item
                                                           .username
                                                       )}
                                                     />{" "}
                                                     {
-                                                      item.user_game_region
+                                                      item
                                                         .username
                                                     }
                                                     <ListGroup
@@ -1059,45 +1136,7 @@ if(item.matchTables[0]){
                                       </tbody>
                                     </Table>
                                   </div>
-                                  <ListGroup>
-                                    {this.state.league.entries.map(
-                                      (item, i) => {
-                                        icStartL = icStartL + 1;
-                                        if (icStartL <= 5) {
-                                          return (
-                                            <ListGroup.Item>
-                                              <ListGroup horizontal>
-                                                <ListGroup.Item>
-                                                  {icStart}
-                                                </ListGroup.Item>
-                                                <ListGroup.Item>
-                                                  <Avatar
-                                                    size="30"
-                                                    round={true}
-                                                    title={
-                                                      item.user_game_region
-                                                        .username
-                                                    }
-                                                    name={setAvatar(
-                                                      item.user_game_region
-                                                        .username
-                                                    )}
-                                                  />
-                                                  {
-                                                    item.user_game_region
-                                                      .username
-                                                  }
-                                                </ListGroup.Item>
-                                                <ListGroup.Item>
-                                                  {item.score}
-                                                </ListGroup.Item>
-                                              </ListGroup>
-                                            </ListGroup.Item>
-                                          );
-                                        }
-                                      }
-                                    )}
-                                  </ListGroup>
+                                  
                                 </VerticalTimelineElement>
                                 <VerticalTimelineElement
                                   className="vertical-timeline-element--education"
@@ -1108,7 +1147,7 @@ if(item.matchTables[0]){
                                   contentArrowStyle={{
                                     borderRight: "7px solid #264653",
                                   }}
-                                  date="{dateExpiredTest2}"
+                                 
                                   iconStyle={{
                                     background: "#264653",
                                     color: "#fff",
@@ -1117,26 +1156,8 @@ if(item.matchTables[0]){
                                   <h3 className="vertical-timeline-element-title">
                                     League Rules
                                   </h3>
-
-                                  <p>
-                                    Refer to the tournament details to see what
-                                    game modes are tracked
-                                  </p>
-                                  <p>
-                                    Smurfing (creating a new account to compete
-                                    with) will result in an immediate and
-                                    permanent ban from{" "}
-                                    <span data-ignore="true">loole.gg</span> and
-                                    all winnings will be forfeited.
-                                  </p>
-                                  <p>
-                                    You must play the minimum number of games in
-                                    order to get paid out in a tournament. The
-                                    minimum number of games to play is the same
-                                    as the number of games we count for your
-                                    score, which can be found in the Tournament
-                                    Details.
-                                  </p>
+                                  <span  id="jsonhtml"></span>
+<span  id="jsonhtml2" className="hide">{events.rules}</span>
                                 </VerticalTimelineElement>
                               </VerticalTimeline>
                             </Col>
@@ -1177,6 +1198,9 @@ if(item.matchTables[0]){
                                   <small>
                 {item.players.map((user, z) => (
                   <span key={z}>
+                    {(currentUser.username==user.username)&&(
+                      isJoin=true
+                      )}
                   {(z<5)?(
                     <>
             {(z<4)?(
@@ -1242,23 +1266,38 @@ if(item.matchTables[0]){
                                         {item.players.length}/{item.totalPlayer}
                                       </small>
                                       <ProgressBar
-                                        animated
-                                        variant="warning"
-                                        now={45}
-                                        style={{
-                                          marginLeft: "auto",
-                                          marginRight: "auto",
-                                          maxWidth: "70%",
-                                        }}
-                                      />
-                                      <Button
-                                        className="btn-round"
-                                        onClick={this.handleJoinMatch}
-                                        variant="danger"
-                                        disabled={this.state.isloading}
-                                      >
-                                        Join Match ${item.amount}
-                                      </Button>
+                                    animated
+                                    variant="warning"
+                                    now={item.players.length/item.totalPlayer*100}
+                                    style={{
+                                      marginLeft: "auto",
+                                      marginRight: "auto",
+                                      maxWidth: "70%",
+                                    }}
+                                  />
+                                  {isJoin ? (
+                                                    <Button
+                                                      className="btn-round"
+                                                      onClick={
+                                                        this.handleLeaveMatch
+                                                      }
+                                                      variant="warning"
+                                                      disabled={
+                                                        this.state.isloading
+                                                      }
+                                                    >
+                                                      Leave Match
+                                                    </Button>
+                                                  ):(
+<Button
+                                    className="btn-round"
+                                    onClick={this.handleJoinMatch}
+                                    variant="danger"
+                                    disabled={this.state.isloading}
+                                  >
+                                    Join Match ${item.amount}
+                                  </Button>
+                                                  )}
                                     </VerticalTimelineElement>
                                     <VerticalTimelineElement
                                       className="vertical-timeline-element--education"
@@ -1322,6 +1361,7 @@ if(item.matchTables[0]){
                                   </h3>
                                       <Accordion defaultActiveKey="0">
                                 {item.matchLevel.map((match, i) => {
+                                  //console.log(match)
                                   return (
                                     <Card
                                       className="card-lock text-center card-plain"
@@ -1503,7 +1543,7 @@ if(item.matchTables[0]){
                                         }}
                                       >
                                         <ListGroup>
-                                          {this.state.league.current_brackets.map(
+                                          {events.current_brackets.map(
                                             (item, i) => {
                                               icStart = icStart + 1;
                                               icEnd =
@@ -1589,7 +1629,7 @@ if(item.matchTables[0]){
                                             </tr>
                                           </thead>
                                           <tbody>
-                                            {this.state.league.entries.map(
+                                            {events.players.map(
                                               (item, i) => {
                                                 icStartL = icStartL + 1;
                                                 if (icStartL <= 2) {
@@ -1606,17 +1646,17 @@ if(item.matchTables[0]){
                                                           round={true}
                                                           title={
                                                             item
-                                                              .user_game_region
+                                                              
                                                               .username
                                                           }
                                                           name={setAvatar(
                                                             item
-                                                              .user_game_region
+                                                              
                                                               .username
                                                           )}
                                                         />{" "}
                                                         {
-                                                          item.user_game_region
+                                                          item
                                                             .username
                                                         }
                                                         <ListGroup
@@ -1683,45 +1723,7 @@ if(item.matchTables[0]){
                                           </tbody>
                                         </Table>
                                       </div>
-                                      <ListGroup>
-                                        {this.state.league.entries.map(
-                                          (item, i) => {
-                                            icStartL = icStartL + 1;
-                                            if (icStartL <= 5) {
-                                              return (
-                                                <ListGroup.Item>
-                                                  <ListGroup horizontal>
-                                                    <ListGroup.Item>
-                                                      {icStart}
-                                                    </ListGroup.Item>
-                                                    <ListGroup.Item>
-                                                      <Avatar
-                                                        size="30"
-                                                        round={true}
-                                                        title={
-                                                          item.user_game_region
-                                                            .username
-                                                        }
-                                                        name={setAvatar(
-                                                          item.user_game_region
-                                                            .username
-                                                        )}
-                                                      />
-                                                      {
-                                                        item.user_game_region
-                                                          .username
-                                                      }
-                                                    </ListGroup.Item>
-                                                    <ListGroup.Item>
-                                                      {item.score}
-                                                    </ListGroup.Item>
-                                                  </ListGroup>
-                                                </ListGroup.Item>
-                                              );
-                                            }
-                                          }
-                                        )}
-                                      </ListGroup>
+                                     
                                     </VerticalTimelineElement>
                                     <VerticalTimelineElement
                                       className="vertical-timeline-element--education"
@@ -1732,7 +1734,7 @@ if(item.matchTables[0]){
                                       contentArrowStyle={{
                                         borderRight: "7px solid #264653",
                                       }}
-                                      date="{dateExpiredTest2}"
+                                      
                                       iconStyle={{
                                         background: "#264653",
                                         color: "#fff",
@@ -1741,26 +1743,9 @@ if(item.matchTables[0]){
                                       <h3 className="vertical-timeline-element-title">
                                         League Rules
                                       </h3>
-
-                                      <p>
-                                        Refer to the tournament details to see
-                                        what game modes are tracked
-                                      </p>
-                                      <p>
-                                        Smurfing (creating a new account to
-                                        compete with) will result in an
-                                        immediate and permanent ban from{" "}
-                                        <span data-ignore="true">loole.gg</span>{" "}
-                                        and all winnings will be forfeited.
-                                      </p>
-                                      <p>
-                                        You must play the minimum number of
-                                        games in order to get paid out in a
-                                        tournament. The minimum number of games
-                                        to play is the same as the number of
-                                        games we count for your score, which can
-                                        be found in the Tournament Details.
-                                      </p>
+<span  id="jsonhtml"></span>
+<span  id="jsonhtml2" className="hide"> {events.rules}</span>
+                                     
                                     </VerticalTimelineElement>
                                   </VerticalTimeline>
                                   
@@ -2265,7 +2250,7 @@ if(item.matchTables[0]){
                               </Card>
                               {currentUser.roles[0] == "ROLE_ADMIN" && (
                                 <>
-                                  {" "}
+                                  
                                   <Button
                                     className="btn-round"
                                     onClick={this.handleDelete}
@@ -2296,7 +2281,10 @@ if(item.matchTables[0]){
         </div>
       </>
     );
+    
+  
   }
+  
 }
 
 export default LockScreenPage;

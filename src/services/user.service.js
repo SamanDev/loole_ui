@@ -115,6 +115,7 @@ class UserService {
       .put(API_URL_TEST + "joinEvent", { id }, { headers: authHeader() })
       .then((response) => {
         console.log("ok");
+       
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
         return response.data;
@@ -189,6 +190,7 @@ class UserService {
 
   }
   getEventById(id) {
+    if(id){
     return axios
       .post(
         API_URL_TEST + "getEventById",
@@ -196,10 +198,11 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
+        localStorage.setItem("eventsid", JSON.stringify(response.data));
         eventBus.dispatch("eventsDataEvent", response.data);
         return response.data;
       });
-
+    }
   }
   getCurrentEvent(token) {
     if (localStorage.getItem('events')&&1==2) {

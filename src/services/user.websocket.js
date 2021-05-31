@@ -13,7 +13,7 @@ class UserWebsocket {
             ws = new WebSocket(USERSOCKETURL + token);
             //userService.getEvents();
             //localStorage.removeItem("events");
-            userService.getEvents();
+            //userService.getEvents();
             console.log("Websocket is connect");
             ws.onmessage = function (data) {
                 new UserWebsocket().serverMessage(data.data);
@@ -37,15 +37,16 @@ class UserWebsocket {
             
             if (msg.Command === 'event') {
                
-                localStorage.setItem("events", msg.data);
-                   eventBus.dispatch("eventsData", msg.data);
+               
+                eventBus.dispatch("eventsData", msg.data);
+                //eventBus.dispatch("eventsDataEvent", msg.data);
                 
             } else if (message.Command === 'startTick') {
                 // setYvalStart(msg.tick);
             }
         } else {
             if (message === 'closeConnection') {
-                localStorage.removeItem("events");
+                //localStorage.removeItem("events");
             }
         }
         //console.log("message: " + message);
@@ -57,7 +58,7 @@ class UserWebsocket {
             
             ws.close();
             ws = null
-            localStorage.removeItem("events");
+            //localStorage.removeItem("events");
         console.log("Websocket is in disconnected state");
         }
         
