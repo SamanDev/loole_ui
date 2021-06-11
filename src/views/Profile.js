@@ -308,14 +308,20 @@ const required = (value) => {
         .then(
           (response) => {
            
+            let jsonBool = isJson(JSON.stringify(response));
+        
+            if (jsonBool) {
+             
+                this.setUserTag(response)
+                localStorage.setItem("user", JSON.stringify(response));
+                Swal.fire("", "Data saved successfully.", "success");
             
-              localStorage.setItem("userTest", JSON.stringify(response));
-              this.setUserTag(response)
-              Swal.fire("", "Data saved successfully.", "success");
-            
-            
-           
-            //this.props.history.push("/panel/dashboard");
+            } else {
+             
+                Swal.fire("", response, "error");
+             
+            }
+          
           },
           (error) => {
             const resMessage =
