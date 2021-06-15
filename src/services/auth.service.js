@@ -1,10 +1,27 @@
 import axios from "axios";
 import { POSTURL } from 'const';
 import UserWebsocket from 'services/user.websocket'
-
+import authHeader from "./auth-header";
 const API_URL = POSTURL;
 
 class AuthService {
+  serverCheck() {
+    return axios.post(API_URL + "serverCheck", { headers: authHeader() }).then((response) => {
+        var response = response.data
+      if(response=='Expire token' || response=='Not registered'){
+        try{
+        localStorage.removeItem("user");
+        }catch(e){}
+    //window.location.replace("/auth/login-page");
+      }
+    return response.data;
+
+
+  }).catch(error => {
+    alert("ServerDown")
+    return false
+  });
+  }
   login(username, password) {
     return axios
       .post(API_URL + "signin", {

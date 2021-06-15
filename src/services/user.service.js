@@ -1,6 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 import uploadHeader from "./upload-header";
+
 import { POSTURLTest } from "const";
 import { useState } from "react"
 import eventBus from "views/eventBus";
@@ -81,15 +82,25 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-
-        console.log("ok");
+        
+          console.log("ok");
+        
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
 
         return response.data;
 
 
-      });
+      }).catch(error => {
+        //alert(error)
+        if (error=='Error: Request failed with status code 401') {
+          
+    localStorage.removeItem("user");
+    window.location.replace("/auth/login-page");
+        }else{
+       
+        }
+      });;
   }
   finishClashRoyale(eventID) {
 

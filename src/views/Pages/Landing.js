@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import $ from "jquery";
 import Countdown from "react-countdown";
 import userService from "services/user.service";
+import authService from "services/auth.service";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
 import { printMatchBlock,printGameBlock } from "components/include";
@@ -27,7 +28,8 @@ export default class Landing extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      events: userService.getCurrentEvent()
+      events: userService.getCurrentEvent(),
+      serverCheck: authService.serverCheck()
     };
 
   }
@@ -46,60 +48,76 @@ export default class Landing extends Component {
   }
   
   render() {
-    if (!this.state.events){
-      userService.getEvents();
+    if (!this.state.serverCheck){
+        authervice.serverCheck();
+        
+        return  <div className="parallax filter-gradient gray section-gray" data-color="red">
+        <div className="parallax-background">
+            <img className="parallax-background-image" src="assets/img/showcases/showcase-1/bg.jpg"/>
+        </div>
+        <div className= "container">
+        <h4 style={{textAlign: "center",marginTop:300,color:'#fff'}}>Loading 
+        <Spinner animation="grow" size="sm" />
+        <Spinner animation="grow" size="sm" />
+        <Spinner animation="grow" size="sm" /></h4>
+        </div>
+    </div>;
       
-      return  <div className="parallax filter-gradient gray section-gray" data-color="red">
-      <div className="parallax-background">
-          <img className="parallax-background-image" src="assets/img/showcases/showcase-1/bg.jpg"/>
-      </div>
-      <div className= "container">
-      <h4 style={{textAlign: "center",marginTop:300,color:'#fff'}}>Loading 
-      <Spinner animation="grow" size="sm" />
-      <Spinner animation="grow" size="sm" />
-      <Spinner animation="grow" size="sm" /></h4>
-      </div>
-  </div>;
-    }
-    let { events, isLoading } = this.state;
-    events=JSON.parse(events);
-    
-    const getBlockChallenge = (filtermode,f,t) => {
-      
-      if (events != []) {
-        return events.map((item, i) => {
-          if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
-            item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
-            {item.players.map((player, j) => {
-             //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
-            })}
-            var timestamp = item.expire
-            var date = new Date(timestamp);
-            //date.setMinutes(date.getMinutes() + item.timeMinute);
-            var now = new Date();
-            var dateExpired = date.toISOString();
-            
-             
-            var dateNow = now.toISOString();
-            
-            if(i>=f  &&  i<t){
-            
-            return (
-  
-              <Col md="3" xl="4" key={i}>
-                {printMatchBlock(item)}
-  
-              </Col>
-            )
-            }
-          } else {
-            return null;
-          }
-        }
-        )
       }
-  
-    }
+      if (!this.state.events){
+        userService.getEvents();
+        
+        return  <div className="parallax filter-gradient gray section-gray" data-color="red">
+        <div className="parallax-background">
+            <img className="parallax-background-image" src="assets/img/showcases/showcase-1/bg.jpg"/>
+        </div>
+        <div className= "container">
+        <h4 style={{textAlign: "center",marginTop:300,color:'#fff'}}>Loading 
+        <Spinner animation="grow" size="sm" />
+        <Spinner animation="grow" size="sm" />
+        <Spinner animation="grow" size="sm" /></h4>
+        </div>
+    </div>;
+      }
+      let { events, isLoading } = this.state;
+      events=JSON.parse(events);
+      
+      const getBlockChallenge = (filtermode,f,t) => {
+        
+        if (events != []) {
+          return events.map((item, i) => {
+            if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
+              item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+              {item.players.map((player, j) => {
+               //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
+              })}
+              var timestamp = item.expire
+              var date = new Date(timestamp);
+              //date.setMinutes(date.getMinutes() + item.timeMinute);
+              var now = new Date();
+              var dateExpired = date.toISOString();
+              
+               
+              var dateNow = now.toISOString();
+              
+              if(i>=f  &&  i<t){
+              
+              return (
+    
+                <Col md="3" xl="4" key={i}>
+                  {printMatchBlock(item)}
+    
+                </Col>
+              )
+              }
+            } else {
+              return null;
+            }
+          }
+          )
+        }
+    
+      }
     const getBlockChallengeMobile = (filtermode,f,t) => {
       
       if (events != []) {

@@ -183,16 +183,22 @@ const required = (value) => {
       
     return gamemaplocal[0]
   };
-  function isJson(str) {
-    // alert("str = "+str)
+  function isJson(item) {
+    item = typeof item !== "string"
+        ? JSON.stringify(item)
+        : item;
+
     try {
-        JSON.parse(str);
+        item = JSON.parse(item);
     } catch (e) {
-        // alert('no JSON')
         return false;
     }
-    // alert('yes JSON')
-    return true;
+
+    if (typeof item === "object" && item !== null) {
+        return true;
+    }
+
+    return false;
 }
   class CreateMatch extends Component {
     constructor(props) {
@@ -308,8 +314,8 @@ const required = (value) => {
         .then(
           (response) => {
            
-            let jsonBool = isJson(JSON.stringify(response));
-        
+            let jsonBool = isJson(response);
+     
             if (jsonBool) {
              
                 this.setUserTag(response)
