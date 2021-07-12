@@ -185,7 +185,7 @@ class CreateMatch extends Component {
       GameTag: "",
       message: "",
       StartTimeLeague:"2021-05-28T19:55:10.0000",
-      EndTimeLeague:"2021-06-28T19:55:10.0000",
+      EndTimeLeague:"2021-08-12T16:15:10.0000",
       TotalPlayer:200,
       TournamentPayout:"2-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00"
     };

@@ -116,14 +116,18 @@
         },
         {
             "id": 7,
-            "name": "CallOfDuty Warzone",
+            "name": "CallOfDuty",
             "gameconsole": [
                 {
                     "id": 1,
-                    "consolename": "PS4"
+                    "consolename": "All"
                 },
                 {
                     "id": 2,
+                    "consolename": "PS4"
+                },
+                {
+                    "id": 3,
                     "consolename": "PC"
                 }
             ],
