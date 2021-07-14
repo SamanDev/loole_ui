@@ -90,6 +90,7 @@ class LockScreenPage extends Component {
     this.handleHowStream = this.handleHowStream.bind(this);
     this.reGetevents = this.reGetevents.bind(this);
     this.fileUpload = React.createRef();
+    this.showDetails = this.showDetails.bind(this);
 
     this.setProgress = this.setProgress.bind(this);
 
@@ -113,23 +114,18 @@ class LockScreenPage extends Component {
   }
 
   componentDidMount() {
-    
     Swal.close();
     this._isMounted = true;
     if (this._isMounted) {
       eventBus.on("eventsDataEvent", (event) => {
-       
         //console.log("socket events: "+JSON.stringify(event));
         this.setEvent(event);
-      //console.log("socket events: "+event);
-     
-     });
-     eventBus.on("eventsData", (event) => {
-      this.reGetevents()
-   
-   });
+        //console.log("socket events: "+event);
+      });
+      eventBus.on("eventsData", (event) => {
+        this.reGetevents();
+      });
     }
-    
   }
   componentWillUnmount() {
     this._isMounted = false;
@@ -143,10 +139,9 @@ class LockScreenPage extends Component {
   setEvent(e) {
     this.setState({
       events: e,
-      
     });
-    
-    $('#jsonhtml').html($('#jsonhtml2').text())
+
+    $("#jsonhtml").html($("#jsonhtml2").text());
   }
   showFileUpload() {
     this.fileUpload.current.click();
@@ -191,11 +186,10 @@ class LockScreenPage extends Component {
       }
     });
   }
-  reGetevents(){
-    if(getQueryVariable("id")){
-      userService.getEventById(getQueryVariable("id"))
+  reGetevents() {
+    if (getQueryVariable("id")) {
+      userService.getEventById(getQueryVariable("id"));
     }
-   
   }
   handleJoinMatch(e) {
     e.preventDefault();
@@ -208,7 +202,7 @@ class LockScreenPage extends Component {
           isloading: false,
         });
         //this.setEvent(response)
-        if (response.indexOf('successful') >-1) {
+        if (response.indexOf("successful") > -1) {
           //sthis.reGetevents();
           Toast.fire({
             icon: "success",
@@ -356,11 +350,11 @@ class LockScreenPage extends Component {
     });
     userService.leaveEvent(this.state.eventid).then(
       (response) => {
-        if (response.indexOf('successful') >-1) {
+        if (response.indexOf("successful") > -1) {
           this.setState({
             isloading: false,
           });
-          
+
           Toast.fire({
             icon: "success",
             title: "UnJoined.",
@@ -377,7 +371,6 @@ class LockScreenPage extends Component {
     userService.changeReadyEvent(this.state.eventid).then(
       (response) => {
         if (response == "changeReadyEvent successful") {
-         
           Toast.fire({
             icon: "success",
             title: "Updated.",
@@ -410,6 +403,11 @@ class LockScreenPage extends Component {
       }
     });
   }
+  showDetails(player){
+$('.gdetails').addClass('hide');
+$('.gdetails.no'+player).removeClass('hide');
+
+  }
   handlecAlertWin(checked) {
     const MySwal = withReactContent(Swal);
 
@@ -433,12 +431,12 @@ class LockScreenPage extends Component {
     });
   }
   render() {
-    let { progress, isUpLoading, progressLable,events ,eventid} = this.state;
+    let { progress, isUpLoading, progressLable, events, eventid } = this.state;
     var currentUser = AuthService.getCurrentUser();
-  
+
     if (!events) {
-      this.reGetevents()
-      
+      this.reGetevents();
+
       return (
         <>
           <div
@@ -495,15 +493,13 @@ class LockScreenPage extends Component {
         winner: "Salar",
         matchPlayers: [
           {
-            "ready": false,
-            "username": "vahid"
-            
-        },
-        {
-            "ready": false,
-            "username": "Yaran12"
-            
-        },
+            ready: false,
+            username: "vahid",
+          },
+          {
+            ready: false,
+            username: "Yaran12",
+          },
         ],
       };
       var matchSampleull = {
@@ -539,10 +535,9 @@ class LockScreenPage extends Component {
           nullmatch.matches.push(matchSample);
         }
         //e.log(item.players[index].username)
-        if(index<9){
-         // nullmatch.matches.matchPlayers[0].push(item.players[index])
+        if (index < 9) {
+          // nullmatch.matches.matchPlayers[0].push(item.players[index])
         }
-        
       }
 
       return nullmatch;
@@ -553,69 +548,60 @@ class LockScreenPage extends Component {
     if (typeof item === "undefined") {
       this.props.history.push("/panel/dashboard");
     }
-    
-    
+
     item.current_brackets = [];
     item.potential_brackets = [];
     if (!item.tournamentPayout) {
-      item.tournamentPayout='2-200, 65.00, 35.00'
+      item.tournamentPayout = "2-200, 65.00, 35.00";
     }
     if (item.tournamentPayout) {
-      var payArr=item.tournamentPayout.split('|')
-      var  totalPay = (item.totalPlayer * item.amount)*90/100;
+      var payArr = item.tournamentPayout.split("|");
+      var totalPay = (item.totalPlayer * item.amount * 90) / 100;
       for (var i = 0; i < payArr.length; i++) {
         var paylvl = payArr[i].split(", ");
         var payplyer = paylvl[0].split("-");
 
-       // console.log(payplyer[0])
-        if (parseInt(payplyer[0]) <= item.players.length && parseInt(payplyer[1]) >= item.players.length) {
+        // console.log(payplyer[0])
+        if (
+          parseInt(payplyer[0]) <= item.players.length &&
+          parseInt(payplyer[1]) >= item.players.length
+        ) {
           for (var j = 1; j < paylvl.length; j++) {
             item.current_brackets.push({
-              "prize": paylvl[j]*totalPay/100,
-              "number": 1
-          });
+              prize: (paylvl[j] * totalPay) / 100,
+              number: 1,
+            });
+          }
         }
-      
-        
-        }
-          
-     
-      
-    }
-    for (var i = payArr.length-1; i < payArr.length; i++) {
-      var paylvl = payArr[i].split(", ");
-      var payplyer = paylvl[0].split("-");
+      }
+      for (var i = payArr.length - 1; i < payArr.length; i++) {
+        var paylvl = payArr[i].split(", ");
+        var payplyer = paylvl[0].split("-");
 
-     
         for (var j = 1; j < paylvl.length; j++) {
           item.potential_brackets.push({
-            "prize": paylvl[j]*totalPay/100,
-            "number": 1
-        });
-      
-    
-      
+            prize: (paylvl[j] * totalPay) / 100,
+            number: 1,
+          });
+        }
       }
-        
-   
-    
-  }
-  }
-    
+    }
+
     if (!item.winner) {
       item.winner = [];
       item.winner.push(nullplayer);
     }
     if (!item.rules) {
       item.info = {
-        "conditions": [
-            "Thank you for participating in our COD: Warzone Beta tournament",
-            "During the Beta scores may be altered, removed or updated as we test the implementation of our scoring systems",
-            "Only games played after you join the tournament are counted",
-            "SMURF accounts are not allowed on Repeat.gg and will be banned"
-        ]
-    }
-    item.rules = "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>"
+        conditions: [
+          "Thank you for participating in our COD: Warzone Beta tournament",
+          "During the Beta scores may be altered, removed or updated as we test the implementation of our scoring systems",
+          "Only games played after you join the tournament are counted",
+          "SMURF accounts are not allowed on Repeat.gg and will be banned",
+        ],
+      };
+      item.rules =
+        "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>";
       item.winner.push(nullplayer);
     }
     if (!item.matchLevel) {
@@ -638,17 +624,16 @@ class LockScreenPage extends Component {
       result.setDate(result.getDate() + days);
       return result;
     }
-    function toTimestamp(strDate){
+    function toTimestamp(strDate) {
       var datum = Date.parse(strDate);
-      return datum/1000;
-   }
+      return datum / 1000;
+    }
     var timestamp = item.expire;
-   // console.log(timestamp);
-    if(timestamp.indexOf('-')>-1) {
-    
-var timestamp = toTimestamp(timestamp);
-   }
-   //console.log(timestamp);
+    // console.log(timestamp);
+    if (timestamp.indexOf("-") > -1) {
+      var timestamp = toTimestamp(timestamp);
+    }
+    //console.log(timestamp);
     var date = new Date(timestamp);
 
     var now = new Date();
@@ -658,42 +643,42 @@ var timestamp = toTimestamp(timestamp);
     var dateExpiredTest3 = addDays(date.toISOString(), 5);
 
     var dateNow = now.toISOString();
-   
-if(item.matchTables[0] && item.gameMode!='Tournament'){
-  if (!item.players[1]) {
-    item.players.push(nullplayer);
-  }
-  if (item.matchTables[0] && !item.matchTables[0].matchPlayers[1]) {
-    item.matchTables[0].matchPlayers.push(nullplayer);
-  }
-  item.matchTables[0].matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
-}
 
-   var isJoin=false;
+    if (item.matchTables[0] && item.gameMode != "Tournament") {
+      if (!item.players[1]) {
+        item.players.push(nullplayer);
+      }
+      if (item.matchTables[0] && !item.matchTables[0].matchPlayers[1]) {
+        item.matchTables[0].matchPlayers.push(nullplayer);
+      }
+      item.matchTables[0].matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
+    }
+
+    var isJoin = false;
     var activePlayer = 0;
     return (
       <>
         <div className="wrapper">
-          {(item.matchTables[0] &&  item.gameMode!='Tournament')?(
+          {item.matchTables[0] && item.gameMode != "Tournament" ? (
             <Chatbar
-            eventID={eventid}
-            eventstatus={item.status}
-            masterplayer={item.matchTables[0].matchPlayers[0].username}
-            secondplayer={item.matchTables[0].matchPlayers[1].username}
-            eventchats={item.chats}
-            chats={item.matchTables[0].matchChats}
-          />
-          ):(
-<Chatbar
-            eventID={eventid}
-            eventstatus={item.status}
-            masterplayer="null"
-            secondplayer="null"
-            eventchats={item.chats}
-            chats="null"
-          />
+              eventID={eventid}
+              eventstatus={item.status}
+              masterplayer={item.matchTables[0].matchPlayers[0].username}
+              secondplayer={item.matchTables[0].matchPlayers[1].username}
+              eventchats={item.chats}
+              chats={item.matchTables[0].matchChats}
+            />
+          ) : (
+            <Chatbar
+              eventID={eventid}
+              eventstatus={item.status}
+              masterplayer="null"
+              secondplayer="null"
+              eventchats={item.chats}
+              chats="null"
+            />
           )}
-          
+
           <div className="main-panel">
             <div
               className="full-page lock-page"
@@ -732,31 +717,44 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                   />{" "}
                                   {item.gameConsole}
                                 </small>
-                                
                               </h5>
                               <small>
-                {item.players.map((user, z) => (
-                  <span key={z}>
-                    {(currentUser.username==user.username)&&(
-                      isJoin=true
-                      )}
-                  {(z<5)?(
-                    <>
-            {(z<4)?(
-              <Avatar size="25"  title={user.username} round={true} name={setAvatar(user.username)} />
-            ):(
-  <Avatar  size="25"  round={true} value={"+"+(item.players.length-4)} color="gray" />
-            )}
-             
-            </>
-            ):(null)}
-           </span>
-                ))}
-                </small>
+                                {item.players.map((user, z) => (
+                                  <span key={z}>
+                                    {currentUser.username == user.username &&
+                                      (isJoin = true)}
+                                    {z < 5 ? (
+                                      <>
+                                        {z < 4 ? (
+                                          <Avatar
+                                            size="25"
+                                            title={user.username}
+                                            round={true}
+                                            name={setAvatar(user.username)}
+                                          />
+                                        ) : (
+                                          <Avatar
+                                            size="25"
+                                            round={true}
+                                            value={
+                                              "+" + (item.players.length - 4)
+                                            }
+                                            color="gray"
+                                          />
+                                        )}
+                                      </>
+                                    ) : null}
+                                  </span>
+                                ))}
+                              </small>
                               <VerticalTimeline
                                 layout="1-column-left"
                                 className="hide2"
-                                style={{marginLeft: '-30px',marginRight:'-30px',width:'110%' }}
+                                style={{
+                                  marginLeft: "-30px",
+                                  marginRight: "-30px",
+                                  width: "110%",
+                                }}
                               >
                                 <VerticalTimelineElement
                                   className="vertical-timeline-element--work"
@@ -772,7 +770,6 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                     color: "#fff",
                                   }}
                                 >
-                                  
                                   <img
                                     alt={item.gameName}
                                     style={{
@@ -809,13 +806,16 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                     Regions: All Regions
                                     <br />
                                     Servers: All Servers
-                                    <br/>
+                                    <br />
                                     {item.players.length}/{item.totalPlayer}
                                   </small>
                                   <ProgressBar
                                     animated
                                     variant="warning"
-                                    now={item.players.length/item.totalPlayer*100}
+                                    now={
+                                      (item.players.length / item.totalPlayer) *
+                                      100
+                                    }
                                     style={{
                                       marginLeft: "auto",
                                       marginRight: "auto",
@@ -823,29 +823,24 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                     }}
                                   />
                                   {isJoin ? (
-                                                    <Button
-                                                      className="btn-round"
-                                                      onClick={
-                                                        this.handleLeaveMatch
-                                                      }
-                                                      variant="warning"
-                                                      disabled={
-                                                        this.state.isloading
-                                                      }
-                                                    >
-                                                      Leave Match
-                                                    </Button>
-                                                  ):(
-<Button
-                                    className="btn-round"
-                                    onClick={this.handleJoinMatch}
-                                    variant="danger"
-                                    disabled={this.state.isloading}
-                                  >
-                                    Join Match ${item.amount}
-                                  </Button>
-                                                  )}
-                                  
+                                    <Button
+                                      className="btn-round"
+                                      onClick={this.handleLeaveMatch}
+                                      variant="warning"
+                                      disabled={this.state.isloading}
+                                    >
+                                      Leave Match
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      className="btn-round"
+                                      onClick={this.handleJoinMatch}
+                                      variant="danger"
+                                      disabled={this.state.isloading}
+                                    >
+                                      Join Match ${item.amount}
+                                    </Button>
+                                  )}
                                 </VerticalTimelineElement>
                                 <VerticalTimelineElement
                                   className="vertical-timeline-element--education my-list"
@@ -944,7 +939,6 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                     className="btn-round"
                                     onClick={this.handleHowStream}
                                     variant="warning"
-                                  
                                   >
                                     How to Stream
                                   </Button>
@@ -965,7 +959,12 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                 >
                                   <h3 className="vertical-timeline-element-title">
                                     Payment Pending
-                                    <div> ${(item.totalPlayer * item.amount)*90/100}</div>
+                                    <div>
+                                      {" "}
+                                      $
+                                      {(item.totalPlayer * item.amount * 90) /
+                                        100}
+                                    </div>
                                   </h3>
                                   <h4 className="vertical-timeline-element-subtitle">
                                     <Countdown
@@ -1045,22 +1044,23 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                     />
                                   </h4>
                                   <div
-                                    style={{ height: 280, overflow: "auto" }}
+                                    style={{ height: 580, overflow: "auto" }}
                                   >
-                                    <Table striped hover variant="dark">
+                                    <Table striped  variant="dark">
                                       <thead>
                                         <tr>
                                           <th>#</th>
                                           <th>Username</th>
                                           <th>Average Score</th>
+                                          <th></th>
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        {item.players.map(
-                                          (item, i) => {
-                                            icStartL = icStartL + 1;
-                                            if (icStartL <= 225) {
-                                              return (
+                                        {item.players.map((player, i) => {
+                                          icStartL = icStartL + 1;
+                                          if (icStartL <= 225) {
+                                            return (
+                                              <>
                                                 <tr>
                                                   <td>#{icStartL}</td>
                                                   <td
@@ -1071,72 +1071,148 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                                     <Avatar
                                                       size="25"
                                                       round={true}
-                                                      title={
-                                                        item
-                                                          .username
-                                                      }
+                                                      title={player.username}
                                                       name={setAvatar(
-                                                        item
-                                                          .username
+                                                        player.username
                                                       )}
                                                     />{" "}
-                                                    {
-                                                      item
-                                                        .username
-                                                    }
-                                                    <ListGroup
-                                                      horizontal
-                                                      style={{
-                                                        display: "inline-flex",
-                                                        marginTop: 0,
-                                                        lineHeight: "20px",
-                                                        float: "right",
-                                                      }}
-                                                    >
-                                                      <ListGroup.Item action>
-                                                        <FontAwesomeIcon
-                                                          icon={faInstagram}
-                                                          style={{
-                                                            color: "#e95950",
-                                                          }}
-                                                        />
-                                                      </ListGroup.Item>
-                                                      <ListGroup.Item action>
-                                                        <FontAwesomeIcon
-                                                          icon={faTwitch}
-                                                          style={{
-                                                            color: "#fff",
-                                                          }}
-                                                        />
-                                                      </ListGroup.Item>
-                                                      <ListGroup.Item action>
-                                                        <FontAwesomeIcon
-                                                          icon={faYoutube}
-                                                          style={{
-                                                            color: "#FF0000",
-                                                          }}
-                                                        />
-                                                      </ListGroup.Item>
-                                                      <ListGroup.Item action>
-                                                        <FontAwesomeIcon
-                                                          icon={faTwitter}
-                                                          style={{
-                                                            color: "#00acee",
-                                                          }}
-                                                        />
-                                                      </ListGroup.Item>
-                                                    </ListGroup>
+                                                    {player.username} ---
+                                                    {player.nickName}
+                                                    {player.social && (
+                                                      <ListGroup
+                                                        horizontal
+                                                        style={{
+                                                          display:
+                                                            "inline-flex",
+                                                          marginTop: 0,
+                                                          lineHeight: "20px",
+                                                          float: "right",
+                                                        }}
+                                                      >
+                                                        {player.social
+                                                          .instagram && (
+                                                          <ListGroup.Item
+                                                            action
+                                                          >
+                                                            <FontAwesomeIcon
+                                                              icon={faInstagram}
+                                                              style={{
+                                                                color:
+                                                                  "#e95950",
+                                                              }}
+                                                            />
+                                                          </ListGroup.Item>
+                                                        )}
+
+                                                        <ListGroup.Item action>
+                                                          <FontAwesomeIcon
+                                                            icon={faTwitch}
+                                                            style={{
+                                                              color: "#fff",
+                                                            }}
+                                                          />
+                                                        </ListGroup.Item>
+                                                        <ListGroup.Item action>
+                                                          <FontAwesomeIcon
+                                                            icon={faYoutube}
+                                                            style={{
+                                                              color: "#FF0000",
+                                                            }}
+                                                          />
+                                                        </ListGroup.Item>
+                                                        <ListGroup.Item action>
+                                                          <FontAwesomeIcon
+                                                            icon={faTwitter}
+                                                            style={{
+                                                              color: "#00acee",
+                                                            }}
+                                                          />
+                                                        </ListGroup.Item>
+                                                      </ListGroup>
+                                                    )}
                                                   </td>
-                                                  <td>{item.score}</td>
+                                                  <td>{item.score} 1000</td>
+                                                  <td>
+                                                    <Button
+                                                      variant="dark"
+                                                      className="btn-block"
+                                                      onClick={ () => this.showDetails(player.username) }
+                                                      
+                                                    >
+                                                      View
+                                                    </Button>
+                                                  </td>
                                                 </tr>
-                                              );
-                                            }
+                                                <tr className={"hide gdetails no"+player.username}>
+                                                 
+                                                  <td colSpan={4} style={{
+                                                              display: "table-cell",
+                                                              background:"#eee"
+                                                            }}>
+                                                    <Table
+                                                      striped size="sm"
+                                                      
+                                                    >
+                                                      <thead>
+                                                        <tr>
+                                                          <th>Date</th>
+                                                          <th>Score</th>
+                                                          <th>Kills</th>
+                                                          <th>Damage Done</th>
+                                                          <th>Time Played</th>
+                                                          <th>Rank</th>
+                                                        </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                        {player.callOfDuties.map(
+                                                          (callOfDuties, i) => {
+                                                            return (
+                                                              <tr>
+                                                                <td>
+                                                                  {
+                                                                    callOfDuties.utcStartTime
+                                                                  }
+                                                                </td>
+                                                                <td>
+                                                                  {
+                                                                    callOfDuties.score
+                                                                  }
+                                                                </td>
+                                                                <td>
+                                                                  {
+                                                                    callOfDuties.kills
+                                                                  }
+                                                                </td>
+                                                                <td>
+                                                                  {
+                                                                    callOfDuties.damageDone
+                                                                  }
+                                                                </td>
+                                                                <td>
+                                                                  {
+                                                                    callOfDuties.timePlayed
+                                                                  }
+                                                                </td>
+                                                                <td>
+                                                                  {
+                                                                    callOfDuties.ranking
+                                                                  }
+                                                                </td>
+                                                              </tr>
+                                                            );
+                                                          }
+                                                        )}
+                                                      </tbody>
+                                                    </Table>
+                                                  </td>
+                                                </tr>
+                                              </>
+                                            );
                                           }
-                                        )}
+                                        })}
                                       </tbody>
                                     </Table>
                                   </div>
-                                  
                                 </VerticalTimelineElement>
                                 <VerticalTimelineElement
                                   className="vertical-timeline-element--education"
@@ -1147,7 +1223,6 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                   contentArrowStyle={{
                                     borderRight: "7px solid #264653",
                                   }}
-                                 
                                   iconStyle={{
                                     background: "#264653",
                                     color: "#fff",
@@ -1156,8 +1231,10 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                   <h3 className="vertical-timeline-element-title">
                                     League Rules
                                   </h3>
-                                  <span  id="jsonhtml"></span>
-<span  id="jsonhtml2" className="hide">{events.rules}</span>
+                                  <span id="jsonhtml"></span>
+                                  <span id="jsonhtml2" className="hide">
+                                    {events.rules}
+                                  </span>
                                 </VerticalTimelineElement>
                               </VerticalTimeline>
                             </Col>
@@ -1196,28 +1273,43 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                     </small>
                                   </h5>
                                   <small>
-                {item.players.map((user, z) => (
-                  <span key={z}>
-                    {(currentUser.username==user.username)&&(
-                      isJoin=true
-                      )}
-                  {(z<5)?(
-                    <>
-            {(z<4)?(
-              <Avatar size="25"  title={user.username} round={true} name={setAvatar(user.username)} />
-            ):(
-  <Avatar  size="25"  round={true} value={"+"+(item.players.length-4)} color="gray" />
-            )}
-             
-            </>
-            ):(null)}
-           </span>
-                ))}
-                </small>
+                                    {item.players.map((user, z) => (
+                                      <span key={z}>
+                                        {currentUser.username ==
+                                          user.username && (isJoin = true)}
+                                        {z < 5 ? (
+                                          <>
+                                            {z < 4 ? (
+                                              <Avatar
+                                                size="25"
+                                                title={user.username}
+                                                round={true}
+                                                name={setAvatar(user.username)}
+                                              />
+                                            ) : (
+                                              <Avatar
+                                                size="25"
+                                                round={true}
+                                                value={
+                                                  "+" +
+                                                  (item.players.length - 4)
+                                                }
+                                                color="gray"
+                                              />
+                                            )}
+                                          </>
+                                        ) : null}
+                                      </span>
+                                    ))}
+                                  </small>
                                   <VerticalTimeline
                                     layout="1-column-left"
                                     className="hide2"
-                                    style={{marginLeft: '-30px',marginRight:'-30px',width:'110%' }}
+                                    style={{
+                                      marginLeft: "-30px",
+                                      marginRight: "-30px",
+                                      width: "110%",
+                                    }}
                                   >
                                     <VerticalTimelineElement
                                       className="vertical-timeline-element--work"
@@ -1266,38 +1358,38 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                         {item.players.length}/{item.totalPlayer}
                                       </small>
                                       <ProgressBar
-                                    animated
-                                    variant="warning"
-                                    now={item.players.length/item.totalPlayer*100}
-                                    style={{
-                                      marginLeft: "auto",
-                                      marginRight: "auto",
-                                      maxWidth: "70%",
-                                    }}
-                                  />
-                                  {isJoin ? (
-                                                    <Button
-                                                      className="btn-round"
-                                                      onClick={
-                                                        this.handleLeaveMatch
-                                                      }
-                                                      variant="warning"
-                                                      disabled={
-                                                        this.state.isloading
-                                                      }
-                                                    >
-                                                      Leave Match
-                                                    </Button>
-                                                  ):(
-<Button
-                                    className="btn-round"
-                                    onClick={this.handleJoinMatch}
-                                    variant="danger"
-                                    disabled={this.state.isloading}
-                                  >
-                                    Join Match ${item.amount}
-                                  </Button>
-                                                  )}
+                                        animated
+                                        variant="warning"
+                                        now={
+                                          (item.players.length /
+                                            item.totalPlayer) *
+                                          100
+                                        }
+                                        style={{
+                                          marginLeft: "auto",
+                                          marginRight: "auto",
+                                          maxWidth: "70%",
+                                        }}
+                                      />
+                                      {isJoin ? (
+                                        <Button
+                                          className="btn-round"
+                                          onClick={this.handleLeaveMatch}
+                                          variant="warning"
+                                          disabled={this.state.isloading}
+                                        >
+                                          Leave Match
+                                        </Button>
+                                      ) : (
+                                        <Button
+                                          className="btn-round"
+                                          onClick={this.handleJoinMatch}
+                                          variant="danger"
+                                          disabled={this.state.isloading}
+                                        >
+                                          Join Match ${item.amount}
+                                        </Button>
+                                      )}
                                     </VerticalTimelineElement>
                                     <VerticalTimelineElement
                                       className="vertical-timeline-element--education"
@@ -1343,175 +1435,197 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                       </Button>
                                     </VerticalTimelineElement>
                                     <VerticalTimelineElement
-                                  className="vertical-timeline-element--education  my-list"
-                                  contentStyle={{
-                                    background: "#222",
-                                    color: "#fff",
-                                  }}
-                                  contentArrowStyle={{
-                                    borderRight: "7px solid #222",
-                                  }}
-                                  iconStyle={{
-                                    background: "#222",
-                                    color: "#fff",
-                                  }}
-                                >
-                                  <h3 className="vertical-timeline-element-title">
-                                    Matches
-                                  </h3>
-                                      <Accordion defaultActiveKey="0">
-                                {item.matchLevel.map((match, i) => {
-                                  //console.log(match)
-                                  return (
-                                    <Card
-                                      className="card-lock text-center card-plain"
-                                      style={{ color: "#fff" }}
-                                      key={i}
+                                      className="vertical-timeline-element--education  my-list"
+                                      contentStyle={{
+                                        background: "#222",
+                                        color: "#fff",
+                                      }}
+                                      contentArrowStyle={{
+                                        borderRight: "7px solid #222",
+                                      }}
+                                      iconStyle={{
+                                        background: "#222",
+                                        color: "#fff",
+                                      }}
                                     >
-                                      <Card.Header>
-                                        <Accordion.Toggle
-                                          as={Button}
-                                          variant="link"
-                                          eventkey={i}
-                                        >
-                                          <Card.Title as="h3" style={{color: '#fff'}}>
-                                            {match.title}
-                                          </Card.Title>
-                                          <Countdown
-                                            renderer={renderer}
-                                            date={dateExpiredTest3}
-                                          />
-                                        </Accordion.Toggle>
-                                      </Card.Header>
-                                      <Accordion.Collapse
-                                        eventkey={i}
-                                        className="show"
-                                      >
-                                        <Card.Body
-                                          style={{
-                                            background: "rgba(0,0,0,.9",
-                                            padding: 0,
-                                            fontSize:13
-                                          }}
-                                        >
-                                          {match.matches.map((mtch, z) => {
-                                            var avSize = 30;
-                                            if (match.level == 2) {
-                                              avSize = 40;
-                                            }
-                                            if (match.level == 1) {
-                                              avSize = 60;
-                                            }
-                                            return (
-                                              <>
-                                                <Row
-                                                  key={z}
+                                      <h3 className="vertical-timeline-element-title">
+                                        Matches
+                                      </h3>
+                                      <Accordion defaultActiveKey="0">
+                                        {item.matchLevel.map((match, i) => {
+                                          //console.log(match)
+                                          return (
+                                            <Card
+                                              className="card-lock text-center card-plain"
+                                              style={{ color: "#fff" }}
+                                              key={i}
+                                            >
+                                              <Card.Header>
+                                                <Accordion.Toggle
+                                                  as={Button}
+                                                  variant="link"
+                                                  eventkey={i}
+                                                >
+                                                  <Card.Title
+                                                    as="h3"
+                                                    style={{ color: "#fff" }}
+                                                  >
+                                                    {match.title}
+                                                  </Card.Title>
+                                                  <Countdown
+                                                    renderer={renderer}
+                                                    date={dateExpiredTest3}
+                                                  />
+                                                </Accordion.Toggle>
+                                              </Card.Header>
+                                              <Accordion.Collapse
+                                                eventkey={i}
+                                                className="show"
+                                              >
+                                                <Card.Body
                                                   style={{
-                                                    borderBottom:
-                                                      "1px rgba(255,255,255,.2) solid",
-                                                    paddingBottom: 10,
-                                                    paddingTop: 15,
+                                                    background: "rgba(0,0,0,.9",
+                                                    padding: 0,
+                                                    fontSize: 13,
                                                   }}
                                                 >
-                                                  {mtch.matchPlayers.map(
-                                                    (player, j) => {
+                                                  {match.matches.map(
+                                                    (mtch, z) => {
+                                                      var avSize = 30;
+                                                      if (match.level == 2) {
+                                                        avSize = 40;
+                                                      }
+                                                      if (match.level == 1) {
+                                                        avSize = 60;
+                                                      }
                                                       return (
                                                         <>
-                                                          <Col
-                                                            xs="4"
-                                                            key={j}
-                                                            style={
-                                                              !player.username
-                                                                ? {
-                                                                    opacity: 0.3,
-                                                                  }
-                                                                : null
-                                                            }
+                                                          <Row
+                                                            key={z}
+                                                            style={{
+                                                              borderBottom:
+                                                                "1px rgba(255,255,255,.2) solid",
+                                                              paddingBottom: 10,
+                                                              paddingTop: 15,
+                                                            }}
                                                           >
-                                                            <div>
-                                                              {player.username ? (
-                                                                <Avatar
-                                                                  size={avSize}
-                                                                  round={true}
-                                                                  title={
-                                                                    player.username
-                                                                  }
-                                                                  name={setAvatar(
-                                                                    player.username
-                                                                  )}
-                                                                />
-                                                              ) : (
-                                                                <Avatar
-                                                                  size={avSize}
-                                                                  round={true}
-                                                                  src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
-                                                                  color="lightgray"
-                                                                />
-                                                              )}
-                                                            </div>
-                                                            {!player.username && (
-                                                              <>...</>
-                                                            )}
-                                                            <small>
-                                                              {" "}
-                                                              {player.username}
-                                                            </small>
-                                                          </Col>
-                                                          {j == 0 && (
-                                                            <Col xs="4" key={j}>
-                                                              {mtch.winner && (
-                                                                <>
-                                                                  <div
-                                                                    className=" winner avatar"
-                                                                    style={{
-                                                                      width: avSize,
-                                                                      height: avSize,
-                                                                      zIndex:0, backgroundColor:'transparent'
-                                                                    }}
-                                                                  ></div>
-                                                                  <div className=" ">
-                                                                    <Avatar
-                                                                      size={
-                                                                        avSize
+                                                            {mtch.matchPlayers.map(
+                                                              (player, j) => {
+                                                                return (
+                                                                  <>
+                                                                    <Col
+                                                                      xs="4"
+                                                                      key={j}
+                                                                      style={
+                                                                        !player.username
+                                                                          ? {
+                                                                              opacity: 0.3,
+                                                                            }
+                                                                          : null
                                                                       }
-                                                                      round={
-                                                                        true
-                                                                      }
-                                                                      title={
-                                                                        mtch.winner
-                                                                      }
-                                                                      name={setAvatar(
-                                                                        mtch.winner
+                                                                    >
+                                                                      <div>
+                                                                        {player.username ? (
+                                                                          <Avatar
+                                                                            size={
+                                                                              avSize
+                                                                            }
+                                                                            round={
+                                                                              true
+                                                                            }
+                                                                            title={
+                                                                              player.username
+                                                                            }
+                                                                            name={setAvatar(
+                                                                              player.username
+                                                                            )}
+                                                                          />
+                                                                        ) : (
+                                                                          <Avatar
+                                                                            size={
+                                                                              avSize
+                                                                            }
+                                                                            round={
+                                                                              true
+                                                                            }
+                                                                            src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
+                                                                            color="lightgray"
+                                                                          />
+                                                                        )}
+                                                                      </div>
+                                                                      {!player.username && (
+                                                                        <>...</>
                                                                       )}
-                                                                    />
-                                                                  </div>
-                                                                  <div>
-                                                                    {
-                                                                      mtch.winner
-                                                                    }{" "}
-                                                                    is winner
-                                                                  </div>
-                                                                </>
-                                                              )}
-                                                            </Col>
-                                                          )}
+                                                                      <small>
+                                                                        {" "}
+                                                                        {
+                                                                          player.username
+                                                                        }
+                                                                      </small>
+                                                                    </Col>
+                                                                    {j == 0 && (
+                                                                      <Col
+                                                                        xs="4"
+                                                                        key={j}
+                                                                      >
+                                                                        {mtch.winner && (
+                                                                          <>
+                                                                            <div
+                                                                              className=" winner avatar"
+                                                                              style={{
+                                                                                width:
+                                                                                  avSize,
+                                                                                height:
+                                                                                  avSize,
+                                                                                zIndex: 0,
+                                                                                backgroundColor:
+                                                                                  "transparent",
+                                                                              }}
+                                                                            ></div>
+                                                                            <div className=" ">
+                                                                              <Avatar
+                                                                                size={
+                                                                                  avSize
+                                                                                }
+                                                                                round={
+                                                                                  true
+                                                                                }
+                                                                                title={
+                                                                                  mtch.winner
+                                                                                }
+                                                                                name={setAvatar(
+                                                                                  mtch.winner
+                                                                                )}
+                                                                              />
+                                                                            </div>
+                                                                            <div>
+                                                                              {
+                                                                                mtch.winner
+                                                                              }{" "}
+                                                                              is
+                                                                              winner
+                                                                            </div>
+                                                                          </>
+                                                                        )}
+                                                                      </Col>
+                                                                    )}
+                                                                  </>
+                                                                );
+                                                              }
+                                                            )}
+                                                          </Row>
                                                         </>
                                                       );
                                                     }
                                                   )}
-                                                </Row>
-                                              </>
-                                            );
-                                          })}
-                                        </Card.Body>
-                                      </Accordion.Collapse>
-                                    </Card>
-                                  );
-                                })}
-                              </Accordion>
-                           
+                                                </Card.Body>
+                                              </Accordion.Collapse>
+                                            </Card>
+                                          );
+                                        })}
+                                      </Accordion>
                                     </VerticalTimelineElement>
-                                   
+
                                     <VerticalTimelineElement
                                       className="vertical-timeline-element--education  my-list"
                                       contentStyle={{
@@ -1528,7 +1642,14 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                     >
                                       <h3 className="vertical-timeline-element-title">
                                         Payment Pending
-                                        <div> ${(item.totalPlayer * item.amount)*90/100}</div>
+                                        <div>
+                                          {" "}
+                                          $
+                                          {(item.totalPlayer *
+                                            item.amount *
+                                            90) /
+                                            100}
+                                        </div>
                                       </h3>
                                       <h4 className="vertical-timeline-element-subtitle">
                                         <Countdown
@@ -1629,101 +1750,78 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                             </tr>
                                           </thead>
                                           <tbody>
-                                            {events.players.map(
-                                              (item, i) => {
-                                                icStartL = icStartL + 1;
-                                                if (icStartL <= 2) {
-                                                  return (
-                                                    <tr>
-                                                      <td>#{icStartL}</td>
-                                                      <td
+                                            {events.players.map((item, i) => {
+                                              icStartL = icStartL + 1;
+                                              if (icStartL <= 2) {
+                                                return (
+                                                  <tr>
+                                                    <td>#{icStartL}</td>
+                                                    <td
+                                                      style={{
+                                                        textAlign: "left",
+                                                      }}
+                                                    >
+                                                      <Avatar
+                                                        size="25"
+                                                        round={true}
+                                                        title={item.username}
+                                                        name={setAvatar(
+                                                          item.username
+                                                        )}
+                                                      />{" "}
+                                                      {item.username}
+                                                      <ListGroup
+                                                        horizontal
                                                         style={{
-                                                          textAlign: "left",
+                                                          display:
+                                                            "inline-flex",
+                                                          marginTop: 0,
+                                                          lineHeight: "20px",
+                                                          float: "right",
                                                         }}
                                                       >
-                                                        <Avatar
-                                                          size="25"
-                                                          round={true}
-                                                          title={
-                                                            item
-                                                              
-                                                              .username
-                                                          }
-                                                          name={setAvatar(
-                                                            item
-                                                              
-                                                              .username
-                                                          )}
-                                                        />{" "}
-                                                        {
-                                                          item
-                                                            .username
-                                                        }
-                                                        <ListGroup
-                                                          horizontal
-                                                          style={{
-                                                            display:
-                                                              "inline-flex",
-                                                            marginTop: 0,
-                                                            lineHeight: "20px",
-                                                            float: "right",
-                                                          }}
-                                                        >
-                                                          <ListGroup.Item
-                                                            action
-                                                          >
-                                                            <FontAwesomeIcon
-                                                              icon={faInstagram}
-                                                              style={{
-                                                                color:
-                                                                  "#e95950",
-                                                              }}
-                                                            />
-                                                          </ListGroup.Item>
-                                                          <ListGroup.Item
-                                                            action
-                                                          >
-                                                            <FontAwesomeIcon
-                                                              icon={faTwitch}
-                                                              style={{
-                                                                color: "#fff",
-                                                              }}
-                                                            />
-                                                          </ListGroup.Item>
-                                                          <ListGroup.Item
-                                                            action
-                                                          >
-                                                            <FontAwesomeIcon
-                                                              icon={faYoutube}
-                                                              style={{
-                                                                color:
-                                                                  "#FF0000",
-                                                              }}
-                                                            />
-                                                          </ListGroup.Item>
-                                                          <ListGroup.Item
-                                                            action
-                                                          >
-                                                            <FontAwesomeIcon
-                                                              icon={faTwitter}
-                                                              style={{
-                                                                color:
-                                                                  "#00acee",
-                                                              }}
-                                                            />
-                                                          </ListGroup.Item>
-                                                        </ListGroup>
-                                                      </td>
-                                                      <td>{item.score}</td>
-                                                    </tr>
-                                                  );
-                                                }
+                                                        <ListGroup.Item action>
+                                                          <FontAwesomeIcon
+                                                            icon={faInstagram}
+                                                            style={{
+                                                              color: "#e95950",
+                                                            }}
+                                                          />
+                                                        </ListGroup.Item>
+                                                        <ListGroup.Item action>
+                                                          <FontAwesomeIcon
+                                                            icon={faTwitch}
+                                                            style={{
+                                                              color: "#fff",
+                                                            }}
+                                                          />
+                                                        </ListGroup.Item>
+                                                        <ListGroup.Item action>
+                                                          <FontAwesomeIcon
+                                                            icon={faYoutube}
+                                                            style={{
+                                                              color: "#FF0000",
+                                                            }}
+                                                          />
+                                                        </ListGroup.Item>
+                                                        <ListGroup.Item action>
+                                                          <FontAwesomeIcon
+                                                            icon={faTwitter}
+                                                            style={{
+                                                              color: "#00acee",
+                                                            }}
+                                                          />
+                                                        </ListGroup.Item>
+                                                      </ListGroup>
+                                                    </td>
+                                                    <td>{item.score}</td>
+                                                  </tr>
+                                                );
                                               }
-                                            )}
+                                            })}
                                           </tbody>
                                         </Table>
                                       </div>
-                                     
                                     </VerticalTimelineElement>
                                     <VerticalTimelineElement
                                       className="vertical-timeline-element--education"
@@ -1734,7 +1832,6 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                       contentArrowStyle={{
                                         borderRight: "7px solid #264653",
                                       }}
-                                      
                                       iconStyle={{
                                         background: "#264653",
                                         color: "#fff",
@@ -1743,17 +1840,17 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                                       <h3 className="vertical-timeline-element-title">
                                         League Rules
                                       </h3>
-<span  id="jsonhtml"></span>
-<span  id="jsonhtml2" className="hide"> {events.rules}</span>
-                                     
+                                      <span id="jsonhtml"></span>
+                                      <span id="jsonhtml2" className="hide">
+                                        {" "}
+                                        {events.rules}
+                                      </span>
                                     </VerticalTimelineElement>
                                   </VerticalTimeline>
-                                  
                                 </Col>
                               </Row>
                             </Card.Header>
-                            <Card.Body>
-                           </Card.Body>
+                            <Card.Body></Card.Body>
                           </Card>
                         </Col>
                       ) : (
@@ -2250,7 +2347,6 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
                               </Card>
                               {currentUser.roles[0] == "ROLE_ADMIN" && (
                                 <>
-                                  
                                   <Button
                                     className="btn-round"
                                     onClick={this.handleDelete}
@@ -2281,10 +2377,7 @@ if(item.matchTables[0] && item.gameMode!='Tournament'){
         </div>
       </>
     );
-    
-  
   }
-  
 }
 
 export default LockScreenPage;
