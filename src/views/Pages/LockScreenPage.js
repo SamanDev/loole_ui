@@ -103,6 +103,7 @@ class LockScreenPage extends Component {
       currentUserTag: AuthService.getCurrentUserTest(),
       tag: "R0P0C8R89",
       eventid: getQueryVariable("id"),
+      matchid: getQueryVariable("matchid"),
       curPlayerReady: false,
       progress: 0,
       selectedFile: null,
@@ -653,7 +654,22 @@ $('.gdetails.no'+player).removeClass('hide');
       }
       item.matchTables[0].matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
     }
+    var lists = item.matchTables;
+    var matchidFind = item.matchTables[0];
+    if(this.state.matchid){
+    lists.map((tblmatch, w) => {
+      console.log(tblmatch.id == parseInt(this.state.matchid))
+      if(parseInt(tblmatch.id) == parseInt(this.state.matchid)){
+         matchidFind = tblmatch;
+      }
+    }
 
+    )
+    
+      //matchidFind = lists.filter( (list) => list.id === );
+    }
+    
+console.log(matchidFind)
     var isJoin = false;
     var activePlayer = 0;
     return (
@@ -1244,7 +1260,7 @@ $('.gdetails.no'+player).removeClass('hide');
                     </Col>
                   ) : (
                     <>
-                      {item.gameMode == "Tournament" ? (
+                      {(item.gameMode == "Tournament" && !this.state.matchid) ? (
                         <Col className="mx-auto" lg="10" md="11">
                           <Card
                             className="card-lock text-center card-plain card-league"
@@ -1454,7 +1470,14 @@ $('.gdetails.no'+player).removeClass('hide');
                                       <Accordion defaultActiveKey="0">
                                         {item.matchLevel.map((match, i) => {
                                           //console.log(match)
+                                          item.matchTables.sort((a, b) => (a.id > b.id ? 1 : -1));
+                                          
+                                          //lists.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
+                                            var hatchbackCar = lists.filter( (list) => list.level === i+1);
+                                            
+                                            
                                           return (
+                                           
                                             <Card
                                               className="card-lock text-center card-plain"
                                               style={{ color: "#fff" }}
@@ -1489,7 +1512,9 @@ $('.gdetails.no'+player).removeClass('hide');
                                                     fontSize: 13,
                                                   }}
                                                 >
-                                                  {match.matches.map(
+                                                  {
+                                                  
+                                                  hatchbackCar.map(
                                                     (mtch, z) => {
                                                       var avSize = 30;
                                                       if (match.level == 2) {
@@ -1500,6 +1525,7 @@ $('.gdetails.no'+player).removeClass('hide');
                                                       }
                                                       return (
                                                         <>
+                                                         <Link  to={'/panel/lobby?id='+item.id+'&matchid='+mtch.id}>
                                                           <Row
                                                             key={z}
                                                             style={{
@@ -1614,6 +1640,7 @@ $('.gdetails.no'+player).removeClass('hide');
                                                               }
                                                             )}
                                                           </Row>
+                                                          </Link>
                                                         </>
                                                       );
                                                     }
@@ -1861,7 +1888,9 @@ $('.gdetails.no'+player).removeClass('hide');
                           >
                             <Card.Header>
                               <Row>
-                                {item.matchTables[0].matchPlayers.map(
+                                {
+                                
+                                matchidFind.matchPlayers.map(
                                   (player, j) => {
                                     if (player.username) {
                                       activePlayer++;

@@ -223,11 +223,11 @@ class UserService {
       //this.getEvents(token)
     }
   }
-  createTournament(gamename, gameconsole, tournamentmode, bet, time) {
+  createTournament(gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer) {
     return axios
       .post(
-        API_URL_TEST + "createTournament",
-        { gamename, gameconsole, tournamentmode, bet, time },
+        API_URL_TEST + "createEvent",
+        { gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer },
         { headers: authHeader() }
       )
       .then((response) => {
