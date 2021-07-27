@@ -795,7 +795,7 @@ list-style: none;
     
     font-size: 14px;
 }
-.main-panel::before{
+.main-panel:not(.lobby)::before{
    
     width: 0px;
     height: 0px;
@@ -1171,7 +1171,7 @@ background:#222;
     top: -2px;
 }
 .badgegroup .lable{
-    padding: 5px 6px 5px 2px!important;
+    padding: 5px 6px 8px 2px!important;
     display: inline-block !important;
     font-size: 13px !important;
     font-weight: 400;

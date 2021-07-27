@@ -141,7 +141,7 @@ this.setState({
 
     finalChat.sort((a, b) => ((a.time < b.time) ? 1 : -1));
     
-    
+    var evntID = getQueryVariable("id")
 
     return (
       <>
@@ -157,8 +157,12 @@ this.setState({
               style={{ color: "#fff", margin: 0, height: "100vh" }}
             >
               <Card.Header>
-               
+              {(getQueryVariable("matchid")) ? (
+                              
+                <Link to={"/panel/lobby?id="+evntID}>Back</Link>
+              ):(
                 <Link to={"/panel/dashboard"}  >Back</Link>
+              )}
                 <h4 style={{ margin: "10px 0px" }}>Match Lobby</h4>
                 <h4 style={{ margin: "10px 0px" }}>{currentUser.username}</h4>
               </Card.Header>

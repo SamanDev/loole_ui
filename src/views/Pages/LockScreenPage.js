@@ -56,8 +56,12 @@ import {
   getQueryVariable,
   getCode,
   getGroupBadge,
+  getGroupBadgePrice,
   getModalTag,
   getGameTag,
+  
+  haveGameTag,
+  isJson
 } from "components/include";
 import { UPLOADURL, POSTURLTest } from "const";
 import Swal from "sweetalert2";
@@ -97,10 +101,15 @@ class LockScreenPage extends Component {
     this.handleChatUpload = this.handleChatUpload.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.setEvent = this.setEvent.bind(this);
+    this.setMatchId = this.setMatchId.bind(this);
     this.showFileUpload = this.showFileUpload.bind(this);
+    this.handleSaveTags = this.handleSaveTags.bind(this);
+    this.handleTagForm = this.handleTagForm.bind(this);
+    this.setSelectedTag = this.setSelectedTag.bind(this);
+    this.setUserTag = this.setUserTag.bind(this);
     this.state = {
       events: null,
-      currentUserTag: AuthService.getCurrentUserTest(),
+      currentUserTag: AuthService.getCurrentUser(),
       tag: "R0P0C8R89",
       eventid: getQueryVariable("id"),
       matchid: getQueryVariable("matchid"),
@@ -111,6 +120,10 @@ class LockScreenPage extends Component {
       isUpLoading: false,
       progressLable: "I Win",
       league: League,
+      gameName: '',
+        gamePlatform: '',
+        gameID: '',
+        gameNickname: '',
     };
   }
 
@@ -125,11 +138,30 @@ class LockScreenPage extends Component {
       });
       eventBus.on("eventsData", (event) => {
         this.reGetevents();
+        //this.setEvent(event);
       });
     }
   }
   componentWillUnmount() {
     this._isMounted = false;
+  }
+  setSelectedGameName(e) {
+    
+    //this.handleTagForm(e,getBlockGameModesVal(e))
+  }
+  setSelectedTag(e,p) {
+    this.setState({
+      gameName: e.replace(' Warzone',''),
+      gamePlatform: p
+    });
+    
+    this.handleTagForm(e.replace(' Warzone',''),p)
+  }
+  setUserTag(e) {
+    this.setState({
+      currentUserTag: e
+    });
+    
   }
   setProgress(e) {
     this.setState({
@@ -143,6 +175,12 @@ class LockScreenPage extends Component {
     });
 
     $("#jsonhtml").html($("#jsonhtml2").text());
+  }
+  setMatchId(e) {
+    this.setState({
+      matchid: e,
+    });
+
   }
   showFileUpload() {
     this.fileUpload.current.click();
@@ -187,10 +225,114 @@ class LockScreenPage extends Component {
       }
     });
   }
-  reGetevents() {
-    if (getQueryVariable("id")) {
-      userService.getEventById(getQueryVariable("id"));
+  handleSaveTags() {
+    Swal.fire({
+      title: '<br/>Please Wait...',
+      text: 'Is working..',
+      customClass:'tag',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      didOpen: () => {
+          Swal.showLoading()
+      }
+  })
+  
+    userService
+      .saveTags(
+       
+        this.state.gameName,
+        this.state.gamePlatform,
+        this.state.gameID,
+        this.state.gameNickname,
+
+      )
+      .then(
+        (response) => {
+         
+          let jsonBool = isJson(response);
+   
+          if (jsonBool) {
+           
+              this.setUserTag(response)
+              localStorage.setItem("user", JSON.stringify(response));
+              Swal.fire("", "Data saved successfully.", "success");
+          
+          } else {
+           
+              Swal.fire("", response, "error");
+           
+          }
+        
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+          Swal.fire("Error!", resMessage, "error");
+        }
+      );
+  }
+  handleTagForm(game,platform) {
+   
+                const resetPw = async () => {
+                  const swalval = await Swal.fire(getModalTag(game));
+        
+                  let v = (swalval && swalval.value) || swalval.dismiss;
+                  console.log(swalval);
+                  if (v) {
+                    if (v.tagid) {
+                      
+                        if (v.tagid == game+"2") {
+                          this.handleTagForm(game+'2')
+                        }else if (v.tagid == game+"3") {
+                          this.handleTagForm(game+'3')
+                        }else{
+                          this.setState({
+                            gameID: '',
+                            gameNickname: '',
+                          });
+                          if (v.tagid != "") {
+                            this.setState({
+                              gameID: v.tagid.replace('#',''),
+                              
+                            });
+                          }
+                          if (v.tagname && v.tagname != "") {
+                            this.setState({
+                              gameNickname: v.tagname,
+                              
+                            });
+                          }
+                          if (v.tagplatform && v.tagplatform != "") {
+                            this.setState({
+                              gamePlatform: v.tagplatform,
+                              
+                            });
+                          }
+                          
+                            console.log(this.state);
+                            this.handleSaveTags();
+                          
+                        }
+                        
+                      }
+                      
+                      //setformdata(swalval);
+                      
+                    
+                  }
+                };
+        if(!haveGameTag(game,this.state.currentUserTag.userTags))                  resetPw();
+              }
+  reGetevents(){
+    if(getQueryVariable("id")){
+      userService.getEventById(getQueryVariable("id"))
     }
+   
   }
   handleJoinMatch(e) {
     e.preventDefault();
@@ -227,38 +369,7 @@ class LockScreenPage extends Component {
               }
             });
           } else if (response == "tagError") {
-            const resetPw = async () => {
-              const swalval = await Swal.fire(getModalTag(this.state.GameName));
-
-              let v = (swalval && swalval.value) || swalval.dismiss;
-              //console.log(swalval);
-              if (v) {
-                if (v.tagid) {
-                  var tags = v.tagid.split("@@");
-                  if (tags.length == 0) {
-                    if (tags[0] != "") {
-                      this.setState({
-                        GameTag: v.tagid,
-                      });
-                      //console.log(this.state);
-                      this.handleSaveTags();
-                    }
-                  }
-                  if (tags.length == 1) {
-                    if (tags[0] != "" && tags[1] != "") {
-                      this.setState({
-                        GameTag: v.tagid,
-                      });
-                      //console.log(this.state);
-                      this.handleSaveTags();
-                    }
-                  }
-                  //setformdata(swalval);
-                }
-              }
-            };
-
-            resetPw();
+            this.setSelectedTag(this.state.events.gameName,'Activition')
           }
         }
       },
@@ -432,8 +543,9 @@ $('.gdetails.no'+player).removeClass('hide');
     });
   }
   render() {
-    let { progress, isUpLoading, progressLable, events, eventid } = this.state;
+    var { progress, isUpLoading, progressLable, events, eventid } = this.state;
     var currentUser = AuthService.getCurrentUser();
+    
 
     if (!events) {
       this.reGetevents();
@@ -543,51 +655,72 @@ $('.gdetails.no'+player).removeClass('hide');
 
       return nullmatch;
     }
-
-    var item = events;
+    var old = JSON.stringify(events).replace(/"Tournament Player1"/g, false).replace(/"Tournament Player"/g, false); //convert to JSON string
+    var newArray = JSON.parse(old);
+    newArray.current_brackets = [];
+    newArray.potential_brackets = [];
+    var item = newArray;
 
     if (typeof item === "undefined") {
       this.props.history.push("/panel/dashboard");
     }
 
-    item.current_brackets = [];
-    item.potential_brackets = [];
+if (item.gameMode == "Tournament") {
     if (!item.tournamentPayout) {
-      item.tournamentPayout = "2-200, 65.00, 35.00";
+      item.tournamentPayout = "1-8, 65.00, 35.00|9-64, 50.00, 30.00, 20.00";
     }
+  }
+    if (item.gameMode == "League") {
+      item.tournamentPayout='1-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00|11-20, 45.00, 28.00, 17.00, 10.00|21-40, 36.00, 23.00, 15.00, 11.00, 8.00, 7.00|41-70, 30.00, 20.00, 14.00, 10.00, 8.00, 7.00, 6.00, 5.00|71-100, 29.00, 18.00, 12.50, 10.00, 8.00, 6.50, 5.50, 4.50, 3.50, 2.50|101-200, 28.00, 17.50, 11.50, 8.50, 7.00, 5.50, 4.50, 3.50, 2.50, 1.50, 1.00x10|201-400, 27.00, 16.50, 10.50, 8.00, 6.25, 4.75, 3.75, 2.75, 1.75, 1.25, 0.75x10, 0.50x20|401-700, 26.00, 15.50, 10.00, 7.50, 6.00, 4.50, 3.50, 2.50, 1.50, 1.00, 0.65x10, 0.40x20, 0.25x30|701-1000, 25.00, 15.00, 10.00, 7.25, 5.50, 4.25, 3.25, 2.25, 1.25, 0.75, 0.55x10, 0.40x20, 0.25x30, 0.15x30'
+    }
+
     if (item.tournamentPayout) {
       var payArr = item.tournamentPayout.split("|");
       var totalPay = (item.totalPlayer * item.amount * 90) / 100;
       for (var i = 0; i < payArr.length; i++) {
         var paylvl = payArr[i].split(", ");
         var payplyer = paylvl[0].split("-");
-
+var tItem = item.players.length;
+if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer}
         // console.log(payplyer[0])
         if (
-          parseInt(payplyer[0]) <= item.players.length &&
-          parseInt(payplyer[1]) >= item.players.length
+          parseInt(payplyer[0]) <= tItem &&
+          parseInt(payplyer[1]) >= tItem
         ) {
           for (var j = 1; j < paylvl.length; j++) {
+            if(paylvl[j].indexOf('x')==-1){paylvl[j] = paylvl[j]+'x1'}
+            var intX = paylvl[j].split("x");
             item.current_brackets.push({
-              prize: (paylvl[j] * totalPay) / 100,
-              number: 1,
+              prize: (intX[0]* totalPay) / 100,
+              percent: intX[0],
+            number: intX[1],
             });
           }
         }
       }
       for (var i = payArr.length - 1; i < payArr.length; i++) {
+        
         var paylvl = payArr[i].split(", ");
         var payplyer = paylvl[0].split("-");
-
+        var tItem = item.players.length;
+if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer}
+        if (
+          parseInt(payplyer[0]) <= tItem &&
+          parseInt(payplyer[1]) >= tItem
+        ) {
         for (var j = 1; j < paylvl.length; j++) {
+          if(paylvl[j].indexOf('x')==-1){paylvl[j] = paylvl[j]+'x1'}
+          var intX = paylvl[j].split("x");
           item.potential_brackets.push({
-            prize: (paylvl[j] * totalPay) / 100,
-            number: 1,
+            prize: (intX[0] * totalPay) / 100,
+            percent: intX[0],
+            number: intX[1],
           });
         }
       }
+      }
     }
-
+    console.log(item)
     if (!item.winner) {
       item.winner = [];
       item.winner.push(nullplayer);
@@ -607,16 +740,32 @@ $('.gdetails.no'+player).removeClass('hide');
     }
     if (!item.matchLevel) {
       item.matchLevel = [];
+      if (item.totalPlayer == 4) {
+       
+        item.matchLevel.push(genMatch(1, 2, "SemiFinal"));
+        item.matchLevel.push(genMatch(2, 1, "Final"));
+      }
       if (item.totalPlayer == 8) {
-        item.matchLevel.push(genMatch(3, 4, "Round 1"));
+        item.matchLevel.push(genMatch(1, 4, "Round 1"));
         item.matchLevel.push(genMatch(2, 2, "SemiFinal"));
-        item.matchLevel.push(genMatch(1, 1, "Final"));
+        item.matchLevel.push(genMatch(3, 1, "Final"));
       }
       if (item.totalPlayer == 16) {
-        item.matchLevel.push(genMatch(4, 8, "Round 1"));
-        item.matchLevel.push(genMatch(3, 4, "Round 2"));
-        item.matchLevel.push(genMatch(2, 2, "SemiFinal"));
-        item.matchLevel.push(genMatch(1, 1, "Final"));
+        item.matchLevel.push(genMatch(1, 8, "Round 1"));
+        item.matchLevel.push(genMatch(2, 4, "Round 2"));
+        item.matchLevel.push(genMatch(3, 2, "SemiFinal"));
+        
+        item.matchLevel.push(genMatch(5, 1, "Final"));
+        item.matchLevel.push(genMatch(4, 1, "3rd Place"));
+      }
+      if (item.totalPlayer == 32) {
+        item.matchLevel.push(genMatch(1, 16, "Round 1"));
+        item.matchLevel.push(genMatch(2, 8, "Round 2"));
+        item.matchLevel.push(genMatch(3, 4, "Round 3"));
+        item.matchLevel.push(genMatch(4, 2, "SemiFinal"));
+        
+        item.matchLevel.push(genMatch(6, 1, "Final"));
+        item.matchLevel.push(genMatch(5, 1, "3rd Place"));
       }
     }
     //console.log(item);
@@ -625,9 +774,27 @@ $('.gdetails.no'+player).removeClass('hide');
       result.setDate(result.getDate() + days);
       return result;
     }
+    function addHoursToDate(date, hours) {
+      return new Date(new Date(date).setHours(date.getHours() + hours));
+    }
     function toTimestamp(strDate) {
       var datum = Date.parse(strDate);
       return datum / 1000;
+    }
+
+    var lists = item.matchTables;
+    var matchidFind = item.matchTables[0];
+    if(this.state.matchid){
+    lists.map((tblmatch, w) => {
+      console.log(tblmatch.id == parseInt(this.state.matchid))
+      if(parseInt(tblmatch.id) == parseInt(this.state.matchid)){
+         matchidFind = tblmatch;
+      }
+    }
+
+    )
+    
+      //matchidFind = lists.filter( (list) => list.id === );
     }
     var timestamp = item.expire;
     // console.log(timestamp);
@@ -644,45 +811,44 @@ $('.gdetails.no'+player).removeClass('hide');
     var dateExpiredTest3 = addDays(date.toISOString(), 5);
 
     var dateNow = now.toISOString();
-
-    if (item.matchTables[0] && item.gameMode != "Tournament") {
+    var dateExpired = item.expire;
+    if (matchidFind && item.gameMode != "Tournament") {
       if (!item.players[1]) {
         item.players.push(nullplayer);
       }
-      if (item.matchTables[0] && !item.matchTables[0].matchPlayers[1]) {
-        item.matchTables[0].matchPlayers.push(nullplayer);
+      if (matchidFind && !matchidFind.matchPlayers[1]) {
+        matchidFind.matchPlayers.push(nullplayer);
       }
-      item.matchTables[0].matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
+      matchidFind.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
     }
-    var lists = item.matchTables;
-    var matchidFind = item.matchTables[0];
-    if(this.state.matchid){
-    lists.map((tblmatch, w) => {
-      console.log(tblmatch.id == parseInt(this.state.matchid))
-      if(parseInt(tblmatch.id) == parseInt(this.state.matchid)){
-         matchidFind = tblmatch;
+    var isInPlayers = false;
+    if (item.gameMode != "League") {
+    if((matchidFind.matchPlayers[0].username ==
+      currentUser.username ||
+      matchidFind.matchPlayers[1].username ==
+        currentUser.username)){
+          isInPlayers = true;
+        }
       }
+    if(item.gameMode == "Tournament" && !this.state.matchid){
+      var expiryDate = new Date(dateExpired);
+      expiryDate.setHours(expiryDate.getHours() + matchidFind.level);
     }
+    
 
-    )
-    
-      //matchidFind = lists.filter( (list) => list.id === );
-    }
-    
-console.log(matchidFind)
     var isJoin = false;
     var activePlayer = 0;
     return (
       <>
         <div className="wrapper">
-          {item.matchTables[0] && item.gameMode != "Tournament" ? (
+          {matchidFind && item.gameMode != "Tournament" ? (
             <Chatbar
               eventID={eventid}
               eventstatus={item.status}
-              masterplayer={item.matchTables[0].matchPlayers[0].username}
-              secondplayer={item.matchTables[0].matchPlayers[1].username}
+              masterplayer={matchidFind.matchPlayers[0].username}
+              secondplayer={matchidFind.matchPlayers[1].username}
               eventchats={item.chats}
-              chats={item.matchTables[0].matchChats}
+              chats={matchidFind.matchChats}
             />
           ) : (
             <Chatbar
@@ -695,7 +861,7 @@ console.log(matchidFind)
             />
           )}
 
-          <div className="main-panel">
+          <div className="main-panel lobby">
             <div
               className="full-page lock-page"
               data-color="black"
@@ -706,6 +872,15 @@ console.log(matchidFind)
 
               <div className="content d-flex align-items-center p-0">
                 <Container style={{ marginTop: 50 }}>
+                
+                                  <Button
+                                    className="btn-round hid2e"
+                                    onClick={this.handleDelete}
+                                    variant="danger"
+                                  >
+                                    Delet Match
+                                  </Button>
+                               
                   {item.gameMode == "League" ? (
                     <Col className="mx-auto" lg="10" md="11">
                       <Card
@@ -734,6 +909,7 @@ console.log(matchidFind)
                                   {item.gameConsole}
                                 </small>
                               </h5>
+                              {getGroupBadgePrice("dollar", item.amount*item.totalPlayer*90/100 , "")}
                               <small>
                                 {item.players.map((user, z) => (
                                   <span key={z}>
@@ -763,6 +939,30 @@ console.log(matchidFind)
                                   </span>
                                 ))}
                               </small>
+                              <small
+                                        style={{
+                                          marginTop: 10,
+                                          marginBottom: 10,
+                                          display: "block",
+                                          fontSize: 20,
+                                        }}
+                                      >
+                                        {item.players.length}/{item.totalPlayer}
+                                      </small>
+                                      <ProgressBar
+                                        animated
+                                        variant="danger"
+                                        now={
+                                          (item.players.length /
+                                            item.totalPlayer) *
+                                          100
+                                        }
+                                        style={{
+                                          marginLeft: "auto",
+                                          marginRight: "auto",
+                                          maxWidth: "50%",
+                                        }}
+                                      />
                               <VerticalTimeline
                                 layout="1-column-left"
                                 className="hide2"
@@ -822,32 +1022,10 @@ console.log(matchidFind)
                                     Regions: All Regions
                                     <br />
                                     Servers: All Servers
-                                    <br />
-                                    {item.players.length}/{item.totalPlayer}
+                                    
                                   </small>
-                                  <ProgressBar
-                                    animated
-                                    variant="warning"
-                                    now={
-                                      (item.players.length / item.totalPlayer) *
-                                      100
-                                    }
-                                    style={{
-                                      marginLeft: "auto",
-                                      marginRight: "auto",
-                                      maxWidth: "70%",
-                                    }}
-                                  />
-                                  {isJoin ? (
-                                    <Button
-                                      className="btn-round"
-                                      onClick={this.handleLeaveMatch}
-                                      variant="warning"
-                                      disabled={this.state.isloading}
-                                    >
-                                      Leave Match
-                                    </Button>
-                                  ) : (
+                                  
+                                   {!isJoin && item.totalPlayer > item.players.length && (
                                     <Button
                                       className="btn-round"
                                       onClick={this.handleJoinMatch}
@@ -974,12 +1152,9 @@ console.log(matchidFind)
                                   }}
                                 >
                                   <h3 className="vertical-timeline-element-title">
-                                    Payment Pending
-                                    <div>
-                                      {" "}
-                                      $
-                                      {(item.totalPlayer * item.amount * 90) /
-                                        100}
+                                    Prizes
+                                    <div style={{position:'relative',zIndex:1,margin:20}}>
+                                    {getGroupBadgePrice("dollar", item.amount*item.totalPlayer*90/100 , "")}
                                     </div>
                                   </h3>
                                   <h4 className="vertical-timeline-element-subtitle">
@@ -989,10 +1164,10 @@ console.log(matchidFind)
                                     />
                                   </h4>
                                   <div
-                                    style={{ height: 230, overflow: "auto" }}
+                                    style={{ maxHeight: 230, overflow: "auto" }}
                                   >
                                     <ListGroup>
-                                      {events.current_brackets.map(
+                                      {item.current_brackets.map(
                                         (item, i) => {
                                           icStart = icStart + 1;
                                           icEnd = icEnd + parseInt(item.number);
@@ -1004,30 +1179,20 @@ console.log(matchidFind)
                                           if (icStart <= 2005) {
                                             return (
                                               <ListGroup.Item>
-                                                <span style={{ fontSize: 20 }}>
+                                                <span style={{ fontSize: 17 }}>
                                                   {" "}
-                                                  {icShow}
+                                                  {icShow} <small> - %{item.percent}</small>
                                                 </span>
-                                                <Badge variant="warning">
-                                                  <img
-                                                    alt={"loole dollar"}
-                                                    style={{ width: 16 }}
-                                                    src={
-                                                      "/assets/images/dollar.svg"
-                                                    }
-                                                  ></img>
-                                                  <CurrencyFormat
-                                                    value={item.prize}
-                                                    displayType={"text"}
-                                                    thousandSeparator={true}
-                                                    prefix={""}
-                                                    renderText={(value) => (
-                                                      <span className="lable">
-                                                        {value}
-                                                      </span>
-                                                    )}
-                                                  />
-                                                </Badge>
+                                                <Badge variant={getColor(item.prize)} className={"badgegroup"}>
+                                          <span className="cur" style={{float:'left'}}><img
+                                alt={"loole dollar"}
+                               
+                                src={"/assets/images/dollar.svg"}
+                              ></img></span>
+                              <CurrencyFormat value={item.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">&nbsp; <b>{value}</b></span>} />
+                                         
+                                          </Badge>
+                                               
                                               </ListGroup.Item>
                                             );
                                           }
@@ -1060,7 +1225,7 @@ console.log(matchidFind)
                                     />
                                   </h4>
                                   <div
-                                    style={{ height: 580, overflow: "auto" }}
+                                    style={{ maxHeight: 580, overflow: "auto" }}
                                   >
                                     <Table striped  variant="dark">
                                       <thead>
@@ -1249,7 +1414,7 @@ console.log(matchidFind)
                                   </h3>
                                   <span id="jsonhtml"></span>
                                   <span id="jsonhtml2" className="hide">
-                                    {events.rules}
+                                    {item.rules}
                                   </span>
                                 </VerticalTimelineElement>
                               </VerticalTimeline>
@@ -1288,6 +1453,7 @@ console.log(matchidFind)
                                       {item.gameConsole}
                                     </small>
                                   </h5>
+                                  {getGroupBadgePrice("dollar", item.amount*item.totalPlayer*90/100 , "")}
                                   <small>
                                     {item.players.map((user, z) => (
                                       <span key={z}>
@@ -1315,9 +1481,34 @@ console.log(matchidFind)
                                             )}
                                           </>
                                         ) : null}
+
                                       </span>
                                     ))}
                                   </small>
+                                  <small
+                                        style={{
+                                          marginTop: 10,
+                                          marginBottom: 10,
+                                          display: "block",
+                                          fontSize: 20,
+                                        }}
+                                      >
+                                        {item.players.length}/{item.totalPlayer}
+                                      </small>
+                                      <ProgressBar
+                                        animated
+                                        variant="danger"
+                                        now={
+                                          (item.players.length /
+                                            item.totalPlayer) *
+                                          100
+                                        }
+                                        style={{
+                                          marginLeft: "auto",
+                                          marginRight: "auto",
+                                          maxWidth: "50%",
+                                        }}
+                                      />
                                   <VerticalTimeline
                                     layout="1-column-left"
                                     className="hide2"
@@ -1355,48 +1546,15 @@ console.log(matchidFind)
                                         }
                                       ></img>
                                       <h3 className="vertical-timeline-element-title">
-                                        Registration Open
-                                      </h3>
-                                      <h4 className="vertical-timeline-element-subtitle">
-                                        <Countdown
+                                      <Countdown
                                           renderer={renderer}
-                                          date={dateExpiredTest}
+                                          date={dateExpired}
                                         />
-                                      </h4>
-
-                                      <small
-                                        style={{
-                                          marginBottom: 15,
-                                          display: "block",
-                                          fontSize: 13,
-                                        }}
-                                      >
-                                        {item.players.length}/{item.totalPlayer}
-                                      </small>
-                                      <ProgressBar
-                                        animated
-                                        variant="warning"
-                                        now={
-                                          (item.players.length /
-                                            item.totalPlayer) *
-                                          100
-                                        }
-                                        style={{
-                                          marginLeft: "auto",
-                                          marginRight: "auto",
-                                          maxWidth: "70%",
-                                        }}
-                                      />
-                                      {isJoin ? (
-                                        <Button
-                                          className="btn-round"
-                                          onClick={this.handleLeaveMatch}
-                                          variant="warning"
-                                          disabled={this.state.isloading}
-                                        >
-                                          Leave Match
-                                        </Button>
-                                      ) : (
+                                        
+                                      </h3>
+                                      
+                                      {!isJoin && item.totalPlayer > item.players.length && (
+                                        <h4 className="vertical-timeline-element-subtitle">
                                         <Button
                                           className="btn-round"
                                           onClick={this.handleJoinMatch}
@@ -1405,8 +1563,14 @@ console.log(matchidFind)
                                         >
                                           Join Match ${item.amount}
                                         </Button>
+                                        </h4>
                                       )}
+                                      
+
+                                      
+                                      
                                     </VerticalTimelineElement>
+
                                     <VerticalTimelineElement
                                       className="vertical-timeline-element--education"
                                       contentStyle={{
@@ -1467,15 +1631,16 @@ console.log(matchidFind)
                                       <h3 className="vertical-timeline-element-title">
                                         Matches
                                       </h3>
-                                      <Accordion defaultActiveKey="0">
+                                      <Accordion >
                                         {item.matchLevel.map((match, i) => {
                                           //console.log(match)
-                                          item.matchTables.sort((a, b) => (a.id > b.id ? 1 : -1));
+                                          
                                           
                                           //lists.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
-                                            var hatchbackCar = lists.filter( (list) => list.level === i+1);
+                                            var hatchbackCar = lists.filter( (list) => list.level === item.matchLevel[i].level);
+                                            hatchbackCar.sort((a, b) => (a.id > b.id ? 1 : -1));
                                             
-                                            
+                                          console.log(hatchbackCar)
                                           return (
                                            
                                             <Card
@@ -1484,6 +1649,7 @@ console.log(matchidFind)
                                               key={i}
                                             >
                                               <Card.Header>
+                                                
                                                 <Accordion.Toggle
                                                   as={Button}
                                                   variant="link"
@@ -1497,7 +1663,7 @@ console.log(matchidFind)
                                                   </Card.Title>
                                                   <Countdown
                                                     renderer={renderer}
-                                                    date={dateExpiredTest3}
+                                                    date={hatchbackCar[0].startTime}
                                                   />
                                                 </Accordion.Toggle>
                                               </Card.Header>
@@ -1517,17 +1683,21 @@ console.log(matchidFind)
                                                   hatchbackCar.map(
                                                     (mtch, z) => {
                                                       var avSize = 30;
-                                                      if (match.level == 2) {
+                                                      if (match.title == 'SemiFinal') {
                                                         avSize = 40;
                                                       }
-                                                      if (match.level == 1) {
+                                                      if (match.title == 'Final') {
                                                         avSize = 60;
+                                                      }
+                                                      if (match.title == '3rd Place') {
+                                                        avSize = 50;
                                                       }
                                                       return (
                                                         <>
-                                                         <Link  to={'/panel/lobby?id='+item.id+'&matchid='+mtch.id}>
+                                                         <Link key={z} to={'/panel/matchlobby?id='+item.id+'&matchid='+mtch.id}>
                                                           <Row
-                                                            key={z}
+                                                          
+                                                            
                                                             style={{
                                                               borderBottom:
                                                                 "1px rgba(255,255,255,.2) solid",
@@ -1537,13 +1707,15 @@ console.log(matchidFind)
                                                           >
                                                             {mtch.matchPlayers.map(
                                                               (player, j) => {
+                                                                var pName  = player.username;
+                                                              
                                                                 return (
                                                                   <>
                                                                     <Col
                                                                       xs="4"
                                                                       key={j}
                                                                       style={
-                                                                        !player.username
+                                                                        !pName
                                                                           ? {
                                                                               opacity: 0.3,
                                                                             }
@@ -1551,7 +1723,7 @@ console.log(matchidFind)
                                                                       }
                                                                     >
                                                                       <div>
-                                                                        {player.username ? (
+                                                                        {pName ? (
                                                                           <Avatar
                                                                             size={
                                                                               avSize
@@ -1560,10 +1732,10 @@ console.log(matchidFind)
                                                                               true
                                                                             }
                                                                             title={
-                                                                              player.username
+                                                                              pName
                                                                             }
                                                                             name={setAvatar(
-                                                                              player.username
+                                                                              pName
                                                                             )}
                                                                           />
                                                                         ) : (
@@ -1579,20 +1751,20 @@ console.log(matchidFind)
                                                                           />
                                                                         )}
                                                                       </div>
-                                                                      {!player.username && (
+                                                                      {!pName && (
                                                                         <>...</>
                                                                       )}
                                                                       <small>
                                                                         {" "}
                                                                         {
-                                                                          player.username
+                                                                          pName
                                                                         }
                                                                       </small>
                                                                     </Col>
                                                                     {j == 0 && (
                                                                       <Col
                                                                         xs="4"
-                                                                        key={j}
+                                                                        key={j+item.totalPlayer/2}
                                                                       >
                                                                         {mtch.winner && (
                                                                           <>
@@ -1653,203 +1825,66 @@ console.log(matchidFind)
                                       </Accordion>
                                     </VerticalTimelineElement>
 
+                                    
                                     <VerticalTimelineElement
-                                      className="vertical-timeline-element--education  my-list"
-                                      contentStyle={{
-                                        background: "#2a9d8f",
-                                        color: "#fff",
-                                      }}
-                                      contentArrowStyle={{
-                                        borderRight: "7px solid #2a9d8f",
-                                      }}
-                                      iconStyle={{
-                                        background: "#2a9d8f",
-                                        color: "#fff",
-                                      }}
-                                    >
-                                      <h3 className="vertical-timeline-element-title">
-                                        Payment Pending
-                                        <div>
-                                          {" "}
-                                          $
-                                          {(item.totalPlayer *
-                                            item.amount *
-                                            90) /
-                                            100}
-                                        </div>
-                                      </h3>
-                                      <h4 className="vertical-timeline-element-subtitle">
-                                        <Countdown
-                                          renderer={renderer}
-                                          date={dateExpiredTest3}
-                                        />
-                                      </h4>
-                                      <div
-                                        style={{
-                                          height: 150,
-                                          overflow: "auto",
-                                        }}
-                                      >
-                                        <ListGroup>
-                                          {events.current_brackets.map(
-                                            (item, i) => {
-                                              icStart = icStart + 1;
-                                              icEnd =
-                                                icEnd + parseInt(item.number);
-                                              var icShow = "#" + icStart;
-                                              if (icStart != icEnd) {
-                                                icShow =
-                                                  icShow + " - #" + icEnd;
-                                                icStart = icEnd;
-                                              }
-                                              if (icStart <= 3) {
-                                                return (
-                                                  <ListGroup.Item>
-                                                    <span
-                                                      style={{ fontSize: 20 }}
-                                                    >
-                                                      {" "}
-                                                      {icShow}
-                                                    </span>
-                                                    <Badge variant="warning">
-                                                      <img
-                                                        alt={"loole dollar"}
-                                                        style={{ width: 16 }}
-                                                        src={
-                                                          "/assets/images/dollar.svg"
-                                                        }
-                                                      ></img>
-                                                      <CurrencyFormat
-                                                        value={item.prize}
-                                                        displayType={"text"}
-                                                        thousandSeparator={true}
-                                                        prefix={""}
-                                                        renderText={(value) => (
-                                                          <span className="lable">
-                                                            {value}
-                                                          </span>
-                                                        )}
-                                                      />
-                                                    </Badge>
-                                                  </ListGroup.Item>
-                                                );
-                                              }
-                                            }
-                                          )}
-                                        </ListGroup>
-                                      </div>
-                                    </VerticalTimelineElement>
-                                    <VerticalTimelineElement
-                                      className="vertical-timeline-element--education"
-                                      contentStyle={{
-                                        background: "#e76f51",
-                                        color: "#fff",
-                                      }}
-                                      contentArrowStyle={{
-                                        borderRight: "7px solid #e76f51",
-                                      }}
-                                      iconStyle={{
-                                        background: "#e76f51",
-                                        color: "#fff",
-                                      }}
-                                    >
-                                      <h3 className="vertical-timeline-element-title">
-                                        Finished &amp; Paid
-                                      </h3>
-                                      <h4 className="vertical-timeline-element-subtitle">
-                                        <Countdown
-                                          renderer={renderer}
-                                          date={dateExpiredTest3}
-                                        />
-                                      </h4>
-                                      <div
-                                        style={{
-                                          height: 160,
-                                          overflow: "auto",
-                                        }}
-                                      >
-                                        <Table striped hover variant="dark">
-                                          <thead>
-                                            <tr>
-                                              <th>#</th>
-                                              <th>Username</th>
-                                              <th>Win</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            {events.players.map((item, i) => {
-                                              icStartL = icStartL + 1;
-                                              if (icStartL <= 2) {
-                                                return (
-                                                  <tr>
-                                                    <td>#{icStartL}</td>
-                                                    <td
-                                                      style={{
-                                                        textAlign: "left",
-                                                      }}
-                                                    >
-                                                      <Avatar
-                                                        size="25"
-                                                        round={true}
-                                                        title={item.username}
-                                                        name={setAvatar(
-                                                          item.username
-                                                        )}
-                                                      />{" "}
-                                                      {item.username}
-                                                      <ListGroup
-                                                        horizontal
-                                                        style={{
-                                                          display:
-                                                            "inline-flex",
-                                                          marginTop: 0,
-                                                          lineHeight: "20px",
-                                                          float: "right",
-                                                        }}
-                                                      >
-                                                        <ListGroup.Item action>
-                                                          <FontAwesomeIcon
-                                                            icon={faInstagram}
-                                                            style={{
-                                                              color: "#e95950",
-                                                            }}
-                                                          />
-                                                        </ListGroup.Item>
-                                                        <ListGroup.Item action>
-                                                          <FontAwesomeIcon
-                                                            icon={faTwitch}
-                                                            style={{
-                                                              color: "#fff",
-                                                            }}
-                                                          />
-                                                        </ListGroup.Item>
-                                                        <ListGroup.Item action>
-                                                          <FontAwesomeIcon
-                                                            icon={faYoutube}
-                                                            style={{
-                                                              color: "#FF0000",
-                                                            }}
-                                                          />
-                                                        </ListGroup.Item>
-                                                        <ListGroup.Item action>
-                                                          <FontAwesomeIcon
-                                                            icon={faTwitter}
-                                                            style={{
-                                                              color: "#00acee",
-                                                            }}
-                                                          />
-                                                        </ListGroup.Item>
-                                                      </ListGroup>
-                                                    </td>
-                                                    <td>{item.score}</td>
-                                                  </tr>
-                                                );
-                                              }
-                                            })}
-                                          </tbody>
-                                        </Table>
-                                      </div>
-                                    </VerticalTimelineElement>
+                                  className="vertical-timeline-element--education  my-list"
+                                  contentStyle={{
+                                    background: "#2a9d8f",
+                                    color: "#fff",
+                                  }}
+                                  contentArrowStyle={{
+                                    borderRight: "7px solid #2a9d8f",
+                                  }}
+                                  iconStyle={{
+                                    background: "#2a9d8f",
+                                    color: "#fff",
+                                  }}
+                                >
+                                  <h3 className="vertical-timeline-element-title">
+                                    Prizes
+                                    <div style={{position:'relative',zIndex:1,margin:20}}>
+                                    {getGroupBadgePrice("dollar", item.amount*item.totalPlayer*90/100 , "")}
+                                    </div>
+                                  </h3>
+                                  
+                                  <div
+                                    style={{ maxHeight: 230, overflow: "auto" }}
+                                  >
+                                    <ListGroup>
+                                      {item.current_brackets.map(
+                                        (item, i) => {
+                                          icStart = icStart + 1;
+                                          icEnd = icEnd + parseInt(item.number);
+                                          var icShow = "#" + icStart;
+                                          if (icStart != icEnd) {
+                                            icShow = icShow + " - #" + icEnd;
+                                            icStart = icEnd;
+                                          }
+                                          if (icStart <= 2005) {
+                                            return (
+                                              <ListGroup.Item>
+                                                <span style={{ fontSize: 17 }}>
+                                                  {" "}
+                                                  {icShow} <small> - %{item.percent}</small>
+                                                </span>
+                                                <Badge variant={getColor(item.prize)} className={"badgegroup"}>
+                                          <span className="cur" style={{float:'left'}}><img
+                                alt={"loole dollar"}
+                               
+                                src={"/assets/images/dollar.svg"}
+                              ></img></span>
+                              <CurrencyFormat value={item.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">&nbsp; <b>{value}</b></span>} />
+                                         
+                                          </Badge>
+                                               
+                                              </ListGroup.Item>
+                                            );
+                                          }
+                                        }
+                                      )}
+                                    </ListGroup>
+                                  </div>
+                                </VerticalTimelineElement>
                                     <VerticalTimelineElement
                                       className="vertical-timeline-element--education"
                                       contentStyle={{
@@ -1870,7 +1905,7 @@ console.log(matchidFind)
                                       <span id="jsonhtml"></span>
                                       <span id="jsonhtml2" className="hide">
                                         {" "}
-                                        {events.rules}
+                                        {item.rules}
                                       </span>
                                     </VerticalTimelineElement>
                                   </VerticalTimeline>
@@ -1935,6 +1970,9 @@ console.log(matchidFind)
                                                 {item.gameConsole}
                                               </small>
                                             </h5>
+                                           
+                              {getGroupBadgePrice("dollar", item.amount*item.totalPlayer*90/100 , "")}
+                             
                                           </Col>
                                         )}
                                         {(j == 3 || j == 5) && (
@@ -1963,6 +2001,7 @@ console.log(matchidFind)
                                                 {item.gameconsole}
                                               </small>
                                             </h4>
+                                            
                                           </Col>
                                         )}
                                         <Col
@@ -1995,7 +2034,8 @@ console.log(matchidFind)
                                           </div>
                                           {!player.username && <>...</>}
                                           <small> {player.username}</small>
-
+                                          {(!this.state.matchid) && (
+                                            <>
                                           {(item.status == "Pending" ||
                                             item.status == "Ready") && (
                                             <>
@@ -2040,16 +2080,15 @@ console.log(matchidFind)
                                               </div>
                                             </>
                                           )}
-                                          <p>---------</p>
-                                          {getGameTag(
-                                            item.gameName,
-                                            this.state.currentUserTag.userTags
+                                          </>
                                           )}
-                                          <small>
-                                            <a href="https://link.clashroyale.com/?playerInfo?id=GPGPCQCP">
-                                              {player.username}
-                                            </a>
-                                          </small>
+                                          {(isInPlayers) && (
+                                            <>
+                                          <p>---------</p>
+                                          <p>{player.tagid}</p>
+                                          <p>{player.nickName}</p>
+                                          </>
+                                          )}
                                         </Col>
                                       </>
                                     );
@@ -2057,7 +2096,245 @@ console.log(matchidFind)
                                 )}
                               </Row>
                             </Card.Header>
+                            {(item.gameMode == "Tournament" && this.state.matchid) ? (
+                              
+                              <>
                             <Card.Body>
+                              <Row>
+                                <Col xs="12">
+                                {(matchidFind.status == 'Pending') && (
+                                    <>
+                                  
+                                  <h3>
+                                  <small className="text-muted">Start at</small><br/>
+                                              <Countdown
+                                                  renderer={renderer}
+                                                  date={matchidFind.startTime}
+                                                />
+                                                
+                                              </h3>
+                                              </>
+                                )}
+                                
+                                  {item.gameName == "ClashRoyale" &&
+                                  matchidFind.status == "InPlay" ? (
+                                    <>
+                                      <Button
+                                        className="btn-fill btn-block btn-lg"
+                                        type="button"
+                                        variant="danger"
+                                        style={{
+                                          position: "relative",
+                                          zIndex: 1,
+                                        }}
+                                        onClick={this.handleClashFinished}
+                                        disabled={this.state.isloading}
+                                      >
+                                        Game finished
+                                      </Button>
+                                    </>
+                                  ) : (
+                                    <>
+                                      {(isInPlayers) && (
+                                        <>
+                                          {matchidFind.status == "InPlay" && (
+                                            <>
+                                              <p>Match Code</p>
+
+                                              <Card.Title
+                                                as="h1"
+                                                className="matchcode"
+                                              >
+                                                {getCode("7723")}
+                                              </Card.Title>
+                                              <Row>
+                                                <Col xs="6">
+                                                  <Button
+                                                    className="btn-fill btn-block btn-lg"
+                                                    type="button"
+                                                    variant="danger"
+                                                    style={{
+                                                      position: "relative",
+                                                      zIndex: 1,
+                                                    }}
+                                                    onClick={
+                                                      this.handlecAlertLost
+                                                    }
+                                                  >
+                                                    I Lost
+                                                  </Button>
+                                                </Col>
+
+                                                <Col xs="6">
+                                                  <input
+                                                    type="file"
+                                                    id="uploadfile"
+                                                    accept="video/*"
+                                                    name="file"
+                                                    className="hide"
+                                                    ref={this.fileUpload}
+                                                    onChange={
+                                                      this.onChangeHandler
+                                                    }
+                                                  />
+                                                  <Button
+                                                    className="btn-fill btn-block btn-lg"
+                                                    type="button"
+                                                    variant="success"
+                                                    style={{
+                                                      position: "relative",
+                                                      zIndex: 1,
+                                                    }}
+                                                    onClick={
+                                                      this.handlecAlertWin
+                                                    }
+                                                    disabled={isUpLoading}
+                                                  >
+                                                    {progressLable}
+                                                  </Button>
+                                                  {progress > 0 && (
+                                                    <div className="prosbar">
+                                                      <ProgressBar
+                                                        variant="success"
+                                                        now={progress}
+                                                        label={""}
+                                                      />
+                                                    </div>
+                                                  )}
+                                                </Col>
+                                              </Row>
+                                            </>
+                                          )}
+                                          
+                                          
+                                              
+                                          
+                                        </>
+                                      )}
+                                    </>
+                                  )}
+
+                                 
+                                      {matchidFind.winner && (
+                                        <>
+                                        <div
+                                            
+                                            style={{ position:'relative',top:20}}
+                                          >
+                                          <div
+                                            className=" winner avatar"
+                                            style={{ width: 92, height: 92}}
+                                          ></div>
+                                          <div className=" ">
+                                            <Avatar
+                                              size="92"
+                                              round={true}
+                                              title={matchidFind.winner}
+                                              name={setAvatar(
+                                                matchidFind.winner
+                                              )}
+                                            />
+                                          </div>
+                                          </div>
+                                          <h3 style={{color:'gold'}}>
+                                            {matchidFind.winner}<br/><small className="text-muted" style={{position:'relative',top:-5}}>is
+                                            winner</small>
+                                          </h3>
+                                        </>
+                                      )}
+                                </Col>
+                                
+                              </Row>
+                            </Card.Body>
+                            <Card.Footer>
+                              <Card
+                                style={{
+                                  backgroundColor: "black",
+                                  overflow: "auto",
+                                  margin: "0 auto",
+                                  maxWidth: 300,
+                                }}
+                              >
+                                <Card.Body
+                                  style={{
+                                    lineHeight: "10px",
+                                    overflow: "auto",
+                                    textAlign: "initial",
+                                  }}
+                                >
+                                  <img
+                                    alt={item.gameName}
+                                    style={{ width: "100%" }}
+                                    src={
+                                      require("assets/images/games/" +
+                                        item.gameName +
+                                        ".jpg").default
+                                    }
+                                  ></img>
+                                  <Table
+                                    striped
+                                    hover
+                                    borderless={true}
+                                    variant="dark"
+                                  >
+                                    <tbody>
+                                      
+                                    <tr>
+                                        <td>Mode</td>
+                                        <td style={{ textAlign: "right" }}>
+                                          {item.gameMode}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>Event ID</td>
+                                        <td style={{ textAlign: "right" }}>
+                                          {item.id}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>Match ID</td>
+                                        <td style={{ textAlign: "right" }}>
+                                          {matchidFind.id}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>Status</td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                          {item.status}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>Prizes</td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                          ${item.amount*item.totalPlayer*90/100}
+                                        </td>
+                                      </tr>
+                                      {item.current_brackets.map(
+                                        (win, w) => {
+                                          icStart = icStart + 1;
+                                          icEnd = icEnd + parseInt(win.number);
+                                          var icShow = "#" + icStart;
+                                          
+                                            return (
+                                              <tr>
+                                              <td>{icShow}</td>
+                                              <td style={{ textAlign: "right" }}>${win.prize}</td>
+                                                </tr>
+                                            );
+                                          
+                                        }
+                                      )}
+                                    </tbody>
+                                  </Table>
+                                </Card.Body>
+                              </Card>
+                              
+                            </Card.Footer>
+                            </>):(
+                              <>
+                              <Card.Body>
                               <Row>
                                 <Col xs="12">
                                   <h2>{item.status}</h2>
@@ -2174,26 +2451,31 @@ console.log(matchidFind)
 
                                   {item.status !== "" ? (
                                     <>
-                                      {item.matchTables[0].winner ? (
+                                      {matchidFind.winner ? (
                                         <>
                                           <div
+                                            
+                                            style={{ position:'relative',top:20}}
+                                          >
+                                          <div
                                             className=" winner avatar"
-                                            style={{ width: 92, height: 92 }}
+                                            style={{ width: 92, height: 92}}
                                           ></div>
                                           <div className=" ">
                                             <Avatar
                                               size="92"
                                               round={true}
-                                              title={item.matchTables[0].winner}
+                                              title={matchidFind.winner}
                                               name={setAvatar(
-                                                item.matchTables[0].winner
+                                                matchidFind.winner
                                               )}
                                             />
                                           </div>
-                                          <h4>
-                                            {item.matchTables[0].winner} is
-                                            winner
-                                          </h4>
+                                          </div>
+                                          <h3 style={{color:'gold'}}>
+                                            {matchidFind.winner}<br/><small className="text-muted" style={{position:'relative',top:-5}}>is
+                                            winner</small>
+                                          </h3>
                                         </>
                                       ) : (
                                         <>
@@ -2244,7 +2526,7 @@ console.log(matchidFind)
                                                     </>
                                                   )}
 
-                                                  {item.matchTables[0]
+                                                  {matchidFind
                                                     .matchPlayers[0].username !=
                                                     currentUser.username && (
                                                     <Button
@@ -2374,23 +2656,16 @@ console.log(matchidFind)
                                   </Table>
                                 </Card.Body>
                               </Card>
-                              {currentUser.roles[0] == "ROLE_ADMIN" && (
-                                <>
-                                  <Button
-                                    className="btn-round"
-                                    onClick={this.handleDelete}
-                                    variant="danger"
-                                  >
-                                    Delet Match
-                                  </Button>
-                                </>
-                              )}
+                              
                             </Card.Footer>
+                              </>
+                            )}
                           </Card>
                         </Col>
                       )}
                     </>
                   )}
+                 
                 </Container>
               </div>
 

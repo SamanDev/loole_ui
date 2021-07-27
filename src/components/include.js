@@ -41,6 +41,23 @@ import {
   }
   return false;
 }
+export const isJson = (item) =>{
+  item = typeof item !== "string"
+      ? JSON.stringify(item)
+      : item;
+
+  try {
+      item = JSON.parse(item);
+  } catch (e) {
+      return false;
+  }
+
+  if (typeof item === "object" && item !== null) {
+      return true;
+  }
+
+  return false;
+}
 export const  setAvatar  = (name) =>{
       var str = name;
       if (str){
@@ -60,316 +77,332 @@ export const  setAvatar  = (name) =>{
     }
     export const  getColor  = (amount) =>{
     
-      if(amount<10){return 'success'}
-      else if(amount<50){return 'warning'}
-      else if(amount>=50){return 'danger'}
+      if(amount<24){return 'success'}
+      else if(amount<40){return 'warning'}
+      else if(amount>=40){return 'danger'}
      
     }
     export const  getGroupBadge  = (sign,amount,classes) =>{
-    var nAmount = parseInt(amount, 10);
-   
-      return (
-        <div style={{height:30,padding:'2px 0'}}><Badge variant={getColor(amount)} className={"badgegroup "+classes}>
-                                      <span className="cur"><img
-                            alt={"loole "+sign}
-                           
-                            src={"/assets/images/"+sign+".svg"}
-                          ></img></span>
-                          <CurrencyFormat value={nAmount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">{value}</span>} />
-                                     
-                                      </Badge></div>
-      )
+      var nAmount = parseInt(amount, 10);
      
-    }
-    export const getModalTag = (filtermode) => {
-      if(filtermode.indexOf(' - ')>-1){
-        var filter = filtermode.value.split(" - ")[0];
-        var controlname = filtermode.value.split(" - ")[1];
-      }else{
-        var filter = filtermode;
-      var controlname = filtermode;
-      }
-      
-      let tagsof = {}
-      
-      if(filter=='8Pool'){
-         tagsof = {
-          customClass:'tag',
-          title: "Connect Your 8Pool Account",
-          focusConfirm: false,
-          html: `<div class="card-plain card text-left" >
-          <ol><li>Open player profile in 8BallPool</li><li>Copy Unique ID</li><li>Paste the Unique ID below
-          <div className="form-group">
-          <label>Enter your Unique ID</label>
-            <input class="form-control" id="tagid" type="tel" pattern="[0-9]" /></div>
-   </li><li>and then enter your 8BallPool Nickname below
-   <div className="form-group">
-   <label>Enter your Nickname</label>
-   <input class="form-control" id="tagname" type="text" /></div>
-</li></ol>
-   
-          
-          `,
-        
-          icon: "warning",
-          showCancelButton: true,
-          cancelButtonColor: "grey",
-          confirmButtonText: "Connect",
-        
-          showLoaderOnConfirm: true,
-          preConfirm: (login) => {
-            if (
-              document.getElementById("tagid").value &&
-              document.getElementById("tagname").value
-            ) {
-              return {
-                tagid:
-                  document.getElementById("tagid").value,
-                 tagname:
-                  document.getElementById("tagname").value,
-              };
-            } else {
-              Swal.showValidationMessage(`All fields are required!!`);
-            }
-          },
-        
-          allowOutsideClick: () => !Swal.isLoading(),
-        };
-      }
-      if(controlname=='PS4'||controlname=='PS5'||controlname=='PSN'||controlname=='XBOX'){
-        if(controlname=='PS4'||controlname=='PS5'||controlname=='PSN'){
-          var accMode = 'PSN Account'
-          var tagMode = 'PSN ID'
-          var holderMode = ''
-        }
-        if(controlname=='XBOX'){
-          var accMode = 'XBOX Account'
-          var tagMode = 'XBOX ID'
-          var holderMode = ''
-        }
+        return (
+          <div style={{height:30,padding:'2px 0'}}><Badge variant={getColor(amount)} className={"badgegroup "+classes}>
+                                        <span className="cur"><img
+                              alt={"loole "+sign}
+                             
+                              src={"/assets/images/"+sign+".svg"}
+                            ></img></span>
+                            <CurrencyFormat value={nAmount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">{value}</span>} />
+                                       
+                                        </Badge></div>
+        )
        
-        
-         tagsof = {
-          customClass:'tag',
-          title: 'Connect Your '+accMode+'',
-          focusConfirm: false,
-          html: `<div class="card-plain card text-left" >
-          <div className="form-group">
-          <label>Enter your `+tagMode+`</label>
-            <input class="form-control" id="tagid" type="text" placeholder="`+holderMode+`" /></div>
-            </div>
-          
-          `,
-          icon: "warning",
-          showCancelButton: true,
-          cancelButtonColor: "grey",
-          confirmButtonText: "Connect",
-        
-          showLoaderOnConfirm: true,
-          preConfirm: (login) => {
-            if (
-              document.getElementById("tagid").value
-            ) {
-              return {
-                tagid:
-                  document.getElementById("tagid").value
-              };
-            } else {
-              Swal.showValidationMessage(`All fields are required!!`);
-            }
-          },
-        
-          allowOutsideClick: () => !Swal.isLoading(),
-        };
       }
-      if(filter=='ClashRoyale'){
+      export const  getGroupBadgePrice  = (sign,amount,classes) =>{
+        var nAmount = parseInt(amount, 10);
        
-          var accMode = 'ClashRoyale Account'
-          var tagMode = 'ClashRoyale PlayerTag'
-          var holderMode = '#123456'
-    
-        
-         tagsof = {
-          customClass:'tag',
-          title: 'Connect Your '+accMode+'',
-          focusConfirm: false,
+          return (
+            <div style={{height:30,padding:'2px 0',transform:'scale(1.2)',zIndex:-1,position:'relative'}}><Badge variant={getColor(amount)} className={"badgegroup"}>
+                                          <span className="cur"><img
+                                alt={"loole "+sign}
+                               
+                                src={"/assets/images/"+sign+".svg"}
+                              ></img></span>
+                              <CurrencyFormat value={nAmount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">&nbsp; <b>{value}</b> &nbsp; Prize </span>} />
+                                         
+                                          </Badge></div>
+          )
          
-          html: `<div class="card-plain card text-left" >
-          <ol><li>Open player profile in Clash Royale</li> <li>Long-press on your player tag</li> <li>Tap “Copy Tag”</li><li>Paste the Player Tag below
-          <div className="form-group">
-          <label>Clash Royale Player Tag</label>
-            <input class="form-control" id="tagid" type="text" placeholder="`+holderMode+`" /></div>
-            </div>
-   </li></ol>
-   
+        }
+        export const getModalTag = (filtermode) => {
+          if(filtermode.indexOf(' - ')>-1){
+            var filter = filtermode.split(" - ")[0];
+            var controlname = filtermode.split(" - ")[1];
+          }else{
+            var filter = filtermode;
+          var controlname = filtermode;
+          }
           
-          `,
-          icon: "warning",
-          showCancelButton: true,
-          cancelButtonColor: "grey",
-          confirmButtonText: "Connect",
-        
-          showLoaderOnConfirm: true,
-          preConfirm: (login) => {
-            if (
-              document.getElementById("tagid").value
-            ) {
-              return {
-                tagid:
-                  document.getElementById("tagid").value
-              };
-            } else {
-              Swal.showValidationMessage(`All fields are required!!`);
+          let tagsof = {}
+          
+          if(filter=='8Pool'){
+             tagsof = {
+              customClass:'tag',
+              title: "Connect Your 8Pool Account",
+              focusConfirm: false,
+              html: `<div class="card-plain card text-left" >
+              <ol><li>Open player profile in 8BallPool</li><li>Copy Unique ID</li><li>Paste the Unique ID below
+              <div className="form-group">
+              <label>Enter your Unique ID</label>
+                <input class="form-control" id="tagid" type="tel" pattern="[0-9]" /></div>
+       </li><li>and then enter your 8BallPool Nickname below
+       <div className="form-group">
+       <label>Enter your Nickname</label>
+       <input class="form-control" id="tagname" type="text" /></div>
+    </li></ol>
+       
+              
+              `,
+            
+              icon: "warning",
+              showCancelButton: true,
+              cancelButtonColor: "grey",
+              confirmButtonText: "Connect",
+            
+              showLoaderOnConfirm: true,
+              preConfirm: (login) => {
+                if (
+                  document.getElementById("tagid").value &&
+                  document.getElementById("tagname").value
+                ) {
+                  return {
+                    tagid:
+                      document.getElementById("tagid").value,
+                     tagname:
+                      document.getElementById("tagname").value,
+                  };
+                } else {
+                  Swal.showValidationMessage(`All fields are required!!`);
+                }
+              },
+            
+              allowOutsideClick: () => !Swal.isLoading(),
+            };
+          }
+          if(controlname=='PS4'||controlname=='PS5'||controlname=='PSN'||controlname=='XBOX'){
+            if(controlname=='PS4'||controlname=='PS5'||controlname=='PSN'){
+              var accMode = 'PSN Account'
+              var tagMode = 'PSN ID'
+              var holderMode = ''
             }
-          },
+            if(controlname=='XBOX'){
+              var accMode = 'XBOX Account'
+              var tagMode = 'XBOX ID'
+              var holderMode = ''
+            }
+           
+            
+             tagsof = {
+              customClass:'tag',
+              title: 'Connect Your '+accMode+'',
+              focusConfirm: false,
+              html: `<div class="card-plain card text-left" >
+              <div className="form-group">
+              <label>Enter your `+tagMode+`</label>
+                <input class="form-control" id="tagid" type="text" placeholder="`+holderMode+`" /></div>
+                </div>
+              
+              `,
+              icon: "warning",
+              showCancelButton: true,
+              cancelButtonColor: "grey",
+              confirmButtonText: "Connect",
+            
+              showLoaderOnConfirm: true,
+              preConfirm: (login) => {
+                if (
+                  document.getElementById("tagid").value
+                ) {
+                  return {
+                    tagid:
+                      document.getElementById("tagid").value
+                  };
+                } else {
+                  Swal.showValidationMessage(`All fields are required!!`);
+                }
+              },
+            
+              allowOutsideClick: () => !Swal.isLoading(),
+            };
+          }
+          if(filter=='ClashRoyale'){
+           
+              var accMode = 'ClashRoyale Account'
+              var tagMode = 'ClashRoyale PlayerTag'
+              var holderMode = '#123456'
         
-          allowOutsideClick: () => !Swal.isLoading(),
-        };
-      }
-      if(filter=='CallOfDuty'){
-        
-        
+            
+             tagsof = {
+              customClass:'tag',
+              title: 'Connect Your '+accMode+'',
+              focusConfirm: false,
+             
+              html: `<div class="card-plain card text-left" >
+              <ol><li>Open player profile in Clash Royale</li> <li>Long-press on your player tag</li> <li>Tap “Copy Tag”</li><li>Paste the Player Tag below
+              <div className="form-group">
+              <label>Clash Royale Player Tag</label>
+                <input class="form-control" id="tagid" type="text" placeholder="`+holderMode+`" /></div>
+                </div>
+       </li></ol>
+       
+              
+              `,
+              icon: "warning",
+              showCancelButton: true,
+              cancelButtonColor: "grey",
+              confirmButtonText: "Connect",
+            
+              showLoaderOnConfirm: true,
+              preConfirm: (login) => {
+                if (
+                  document.getElementById("tagid").value
+                ) {
+                  return {
+                    tagid:
+                      document.getElementById("tagid").value
+                  };
+                } else {
+                  Swal.showValidationMessage(`All fields are required!!`);
+                }
+              },
+            
+              allowOutsideClick: () => !Swal.isLoading(),
+            };
+          }
+          if(filter=='CallOfDuty' || filter=='CallOfDuty Warzone'){
+            
+            
+            tagsof = {
+              customClass:'tag',
+             title: 'Expose Public Match Data',
+             focusConfirm: false,
+             html: `<div class="card-plain card text-left" ><ol><li>Login to the <a target="_blank" rel="noreferrer noopenner" href="https://profile.callofduty.com/cod/login"><span data-ignore="true">Call of Duty</span> website.</a></li><li>Find the <a href="https://profile.callofduty.com/cod/profile" target="_blank" rel="noreferrer noopenner">account preference</a> page.</li><li>Click on the Account Linking tab. Here you will find the <span data-ignore="true">PlayStation</span>, <span data-ignore="true">Xbox</span>, <span data-ignore="true">Battle.net</span>, or <span data-ignore="true">Steam</span> accounts that you've connected.</li><li>Set <strong>Searchable</strong> and <strong>Data Visible</strong> to <strong>All</strong></li></ol></div>`,
+             icon: "info",
+             showCancelButton: true,
+             cancelButtonColor: "grey",
+             confirmButtonText: "Continue",
+           
+             showLoaderOnConfirm: true,
+             preConfirm: (login) => {
+               
+                 return {
+                   tagid:
+                   filter+'2'
+                 };
+              
+             },
+           
+             allowOutsideClick: () => !Swal.isLoading(),
+           };
+         }
+         if(filter=='Fortnite'){
+            
+            
+          tagsof = {
+            customClass:'tag',
+           title: 'Make your Fortnite stats public',
+           focusConfirm: false,
+           html: `<div class="card-plain card text-left" ><ol><li>Launch the game <span data-ignore="true">Fortnite</span></li><li>Enter the Battle Royale mode</li><li>Go to your Settings</li><li>Navigate to your Account Settings Tab</li><li>Toggle "Show On Leaderboard" option to Yes</li></ol></div>`,
+           icon: "info",
+           showCancelButton: true,
+           cancelButtonColor: "grey",
+           confirmButtonText: "Continue",
+         
+           showLoaderOnConfirm: true,
+           preConfirm: (login) => {
+             
+               return {
+                 tagid:
+                 filter+'2'
+               };
+            
+           },
+         
+           allowOutsideClick: () => !Swal.isLoading(),
+         };
+       }
+       if(filter=='CallOfDuty2' || filter=='CallOfDuty Warzone2'){
+            
+            
         tagsof = {
           customClass:'tag',
-         title: 'Expose Public Match Data',
+          
+         title: 'Connect Your Activition Account',
          focusConfirm: false,
-         html: `<div class="card-plain card text-left" ><ol><li>Login to the <a target="_blank" rel="noreferrer noopenner" href="https://profile.callofduty.com/cod/login"><span data-ignore="true">Call of Duty</span> website.</a></li><li>Find the <a href="https://profile.callofduty.com/cod/profile" target="_blank" rel="noreferrer noopenner">account preference</a> page.</li><li>Click on the Account Linking tab. Here you will find the <span data-ignore="true">PlayStation</span>, <span data-ignore="true">Xbox</span>, <span data-ignore="true">Battle.net</span>, or <span data-ignore="true">Steam</span> accounts that you've connected.</li><li>Set <strong>Searchable</strong> and <strong>Data Visible</strong> to <strong>All</strong></li></ol></div>`,
-         icon: "info",
-         showCancelButton: true,
+         html: `<div class="card-plain card text-left" >
+         <ol><li>Click/hover on your username and click "Account" or <a href="https://profile.callofduty.com/cod/profile" target="_blank" rel="noreferrer noopener">go here</a></li><li>Under "Account" copy the long string that appears after "ID"</li><li>Paste your ID below
+         <div className="form-group">
+         <label>ACTIVISION ID</label>
+         <input class="form-control" id="tagid" type="text" placeholder="XXXXXX#00000" /></div>
+         <div className="form-group">
+         <label>Platform</label>
+         <select class="form-control" id="tagplatform">
+         <option value="PSN">Playstation Network</option>
+         <option value="xbl">Xbox Live</option>
+         <option value="steam">Steam</option>
+         <option value="battle">Battle.net</option>
+         </select>
+         </div>
+         </li></ol>
+           
+             </div>
+            
+            `,
+            icon: "warning",
+            showCancelButton: true,
          cancelButtonColor: "grey",
-         confirmButtonText: "Continue",
+         confirmButtonText: "Connect",
        
          showLoaderOnConfirm: true,
          preConfirm: (login) => {
-           
-             return {
-               tagid:
-               filter+'2'
-             };
-          
+          if (
+            document.getElementById("tagid").value
+          ) {
+            return {
+              tagid:
+                document.getElementById("tagid").value,
+                tagplatform:document.getElementById("tagplatform").value,
+            };
+          } else {
+            Swal.showValidationMessage(`All fields are required!!`);
+          }
          },
        
          allowOutsideClick: () => !Swal.isLoading(),
        };
      }
-     if(filter=='Fortnite'){
-        
-        
+     if(filter=='Fortnite2'){
+            
+            
       tagsof = {
         customClass:'tag',
-       title: 'Make your Fortnite stats public',
+       title: 'Paste your Epic ID',
        focusConfirm: false,
-       html: `<div class="card-plain card text-left" ><ol><li>Launch the game <span data-ignore="true">Fortnite</span></li><li>Enter the Battle Royale mode</li><li>Go to your Settings</li><li>Navigate to your Account Settings Tab</li><li>Toggle "Show On Leaderboard" option to Yes</li></ol></div>`,
-       icon: "info",
-       showCancelButton: true,
+       html: `
+       <div class="card-plain card text-left" >
+       <ol><li>Go to <a href="https://epicgames.com" target="_blank" rel="noreferrer noopenner" data-ignore="true">epicgames.com</a> and login to your <span data-ignore="true">Epic</span> account.</li><li>Click/hover on your username and click "Account" or <a href="https://www.epicgames.com/account/personal?productName=epicgames&amp;lang=en" target="_blank" rel="noreferrer noopener">go here</a></li><li>Under "Account ID" copy the long string that appears after "ID"</li><li>Paste the ID below
+       <div className="form-group">
+          <label>Epic account ID</label>
+          <input class="form-control" id="tagid" type="text" placeholder="Your Epic account ID" /></div>
+       </li></ol>
+            </div>
+          
+          `,
+          icon: "warning",
+          showCancelButton: true,
        cancelButtonColor: "grey",
-       confirmButtonText: "Continue",
+       confirmButtonText: "Connect",
      
        showLoaderOnConfirm: true,
        preConfirm: (login) => {
-         
-           return {
-             tagid:
-             filter+'2'
-           };
-        
+        if (
+          document.getElementById("tagid").value
+        ) {
+          return {
+            tagid:
+              document.getElementById("tagid").value
+          };
+        } else {
+          Swal.showValidationMessage(`All fields are required!!`);
+        }
        },
      
        allowOutsideClick: () => !Swal.isLoading(),
      };
-   }
-   if(filter=='CallOfDuty2'){
-        
-        
-    tagsof = {
-      customClass:'tag',
-      
-     title: 'Connect Your Activition Account',
-     focusConfirm: false,
-     html: `<div class="card-plain card text-left" >
-     <ol><li>Click/hover on your username and click "Account" or <a href="https://profile.callofduty.com/cod/profile" target="_blank" rel="noreferrer noopener">go here</a></li><li>Under "Account" copy the long string that appears after "ID"</li><li>Paste your ID below
-     <div className="form-group">
-     <label>ACTIVISION ID</label>
-     <input class="form-control" id="tagid" type="text" placeholder="XXXXXX#00000" /></div>
-     <div className="form-group">
-     <label>Platform</label>
-     <select class="form-control" id="tagplatform">
-     <option value="PSN">Playstation Network</option>
-     <option value="xbl">Xbox Live</option>
-     <option value="steam">Steam</option>
-     <option value="battle">Battle.net</option>
-     </select>
-     </div>
-     </li></ol>
-       
-         </div>
-        
-        `,
-        icon: "warning",
-        showCancelButton: true,
-     cancelButtonColor: "grey",
-     confirmButtonText: "Connect",
-   
-     showLoaderOnConfirm: true,
-     preConfirm: (login) => {
-      if (
-        document.getElementById("tagid").value
-      ) {
-        return {
-          tagid:
-            document.getElementById("tagid").value,
-            tagplatform:document.getElementById("tagplatform").value,
-        };
-      } else {
-        Swal.showValidationMessage(`All fields are required!!`);
-      }
-     },
-   
-     allowOutsideClick: () => !Swal.isLoading(),
-   };
- }
- if(filter=='Fortnite2'){
-        
-        
-  tagsof = {
-    customClass:'tag',
-   title: 'Paste your Epic ID',
-   focusConfirm: false,
-   html: `
-   <div class="card-plain card text-left" >
-   <ol><li>Go to <a href="https://epicgames.com" target="_blank" rel="noreferrer noopenner" data-ignore="true">epicgames.com</a> and login to your <span data-ignore="true">Epic</span> account.</li><li>Click/hover on your username and click "Account" or <a href="https://www.epicgames.com/account/personal?productName=epicgames&amp;lang=en" target="_blank" rel="noreferrer noopener">go here</a></li><li>Under "Account ID" copy the long string that appears after "ID"</li><li>Paste the ID below
-   <div className="form-group">
-      <label>Epic account ID</label>
-      <input class="form-control" id="tagid" type="text" placeholder="Your Epic account ID" /></div>
-   </li></ol>
-        </div>
-      
-      `,
-      icon: "warning",
-      showCancelButton: true,
-   cancelButtonColor: "grey",
-   confirmButtonText: "Connect",
- 
-   showLoaderOnConfirm: true,
-   preConfirm: (login) => {
-    if (
-      document.getElementById("tagid").value
-    ) {
-      return {
-        tagid:
-          document.getElementById("tagid").value
-      };
-    } else {
-      Swal.showValidationMessage(`All fields are required!!`);
     }
-   },
- 
-   allowOutsideClick: () => !Swal.isLoading(),
- };
-}
-      return tagsof
-    }
-    export const  addTime = (datetime, hours) => {
+          return tagsof
+        }
+        export const  addTime = (datetime, hours) => {
       var result = new Date(datetime);
     
       result.setHours(result.getHours() + hours);

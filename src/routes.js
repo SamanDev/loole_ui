@@ -125,7 +125,14 @@ var routes = [
     component: LockScreenPage,
     show:false
   },
-  
+  {
+    path: "/matchlobby",
+    layout: "/panel",
+    name: "Match Lobby",
+    icon: "nc-icon nc-simple-add",
+    component: LockScreenPage,
+    show:false
+  },
   {
     path: "/login-page",
     layout: "/auth",
