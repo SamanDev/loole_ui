@@ -64,7 +64,7 @@ class Dashboard extends Component {
 
   render() {
     
-    if (!this.state.events.length){
+    if (!this.state.events){
       userService.getEvents();
       
       return <h4 style={{textAlign: "center"}}>Loading 
@@ -86,7 +86,7 @@ class Dashboard extends Component {
       
       if (events != []) {
         return events.map((item, i) => {
-          if ((item.matchTables[0].winner === currentUser.username &&  filtermode == 'Wins' && item.status == 'Finished') || item.status == filtermode || ('All' == filtermode && item.status != 'Expire')) {
+          if ((filtermode == 'Wins' && item.status == 'Finished') || item.status == filtermode || ('All' == filtermode && item.status != 'Expire')) {
             item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
             var blnShow = false;
             {item.players.map((player, j) => {

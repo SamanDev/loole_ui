@@ -59,17 +59,45 @@ const required = (value) => {
 const getBlockGames = (filtermode) => {
   var gamemap = [];
   Games.games.map((item, i) => {
+    
     item.gameconsole.map((consoles, j) => {
-      if (
-        "All" == filtermode ||
-        consoles.consolename == filtermode ||
-        (consoles.consolename != "Mobile" && filtermode == "NoMobile")
-      ) {
-        gamemap.push({
-          value: item.name + " - " + consoles.consolename,
-          label: item.name + " - " + consoles.consolename,
-        });
+      if(filtermode == 'Match'){
+        if (item.haveMatch == true
+          ) {
+            gamemap.push({
+              value: item.name + " - " + consoles.consolename,
+              label: item.name + " - " + consoles.consolename,
+            });
+          }
+      }else if(filtermode == 'Tournament'){
+        if (item.haveTournament == true
+          ) {
+            gamemap.push({
+              value: item.name + " - " + consoles.consolename,
+              label: item.name + " - " + consoles.consolename,
+            });
+          }
+      }else if(filtermode == 'League'){
+        if (item.haveLeague == true
+          ) {
+            gamemap.push({
+              value: item.name + " - " + consoles.consolename,
+              label: item.name + " - " + consoles.consolename,
+            });
+          }
+      }else{
+        if (
+          "All" == filtermode ||
+          consoles.consolename == filtermode ||
+          (consoles.consolename != "Mobile" && filtermode == "NoMobile")
+        ) {
+          gamemap.push({
+            value: item.name + " - " + consoles.consolename,
+            label: item.name + " - " + consoles.consolename,
+          });
+        }
       }
+      
     });
   });
 
@@ -173,6 +201,9 @@ class CreateMatch extends Component {
     this.setStartTime = this.setStartTime.bind(this);
     this.selectrequired = this.selectrequired.bind(this);
     this.handleSaveTags = this.handleSaveTags.bind(this);
+    this.setInSign = this.setInSign.bind(this);
+    this.setOutSign = this.setOutSign.bind(this);
+    this.setRules = this.setRules.bind(this);
 
     this.state = {
       GameName: getBlockGamesVal("All"),
@@ -186,6 +217,9 @@ class CreateMatch extends Component {
       submit: false,
       GameTag: "",
       message: "",
+      Rules: "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>",
+      inSign:{ value: "Dollar", label: "Dollar" },
+      outSign:{ value: "Dollar", label: "Dollar" },
       StartTimeLeague:"2021-08-28T19:55:10.0000",
       EndTimeLeague:"2021-09-12T16:15:10.0000",
       TotalPlayer:200,
@@ -212,6 +246,22 @@ class CreateMatch extends Component {
       GameName: e,
       GameMode: getBlockGameModesVal(e),
     });
+  }
+  setInSign(e) {
+    this.setState({
+      inSign: e,
+    });
+  }
+  setOutSign(e) {
+    this.setState({
+      outSign: e,
+    });
+  }
+  setRules(e) {
+    this.setState({
+      Rules: e.target.value
+    });
+    console.log(this.state.Rules)
   }
   setTournamentMode(e) {
     this.setState({
@@ -410,11 +460,15 @@ class CreateMatch extends Component {
           this.state.BetAmount.value,
           this.state.StartTime.value,
           this.state.TournamentMode.value,
+          '1-8, 65.00, 35.00|9-16, 50.00, 30.00, 20.00|17-64, 48.00, 27.00, 15.00, 10.00',
+          this.state.inSign.value,
+          this.state.outSign.value,
+          this.state.Rules
         )
         .then(
             
           (response) => {
-            if (response=='Create event successful'){
+            if (response=='Create tournament successful'){
               Swal.fire("", "Data saved successfully.", "success").then(
                 (result) => {
                   this.props.history.push("/panel/dashboard");
@@ -522,7 +576,11 @@ class CreateMatch extends Component {
             this.state.StartTimeLeague,
             this.state.EndTimeLeague,
             this.state.TotalPlayer,
-            this.state.TournamentPayout
+            
+            '0-70, 30.00, 20.00, 14.00, 10.00, 8.00, 7.00, 6.00, 5.00|71-100, 29.00, 18.00, 12.50, 10.00, 8.00, 6.50, 5.50, 4.50, 3.50, 2.50|101-200, 28.00, 17.50, 11.50, 8.50, 7.00, 5.50, 4.50, 3.50, 2.50, 1.50, 1.00x10|201-400, 27.00, 16.50, 10.50, 8.00, 6.25, 4.75, 3.75, 2.75, 1.75, 1.25, 0.75x10, 0.50x20|401-700, 26.00, 15.50, 10.00, 7.50, 6.00, 4.50, 3.50, 2.50, 1.50, 1.00, 0.65x10, 0.40x20, 0.25x30|701-1000, 25.00, 15.00, 10.00, 7.25, 5.50, 4.25, 3.25, 2.25, 1.25, 0.75, 0.55x10, 0.40x20, 0.25x30, 0.15x30',
+          this.state.inSign.value,
+          this.state.outSign.value,
+          this.state.Rules
           )
           .then(
             
@@ -661,7 +719,7 @@ class CreateMatch extends Component {
                                 name="GameName"
                                 value={this.state.GameName}
                                 onChange={this.setGameName}
-                                options={getBlockGames("All")}
+                                options={getBlockGames("Match")}
                                 placeholder=""
                               />
                               {this.selectrequired(this.state.GameName)}
@@ -880,7 +938,7 @@ class CreateMatch extends Component {
                                 name="GameName"
                                 value={this.state.GameName}
                                 onChange={this.setGameName}
-                                options={getBlockGames("All")}
+                                options={getBlockGames("Tournament")}
                                 placeholder=""
                               />
                               {this.selectrequired(this.state.GameName)}
@@ -895,11 +953,15 @@ class CreateMatch extends Component {
                                 value={this.state.BetAmount}
                                 onChange={this.setBetAmount}
                                 options={[
-                                  { value: "5", label: "$5" },
-                                  { value: "10", label: "$10" },
-                                  { value: "25", label: "$25" },
-                                  { value: "50", label: "$50" },
-                                  { value: "100", label: "$100" },
+                                  { value: "1", label: "1" },
+                                  { value: "3", label: "3" },
+                                  { value: "5", label: "5" },
+                                  { value: "10", label: "10" },
+                                  { value: "25", label: "25" },
+                                  { value: "50", label: "50" },
+                                  { value: "100", label: "100" },
+                                  { value: "500", label: "500" },
+                                  { value: "1000", label: "1000" },
                                 ]}
                                 placeholder=""
                                 isSearchable={false}
@@ -932,7 +994,7 @@ class CreateMatch extends Component {
                                 value={this.state.StartTime}
                                 onChange={this.setStartTime}
                                 options={[
-                                  { value: "30", label: "30 Minutes Later" },
+                                  { value: "1", label: "30 Minutes Later" },
                                   { value: "60", label: "1 Hour Later" },
                                   { value: "120", label: "2 Hours Later" },
                                   { value: "360", label: "6 Hours Later" },
@@ -942,7 +1004,51 @@ class CreateMatch extends Component {
                               />
                               {this.selectrequired(this.state.GameMode)}
                             </div>
-
+                            <div className="form-group">
+                              <label>InSign</label>
+                              <Select
+                                className="react-select default"
+                                classNamePrefix="react-select"
+                                name="InSign"
+                                value={this.state.inSign}
+                                onChange={this.setInSign}
+                                options={[
+                                  { value: "Dollar", label: "Dollar" },
+                                  { value: "Point", label: "Point" },
+                                ]}
+                                placeholder=""
+                                isSearchable={false}
+                              />
+                              
+                            </div>
+                            <div className="form-group">
+                              <label>OutSign</label>
+                              <Select
+                                className="react-select default"
+                                classNamePrefix="react-select"
+                                name="OutSign"
+                                value={this.state.outSign}
+                                onChange={this.setOutSign}
+                                options={[
+                                  { value: "Dollar", label: "Dollar" },
+                                  { value: "Point", label: "Point" },
+                                ]}
+                                placeholder=""
+                                isSearchable={false}
+                              />
+                              
+                            </div>
+                            <div className="form-group">
+                              <label>Rules</label>
+                              <Input
+                    type="textarea"
+                    className="form-control"
+                    name="name"
+                    value={this.state.Rules}
+                    onChange={this.setRules}
+                  />
+                              
+                            </div>
                             {this.state.message && (
                               <div className="form-group">
                                 <div
@@ -1160,7 +1266,7 @@ class CreateMatch extends Component {
                                 name="GameName"
                                 value={this.state.GameName}
                                 onChange={this.setGameName}
-                                options={getBlockGames("All")}
+                                options={getBlockGames("League")}
                                 placeholder=""
                               />
                               {this.selectrequired(this.state.GameName)}
@@ -1175,11 +1281,15 @@ class CreateMatch extends Component {
                                 value={this.state.BetAmount}
                                 onChange={this.setBetAmount}
                                 options={[
-                                  { value: "5", label: "$5" },
-                                  { value: "10", label: "$10" },
-                                  { value: "25", label: "$25" },
-                                  { value: "50", label: "$50" },
-                                  { value: "100", label: "$100" },
+                                  { value: "1", label: "1" },
+                                  { value: "3", label: "3" },
+                                  { value: "5", label: "5" },
+                                  { value: "10", label: "10" },
+                                  { value: "25", label: "25" },
+                                  { value: "50", label: "50" },
+                                  { value: "100", label: "100" },
+                                  { value: "500", label: "500" },
+                                  { value: "1000", label: "1000" },
                                 ]}
                                 placeholder=""
                                 isSearchable={false}
@@ -1222,7 +1332,52 @@ class CreateMatch extends Component {
                               />
                               {this.selectrequired(this.state.GameMode)}
                             </div>
-
+                            <div className="form-group">
+                              <label>InSign</label>
+                              <Select
+                                className="react-select default"
+                                classNamePrefix="react-select"
+                                name="InSign"
+                                value={this.state.inSign}
+                                onChange={this.setInSign}
+                                options={[
+                                  { value: "Dollar", label: "Dollar" },
+                                  { value: "Point", label: "Point" },
+                                ]}
+                                placeholder=""
+                                isSearchable={false}
+                              />
+                              
+                            </div>
+                            <div className="form-group">
+                              <label>OutSign</label>
+                              <Select
+                                className="react-select default"
+                                classNamePrefix="react-select"
+                                name="OutSign"
+                                value={this.state.outSign}
+                                onChange={this.setOutSign}
+                                options={[
+                                  { value: "Dollar", label: "Dollar" },
+                                  { value: "Point", label: "Point" },
+                                ]}
+                                placeholder=""
+                                isSearchable={false}
+                              />
+                              
+                            </div>
+                            <div className="form-group">
+                              <label>Rules</label>
+                              <Input
+                    type="text"
+                    className="form-control"
+                    name="name"
+                    value={this.state.Rules}
+                    onChange={this.setRules}
+                  />
+                              
+                            </div>
+                            
                             {this.state.message && (
                               <div className="form-group">
                                 <div

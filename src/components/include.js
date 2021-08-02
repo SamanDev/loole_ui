@@ -30,7 +30,7 @@ import {
   Tab
   
 } from "react-bootstrap";
-  export const  getQueryVariable  = (variable) =>{
+export const  getQueryVariable  = (variable) =>{
   var query = window.location.search.substring(1);
   var vars = query.split("&");
   for (var i = 0; i < vars.length; i++) {
@@ -40,6 +40,13 @@ import {
     }
   }
   return false;
+}
+export const  getPageVariable  = () =>{
+  var query = window.location.href;
+  var vars = query.split("/")[4];
+  console.log(vars)
+      return vars;
+    
 }
 export const isJson = (item) =>{
   item = typeof item !== "string"
@@ -81,6 +88,34 @@ export const  setAvatar  = (name) =>{
       else if(amount<40){return 'warning'}
       else if(amount>=40){return 'danger'}
      
+    }
+    export const  getMatchTitle  = (level,totalPlayer) =>{
+    var mTitle = "Round 1"
+    if(totalPlayer==4){
+      
+      if(level==1){mTitle = "SemiFinal"}
+      if(level==2){mTitle = "Final"}
+     
+    }
+    if(totalPlayer==8){
+     
+      if(level==2){mTitle = "SemiFinal"}
+      if(level==3){mTitle = "Final"}
+    }
+    if(totalPlayer==16){
+      if(level==2){mTitle = "Round 2"}
+      if(level==3){mTitle = "SemiFinal"}
+      if(level==5){mTitle = "Final"}
+      if(level==4){mTitle = "3rd Place"} 
+    }
+    if(totalPlayer==32){
+      if(level==2){mTitle = "Round 2"}
+      if(level==3){mTitle = "Round 3"}
+      if(level==4){mTitle = "SemiFinal"}
+      if(level==6){mTitle = "Final"}
+      if(level==5){mTitle = "3rd Place"} 
+    }
+      return mTitle
     }
     export const  getGroupBadge  = (sign,amount,classes) =>{
       var nAmount = parseInt(amount, 10);
@@ -543,14 +578,14 @@ if(res== 'Not Connected') {
   
           if(item.gameMode == 'Tournament'||item.gameMode == 'League'){_mode = item.gameMode}
           if(item.gameMode == 'Tournament'||item.gameMode == 'League'){
-            _mode = " $"+(item.totalPlayer * item.amount)*90/100+' '
+           // _mode = " $"+(item.totalPlayer * item.amount)*90/100+' '
             //_color = 'orange'
           }
           if (item.winner)  {
           if (item.winner !== null)  {_mode = setAvatar(item.winner)}
           }
           return (
-            <Link  to={'/panel/lobby?id='+item.id}>
+            <Link  to={'/panel/lobby?ref='+getPageVariable() +'&id='+item.id}>
             <Card className="card-user chall" >
             <Card.Header className="no-padding">
               <div className="card-image">
@@ -626,7 +661,7 @@ if(res== 'Not Connected') {
   <Col className="text-muted text-right" xs="5">
   <small className="text-muted"><FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)}  /> {item.gameConsole}<br/></small>
  
-  {getGroupBadge('dollar',item.amount,'small right')}
+  {getGroupBadge(item.inSign,item.amount,'small right')}
                                      
   
   <small className="text-muted">{item.players.length}/{item.totalPlayer}<br/></small>
@@ -699,7 +734,7 @@ if(res== 'Not Connected') {
   
   <Col className="text-muted text-right">
  
-  {getGroupBadge('coin',item.cost,'small right')}
+  {getGroupBadge('point',item.cost,'small right')}
       
     </Col>
   </Row>

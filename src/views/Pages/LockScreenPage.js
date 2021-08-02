@@ -59,7 +59,7 @@ import {
   getGroupBadgePrice,
   getModalTag,
   getGameTag,
-  
+  getMatchTitle,
   haveGameTag,
   isJson
 } from "components/include";
@@ -419,7 +419,9 @@ class LockScreenPage extends Component {
     });
     let uploadInfo = new FormData();
     uploadInfo.append("id", this.state.eventid);
+    if(this.state.matchid){uploadInfo.append("idMatch", this.state.matchid);}
     uploadInfo.append("file", this.state.selectedFile);
+    
     //console.log(uploadInfo);
     axios
       .post(API_URL_TEST + "uploadFile", uploadInfo, {
@@ -796,6 +798,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
     
       //matchidFind = lists.filter( (list) => list.id === );
     }
+    //matchidFind.status = 'InPlay'
     var timestamp = item.expire;
     // console.log(timestamp);
     if (timestamp.indexOf("-") > -1) {
@@ -812,6 +815,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
 
     var dateNow = now.toISOString();
     var dateExpired = item.expire;
+    
     if (matchidFind && item.gameMode != "Tournament") {
       if (!item.players[1]) {
         item.players.push(nullplayer);
@@ -851,6 +855,18 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
               chats={matchidFind.matchChats}
             />
           ) : (
+            <>
+            {this.state.matchid ? (
+            <Chatbar
+              eventID={eventid}
+              matchID={this.state.matchid}
+              eventstatus={item.status}
+              masterplayer={matchidFind.matchPlayers[0].username}
+              secondplayer={matchidFind.matchPlayers[1].username}
+              eventchats="null"
+              chats={matchidFind.matchChats}
+            />
+          ) : (
             <Chatbar
               eventID={eventid}
               eventstatus={item.status}
@@ -859,6 +875,9 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
               eventchats={item.chats}
               chats="null"
             />
+          )}
+            </>
+           
           )}
 
           <div className="main-panel lobby">
@@ -872,14 +891,30 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
 
               <div className="content d-flex align-items-center p-0">
                 <Container style={{ marginTop: 50 }}>
-                
-                                  <Button
+                {(getQueryVariable("matchid")) ? (
+                              
+                              <Link to={"/panel/lobby?id="+item.id} className="btn btn-danger btn-round "> Back </Link>
+                            ):(
+                              <>
+                              {getQueryVariable("ref")? (
+                              
+                              <Link to={"/panel/"+getQueryVariable("ref")} className="btn btn-danger btn-round "> Back </Link>
+                              ):(
+                                <Link to="/panel/dashboard" className="btn btn-danger btn-round "> Back </Link>
+                                )}
+                                </>
+                            )}
+                             
+                             
+                              <Button
                                     className="btn-round hid2e"
                                     onClick={this.handleDelete}
-                                    variant="danger"
+                                    variant="primary"
                                   >
                                     Delet Match
                                   </Button>
+                                 
+                                  
                                
                   {item.gameMode == "League" ? (
                     <Col className="mx-auto" lg="10" md="11">
@@ -897,7 +932,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                 fontSize: "20px",
                               }}
                             >
-                              {getGroupBadge("dollar", item.amount, "")}
+                              {getGroupBadge(item.inSign, item.amount, "")}
                               <h5 style={{ marginTop: 5 }}>
                                 {item.gameName} <br />
                                 <small>{item.gameMode}</small> <br />
@@ -909,7 +944,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                   {item.gameConsole}
                                 </small>
                               </h5>
-                              {getGroupBadgePrice("dollar", item.amount*item.totalPlayer*90/100 , "")}
+                              {getGroupBadgePrice(item.outSign, item.amount*item.totalPlayer*90/100 , "")}
                               <small>
                                 {item.players.map((user, z) => (
                                   <span key={z}>
@@ -1032,7 +1067,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                       variant="danger"
                                       disabled={this.state.isloading}
                                     >
-                                      Join Match ${item.amount}
+                                      Join Match {item.outSign.replace('Dollar','$')}  {item.amount}
                                     </Button>
                                   )}
                                 </VerticalTimelineElement>
@@ -1154,7 +1189,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                   <h3 className="vertical-timeline-element-title">
                                     Prizes
                                     <div style={{position:'relative',zIndex:1,margin:20}}>
-                                    {getGroupBadgePrice("dollar", item.amount*item.totalPlayer*90/100 , "")}
+                                    {getGroupBadgePrice(item.outSign, item.amount*item.totalPlayer*90/100 , "")}
                                     </div>
                                   </h3>
                                   <h4 className="vertical-timeline-element-subtitle">
@@ -1187,7 +1222,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                           <span className="cur" style={{float:'left'}}><img
                                 alt={"loole dollar"}
                                
-                                src={"/assets/images/dollar.svg"}
+                                src={"/assets/images/"+item.outSign+".svg"}
                               ></img></span>
                               <CurrencyFormat value={item.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">&nbsp; <b>{value}</b></span>} />
                                          
@@ -1412,7 +1447,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                   <h3 className="vertical-timeline-element-title">
                                     League Rules
                                   </h3>
-                                  <span id="jsonhtml"></span>
+                                  <p id="jsonhtml"></p>
                                   <span id="jsonhtml2" className="hide">
                                     {item.rules}
                                   </span>
@@ -1441,7 +1476,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                     fontSize: "20px",
                                   }}
                                 >
-                                  {getGroupBadge("dollar", item.amount, "")}
+                                  {getGroupBadge(item.inSign, item.amount, "")}
                                   <h5 style={{ marginTop: 5 }}>
                                     {item.gameName} <br />
                                     <small>{item.gameMode}</small> <br />
@@ -1453,7 +1488,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                       {item.gameConsole}
                                     </small>
                                   </h5>
-                                  {getGroupBadgePrice("dollar", item.amount*item.totalPlayer*90/100 , "")}
+                                  {getGroupBadgePrice(item.outSign, item.amount*item.totalPlayer*90/100 , "")}
                                   <small>
                                     {item.players.map((user, z) => (
                                       <span key={z}>
@@ -1554,14 +1589,14 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                       </h3>
                                       
                                       {!isJoin && item.totalPlayer > item.players.length && (
-                                        <h4 className="vertical-timeline-element-subtitle">
+                                        <h4 className="vertical-timeline-element-subtitle"  style={{paddingBottom:0}}>
                                         <Button
-                                          className="btn-round"
+                                          className="btn-roun2d"
                                           onClick={this.handleJoinMatch}
                                           variant="danger"
                                           disabled={this.state.isloading}
                                         >
-                                          Join Match ${item.amount}
+                                          <b>Join Tournament</b><br/> {item.outSign.replace('Dollar','$')} <CurrencyFormat value={item.amount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
                                         </Button>
                                         </h4>
                                       )}
@@ -1659,7 +1694,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                                     as="h3"
                                                     style={{ color: "#fff" }}
                                                   >
-                                                    {match.title}
+                                                    {getMatchTitle(hatchbackCar[0].level,item.totalPlayer)}
                                                   </Card.Title>
                                                   <Countdown
                                                     renderer={renderer}
@@ -1683,13 +1718,14 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                                   hatchbackCar.map(
                                                     (mtch, z) => {
                                                       var avSize = 30;
-                                                      if (match.title == 'SemiFinal') {
+                                                      var avT = getMatchTitle(hatchbackCar[0].level,item.totalPlayer);
+                                                      if (avT == 'SemiFinal') {
                                                         avSize = 40;
                                                       }
-                                                      if (match.title == 'Final') {
+                                                      if (avT == 'Final') {
                                                         avSize = 60;
                                                       }
-                                                      if (match.title == '3rd Place') {
+                                                      if (avT == '3rd Place') {
                                                         avSize = 50;
                                                       }
                                                       return (
@@ -1843,7 +1879,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                   <h3 className="vertical-timeline-element-title">
                                     Prizes
                                     <div style={{position:'relative',zIndex:1,margin:20}}>
-                                    {getGroupBadgePrice("dollar", item.amount*item.totalPlayer*90/100 , "")}
+                                    {getGroupBadgePrice(item.outSign, item.amount*item.totalPlayer*90/100 , "")}
                                     </div>
                                   </h3>
                                   
@@ -1852,9 +1888,9 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                   >
                                     <ListGroup>
                                       {item.current_brackets.map(
-                                        (item, i) => {
+                                        (win, i) => {
                                           icStart = icStart + 1;
-                                          icEnd = icEnd + parseInt(item.number);
+                                          icEnd = icEnd + parseInt(win.number);
                                           var icShow = "#" + icStart;
                                           if (icStart != icEnd) {
                                             icShow = icShow + " - #" + icEnd;
@@ -1865,15 +1901,15 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                               <ListGroup.Item>
                                                 <span style={{ fontSize: 17 }}>
                                                   {" "}
-                                                  {icShow} <small> - %{item.percent}</small>
+                                                  {icShow} <small> - %{win.percent}</small>
                                                 </span>
-                                                <Badge variant={getColor(item.prize)} className={"badgegroup"}>
+                                                <Badge variant={getColor(win.prize)} className={"badgegroup"}>
                                           <span className="cur" style={{float:'left'}}><img
                                 alt={"loole dollar"}
                                
-                                src={"/assets/images/dollar.svg"}
+                                src={"/assets/images/"+item.outSign+".svg"}
                               ></img></span>
-                              <CurrencyFormat value={item.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">&nbsp; <b>{value}</b></span>} />
+                              <CurrencyFormat value={win.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">&nbsp; <b>{value}</b></span>} />
                                          
                                           </Badge>
                                                
@@ -1900,9 +1936,9 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                       }}
                                     >
                                       <h3 className="vertical-timeline-element-title">
-                                        League Rules
+                                        Tournament Rules
                                       </h3>
-                                      <span id="jsonhtml"></span>
+                                      <p id="jsonhtml"></p>
                                       <span id="jsonhtml2" className="hide">
                                         {" "}
                                         {item.rules}
@@ -1950,7 +1986,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                             }}
                                           >
                                             {getGroupBadge(
-                                              "dollar",
+                                              item.outSign,
                                               item.amount,
                                               ""
                                             )}
@@ -1971,7 +2007,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                               </small>
                                             </h5>
                                            
-                              {getGroupBadgePrice("dollar", item.amount*item.totalPlayer*90/100 , "")}
+                              {getGroupBadgePrice(item.outSign, item.amount*item.totalPlayer*90/100 , "")}
                              
                                           </Col>
                                         )}
@@ -2102,10 +2138,12 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                             <Card.Body>
                               <Row>
                                 <Col xs="12">
+                                <h2>{getMatchTitle(matchidFind.level,item.totalPlayer)}</h2>
                                 {(matchidFind.status == 'Pending') && (
                                     <>
                                   
                                   <h3>
+                                  
                                   <small className="text-muted">Start at</small><br/>
                                               <Countdown
                                                   renderer={renderer}
@@ -2292,23 +2330,30 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                         </td>
                                       </tr>
                                       <tr>
-                                        <td>Match ID</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {matchidFind.id}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Status</td>
+                                        <td>Event Status</td>
 
                                         <td style={{ textAlign: "right" }}>
                                           {item.status}
                                         </td>
                                       </tr>
                                       <tr>
+                                        <td>Match ID</td>
+                                        <td style={{ textAlign: "right" }}>
+                                          {matchidFind.id}
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>Match Status</td>
+
+                                        <td style={{ textAlign: "right" }}>
+                                          {matchidFind.status}
+                                        </td>
+                                      </tr>
+                                      <tr>
                                         <td>Prizes</td>
 
                                         <td style={{ textAlign: "right" }}>
-                                          ${item.amount*item.totalPlayer*90/100}
+                                          {item.outSign.replace('Dollar','$')} <CurrencyFormat value={item.amount*item.totalPlayer*90/100} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
                                         </td>
                                       </tr>
                                       {item.current_brackets.map(
@@ -2320,7 +2365,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                             return (
                                               <tr>
                                               <td>{icShow}</td>
-                                              <td style={{ textAlign: "right" }}>${win.prize}</td>
+                                              <td style={{ textAlign: "right" }}>{item.outSign.replace('Dollar','$')} <CurrencyFormat value={win.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} /></td>
                                                 </tr>
                                             );
                                           
@@ -2582,7 +2627,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                                         this.state.isloading
                                                       }
                                                     >
-                                                      Join Match ${item.amount}
+                                                      Join Match {item.outSign.replace('Dollar','$')}  {item.amount}
                                                     </Button>
                                                   )}
                                                 </>

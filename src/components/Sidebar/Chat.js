@@ -55,6 +55,7 @@ class Chatbar extends Component {
       
       isLoading: false,
       eventID: this.props.eventID,
+      matchid: this.props.matchID,
       eventstatus: this.props.eventstatus,
       chats: this.props.chats,
       eventchats: this.props.eventchats,
@@ -86,37 +87,72 @@ this.setState({
           
           isLoading:true
         });
-    userService.sendChat(this.state.messageBox, this.state.eventID).then(
-      (response) => {
-        this.setState({
-          messageBox: "",
-          isLoading:false
-        });
-        const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
-        
-        Toast.fire({
-          icon: 'success',
-          title: 'Saved.'
-        })
-      },
-      (error) => {
-        alert(error.message)
-        this.setState({
-         
-          isLoading:false
-        });
-      }
-    );
+        if(this.state.matchid){
+          userService.sendChatMatch(this.state.messageBox, this.state.eventID,this.state.matchid).then(
+            (response) => {
+              this.setState({
+                messageBox: "",
+                isLoading:false
+              });
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+              
+              Toast.fire({
+                icon: 'success',
+                title: 'Saved.'
+              })
+            },
+            (error) => {
+              alert(error.message)
+              this.setState({
+               
+                isLoading:false
+              });
+            }
+          );
+        }else{
+          userService.sendChat(this.state.messageBox, this.state.eventID).then(
+            (response) => {
+              this.setState({
+                messageBox: "",
+                isLoading:false
+              });
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+              
+              Toast.fire({
+                icon: 'success',
+                title: 'Saved.'
+              })
+            },
+            (error) => {
+              alert(error.message)
+              this.setState({
+               
+                isLoading:false
+              });
+            }
+          );
+        }
+    
   }
   
   
@@ -131,11 +167,11 @@ this.setState({
         finalChat.push(item)
       })}
     }
-    
+    if(eventchats!='null'){
     {eventchats.map((item, i) => {
       finalChat.push(item)
     })}
-    
+  }
     // this creates the intial state of this component based on the collapse routes
     // that it gets through routes prop
 
@@ -158,12 +194,11 @@ this.setState({
             >
               <Card.Header>
               {(getQueryVariable("matchid")) ? (
-                              
-                <Link to={"/panel/lobby?id="+evntID}>Back</Link>
+                  <h4 style={{ margin: "10px 0px" }}>Match Lobby</h4>
               ):(
-                <Link to={"/panel/dashboard"}  >Back</Link>
+                <h4 style={{ margin: "10px 0px" }}>Lobby</h4>
               )}
-                <h4 style={{ margin: "10px 0px" }}>Match Lobby</h4>
+                
                 <h4 style={{ margin: "10px 0px" }}>{currentUser.username}</h4>
               </Card.Header>
               <Card.Body
@@ -406,12 +441,12 @@ this.setState({
                                   </>
                                 )}
                         
-                           {i == finalChat.length-1 &&  (
+                           {i == finalChat.length-1 && !this.state.matchid &&  (
                               <>
                               
                               <p
                             key={i}
-                            className="sys-quote alertmsg text-center alert-danger ">
+                            className="sys-quote alertmsg text-center alert-danger hide">
                            
                              
                                     Match Created.

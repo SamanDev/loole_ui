@@ -43,7 +43,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      events: userService.getCurrentEvent(),
+      events: null,
       products: Market.getMarketplace
     };
 
@@ -65,7 +65,7 @@ class Dashboard extends Component {
 
   render() {
     
-    if (!this.state.events.length){
+    if (!this.state.events){
       userService.getEvents();
       
       return <h4 style={{textAlign: "center"}}>Loading 

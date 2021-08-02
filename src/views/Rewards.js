@@ -39,31 +39,33 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      events: userService.getCurrentEvent()
+      events: null
     };
   }
 
+  
   componentDidMount() {
+  
+      
     eventBus.on("eventsData", (event) => {
       // console.log("socket events: "+events);
-
+    
       this.setState({ events: event, isLoading: false });
-      console.log("change state: " + this.state.isLoading);
+     // console.log("change state: " + this.state.isLoading);
+      
     });
+
   }
+  
 
   render() {
-    if (!this.state.events.length) {
+    if (!this.state.events){
       userService.getEvents();
-
-      return (
-        <h4 style={{ textAlign: "center" }}>
-          Loading
-          <Spinner animation="grow" size="sm" />
-          <Spinner animation="grow" size="sm" />
-          <Spinner animation="grow" size="sm" />
-        </h4>
-      );
+      
+      return <h4 style={{textAlign: "center"}}>Loading 
+      <Spinner animation="grow" size="sm" />
+      <Spinner animation="grow" size="sm" />
+      <Spinner animation="grow" size="sm" /></h4>;
     }
 
     let { events, isLoading } = this.state;
@@ -126,14 +128,14 @@ class Dashboard extends Component {
             <Card>
               <Card.Header >
               <img
-                            alt="loole coin"
+                            alt="loole Point"
                            
-                            src="/assets/images/coin.svg"
+                            src="/assets/images/Point.svg"
                             style={{float:'left',marginRight:10,width:80}}
                           ></img>
-                <Card.Title as="h4"> Earn Free Coins!</Card.Title>
+                <Card.Title as="h4"> Earn Free Points!</Card.Title>
                 <p className="card-category">
-                Maximise your daily earning by taking advantage of Repeat.gg's bonuses and start earning free coins every day. You can earn coins by logging in, playing games, inviting friends and many other ways. Then all you have to do is go to the market place and spend your spare coins on plenty of great things. It's that simple!
+                Maximise your daily earning by taking advantage of Repeat.gg's bonuses and start earning free Points every day. You can earn Points by logging in, playing games, inviting friends and many other ways. Then all you have to do is go to the market place and spend your spare Points on plenty of great things. It's that simple!
                 </p>
               </Card.Header>
 
@@ -150,21 +152,21 @@ class Dashboard extends Component {
                 <p className="card-category">
                   When a friend you have invited plays their first challenge you
                   will receive <img
-                            alt="loole coin"
+                            alt="loole Point"
                            
-                            src="/assets/images/coin.svg"
-                            className="coinicon"
+                            src="/assets/images/Point.svg"
+                            className="Pointicon"
                           ></img> 1,000 and they will receive <img
-                          alt="loole coin"
+                          alt="loole Point"
                          
-                          src="/assets/images/coin.svg"
-                          className="coinicon"
+                          src="/assets/images/Point.svg"
+                          className="Pointicon"
                         ></img> 500. Then for every
                   challenge they play on the site you get an extra <img
-                            alt="loole coin"
+                            alt="loole Point"
                            
-                            src="/assets/images/coin.svg"
-                            className="coinicon"
+                            src="/assets/images/Point.svg"
+                            className="Pointicon"
                           ></img> 20 per game
                   they play for life.
                 </p>
@@ -190,54 +192,14 @@ https://www.repeat.gg/i/salidesign
               </Card.Header>
 
               <ListGroup variant="flush">
-    <ListGroup.Item className="d-flex justify-content-between align-items-center">Compete in a coins tournament {getGroupBadge('coin','20','small right')}</ListGroup.Item>
-    <ListGroup.Item className="d-flex justify-content-between align-items-center">Compete in a real money tournament {getGroupBadge('coin','100','small right')}</ListGroup.Item>
+    <ListGroup.Item className="d-flex justify-content-between align-items-center">Compete in a Points tournament {getGroupBadge('Point','20','small right')}</ListGroup.Item>
+    <ListGroup.Item className="d-flex justify-content-between align-items-center">Compete in a real money tournament {getGroupBadge('Point','100','small right')}</ListGroup.Item>
     <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
   </ListGroup>
             </Card>
           </Col>
         </Row>
 
-        <Row>
-          <Col md="12" style={{ overflow: "hidden" }}>
-            <Tab.Container id="matches-tabs" defaultActiveKey="all-match">
-              <div style={{ width: "90vw", overflow: "auto" }}>
-                <Nav role="tablist" variant="tabs" style={{ minWidth: 600 }}>
-                  <Nav.Item>
-                    <Nav.Link eventKey="all-match">All</Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link eventKey="mob-match">Mobile</Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link eventKey="con-match">Console</Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link eventKey="tour-match">Tournament</Nav.Link>
-                  </Nav.Item>
-                </Nav>
-              </div>
-              <Card>
-                <Card.Body>
-                  <Tab.Content>
-                    <Tab.Pane eventKey="all-match">
-                      <Row>{getBlockChallenge("all")}</Row>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="mob-match">
-                      <Row>{getBlockChallenge("Mobile")}</Row>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="con-match">
-                      <Row>{getBlockChallenge("NoMobile")}</Row>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="tour-match">
-                      <Row>{getBlockChallenge("Tournament")}</Row>
-                    </Tab.Pane>
-                  </Tab.Content>
-                </Card.Body>
-              </Card>
-            </Tab.Container>
-          </Col>
-        </Row>
       </>
     );
   }

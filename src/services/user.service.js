@@ -53,6 +53,20 @@ class UserService {
         }
       });
   }
+  sendChatMatch(message, id,idMatch) {
+
+    return axios
+      .put(
+        API_URL_TEST + "sendChatMatch",
+        { message, id ,idMatch},
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        if (response.data.accessToken) {
+
+        }
+      });
+  }
   sendChatUpload(uploadInfo) {
     const [selectedFiles, setSelectedFiles] = useState([])
     const [progress, setProgress] = useState()
@@ -223,11 +237,11 @@ class UserService {
       //this.getEvents(token)
     }
   }
-  createTournament(gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer) {
+  createTournament(gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer,tournamentPayout,inSign,outSign,rules) {
     return axios
       .post(
         API_URL_TEST + "createEvent",
-        { gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer },
+        { gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer,tournamentPayout,inSign,outSign,rules },
         { headers: authHeader() }
       )
       .then((response) => {
@@ -254,11 +268,11 @@ class UserService {
         return response.data;
       });
   }
-  createLeague(gameName, gameConsole, gameMode, amount, start, finished,totalPlayer,tournamentPayout) {
+  createLeague(gameName, gameConsole, gameMode, amount, start, finished,totalPlayer,tournamentPayout,inSign,outSign,rules) {
     return axios
       .post(
         API_URL_TEST + "createEvent",
-        { gameName, gameConsole, gameMode, amount, start, finished,totalPlayer,tournamentPayout },
+        { gameName, gameConsole, gameMode, amount, start, finished,totalPlayer,tournamentPayout,inSign,outSign,rules },
         { headers: authHeader() }
       )
       .then((response) => {

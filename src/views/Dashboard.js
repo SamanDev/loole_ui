@@ -193,7 +193,7 @@ class Dashboard extends Component {
                       <Card.Title as="h4"><img
                             alt="loole coin"
                            
-                            src="/assets/images/coin.svg"
+                            src="/assets/images/point.svg"
                           ></img> 1,000</Card.Title>
                     </div>
                   </Col>
