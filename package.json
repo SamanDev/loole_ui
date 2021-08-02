@@ -40,6 +40,7 @@
     "react-jvectormap": "0.0.16",
     "react-medium-editor": "^1.8.1",
     "react-notification-alert": "0.0.13",
+    "react-numeric-input": "^2.2.3",
     "react-rainbow-components": "^1.25.0",
     "react-responsive-navbar": "^1.0.11",
     "react-router": "5.2.0",

@@ -13,6 +13,7 @@ import { withRouter } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import AuthService from "services/auth.service";
+import NumericInput from 'react-numeric-input';
 
 import userService from "services/user.service";
 // react-bootstrap components
@@ -42,7 +43,11 @@ import {
   getIcon,
   renderer,
   printMatchBlock,
-  getModalTag
+  isJson,
+  getModalTag,
+  getGameTag,
+  getMatchTitle,
+  haveGameTag,
 } from "components/include";
 import Games from "server/Games";
 var allValid = true;
@@ -200,17 +205,23 @@ class CreateMatch extends Component {
     this.setAvalableFor = this.setAvalableFor.bind(this);
     this.setStartTime = this.setStartTime.bind(this);
     this.selectrequired = this.selectrequired.bind(this);
-    this.handleSaveTags = this.handleSaveTags.bind(this);
+    
     this.setInSign = this.setInSign.bind(this);
     this.setOutSign = this.setOutSign.bind(this);
     this.setRules = this.setRules.bind(this);
+    this.setPrize = this.setPrize.bind(this);
+    this.handleSaveTags = this.handleSaveTags.bind(this);
+    this.handleTagForm = this.handleTagForm.bind(this);
+    this.setSelectedTag = this.setSelectedTag.bind(this);
+    this.setUserTag = this.setUserTag.bind(this);
 
     this.state = {
-      GameName: getBlockGamesVal("All"),
-      GameMode: getBlockGameModesVal(getBlockGamesVal("All")),
+      GName: { value: "", label: "" },
+      GameMode: { value: "", label: "" },
       TournamentMode: getBlockTournamentVal(10, 4),
       gamemaplocal: [],
-      BetAmount: { value: "10", label: "$10" },
+      BetAmount: 10,
+      Prize: '',
       AvalableFor: { value: "60", label: "1 Hour" },
       StartTime: { value: "60", label: "1 Hour Later" },
       loading: false,
@@ -223,10 +234,83 @@ class CreateMatch extends Component {
       StartTimeLeague:"2021-08-28T19:55:10.0000",
       EndTimeLeague:"2021-09-12T16:15:10.0000",
       TotalPlayer:200,
-      TournamentPayout:"2-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00"
+      TournamentPayout:"2-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00",
+      gameName: '',
+        gamePlatform: '',
+        gameID: '',
+        gameNickname: '',
     };
   }
-
+  setSelectedGameName(e) {
+    
+    //this.handleTagForm(e,getBlockGameModesVal(e))
+  }
+  setSelectedTag(e,p) {
+    this.setState({
+      gameName: e.replace(' Warzone',''),
+      gamePlatform: p
+    });
+    
+    this.handleTagForm(e.replace(' Warzone',''),p)
+  }
+  setUserTag(e) {
+    this.setState({
+      currentUserTag: e
+    });
+    
+  }
+handleTagForm(game,platform) {
+   
+                const resetPw = async () => {
+                  const swalval = await Swal.fire(getModalTag(game));
+        
+                  let v = (swalval && swalval.value) || swalval.dismiss;
+                  console.log(swalval);
+                  if (v) {
+                    if (v.tagid) {
+                      
+                        if (v.tagid == game+"2") {
+                          this.handleTagForm(game+'2')
+                        }else if (v.tagid == game+"3") {
+                          this.handleTagForm(game+'3')
+                        }else{
+                          this.setState({
+                            gameID: '',
+                            gameNickname: '',
+                          });
+                          if (v.tagid != "") {
+                            this.setState({
+                              gameID: v.tagid.replace('#',''),
+                              
+                            });
+                          }
+                          if (v.tagname && v.tagname != "") {
+                            this.setState({
+                              gameNickname: v.tagname,
+                              
+                            });
+                          }
+                          if (v.tagplatform && v.tagplatform != "") {
+                            this.setState({
+                              gamePlatform: v.tagplatform,
+                              
+                            });
+                          }
+                          
+                            console.log(this.state);
+                            this.handleSaveTags();
+                          
+                        }
+                        
+                      }
+                      
+                      //setformdata(swalval);
+                      
+                    
+                  }
+                };
+                resetPw();
+              }
   selectrequired(value) {
     if (!value) {
       allValid = false;
@@ -243,9 +327,10 @@ class CreateMatch extends Component {
   }
   setGameName(e) {
     this.setState({
-      GameName: e,
+      GName: e,
       GameMode: getBlockGameModesVal(e),
     });
+    
   }
   setInSign(e) {
     this.setState({
@@ -261,7 +346,13 @@ class CreateMatch extends Component {
     this.setState({
       Rules: e.target.value
     });
-    console.log(this.state.Rules)
+    
+  }
+  setPrize(e) {
+    this.setState({
+      Prize: e.target.value
+    });
+    
   }
   setTournamentMode(e) {
     this.setState({
@@ -275,11 +366,12 @@ class CreateMatch extends Component {
     });
   }
   setBetAmount(e) {
+    console.log(e)
     this.setState({
       BetAmount: e,
     });
 
-    this.setTournamentMode(getBlockTournamentVal(e.value, 4));
+    //this.setTournamentMode(getBlockTournamentVal(e, this.state.TournamentMode));
   }
   setAvalableFor(e) {
     this.setState({
@@ -319,10 +411,10 @@ class CreateMatch extends Component {
         });
         userService
           .createEvent(
-            this.state.GameName.value.split(" - ")[0],
-            this.state.GameName.value.split(" - ")[1],
+            this.state.GName.value.split(" - ")[0],
+            this.state.GName.value.split(" - ")[1],
             this.state.GameMode.value,
-            this.state.BetAmount.value,
+            this.state.BetAmount,
             this.state.AvalableFor.value
           )
           .then(
@@ -357,39 +449,7 @@ class CreateMatch extends Component {
           }
         })
               }else if (response=='tagError'){
-                const resetPw = async () => {
-                  const swalval = await Swal.fire(getModalTag(this.state.GameName));
-        
-                  let v = (swalval && swalval.value) || swalval.dismiss;
-                  console.log(swalval);
-                  if (v) {
-                    if (v.tagid) {
-                      var tags = v.tagid.split("@@");
-                      if(tags.length==0){
-                        if (tags[0] != "") {
-                          this.setState({
-                            GameTag: v.tagid,
-                          });
-                          console.log(this.state);
-                          this.handleSaveTags();
-                        }
-                      }
-                      if(tags.length==1){
-                        if (tags[0] != "" && tags[1] != "") {
-                          this.setState({
-                            GameTag: v.tagid,
-                          });
-                          console.log(this.state);
-                          this.handleSaveTags();
-                        }
-                      }
-                      //setformdata(swalval);
-                      
-                    }
-                  }
-                };
-        
-                resetPw();
+                this.setSelectedTag(this.state.GName.value.split(" - ")[0],'Activition')
               }
             }
             },
@@ -420,16 +480,44 @@ class CreateMatch extends Component {
     }
   }
   handleSaveTags() {
+    Swal.fire({
+      title: '<br/>Please Wait...',
+      text: 'Is working..',
+      customClass:'tag',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      didOpen: () => {
+          Swal.showLoading()
+      }
+  })
+  
     userService
       .saveTags(
-        this.state.GameName.value.split(" - ")[0],
+       
+        this.state.gameName,
+        this.state.gamePlatform,
+        this.state.gameID,
+        this.state.gameNickname,
 
-        this.state.GameTag
       )
       .then(
         (response) => {
-          Swal.fire("", "Data saved successfully.", "success");
-          //this.props.history.push("/panel/dashboard");
+         
+          let jsonBool = isJson(response);
+   
+          if (jsonBool) {
+           
+              this.setUserTag(response)
+              localStorage.setItem("user", JSON.stringify(response));
+              Swal.fire("", "Data saved successfully.", "success");
+          
+          } else {
+           
+              Swal.fire("", response, "error");
+           
+          }
+        
         },
         (error) => {
           const resMessage =
@@ -453,11 +541,11 @@ class CreateMatch extends Component {
 
       userService
         .createTournament(
-          this.state.GameName.value.split(" - ")[0],
-          this.state.GameName.value.split(" - ")[1],
+          this.state.GName.value.split(" - ")[0],
+          this.state.GName.value.split(" - ")[1],
           'Tournament',
           
-          this.state.BetAmount.value,
+          this.state.BetAmount,
           this.state.StartTime.value,
           this.state.TournamentMode.value,
           '1-8, 65.00, 35.00|9-16, 50.00, 30.00, 20.00|17-64, 48.00, 27.00, 15.00, 10.00',
@@ -468,7 +556,7 @@ class CreateMatch extends Component {
         .then(
             
           (response) => {
-            if (response=='Create tournament successful'){
+            if (response=='Tournament event created.'){
               Swal.fire("", "Data saved successfully.", "success").then(
                 (result) => {
                   this.props.history.push("/panel/dashboard");
@@ -497,39 +585,7 @@ class CreateMatch extends Component {
         }
       })
             }else if (response=='tagError'){
-              const resetPw = async () => {
-                const swalval = await Swal.fire(getModalTag(this.state.GameName));
-      
-                let v = (swalval && swalval.value) || swalval.dismiss;
-                console.log(swalval);
-                if (v) {
-                  if (v.tagid) {
-                    var tags = v.tagid.split("@@");
-                    if(tags.length==0){
-                      if (tags[0] != "") {
-                        this.setState({
-                          GameTag: v.tagid,
-                        });
-                        console.log(this.state);
-                        this.handleSaveTags();
-                      }
-                    }
-                    if(tags.length==1){
-                      if (tags[0] != "" && tags[1] != "") {
-                        this.setState({
-                          GameTag: v.tagid,
-                        });
-                        console.log(this.state);
-                        this.handleSaveTags();
-                      }
-                    }
-                    //setformdata(swalval);
-                    
-                  }
-                }
-              };
-      
-              resetPw();
+              this.setSelectedTag(this.state.GName.value.split(" - ")[0],'Activition')
             }
           }
           },
@@ -569,10 +625,10 @@ class CreateMatch extends Component {
         });
         userService
           .createLeague(
-            this.state.GameName.value.split(" - ")[0],
-            this.state.GameName.value.split(" - ")[1],
+            this.state.GName.value.split(" - ")[0],
+            this.state.GName.value.split(" - ")[1],
             'League',
-            this.state.BetAmount.value,
+            this.state.BetAmount,
             this.state.StartTimeLeague,
             this.state.EndTimeLeague,
             this.state.TotalPlayer,
@@ -614,39 +670,7 @@ class CreateMatch extends Component {
           }
         })
               }else if (response=='tagError'){
-                const resetPw = async () => {
-                  const swalval = await Swal.fire(getModalTag(this.state.GameName));
-        
-                  let v = (swalval && swalval.value) || swalval.dismiss;
-                  console.log(swalval);
-                  if (v) {
-                    if (v.tagid) {
-                      var tags = v.tagid.split("@@");
-                      if(tags.length==0){
-                        if (tags[0] != "") {
-                          this.setState({
-                            GameTag: v.tagid,
-                          });
-                          console.log(this.state);
-                          this.handleSaveTags();
-                        }
-                      }
-                      if(tags.length==1){
-                        if (tags[0] != "" && tags[1] != "") {
-                          this.setState({
-                            GameTag: v.tagid,
-                          });
-                          console.log(this.state);
-                          this.handleSaveTags();
-                        }
-                      }
-                      //setformdata(swalval);
-                      
-                    }
-                  }
-                };
-        
-                resetPw();
+                this.setSelectedTag(this.state.GName.value.split(" - ")[0],'Activition')
               }
             }
             },
@@ -717,12 +741,12 @@ class CreateMatch extends Component {
                                 className="react-select default"
                                 classNamePrefix="react-select"
                                 name="GameName"
-                                value={this.state.GameName}
+                                value={this.state.GName}
                                 onChange={this.setGameName}
                                 options={getBlockGames("Match")}
                                 placeholder=""
                               />
-                              {this.selectrequired(this.state.GameName)}
+                              {this.selectrequired(this.state.GName)}
                             </div>
                             <div className="form-group">
                               <label>Mode</label>
@@ -732,7 +756,7 @@ class CreateMatch extends Component {
                                 name="GameMode"
                                 value={this.state.GameMode}
                                 onChange={this.setGameMode}
-                                options={getBlockGameModes(this.state.GameName)}
+                                options={getBlockGameModes(this.state.GName)}
                                 placeholder=""
                                 isSearchable={false}
                               />
@@ -740,22 +764,13 @@ class CreateMatch extends Component {
                             </div>
                             <div className="form-group">
                               <label>Bet</label>
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="BetAmount"
+                              <NumericInput min={1} step={1} max={1000} className="form-control"
+                    name="BetAmount"
                                 value={this.state.BetAmount}
-                                onChange={this.setBetAmount}
-                                options={[
-                                  { value: "5", label: "$5" },
-                                  { value: "10", label: "$10" },
-                                  { value: "25", label: "$25" },
-                                  { value: "50", label: "$50" },
-                                  { value: "100", label: "$100" },
-                                ]}
-                                placeholder=""
-                                isSearchable={false}
-                              />
+                                onChange={this.setBetAmount}/>
+                              
+                              
+                            
                               {this.selectrequired(this.state.BetAmount)}
                             </div>
                             <div className="form-group">
@@ -806,13 +821,14 @@ class CreateMatch extends Component {
                       </Form>
                     </Col>
                     <Col sm="5" md="4">
-                      <Card className="card-user chall">
+                      {(this.state.GName.value.indexOf(' - ') > -1) && (
+                        <Card className="card-user chall">
                         <Card.Header className="no-padding">
                           <div className="card-image">
                             <img
                               src={
                                 require("assets/images/games/" +
-                                  this.state.GameName.value.split(" - ")[0] +
+                                  this.state.GName.value.split(" - ")[0] +
                                   ".jpg").default
                               }
                             ></img>
@@ -842,7 +858,7 @@ class CreateMatch extends Component {
                           <Row>
                             <Col style={{ lineHeight: "30px" }}>
                               <Card.Title as="h4">
-                                {this.state.GameName.value.split(" - ")[0]}
+                                {this.state.GName.value.split(" - ")[0]}
                               </Card.Title>
                               <small className="text-muted">
                                 {this.state.GameMode.value}
@@ -878,16 +894,16 @@ class CreateMatch extends Component {
                                 <FontAwesomeIcon
                                   fixedWidth
                                   icon={getIcon(
-                                    this.state.GameName.value.split(" - ")[1]
+                                    this.state.GName.value.split(" - ")[1]
                                   )}
                                 />{" "}
-                                {this.state.GameName.value.split(" - ")[1]}
+                                {this.state.GName.value.split(" - ")[1]}
                               </small>
                               <br />
                               <Badge
-                                variant={getColor(this.state.BetAmount.value)}
+                                variant={getColor(this.state.BetAmount)}
                               >
-                                ${this.state.BetAmount.value}
+                                ${this.state.BetAmount}
                               </Badge>
                               <br />
                               <small className="text-muted">1/2</small>
@@ -913,6 +929,8 @@ class CreateMatch extends Component {
                           </Row>
                         </Card.Body>
                       </Card>
+                      )}
+                      
                     </Col>
                   </Row>
                 </Tab.Pane>
@@ -935,74 +953,23 @@ class CreateMatch extends Component {
                               <Select
                                 className="react-select default"
                                 classNamePrefix="react-select"
-                                name="GameName"
-                                value={this.state.GameName}
+                                name="GName"
+                                value={this.state.GName}
                                 onChange={this.setGameName}
                                 options={getBlockGames("Tournament")}
                                 placeholder=""
                               />
-                              {this.selectrequired(this.state.GameName)}
+                              {this.selectrequired(this.state.GName)}
                             </div>
-
                             <div className="form-group">
                               <label>Bet</label>
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="BetAmount"
+                              <NumericInput min={1} step={1} max={1000} className="form-control"
+                    name="BetAmount"
                                 value={this.state.BetAmount}
-                                onChange={this.setBetAmount}
-                                options={[
-                                  { value: "1", label: "1" },
-                                  { value: "3", label: "3" },
-                                  { value: "5", label: "5" },
-                                  { value: "10", label: "10" },
-                                  { value: "25", label: "25" },
-                                  { value: "50", label: "50" },
-                                  { value: "100", label: "100" },
-                                  { value: "500", label: "500" },
-                                  { value: "1000", label: "1000" },
-                                ]}
-                                placeholder=""
-                                isSearchable={false}
-                              />
+                                onChange={this.setBetAmount}/>
+                              
+                            
                               {this.selectrequired(this.state.BetAmount)}
-                            </div>
-                            <div className="form-group">
-                              <label>Mode</label>
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="TournamentMode"
-                                value={this.state.TournamentMode}
-                                onChange={this.setTournamentMode}
-                                options={getBlockTournament(
-                                  this.state.BetAmount.value
-                                )}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                              {this.selectrequired(this.state.TournamentMode)}
-                            </div>
-                            <div className="form-group">
-                              <label>Start Time</label>
-
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="StartTime"
-                                value={this.state.StartTime}
-                                onChange={this.setStartTime}
-                                options={[
-                                  { value: "1", label: "30 Minutes Later" },
-                                  { value: "60", label: "1 Hour Later" },
-                                  { value: "120", label: "2 Hours Later" },
-                                  { value: "360", label: "6 Hours Later" },
-                                ]}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                              {this.selectrequired(this.state.GameMode)}
                             </div>
                             <div className="form-group">
                               <label>InSign</label>
@@ -1020,6 +987,52 @@ class CreateMatch extends Component {
                                 isSearchable={false}
                               />
                               
+                            </div>
+                            <div className="form-group">
+                              <label>Mode</label>
+                              <Select
+                                className="react-select default"
+                                classNamePrefix="react-select"
+                                name="TournamentMode"
+                                value={this.state.TournamentMode}
+                                onChange={this.setTournamentMode}
+                                options={getBlockTournament(
+                                  this.state.BetAmount
+                                )}
+                                placeholder=""
+                                isSearchable={false}
+                              />
+                              {this.selectrequired(this.state.TournamentMode)}
+                            </div>
+                            <div className="form-group">
+                              <label>Start Time</label>
+
+                              <Select
+                                className="react-select default"
+                                classNamePrefix="react-select"
+                                name="StartTime"
+                                value={this.state.StartTime}
+                                onChange={this.setStartTime}
+                                options={[
+                                  { value: "30", label: "30 Minutes Later" },
+                                  { value: "60", label: "1 Hour Later" },
+                                  { value: "120", label: "2 Hours Later" },
+                                  { value: "3600", label: "6 Hours Later" },
+                                ]}
+                                placeholder=""
+                                isSearchable={false}
+                              />
+                              {this.selectrequired(this.state.GameMode)}
+                            </div>
+                            <div className="form-group">
+                              <label>Prize</label>
+                              <NumericInput min={1} step={1} max={1000} className="form-control"
+                    name="BetAmount"
+                    value={this.state.Prize}
+                    onChange={this.setPrize}/>
+
+                              
+                            
                             </div>
                             <div className="form-group">
                               <label>OutSign</label>
@@ -1077,13 +1090,14 @@ class CreateMatch extends Component {
                       </Form>
                     </Col>
                     <Col md="3">
+                    {(this.state.GName.value.indexOf(' - ') > -1) && (
                       <Card className="card-user chall">
                         <Card.Header className="no-padding">
                           <div className="card-image">
                             <img
                               src={
                                 require("assets/images/games/" +
-                                  this.state.GameName.value.split(" - ")[0] +
+                                  this.state.GName.value.split(" - ")[0] +
                                   ".jpg").default
                               }
                             ></img>
@@ -1093,7 +1107,7 @@ class CreateMatch extends Component {
                           <Row>
                             <Col style={{ lineHeight: "30px" }}>
                               <Card.Title as="h4">
-                                {this.state.GameName.value.split(" - ")[0]}
+                                {this.state.GName.value.split(" - ")[0]}
                               </Card.Title>
                               <small className="text-muted">Tournament</small>
                               <br />
@@ -1170,16 +1184,16 @@ class CreateMatch extends Component {
                                 <FontAwesomeIcon
                                   fixedWidth
                                   icon={getIcon(
-                                    this.state.GameName.value.split(" - ")[1]
+                                    this.state.GName.value.split(" - ")[1]
                                   )}
                                 />{" "}
-                                {this.state.GameName.value.split(" - ")[1]}
+                                {this.state.GName.value.split(" - ")[1]}
                               </small>
                               <br />
                               <Badge
-                                variant={getColor(this.state.BetAmount.value)}
+                                variant={getColor(this.state.BetAmount)}
                               >
-                                ${this.state.BetAmount.value}
+                                ${this.state.BetAmount}
                               </Badge>
                               <br />
                               <small className="text-muted">
@@ -1241,6 +1255,7 @@ class CreateMatch extends Component {
                           </Row>
                         </Card.Body>
                       </Card>
+                    )}
                     </Col>
                   </Row>
                 </Tab.Pane>
@@ -1263,37 +1278,23 @@ class CreateMatch extends Component {
                               <Select
                                 className="react-select default"
                                 classNamePrefix="react-select"
-                                name="GameName"
-                                value={this.state.GameName}
+                                name="GName"
+                                value={this.state.GName}
                                 onChange={this.setGameName}
                                 options={getBlockGames("League")}
                                 placeholder=""
                               />
-                              {this.selectrequired(this.state.GameName)}
+                              {this.selectrequired(this.state.GName)}
                             </div>
 
                             <div className="form-group">
                               <label>Bet</label>
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="BetAmount"
+                              <NumericInput min={1} step={1} max={1000} className="form-control"
+                    name="BetAmount"
                                 value={this.state.BetAmount}
-                                onChange={this.setBetAmount}
-                                options={[
-                                  { value: "1", label: "1" },
-                                  { value: "3", label: "3" },
-                                  { value: "5", label: "5" },
-                                  { value: "10", label: "10" },
-                                  { value: "25", label: "25" },
-                                  { value: "50", label: "50" },
-                                  { value: "100", label: "100" },
-                                  { value: "500", label: "500" },
-                                  { value: "1000", label: "1000" },
-                                ]}
-                                placeholder=""
-                                isSearchable={false}
-                              />
+                                onChange={this.setBetAmount}/>
+                              
+                            
                               {this.selectrequired(this.state.BetAmount)}
                             </div>
                             <div className="form-group">
@@ -1305,7 +1306,7 @@ class CreateMatch extends Component {
                                 value={this.state.TournamentMode}
                                 onChange={this.setTournamentMode}
                                 options={getBlockTournament(
-                                  this.state.BetAmount.value
+                                  this.state.BetAmount
                                 )}
                                 placeholder=""
                                 isSearchable={false}
@@ -1406,13 +1407,14 @@ class CreateMatch extends Component {
                       </Form>
                     </Col>
                     <Col md="3">
+                    {(this.state.GName.value.indexOf(' - ') > -1) && (
                       <Card className="card-user chall">
                         <Card.Header className="no-padding">
                           <div className="card-image">
                             <img
                               src={
                                 require("assets/images/games/" +
-                                  this.state.GameName.value.split(" - ")[0] +
+                                  this.state.GName.value.split(" - ")[0] +
                                   ".jpg").default
                               }
                             ></img>
@@ -1422,7 +1424,7 @@ class CreateMatch extends Component {
                           <Row>
                             <Col style={{ lineHeight: "30px" }}>
                               <Card.Title as="h4">
-                                {this.state.GameName.value.split(" - ")[0]}
+                                {this.state.GName.value.split(" - ")[0]}
                               </Card.Title>
                               <small className="text-muted">Tournament</small>
                               <br />
@@ -1499,16 +1501,16 @@ class CreateMatch extends Component {
                                 <FontAwesomeIcon
                                   fixedWidth
                                   icon={getIcon(
-                                    this.state.GameName.value.split(" - ")[1]
+                                    this.state.GName.value.split(" - ")[1]
                                   )}
                                 />{" "}
-                                {this.state.GameName.value.split(" - ")[1]}
+                                {this.state.GName.value.split(" - ")[1]}
                               </small>
                               <br />
                               <Badge
-                                variant={getColor(this.state.BetAmount.value)}
+                                variant={getColor(this.state.BetAmount)}
                               >
-                                ${this.state.BetAmount.value}
+                                ${this.state.BetAmount}
                               </Badge>
                               <br />
                               <small className="text-muted">
@@ -1570,6 +1572,8 @@ class CreateMatch extends Component {
                           </Row>
                         </Card.Body>
                       </Card>
+                    )
+                                    }
                     </Col>
                   </Row>
                 </Tab.Pane>

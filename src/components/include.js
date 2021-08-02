@@ -150,6 +150,7 @@ export const  setAvatar  = (name) =>{
          
         }
         export const getModalTag = (filtermode) => {
+          console.log(filtermode)
           if(filtermode.indexOf(' - ')>-1){
             var filter = filtermode.split(" - ")[0];
             var controlname = filtermode.split(" - ")[1];
@@ -501,14 +502,16 @@ export const  setAvatar  = (name) =>{
       };
       export const getCode = ( code ) => {
         
-       
+       if(code){
         return(
-            <span >
-            {code.split("").map(function(char, index){
-                return <span className="char" key={index}>{char}</span>;
-            })}
-            </span>
-        );
+          <span >
+          {code.toString().split("").map(function(char, index){
+              return <span className="char" key={index}>{char}</span>;
+          })}
+          </span>
+      );
+       }
+        
    
       
       };
@@ -538,6 +541,24 @@ if(res== 'Not Connected') {
    
       
       };
+      export const getPlayerTag = ( player,playerTags,mode ) => {
+        var val = '';
+  playerTags.map((tag, w) => {
+          
+    if (tag.username==player){
+if(mode== 'nickname') {
+  
+  val=tag.nickName
+}else{
+  val=tag.tagId
+}
+
+
+}
+})
+return (<b>{val}</b>)
+   };
+
       export const haveGameTag = ( game,userTags ) => {
         var res = 'Not Connected'
         var resName = ''
