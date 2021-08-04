@@ -151,6 +151,9 @@ class LockScreenPage extends Component {
     //this.handleTagForm(e,getBlockGameModesVal(e))
   }
   setSelectedTag(e,p) {
+    if(p=='PS4'||e=='PS4'){e='PSN';p='PSN';}
+  if(p=='PS5'||e=='PS5'){e='PSN';p='PSN';}
+  if(p=='XBOX'||e=='XBOX'){e='XBOX';p='XBOX';}
     this.setState({
       gameName: e.replace(' Warzone',''),
       gamePlatform: p
@@ -283,7 +286,7 @@ class LockScreenPage extends Component {
                   const swalval = await Swal.fire(getModalTag(game));
         
                   let v = (swalval && swalval.value) || swalval.dismiss;
-                  console.log(swalval);
+                  console.log(platform);
                   if (v) {
                     if (v.tagid) {
                       
@@ -370,7 +373,7 @@ class LockScreenPage extends Component {
               }
             });
           } else if (response == "tagError") {
-            this.setSelectedTag(this.state.events.gameName,'Activition')
+            this.setSelectedTag(this.state.events.gameName,this.state.events.gameConsole)
           }
         }
       },
@@ -1069,7 +1072,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                       variant="danger"
                                       disabled={this.state.isloading}
                                     >
-                                      Join Match {item.outSign.replace('Dollar','$')}  {item.amount}
+                                      Join Match {item.inSign.replace('Dollar','$')}  {item.amount}
                                     </Button>
                                   )}
                                 </VerticalTimelineElement>
@@ -1599,7 +1602,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                           variant="danger"
                                           disabled={this.state.isloading}
                                         >
-                                          <b>Join Tournament</b><br/> {item.outSign.replace('Dollar','$')} <CurrencyFormat value={item.amount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
+                                          <b>Join Tournament</b><br/> {item.inSign.replace('Dollar','$')} <CurrencyFormat value={item.amount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
                                         </Button>
                                         </h4>
                                       )}
@@ -2121,11 +2124,19 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                           )}
                                           </>
                                           )}
+                                          {(player.username && item.status=='InPlay') && (
+                                            <>
                                           {(isInPlayers) && (
                                             <>
-                                          <p>---------</p>
-                                          <p>{getPlayerTag(player.username,item.players,'tagid')}</p>
-                                          <p>{getPlayerTag(player.username,item.players,'nickname')}</p>
+                                          <div>---------</div>
+
+                                          <p><small className="text-muted">{getPlayerTag(player.username,item.players,'console',item.gameName)} ID</small><br/>{getPlayerTag(player.username,item.players,'tagid',item.gameName)}</p>
+                                          {(getPlayerTag(player.username,item.players,'nickname',item.gameName).length > 3) &&(
+                                            <p><small className="text-muted">Nickname</small><br/>{getPlayerTag(player.username,item.players,'nickname',item.gameName)}</p>
+                                          )}
+                                          
+                                          </>
+                                          )}
                                           </>
                                           )}
                                         </Col>
@@ -2629,7 +2640,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                                         this.state.isloading
                                                       }
                                                     >
-                                                      Join Match {item.outSign.replace('Dollar','$')}  {item.amount}
+                                                      Join Match {item.inSign.replace('Dollar','$')}  {item.amount}
                                                     </Button>
                                                   )}
                                                 </>

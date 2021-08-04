@@ -246,6 +246,9 @@ class CreateMatch extends Component {
     //this.handleTagForm(e,getBlockGameModesVal(e))
   }
   setSelectedTag(e,p) {
+    if(p=='PS4'||e=='PS4'){e='PSN';p='PSN';}
+  if(p=='PS5'||e=='PS5'){e='PSN';p='PSN';}
+  if(p=='XBOX'||e=='XBOX'){e='XBOX';p='XBOX';}
     this.setState({
       gameName: e.replace(' Warzone',''),
       gamePlatform: p
@@ -260,7 +263,9 @@ class CreateMatch extends Component {
     
   }
 handleTagForm(game,platform) {
-   
+  
+  
+  console.log(game);
                 const resetPw = async () => {
                   const swalval = await Swal.fire(getModalTag(game));
         
@@ -449,7 +454,8 @@ handleTagForm(game,platform) {
           }
         })
               }else if (response=='tagError'){
-                this.setSelectedTag(this.state.GName.value.split(" - ")[0],'Activition')
+                this.setSelectedTag(this.state.gameName,this.state.gameConsole)
+                this.setSelectedTag(this.state.GName.value.split(" - ")[0],this.state.GName.value.split(" - ")[1])
               }
             }
             },

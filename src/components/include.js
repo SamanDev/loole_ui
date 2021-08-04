@@ -531,6 +531,7 @@ if(res!=''&&game=='ClashRoyale')res='#'+res
    
 })
 }
+res=res.split('@@')[0]
 if(res== 'Not Connected') {
   return ( <p style={{opacity:.5}}><small className="text-muted"><b>{res}</b><br/>Click to connect</small></p>)
 }else{
@@ -541,22 +542,27 @@ if(res== 'Not Connected') {
    
       
       };
-      export const getPlayerTag = ( player,playerTags,mode ) => {
+      export const getPlayerTag = ( player,playerTags,mode,gameName ) => {
         var val = '';
   playerTags.map((tag, w) => {
           
     if (tag.username==player){
-if(mode== 'nickname') {
+      if(mode== 'nickname') {
   
-  val=tag.nickName
-}else{
+        val=tag.nickName
+      }else if(mode== 'console') {
+  
+        val=tag.gamePlatform
+        if(val=='Mobile'){val=gameName}
+      }else{
   val=tag.tagId
+  val=val.split('@@')[0]
 }
 
 
 }
 })
-return (<b>{val}</b>)
+return (val)
    };
 
       export const haveGameTag = ( game,userTags ) => {
@@ -567,7 +573,7 @@ if(userTags){
           
     if (tag.gameName==game){
 res=tag.tagId
-
+res=res.split('@@')[0]
     }
 
    
