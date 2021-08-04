@@ -53,7 +53,7 @@ class UserService {
         }
       });
   }
-  sendChatMatch(message, id,idMatch) {
+  sendChatMatch(message, id,) {
 
     return axios
       .put(
@@ -146,8 +146,18 @@ class UserService {
         return response.data;
       });
   }
-  loseEvent(id) {
-    return axios
+  loseEvent(id,idMatch) {
+    if(idMatch){
+      return axios
+      .put(API_URL_TEST + "loseEvent", { id,idMatch }, { headers: authHeader() })
+      .then((response) => {
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
+        return response.data;
+      });
+    }else{
+      return axios
       .put(API_URL_TEST + "loseEvent", { id }, { headers: authHeader() })
       .then((response) => {
         console.log("ok");
@@ -155,6 +165,7 @@ class UserService {
         //localStorage.setItem("user", JSON.stringify(response.data));
         return response.data;
       });
+    }    
   }
   leaveEvent(id) {
     return axios

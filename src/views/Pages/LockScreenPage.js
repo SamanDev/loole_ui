@@ -408,12 +408,23 @@ class LockScreenPage extends Component {
     this.setState({
       isloading: true,
     });
-    userService.loseEvent(this.state.eventid).then(
-      (response) => {
-        //this.props.history.push("/panel/dashboard");
-      },
-      (error) => {}
-    );
+    if(this.state.matchid){
+      userService.loseEvent(this.state.eventid,this.state.matchid).then(
+        (response) => {
+          //this.props.history.push("/panel/dashboard");
+        },
+        (error) => {}
+      );
+    }else{
+      userService.loseEvent(this.state.eventid).then(
+        (response) => {
+          //this.props.history.push("/panel/dashboard");
+        },
+        (error) => {}
+      );
+    }
+
+    
   }
   handleChatUpload = () => {
     this.setState({
@@ -2078,11 +2089,11 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                           <small> {player.username}</small>
                                           {(!this.state.matchid) && (
                                             <>
-                                          {(item.status == "Pending" ||
-                                            item.status == "Ready") && (
+                                          {(matchidFind.status == "Pending" ||
+                                            matchidFind.status == "Ready") && (
                                             <>
                                               <br />
-                                              {(item.status != "Ready" ||
+                                              {(matchidFind.status != "Ready" ||
                                                 player.username !=
                                                   currentUser.username) && (
                                                 <div
@@ -2097,7 +2108,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
 
                                               <div
                                                 style={
-                                                  item.status != "Ready" ||
+                                                  matchidFind.status != "Ready" ||
                                                   player.username !=
                                                     currentUser.username
                                                     ? { opacity: 0.5 }
@@ -2124,7 +2135,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                           )}
                                           </>
                                           )}
-                                          {(player.username && item.status=='InPlay') && (
+                                          {(player.username && matchidFind.status=='InPlay') && (
                                             <>
                                           {(isInPlayers) && (
                                             <>
@@ -2396,9 +2407,9 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                               <Card.Body>
                               <Row>
                                 <Col xs="12">
-                                  <h2>{item.status}</h2>
+                                  <h2>{matchidFind.status}</h2>
                                   {item.gameName == "ClashRoyale" &&
-                                  item.status == "InPlay" ? (
+                                  matchidFind.status == "InPlay" ? (
                                     <>
                                       <Button
                                         className="btn-fill btn-block btn-lg"
@@ -2421,7 +2432,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                         item.players[1].username ==
                                           currentUser.username) && (
                                         <>
-                                          {item.status == "InPlay" && (
+                                          {matchidFind.status == "InPlay" && (
                                             <>
                                               <p>Match Code</p>
 
@@ -2489,7 +2500,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                               </Row>
                                             </>
                                           )}
-                                          {item.status == "InPlay" && (
+                                          {matchidFind.status == "InPlay" && (
                                             <>
                                               <p>
                                                 <small className="text-muted">
@@ -2508,7 +2519,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                     </>
                                   )}
 
-                                  {item.status !== "" ? (
+                                  {matchidFind.status !== "" ? (
                                     <>
                                       {matchidFind.winner ? (
                                         <>
@@ -2538,8 +2549,8 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                         </>
                                       ) : (
                                         <>
-                                          {(item.status == "Pending" ||
-                                            item.status == "Ready") && (
+                                          {(matchidFind.status == "Pending" ||
+                                            matchidFind.status == "Ready") && (
                                             <>
                                               {item.players[0].username ==
                                                 currentUser.username ||
@@ -2558,7 +2569,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                                   </p>
                                                   {item.players[0].username &&
                                                   item.players[1].username &&
-                                                  item.status == "Ready" ? (
+                                                  matchidFind.status == "Ready" ? (
                                                     <>
                                                       <p
                                                         style={{
@@ -2723,13 +2734,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                           {item.gameMode}
                                         </td>
                                       </tr>
-                                      <tr>
-                                        <td>Status</td>
-
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.status}
-                                        </td>
-                                      </tr>
+                                      
                                     </tbody>
                                   </Table>
                                 </Card.Body>

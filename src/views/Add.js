@@ -552,7 +552,7 @@ handleTagForm(game,platform) {
           'Tournament',
           
           this.state.BetAmount,
-          this.state.StartTime.value,
+          "1",
           this.state.TournamentMode.value,
           '1-8, 65.00, 35.00|9-16, 50.00, 30.00, 20.00|17-64, 48.00, 27.00, 15.00, 10.00',
           this.state.inSign.value,
