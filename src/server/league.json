@@ -1,202 +1,127 @@
 {
-    "user": [],
-    "user_entry": [],
-    "user_position": "-",
-    "entries": [
-        {
-            "userame": "b5c7fcb7-aead-11eb-9160-0a8c1782b549",
-            "when_created": 1620334666,
-            "score": "1,847.30",
-            
-            
-            "user_game_region": {
-                
-                "id": 361163262,
-                "battletag": "iNewwz#1635",
-                "game_key": "cod-warzone",
-                "username": "iNewwz#1635",
-                "externalGameIdentity": "iNewwz#1635",
-                "platform": "battle",
-                "gameServiceKey": "battlenet",
-                "platformTag": "PC",
-                "playerName": "iNewwz#1635"
-            },
-            "resultsLength": 0
-        }
-        
-    ],
-    "last_update": "2021-05-17 14:46:12",
-    "current_brackets": [
-        {
-            "prize": 100,
-            "number": "1"
+    "id": "81e49689-f8b5-11eb-b97c-0a8c1782b549",
+    "entry_fee": 0,
+    "entry_types": [],
+    "score_template": {
+        "name": "COD - Battle Royal - Solo Duo Trio Squad V2 - 3 Games",
+        "game": {
+            "id": "38c36461-d646-11ea-9d58-06b29c596189",
+            "name": "Call of Duty: Warzone",
+            "shortName": "",
+            "sortOrder": 1,
+            "game_key": "cod-warzone",
+            "icon_tiny": "/img/games/fps/cod-warzone/cod-warzone_25x25.png",
+            "icon_small": "/img/games/fps/cod-warzone/cod-warzone_40x40.png",
+            "age_rating": 15
         },
-        {
-            "prize": 50,
-            "number": "1"
+        "regions": [],
+        "game_modes": null,
+        "game_modes_text": "Solo, Duo, Trio and Squad - PC and Console, Excludes Blood Money and Plunder",
+        "game_queues": [],
+        "special_terms_url": "https://www.repeat.gg/content/terms-and-conditions",
+        "json": {
+            "type": "simple",
+            "gameModes": [
+                "br_87",
+                "br_71",
+                "br_brsolo",
+                "br_brz_brsolo",
+                "br_88",
+                "br_brduos",
+                "br_brz_brduos",
+                "br_25",
+                "br_74",
+                "br_brtrios",
+                "br_brz_brtrios",
+                "br_89",
+                "br_brquads",
+                "br_brz_brquads"
+            ],
+            "values": {
+                "kills": 20,
+                "damageDone": 0.06,
+                "timePlayed": 0.04,
+                "teamPlacement": [
+                    {
+                        "type": "eq",
+                        "trigger": "1",
+                        "multiplier": "0",
+                        "addition": "240",
+                        "altText": "1st Place"
+                    },
+                    {
+                        "type": "lte",
+                        "trigger": "3",
+                        "multiplier": "0",
+                        "addition": "60",
+                        "altText": "2nd or 3rd Place"
+                    },
+                    {
+                        "type": "lte",
+                        "trigger": "8",
+                        "multiplier": "0",
+                        "addition": "20",
+                        "altText": "4th to 8th Place"
+                    }
+                ]
+            }
         },
-        {
-            "prize": 30,
-            "number": "1"
-        },
-        {
-            "prize": 20,
-            "number": "1"
-        },
-        {
-            "prize": 10,
-            "number": "1"
-        },
-        {
-            "prize": 8,
-            "number": "1"
-        },
-        {
-            "prize": 7,
-            "number": "1"
-        },
-        {
-            "prize": 6,
-            "number": "2"
-        },
-        {
-            "prize": 5,
-            "number": "2"
-        },
-        {
-            "prize": 4.5,
-            "number": "3"
-        },
-        {
-            "prize": 3.75,
-            "number": "4"
-        },
-        {
-            "prize": 3,
-            "number": "4"
-        },
-        {
-            "prize": 2.5,
-            "number": "6"
-        },
-        {
-            "prize": 2,
-            "number": "8"
-        },
-        {
-            "prize": 0.65,
-            "number": "10"
-        },
-        {
-            "prize": 0.5,
-            "number": "24"
-        },
-        {
-            "prize": 0.45,
-            "number": "44"
-        },
-        {
-            "prize": 0.4,
-            "number": "88"
-        },
-        {
-            "prize": 0.3,
-            "number": "150"
-        },
-        {
-            "prize": 0.25,
-            "number": "252"
-        }
-    ],
-    "potential_brackets": [
-        {
-            "prize": 100,
-            "number": "1"
-        },
-        {
-            "prize": 50,
-            "number": "1"
-        },
-        {
-            "prize": 30,
-            "number": "1"
-        },
-        {
-            "prize": 20,
-            "number": "1"
-        },
-        {
-            "prize": 10,
-            "number": "1"
-        },
-        {
-            "prize": 8,
-            "number": "1"
-        },
-        {
-            "prize": 7,
-            "number": "1"
-        },
-        {
-            "prize": 6,
-            "number": "2"
-        },
-        {
-            "prize": 5,
-            "number": "2"
-        },
-        {
-            "prize": 4.5,
-            "number": "3"
-        },
-        {
-            "prize": 3.75,
-            "number": "4"
-        },
-        {
-            "prize": 3,
-            "number": "4"
-        },
-        {
-            "prize": 2.5,
-            "number": "6"
-        },
-        {
-            "prize": 2,
-            "number": "8"
-        },
-        {
-            "prize": 0.65,
-            "number": "10"
-        },
-        {
-            "prize": 0.5,
-            "number": "24"
-        },
-        {
-            "prize": 0.45,
-            "number": "44"
-        },
-        {
-            "prize": 0.4,
-            "number": "88"
-        },
-        {
-            "prize": 0.3,
-            "number": "150"
-        },
-        {
-            "prize": 0.25,
-            "number": "252"
-        }
-    ],
-    "info": {
-        "conditions": [
-            "Thank you for participating in our COD: Warzone Beta tournament",
-            "During the Beta scores may be altered, removed or updated as we test the implementation of our scoring systems",
-            "Only games played after you join the tournament are counted",
-            "SMURF accounts are not allowed on Repeat.gg and will be banned"
-        ]
+        "num_games": 3
     },
-    "rules": "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>"
+    "payout_template": {
+        "currency_type": {
+            "id": "60833148-7197-11e5-924a-02123ba98fbb",
+            "name": "US Dollars",
+            "abbreviation": "USD"
+        },
+        "initial_slots": 500,
+        "max_slots": 500,
+        "max_potential_prize_pool_multiplier": "100.00"
+    },
+    "name": "Daily Freebie - $100",
+    "registration_opens": "2021-08-09T02:00:01+00:00",
+    "start_time": "2021-08-09T02:00:01+00:00",
+    "end_time": "2021-08-10T04:00:01+00:00",
+    "length_minutes": 1560,
+    "slots": 500,
+    "top_prize": "10.00",
+    "prize_pot": 100,
+    "finished": false,
+    "featured": true,
+    "sticky": false,
+    "tournament_visible_start": null,
+    "ads": {
+        "banner": {
+            "id": "81f37d6e-f8b5-11eb-b97c-0a8c1782b549",
+            "image_url": "https://i.imgur.com/L2WObfg.png",
+            "imageUrlMobile": null,
+            "url": "https://www.repeat.gg/content/daily-tournaments-freebie-repeat/",
+            "position": "banner"
+        },
+        "left_a": {
+            "id": "8206c0eb-f8b5-11eb-b97c-0a8c1782b549",
+            "image_url": "https://i.imgur.com/9lE84A4.png",
+            "imageUrlMobile": null,
+            "url": "https://www.repeat.gg/content/build-twitch-following-repeat/",
+            "position": "left_a"
+        },
+        "left_b": {
+            "id": "821de147-f8b5-11eb-b97c-0a8c1782b549",
+            "image_url": "https://i.imgur.com/JdywcCx.png",
+            "imageUrlMobile": null,
+            "url": "https://www.repeat.gg/content/daily-tournaments-freebie-repeat/",
+            "position": "left_b"
+        }
+    },
+    "banner": "/img/user_profile/Default Profile Background.png",
+    "banner_small": "https://i.imgur.com/ohvbEof.png",
+    "social_media": [],
+    "length_english": null,
+    "tournament_class": null,
+    "brand": {
+        "logo": "https://i.imgur.com/qgkEIrD.png",
+        "name": null
+    },
+    "displayRules": null,
+    "entries_count": 105
 }
