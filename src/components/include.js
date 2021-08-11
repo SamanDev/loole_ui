@@ -460,7 +460,7 @@ export const  setAvatar  = (name) =>{
         <span>
            {days > 0? (
              <>
-          {days} <small>days </small>  
+          {days} <small style={{color: 'inherit'}}>days </small>  
           </>
            ):(null)}
            {hours > 0 ? (
@@ -637,6 +637,7 @@ if(res== 'Not Connected') {
   <Col  xs="7">
   <Card.Title as="h5" style={{fontSize:15}} >{item.gameName}</Card.Title>
   <small className="text-muted">{item.gameMode}<br/></small>
+  <small className="text-muted">Prize<br/></small>
   {item.players[0] ? (
                 <small>
                 {item.players.map((user, z) => (
@@ -690,6 +691,7 @@ if(res== 'Not Connected') {
  
   {getGroupBadge(item.inSign,item.amount,'small right')}
                                      
+  {getGroupBadge(item.outSign,item.prize,'small right')}
   
   <small className="text-muted">{item.players.length}/{item.totalPlayer}<br/></small>
   {item.gameMode=='Tournament3' ? (

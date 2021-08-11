@@ -682,11 +682,44 @@ $('.gdetails.no'+player).removeClass('hide');
       this.props.history.push("/panel/dashboard");
     }
 
-if (item.gameMode == "Tournament") {
-    if (!item.tournamentPayout) {
-      item.tournamentPayout = "1-8, 65.00, 35.00|9-64, 50.00, 30.00, 20.00";
+    if (item.gameMode == "Tournament") {
+      if (!item.tournamentPayout) {
+        item.tournamentPayout = "1-8, 65.00, 35.00|9-64, 50.00, 30.00, 20.00";
+      }
     }
-  }
+    if (item.gameMode == "League") {
+      if (!item.scoreTemplate) {
+        item.scoreTemplate = {
+          "kills": 20,
+          "damageDone": 0.06,
+          "timePlayed": 0.04,
+          "teamPlacement": [
+            {
+              "type": "eq",
+              "trigger": "1",
+              "multiplier": "0",
+              "addition": "240",
+              "altText": "1st Place"
+            },
+            {
+              "type": "lte",
+              "trigger": "3",
+              "multiplier": "0",
+              "addition": "60",
+              "altText": "2nd or 3rd Place"
+            },
+            {
+              "type": "lte",
+              "trigger": "8",
+              "multiplier": "0",
+              "addition": "20",
+              "altText": "4th to 8th Place"
+            }
+          ]
+        };
+      }
+    }
+  
     if (item.gameMode == "League") {
       item.tournamentPayout='1-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00|11-20, 45.00, 28.00, 17.00, 10.00|21-40, 36.00, 23.00, 15.00, 11.00, 8.00, 7.00|41-70, 30.00, 20.00, 14.00, 10.00, 8.00, 7.00, 6.00, 5.00|71-100, 29.00, 18.00, 12.50, 10.00, 8.00, 6.50, 5.50, 4.50, 3.50, 2.50|101-200, 28.00, 17.50, 11.50, 8.50, 7.00, 5.50, 4.50, 3.50, 2.50, 1.50, 1.00x10|201-400, 27.00, 16.50, 10.50, 8.00, 6.25, 4.75, 3.75, 2.75, 1.75, 1.25, 0.75x10, 0.50x20|401-700, 26.00, 15.50, 10.00, 7.50, 6.00, 4.50, 3.50, 2.50, 1.50, 1.00, 0.65x10, 0.40x20, 0.25x30|701-1000, 25.00, 15.00, 10.00, 7.25, 5.50, 4.25, 3.25, 2.25, 1.25, 0.75, 0.55x10, 0.40x20, 0.25x30, 0.15x30'
     }
@@ -802,18 +835,34 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
 
     var lists = item.matchTables;
     var matchidFind = item.matchTables[0];
+    var mymatchFind = null;
+    var matchLevelFind =null
     if(this.state.matchid){
-    lists.map((tblmatch, w) => {
-      console.log(tblmatch.id == parseInt(this.state.matchid))
-      if(parseInt(tblmatch.id) == parseInt(this.state.matchid)){
-         matchidFind = tblmatch;
+      lists.map((tblmatch, w) => {
+        console.log(tblmatch.id == parseInt(this.state.matchid))
+        if(parseInt(tblmatch.id) == parseInt(this.state.matchid)){
+           matchidFind = tblmatch;
+        }
       }
-    }
-
-    )
+  
+      )
+      
+        //matchidFind = lists.filter( (list) => list.id === );
+      }
+      if((item.status=='InPlay' || item.status=='Pending') && item.gameMode=='Tournament'){
+        lists.map((tblmatch, w) => {
+          if(tblmatch.status=='InPlay' || tblmatch.status=='Pending'){
+            if(!matchLevelFind){matchLevelFind = tblmatch;}
+          }
+          if(tblmatch.status!='Finished' && (tblmatch.matchPlayers[0].username==currentUser.username || tblmatch.matchPlayers[1].username==currentUser.username)){
+            mymatchFind = tblmatch;
+          }
+        }
     
-      //matchidFind = lists.filter( (list) => list.id === );
-    }
+        )
+        
+          //matchidFind = lists.filter( (list) => list.id === );
+        }
     //matchidFind.status = 'InPlay'
     var timestamp = item.expire;
     // console.log(timestamp);
@@ -1052,12 +1101,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                   <h3 className="vertical-timeline-element-title">
                                     Registration Open
                                   </h3>
-                                  <h4 className="vertical-timeline-element-subtitle">
-                                    <Countdown
-                                      renderer={renderer}
-                                      date={dateExpiredTest}
-                                    />
-                                  </h4>
+                                  
 
                                   <small
                                     style={{
@@ -1075,16 +1119,25 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                     Servers: All Servers
                                     
                                   </small>
-                                  
+                                  <h3 className="vertical-timeline-element-title">
+                                      <Countdown
+                                          renderer={renderer}
+                                          date={dateExpired}
+                                        />
+                                        
+                                      </h3>
+                                        
                                    {!isJoin && item.totalPlayer > item.players.length && (
+                                    <h4 className="vertical-timeline-element-subtitle"  style={{paddingBottom:0}}>
                                     <Button
-                                      className="btn-round"
+                                      className="btn-roun2d"
                                       onClick={this.handleJoinMatch}
                                       variant="danger"
                                       disabled={this.state.isloading}
                                     >
-                                      Join Match {item.inSign.replace('Dollar','$')}  {item.amount}
+                                      <b>Join League</b><br/> {item.inSign.replace('Dollar','$')} <CurrencyFormat value={item.amount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
                                     </Button>
+                                    </h4>
                                   )}
                                 </VerticalTimelineElement>
                                 <VerticalTimelineElement
@@ -1537,6 +1590,8 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                       </span>
                                     ))}
                                   </small>
+                                  {item.status == 'Pending' ? (
+                                    <>
                                   <small
                                         style={{
                                           marginTop: 10,
@@ -1561,6 +1616,35 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                           maxWidth: "50%",
                                         }}
                                       />
+                                      </>
+                                  ):(
+                                    <small
+                                        style={{
+                                          marginTop: 10,
+                                          marginBottom: 10,
+                                          display: "block",
+                                          fontSize: 20,
+                                        }}
+                                      >
+                                        {item.status}
+                                        {matchLevelFind && (
+                                          <>
+                                          <small
+                                        style={{
+                                          marginTop: 10,
+                                          marginBottom: 10,
+                                          display: "block",
+                                          fontSize: 30,
+                                        }}
+                                      >
+{getMatchTitle(matchLevelFind.level,item.totalPlayer)}
+</small>
+</>
+                                        )}
+                                        
+                                      </small>
+                                    
+                                  )}
                                   <VerticalTimeline
                                     layout="1-column-left"
                                     className="hide2"
@@ -1597,15 +1681,17 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                             ".jpg").default
                                         }
                                       ></img>
-                                      <h3 className="vertical-timeline-element-title">
+                                      
+                                      
+                                      {!isJoin && item.totalPlayer > item.players.length ? (
+                                        <>
+                                        <h3 className="vertical-timeline-element-title">
                                       <Countdown
                                           renderer={renderer}
                                           date={dateExpired}
                                         />
                                         
                                       </h3>
-                                      
-                                      {!isJoin && item.totalPlayer > item.players.length && (
                                         <h4 className="vertical-timeline-element-subtitle"  style={{paddingBottom:0}}>
                                         <Button
                                           className="btn-roun2d"
@@ -1616,6 +1702,33 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                           <b>Join Tournament</b><br/> {item.inSign.replace('Dollar','$')} <CurrencyFormat value={item.amount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
                                         </Button>
                                         </h4>
+                                        </>
+                                      ):(
+                                        <>
+                                        {mymatchFind && (
+                                          <>
+                                          <h3 className="vertical-timeline-element-title">
+                                      <Countdown
+                                          renderer={renderer}
+                                          date={mymatchFind.startTime}
+                                        />
+                                        
+                                      </h3>
+                                          <h4 className="vertical-timeline-element-subtitle"  style={{paddingBottom:0}}>
+                                            <Link to={'/panel/matchlobby?id='+item.id+'&matchid='+mymatchFind.id}>
+                                          <Button
+                                            className="btn-roun2d"
+                                            
+                                            variant="warning"
+                                            
+                                          >
+                                            <b>Open My Match</b>
+                                          </Button>
+                                          </Link>
+                                          </h4>
+                                          </>
+                                        )}
+                                        </>
                                       )}
                                       
 
@@ -1819,7 +1932,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                                                         xs="4"
                                                                         key={j+item.totalPlayer/2}
                                                                       >
-                                                                        {mtch.winner && (
+                                                                        {mtch.winner ? (
                                                                           <>
                                                                             <div
                                                                               className=" winner avatar"
@@ -1855,6 +1968,16 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                                                               }{" "}
                                                                               is
                                                                               winner
+                                                                            </div>
+                                                                          </>
+                                                                        ):(
+                                                                          <>
+                                                                            
+                                                                            
+                                                                            <div style={{lineHeight:'80px'}}>
+                                                                              {
+                                                                                mtch.status}
+                                                                              
                                                                             </div>
                                                                           </>
                                                                         )}

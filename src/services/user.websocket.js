@@ -20,11 +20,12 @@ class UserWebsocket {
             }
             ws.onerror = function (e) {
                 console.log(e.type);
+
                 if(e.type === 'error'){
                     
-                    //ws=null;
-                    //localStorage.clear();
-                    //window.location.reload();
+                    ws=null;
+                    localStorage.clear();
+                    window.location.reload();
                 }
             }
         }
@@ -47,6 +48,8 @@ class UserWebsocket {
         } else {
             if (message === 'closeConnection') {
                 //localStorage.removeItem("events");
+                localStorage.clear();
+                    window.location.reload();
             }
         }
         //console.log("message: " + message);
@@ -57,8 +60,9 @@ class UserWebsocket {
         if (ws != null) {
             
             ws.close();
-            ws = null
-            //localStorage.removeItem("events");
+            ws=null;
+                    localStorage.clear();
+                    window.location.reload();
         console.log("Websocket is in disconnected state");
         }
         

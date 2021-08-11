@@ -237,6 +237,10 @@ class UserService {
         localStorage.setItem("eventsid", JSON.stringify(response.data));
         eventBus.dispatch("eventsDataEvent", response.data);
         return response.data;
+      }).catch(error => {
+        
+    window.location.replace("/panel/dashboard");
+        
       });
     }
   }

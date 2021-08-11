@@ -190,7 +190,8 @@ const getBlockGameModesVal = (filtermode) => {
   return gamemaplocal[0];
 };
 const MySwal = withReactContent(Swal);
-
+var nowS  = new Date()
+var nowE  = new Date()
 
 class CreateMatch extends Component {
   constructor(props) {
@@ -202,6 +203,7 @@ class CreateMatch extends Component {
     this.setGameMode = this.setGameMode.bind(this);
     this.setTournamentMode = this.setTournamentMode.bind(this);
     this.setBetAmount = this.setBetAmount.bind(this);
+    this.setTotalPlayer = this.setTotalPlayer.bind(this);
     this.setAvalableFor = this.setAvalableFor.bind(this);
     this.setStartTime = this.setStartTime.bind(this);
     this.selectrequired = this.selectrequired.bind(this);
@@ -209,6 +211,8 @@ class CreateMatch extends Component {
     this.setInSign = this.setInSign.bind(this);
     this.setOutSign = this.setOutSign.bind(this);
     this.setRules = this.setRules.bind(this);
+    this.setStartTimeLeague = this.setStartTimeLeague.bind(this);
+    this.setEndTimeLeague = this.setEndTimeLeague.bind(this);
     this.setPrize = this.setPrize.bind(this);
     this.handleSaveTags = this.handleSaveTags.bind(this);
     this.handleTagForm = this.handleTagForm.bind(this);
@@ -231,8 +235,8 @@ class CreateMatch extends Component {
       Rules: "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>",
       inSign:{ value: "Dollar", label: "Dollar" },
       outSign:{ value: "Dollar", label: "Dollar" },
-      StartTimeLeague:"2021-08-28T19:55:10.0000",
-      EndTimeLeague:"2021-09-12T16:15:10.0000",
+      StartTimeLeague:nowS,
+      EndTimeLeague:nowE,
       TotalPlayer:200,
       TournamentPayout:"2-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00",
       gameName: '',
@@ -262,6 +266,7 @@ class CreateMatch extends Component {
     });
     
   }
+  
 handleTagForm(game,platform) {
   
   
@@ -353,9 +358,21 @@ handleTagForm(game,platform) {
     });
     
   }
+  setStartTimeLeague(e) {
+    this.setState({
+      StartTimeLeague: e.target.value
+    });
+    
+  }
+  setEndTimeLeague(e) {
+    this.setState({
+      EndTimeLeague: e.target.value
+    });
+    
+  }
   setPrize(e) {
     this.setState({
-      Prize: e.target.value
+      Prize: e
     });
     
   }
@@ -371,7 +388,7 @@ handleTagForm(game,platform) {
     });
   }
   setBetAmount(e) {
-    console.log(e)
+    
     this.setState({
       BetAmount: e,
     });
@@ -388,17 +405,9 @@ handleTagForm(game,platform) {
       StartTime: e,
     });
   }
-  setStartTimeLeague(e) {
-    this.setState({
-      StartTimeLeague: e,
-    });
-  }
-  setEndTimeLeague(e) {
-    this.setState({
-      EndTimeLeague: e,
-    });
-  }
+  
   setTotalPlayer(e) {
+    console.log(this.state)
     this.setState({
       TotalPlayer: e,
     });
@@ -552,7 +561,7 @@ handleTagForm(game,platform) {
           'Tournament',
           
           this.state.BetAmount,
-          "1",
+          this.state.StartTime.value,
           this.state.TournamentMode.value,
           '1-8, 65.00, 35.00|9-16, 50.00, 30.00, 20.00|17-64, 48.00, 27.00, 15.00, 10.00',
           this.state.inSign.value,
@@ -624,7 +633,8 @@ handleTagForm(game,platform) {
     e.preventDefault();
     
     if (allValid) {
-     
+     var sdate = new Date(this.state.StartTimeLeague).valueOf();
+     var edate = new Date(this.state.EndTimeLeague).valueOf();
         this.setState({
           message: "",
           loading: true,
@@ -635,8 +645,8 @@ handleTagForm(game,platform) {
             this.state.GName.value.split(" - ")[1],
             'League',
             this.state.BetAmount,
-            this.state.StartTimeLeague,
-            this.state.EndTimeLeague,
+            sdate,
+            edate,
             this.state.TotalPlayer,
             
             '0-70, 30.00, 20.00, 14.00, 10.00, 8.00, 7.00, 6.00, 5.00|71-100, 29.00, 18.00, 12.50, 10.00, 8.00, 6.50, 5.50, 4.50, 3.50, 2.50|101-200, 28.00, 17.50, 11.50, 8.50, 7.00, 5.50, 4.50, 3.50, 2.50, 1.50, 1.00x10|201-400, 27.00, 16.50, 10.50, 8.00, 6.25, 4.75, 3.75, 2.75, 1.75, 1.25, 0.75x10, 0.50x20|401-700, 26.00, 15.50, 10.00, 7.50, 6.00, 4.50, 3.50, 2.50, 1.50, 1.00, 0.65x10, 0.40x20, 0.25x30|701-1000, 25.00, 15.00, 10.00, 7.25, 5.50, 4.25, 3.25, 2.25, 1.25, 0.75, 0.55x10, 0.40x20, 0.25x30, 0.15x30',
@@ -706,10 +716,12 @@ handleTagForm(game,platform) {
       this.form.validateAll();
     }
   }
+  
   render() {
     const currentUser = AuthService.getCurrentUser();
     var _mode = " 1 v 1 ";
     var _color = "#404040";
+    
     return (
       <>
         <Tab.Container id="plain-tabs-example" defaultActiveKey="match">
@@ -1304,42 +1316,6 @@ handleTagForm(game,platform) {
                               {this.selectrequired(this.state.BetAmount)}
                             </div>
                             <div className="form-group">
-                              <label>Mode</label>
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="TournamentMode"
-                                value={this.state.TournamentMode}
-                                onChange={this.setTournamentMode}
-                                options={getBlockTournament(
-                                  this.state.BetAmount
-                                )}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                              {this.selectrequired(this.state.TournamentMode)}
-                            </div>
-                            <div className="form-group">
-                              <label>Start Time</label>
-
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="StartTime"
-                                value={this.state.StartTime}
-                                onChange={this.setStartTime}
-                                options={[
-                                  { value: "30", label: "30 Minutes Later" },
-                                  { value: "60", label: "1 Hour Later" },
-                                  { value: "120", label: "2 Hours Later" },
-                                  { value: "360", label: "6 Hours Later" },
-                                ]}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                              {this.selectrequired(this.state.GameMode)}
-                            </div>
-                            <div className="form-group">
                               <label>InSign</label>
                               <Select
                                 className="react-select default"
@@ -1355,6 +1331,48 @@ handleTagForm(game,platform) {
                                 isSearchable={false}
                               />
                               
+                            </div>
+                            <div className="form-group">
+                              <label>Total Players</label>
+                              <NumericInput min={1} step={1} max={1000} className="form-control"
+                    name="TotalPlayer"
+                                value={this.state.TotalPlayer}
+                                onChange={this.setTotalPlayer}/>
+                              
+                            
+                            </div>
+                            <div className="form-group">
+                              <label>Start Time</label>
+                              <Input
+                    type="input"
+                    className="form-control"
+                    name="StartTime"
+                    value={this.state.StartTimeLeague}
+                    onChange={this.setStartTimeLeague}
+                  />
+                              
+                            </div>
+                            <div className="form-group">
+                              <label>End Time</label>
+                              <Input
+                    type="input"
+                    className="form-control"
+                    name="EndTime"
+                    value={this.state.EndTimeLeague}
+                    onChange={this.setEndTimeLeague}
+                  />
+                              
+                            </div>
+                            
+                            <div className="form-group">
+                              <label>Prize</label>
+                              <NumericInput min={1} step={1} max={1000} className="form-control"
+                    name="BetAmount"
+                    value={this.state.Prize}
+                    onChange={this.setPrize}/>
+
+                              
+                            
                             </div>
                             <div className="form-group">
                               <label>OutSign</label>
