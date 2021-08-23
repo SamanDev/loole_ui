@@ -805,8 +805,8 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
         item.matchLevel.push(genMatch(2, 4, "Round 2"));
         item.matchLevel.push(genMatch(3, 2, "SemiFinal"));
         
-        item.matchLevel.push(genMatch(5, 1, "Final"));
-        item.matchLevel.push(genMatch(4, 1, "3rd Place"));
+        item.matchLevel.push(genMatch(4, 1, "Final"));
+        //item.matchLevel.push(genMatch(4, 1, "3rd Place"));
       }
       if (item.totalPlayer == 32) {
         item.matchLevel.push(genMatch(1, 16, "Round 1"));
@@ -814,8 +814,8 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
         item.matchLevel.push(genMatch(3, 4, "Round 3"));
         item.matchLevel.push(genMatch(4, 2, "SemiFinal"));
         
-        item.matchLevel.push(genMatch(6, 1, "Final"));
-        item.matchLevel.push(genMatch(5, 1, "3rd Place"));
+        item.matchLevel.push(genMatch(5, 1, "Final"));
+        //item.matchLevel.push(genMatch(5, 1, "3rd Place"));
       }
     }
    
@@ -1325,7 +1325,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                   <h4 className="vertical-timeline-element-subtitle">
                                     <Countdown
                                       renderer={renderer}
-                                      date={dateExpiredTest3}
+                                      date={item.finished}
                                     />
                                   </h4>
                                   <div

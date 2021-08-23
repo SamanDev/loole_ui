@@ -105,15 +105,15 @@ export const  setAvatar  = (name) =>{
     if(totalPlayer==16){
       if(level==2){mTitle = "Round 2"}
       if(level==3){mTitle = "SemiFinal"}
-      if(level==5){mTitle = "Final"}
-      if(level==4){mTitle = "3rd Place"} 
+      if(level==4){mTitle = "Final"}
+      //if(level==4){mTitle = "3rd Place"} 
     }
     if(totalPlayer==32){
       if(level==2){mTitle = "Round 2"}
       if(level==3){mTitle = "Round 3"}
       if(level==4){mTitle = "SemiFinal"}
-      if(level==6){mTitle = "Final"}
-      if(level==5){mTitle = "3rd Place"} 
+      if(level==5){mTitle = "Final"}
+      //if(level==5){mTitle = "3rd Place"} 
     }
       return mTitle
     }
@@ -589,6 +589,22 @@ if(res== 'Not Connected') {
    
       
       };
+      export const  printRequired = () => {
+     
+    
+        
+            return (
+                <>
+                
+              <div className="alert alert-danger " role="alert" style={{position:'relative',top:-12,fontSize:12,padding:5}}>
+                This field is required!
+                
+              </div>
+              </>
+            );
+            
+          
+      }
         export const  printMatchBlock = (item) => {
           var _mode=' 1 v 1 '
           var _color = '#404040'
@@ -599,7 +615,7 @@ if(res== 'Not Connected') {
   var now = new Date();
   var dateExpired = date.toISOString();
   
-   
+   console.log(item.gameName)
   var dateNow = now.toISOString();
   
   

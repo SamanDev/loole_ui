@@ -283,6 +283,21 @@ class UserService {
         return response.data;
       });
   }
+  createDepositPM(eVoucher,activatioCode) {
+    
+    return axios
+      .post(
+        API_URL_TEST + "createDepositPM",
+        { eVoucher,activatioCode },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
+        return response.data;
+      });
+  }
   createLeague(gameName, gameConsole, gameMode, amount, start, finished,totalPlayer,tournamentPayout,inSign,outSign,rules) {
     return axios
       .post(

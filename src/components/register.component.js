@@ -102,7 +102,12 @@ class Register extends Component {
         this.state.password
       ).then(
         response => {
-          this.props.history.push("/auth/login-page");
+          this.setState({
+            successful: false,
+           
+            loading: false
+          });
+          //this.props.history.push("/auth/login-page");
         },
         error => {
           const resMessage =

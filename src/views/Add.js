@@ -5,6 +5,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import Avatar from "react-avatar";
 
+import $ from "jquery";
 import Countdown from "react-countdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlaystation, faXbox } from "@fortawesome/free-brands-svg-icons";
@@ -48,10 +49,11 @@ import {
   getGameTag,
   getMatchTitle,
   haveGameTag,
+  printRequired
 } from "components/include";
 import Games from "server/Games";
 var allValid = true;
-
+var reqnum = 0;
 const required = (value) => {
   if (!value) {
     return (
@@ -321,20 +323,29 @@ handleTagForm(game,platform) {
                 };
                 resetPw();
               }
-  selectrequired(value) {
-    if (!value) {
-      allValid = false;
-      if (this.state.submit) {
-        return (
-          <div className="alert alert-danger" role="alert">
-            This field is required!
-          </div>
-        );
-      }
-    } else {
-      //allValid = true;
-    }
-  }
+              selectrequired(field,value) {
+                console.log(field+': '+value+' -' + allValid+': '+reqnum+' -' + this.state.submit);
+                if (!value ) {
+                    allValid = false;
+                    if (this.state.submit && reqnum==0) {
+                      console.log(field)
+                      reqnum = reqnum+1;
+                     
+                      $('input.'+field+'').focus()
+
+                      return (
+                        printRequired()
+                      )
+                
+            }
+            } else {
+              if (reqnum==1 ) {
+                reqnum=0;
+              allValid = true;
+              }
+            }
+                
+              }
   setGameName(e) {
     this.setState({
       GName: e,
@@ -416,7 +427,10 @@ handleTagForm(game,platform) {
 
   handleCreateMatch(e) {
     e.preventDefault();
-    
+    reqnum = 0;
+    this.setState({
+    submit: true,
+  });
     if (allValid) {
      
         this.setState({
@@ -562,6 +576,7 @@ handleTagForm(game,platform) {
           
           this.state.BetAmount,
           this.state.StartTime.value,
+         // "1",
           this.state.TournamentMode.value,
           '1-8, 65.00, 35.00|9-16, 50.00, 30.00, 20.00|17-64, 48.00, 27.00, 15.00, 10.00',
           this.state.inSign.value,
@@ -756,7 +771,7 @@ handleTagForm(game,platform) {
                             <div className="form-group">
                               <label>Game</label>
                               <Select
-                                className="react-select default"
+                                className="react-select default GameName"
                                 classNamePrefix="react-select"
                                 name="GameName"
                                 value={this.state.GName}
@@ -764,12 +779,12 @@ handleTagForm(game,platform) {
                                 options={getBlockGames("Match")}
                                 placeholder=""
                               />
-                              {this.selectrequired(this.state.GName)}
+                              {this.selectrequired('GameName',this.state.GName.value)}
                             </div>
                             <div className="form-group">
                               <label>Mode</label>
                               <Select
-                                className="react-select default"
+                                className="react-select default GameMode"
                                 classNamePrefix="react-select"
                                 name="GameMode"
                                 value={this.state.GameMode}
@@ -778,23 +793,23 @@ handleTagForm(game,platform) {
                                 placeholder=""
                                 isSearchable={false}
                               />
-                              {this.selectrequired(this.state.GameMode)}
+                              {this.selectrequired('GameMode',this.state.GameMode.value)}
                             </div>
                             <div className="form-group">
                               <label>Bet</label>
-                              <NumericInput min={1} step={1} max={1000} className="form-control"
+                              <NumericInput min={1} step={1} max={1000} className="form-control BetAmount"
                     name="BetAmount"
                                 value={this.state.BetAmount}
                                 onChange={this.setBetAmount}/>
                               
                               
                             
-                              {this.selectrequired(this.state.BetAmount)}
+                              {this.selectrequired('BetAmount',this.state.BetAmount)}
                             </div>
                             <div className="form-group">
                               <label>Avalable for</label>
                               <Select
-                                className="react-select default"
+                                className="react-select default AvalableFor"
                                 classNamePrefix="react-select"
                                 name="AvalableFor"
                                 value={this.state.AvalableFor}
@@ -808,7 +823,7 @@ handleTagForm(game,platform) {
                                 placeholder=""
                                 isSearchable={false}
                               />
-                              {this.selectrequired(this.state.AvalableFor)}
+                              {this.selectrequired('AvalableFor',this.state.AvalableFor.value)}
                             </div>
 
                             {this.state.message && (
@@ -977,7 +992,7 @@ handleTagForm(game,platform) {
                                 options={getBlockGames("Tournament")}
                                 placeholder=""
                               />
-                              {this.selectrequired(this.state.GName)}
+                             
                             </div>
                             <div className="form-group">
                               <label>Bet</label>
@@ -987,7 +1002,7 @@ handleTagForm(game,platform) {
                                 onChange={this.setBetAmount}/>
                               
                             
-                              {this.selectrequired(this.state.BetAmount)}
+                          
                             </div>
                             <div className="form-group">
                               <label>InSign</label>
@@ -1020,7 +1035,7 @@ handleTagForm(game,platform) {
                                 placeholder=""
                                 isSearchable={false}
                               />
-                              {this.selectrequired(this.state.TournamentMode)}
+                          
                             </div>
                             <div className="form-group">
                               <label>Start Time</label>
@@ -1040,7 +1055,7 @@ handleTagForm(game,platform) {
                                 placeholder=""
                                 isSearchable={false}
                               />
-                              {this.selectrequired(this.state.GameMode)}
+                            
                             </div>
                             <div className="form-group">
                               <label>Prize</label>
@@ -1302,7 +1317,7 @@ handleTagForm(game,platform) {
                                 options={getBlockGames("League")}
                                 placeholder=""
                               />
-                              {this.selectrequired(this.state.GName)}
+                            
                             </div>
 
                             <div className="form-group">
@@ -1313,7 +1328,7 @@ handleTagForm(game,platform) {
                                 onChange={this.setBetAmount}/>
                               
                             
-                              {this.selectrequired(this.state.BetAmount)}
+                           
                             </div>
                             <div className="form-group">
                               <label>InSign</label>
@@ -1344,7 +1359,7 @@ handleTagForm(game,platform) {
                             <div className="form-group">
                               <label>Start Time</label>
                               <Input
-                    type="input"
+                    type="datetime-local"
                     className="form-control"
                     name="StartTime"
                     value={this.state.StartTimeLeague}
@@ -1355,7 +1370,7 @@ handleTagForm(game,platform) {
                             <div className="form-group">
                               <label>End Time</label>
                               <Input
-                    type="input"
+                    type="datetime-local"
                     className="form-control"
                     name="EndTime"
                     value={this.state.EndTimeLeague}
