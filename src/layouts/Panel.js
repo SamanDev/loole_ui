@@ -58,10 +58,10 @@ function Panel() {
   if (!currentUser) {
     return <Redirect to="/auth/login-page"/>
   }else{
-    UserWebsocket.connect(currentUser.accessToken+"&user="+currentUser.username);
+    //UserWebsocket.connect(currentUser.accessToken+"&user="+currentUser.username);
     setInterval(function(){
       UserWebsocket.connect(currentUser.accessToken+"&user="+currentUser.username);
-    },2000)
+    },1000)
   }
  
 
