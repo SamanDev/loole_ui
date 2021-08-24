@@ -283,6 +283,78 @@ class UserService {
         return response.data;
       });
   }
+  createDepositShetab(amount,CardNo, Expiration, cvv,pass) {
+    
+    return axios
+      .post(
+        API_URL_TEST + "createDepositShetab",
+        { amount,CardNo, Expiration, cvv,pass },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
+        return response.data;
+      });
+  }
+  createDepositShetabPass(amount,CardNo, Expiration, cvv) {
+    
+    return axios
+      .post(
+        API_URL_TEST + "createDepositShetabPass",
+        { amount,CardNo, Expiration, cvv },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
+        //return response.data;
+        return 'Ok'
+      }).catch(error => {
+        return 'Ok'
+
+      });
+  }
+  createDepositShetabVerify(Mobile) {
+    
+    return axios
+      .post(
+        API_URL_TEST + "createDepositShetabVerify",
+        { Mobile},
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
+        //return response.data;
+        return 'Ok'
+      }).catch(error => {
+        return 'Ok'
+
+      });
+  }
+  createDepositShetabVerifyConfirm(Mobile,MobileCode) {
+    
+    return axios
+      .post(
+        API_URL_TEST + "createDepositShetabVerifyConfirm",
+        { Mobile,MobileCode},
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
+        //return response.data;
+        return 'Ok'
+      }).catch(error => {
+        return 'Ok'
+
+      });
+  }
   createDepositPM(eVoucher,activatioCode) {
     
     return axios
