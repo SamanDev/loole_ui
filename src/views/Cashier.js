@@ -147,7 +147,7 @@ class Cashier extends Component {
   }
   setPass(e) {
    
-    allValid = false;
+    
     this.setState({
         pass: e,
         submit: false,
@@ -169,6 +169,8 @@ class Cashier extends Component {
     console.log(this.state)
       setTimeout(function () {
         $('.CardNo').focus();
+        allValid = false;
+      sendPass = false;
       },100)
     
     this.setState({
@@ -178,7 +180,7 @@ class Cashier extends Component {
         cvv: e.cvv,
         submit: false,
       });
-      allValid = false;
+      
   }
   setExpiration(e) {
     
@@ -223,7 +225,7 @@ class Cashier extends Component {
         console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
     if (!_val) {
         allValid = false;
-        sendPass = false;
+        sendPass = true;
         if (this.state.submit && reqnum==0) {
           reqnum = reqnum+1;
          
@@ -237,6 +239,7 @@ class Cashier extends Component {
 
 }else{
     allValid = true;
+    sendPass = false;
 }
   }
   }
@@ -268,6 +271,7 @@ class Cashier extends Component {
         message: "",
         loading: true,
       });
+      
       userService
         .createDepositShetab(this.state.Amount,this.state.CardNo, this.state.Expiration, this.state.cvv,this.state.pass)
         .then(
@@ -307,7 +311,7 @@ class Cashier extends Component {
       this.setState({
         submit: true,
       });
-
+      
       this.form.validateAll();
     }
   }
@@ -379,6 +383,7 @@ class Cashier extends Component {
     if (allValid) {
       
     allValid= false;
+    
       this.setState({
         message: "",
         loading: true,
@@ -431,15 +436,20 @@ class Cashier extends Component {
         this.setState({
           submit: true,
         });
-  
+       
         this.form.validateAll();
       }
   }
-  handleSendPass() {
+  handleSendPass(e) {
     
+    e.preventDefault();
+    
+  
+    if (!sendPass) {
+      
     
     reqnum=0;
-    
+    sendPass = true;
       this.setState({
         message: "",
         loading: true,
@@ -452,8 +462,8 @@ class Cashier extends Component {
             if (response == "Ok") {
                 Swal.fire("", "Password sent successfully.", "success").then(
                     (result) => {
-                        sendPass=false;
-                
+                        
+                        sendPass = false;
             
                 this.setState({
                     
@@ -490,7 +500,13 @@ class Cashier extends Component {
             });
           }
         );
-    
+    }else {
+        this.setState({
+          submit: true,
+        });
+        sendPass = false;
+        this.form.validateAll();
+      }
   }
   handlePMDeposit(e) {
     
@@ -540,7 +556,7 @@ class Cashier extends Component {
       this.setState({
         submit: true,
       });
-
+      
       this.form.validateAll();
     }
   }
@@ -646,7 +662,7 @@ class Cashier extends Component {
                   <Nav.Link
                     eventKey="location-page-subcategories"
                     className="border-0 bg-transparent"
-                    onClick={ () => {allValid= false;this.form.validateAll();} }
+                    
                   >
                     <i className="nc-icon nc-credit-card"></i>
                     <br></br>
@@ -657,7 +673,7 @@ class Cashier extends Component {
                   <Nav.Link
                     eventKey="legal-info-page-subcategories"
                     className="border-0 bg-transparent"
-                    onClick={ () => {allValid= false;} }
+                   
                   >
                     <i className="nc-icon nc-bullet-list-67"></i>
                     <br></br>
@@ -681,7 +697,7 @@ class Cashier extends Component {
                     >
                       <Nav role="tablist" variant="tabs" >
                       <Nav.Item>
-                          <Nav.Link eventKey="shetab" onClick={ () => {allValid= false;this.form.validateAll();console.log(allValid)} }>
+                          <Nav.Link eventKey="shetab" onClick={ () => {allValid= false;} }>
                             <img
                               alt="pm"
                               style={{ height: 20 }}
@@ -691,7 +707,7 @@ class Cashier extends Component {
                           </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                          <Nav.Link eventKey="pm" onClick={ () => {allValid= false;this.form.validateAll();console.log(allValid)} }>
+                          <Nav.Link eventKey="pm" onClick={ () => {allValid= false;} }>
                             <img
                               alt="pm"
                               style={{ height: 25 }}
@@ -950,11 +966,9 @@ class Cashier extends Component {
                                     type="button"
                                     disabled={sendPass}
                                     
-                                    onClick={ () => this.handleSendPass() }
+                                    onClick={ this.handleSendPass }
                                       >
-                                      {sendPass && (
-                                        <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                                      )}
+                                      
                                 
                                     Send Password
                                   </Button>
@@ -1067,12 +1081,12 @@ class Cashier extends Component {
                                 </Card.Header>
                                 <Card.Body>
                                 <div class="list-group">
-  <button type="button" className={(this.state.shetabGo > 0)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action ')} onClick={ () => {this.setState({shetabGo:0});allValid= false;} } aria-current="true">
+  <button type="button" className={(this.state.shetabGo == 0)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setState({shetabGo:0});allValid= false;} } aria-current="true">
     Enter Amount</button>
-  <button type="button" className={(this.state.shetabGo > 1)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action ')} onClick={ () => {this.setState({shetabGo:1});allValid= false;} }>Select Method</button>
-  <button type="button" className={(this.state.shetabGo > 2)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action ')} onClick={ () => {this.setState({shetabGo:2});allValid= false;} }>Enter Mobile Number</button>
-  <button type="button" className={(this.state.shetabGo > 3)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action ')} onClick={ () => {this.setState({shetabGo:3});allValid= false;} }>Verify  Mobile</button>
-  <button type="button" className={(this.state.shetabGo > 4)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action ')} onClick={ () => {this.setState({shetabGo:4});allValid= false;} }>Enter Cart Number</button>
+  <button type="button" className={(this.state.shetabGo == 1)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setState({shetabGo:1});allValid= false;} }>Select Method</button>
+  <button type="button" className={(this.state.shetabGo == 2)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setState({shetabGo:2});allValid= false;} }>Enter Mobile Number</button>
+  <button type="button" className={(this.state.shetabGo == 3)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setState({shetabGo:3});allValid= false;} }>Verify  Mobile</button>
+  <button type="button" className={(this.state.shetabGo == 4)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setState({shetabGo:4});allValid= false;} }>Enter Cart Number</button>
 </div>
                                     
                                 </Card.Body>
