@@ -61,6 +61,9 @@ class Cashier extends Component {
     this.setactivatioCode = this.setactivatioCode.bind(this);
     this.selectrequired = this.selectrequired.bind(this);
    
+    this.handleGoNext = this.handleGoNext.bind(this);
+    this.handleSendVerify = this.handleSendVerify.bind(this);
+    this.handleSendVerifyConfirm = this.handleSendVerifyConfirm.bind(this);
     this.handleShetabDeposit = this.handleShetabDeposit.bind(this);
     this.handleShetabMethod = this.handleShetabMethod.bind(this);
     this.handleSendPass = this.handleSendPass.bind(this);
@@ -134,7 +137,7 @@ class Cashier extends Component {
     
   }
   handleShetabMethod(e) {
-   
+    console.log(e)
    
     this.setState({
         shetabMethod: e,
@@ -237,6 +240,24 @@ class Cashier extends Component {
 }
   }
   }
+  handleGoNext(e) {
+    e.preventDefault();
+    
+    reqnum=0;
+    if (allValid) {
+      
+    allValid= false;
+                                           
+    this.setState({shetabGo:this.state.shetabGo+1});
+    }else {
+        this.setState({
+          submit: true,
+        });
+  
+        this.form.validateAll();
+      }
+    
+  }
   handleShetabDeposit(e) {
     
     e.preventDefault();
@@ -290,15 +311,13 @@ class Cashier extends Component {
       this.form.validateAll();
     }
   }
-  handleSendVerify() {
-    allValid = false;
+  handleSendVerify(e) {
+    e.preventDefault();
     
     reqnum=0;
-    
-      this.setState({
-        message: "",
-        loading: true,
-      });
+    if (allValid) {
+      
+    allValid= false;
       userService
         .createDepositShetabVerify(this.state.Mobile)
         .then(
@@ -343,13 +362,23 @@ class Cashier extends Component {
             });
           }
         );
-    
+        }else {
+            this.setState({
+              submit: true,
+            });
+      
+            this.form.validateAll();
+          }
   }
-  handleSendVerifyConfirm() {
+  handleSendVerifyConfirm(e) {
     
     
-   
+    e.preventDefault();
+    
     reqnum=0;
+    if (allValid) {
+      
+    allValid= false;
       this.setState({
         message: "",
         loading: true,
@@ -398,7 +427,13 @@ class Cashier extends Component {
             });
           }
         );
-    
+    }else {
+        this.setState({
+          submit: true,
+        });
+  
+        this.form.validateAll();
+      }
   }
   handleSendPass() {
     
@@ -733,9 +768,9 @@ class Cashier extends Component {
                                          
                                         />
                                      
-{this.selectrequired('selectMethod',this.state.shetabMethod.value)} 
+
                                       </div>
-                                      
+                                      {this.selectrequired('selectMethod',this.state.shetabMethod.value)} 
                                       </>
                                       )}
                                       {(this.state.shetabGo==2) &&(
@@ -758,12 +793,12 @@ class Cashier extends Component {
  
 </div>
                               
-                              
-{this.selectrequired('Mobile',this.state.Mobile)} 
+       
                               
                               
                             </div>
-                            
+                                                   
+{this.selectrequired('Mobile',this.state.Mobile)} 
                                     
                                       
                                       </>
@@ -950,8 +985,8 @@ class Cashier extends Component {
                                        
                                     variant="secondary"
                                     type="button"
-                                    disabled={this.state.loading  || !allValid}
-                                    onClick={ () => this.handleSendVerify() }
+                                    disabled={this.state.loading }
+                                    onClick={this.handleSendVerify}
                                       >
                                       {this.state.loading &&  (
                                         <span className="spinner-border spinner-border-sm  fa-wd"></span>
@@ -971,8 +1006,8 @@ class Cashier extends Component {
                                        
                                     variant="danger"
                                     type="button"
-                                    disabled={this.state.loading  || !allValid}
-                                    onClick={ () => this.handleSendVerifyConfirm() }
+                                    disabled={this.state.loading}
+                                    onClick={this.handleSendVerifyConfirm}
                                       >
                                       {this.state.loading && (
                                         <span className="spinner-border spinner-border-sm  fa-wd"></span>
@@ -993,11 +1028,9 @@ class Cashier extends Component {
                                        
                                     variant="danger"
                                     type="button"
-                                        disabled={this.state.loading || !allValid}
-                                        onClick={ () => {
-                                            allValid= false;
-                                            this.setState({shetabGo:this.state.shetabGo+1});} }
-                                      >
+                                        disabled={this.state.loading}
+                                        onClick={this.handleGoNext}
+                                                                             >
                                        
                                         <span> Next</span>
                                       </button>
