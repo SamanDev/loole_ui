@@ -317,12 +317,11 @@ class UserService {
 
       });
   }
-  createDepositShetabVerify(Mobile) {
+  createDepositShetabVerify(mobile) {
     
     return axios
       .post(
-        API_URL_TEST + "createDepositShetabVerify",
-        { Mobile},
+        API_URL_TEST + "createDepositShetabVerify",{mobile},
         { headers: authHeader() }
       )
       .then((response) => {
@@ -330,18 +329,18 @@ class UserService {
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
         //return response.data;
-        return 'Ok'
+        return response
       }).catch(error => {
         return 'Ok'
 
       });
   }
-  createDepositShetabVerifyConfirm(Mobile,MobileCode) {
+  createDepositShetabVerifyConfirm(mobile,code) {
     
     return axios
       .post(
         API_URL_TEST + "createDepositShetabVerifyConfirm",
-        { Mobile,MobileCode},
+        { mobile,code},
         { headers: authHeader() }
       )
       .then((response) => {
@@ -349,7 +348,7 @@ class UserService {
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
         //return response.data;
-        return 'Ok'
+        return response
       }).catch(error => {
         return 'Ok'
 

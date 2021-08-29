@@ -60,6 +60,7 @@ class Cashier extends Component {
     this.setPass = this.setPass.bind(this);
     this.setactivatioCode = this.setactivatioCode.bind(this);
     this.selectrequired = this.selectrequired.bind(this);
+    this.setDepositPage = this.setDepositPage.bind(this);
    
     this.handleGoNext = this.handleGoNext.bind(this);
     this.handleSendVerify = this.handleSendVerify.bind(this);
@@ -85,7 +86,7 @@ class Cashier extends Component {
           },
         shetabGo:0,
         Amount:"10",
-        Mobile: "12137611",
+        Mobile: "9122266208",
         MobileCode: "",
       eVoucher: "",
       activatioCode: "",
@@ -145,6 +146,28 @@ class Cashier extends Component {
       });
       allValid = false;
   }
+  setDepositPage(e) {
+    //reqnum=0;
+    this.setState({
+      shetabGo:e, 
+      successful: false,
+  message: "",
+  submit: false,
+  loading: false,
+  })
+    if (allValid) {
+      allValid = false;
+      setTimeout(function () {
+      
+        $('.btn.btn-danger:visible:first').trigger('click')
+        //allValid = false;
+      },100) 
+    
+  }else{
+    //allValid = true;
+                    
+  }            
+  }
   setPass(e) {
    
     
@@ -167,12 +190,13 @@ class Cashier extends Component {
   setCardDef(e) {
     console.log(e)
     console.log(this.state)
+    if($(".CardNo:visible").length>0){
       setTimeout(function () {
         $('.CardNo').focus();
         allValid = false;
       sendPass = false;
       },100)
-    
+    }
     this.setState({
         cartSelected: e,
         CardNo: e.value,
@@ -213,7 +237,7 @@ class Cashier extends Component {
       
       
       var _val = value;
-      
+      console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + allValid)
       
       
       if($("."+field+":visible").length>0){
@@ -222,7 +246,8 @@ class Cashier extends Component {
         if (field == 'cvv'  && value.length < 3) {_val = false}
         if (field == 'Mobile'  && value.length < 9) {_val = false}
         if (field == 'selectMethod'  && value=='') {_val = false}
-        console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
+        if (field == 'Amount'  && value!='') {_val = true}
+        
     if (!_val) {
         allValid = false;
         sendPass = true;
@@ -234,10 +259,13 @@ class Cashier extends Component {
             printRequired()
           )
     
+}else{
+  allValid = false;
 }
-    
+console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
 
 }else{
+  console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
     allValid = true;
     sendPass = false;
 }
@@ -249,16 +277,29 @@ class Cashier extends Component {
     reqnum=0;
     if (allValid) {
       
-    allValid= false;
-                                           
+    //allValid = false;
+                            
     this.setState({shetabGo:this.state.shetabGo+1});
+    
+    
+    
     }else {
-        this.setState({
-          submit: true,
-        });
+      //allValid = true;
+      setTimeout(function () {
+       
+        $('.btn.btn-danger:visible:first').trigger('click')
+        
+      },100) 
+      this.setState({
+        submit: true,
+      });
+      
+      this.form.validateAll();
+    }
+      
+      
+      
   
-        this.form.validateAll();
-      }
     
   }
   handleShetabDeposit(e) {
@@ -320,13 +361,16 @@ class Cashier extends Component {
     
     reqnum=0;
     if (allValid) {
-      
-    allValid= false;
+      this.setState({
+        message: "",
+        loading: true,
+      });
+      allValid= false;
       userService
         .createDepositShetabVerify(this.state.Mobile)
         .then(
           (response) => {
-            if (response == "Ok") {
+            if (response.data == "OK") {
                 
                 Swal.fire("", "Data saved successfully.", "success").then(
                     (result) => {
@@ -342,12 +386,23 @@ class Cashier extends Component {
                     }
                   );
             } else {
+              const resMessage =
+              (response.response &&
+                response.response.data &&
+                response.response.data.message) ||
+                response.message ||
+                response.toString();
+
               this.setState({
                 successful: false,
                 message: "",
                 submit: false,
                 loading: false,
               });
+              
+                Swal.fire("", resMessage, "error");
+             
+            
             }
           },
           (error) => {
@@ -393,7 +448,7 @@ class Cashier extends Component {
         .createDepositShetabVerifyConfirm(this.state.Mobile,this.state.MobileCode)
         .then(
           (response) => {
-            if (response == "Ok") {
+            if (response == "OK") {
                 Swal.fire("", "Data saved successfully.", "success").then(
                     (result) => {
                         
@@ -589,11 +644,11 @@ class Cashier extends Component {
             cvv: '',
           },
           {
-            value: "5022502205225022",
+            value: "6104337830282164",
             id: 1,
-            label: '5022-5022-0522-5022',
-            expiration: '0130',
-            cvv: '400',
+            label: '6104-3378-3028-2164',
+            expiration: '0203',
+            cvv: '237',
           },
           {
             value: "6666502205225022",
@@ -800,7 +855,7 @@ class Cashier extends Component {
                               type="tel"
                               pattern="[0-9]"
                               unmask={true}
-                              mask={"900 000 0000"}
+                              mask={"000 000 0000"}
                              
                              
   inputRef={el => this.input = el} 
@@ -1080,13 +1135,13 @@ class Cashier extends Component {
                                   </Card.Title>
                                 </Card.Header>
                                 <Card.Body>
-                                <div class="list-group">
-  <button type="button" className={(this.state.shetabGo == 0)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setState({shetabGo:0});allValid= false;} } aria-current="true">
+                                <div className="list-group">
+  <button type="button" className={(this.state.shetabGo == 0)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setDepositPage(0)} } aria-current="true">
     Enter Amount</button>
-  <button type="button" className={(this.state.shetabGo == 1)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setState({shetabGo:1});allValid= false;} }>Select Method</button>
-  <button type="button" className={(this.state.shetabGo == 2)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setState({shetabGo:2});allValid= false;} }>Enter Mobile Number</button>
-  <button type="button" className={(this.state.shetabGo == 3)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setState({shetabGo:3});allValid= false;} }>Verify  Mobile</button>
-  <button type="button" className={(this.state.shetabGo == 4)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setState({shetabGo:4});allValid= false;} }>Enter Cart Number</button>
+  <button type="button" className={(this.state.shetabGo == 1)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setDepositPage(1)} }>Select Method</button>
+  <button type="button" className={(this.state.shetabGo == 2)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setDepositPage(2)} }>Enter Mobile Number</button>
+  <button type="button" className={(this.state.shetabGo == 3)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setDepositPage(3)} }>Verify  Mobile</button>
+  <button type="button" className={(this.state.shetabGo == 4)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setDepositPage(4)} }>Enter Cart Number</button>
 </div>
                                     
                                 </Card.Body>
