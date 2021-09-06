@@ -354,12 +354,12 @@ class UserService {
 
       });
   }
-  createDepositPM(eVoucher,activatioCode) {
+  createDepositPM(voucherNumber,voucherCode) {
     
     return axios
       .post(
         API_URL_TEST + "createDepositPM",
-        { eVoucher,activatioCode },
+        { voucherNumber,voucherCode },
         { headers: authHeader() }
       )
       .then((response) => {
