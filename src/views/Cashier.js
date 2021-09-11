@@ -12,6 +12,7 @@ import Select from "react-select";
 import NotificationAlert from "react-notification-alert";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
+import Active  from "components/active.component";
 // react-bootstrap components
 import {
   Badge,
@@ -690,6 +691,7 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
     
     return (
       <>
+      <Active/>
         <Container>
           <Tab.Container
             id="page-subcategories-tabs-example"

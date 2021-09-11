@@ -13,7 +13,7 @@ import {
   Badge,
   Button,
   Card,
-
+  Alert,
   Form,
   InputGroup,
   Navbar,
@@ -30,6 +30,7 @@ import {
   Tab
   
 } from "react-bootstrap";
+
 export const  getQueryVariable  = (variable) =>{
   var query = window.location.search.substring(1);
   var vars = query.split("&");
@@ -593,18 +594,20 @@ if(res== 'Not Connected') {
      
     
         
-            return (
-                <>
-                
-              <div className="alert alert-danger " role="alert" style={{position:'relative',top:-12,fontSize:12,padding:5}}>
-                This field is required!
-                
-              </div>
-              </>
-            );
+        return (
+            <>
             
-          
-      }
+          <div className="alert alert-danger " role="alert" style={{position:'relative',top:-12,fontSize:12,padding:5}}>
+            This field is required!
+            
+          </div>
+          </>
+        );
+        
+      
+  }
+  
+  
         export const  printMatchBlock = (item) => {
           var _mode=' 1 v 1 '
           var _color = '#404040'

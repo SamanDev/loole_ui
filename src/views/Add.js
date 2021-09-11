@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import AuthService from "services/auth.service";
 import NumericInput from 'react-numeric-input';
-
+import Active  from "components/active.component";
 import userService from "services/user.service";
 // react-bootstrap components
 import {
@@ -49,7 +49,8 @@ import {
   getGameTag,
   getMatchTitle,
   haveGameTag,
-  printRequired
+  printRequired,
+  
 } from "components/include";
 import Games from "server/Games";
 var allValid = true;
@@ -427,6 +428,7 @@ handleTagForm(game,platform) {
 
   handleCreateMatch(e) {
     e.preventDefault();
+    allValid = true;
     reqnum = 0;
     this.setState({
     submit: true,
@@ -739,6 +741,7 @@ handleTagForm(game,platform) {
     
     return (
       <>
+      <Active/>
         <Tab.Container id="plain-tabs-example" defaultActiveKey="match">
           <Nav role="tablist" variant="tabs">
             <Nav.Item>

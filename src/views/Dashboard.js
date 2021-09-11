@@ -9,7 +9,9 @@ import userService from "services/user.service";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
 import { printMatchBlock } from "components/include";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import Active  from "components/active.component";
 // react-bootstrap components
 import {
   Badge,
@@ -28,13 +30,11 @@ import {
   TabContent,
   TabPane,
   Tab,
-  Spinner
+  Spinner,
+  Alert
 
 } from "react-bootstrap";
 
-
-
-//const EventList = JSON.parse(userService.getEvents());
 
 
 class Dashboard extends Component {
@@ -42,7 +42,7 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
+      loading: true,
       events: null
     };
 
@@ -54,14 +54,13 @@ class Dashboard extends Component {
     eventBus.on("eventsData", (event) => {
       // console.log("socket events: "+events);
     
-      this.setState({ events: event, isLoading: false });
-     // console.log("change state: " + this.state.isLoading);
+      this.setState({ events: event, loading: false });
+     // console.log("change state: " + this.state.loading);
       
     });
 
   }
   
-
   render() {
     
     if (!this.state.events){
@@ -73,7 +72,7 @@ class Dashboard extends Component {
       <Spinner animation="grow" size="sm" /></h4>;
     }
     
-    let { events, isLoading } = this.state;
+    let { events, loading } = this.state;
     events=JSON.parse(events);
    
     const currentUser = AuthService.getCurrentUser();
@@ -119,8 +118,9 @@ class Dashboard extends Component {
 
     return (
       <>
-
-<Row>
+      <Active />
+   
+  <Row>
           <Col lg="3" xs="6">
             <Card className="card-stats">
               <Card.Body>
@@ -235,6 +235,8 @@ class Dashboard extends Component {
             </Card>
           </Col>
         </Row>
+
+
 
         <Row>
           <Col md="12" style={{overflow:'hidden'}}>

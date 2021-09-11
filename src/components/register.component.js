@@ -107,7 +107,7 @@ class Register extends Component {
            
             loading: false
           });
-          //this.props.history.push("/auth/login-page");
+          this.props.history.push("/panel/dashboard");
         },
         error => {
           const resMessage =

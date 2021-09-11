@@ -35,6 +35,7 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 
+import Active  from "components/active.component";
 import uploadHeader from "services/upload-header";
 import PropTypes from "prop-types";
 import AdminNavbar from "components/Navbars/ChatNavbar.js";
@@ -956,6 +957,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
 
               <div className="content d-flex align-items-center p-0">
                 <Container style={{ marginTop: 50 }}>
+                  <Active/>
                 {(getQueryVariable("matchid")) ? (
                               
                               <Link to={"/panel/lobby?id="+item.id} className="btn btn-danger btn-round "> Back </Link>

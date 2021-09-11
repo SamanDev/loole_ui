@@ -66,7 +66,8 @@ function Sidebar({ routes, image, background }) {
   // this function creates the links and collapses that appear in the sidebar (left menu)
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.redirect) {
+      
+      if (prop.redirect ) {
         return null;
       }
       if (prop.collapse) {

@@ -283,6 +283,40 @@ class UserService {
         return response.data;
       });
   }
+  resendActive(){
+    return axios
+      .post(
+        API_URL_TEST + "resendActive",
+       
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
+        return response.data;
+      }).catch(error => {
+        return 'Ok'
+
+      });
+  }
+  handleDelete(){
+    return axios
+      .post(
+        API_URL_TEST + "handleDelete",
+       
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
+        return response.data;
+      }).catch(error => {
+        return 'Ok'
+
+      });
+  }
   createDepositShetab(amount,CardNo, Expiration, cvv,pass) {
     
     return axios
