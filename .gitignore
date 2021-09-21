@@ -10,7 +10,6 @@
 /build
 
 # misc
-.env
 .DS_Store
 .env.local
 .env.development.local
@@ -26,3 +25,4 @@ yarn-error.log*
 /src/assets/sass/light-bootstrap-dashboard.css
 
 .eslintcache
+.env
