@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import AuthService from "services/auth.service";
-import NumericInput from 'react-numeric-input';
+import NumericInput from "react-numeric-input";
 
 import $ from "jquery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,7 +12,7 @@ import Select from "react-select";
 import NotificationAlert from "react-notification-alert";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
-import Active  from "components/active.component";
+import Active from "components/active.component";
 // react-bootstrap components
 import {
   Badge,
@@ -32,7 +32,7 @@ import {
   TabPane,
   Tab,
 } from "react-bootstrap";
-import {printRequired} from "components/include";
+import { printRequired } from "components/include";
 var allValid = true;
 var sendPass = false;
 var reqnum = 0;
@@ -45,8 +45,8 @@ const required = (value) => {
     );
   }
 };
-import InputMask from 'react-input-mask';
-import {IMaskInput} from 'react-imask';
+import InputMask from "react-input-mask";
+import { IMaskInput } from "react-imask";
 class Cashier extends Component {
   constructor(props) {
     super(props);
@@ -62,7 +62,7 @@ class Cashier extends Component {
     this.setactivatioCode = this.setactivatioCode.bind(this);
     this.selectrequired = this.selectrequired.bind(this);
     this.setDepositPage = this.setDepositPage.bind(this);
-   
+
     this.handleGoNext = this.handleGoNext.bind(this);
     this.handleSendVerify = this.handleSendVerify.bind(this);
     this.handleSendVerifyConfirm = this.handleSendVerifyConfirm.bind(this);
@@ -72,29 +72,27 @@ class Cashier extends Component {
     this.handlePMDeposit = this.handlePMDeposit.bind(this);
 
     this.state = {
-        currentUserCarts: AuthService.getCurrentUser(),
-        cartSelected: {
-            value: '',
-           
-            label: 'Select Cart...',
-            
-          },
-        shetabMethod:{
-            value: '',
-           
-            label: 'Select Method...',
-            
-          },
-        shetabGo:0,
-        Amount:"10",
-        Mobile: "9122266208",
-        MobileCode: "",
+      currentUserCarts: AuthService.getCurrentUser(),
+      cartSelected: {
+        value: "",
+
+        label: "Select Cart...",
+      },
+      shetabMethod: {
+        value: "",
+
+        label: "Select Method...",
+      },
+      shetabGo: 0,
+      Amount: "10",
+      Mobile: "9122266208",
+      MobileCode: "",
       eVoucher: "",
       activatioCode: "",
-      CardNo:"",
-      Expiration:"",
-      cvv:"1",
-      pass:"",
+      CardNo: "",
+      Expiration: "",
+      cvv: "1",
+      pass: "",
       loading: false,
       submit: false,
       successful: false,
@@ -102,220 +100,201 @@ class Cashier extends Component {
     };
   }
   seteVoucher(e) {
-   
     this.setState({
-        eVoucher: e.target.value.replace(/\D/,''),
-        submit: false,
-      });
-    
+      eVoucher: e.target.value.replace(/\D/, ""),
+      submit: false,
+    });
   }
   setAmount(e) {
-   
-   
     this.setState({
-        Amount: e,
-        submit: false,
-      });
-    
+      Amount: e,
+      submit: false,
+    });
   }
   setMobile(e) {
-   
-    console.log(e)
-    console.log(this.state)
+    console.log(e);
+    console.log(this.state);
     this.setState({
-        Mobile: e,
-        submit: false,
-      });
-    
+      Mobile: e,
+      submit: false,
+    });
   }
   setMobileCode(e) {
-   
-    console.log(e)
-    console.log(this.state)
+    console.log(e);
+    console.log(this.state);
     this.setState({
-        MobileCode: e,
-        submit: false,
-      });
-    
+      MobileCode: e,
+      submit: false,
+    });
   }
   handleShetabMethod(e) {
-    console.log(e)
-   
+    console.log(e);
+
     this.setState({
-        shetabMethod: e,
-        submit: false,
-      });
-      allValid = false;
+      shetabMethod: e,
+      submit: false,
+    });
+    allValid = false;
   }
   setDepositPage(e) {
     //reqnum=0;
     this.setState({
-      shetabGo:e, 
+      shetabGo: e,
       successful: false,
-  message: "",
-  submit: false,
-  loading: false,
-  })
+      message: "",
+      submit: false,
+      loading: false,
+    });
     if (allValid) {
       allValid = false;
       setTimeout(function () {
-      
-        $('.btn.btn-danger:visible:first').trigger('click')
+        $(".btn.btn-danger:visible:first").trigger("click");
         //allValid = false;
-      },100) 
-    
-  }else{
-    //allValid = true;
-                    
-  }            
+      }, 100);
+    } else {
+      //allValid = true;
+    }
   }
   setPass(e) {
-   
-    
     this.setState({
-        pass: e,
-        submit: false,
-      });
-    
-  }
-  setCardNo(e) {
-   
-   
-    this.setState({
-        CardNo: e,
-        submit: false,
-      });
-    console.log(e)
-    console.log(this.state)
-  }
-  setCardDef(e) {
-    console.log(e)
-    console.log(this.state)
-    if($(".CardNo:visible").length>0){
-      setTimeout(function () {
-        $('.CardNo').focus();
-        allValid = false;
-      sendPass = false;
-      },100)
-    }
-    this.setState({
-        cartSelected: e,
-        CardNo: e.value,
-        Expiration: e.expiration,
-        cvv: e.cvv,
-        submit: false,
-      });
-      
-  }
-  setExpiration(e) {
-    
-    console.log(e)
-    console.log(this.state)
-    this.setState({
-        Expiration: e,
-        submit: false,
-      });
-    
-  }
-  setCvv(e) {
-    
-    this.setState({
-        cvv: e,
-        submit: false,
-      });
-    
-  }
-  setactivatioCode(e) {
-    this.setState({
-      activatioCode: e.target.value.replace(/\D/,''),
+      pass: e,
       submit: false,
     });
   }
-  
-  selectrequired(field,value) {
-      
+  setCardNo(e) {
+    this.setState({
+      CardNo: e,
+      submit: false,
+    });
+    console.log(e);
+    console.log(this.state);
+  }
+  setCardDef(e) {
+    console.log(e);
+    console.log(this.state);
+    if ($(".CardNo:visible").length > 0) {
+      setTimeout(function () {
+        $(".CardNo").focus();
+        allValid = false;
+        sendPass = false;
+      }, 100);
+    }
+    this.setState({
+      cartSelected: e,
+      CardNo: e.value,
+      Expiration: e.expiration,
+      cvv: e.cvv,
+      submit: false,
+    });
+  }
+  setExpiration(e) {
+    console.log(e);
+    console.log(this.state);
+    this.setState({
+      Expiration: e,
+      submit: false,
+    });
+  }
+  setCvv(e) {
+    this.setState({
+      cvv: e,
+      submit: false,
+    });
+  }
+  setactivatioCode(e) {
+    this.setState({
+      activatioCode: e.target.value.replace(/\D/, ""),
+      submit: false,
+    });
+  }
 
-      
-      
-      var _val = value;
-      console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + allValid)
-      
-      
-      if($("."+field+":visible").length>0){
-        if (field == 'CardNo'  && value.length < 16) {_val = false}
-        if (field == 'Expiration'  && value.length < 4) {_val = false}
-        if (field == 'cvv'  && value.length < 3) {_val = false}
-        if (field == 'Mobile'  && value.length < 9) {_val = false}
-        if (field == 'selectMethod'  && value=='') {_val = false}
-        if (field == 'Amount'  && value!='') {_val = true}
-        
-    if (!_val) {
+  selectrequired(field, value) {
+    var _val = value;
+    console.log(
+      field + ": " + $("." + field + ":visible").length + " - " + allValid
+    );
+
+    if ($("." + field + ":visible").length > 0) {
+      if (field == "CardNo" && value.length < 16) {
+        _val = false;
+      }
+      if (field == "Expiration" && value.length < 4) {
+        _val = false;
+      }
+      if (field == "cvv" && value.length < 3) {
+        _val = false;
+      }
+      if (field == "Mobile" && value.length < 9) {
+        _val = false;
+      }
+      if (field == "selectMethod" && value == "") {
+        _val = false;
+      }
+      if (field == "Amount" && value != "") {
+        _val = true;
+      }
+
+      if (!_val) {
         allValid = false;
         sendPass = true;
-        if (this.state.submit && reqnum==0) {
-          reqnum = reqnum+1;
-         
-          $('.'+field).focus()
-          return (
-            printRequired()
-          )
-    
-}else{
-  allValid = false;
-}
-console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
+        if (this.state.submit && reqnum == 0) {
+          reqnum = reqnum + 1;
 
-}else{
-  console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
-    allValid = true;
-    sendPass = false;
-}
-  }
+          $("." + field).focus();
+          return printRequired();
+        } else {
+          allValid = false;
+        }
+        console.log(
+          field + ": " + $("." + field + ":visible").length + " - " + _val
+        );
+      } else {
+        console.log(
+          field + ": " + $("." + field + ":visible").length + " - " + _val
+        );
+        allValid = true;
+        sendPass = false;
+      }
+    }
   }
   handleGoNext(e) {
     e.preventDefault();
-    
-    reqnum=0;
+
+    reqnum = 0;
     if (allValid) {
-      
-    //allValid = false;
-                            
-    this.setState({shetabGo:this.state.shetabGo+1});
-    
-    
-    
-    }else {
+      //allValid = false;
+
+      this.setState({ shetabGo: this.state.shetabGo + 1 });
+    } else {
       //allValid = true;
       setTimeout(function () {
-       
-        $('.btn.btn-danger:visible:first').trigger('click')
-        
-      },100) 
+        $(".btn.btn-danger:visible:first").trigger("click");
+      }, 100);
       this.setState({
         submit: true,
       });
-      
+
       this.form.validateAll();
     }
-      
-      
-      
-  
-    
   }
   handleShetabDeposit(e) {
-    
     e.preventDefault();
-    
-    reqnum=0;
+
+    reqnum = 0;
     if (allValid) {
       this.setState({
         message: "",
         loading: true,
       });
-      
+
       userService
-        .createDepositShetab(this.state.Amount,this.state.CardNo, this.state.Expiration, this.state.cvv,this.state.pass)
+        .createDepositShetab(
+          this.state.Amount,
+          this.state.CardNo,
+          this.state.Expiration,
+          this.state.cvv,
+          this.state.pass
+        )
         .then(
           (response) => {
             if (response == "Create event successful") {
@@ -353,116 +332,110 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
       this.setState({
         submit: true,
       });
-      
+
       this.form.validateAll();
     }
   }
   handleSendVerify(e) {
     e.preventDefault();
-    
-    reqnum=0;
+
+    reqnum = 0;
     if (allValid) {
       this.setState({
         message: "",
         loading: true,
       });
-      allValid= false;
-      userService
-        .createDepositShetabVerify(this.state.Mobile)
-        .then(
-          (response) => {
-            if (response.data == "OK") {
-                
-                Swal.fire("", "Data saved successfully.", "success").then(
-                    (result) => {
-                        allValid = false;
-                 
-                        this.setState({
-                            shetabGo:this.state.shetabGo+1, 
-                            successful: false,
-                        message: "",
-                        submit: false,
-                        loading: false,
-                        })
-                    }
-                  );
-            } else {
-              const resMessage =
+      allValid = false;
+      userService.createDepositShetabVerify(this.state.Mobile).then(
+        (response) => {
+          if (response.data == "OK") {
+            Swal.fire("", "Data saved successfully.", "success").then(
+              (result) => {
+                allValid = false;
+
+                this.setState({
+                  shetabGo: this.state.shetabGo + 1,
+                  successful: false,
+                  message: "",
+                  submit: false,
+                  loading: false,
+                });
+              }
+            );
+          } else {
+            const resMessage =
               (response.response &&
                 response.response.data &&
                 response.response.data.message) ||
-                response.message ||
-                response.toString();
-
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-              
-                Swal.fire("", resMessage, "error");
-             
-            
-            }
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
+              response.message ||
+              response.toString();
 
             this.setState({
               successful: false,
-              message: resMessage,
+              message: "",
               submit: false,
               loading: false,
             });
+
+            Swal.fire("", resMessage, "error");
           }
-        );
-        }else {
-            this.setState({
-              submit: true,
-            });
-      
-            this.form.validateAll();
-          }
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+
+          this.setState({
+            successful: false,
+            message: resMessage,
+            submit: false,
+            loading: false,
+          });
+        }
+      );
+    } else {
+      this.setState({
+        submit: true,
+      });
+
+      this.form.validateAll();
+    }
   }
   handleSendVerifyConfirm(e) {
-    
-    
     e.preventDefault();
-    
-    reqnum=0;
+
+    reqnum = 0;
     if (allValid) {
-      
-    allValid= false;
-    
+      allValid = false;
+
       this.setState({
         message: "",
         loading: true,
       });
-      
+
       userService
-        .createDepositShetabVerifyConfirm(this.state.Mobile,this.state.MobileCode)
+        .createDepositShetabVerifyConfirm(
+          this.state.Mobile,
+          this.state.MobileCode
+        )
         .then(
           (response) => {
             if (response == "OK") {
-                Swal.fire("", "Data saved successfully.", "success").then(
-                    (result) => {
-                        
-                        allValid = false;
-                        this.setState({
-                            shetabGo:this.state.shetabGo+1, 
-                            successful: false,
-                        message: "",
-                        submit: false,
-                        loading: false,
-                        })
-                    }
-                  );
+              Swal.fire("", "Data saved successfully.", "success").then(
+                (result) => {
+                  allValid = false;
+                  this.setState({
+                    shetabGo: this.state.shetabGo + 1,
+                    successful: false,
+                    message: "",
+                    submit: false,
+                    loading: false,
+                  });
+                }
+              );
             } else {
               this.setState({
                 successful: false,
@@ -488,49 +461,47 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
             });
           }
         );
-    }else {
-        this.setState({
-          submit: true,
-        });
-       
-        this.form.validateAll();
-      }
+    } else {
+      this.setState({
+        submit: true,
+      });
+
+      this.form.validateAll();
+    }
   }
   handleSendPass(e) {
-    
     e.preventDefault();
-    
-  
+
     if (!sendPass) {
-      
-    
-    reqnum=0;
-    sendPass = true;
+      reqnum = 0;
+      sendPass = true;
       this.setState({
         message: "",
         loading: true,
       });
       //allValid = false;
       userService
-        .createDepositShetabPass(this.state.Amount,this.state.CardNo, this.state.Expiration, this.state.cvv)
+        .createDepositShetabPass(
+          this.state.Amount,
+          this.state.CardNo,
+          this.state.Expiration,
+          this.state.cvv
+        )
         .then(
           (response) => {
             if (response == "Ok") {
-                Swal.fire("", "Password sent successfully.", "success").then(
-                    (result) => {
-                        
-                        sendPass = false;
-            
-                this.setState({
-                    
+              Swal.fire("", "Password sent successfully.", "success").then(
+                (result) => {
+                  sendPass = false;
+
+                  this.setState({
                     successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-                })
-                    }
-                  );
-                
+                    message: "",
+                    submit: false,
+                    loading: false,
+                  });
+                }
+              );
             } else {
               this.setState({
                 successful: false,
@@ -556,18 +527,17 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
             });
           }
         );
-    }else {
-        this.setState({
-          submit: true,
-        });
-        sendPass = false;
-        this.form.validateAll();
-      }
+    } else {
+      this.setState({
+        submit: true,
+      });
+      sendPass = false;
+      this.form.validateAll();
+    }
   }
   handlePMDeposit(e) {
-    
     e.preventDefault();
-    reqnum=0;
+    reqnum = 0;
     if (allValid) {
       this.setState({
         message: "",
@@ -612,86 +582,77 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
       this.setState({
         submit: true,
       });
-      
+
       this.form.validateAll();
     }
   }
   onKeyPress(event) {
     const keyCode = event.keyCode || event.which;
     const keyValue = String.fromCharCode(keyCode);
-     if (/\+|-/.test(keyValue))
-       event.preventDefault();
-   }
-   componentDidMount() {
+    if (/\+|-/.test(keyValue)) event.preventDefault();
+  }
+  componentDidMount() {
     Swal.close();
     this._isMounted = true;
     if (this._isMounted) {
-        
-        
-        
     }
   }
   render() {
-    
-   if(!this.state.currentUserCarts.cards){
-    var currentUser = this.state.currentUserCarts;
-    
-    currentUser.cards = [
+    if (!this.state.currentUserCarts.cards) {
+      var currentUser = this.state.currentUserCarts;
+
+      currentUser.cards = [
         {
-            value: "",
-            id: 0,
-            label: 'New Cart...',
-            expiration: '',
-            cvv: '',
-          },
-          {
-            value: "6104337830282164",
-            id: 1,
-            label: '6104-3378-3028-2164',
-            expiration: '0203',
-            cvv: '237',
-          },
-          {
-            value: "6666502205225022",
-            id: 2,
-            label: '6666-5022-0522-5022',
-            expiration: '1020',
-            cvv: '6800',
-          },
-    ]
-    currentUser.payMethod = [
+          value: "",
+          id: 0,
+          label: "New Cart...",
+          expiration: "",
+          cvv: "",
+        },
         {
-            value: "",
-            
-            label: 'Select  Method...',
-           
-          },
+          value: "6104337830282164",
+          id: 1,
+          label: "6104-3378-3028-2164",
+          expiration: "0203",
+          cvv: "237",
+        },
         {
-            value: "HamrahCart",
-           
-            label: 'HamrahCart',
-            
-          },
-          {
-            value: "HamrahCart",
-           
-            label: 'Iva App',
-            
-          },
-          {
-            value: "HamrahCart",
-           
-            label: 'Kipod',
-            
-          },
-    ]
-    this.setCardDef(currentUser.cards[1]) 
-    this.handleShetabMethod(currentUser.payMethod[0]) 
-   }
-    
+          value: "6666502205225022",
+          id: 2,
+          label: "6666-5022-0522-5022",
+          expiration: "1020",
+          cvv: "6800",
+        },
+      ];
+      currentUser.payMethod = [
+        {
+          value: "",
+
+          label: "Select  Method...",
+        },
+        {
+          value: "HamrahCart",
+
+          label: "HamrahCart",
+        },
+        {
+          value: "HamrahCart",
+
+          label: "Iva App",
+        },
+        {
+          value: "HamrahCart",
+
+          label: "Kipod",
+        },
+      ];
+      this.setCardDef(currentUser.cards[1]);
+      this.handleShetabMethod(currentUser.payMethod[0]);
+    }
+
     return (
       <>
-      <Active/>
+        <Active />
         <Container>
           <Tab.Container
             id="page-subcategories-tabs-example"
@@ -702,13 +663,11 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                 role="tablist"
                 variant="tabs"
                 className="justify-content-center border-0 nav-icons"
-                
               >
                 <Nav.Item>
                   <Nav.Link
                     eventKey="description-page-subcategories"
                     className="border-0 bg-transparent "
-                    
                   >
                     <i className="nc-icon nc-money-coins"></i>
                     <br></br>
@@ -719,7 +678,6 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                   <Nav.Link
                     eventKey="location-page-subcategories"
                     className="border-0 bg-transparent"
-                    
                   >
                     <i className="nc-icon nc-credit-card"></i>
                     <br></br>
@@ -730,7 +688,6 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                   <Nav.Link
                     eventKey="legal-info-page-subcategories"
                     className="border-0 bg-transparent"
-                   
                   >
                     <i className="nc-icon nc-bullet-list-67"></i>
                     <br></br>
@@ -750,11 +707,15 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                     <Tab.Container
                       id="plain-tabs-example"
                       defaultActiveKey="shetab"
-                      
                     >
-                      <Nav role="tablist" variant="tabs" >
-                      <Nav.Item>
-                          <Nav.Link eventKey="shetab" onClick={ () => {allValid= false;} }>
+                      <Nav role="tablist" variant="tabs">
+                        <Nav.Item>
+                          <Nav.Link
+                            eventKey="shetab"
+                            onClick={() => {
+                              allValid = false;
+                            }}
+                          >
                             <img
                               alt="pm"
                               style={{ height: 20 }}
@@ -764,7 +725,12 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                           </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                          <Nav.Link eventKey="pm" onClick={ () => {allValid= false;} }>
+                          <Nav.Link
+                            eventKey="pm"
+                            onClick={() => {
+                              allValid = false;
+                            }}
+                          >
                             <img
                               alt="pm"
                               style={{ height: 25 }}
@@ -785,7 +751,7 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                         </Nav.Item>
                       </Nav>
                       <Tab.Content>
-                      <Tab.Pane eventKey="shetab">
+                        <Tab.Pane eventKey="shetab">
                           <Row>
                             <Col md="6">
                               <Form
@@ -801,330 +767,331 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                                     </Card.Title>
                                   </Card.Header>
                                   <Card.Body>
-                                  {(this.state.shetabGo==0) &&(
+                                    {this.state.shetabGo == 0 && (
                                       <>
                                         <div className="form-group form-group-lg2">
-                                  <label>Amount</label>
-                                  <div className="input-group">
-  <span className="input-group-text" id="inputGroup-sizing-lg">$</span>
-  <IMaskInput className="form-control Amount form-control-lg2"  
-                              type="tel"
-                              pattern="[1-9]{1}[0-9]"
-                              mask={"0000"}
-                              
-                             
-  inputRef={el => this.input = el} 
-                    value={this.state.Amount}
-                    onAccept={this.setAmount}  />
- 
-</div>
-                              
-                              
-
-                              
-                              
-                            </div>
-                            {this.selectrequired('Amount',this.state.Amount)} 
-                                    </>
-                                      )}
-                                      {(this.state.shetabGo==1) &&(
-                                          <>
-                                        <div className="form-group form-group-lg2">
-                                        <label>Select Method</label>
-                                        <Select
-                                          className="react-select default selectMethod"
-                                          classNamePrefix="react-select selectMethod"
-                                         
-                                         value={this.state.shetabMethod}
-                                          onChange={this.handleShetabMethod}
-                                          options={this.state.currentUserCarts.payMethod}
-                                         
-                                        />
-                                     
-
-                                      </div>
-                                      {this.selectrequired('selectMethod',this.state.shetabMethod.value)} 
+                                          <label>Amount</label>
+                                          <div className="input-group">
+                                            <span
+                                              className="input-group-text"
+                                              id="inputGroup-sizing-lg"
+                                            >
+                                              $
+                                            </span>
+                                            <IMaskInput
+                                              className="form-control Amount form-control-lg2"
+                                              type="tel"
+                                              pattern="[1-9]{1}[0-9]"
+                                              mask={"0000"}
+                                              inputRef={(el) =>
+                                                (this.input = el)
+                                              }
+                                              value={this.state.Amount}
+                                              onAccept={this.setAmount}
+                                            />
+                                          </div>
+                                        </div>
+                                        {this.selectrequired(
+                                          "Amount",
+                                          this.state.Amount
+                                        )}
                                       </>
-                                      )}
-                                      {(this.state.shetabGo==2) &&(
-                                        
-                                        <>
+                                    )}
+                                    {this.state.shetabGo == 1 && (
+                                      <>
                                         <div className="form-group form-group-lg2">
-                                  <label>Mobile</label>
-                                  <div className="input-group">
-  <span className="input-group-text" id="inputGroup-sizing-lg">+98</span>
-  <IMaskInput className="form-control Mobile form-control-lg2"  
-                              type="tel"
-                              pattern="[0-9]"
-                              unmask={true}
-                              mask={"000 000 0000"}
-                             
-                             
-  inputRef={el => this.input = el} 
-                    value={this.state.Mobile}
-                    onAccept={this.setMobile}  />
- 
-</div>
-                              
-       
-                              
-                              
-                            </div>
-                                                   
-{this.selectrequired('Mobile',this.state.Mobile)} 
-                                    
-                                      
+                                          <label>Select Method</label>
+                                          <Select
+                                            className="react-select default selectMethod"
+                                            classNamePrefix="react-select selectMethod"
+                                            value={this.state.shetabMethod}
+                                            onChange={this.handleShetabMethod}
+                                            options={
+                                              this.state.currentUserCarts
+                                                .payMethod
+                                            }
+                                          />
+                                        </div>
+                                        {this.selectrequired(
+                                          "selectMethod",
+                                          this.state.shetabMethod.value
+                                        )}
                                       </>
-                                      )}
-                                      {(this.state.shetabGo==3) &&(
-                                        
-                                        <>
+                                    )}
+                                    {this.state.shetabGo == 2 && (
+                                      <>
+                                        <div className="form-group form-group-lg2">
+                                          <label>Mobile</label>
+                                          <div className="input-group">
+                                            <span
+                                              className="input-group-text"
+                                              id="inputGroup-sizing-lg"
+                                            >
+                                              +98
+                                            </span>
+                                            <IMaskInput
+                                              className="form-control Mobile form-control-lg2"
+                                              type="tel"
+                                              pattern="[0-9]"
+                                              unmask={true}
+                                              mask={"000 000 0000"}
+                                              inputRef={(el) =>
+                                                (this.input = el)
+                                              }
+                                              value={this.state.Mobile}
+                                              onAccept={this.setMobile}
+                                            />
+                                          </div>
+                                        </div>
+
+                                        {this.selectrequired(
+                                          "Mobile",
+                                          this.state.Mobile
+                                        )}
+                                      </>
+                                    )}
+                                    {this.state.shetabGo == 3 && (
+                                      <>
                                         <div className="form-group ">
-                                  <label>Code</label>
-                                 
-  <IMaskInput className="form-control MobileCode"  
-                              type="tel"
-                              pattern="[0-9]"
-                              unmask={true}
-                              mask={"0000000"}
-                              
-                             
-  inputRef={el => this.input = el} 
-                    value={this.state.MobileCode}
-                    onAccept={this.setMobileCode}  />
- 
-</div>
-                              
-                              
-{this.selectrequired('MobileCode',this.state.MobileCode)} 
-                              
-                          
-                            
-                                    
-                                      
+                                          <label>Code</label>
+
+                                          <IMaskInput
+                                            className="form-control MobileCode"
+                                            type="tel"
+                                            pattern="[0-9]"
+                                            unmask={true}
+                                            mask={"0000000"}
+                                            inputRef={(el) => (this.input = el)}
+                                            value={this.state.MobileCode}
+                                            onAccept={this.setMobileCode}
+                                          />
+                                        </div>
+
+                                        {this.selectrequired(
+                                          "MobileCode",
+                                          this.state.MobileCode
+                                        )}
                                       </>
-                                      )}
-                                  
-                            
-                                  {(this.state.shetabGo==4) &&(
-<>
-<div className="form-group form-group-lg2">
-                                        <label>Cart Number</label>
-                                        <Select
-                                          className="react-select default selectCart"
-                                          classNamePrefix="react-select"
-                                         
-                                         value={this.state.cartSelected}
-                                          onChange={this.setCardDef}
-                                          options={this.state.currentUserCarts.cards}
-                                          placeholder="Cart Number"
-                                        />
-                                     
-                                      </div>
-                                      {(!this.state.cartSelected.value) && (
+                                    )}
+
+                                    {this.state.shetabGo == 4 && (
+                                      <>
+                                        <div className="form-group form-group-lg2">
+                                          <label>Cart Number</label>
+                                          <Select
+                                            className="react-select default selectCart"
+                                            classNamePrefix="react-select"
+                                            value={this.state.cartSelected}
+                                            onChange={this.setCardDef}
+                                            options={
+                                              this.state.currentUserCarts.cards
+                                            }
+                                            placeholder="Cart Number"
+                                          />
+                                        </div>
+                                        {!this.state.cartSelected.value && (
                                           <>
-<div className="form-group">
-                              <label>Cart Number</label>
-                              <IMaskInput className="form-control CardNo" inputMode="numeric"
-                              autoComplete="cc-number" 
-                              
-                              unmask={true}
-                              name="cardNumber"
-                              placeholder='Cart Number'
-                    value={this.state.CardNo}
-                    onAccept={this.setCardNo} mask={"0000-0000-0000-0000"}  />
-                          
-                              
-                              
-                            </div>
-                                    
-                                      {this.selectrequired('CardNo',this.state.CardNo)}
-                                      
-                                      <div className="row">
-    <div className="col">
-    <div className="form-group">
-                              <label>Expiration (mm/yy)</label>
-                              <IMaskInput
-                               
-                               inputMode="numeric"
-                               pattern="[0-9]{4}"
-  mask={"MM/YY"}
-  blocks={{
-    YY: {
-      mask: "00"
-    },
-    MM: {
-        mask: IMask.MaskedRange,
-      from: 1,
-      to: 12
-    }
-  }}
-  className="form-control Expiration" 
-  autoComplete="cc-exp"
-  value={this.state.Expiration}
-  unmask={true}
-                  name="expDate"
-  inputRef={el => this.input = el}  // access to nested input
-  // DO NOT USE onChange TO HANDLE CHANGES!
-  // USE onAccept INSTEAD
-  onAccept={
-    this.setExpiration
-  }
-  placeholder='MM/YY'
-  
-/>
-                             
-                          
-                              
-                              
-                            </div>
-                                    
-                                      {this.selectrequired('Expiration',this.state.Expiration)}
-    </div>
-    <div className="col">
-    <div className="form-group">
-                              <label>CVV</label>
-                              <IMaskInput className="form-control cvv" pattern="[0-9]*" inputMode="numeric"
-                              type="text"
-                              maxLength="4"
-                              mask={Number}
-                              autoComplete="off"
-                              unmask={true} // true|false|'typed'
-  inputRef={el => this.input = el} 
-                    value={this.state.cvv}
-                    onAccept={this.setCvv}   />
-                              
-                          
-                              
-                              
-                            </div>
-                                    
-                                      {this.selectrequired('cvv',this.state.cvv)}
-    </div>
-  </div>
-  </>
-                                      )}
-  <div className="form-group">
-                              <label>Password</label>
-  <div className="input-group">
-  <IMaskInput className="form-control pass" pattern="[0-9]*" inputMode="numeric"
-                              type="text"
-                              
-                              mask={Number}
-                              autoComplete="off"
-                              unmask={true} // true|false|'typed'
-  inputRef={el => this.input = el} 
-                    value={this.state.pass}
-                    onAccept={this.setPass}   />
-  <Button
-                                    className="btn btn-danger"
-                                   
-                                    variant="danger"
-                                    type="button"
-                                    disabled={sendPass}
-                                    
-                                    onClick={ this.handleSendPass }
-                                      >
-                                      
-                                
-                                    Send Password
-                                  </Button>
-                
-</div>
-                                      
-                              
-                              
-                            </div>
-                                    
-                                      {this.selectrequired('pass',
-                                        this.state.pass
-                                      )}
-</>
-                                     )} 
-                                   
-  
-                                   
+                                            <div className="form-group">
+                                              <label>Cart Number</label>
+                                              <IMaskInput
+                                                className="form-control CardNo"
+                                                inputMode="numeric"
+                                                autoComplete="cc-number"
+                                                unmask={true}
+                                                name="cardNumber"
+                                                placeholder="Cart Number"
+                                                value={this.state.CardNo}
+                                                onAccept={this.setCardNo}
+                                                mask={"0000-0000-0000-0000"}
+                                              />
+                                            </div>
+
+                                            {this.selectrequired(
+                                              "CardNo",
+                                              this.state.CardNo
+                                            )}
+
+                                            <div className="row">
+                                              <div className="col">
+                                                <div className="form-group">
+                                                  <label>
+                                                    Expiration (mm/yy)
+                                                  </label>
+                                                  <IMaskInput
+                                                    inputMode="numeric"
+                                                    pattern="[0-9]{4}"
+                                                    mask={"MM/YY"}
+                                                    blocks={{
+                                                      YY: {
+                                                        mask: "00",
+                                                      },
+                                                      MM: {
+                                                        mask: IMask.MaskedRange,
+                                                        from: 1,
+                                                        to: 12,
+                                                      },
+                                                    }}
+                                                    className="form-control Expiration"
+                                                    autoComplete="cc-exp"
+                                                    value={
+                                                      this.state.Expiration
+                                                    }
+                                                    unmask={true}
+                                                    name="expDate"
+                                                    inputRef={(el) =>
+                                                      (this.input = el)
+                                                    } // access to nested input
+                                                    // DO NOT USE onChange TO HANDLE CHANGES!
+                                                    // USE onAccept INSTEAD
+                                                    onAccept={
+                                                      this.setExpiration
+                                                    }
+                                                    placeholder="MM/YY"
+                                                  />
+                                                </div>
+
+                                                {this.selectrequired(
+                                                  "Expiration",
+                                                  this.state.Expiration
+                                                )}
+                                              </div>
+                                              <div className="col">
+                                                <div className="form-group">
+                                                  <label>CVV</label>
+                                                  <IMaskInput
+                                                    className="form-control cvv"
+                                                    pattern="[0-9]*"
+                                                    inputMode="numeric"
+                                                    type="text"
+                                                    maxLength="4"
+                                                    mask={Number}
+                                                    autoComplete="off"
+                                                    unmask={true} // true|false|'typed'
+                                                    inputRef={(el) =>
+                                                      (this.input = el)
+                                                    }
+                                                    value={this.state.cvv}
+                                                    onAccept={this.setCvv}
+                                                  />
+                                                </div>
+
+                                                {this.selectrequired(
+                                                  "cvv",
+                                                  this.state.cvv
+                                                )}
+                                              </div>
+                                            </div>
+                                          </>
+                                        )}
+                                        <div className="form-group">
+                                          <label>Password</label>
+                                          <div className="input-group">
+                                            <IMaskInput
+                                              className="form-control pass"
+                                              pattern="[0-9]*"
+                                              inputMode="numeric"
+                                              type="text"
+                                              mask={Number}
+                                              autoComplete="off"
+                                              unmask={true} // true|false|'typed'
+                                              inputRef={(el) =>
+                                                (this.input = el)
+                                              }
+                                              value={this.state.pass}
+                                              onAccept={this.setPass}
+                                            />
+                                            <Button
+                                              className="btn btn-danger"
+                                              variant="danger"
+                                              type="button"
+                                              disabled={sendPass}
+                                              onClick={this.handleSendPass}
+                                            >
+                                              Send Password
+                                            </Button>
+                                          </div>
+                                        </div>
+
+                                        {this.selectrequired(
+                                          "pass",
+                                          this.state.pass
+                                        )}
+                                      </>
+                                    )}
                                   </Card.Body>
                                   <Card.Footer>
-                                  {(this.state.shetabGo<4) ?(
+                                    {this.state.shetabGo < 4 ? (
                                       <>
-                                      {(this.state.shetabGo==2) &&(
-                                      <>
-                                  <div className="form-group">
-                                      <button
-                                        className="btn btn-danger btn-block"
-                                       
-                                    variant="secondary"
-                                    type="button"
-                                    disabled={this.state.loading }
-                                    onClick={this.handleSendVerify}
-                                      >
-                                      {this.state.loading &&  (
-                                        <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                                      )}
-                                        
-                                       
-                                        <span> Send Code</span>
-                                      </button>
-                                    </div>
-                                    </>
-                                      )}
-                                      {(this.state.shetabGo==3) &&(
-                                      <>
-                                  <div className="form-group">
-                                      <button
-                                        className="btn btn-danger btn-block"
-                                       
-                                    variant="danger"
-                                    type="button"
-                                    disabled={this.state.loading}
-                                    onClick={this.handleSendVerifyConfirm}
-                                      >
-                                      {this.state.loading && (
-                                        <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                                      )}
-                                        
-                                       
-                                        <span> Verify</span>
-                                      </button>
-                                    </div>
-                                    </>
-                                      )}
+                                        {this.state.shetabGo == 2 && (
+                                          <>
+                                            <div className="form-group">
+                                              <button
+                                                className="btn btn-danger btn-block"
+                                                variant="secondary"
+                                                type="button"
+                                                disabled={this.state.loading}
+                                                onClick={this.handleSendVerify}
+                                              >
+                                                {this.state.loading && (
+                                                  <span className="spinner-border spinner-border-sm  fa-wd"></span>
+                                                )}
 
-{(this.state.shetabGo<2) &&(
-                                      <>
-                                  <div className="form-group">
-                                      <button
-                                        className="btn btn-danger btn-block"
-                                       
-                                    variant="danger"
-                                    type="button"
-                                        disabled={this.state.loading}
-                                        onClick={this.handleGoNext}
-                                                                             >
-                                       
-                                        <span> Next</span>
-                                      </button>
-                                    </div>
-                                    </>
-                                      )}
-                                    </>
-                                      ):(
-<div className="form-group">
-                                      <button
-                                        className="btn btn-danger btn-wd btn-block"
-                                        disabled={this.state.loading}
-                                      >
-                                        {this.state.loading && (
-                                          <span className="spinner-border spinner-border-sm  fa-wd"></span>
+                                                <span> Send Code</span>
+                                              </button>
+                                            </div>
+                                          </>
                                         )}
-                                        <span> Deposit</span>
-                                      </button>
-                                    </div>
-                                      )}
-                                      
-                                    
-                                   
+                                        {this.state.shetabGo == 3 && (
+                                          <>
+                                            <div className="form-group">
+                                              <button
+                                                className="btn btn-danger btn-block"
+                                                variant="danger"
+                                                type="button"
+                                                disabled={this.state.loading}
+                                                onClick={
+                                                  this.handleSendVerifyConfirm
+                                                }
+                                              >
+                                                {this.state.loading && (
+                                                  <span className="spinner-border spinner-border-sm  fa-wd"></span>
+                                                )}
+
+                                                <span> Verify</span>
+                                              </button>
+                                            </div>
+                                          </>
+                                        )}
+
+                                        {this.state.shetabGo < 2 && (
+                                          <>
+                                            <div className="form-group">
+                                              <button
+                                                className="btn btn-danger btn-block"
+                                                variant="danger"
+                                                type="button"
+                                                disabled={this.state.loading}
+                                                onClick={this.handleGoNext}
+                                              >
+                                                <span> Next</span>
+                                              </button>
+                                            </div>
+                                          </>
+                                        )}
+                                      </>
+                                    ) : (
+                                      <div className="form-group">
+                                        <button
+                                          className="btn btn-danger btn-wd btn-block"
+                                          disabled={this.state.loading}
+                                        >
+                                          {this.state.loading && (
+                                            <span className="spinner-border spinner-border-sm  fa-wd"></span>
+                                          )}
+                                          <span> Deposit</span>
+                                        </button>
+                                      </div>
+                                    )}
                                   </Card.Footer>
                                 </Card>
                               </Form>
@@ -1137,15 +1104,74 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                                   </Card.Title>
                                 </Card.Header>
                                 <Card.Body>
-                                <div className="list-group">
-  <button type="button" className={(this.state.shetabGo == 0)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setDepositPage(0)} } aria-current="true">
-    Enter Amount</button>
-  <button type="button" className={(this.state.shetabGo == 1)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setDepositPage(1)} }>Select Method</button>
-  <button type="button" className={(this.state.shetabGo == 2)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setDepositPage(2)} }>Enter Mobile Number</button>
-  <button type="button" className={(this.state.shetabGo == 3)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setDepositPage(3)} }>Verify  Mobile</button>
-  <button type="button" className={(this.state.shetabGo == 4)?('list-group-item list-group-item-action  list-group-item-success'):('list-group-item list-group-item-action list-group-item-warning')} onClick={ () => {this.setDepositPage(4)} }>Enter Cart Number</button>
-</div>
-                                    
+                                  <div className="list-group">
+                                    <button
+                                      type="button"
+                                      className={
+                                        this.state.shetabGo == 0
+                                          ? "list-group-item list-group-item-action  list-group-item-success"
+                                          : "list-group-item list-group-item-action list-group-item-warning"
+                                      }
+                                      onClick={() => {
+                                        this.setDepositPage(0);
+                                      }}
+                                      aria-current="true"
+                                    >
+                                      Enter Amount
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className={
+                                        this.state.shetabGo == 1
+                                          ? "list-group-item list-group-item-action  list-group-item-success"
+                                          : "list-group-item list-group-item-action list-group-item-warning"
+                                      }
+                                      onClick={() => {
+                                        this.setDepositPage(1);
+                                      }}
+                                    >
+                                      Select Method
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className={
+                                        this.state.shetabGo == 2
+                                          ? "list-group-item list-group-item-action  list-group-item-success"
+                                          : "list-group-item list-group-item-action list-group-item-warning"
+                                      }
+                                      onClick={() => {
+                                        this.setDepositPage(2);
+                                      }}
+                                    >
+                                      Enter Mobile Number
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className={
+                                        this.state.shetabGo == 3
+                                          ? "list-group-item list-group-item-action  list-group-item-success"
+                                          : "list-group-item list-group-item-action list-group-item-warning"
+                                      }
+                                      onClick={() => {
+                                        this.setDepositPage(3);
+                                      }}
+                                    >
+                                      Verify Mobile
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className={
+                                        this.state.shetabGo == 4
+                                          ? "list-group-item list-group-item-action  list-group-item-success"
+                                          : "list-group-item list-group-item-action list-group-item-warning"
+                                      }
+                                      onClick={() => {
+                                        this.setDepositPage(4);
+                                      }}
+                                    >
+                                      Enter Cart Number
+                                    </button>
+                                  </div>
                                 </Card.Body>
                               </Card>
                             </Col>
@@ -1167,37 +1193,38 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                                     </Card.Title>
                                   </Card.Header>
                                   <Card.Body>
-                                  <div className="form-group">
-                              <label>Voucher Number</label>
-                              <Input
-                    type="tel"
-                    className="form-control eVoucher"
-                    pattern="[0-9]*" 
-                    value={this.state.eVoucher}
-                    onChange={this.seteVoucher}
-                    onKeyPress={this.onKeyPress.bind(this)}
-                  />
-                              
-                            </div>
-                                    
-                                      {this.selectrequired('eVoucher',this.state.eVoucher)}
-                                      <div className="form-group">
-                              <label>Activation Code</label>
-                              <Input
-                    type="tel"
-                    className="form-control  activatioCode"
-                    pattern="[0-9]*" 
-                    value={this.state.activatioCode}
-                    onChange={this.setactivatioCode}
-                    onKeyPress={this.onKeyPress.bind(this)}
-                  />
-                              
-                            </div>
-                                    
-                                      {this.selectrequired('activatioCode',
-                                        this.state.activatioCode
-                                      )}
-                                   
+                                    <div className="form-group">
+                                      <label>Voucher Number</label>
+                                      <Input
+                                        type="tel"
+                                        className="form-control eVoucher"
+                                        pattern="[0-9]*"
+                                        value={this.state.eVoucher}
+                                        onChange={this.seteVoucher}
+                                        onKeyPress={this.onKeyPress.bind(this)}
+                                      />
+                                    </div>
+
+                                    {this.selectrequired(
+                                      "eVoucher",
+                                      this.state.eVoucher
+                                    )}
+                                    <div className="form-group">
+                                      <label>Activation Code</label>
+                                      <Input
+                                        type="tel"
+                                        className="form-control  activatioCode"
+                                        pattern="[0-9]*"
+                                        value={this.state.activatioCode}
+                                        onChange={this.setactivatioCode}
+                                        onKeyPress={this.onKeyPress.bind(this)}
+                                      />
+                                    </div>
+
+                                    {this.selectrequired(
+                                      "activatioCode",
+                                      this.state.activatioCode
+                                    )}
                                   </Card.Body>
                                   <Card.Footer>
                                     <div className="form-group">
@@ -1211,7 +1238,6 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                                         <span> Deposit</span>
                                       </button>
                                     </div>
-                                   
                                   </Card.Footer>
                                 </Card>
                               </Form>
@@ -1237,9 +1263,7 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                                     Crypto Currency Deposit
                                   </Card.Title>
                                 </Card.Header>
-                                <Card.Body>
-                                 
-                                </Card.Body>
+                                <Card.Body></Card.Body>
                                 <Card.Footer>
                                   <Button
                                     className="btn-fill"
@@ -1301,9 +1325,7 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                                     eVoucher PerfectMoney Cashout
                                   </Card.Title>
                                 </Card.Header>
-                                <Card.Body>
-                                  
-                                </Card.Body>
+                                <Card.Body></Card.Body>
                                 <Card.Footer>
                                   <Button
                                     className="btn-fill"
@@ -1336,9 +1358,7 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                                     Crypto Currency Cashout
                                   </Card.Title>
                                 </Card.Header>
-                                <Card.Body>
-                                  
-                                </Card.Body>
+                                <Card.Body></Card.Body>
                                 <Card.Footer>
                                   <Button
                                     className="btn-fill"
@@ -1371,7 +1391,6 @@ console.log(field  + ': '+ $("."+field+":visible").length + ' - ' + _val)
                 <Card className="regular-table-with-color">
                   <Card.Header>
                     <Card.Title as="h4">Trasactions</Card.Title>
-                    
                   </Card.Header>
                   <Card.Body className="table-responsive p-0">
                     <Table className="table-hover">
