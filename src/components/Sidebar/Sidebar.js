@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useState} from "react";
 import { Link, useLocation,Redirect } from "react-router-dom";
 import Avatar from 'react-avatar';
 import PropTypes from "prop-types";
@@ -19,24 +19,39 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
+import {
+  userState
+} from 'atoms';
 
 function Sidebar({ routes, image, background }) {
+  
+  const token = useRecoilValue(userState);
+  var currentUser = token;
+   
   // to check for active links and opened collapses
   let location = useLocation();
   // this is for the user collapse
-  const [userCollapseState, setUserCollapseState] = React.useState(false);
+  var [userCollapseState, setUserCollapseState] = React.useState(false);
   // this is for the rest of the collapses
-  const [state, setState] = React.useState({});
+  var [state, setState] = React.useState({});
   React.useEffect(() => {
+    
     setState(getCollapseStates(routes));
+    
   }, []);
-  const currentUser = AuthService.getCurrentUser();
   
   // this is for the rest of the collapses
   
   // this creates the intial state of this component based on the collapse routes
   // that it gets through routes prop
-  const getCollapseStates = (routes) => {
+  var getCollapseStates = (routes) => {
     let initialState = {};
     routes.map((prop, key) => {
       if (prop.collapse) {
@@ -215,6 +230,8 @@ function Sidebar({ routes, image, background }) {
       </div>
     </>
   );
+        }else{
+          return null;
         }
 }
 
@@ -222,17 +239,23 @@ let linkPropTypes = {
   path: PropTypes.string,
   layout: PropTypes.string,
   name: PropTypes.string,
+  token: PropTypes.arrayOf(),
+  page: PropTypes.string,
   component: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
 };
 
 Sidebar.defaultProps = {
   image: "",
+  page: "",
   background: "purple",
   routes: [],
+  token: "",
 };
 
 Sidebar.propTypes = {
   image: PropTypes.string,
+  
+  page: PropTypes.string,
   background: PropTypes.oneOf([
     "blue",
     "azure",
@@ -260,6 +283,7 @@ Sidebar.propTypes = {
       }),
     ])
   ),
+  token: PropTypes.string,
 };
 
 export default Sidebar;

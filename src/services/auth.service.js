@@ -22,6 +22,7 @@ class AuthService {
     return false
   });
   }
+  
   login(username, password) {
     return axios
       .post(API_URL + "signin", {
@@ -30,6 +31,7 @@ class AuthService {
       })
       .then(response => {
         if (response.data.accessToken) {
+
           localStorage.setItem("user", JSON.stringify(response.data));
           UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username);
         }

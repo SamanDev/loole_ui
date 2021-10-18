@@ -13,6 +13,7 @@ import {
     Navbar,
     Nav,
     Container,
+    Spinner
 
 } from "react-bootstrap";
 
@@ -22,30 +23,17 @@ class AdminNavbar extends Component {
         this.logOut = this.logOut.bind(this);
 
         this.state = {
-          currentUser: { username: "" },
+          currentUser: false,
             showModeratorBoard: false,
             showAdminBoard: false,
             collapseOpen: false,
-           
+            currpage:false,
             isExpanded: false
         };
 
     }
 
-    componentDidMount() {
-        const user = AuthService.getCurrentUser();
-       
-        if (user) {
-          this.setState({
-              currentUser: user,
-             
-              showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-              showAdminBoard: user.roles.includes("ROLE_ADMIN"),
-          });
-          
-      } 
-
-    }
+   
 
     logOut() {
         AuthService.logout();
@@ -59,8 +47,9 @@ class AdminNavbar extends Component {
     }
     
     render() {
-        const { currentUser, showModeratorBoard, showAdminBoard, collapseOpen, isExpanded } = this.state;
-     
+      
+      let { currentUser, showModeratorBoard, showAdminBoard, collapseOpen, isExpanded,currpage } = this.state;
+        
         return (
           <Navbar expand="lg" fixed="top" variant="dark" style={{background:'#111'}}>
           <Container fluid>

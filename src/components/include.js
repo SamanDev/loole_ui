@@ -49,6 +49,13 @@ export const  getPageVariable  = () =>{
       return vars;
     
 }
+
+      export const  date_locale  = (thisDate) =>{
+       
+          var d = new Date(thisDate);
+       
+        return d.toLocaleDateString();
+    }
 export const isJson = (item) =>{
   item = typeof item !== "string"
       ? JSON.stringify(item)

@@ -131,6 +131,8 @@ class LockScreenPage extends Component {
 
   componentDidMount() {
     Swal.close();
+    
+    
     this._isMounted = true;
     if (this._isMounted) {
       eventBus.on("eventsDataEvent", (event) => {
@@ -908,6 +910,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
 
     var isJoin = false;
     var activePlayer = 0;
+   
     return (
       <>
         <div className="wrapper">

@@ -17,14 +17,21 @@ import LandMobileLayout from "layouts/LandMobile.js";
 import AdminLayout from "layouts/Admin.js";
 import LockLayout from "layouts/Lock.js";
 import PanelLayout from "layouts/Panel.js";
-
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
 
 ReactDOM.render(
+  <RecoilRoot>
   <BrowserRouter>
     <Switch>
       
       <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-      <Route path="/panel" render={(props) => <PanelLayout {...props} />} />
+      <Route path="/panel" render={(props) => <PanelLayout text="hi" {...props} />} />
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
       <Route path="/lock" render={(props) => <LockLayout {...props} />} />
       <Route path="/game/:id" render={(props) => <LandLayout {...props} />} />
@@ -34,6 +41,8 @@ ReactDOM.render(
       <Redirect from="/" to="/auth/login-page" />
       
     </Switch>
-  </BrowserRouter>,
+  </BrowserRouter>
+  </RecoilRoot>
+  ,
   document.getElementById("root")
 );

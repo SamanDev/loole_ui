@@ -252,6 +252,20 @@ class UserService {
       //this.getEvents(token)
     }
   }
+  editInfo(name,country,birthday) {
+    return axios
+      .post(
+        API_URL_TEST + "editInfo",
+        { name,country,birthday},
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        if (response.data.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          return "Ok";
+        }
+      });
+  }
   createTournament(gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer,tournamentPayout,inSign,outSign,rules) {
     return axios
       .post(

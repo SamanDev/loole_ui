@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { DatePicker } from "react-rainbow-components";
 
-export default function RainbowDatepicker() {
-  const [date, setDate] = useState(null);
+export default function RainbowDatepicker(props) {
+  const date = props.value;
 
   function onChange(date) {
     setDate(date);
@@ -16,7 +16,7 @@ export default function RainbowDatepicker() {
       minDate={new Date("01-01-1960")}
       maxDate={new Date("01-01-2002")}
       value={date}
-      onChange={onChange}
+      onChange={props.passedFunction}
       
      
     />
