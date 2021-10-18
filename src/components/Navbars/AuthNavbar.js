@@ -26,7 +26,7 @@ class AuthNavbar extends Component {
         this.state = {
             showModeratorBoard: false,
             showAdminBoard: false,
-            currentUser: undefined,
+            currentUser: false,
             collapseOpen: false,
           
             isExpanded: false
@@ -35,7 +35,7 @@ class AuthNavbar extends Component {
     }
 
     componentDidMount() {
-        const user = AuthService.getCurrentUser();
+        const user = this.props.token;
         
         if (user) {
             this.setState({
@@ -70,7 +70,7 @@ class AuthNavbar extends Component {
     }
     render() {
         const { currentUser, showModeratorBoard, showAdminBoard, collapseOpen, currPage, isExpanded } = this.state;
-       
+        
         return (
             <Navbar
                 className="position-absolute w-100"

@@ -41,7 +41,7 @@ export default class Landing extends Component {
      // alert("socket events: "+event);
     
       this.setState({ events: event, isLoading: false });
-      console.log("change state: " + this.state.isLoading);
+      //console.log("change state: " + this.state.isLoading);
       
     });
 

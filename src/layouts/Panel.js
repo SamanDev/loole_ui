@@ -1,8 +1,9 @@
-import React from "react";
+import React ,{useEffect, useState} from "react";
 import { Switch, Route,Redirect } from "react-router-dom";
 import Avatar, { ConfigProvider } from "react-avatar";
 import $ from "jquery";
 
+import Active  from "components/active.component";
 // react-bootstrap components
 import {
   Badge,
@@ -17,6 +18,7 @@ import {
   Container,
   Row,
   Col,
+  Spinner
 } from "react-bootstrap";
 import { DEFCOLORS } from "const";
 // core components
@@ -36,7 +38,16 @@ import image4 from "assets/img/bg.jpg";
 import UserWebsocket from 'services/user.websocket'
 import AuthService from "services/auth.service";
 import userService from "services/user.service";
-
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
+import {
+  userState
+} from 'atoms';
 function scrollToTop() {
 
   window.scrollTo({
@@ -47,67 +58,84 @@ function scrollToTop() {
 
 
 };
+var getRoutes = (routes,tokensend) => {
+    
+  return routes.map((prop, key) => {
+    
+    if (prop.collapse) {
+      return getRoutes(prop.views,tokensend);
+    }
+    if (prop.layout === "/panel" ) {
+      
+      scrollToTop();
+     
+      return (
+        
+        
+        <Route
+          path={prop.layout + prop.path}
+          key={key}
+          component={prop.component}
+          
+          token={tokensend}
+          
+        />
+          
+        
+      );
+    } else {
+      return null;
+    }
+  });
+};
 
+const getPage = (routes) => {
+  return routes.map((prop, key) => {
+    
+    if (window.location.href.indexOf(prop.path)>-1 && prop.path !='/') {
+      
+  return prop.name
+  
+    }
+  });
+};
 function Panel() {
   
+   
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
-  const currentUser = AuthService.getCurrentUser();
- // userService.getEvents();
- 
-  if (!currentUser) {
-    return <Redirect to="/auth/login-page"/>
-  }else{
-    //UserWebsocket.connect(currentUser.accessToken+"&user="+currentUser.username);
-    setInterval(function(){
-      UserWebsocket.connect(currentUser.accessToken+"&user="+currentUser.username);
-    },1000)
-  }
- 
-
-  const getRoutes = (routes) => {
-    return routes.map((prop, key) => {
-      
-      if (prop.collapse) {
-        return getRoutes(prop.views);
-      }
-      if (prop.layout === "/panel" ) {
-        
-        scrollToTop();
-        
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            key={key}
-            component={prop.component}
-            
-          />
-        );
-      } else {
-        return null;
-      }
-    });
-  };
-  const getPage = (routes) => {
-    return routes.map((prop, key) => {
-      
-      if (window.location.href.indexOf(prop.path)>-1 && prop.path !='/') {
-        
-    return prop.name
-    
-      }
-    });
-  };
+  const [token, setToken] = useRecoilState(userState);
   
+  
+  var currentUser = token;
+    
+  var currpage = "Dashboard"
+  
+  
+  if (currentUser==''){
+    setToken(AuthService.getCurrentUser());
+    currentUser = token;
+    
+    return <h4 style={{textAlign: "center"}}>Loading 
+    <Spinner animation="grow" size="sm" />
+    <Spinner animation="grow" size="sm" />
+    <Spinner animation="grow" size="sm" /></h4>;
+  }
+  
+  
+
+  
+
+  //console.log(currentUser)
   return (
     
     <>
    
     
-   <ConfigProvider colors={DEFCOLORS}>
+   <ConfigProvider colors={DEFCOLORS} >
       
       {getPage(routes).indexOf('Match Lobby') > -1 ? (
-        <Switch>{getRoutes(routes)}</Switch>
+        <Switch>{getRoutes(routes,currentUser)}</Switch>
       ):(
         <>
         <div className="wrapper" >
@@ -116,13 +144,14 @@ function Panel() {
           image={sidebarImage}
           background={sidebarBackground}
           
+          page={currpage}
         />
         
         <div className="main-panel">
-        <AdminNavbar page={getPage(routes)}/>
+        <AdminNavbar page={getPage(routes)} token={token}/>
         <div className="content">
          
-            <Switch>{getRoutes(routes)}</Switch>
+            <Switch>{getRoutes(routes,token)}</Switch>
           </div>
           <AdminFooter />
           <div
@@ -139,7 +168,9 @@ function Panel() {
         </ConfigProvider>
        
     </>
+    
   );
+  
 }
 
 export default Panel;

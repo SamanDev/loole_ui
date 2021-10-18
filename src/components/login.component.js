@@ -5,6 +5,7 @@ import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service";
 import { Redirect, Route } from "react-router";
 import {  withRouter} from 'react-router-dom';
+
 const required = value => {
   if (!value) {
     return (
@@ -54,7 +55,8 @@ class Login extends Component {
 
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.username, this.state.password).then(
-        () => {
+        (response) => {
+          
                      //return <Redirect to="/panel/dashboard" />;
           this.props.history.push("/panel/dashboard");
           //window.location.href="/panel/dashboard";

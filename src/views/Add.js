@@ -17,6 +17,16 @@ import AuthService from "services/auth.service";
 import NumericInput from 'react-numeric-input';
 import Active  from "components/active.component";
 import userService from "services/user.service";
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
+import {
+  userState
+} from 'atoms';
 // react-bootstrap components
 import {
   Badge,
@@ -53,6 +63,7 @@ import {
   
 } from "components/include";
 import Games from "server/Games";
+import authService from "services/auth.service";
 var allValid = true;
 var reqnum = 0;
 const required = (value) => {
@@ -192,6 +203,7 @@ const getBlockGameModesVal = (filtermode) => {
 
   return gamemaplocal[0];
 };
+
 const MySwal = withReactContent(Swal);
 var nowS  = new Date()
 var nowE  = new Date()
@@ -248,6 +260,8 @@ class CreateMatch extends Component {
         gameNickname: '',
     };
   }
+  
+  
   setSelectedGameName(e) {
     
     //this.handleTagForm(e,getBlockGameModesVal(e))
@@ -273,7 +287,7 @@ class CreateMatch extends Component {
 handleTagForm(game,platform) {
   
   
-  console.log(game);
+ // console.log(game);
                 const resetPw = async () => {
                   const swalval = await Swal.fire(getModalTag(game));
         
@@ -325,11 +339,11 @@ handleTagForm(game,platform) {
                 resetPw();
               }
               selectrequired(field,value) {
-                console.log(field+': '+value+' -' + allValid+': '+reqnum+' -' + this.state.submit);
+                //console.log(field+': '+value+' -' + allValid+': '+reqnum+' -' + this.state.submit);
                 if (!value ) {
                     allValid = false;
                     if (this.state.submit && reqnum==0) {
-                      console.log(field)
+                      //console.log(field)
                       reqnum = reqnum+1;
                      
                       $('input.'+field+'').focus()
@@ -735,13 +749,14 @@ handleTagForm(game,platform) {
   }
   
   render() {
-    const currentUser = AuthService.getCurrentUser();
+    console.log(this.props)
+    const currentUser = authService.getCurrentUser();
     var _mode = " 1 v 1 ";
     var _color = "#404040";
     
     return (
       <>
-      <Active/>
+      <Active token={currentUser}/>
         <Tab.Container id="plain-tabs-example" defaultActiveKey="match">
           <Nav role="tablist" variant="tabs">
             <Nav.Item>

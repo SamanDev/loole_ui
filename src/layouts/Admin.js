@@ -71,7 +71,7 @@ function Admin() {
           
         />
         <div className="main-panel">
-          <AdminNavbar />
+          
           <div className="content">
             <Switch>{getRoutes(routes)}</Switch>
           </div>
