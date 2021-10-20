@@ -114,6 +114,32 @@ class UserService {
         }
       });;
   }
+  saveSocial(socialPlatform,socialID) {
+
+    return axios
+      .post(
+        API_URL_TEST + "saveSocial",
+        { socialPlatform,socialID },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        if (response.data.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          return "Ok";
+        }
+
+
+      }).catch(error => {
+        //alert(error)
+        if (error=='Error: Request failed with status code 401') {
+          
+    //localStorage.removeItem("user");
+    //window.location.replace("/auth/login-page");
+        }else{
+       
+        }
+      });;
+  }
   finishClashRoyale(eventID) {
 
     return axios
@@ -279,6 +305,20 @@ class UserService {
       .post(
         API_URL_TEST + "editInfo",
         { name,country,birthday},
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        if (response.data.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          return "Ok";
+        }
+      });
+  }
+  changePasswoord(oldPassword,newPassword) {
+    return axios
+      .post(
+        API_URL_TEST + "changePasswoord",
+        { oldPassword,newPassword},
         { headers: authHeader() }
       )
       .then((response) => {
