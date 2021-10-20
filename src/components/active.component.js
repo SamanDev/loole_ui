@@ -5,6 +5,7 @@ import {
     Alert,
     
   } from "react-bootstrap";
+  import $ from "jquery";
 import {  withRouter} from 'react-router-dom';
 import userService from "services/user.service";
 
@@ -39,7 +40,7 @@ userService
           .then(
             
             (response) => {
-              if (response=='Ok'){
+              if (response=='Activation link sent to your email.'){
                 Swal.fire("", "Activation link send to <b>"+currentUser.email+"</b> successfully.", "success").then(
                   (result) => {
                     setLoading(false);
@@ -53,13 +54,13 @@ userService
           title: 'Error!',
           text:resMessage,
           icon:"error",
-          showCancelButton: true,
-          confirmButtonText: `Go to Cashier`,
-          canceleButtonText: `Back`,
+          showCancelButton: false,
+          confirmButtonText: `Ok`,
+          
         }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
-            this.props.history.push("/panel/cashier");
+            //this.props.history.push("/panel/cashier");
           }
         })
               
@@ -103,6 +104,7 @@ userService
     
   }
   if(!currentUser.userActivate){
+    $('.btn:not(.actbtn)').attr('disabled', 'disabled');
     return (
         <>
            
@@ -118,7 +120,7 @@ userService
                   <p>We have sent an email to your email address (<b>{currentUser.email}</b>) with a link for activating your account and proving you are human.</p>
                   
                   <Button
-                                                                  className="btn-fill"
+                                                                  className="btn-fill actbtn"
                                                                   type="button"
                                                                   variant="danger"
                                                                   disabled={activeLoading}
@@ -136,6 +138,7 @@ userService
                                                                 </Button> 
                                                                 <Button
                                                                   style={{marginLeft:10}}
+                                                                  className=" actbtn"
                                                                   type="button"
                                                                   variant="warning"
                                                                   disabled={activeLoading}

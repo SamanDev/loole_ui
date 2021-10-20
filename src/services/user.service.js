@@ -48,9 +48,7 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        if (response.data.accessToken) {
-
-        }
+        eventBus.dispatch("eventsData", "");
       });
   }
   sendChatMatch(message, id,) {
@@ -109,8 +107,8 @@ class UserService {
         //alert(error)
         if (error=='Error: Request failed with status code 401') {
           
-    localStorage.removeItem("user");
-    window.location.replace("/auth/login-page");
+    //localStorage.removeItem("user");
+    //window.location.replace("/auth/login-page");
         }else{
        
         }
@@ -139,11 +137,26 @@ class UserService {
     return axios
       .put(API_URL_TEST + "joinEvent", { id }, { headers: authHeader() })
       .then((response) => {
-        console.log("ok");
-       
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
-        return response.data;
+        if (response.data.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          return axios
+            .post(
+              API_URL_TEST + "getEventById",
+              { id },
+              { headers: authHeader() }
+            )
+            .then((response2) => {
+              localStorage.setItem("eventsid", JSON.stringify(response2.data));
+              eventBus.dispatch("eventsDataEvent", response2.data);
+              return "successful";
+            })
+          
+          
+          
+        }
+        else{
+          return response.data;
+        }
       });
   }
   loseEvent(id,idMatch) {
@@ -152,6 +165,7 @@ class UserService {
       .put(API_URL_TEST + "loseEvent", { id,idMatch }, { headers: authHeader() })
       .then((response) => {
         console.log("ok");
+
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
         return response.data;
@@ -171,10 +185,17 @@ class UserService {
     return axios
       .put(API_URL_TEST + "leaveEvent", { id }, { headers: authHeader() })
       .then((response) => {
-        console.log("ok");
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
-        return response.data;
+        if (response.data.accessToken) {
+          
+          localStorage.setItem("user", JSON.stringify(response.data));
+          const event = this.getEventById(id);
+          //eventBus.dispatch("eventsData", event);
+          return "successful";
+        }
+        else{
+          return response.data;
+        }
+        
       });
   }
   deleteEvent(id) {
@@ -195,6 +216,7 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
+        eventBus.dispatch("eventsData", "");
         console.log("ok");
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
@@ -291,26 +313,27 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        console.log("ok");
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
-        return response.data;
+        if (response.data.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          return "successful";
+        }
+        else{
+          return response.data;
+        }
+        
       });
   }
   resendActive(){
     return axios
       .post(
-        API_URL_TEST + "resendActive",
-       
+        API_URL_TEST + "resendActivationLink",
+       {},
         { headers: authHeader() }
       )
       .then((response) => {
-        console.log("ok");
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
         return response.data;
       }).catch(error => {
-        return 'Ok'
+        return error
 
       });
   }

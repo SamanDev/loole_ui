@@ -50,22 +50,24 @@ function Dashboard(props) {
   const token = useRecoilValue(userState);
   const [event,setEvent] = useState("");
   const [events,setEvents] = useState("");
-  const currentUser = token;
+  var currentUser = token;
   
   useEffect(() => {
-    
+    userService.getEvents();
     eventBus.on("eventsData", (event) => {
       // console.log("socket events: "+events);
-    
+    try{
       setEvent(event);
       setEvents(JSON.parse(event));
+    }catch(e){}
+      
      // console.log("change state: " + this.state.loading);
       
     });
     // return a function to execute at unmount
     return () => {
       
-      setEvents('');
+      //setEvents('');
     
     }
   }, []) // notice the empty array
@@ -104,14 +106,15 @@ function Dashboard(props) {
 
   }
   if (!event){
-    userService.getEvents();
+    
+    
     
     return <h4 style={{textAlign: "center"}}>Loading 
     <Spinner animation="grow" size="sm" />
     <Spinner animation="grow" size="sm" />
     <Spinner animation="grow" size="sm" /></h4>;
   }
-  
+    
   
     var Balance = currentUser.balance;
     if (!Balance) { Balance = 0 }

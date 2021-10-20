@@ -5,7 +5,6 @@ import userService from "services/user.service";
 var ws;
 var timerId = 0;
 class UserWebsocket {
-
    
 
     connect(token) {
@@ -86,8 +85,8 @@ class UserWebsocket {
                 if(e.type === 'error'){
                     
                     ws=null;
-                    localStorage.clear();
-                    window.location.reload();
+                    //localStorage.clear();
+                    //window.location.reload();
                 }
             }
             ws.onclose = function(e){
@@ -98,8 +97,8 @@ class UserWebsocket {
             
                     ws.close();
                     ws=null;
-                            localStorage.clear();
-                            window.location.reload();
+                            //localStorage.clear();
+                            //window.location.reload();
                 console.log("Websocket is in disconnected state");
                 }
             }

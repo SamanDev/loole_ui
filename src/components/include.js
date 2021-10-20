@@ -45,7 +45,7 @@ export const  getQueryVariable  = (variable) =>{
 export const  getPageVariable  = () =>{
   var query = window.location.href;
   var vars = query.split("/")[4];
-  console.log(vars)
+  //console.log(vars)
       return vars;
     
 }
@@ -158,7 +158,7 @@ export const  setAvatar  = (name) =>{
          
         }
         export const getModalTag = (filtermode) => {
-          console.log(filtermode)
+         // console.log(filtermode)
           if(filtermode.indexOf(' - ')>-1){
             var filter = filtermode.split(" - ")[0];
             var controlname = filtermode.split(" - ")[1];
@@ -204,6 +204,47 @@ export const  setAvatar  = (name) =>{
                       document.getElementById("tagid").value,
                      tagname:
                       document.getElementById("tagname").value,
+                  };
+                } else {
+                  Swal.showValidationMessage(`All fields are required!!`);
+                }
+              },
+            
+              allowOutsideClick: () => !Swal.isLoading(),
+            };
+          }
+          if(filter=='Social'){
+            
+              var accMode = controlname + ' Account'
+              var tagMode = controlname + ' ID'
+              var holderMode = ''
+            
+           
+            
+             tagsof = {
+              customClass:'tag',
+              title: 'Connect Your '+accMode+'',
+              focusConfirm: false,
+              html: `<div class="card-plain card text-left" >
+              <div className="form-group">
+              <label>Enter your `+tagMode+`</label>
+                <input class="form-control" id="tagid" type="text" placeholder="`+holderMode+`" /></div>
+                </div>
+              
+              `,
+              icon: "warning",
+              showCancelButton: true,
+              cancelButtonColor: "grey",
+              confirmButtonText: "Connect",
+            
+              showLoaderOnConfirm: true,
+              preConfirm: (login) => {
+                if (
+                  document.getElementById("tagid").value
+                ) {
+                  return {
+                    tagid:
+                      document.getElementById("tagid").value
                   };
                 } else {
                   Swal.showValidationMessage(`All fields are required!!`);
@@ -550,6 +591,30 @@ if(res== 'Not Connected') {
    
       
       };
+      export const getSocialTag = ( game,userTags ) => {
+        var res = 'Not Connected'
+        var resName = ''
+if(userTags){
+  userTags.map(function(tag){
+          
+    if (tag.accountName==game){
+res=tag.accountId
+resName = ''
+if(resName=='')resName='Connected'
+    }
+    })
+}
+res=res.split('@@')[0]
+if(res== 'Not Connected') {
+  return ( <span style={{opacity:.5}}><small className="text-muted"><b>{res}</b> - Connect Your {game}</small></span>)
+}else{
+  return (<span><small><b>{resName}</b> - {res}</small></span>)
+}
+  
+
+   
+      
+      };
       export const getPlayerTag = ( player,playerTags,mode,gameName ) => {
         var val = '';
   playerTags.map((tag, w) => {
@@ -625,7 +690,7 @@ if(res== 'Not Connected') {
   var now = new Date();
   var dateExpired = date.toISOString();
   
-   console.log(item.gameName)
+   //console.log(item.gameName)
   var dateNow = now.toISOString();
   
   

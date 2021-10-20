@@ -56,11 +56,13 @@ class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.username, this.state.password).then(
         (response) => {
-          
+          //console.log(response)
+          if (response.accessToken) {
                      //return <Redirect to="/panel/dashboard" />;
           this.props.history.push("/panel/dashboard");
           //window.location.href="/panel/dashboard";
           //window.location.reload();
+          }
           
         },
         error => {
