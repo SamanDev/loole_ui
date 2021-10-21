@@ -6,7 +6,7 @@ const API_URL = POSTURL;
 
 class AuthService {
   serverCheck() {
-    return axios.post(API_URL + "serverCheck",{}, { headers: authHeader() }).then((response) => {
+    return axios.post(API_URL + "serverCheck", { headers: authHeader() }).then((response) => {
         var response = response.data
       if(response=='Expire token' || response=='Not registered'){
         try{
@@ -18,8 +18,11 @@ class AuthService {
 
 
   }).catch(error => {
-    alert("ServerDown")
-    return false
+    if(error != 'Error: Network Error'){
+      alert("ServerDown")
+      return false
+    }
+    
   });
   }
   
@@ -42,7 +45,7 @@ class AuthService {
 
   logout() {
     var loc = window.location.href;
-    if (loc.indexOf("/panel") > -1){
+    if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
       UserWebsocket.disconnect();
       localStorage.removeItem("user");
       window.location.replace("/");

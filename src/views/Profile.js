@@ -50,8 +50,10 @@ import {
   getModalTag,
   getGameTag,
   getSocialTag,
+  haveSocialTag,
   haveGameTag,
-  date_locale
+  date_locale,
+  userDetails
 } from "components/include";
 import {
   RecoilRoot,
@@ -63,9 +65,9 @@ import {
 import {
   userState
 } from 'atoms';
-function profile(props) {
-  const [token, setToken] = useRecoilState(userState);
-  const [gameName,setGameName] = useState("");
+function profile() {
+  const [token,setToken] = useRecoilState(userState);
+  const [gameName,setGameName] = useState();
   const [gamePlatform,setGamePlatform] = useState("");
   const [gameID,setGameID] = useState("");
   const [gameNickname,setGameNickname] = useState("");
@@ -73,7 +75,7 @@ function profile(props) {
   const [loading,setLoading] = useState(false);
   const [submit,setSubmit] = useState(false);
   const [currentUserTag,SetCurrentUserTag] = useState(token);
-  const currentUser = token;
+  var currentUser = token;
   const [name,setName] = useState(currentUser.fullName);
   const [country,setCountry] = useState(currentUser.country);
   const [birthday,setBirthday] = useState(currentUser.birthday);
@@ -83,6 +85,14 @@ function profile(props) {
   const [socialPlatform,setSocialPlatform] = useState("");
   const [socialID,setSocialID] = useState("");
   const [flag,setFlag] = useState('ir');
+  useEffect(() => {
+    
+console.log(gameName)
+console.log(gamePlatform)
+console.log(gameID)
+console.log(gameNickname)
+    //do something here
+  }, [gameName,gamePlatform,gameID,gameNickname]);
   const handleSubmitInfo = (evt) => {
     evt.preventDefault();
     setSubmit(true);
@@ -98,10 +108,11 @@ function profile(props) {
               setSubmit(false);
     setLoading(false);
               if (response=='Ok'){
+                
                 Swal.fire("", "Data saved successfully.", "success").then(
                   (result) => {
-                    setToken('');
-                    props.history.push("/panel/dashboard");
+                   
+                    setToken(AuthService.getCurrentUser())
                   }
                 );
               }
@@ -124,7 +135,7 @@ function profile(props) {
               if (response=='Ok'){
                 Swal.fire("", "Data saved successfully.", "success").then(
                   (result) => {
-                    setToken('');
+                 
                     props.history.push("/panel/dashboard");
                   }
                 );
@@ -133,7 +144,11 @@ function profile(props) {
 }
   const setSelectedTag = (e,p) => {
     setGameName(e);
+    
     setGamePlatform(p);
+    
+    
+    
     handleTagForm(e,p);
   }
   const setUserTag = (e) => {
@@ -181,9 +196,9 @@ function profile(props) {
           let jsonBool = isJson(response);
    
           if (jsonBool) {
-           
+            setToken(AuthService.getCurrentUser())
               setUserTag(response)
-              localStorage.setItem("user", JSON.stringify(response));
+              
               Swal.fire("", "Data saved successfully.", "success");
           
           } else {
@@ -258,7 +273,7 @@ function profile(props) {
   }
   const handlecSetInstagram = (game,platform) => {
     setSocialPlatform(platform)
-    const resetPw = async () => {
+    const resetPw2= async () => {
       const swalval = await Swal.fire(getModalTag(game));
 
       let v = (swalval && swalval.value) || swalval.dismiss;
@@ -279,7 +294,7 @@ function profile(props) {
           
         
       }
-      resetPw();
+      resetPw2();
     
     
     }
@@ -299,12 +314,11 @@ function profile(props) {
       //allValid = true;
     }
   }
-  const handleTagForm = (game,platform) => {
-
-   
+  var handleTagForm = (game,platform) => {
+    
     const resetPw = async () => {
       const swalval = await Swal.fire(getModalTag(game));
-
+      
       let v = (swalval && swalval.value) || swalval.dismiss;
       console.log(swalval);
       if (v) {
@@ -352,12 +366,15 @@ if(!haveGameTag(game,currentUserTag.userTags))                  resetPw();
         var _color = '#404040'
        
      
+    
         var str = currentUser.username;
-    var res = str;
+        var res = str.substring(0, 1);
+        res  = res + ' '+ str.substring(1, 2);
    var arrLogos = ['psn.svg','xbox.svg','8pool.png','clashroyale.png','activition.png','epic.svg']
     var arrTagMode = ['PSN','XBOX','8Pool','ClashRoyale','CallOfDuty','Fortnite']
     var arrPlatform = ['PSN','XBOX','Mobile','Mobile','Activition','All']
     if (currentUser.country.value && currentUser.country.value !=  flag){setFlag(currentUser.country.value)}
+   
   return (
     
     <>
@@ -447,7 +464,7 @@ onSubmit={handleSubmitInfo}
                     type="text"
                     className="form-control"
                     name="name"
-                    value={name}
+                    value={(name !== null) ? name : " "}
                     
                     onChange={e => setName(e.target.value)}
                   />
@@ -464,7 +481,7 @@ passedFunction={setLok}
                             </div>
                             <div className="form-group">
                               <label>Birthday</label>
-                             <Birthday passedFunction={setBirt} value={(birthday != null) ? birthday : "01-01-1990"}/>
+                             <Birthday passedFunction={setBirt} value={(birthday !== null) ? birthday : "01/01/1990"}/>
                             </div>
                             
                             
@@ -672,25 +689,13 @@ onSubmit={handleChangePassword}
                     </div>
                   </Card.Header>
                   <Card.Body>
-                    <div className="author  avatar">
+                  <div className="author  avatar">
                       
-                    <Avatar size="114" round={true} name={res} />
-            
-                        
-                    </div>
-                   
-                     
-                    <div className="card-description text-center" style={{marginBottom:30}}>
-                      <Card.Title as="h5" style={{marginBottom:0,marginTop:15}}>{currentUser.username} <img src={"/assets/images/famfamfam_flag_icons/png/"+flag+".png"} /></Card.Title>
-                      <small style={{fontSize:10}}>Last Login 5 hours ago</small><br/>
-                        <ListGroup horizontal style={{display:'inline-flex',marginTop:10}}>
-  <ListGroup.Item action><FontAwesomeIcon  icon={faInstagram} style={{color: '#e95950'}}/></ListGroup.Item>
-  <ListGroup.Item action><FontAwesomeIcon  icon={faTwitch} style={{color: '#6441a5'}} /></ListGroup.Item>
-  <ListGroup.Item action><FontAwesomeIcon  icon={faYoutube} style={{color: '#FF0000'}}/></ListGroup.Item>
-  <ListGroup.Item action><FontAwesomeIcon  icon={faTwitter} style={{color: '#00acee'}} /></ListGroup.Item>
-</ListGroup>
-                        </div>
-                    
+                      <Avatar size="114" round={true} name={res} />
+              
+                          
+                      </div>
+                    {userDetails(currentUser )}
                   </Card.Body>
                   
                 </Card>
@@ -852,4 +857,4 @@ const required = (value) => {
     return false;
 }
 
-export default withRouter(profile) ;
+export default (profile) ;

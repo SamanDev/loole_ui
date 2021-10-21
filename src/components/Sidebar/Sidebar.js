@@ -30,11 +30,8 @@ import {
   userState
 } from 'atoms';
 
-function Sidebar({ routes, image, background }) {
+function Sidebar({ routes, image, background,token }) {
   
-  const token = useRecoilValue(userState);
-  var currentUser = token;
-   
   // to check for active links and opened collapses
   let location = useLocation();
   // this is for the user collapse
@@ -152,7 +149,7 @@ function Sidebar({ routes, image, background }) {
               {prop.icon ? (
                 <>
                   <i className={prop.icon} />
-                  <p>{currentUser.username}</p>
+                  <p>{token.username}</p>
                 </>
               ) : (
                 <>
@@ -173,14 +170,15 @@ function Sidebar({ routes, image, background }) {
   const activeRoute = (routeName) => {
     return location.pathname === routeName ? "active" : "";
   };
-  if(currentUser){
 
-    var str = currentUser.username;
+  if(token !=''){
+
+    var str = token.username;
     var res = str.substring(0, 1);
     res  = res + ' '+ str.substring(1, 2);
   return (
     <>
-      <div className="sidebar"  data-color={background} data-image={image}>
+      <div className="sidebar"  data-color={background} data-image={image} >
         <div className="sidebar-wrapper">
           <div className="logo">
            
@@ -208,7 +206,7 @@ function Sidebar({ routes, image, background }) {
     }>
               
                 <span>
-                {currentUser.username} 
+                {token.username} 
                 </span>
                 </Link>
              
@@ -239,7 +237,7 @@ let linkPropTypes = {
   path: PropTypes.string,
   layout: PropTypes.string,
   name: PropTypes.string,
-  token: PropTypes.arrayOf(),
+  
   page: PropTypes.string,
   component: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
 };
@@ -249,7 +247,7 @@ Sidebar.defaultProps = {
   page: "",
   background: "purple",
   routes: [],
-  token: "",
+  
 };
 
 Sidebar.propTypes = {
@@ -283,7 +281,7 @@ Sidebar.propTypes = {
       }),
     ])
   ),
-  token: PropTypes.string,
+  
 };
 
 export default Sidebar;

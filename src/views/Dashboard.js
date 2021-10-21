@@ -53,7 +53,7 @@ function Dashboard(props) {
   var currentUser = token;
   
   useEffect(() => {
-    userService.getEvents();
+    
     eventBus.on("eventsData", (event) => {
       // console.log("socket events: "+events);
     try{
@@ -107,7 +107,7 @@ function Dashboard(props) {
   }
   if (!event){
     
-    
+    userService.getEvents();
     
     return <h4 style={{textAlign: "center"}}>Loading 
     <Spinner animation="grow" size="sm" />

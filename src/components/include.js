@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link, useLocation } from "react-router-dom";
 import CurrencyFormat from 'react-currency-format';
+import { faInstagram,faTwitch, faYoutube,faTwitter } from '@fortawesome/free-brands-svg-icons'
 // react-bootstrap components
 import {
   Badge,
@@ -27,7 +28,7 @@ import {
   Carousel,
   TabContent,
   TabPane,
-  Tab
+  Tab,ListGroup
   
 } from "react-bootstrap";
 
@@ -609,6 +610,55 @@ if(res== 'Not Connected') {
   return ( <span style={{opacity:.5}}><small className="text-muted"><b>{res}</b> - Connect Your {game}</small></span>)
 }else{
   return (<span><small><b>{resName}</b> - {res}</small></span>)
+}
+  
+
+   
+      
+      };
+      export const userDetails = ( currentUser ) => {
+        var  flag='ir'
+        if (currentUser.country.value && currentUser.country.value !=  flag){flag = currentUser.country.value }
+        return (
+          <>
+        
+                   
+                     
+                    <div className="card-description text-center" style={{marginBottom:30}}>
+                      <Card.Title as="h5" style={{marginBottom:0,marginTop:15}}>{currentUser.username} <img src={"/assets/images/famfamfam_flag_icons/png/"+flag+".png"} /></Card.Title>
+                      <small style={{fontSize:10}}>{currentUser.lastLogin}</small><br/>
+                        <ListGroup horizontal style={{display:'inline-flex',marginTop:10}}>
+                        {(haveSocialTag('Instagram',currentUser.userSocialAccounts)) && (<ListGroup.Item action><FontAwesomeIcon  icon={faInstagram} style={{color: '#e95950'}}/></ListGroup.Item>)}
+                        {(haveSocialTag('Twitch',currentUser.userSocialAccounts)) && (<ListGroup.Item action><FontAwesomeIcon  icon={faTwitch} style={{color: '#6441a5'}} /></ListGroup.Item>)}
+                        {(haveSocialTag('Youtube',currentUser.userSocialAccounts)) && (<ListGroup.Item action><FontAwesomeIcon  icon={faYoutube} style={{color: '#FF0000'}}/></ListGroup.Item>)}
+                        {(haveSocialTag('Twitter',currentUser.userSocialAccounts)) && (<ListGroup.Item action><FontAwesomeIcon  icon={faTwitter} style={{color: '#00acee'}} /></ListGroup.Item>)}
+  
+  
+  
+  
+</ListGroup>
+                        </div>
+                        </>
+        )
+      }
+      export const haveSocialTag = ( platform, userTags ) => {
+        var res = 'Not Connected'
+        var resName = ''
+if(userTags){
+  userTags.map(function(tag){
+          
+    if (tag.accountName==platform){
+res=tag.accountId
+
+    }
+
+   
+})
+}
+if(res== 'Not Connected') {
+  return false
+}else{
+  return true
 }
   
 

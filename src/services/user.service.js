@@ -94,11 +94,7 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        
-          console.log("ok");
-        
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("user", JSON.stringify(response.data));
 
         return response.data;
 
@@ -165,19 +161,8 @@ class UserService {
       .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
-          return axios
-            .post(
-              API_URL_TEST + "getEventById",
-              { id },
-              { headers: authHeader() }
-            )
-            .then((response2) => {
-              localStorage.setItem("eventsid", JSON.stringify(response2.data));
-              eventBus.dispatch("eventsDataEvent", response2.data);
-              return "successful";
-            })
           
-          
+          return "successful";
           
         }
         else{
@@ -214,14 +199,32 @@ class UserService {
         if (response.data.accessToken) {
           
           localStorage.setItem("user", JSON.stringify(response.data));
-          const event = this.getEventById(id);
-          //eventBus.dispatch("eventsData", event);
+          
           return "successful";
         }
         else{
           return response.data;
         }
         
+      });
+  }
+  getUser() {
+    return axios
+      .get(API_URL_TEST + "getUser", { headers: authHeader() })
+      .then( (response) => {
+        if (response.data.accessToken) {
+          //console.log(JSON.stringify(response.data))
+          localStorage.setItem("user", JSON.stringify(response.data));
+          //UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username);
+          
+        }else{
+          UserWebsocket.disconnect();
+      localStorage.removeItem("user");
+      window.location.replace("/");
+        }
+        return response.data;
+      }).catch( (err) => {
+        window.location.replace("/auth/login-page");
       });
   }
   deleteEvent(id) {
@@ -286,8 +289,12 @@ class UserService {
         eventBus.dispatch("eventsDataEvent", response.data);
         return response.data;
       }).catch(error => {
-        
-    window.location.replace("/panel/dashboard");
+        return axios.get(API_URL_TEST + "getEvents").then((response) => {
+        var _d = JSON.parse(response.data.data).filter( (list) => list.id === id);
+          console.log(id);
+          eventBus.dispatch("eventsData", _d);
+        })
+      
         
       });
     }

@@ -1,3 +1,4 @@
+import AuthService from "../services/auth.service";
 import {
     RecoilRoot,
     atom,
@@ -7,6 +8,6 @@ import {
   } from 'recoil';
 const userState = atom({
     key: 'userState',
-    default: '',
+    default: AuthService.getCurrentUser(),
   });
   export {userState}

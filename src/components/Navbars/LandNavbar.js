@@ -177,8 +177,7 @@ class LandNavbar extends Component {
         if (user) {
           this.setState({
               currentUser: user,
-              showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
-              showAdminBoard: user.roles.includes("ROLE_ADMIN"),
+              
              
           });
          

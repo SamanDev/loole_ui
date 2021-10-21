@@ -141,10 +141,12 @@ class LockScreenPage extends Component {
         //console.log("socket events: "+event);
       });
       eventBus.on("eventsData", (event) => {
-        console.log(JSON.stringify(event));
-        this.reGetevents();
-        //this.setEvent(event);
-        //this.setEvent(event);
+        
+        //this.reGetevents();
+        //this.setEvent(JSON.parse(event));
+        //const ids = event.map(entity => entity.id);
+
+        this.setEvent(event);
       });
     }
   }
@@ -477,7 +479,7 @@ class LockScreenPage extends Component {
 
     userService.deleteEvent(this.state.eventid).then(
       (response) => {
-        this.props.history.push("/panel/dashboard");
+        //this.props.history.push("/panel/dashboard");
       },
       (error) => {}
     );
@@ -690,7 +692,7 @@ $('.gdetails.no'+player).removeClass('hide');
     var item = newArray;
 
     if (typeof item === "undefined") {
-      this.props.history.push("/panel/dashboard");
+      //this.props.history.push("/panel/dashboard");
     }
 
     if (item.gameMode == "Tournament") {
@@ -930,6 +932,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
               secondplayer={matchidFind.matchPlayers[1].username}
               eventchats={item.chats}
               chats={matchidFind.matchChats}
+              username={currentUser}
             />
           ) : (
             <>
@@ -942,6 +945,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
               secondplayer={matchidFind.matchPlayers[1].username}
               eventchats="null"
               chats={matchidFind.matchChats}
+              username={currentUser}
             />
           ) : (
             <Chatbar
@@ -951,6 +955,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
               secondplayer="null"
               eventchats={item.chats}
               chats="null"
+              username={currentUser}
             />
           )}
             </>

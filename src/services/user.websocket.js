@@ -71,8 +71,8 @@ class UserWebsocket {
               } else {
                   if (message === 'closeConnection') {
                       //localStorage.removeItem("events");
-                      localStorage.clear();
-                          window.location.reload();
+                      //localStorage.clear();
+                          //window.location.reload();
                   }
               }
             }
