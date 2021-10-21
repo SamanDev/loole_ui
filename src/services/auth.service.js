@@ -6,13 +6,13 @@ const API_URL = POSTURL;
 
 class AuthService {
   serverCheck() {
-    return axios.post(API_URL + "serverCheck", { headers: authHeader() }).then((response) => {
+    return axios.post(API_URL + "serverCheck",{}, { headers: authHeader() }).then((response) => {
         var response = response.data
       if(response=='Expire token' || response=='Not registered'){
         try{
         localStorage.removeItem("user");
         }catch(e){}
-    //window.location.replace("/auth/login-page");
+   // window.location.replace("/auth/login-page");
       }
     return response.data;
 
@@ -33,7 +33,7 @@ class AuthService {
         if (response.data.accessToken) {
 
           localStorage.setItem("user", JSON.stringify(response.data));
-          UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username);
+          //UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username);
         }
 
         return response.data;
@@ -41,8 +41,13 @@ class AuthService {
   }
 
   logout() {
-    UserWebsocket.disconnect();
-    localStorage.removeItem("user");
+    var loc = window.location.href;
+    if (loc.indexOf("/panel") > -1){
+      UserWebsocket.disconnect();
+      localStorage.removeItem("user");
+      window.location.replace("/");
+    }
+    
   }
 
   register(username, email, password) {
@@ -61,7 +66,17 @@ class AuthService {
   }
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('user'));
+    if(localStorage.getItem('user')){
+    const usr = JSON.parse(localStorage.getItem('user'));
+    var loc = window.location.href;
+    if (loc.indexOf("/panel") > -1){
+    UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
+    }
+    return usr;
+    }else{
+      this.logout()
+    }
+  
   }
   getCurrentUserTest() {
     if(localStorage.getItem('userTest')){

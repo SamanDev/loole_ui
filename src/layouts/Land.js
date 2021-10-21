@@ -23,7 +23,6 @@ import AuthService from "services/auth.service";
 // dinamically create auth routes
 import routes from "routes.js";
 
-const currentUser = AuthService.getCurrentUser();
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {

@@ -464,7 +464,7 @@ handleTagForm(game,platform) {
           .then(
             
             (response) => {
-              if (response=='Create event successful'){
+              if (response.indexOf("successful") > -1) {
                 Swal.fire("", "Data saved successfully.", "success").then(
                   (result) => {
                     this.props.history.push("/panel/dashboard");

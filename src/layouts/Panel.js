@@ -99,6 +99,7 @@ const getPage = (routes) => {
     }
   });
 };
+var currentUser = '';
 function Panel() {
   
    
@@ -106,15 +107,22 @@ function Panel() {
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
   const [token, setToken] = useRecoilState(userState);
   
-  
-  var currentUser = token;
+  useEffect(() => {
+    console.log('hi')
+    currentUser = AuthService.getCurrentUser();
+    setToken(currentUser);
+    // return a function to execute at unmount
+    return () => {
+      
+      //setEvents('');
     
+    }
+  }, [])
   var currpage = "Dashboard"
-  
+ 
   
   if (currentUser==''){
-    setToken(AuthService.getCurrentUser());
-    currentUser = token;
+    
     
     return <h4 style={{textAlign: "center"}}>Loading 
     <Spinner animation="grow" size="sm" />

@@ -12,6 +12,8 @@ import { faInstagram,faTwitch, faYoutube,faTwitter } from '@fortawesome/free-bra
 import { faPlaystation, faXbox } from '@fortawesome/free-brands-svg-icons'
 import { faMobileAlt } from '@fortawesome/free-solid-svg-icons'
 import {  withRouter} from 'react-router-dom';
+import { Redirect, Route } from "react-router";
+
 import AuthService from "services/auth.service";
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
@@ -47,6 +49,7 @@ import {
   printMatchBlock,
   getModalTag,
   getGameTag,
+  getSocialTag,
   haveGameTag,
   date_locale
 } from "components/include";
@@ -61,7 +64,7 @@ import {
   userState
 } from 'atoms';
 function profile(props) {
-  const token = useRecoilValue(userState);
+  const [token, setToken] = useRecoilState(userState);
   const [gameName,setGameName] = useState("");
   const [gamePlatform,setGamePlatform] = useState("");
   const [gameID,setGameID] = useState("");
@@ -72,15 +75,19 @@ function profile(props) {
   const [currentUserTag,SetCurrentUserTag] = useState(token);
   const currentUser = token;
   const [name,setName] = useState(currentUser.fullName);
-  const [country,setCountry] = useState(JSON.parse(JSON.stringify(currentUser.country)));
+  const [country,setCountry] = useState(currentUser.country);
   const [birthday,setBirthday] = useState(currentUser.birthday);
+  const [oldPassword,setOldPassword] = useState("");
+  const [newPassword,setNewPassword] = useState("");
+  
+  const [socialPlatform,setSocialPlatform] = useState("");
+  const [socialID,setSocialID] = useState("");
+  const [flag,setFlag] = useState('ir');
   const handleSubmitInfo = (evt) => {
     evt.preventDefault();
     setSubmit(true);
     setLoading(true);
-    console.log(name)
-    console.log(country)
-    console.log(birthday)
+    
         userService
           .editInfo(
             name,country,birthday
@@ -93,7 +100,32 @@ function profile(props) {
               if (response=='Ok'){
                 Swal.fire("", "Data saved successfully.", "success").then(
                   (result) => {
-                    this.props.history.push("/panel/dashboard");
+                    setToken('');
+                    props.history.push("/panel/dashboard");
+                  }
+                );
+              }
+    })
+}
+  const handleChangePassword = (evt) => {
+    evt.preventDefault();
+    setSubmit(true);
+    setLoading(true);
+    
+        userService
+          .changePasswoord(
+            oldPassword,newPassword
+          )
+          .then(
+            
+            (response) => {
+              setSubmit(false);
+    setLoading(false);
+              if (response=='Ok'){
+                Swal.fire("", "Data saved successfully.", "success").then(
+                  (result) => {
+                    setToken('');
+                    props.history.push("/panel/dashboard");
                   }
                 );
               }
@@ -102,7 +134,7 @@ function profile(props) {
   const setSelectedTag = (e,p) => {
     setGameName(e);
     setGamePlatform(p);
-    handleTagForm(e,p)
+    handleTagForm(e,p);
   }
   const setUserTag = (e) => {
     SetCurrentUserTag(e)
@@ -112,13 +144,13 @@ function profile(props) {
   
   const setLok = (e) => {
     setCountry(e)
-    console.log(e)
+   
   }
   const setBirt = (e) => {
     
     var newe = date_locale(e);
     setBirthday(newe)
-    console.log(newe)
+    
   }
   const handleSaveTags = () => {
   
@@ -172,44 +204,84 @@ function profile(props) {
         }
       );
   }
-  const handlecSetInstagram = (checked) => {
-  
-    const MySwal = withReactContent(Swal)
+  const handleSaveSocial = () => {
   
     Swal.fire({
-      title: 'Connect your Instagram',
-      input: 'text',
-      inputAttributes: {
-        autocapitalize: 'off'
-      },
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      cancelButtonText:
-      'Back',
-      showLoaderOnConfirm: true,
-      preConfirm: (login) => {
-        return fetch(`//api.github.com/users/${login}`)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(response.statusText)
-            }
-            return response.json()
-          })
-          .catch(error => {
-            Swal.showValidationMessage(
-              `Request failed: ${error}`
-            )
-          })
-      },
-      allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: `${result.value.login}'s avatar`,
-          imageUrl: result.value.avatar_url
-        })
+      title: '<br/>Please Wait...',
+      text: 'Is working..',
+      customClass:'tag',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      didOpen: () => {
+          Swal.showLoading()
       }
-    })
+  })
+  
+    userService
+      .saveSocial(
+       
+     
+        socialPlatform,
+        socialID,
+    
+
+      )
+      .then(
+        (response) => {
+         
+          let jsonBool = isJson(response);
+   
+          if (jsonBool) {
+           
+              
+              localStorage.setItem("user", JSON.stringify(response));
+              Swal.fire("", "Data saved successfully.", "success");
+          
+          } else {
+           
+              Swal.fire("", response, "error");
+           
+          }
+        
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+          Swal.fire("Error!", resMessage, "error");
+        }
+      );
+  }
+  const handlecSetInstagram = (game,platform) => {
+    setSocialPlatform(platform)
+    const resetPw = async () => {
+      const swalval = await Swal.fire(getModalTag(game));
+
+      let v = (swalval && swalval.value) || swalval.dismiss;
+      console.log(swalval);
+      if (v) {
+        if (v.tagid) {
+          
+            
+              setSocialID(v.tagid)
+            
+          handleSaveSocial();
+              
+            }
+            
+          }
+          
+          //setformdata(swalval);
+          
+        
+      }
+      resetPw();
+    
+    
     }
     const selectrequired = (value) => {
   
@@ -279,13 +351,13 @@ if(!haveGameTag(game,currentUserTag.userTags))                  resetPw();
   var _mode=' 1 v 1 '
         var _color = '#404040'
        
-       
-        console.log(JSON.stringify(currentUser))
+     
         var str = currentUser.username;
     var res = str;
    var arrLogos = ['psn.svg','xbox.svg','8pool.png','clashroyale.png','activition.png','epic.svg']
     var arrTagMode = ['PSN','XBOX','8Pool','ClashRoyale','CallOfDuty','Fortnite']
     var arrPlatform = ['PSN','XBOX','Mobile','Mobile','Activition','All']
+    if (currentUser.country.value && currentUser.country.value !=  flag){setFlag(currentUser.country.value)}
   return (
     
     <>
@@ -392,7 +464,7 @@ passedFunction={setLok}
                             </div>
                             <div className="form-group">
                               <label>Birthday</label>
-                             <Birthday passedFunction={setBirt} value={(birthday) ? birthday : "01-01-1990"}/>
+                             <Birthday passedFunction={setBirt} value={(birthday != null) ? birthday : "01-01-1990"}/>
                             </div>
                             
                             
@@ -423,6 +495,7 @@ passedFunction={setLok}
                       </Form>
                       <Form
           
+onSubmit={handleChangePassword} 
            
           >
                       <Card className="card-plain" style={{margin: -10}}>
@@ -430,22 +503,16 @@ passedFunction={setLok}
                          <Card.Title>Change Password</Card.Title></Card.Header>
                         <Card.Body>
                         
-                        <div className="form-group">
-                              <label>Old Password</label>
-                              <Input
-                    type="text"
-                    className="form-control"
-                   
-                  />
-                             
-                               
-                            </div>
+                        
                             <div className="form-group">
                               <label>New Password</label>
                               <Input
-                    type="text"
+                    type="password"
                     className="form-control"
-                   
+                    name="password"
+                    
+                    
+                    onChange={e => setOldPassword(e.target.value)}
                   />
                              
                                
@@ -453,9 +520,12 @@ passedFunction={setLok}
                             <div className="form-group">
                               <label>Repeat Password</label>
                               <Input
-                    type="text"
+                    type="password"
                     className="form-control"
-                   
+                    name="password"
+                    
+                    
+                    onChange={e => setNewPassword(e.target.value)}
                   />
                              
                                
@@ -542,28 +612,29 @@ passedFunction={setLok}
                          <Card.Title>Game Tags</Card.Title></Card.Header>
                         <Card.Body>
                         
-                        <Card onClick={handlecSetInstagram}>
+                        <Card onClick={() => handlecSetInstagram('Social - Instagram','Instagram')}>
        
           <Card.Body>
-          <FontAwesomeIcon  icon={faInstagram} style={{color: '#e95950'}}/>  Connect Your Instagram
+          <FontAwesomeIcon  icon={faInstagram} style={{color: '#e95950'}}/>  
+          {getSocialTag('Instagram',currentUserTag.userSocialAccounts)}
           </Card.Body>
           </Card>
-          <Card >
+          <Card  onClick={() => handlecSetInstagram('Social - Twitch','Twitch')}>
        
           <Card.Body>
-          <FontAwesomeIcon  icon={faTwitch} style={{color: '#6441a5'}} />  Connect Your Twitch
+          <FontAwesomeIcon  icon={faTwitch} style={{color: '#6441a5'}} /> {getSocialTag('Twitch',currentUserTag.userSocialAccounts)}
           </Card.Body>
           </Card>
-          <Card >
+          <Card  onClick={() => handlecSetInstagram('Social - Youtube','Youtube')}>
        
           <Card.Body>
-          <FontAwesomeIcon  icon={faYoutube} style={{color: '#FF0000'}}/>  Connect Your Youtube
+          <FontAwesomeIcon  icon={faYoutube} style={{color: '#FF0000'}}/>  {getSocialTag('Youtube',currentUserTag.userSocialAccounts)}
           </Card.Body>
           </Card>
-          <Card >
+          <Card  onClick={() => handlecSetInstagram('Social - Twitter','Twitter')}>
        
           <Card.Body>
-          <FontAwesomeIcon  icon={faTwitter} style={{color: '#00acee'}} />  Connect Your Twitter
+          <FontAwesomeIcon  icon={faTwitter} style={{color: '#00acee'}} />  {getSocialTag('Twitter',currentUserTag.userSocialAccounts)}
           </Card.Body>
           </Card>
                           
@@ -610,7 +681,7 @@ passedFunction={setLok}
                    
                      
                     <div className="card-description text-center" style={{marginBottom:30}}>
-                      <Card.Title as="h5" style={{marginBottom:0,marginTop:15}}>{currentUser.username} <img src="/assets/images/famfamfam_flag_icons/png/tr.png" /></Card.Title>
+                      <Card.Title as="h5" style={{marginBottom:0,marginTop:15}}>{currentUser.username} <img src={"/assets/images/famfamfam_flag_icons/png/"+flag+".png"} /></Card.Title>
                       <small style={{fontSize:10}}>Last Login 5 hours ago</small><br/>
                         <ListGroup horizontal style={{display:'inline-flex',marginTop:10}}>
   <ListGroup.Item action><FontAwesomeIcon  icon={faInstagram} style={{color: '#e95950'}}/></ListGroup.Item>

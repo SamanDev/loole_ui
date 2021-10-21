@@ -141,13 +141,15 @@ class LockScreenPage extends Component {
         //console.log("socket events: "+event);
       });
       eventBus.on("eventsData", (event) => {
+        console.log(JSON.stringify(event));
         this.reGetevents();
+        //this.setEvent(event);
         //this.setEvent(event);
       });
     }
   }
   componentWillUnmount() {
-    this._isMounted = false;
+    //this._isMounted = false;
   }
   setSelectedGameName(e) {
     
@@ -338,6 +340,7 @@ class LockScreenPage extends Component {
   reGetevents(){
     if(getQueryVariable("id")){
       userService.getEventById(getQueryVariable("id"))
+      
     }
    
   }
@@ -351,13 +354,14 @@ class LockScreenPage extends Component {
         this.setState({
           isloading: false,
         });
-        //this.setEvent(response)
+        //alert(response)
         if (response.indexOf("successful") > -1) {
-          //sthis.reGetevents();
+         // this.reGetevents();
           Toast.fire({
             icon: "success",
             title: "Joined.",
           });
+          
         } else {
           if (response == "balanceError") {
             var resMessage =
@@ -414,6 +418,8 @@ class LockScreenPage extends Component {
     if(this.state.matchid){
       userService.loseEvent(this.state.eventid,this.state.matchid).then(
         (response) => {
+          //this.reGetevents();
+          
           //this.props.history.push("/panel/dashboard");
         },
         (error) => {}
@@ -421,6 +427,7 @@ class LockScreenPage extends Component {
     }else{
       userService.loseEvent(this.state.eventid).then(
         (response) => {
+          //this.reGetevents();
           //this.props.history.push("/panel/dashboard");
         },
         (error) => {}
@@ -486,7 +493,7 @@ class LockScreenPage extends Component {
           this.setState({
             isloading: false,
           });
-
+          //this.reGetevents();
           Toast.fire({
             icon: "success",
             title: "UnJoined.",
@@ -507,6 +514,7 @@ class LockScreenPage extends Component {
             icon: "success",
             title: "Updated.",
           });
+          //this.reGetevents();
         }
         //this.props.history.push("/panel/dashboard");
       },
@@ -568,7 +576,7 @@ $('.gdetails.no'+player).removeClass('hide');
     
 
     if (!events) {
-      this.reGetevents();
+      userService.getEventById(getQueryVariable("id"))
 
       return (
         <>
@@ -773,7 +781,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
       }
       }
     }
-    console.log(item)
+    //console.log(item)
     if (!item.winner) {
       item.winner = [];
       item.winner.push(nullplayer);
@@ -842,7 +850,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
     var matchLevelFind =null
     if(this.state.matchid){
       lists.map((tblmatch, w) => {
-        console.log(tblmatch.id == parseInt(this.state.matchid))
+        //console.log(tblmatch.id == parseInt(this.state.matchid))
         if(parseInt(tblmatch.id) == parseInt(this.state.matchid)){
            matchidFind = tblmatch;
         }
@@ -1810,7 +1818,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                             var hatchbackCar = lists.filter( (list) => list.level === item.matchLevel[i].level);
                                             hatchbackCar.sort((a, b) => (a.id > b.id ? 1 : -1));
                                             
-                                          console.log(hatchbackCar)
+                                          //console.log(hatchbackCar)
                                           return (
                                            
                                             <Card
