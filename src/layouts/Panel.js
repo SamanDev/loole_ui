@@ -100,28 +100,35 @@ const getPage = (routes) => {
   });
 };
 var currentUser = '';
-function Panel() {
+function  Panel() {
   
    
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
-  const [token, setToken] = useRecoilState(userState);
+  const [token,setToken] = useRecoilState(userState);
+ 
   
+  var currpage = "Dashboard"
   useEffect(() => {
-    console.log('hi')
-    currentUser = AuthService.getCurrentUser();
-    setToken(currentUser);
+    
+    
+      
+     // console.log("change state: " + this.state.loading);
+      
+   
     // return a function to execute at unmount
     return () => {
       
       //setEvents('');
     
     }
-  }, [])
-  var currpage = "Dashboard"
- 
+  }, []) // notice the empty array
   
   if (currentUser==''){
+    
+    userService.getUser()
+    setToken(AuthService.getCurrentUser())
+     currentUser = token;
     
     
     return <h4 style={{textAlign: "center"}}>Loading 
@@ -151,7 +158,7 @@ function Panel() {
           routes={routes}
           image={sidebarImage}
           background={sidebarBackground}
-          
+          token={token}
           page={currpage}
         />
         

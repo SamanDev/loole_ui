@@ -61,6 +61,7 @@ class Chatbar extends Component {
       eventchats: this.props.eventchats,
       masterplayer: this.props.masterplayer,
       secondplayer: this.props.secondplayer,
+      currentUser: this.props.username
     };
   }
   
@@ -71,6 +72,7 @@ class Chatbar extends Component {
     this.setState({ eventstatus: newProps.eventstatus });
     this.setState({ masterplayer: newProps.masterplayer });
     this.setState({ secondplayer: newProps.secondplayer });
+    this.setState({ currentUser: newProps.username });
     console.log('Props updated')
   }
   changeMessageBox(e) {
@@ -158,8 +160,8 @@ this.setState({
   
   
   render() {
-    const currentUser = AuthService.getCurrentUser();
-    let { chats, eventchats, masterplayer, eventstatus,secondplayer,isLoading } = this.state;
+    
+    let { chats, eventchats, masterplayer, eventstatus,secondplayer,isLoading,currentUser } = this.state;
     // this is for the rest of the collapses
     var finalChat = []
     if(chats!='null'){
@@ -177,7 +179,6 @@ this.setState({
 
     finalChat.sort((a, b) => ((a.time < b.time) ? 1 : -1));
     
-    var evntID = getQueryVariable("id")
 
     return (
       <>

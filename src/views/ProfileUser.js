@@ -40,7 +40,7 @@ import {
   Tab,
 } from "react-bootstrap";
 
-import {setAvatar,getColor,getIcon,renderer,printMatchBlock} from "components/include";
+import {setAvatar,getColor,getIcon,renderer,printMatchBlock,userDetails} from "components/include";
 import Games from "server/Games";
 var allValid = true;
 
@@ -427,6 +427,7 @@ const required = (value) => {
                                   className=" winner avatar"
                                   style={{ width: 92, height: 92 }}
                                 ></div>
+                                 
                                 <div className="author  avatar text-center">
                       
                       <Avatar size="114" round={true} name={res} />
@@ -434,15 +435,7 @@ const required = (value) => {
                           
                       </div>
                       <div className="card-description text-center" style={{marginBottom:30}}>
-                      <Card.Title as="h5" style={{marginBottom:0,marginTop:15}}>{currentUser.username} <img src="/assets/images/famfamfam_flag_icons/png/tr.png" /></Card.Title>
-                        <small style={{fontSize:10}}>Last Login 5 hours ago</small><br/>
-                        <ListGroup horizontal style={{display:'inline-flex',marginTop:10}}>
-  <ListGroup.Item action><FontAwesomeIcon  icon={faInstagram} style={{color: '#e95950'}}/></ListGroup.Item>
-  <ListGroup.Item action><FontAwesomeIcon  icon={faTwitch} style={{color: '#6441a5'}} /></ListGroup.Item>
-  <ListGroup.Item action><FontAwesomeIcon  icon={faYoutube} style={{color: '#FF0000'}}/></ListGroup.Item>
-  <ListGroup.Item action><FontAwesomeIcon  icon={faTwitter} style={{color: '#00acee'}} /></ListGroup.Item>
-</ListGroup>
-                        
+                      {userDetails(currentUser)}   
                       
                         </div>
                       <div className="row card-stats card-profile">

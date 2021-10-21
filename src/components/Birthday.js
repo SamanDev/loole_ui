@@ -7,7 +7,7 @@ export default function RainbowDatepicker(props) {
   function onChange(date) {
     setDate(date);
   }
-
+ 
   return (
     <DatePicker
       id="datePicker-1"
