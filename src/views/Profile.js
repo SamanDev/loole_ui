@@ -120,7 +120,7 @@ function profile() {
     setLoading(true);
     
         userService
-          .changePasswoord(
+          .changePassword(
             oldPassword,newPassword
           )
           .then(

@@ -2,22 +2,10 @@ import React ,{useEffect, useState} from "react";
 import { Switch, Route,Redirect } from "react-router-dom";
 import Avatar, { ConfigProvider } from "react-avatar";
 import $ from "jquery";
-
+//import { GlobalProvider } from 'context/GlobalState';
 import Active  from "components/active.component";
 // react-bootstrap components
 import {
-  Badge,
-  Button,
-  ButtonGroup,
-  Card,
-  Form,
-  InputGroup,
-  Navbar,
-  Nav,
-  Pagination,
-  Container,
-  Row,
-  Col,
   Spinner
 } from "react-bootstrap";
 import { DEFCOLORS } from "const";
@@ -38,6 +26,9 @@ import image4 from "assets/img/bg.jpg";
 import UserWebsocket from 'services/user.websocket'
 import AuthService from "services/auth.service";
 import userService from "services/user.service";
+import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
+
+ const queryClient = new QueryClient()
 import {
   RecoilRoot,
   atom,
@@ -146,8 +137,7 @@ function  Panel() {
   return (
     
     <>
-   
-    
+   <QueryClientProvider client={queryClient}>
    <ConfigProvider colors={DEFCOLORS} >
       
       {getPage(routes).indexOf('Match Lobby') > -1 ? (
@@ -182,7 +172,7 @@ function  Panel() {
       )}
         
         </ConfigProvider>
-       
+        </QueryClientProvider>
     </>
     
   );

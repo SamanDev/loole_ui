@@ -9,6 +9,7 @@ import { VectorMap } from "react-jvectormap";
 import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import {getAllEvents} from "services/user.service";
+import { useAllEvents } from "services/hooks"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
 import { printMatchBlock } from "components/include";
@@ -50,8 +51,9 @@ import {
 function Dashboard(props) {
   const token = useRecoilValue(userState);
   const [event,setEvent] = useState("");
- 
-  const  { events } = getAllEvents();
+  const { data: events, isLoading } = useAllEvents()
+  
+  
   if (!events) return <p>loading...</p>
   var currentUser = token;
   setEvent(events);

@@ -21,7 +21,7 @@ const client = axios.create({
 
 const getAllEvents=async () => {
   
-  const { data } = await client.get(`/getEvents`)
+  const { data } = await client.get("/getEvents")
   return data
 }
 export {
@@ -309,7 +309,7 @@ class UserService {
   }
   editInfo(name,country,birthday) {
     return axios
-      .post(
+      .put(
         API_URL_TEST + "editInfo",
         { name,country,birthday},
         { headers: authHeader() }
@@ -323,7 +323,7 @@ class UserService {
   }
   changePassword(oldPassword,newPassword) {
     return axios
-      .post(
+      .put(
         API_URL_TEST + "changePassword",
         { oldPassword,newPassword},
         { headers: authHeader() }
