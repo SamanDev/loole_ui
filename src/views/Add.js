@@ -552,7 +552,7 @@ handleTagForm(game,platform) {
           let jsonBool = isJson(response);
    
           if (jsonBool) {
-           
+            setToken(AuthService.getCurrentUser())
               this.setUserTag(response)
               localStorage.setItem("user", JSON.stringify(response));
               Swal.fire("", "Data saved successfully.", "success");
