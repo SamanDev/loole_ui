@@ -5,8 +5,28 @@ import uploadHeader from "./upload-header";
 import { POSTURLTest } from "const";
 import { useState } from "react"
 import eventBus from "views/eventBus";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
 const API_URL_TEST = POSTURLTest;
 
+
+const client = axios.create({
+  baseURL: API_URL_TEST ,
+})
+
+const getAllEvents=async () => {
+  
+  const { data } = await client.get(`/getEvents`)
+  return data
+}
+export {
+  getAllEvents
+}
 class UserService {
   getPublicContent() {
     return axios.get(API_URL_TEST + "all");
@@ -208,8 +228,8 @@ class UserService {
         
       });
   }
-  getUser() {
-    return axios
+   getUser = async( id) => {
+    return await axios
       .get(API_URL_TEST + "getUser", { headers: authHeader() })
       .then( (response) => {
         if (response.data.accessToken) {
@@ -252,28 +272,8 @@ class UserService {
         return response.data;
       });
   }
-  getEvents(token) {
-    if (localStorage.getItem('events')&&1==2) {
-      const event = this.getCurrentEvent(token);
-      //alert(event)
-
-
-      eventBus.dispatch("eventsData", event);
-
-
-    } else {
-      return axios.get(API_URL_TEST + "getEvents").then((response) => {
-        
-
-        eventBus.dispatch("eventsData", response.data.data);
-      }).catch(error => {
-        var _this = this;
-        setTimeout(function () {
-          //_this.getEvents(token)
-        }, 2000)
-
-      });
-    }
+  getEvents() {
+    
 
   }
   getEventById(id) {
@@ -321,10 +321,10 @@ class UserService {
         }
       });
   }
-  changePasswoord(oldPassword,newPassword) {
+  changePassword(oldPassword,newPassword) {
     return axios
       .post(
-        API_URL_TEST + "changePasswoord",
+        API_URL_TEST + "changePassword",
         { oldPassword,newPassword},
         { headers: authHeader() }
       )

@@ -87,10 +87,6 @@ function profile() {
   const [flag,setFlag] = useState('ir');
   useEffect(() => {
     
-console.log(gameName)
-console.log(gamePlatform)
-console.log(gameID)
-console.log(gameNickname)
     //do something here
   }, [gameName,gamePlatform,gameID,gameNickname]);
   const handleSubmitInfo = (evt) => {
@@ -142,15 +138,28 @@ console.log(gameNickname)
               }
     })
 }
-  const setSelectedTag = (e,p) => {
-    setGameName(e);
+function setSelectedTag (e,p){
+  Promise.resolve()
+      .then(() => { 
+        setGameName(e);
     
     setGamePlatform(p);
+      })
+      .then(() => {
+        setGameName(e);
+    
+    setGamePlatform(p);
+        console.log(e)
+        console.log(gameName)
+        handleTagForm(e,p);
+      })
     
     
     
-    handleTagForm(e,p);
-  }
+    
+    
+}
+ 
   const setUserTag = (e) => {
     SetCurrentUserTag(e)
   
@@ -167,7 +176,7 @@ console.log(gameNickname)
     setBirthday(newe)
     
   }
-  const handleSaveTags = () => {
+  const handleSaveTags = (gameName,gamePlatform,gameID,gameNickname) => {
   
     Swal.fire({
       title: '<br/>Please Wait...',
@@ -323,7 +332,8 @@ console.log(gameNickname)
       console.log(swalval);
       if (v) {
         if (v.tagid) {
-          
+          var gameName,gamePlatform,gameID,gameNickname;
+          gameName = game;
             if (v.tagid == game+"2") {
               handleTagForm(game+'2')
             }else if (v.tagid == game+"3") {
@@ -331,23 +341,24 @@ console.log(gameNickname)
             }else{
               setGameNickname('');
               setGameID('');
-              
+              gameID = '';
+              gameNickname = '';
               if (v.tagid != "") {
               
               setGameID(v.tagid.replace('#',''));
-                
+                gameID = v.tagid.replace('#','')
               }
               if (v.tagname && v.tagname != "") {
                 setGameNickname(v.tagname);
-              
+                gameNickname = v.tagname;
               }
               if (v.tagplatform && v.tagplatform != "") {
                 setGamePlatform(v.tagplatform);
-                
+                gamePlatform = v.tagplatform
               }
               
             
-                handleSaveTags();
+                handleSaveTags(gameName,gamePlatform,gameID,gameNickname);
               
             }
             
@@ -481,7 +492,7 @@ passedFunction={setLok}
                             </div>
                             <div className="form-group">
                               <label>Birthday</label>
-                             <Birthday passedFunction={setBirt} value={(birthday !== null) ? birthday : "01/01/1990"}/>
+                             <Birthday passedFunction={setBirt} value={(birthday != null) ? (birthday) : "01/01/1990"}/>
                             </div>
                             
                             
