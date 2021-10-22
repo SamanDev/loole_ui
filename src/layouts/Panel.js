@@ -106,13 +106,14 @@ function  Panel() {
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
   const [token,setToken] = useRecoilState(userState);
- 
   
   var currpage = "Dashboard"
   useEffect(() => {
+    //userService.getUser()
     
+    //setToken(AuthService.getCurrentUser())
     
-      
+      //alert()
      // console.log("change state: " + this.state.loading);
       
    
@@ -125,8 +126,8 @@ function  Panel() {
   }, []) // notice the empty array
   
   if (currentUser==''){
-    
     userService.getUser()
+    
     setToken(AuthService.getCurrentUser())
      currentUser = token;
     

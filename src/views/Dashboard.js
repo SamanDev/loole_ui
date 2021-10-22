@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import { VectorMap } from "react-jvectormap";
 import AuthService from "services/auth.service";
 import userService from "services/user.service";
+import {getAllEvents} from "services/user.service";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
 import { printMatchBlock } from "components/include";
@@ -49,9 +50,11 @@ import {
 function Dashboard(props) {
   const token = useRecoilValue(userState);
   const [event,setEvent] = useState("");
-  const [events,setEvents] = useState("");
+ 
+  const  { events } = getAllEvents();
+  if (!events) return <p>loading...</p>
   var currentUser = token;
-  
+  setEvent(events);
   useEffect(() => {
     
     eventBus.on("eventsData", (event) => {
