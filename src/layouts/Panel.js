@@ -28,7 +28,7 @@ import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
 
- const queryClient = new QueryClient()
+ 
 import {
   RecoilRoot,
   atom,
@@ -92,12 +92,12 @@ const getPage = (routes) => {
 };
 var currentUser = '';
 function  Panel() {
-  
+  const queryClient = new QueryClient()
    
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
   const [token,setToken] = useRecoilState(userState);
-  
+  currentUser = token;
   var currpage = "Dashboard"
   useEffect(() => {
     //userService.getUser()
@@ -131,13 +131,11 @@ function  Panel() {
   
   
 
-  
-
   //console.log(currentUser)
   return (
     
     <>
-   <QueryClientProvider client={queryClient}>
+   
    <ConfigProvider colors={DEFCOLORS} >
       
       {getPage(routes).indexOf('Match Lobby') > -1 ? (
@@ -156,8 +154,9 @@ function  Panel() {
         <div className="main-panel">
         <AdminNavbar page={getPage(routes)} token={token}/>
         <div className="content">
-         
+        <QueryClientProvider client={queryClient}>
             <Switch>{getRoutes(routes,token)}</Switch>
+            </QueryClientProvider>
           </div>
           <AdminFooter />
           <div
@@ -172,7 +171,7 @@ function  Panel() {
       )}
         
         </ConfigProvider>
-        </QueryClientProvider>
+       
     </>
     
   );

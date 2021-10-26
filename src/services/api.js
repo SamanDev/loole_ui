@@ -13,14 +13,20 @@ const client = axios.create({
 
 const getAllEvents=async () => {
   
-  const { data } = await client.get("/getEvents")
-  return data
-}
+    const { data } = await client.get("/getEvents")
+    return data.data
+  }
+  const getUser=async () => {
+  
+    const { data } = await client.get("/getUser",{ headers: authHeader() })
+    return data
+  }
 const getEvent = async (_, id) => {
     const { data } = await client.get(`/getEventById/${id}`)
     return data
   }
 export {
   getAllEvents,
-  getEvent
+  getEvent,
+  getUser
 }

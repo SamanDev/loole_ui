@@ -1,9 +1,17 @@
 import * as api from "services/api"
-import { useQuery, useMutation, queryCache } from "react-query"
-
+import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
+const queryClient = new QueryClient()
 const useAllEvents = () => {
-  return useQuery("Events", api.getAllEvents)
-}
+    const result = useQuery(["Events"],api.getAllEvents)
+    queryClient.setQueriesData(['Events'], result)
+    return result
+  }
+  const useUser = () => {
+  
+    const result = useQuery("User",api.getUser)
+    queryClient.setQueriesData('User', result)
+    return result
+  }
 
 const useEvent = (id) => {
   return useQuery(["Event", id], api.getEvent)
@@ -13,7 +21,7 @@ const useEvent = (id) => {
 
 export {
   useAllEvents,
-
+  useUser,
   useEvent,
 
 }
