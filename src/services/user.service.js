@@ -5,6 +5,8 @@ import uploadHeader from "./upload-header";
 import { POSTURLTest } from "const";
 import { useState } from "react"
 import eventBus from "views/eventBus";
+import * as api from "services/api"
+import { useAllEvents,useUser,useEvent } from "services/hooks"
 import {
   useQuery,
   useMutation,
@@ -15,18 +17,6 @@ import {
 const API_URL_TEST = POSTURLTest;
 
 
-const client = axios.create({
-  baseURL: API_URL_TEST ,
-})
-
-const getAllEvents=async () => {
-  
-  const { data } = await client.get("/getEvents")
-  return data
-}
-export {
-  getAllEvents
-}
 class UserService {
   getPublicContent() {
     return axios.get(API_URL_TEST + "all");
@@ -68,7 +58,7 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        eventBus.dispatch("eventsData", "");
+       // eventBus.dispatch("eventsData", "");
       });
   }
   sendChatMatch(message, id,) {
@@ -265,7 +255,7 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        eventBus.dispatch("eventsData", "");
+       // eventBus.dispatch("eventsData", "");
         console.log("ok");
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
@@ -273,39 +263,29 @@ class UserService {
       });
   }
   getEvents() {
-    
+    //return useQuery("Events", api.getAllEvents)
 
   }
-  getEventById(id) {
-    if(id){
-    return axios
-      .post(
-        API_URL_TEST + "getEventById",
-        { id },
-        { headers: authHeader() }
-      )
-      .then((response) => {
+  getEventById =  ( id) => {
+    
+    return   axios
+      .post(API_URL_TEST + "getEventById",{id})
+      .then( (response) => {
         localStorage.setItem("eventsid", JSON.stringify(response.data));
-        eventBus.dispatch("eventsDataEvent", response.data);
+        eventBus.dispatch("eventsDataEventDo", response.data);
         return response.data;
       }).catch(error => {
         return axios.get(API_URL_TEST + "getEvents").then((response) => {
         var _d = JSON.parse(response.data.data).filter( (list) => list.id === id);
           console.log(id);
-          eventBus.dispatch("eventsData", _d);
+          eventBus.dispatch("eventsDataEventDo", _d);
+          
         })
-      
-        
-      });
-    }
+      })
+       
   }
   getCurrentEvent(token) {
-    if (localStorage.getItem('events')&&1==2) {
-      return localStorage.getItem('events');
-    } else {
-      //localStorage.removeItem("events");
-      //this.getEvents(token)
-    }
+    return useQuery("Events", api.getAllEvents)
   }
   editInfo(name,country,birthday) {
     return axios
