@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { useParams } from "react-router-dom"
 import Avatar from "react-avatar";
 import $ from "jquery";
 import { NavLink, Link } from "react-router-dom";
@@ -34,7 +35,7 @@ import {
   Accordion,
 } from "react-bootstrap";
 import axios from "axios";
-
+import { useAllEvents,useEvent } from "services/hooks"
 import Active  from "components/active.component";
 import uploadHeader from "services/upload-header";
 import PropTypes from "prop-types";
@@ -70,6 +71,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 var firstLoad = true;
+var isLoading = true;
 
 const API_URL_TEST = POSTURLTest;
 const Toast = Swal.mixin({
@@ -83,6 +85,94 @@ const Toast = Swal.mixin({
     toast.addEventListener("mouseleave", Swal.resumeTimer);
   },
 });
+function genMatch(lvl, matchCount, title) {
+  var matchSample = {
+    startTime: 1619728571000,
+    winner: "Salar",
+    matchPlayers: [
+      {
+        ready: false,
+        username: "vahid",
+      },
+      {
+        ready: false,
+        username: "Yaran12",
+      },
+    ],
+  };
+  var matchSampleull = {
+    startTime: 1619728571000,
+    winner: null,
+    matchPlayers: [
+      {
+        id: 257,
+        username: null,
+        tagName: null,
+        ready: false,
+      },
+      {
+        id: 257,
+        username: null,
+        tagName: null,
+        ready: false,
+      },
+    ],
+  };
+  var nullmatch = {
+    id: 100000,
+    level: 1,
+    title: "",
+    matches: [],
+  };
+  nullmatch.level = lvl;
+  nullmatch.title = title;
+  for (let index = 0; index < matchCount; index++) {
+    if (lvl == 3 && 12 == 1) {
+      nullmatch.matches.push(matchSample);
+    } else {
+      nullmatch.matches.push(matchSample);
+    }
+    //e.log(item.players[index].username)
+    if (index < 9) {
+      // nullmatch.matches.matchPlayers[0].push(item.players[index])
+    }
+  }
+
+  return nullmatch;
+}
+
+function toTimestamp(strDate) {
+  var datum = Date.parse(strDate);
+  return datum / 1000;
+}
+ //console.log(item);
+function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+function addHoursToDate(date, hours) {
+  return new Date(new Date(date).setHours(date.getHours() + hours));
+}
+var isInPlayers = false;
+var matchidFind = []
+var lists = [];
+var item = false;
+var dateExpired = null;
+            var icEnd = 0;
+            var icStart = 0;
+            var icStartL = 0;
+            var nullplayer = {
+              id: 100000,
+              username: false,
+              rank: null,
+              winAmount: null,
+              ready: false,
+            };
+            var mymatchFind = null;
+            var matchLevelFind =null
+            var isJoin = false;
+    var activePlayer = 0;
 class LockScreenPage extends Component {
   constructor(props) {
     super(props);
@@ -98,6 +188,7 @@ class LockScreenPage extends Component {
     this.fileUpload = React.createRef();
     this.showDetails = this.showDetails.bind(this);
 
+    this.editEvent = this.editEvent.bind(this);
     this.setProgress = this.setProgress.bind(this);
 
     this.handleChatUpload = this.handleChatUpload.bind(this);
@@ -110,6 +201,7 @@ class LockScreenPage extends Component {
     this.setSelectedTag = this.setSelectedTag.bind(this);
     this.setUserTag = this.setUserTag.bind(this);
     this.state = {
+      event: this.reGetevents(),
       events: null,
       currentUserTag: AuthService.getCurrentUser(),
       tag: "R0P0C8R89",
@@ -135,18 +227,45 @@ class LockScreenPage extends Component {
     
     this._isMounted = true;
     if (this._isMounted) {
-      eventBus.on("eventsDataEvent", (event) => {
-        //console.log("socket events: "+JSON.stringify(event));
-        this.setEvent(event);
-        //console.log("socket events: "+event);
-      });
-      eventBus.on("eventsData", (event) => {
+      eventBus.on("eventsDataEventDo", (event) => {
+         isJoin = false;
+          item = false;
+     activePlayer = 0;
+      isInPlayers = false;
+ matchidFind = []
+ lists = [];
+
+             icEnd = 0;
+             icStart = 0;
+             icStartL = 0;
+            
+        var newitem = this.editEvent(event);
+        try{
+          this.setEvent(JSON.parse(newitem));
+          //events = JSON.parse(event);
+        }catch(err){
+          this.setEvent((newitem));
+         // events = (event);
+        }
+        
         
         //this.reGetevents();
+        console.log("socket events: "+JSON.stringify(newitem));
+      });
+      eventBus.on("eventsDataEvent", (event) => {
+         
+       this.reGetevents();
+        try{
+          //this.setEvent(JSON.parse(event));
+          //events = JSON.parse(event);
+        }catch(err){
+          //this.setEvent((event));
+         // events = (event);
+        }
         //this.setEvent(JSON.parse(event));
         //const ids = event.map(entity => entity.id);
-
-        this.setEvent(event);
+        //console.log("socket events: "+JSON.stringify(event));
+        //this.setEvent(event);
       });
     }
   }
@@ -182,6 +301,7 @@ class LockScreenPage extends Component {
   }
   setEvent(e) {
     this.setState({
+      event: e,
       events: e,
     });
 
@@ -340,7 +460,8 @@ class LockScreenPage extends Component {
         if(!haveGameTag(game,this.state.currentUserTag.userTags))                  resetPw();
               }
   reGetevents(){
-    if(getQueryVariable("id")){
+    if(getQueryVariable("id") ){
+      
       userService.getEventById(getQueryVariable("id"))
       
     }
@@ -382,7 +503,7 @@ class LockScreenPage extends Component {
               }
             });
           } else if (response == "tagError") {
-            this.setSelectedTag(this.state.events.gameName,this.state.events.gameConsole)
+            this.setSelectedTag(this.state.event.gameName,this.state.event.gameConsole)
           }
         }
       },
@@ -516,7 +637,7 @@ class LockScreenPage extends Component {
             icon: "success",
             title: "Updated.",
           });
-          //this.reGetevents();
+          this.reGetevents();
         }
         //this.props.history.push("/panel/dashboard");
       },
@@ -572,129 +693,15 @@ $('.gdetails.no'+player).removeClass('hide');
       }
     });
   }
-  render() {
-    var { progress, isUpLoading, progressLable, events, eventid } = this.state;
-    var currentUser = AuthService.getCurrentUser();
+  editEvent(event) {
+    var getItem = event
+    item = (getItem);
     
-
-    if (!events) {
-      userService.getEventById(getQueryVariable("id"))
-
-      return (
-        <>
-          <div
-            className="full-page lock-page"
-            data-color="black"
-            style={{ height: "100vh", overflow: "auto" }}
-            data-image={require("assets/img/bg.jpg").default}
-          >
-            <div
-              className="content "
-              style={{
-                fontSize: 50,
-                color: "#fff",
-                position: "relative",
-                zIndex: "23",
-              }}
-            >
-              <Container className="text-center">
-                <h4 style={{ textAlign: "center" }}>
-                  Loading
-                  <Spinner animation="grow" size="sm" />
-                  <Spinner animation="grow" size="sm" />
-                  <Spinner animation="grow" size="sm" />
-                </h4>
-              </Container>
-            </div>
-            <div
-              className="full-page-background"
-              style={{
-                backgroundImage:
-                  "url(" + require("assets/img/bg.jpg").default + ")",
-              }}
-            ></div>
-          </div>
-        </>
-      );
-    }
-
-    //events = JSON.parse(events);
-    var icEnd = 0;
-    var icStart = 0;
-    var icStartL = 0;
-    var nullplayer = {
-      id: 100000,
-      username: false,
-      rank: null,
-      winAmount: null,
-      ready: false,
-    };
-
-    function genMatch(lvl, matchCount, title) {
-      var matchSample = {
-        startTime: 1619728571000,
-        winner: "Salar",
-        matchPlayers: [
-          {
-            ready: false,
-            username: "vahid",
-          },
-          {
-            ready: false,
-            username: "Yaran12",
-          },
-        ],
-      };
-      var matchSampleull = {
-        startTime: 1619728571000,
-        winner: null,
-        matchPlayers: [
-          {
-            id: 257,
-            username: null,
-            tagName: null,
-            ready: false,
-          },
-          {
-            id: 257,
-            username: null,
-            tagName: null,
-            ready: false,
-          },
-        ],
-      };
-      var nullmatch = {
-        id: 100000,
-        level: 1,
-        title: "",
-        matches: [],
-      };
-      nullmatch.level = lvl;
-      nullmatch.title = title;
-      for (let index = 0; index < matchCount; index++) {
-        if (lvl == 3 && 12 == 1) {
-          nullmatch.matches.push(matchSample);
-        } else {
-          nullmatch.matches.push(matchSample);
-        }
-        //e.log(item.players[index].username)
-        if (index < 9) {
-          // nullmatch.matches.matchPlayers[0].push(item.players[index])
-        }
-      }
-
-      return nullmatch;
-    }
-    var old = JSON.stringify(events).replace(/"Tournament Player1"/g, false).replace(/"Tournament Player"/g, false); //convert to JSON string
-    var newArray = JSON.parse(old);
-    newArray.current_brackets = [];
-    newArray.potential_brackets = [];
-    var item = newArray;
-
+  
     if (typeof item === "undefined") {
       //this.props.history.push("/panel/dashboard");
     }
-
+    
     if (item.gameMode == "Tournament") {
       if (!item.tournamentPayout) {
         item.tournamentPayout = "1-8, 65.00, 35.00|9-64, 50.00, 30.00, 20.00";
@@ -732,58 +739,13 @@ $('.gdetails.no'+player).removeClass('hide');
         };
       }
     }
-  
+    
     if (item.gameMode == "League") {
       item.tournamentPayout='1-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00|11-20, 45.00, 28.00, 17.00, 10.00|21-40, 36.00, 23.00, 15.00, 11.00, 8.00, 7.00|41-70, 30.00, 20.00, 14.00, 10.00, 8.00, 7.00, 6.00, 5.00|71-100, 29.00, 18.00, 12.50, 10.00, 8.00, 6.50, 5.50, 4.50, 3.50, 2.50|101-200, 28.00, 17.50, 11.50, 8.50, 7.00, 5.50, 4.50, 3.50, 2.50, 1.50, 1.00x10|201-400, 27.00, 16.50, 10.50, 8.00, 6.25, 4.75, 3.75, 2.75, 1.75, 1.25, 0.75x10, 0.50x20|401-700, 26.00, 15.50, 10.00, 7.50, 6.00, 4.50, 3.50, 2.50, 1.50, 1.00, 0.65x10, 0.40x20, 0.25x30|701-1000, 25.00, 15.00, 10.00, 7.25, 5.50, 4.25, 3.25, 2.25, 1.25, 0.75, 0.55x10, 0.40x20, 0.25x30, 0.15x30'
     }
-
-    if (item.tournamentPayout) {
-      var payArr = item.tournamentPayout.split("|");
-      var totalPay = item.prize
-      for (var i = 0; i < payArr.length; i++) {
-        var paylvl = payArr[i].split(", ");
-        var payplyer = paylvl[0].split("-");
-var tItem = item.players.length;
-if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer}
-        // console.log(payplyer[0])
-        if (
-          parseInt(payplyer[0]) <= tItem &&
-          parseInt(payplyer[1]) >= tItem
-        ) {
-          for (var j = 1; j < paylvl.length; j++) {
-            if(paylvl[j].indexOf('x')==-1){paylvl[j] = paylvl[j]+'x1'}
-            var intX = paylvl[j].split("x");
-            item.current_brackets.push({
-              prize: (intX[0]* totalPay) / 100,
-              percent: intX[0],
-            number: intX[1],
-            });
-          }
-        }
-      }
-      for (var i = payArr.length - 1; i < payArr.length; i++) {
-        
-        var paylvl = payArr[i].split(", ");
-        var payplyer = paylvl[0].split("-");
-        var tItem = item.players.length;
-if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer}
-        if (
-          parseInt(payplyer[0]) <= tItem &&
-          parseInt(payplyer[1]) >= tItem
-        ) {
-        for (var j = 1; j < paylvl.length; j++) {
-          if(paylvl[j].indexOf('x')==-1){paylvl[j] = paylvl[j]+'x1'}
-          var intX = paylvl[j].split("x");
-          item.potential_brackets.push({
-            prize: (intX[0] * totalPay) / 100,
-            percent: intX[0],
-            number: intX[1],
-          });
-        }
-      }
-      }
-    }
-    //console.log(item)
+    
+    
+    
     if (!item.winner) {
       item.winner = [];
       item.winner.push(nullplayer);
@@ -831,95 +793,180 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
         //item.matchLevel.push(genMatch(5, 1, "3rd Place"));
       }
     }
-   
-     //console.log(item);
-    function addDays(date, days) {
-      var result = new Date(date);
-      result.setDate(result.getDate() + days);
-      return result;
-    }
-    function addHoursToDate(date, hours) {
-      return new Date(new Date(date).setHours(date.getHours() + hours));
-    }
-    function toTimestamp(strDate) {
-      var datum = Date.parse(strDate);
-      return datum / 1000;
-    }
-
-    var lists = item.matchTables;
-    var matchidFind = item.matchTables[0];
-    var mymatchFind = null;
-    var matchLevelFind =null
-    if(this.state.matchid){
-      lists.map((tblmatch, w) => {
-        //console.log(tblmatch.id == parseInt(this.state.matchid))
-        if(parseInt(tblmatch.id) == parseInt(this.state.matchid)){
-           matchidFind = tblmatch;
-        }
-      }
-  
-      )
-      
-        //matchidFind = lists.filter( (list) => list.id === );
-      }
-      if((item.status=='InPlay' || item.status=='Pending') && item.gameMode=='Tournament'){
-        lists.map((tblmatch, w) => {
-          if(tblmatch.status=='InPlay' || tblmatch.status=='Pending'){
-            if(!matchLevelFind){matchLevelFind = tblmatch;}
-          }
-          if(tblmatch.status!='Finished' && (tblmatch.matchPlayers[0].username==currentUser.username || tblmatch.matchPlayers[1].username==currentUser.username)){
-            mymatchFind = tblmatch;
-          }
-        }
+                var old = JSON.stringify(item).replace(/"Tournament Player1"/g, false).replace(/"Tournament Player"/g, false); //convert to JSON string
+                var newArray = JSON.parse(old);
+                newArray.current_brackets = [];
+                newArray.potential_brackets = [];
+                 item = newArray;
     
-        )
+        //var events = eventGet;
         
-          //matchidFind = lists.filter( (list) => list.id === );
+        if (item.tournamentPayout) {
+          var payArr = item.tournamentPayout.split("|");
+          var totalPay = item.prize
+          for (var i = 0; i < payArr.length; i++) {
+            var paylvl = payArr[i].split(", ");
+            var payplyer = paylvl[0].split("-");
+        var tItem = item.players.length;
+        if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer}
+            // console.log(payplyer[0])
+            if (
+              parseInt(payplyer[0]) <= tItem &&
+              parseInt(payplyer[1]) >= tItem
+            ) {
+              for (var j = 1; j < paylvl.length; j++) {
+                if(paylvl[j].indexOf('x')==-1){paylvl[j] = paylvl[j]+'x1'}
+                var intX = paylvl[j].split("x");
+                item.current_brackets.push({
+                  prize: (intX[0]* totalPay) / 100,
+                  percent: intX[0],
+                number: intX[1],
+                });
+              }
+            }
+          }
+          for (var i = payArr.length - 1; i < payArr.length; i++) {
+            
+            var paylvl = payArr[i].split(", ");
+            var payplyer = paylvl[0].split("-");
+            var tItem = item.players.length;
+        if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer}
+            if (
+              parseInt(payplyer[0]) <= tItem &&
+              parseInt(payplyer[1]) >= tItem
+            ) {
+            for (var j = 1; j < paylvl.length; j++) {
+              if(paylvl[j].indexOf('x')==-1){paylvl[j] = paylvl[j]+'x1'}
+              var intX = paylvl[j].split("x");
+              item.potential_brackets.push({
+                prize: (intX[0] * totalPay) / 100,
+                percent: intX[0],
+                number: intX[1],
+              });
+            }
+          }
+          }
         }
-    //matchidFind.status = 'InPlay'
-    var timestamp = item.expire;
-    // console.log(timestamp);
-    if (timestamp.indexOf("-") > -1) {
-      var timestamp = toTimestamp(timestamp);
-    }
-    //console.log(timestamp);
-    var date = new Date(timestamp);
-
-    var now = new Date();
-    var dateExpired = date.toISOString();
-    var dateExpiredTest = addDays(date.toISOString(), 2);
-    var dateExpiredTest2 = addDays(date.toISOString(), 4);
-    var dateExpiredTest3 = addDays(date.toISOString(), 5);
-
-    var dateNow = now.toISOString();
-    var dateExpired = item.expire;
     
-    if (matchidFind && item.gameMode != "Tournament") {
-      if (!item.players[1]) {
-        item.players.push(nullplayer);
-      }
-      if (matchidFind && !matchidFind.matchPlayers[1]) {
-        matchidFind.matchPlayers.push(nullplayer);
-      }
-      matchidFind.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
-    }
-    var isInPlayers = false;
-    if (item.gameMode != "League") {
-    if((matchidFind.matchPlayers[0].username ==
-      currentUser.username ||
-      matchidFind.matchPlayers[1].username ==
-        currentUser.username)){
-          isInPlayers = true;
+         lists = item.matchTables;
+        matchidFind = item.matchTables[0];
+        
+        if(this.state.matchid){
+          lists.map((tblmatch, w) => {
+            //console.log(tblmatch.id == parseInt(this.state.matchid))
+            if(parseInt(tblmatch.id) == parseInt(this.state.matchid)){
+               matchidFind = tblmatch;
+            }
+          }
+      
+          )
+          
+            //matchidFind = lists.filter( (list) => list.id === );
+          }
+          if((item.status=='InPlay' || item.status=='Pending') && item.gameMode=='Tournament'){
+            lists.map((tblmatch, w) => {
+              if(tblmatch.status=='InPlay' || tblmatch.status=='Pending'){
+                if(!matchLevelFind){matchLevelFind = tblmatch;}
+              }
+              if(tblmatch.status!='Finished' && (tblmatch.matchPlayers[0].username==this.state.currentUserTag.username || tblmatch.matchPlayers[1].username==this.state.currentUserTag.username)){
+                mymatchFind = tblmatch;
+              }
+            }
+        
+            )
+            
+              //matchidFind = lists.filter( (list) => list.id === );
+            }
+        //matchidFind.status = 'InPlay'
+        var timestamp = item.expire;
+        // console.log(timestamp);
+        if (timestamp.indexOf("-") > -1) {
+          var timestamp = toTimestamp(timestamp);
         }
-      }
-    if(item.gameMode == "Tournament" && !this.state.matchid){
-      var expiryDate = new Date(dateExpired);
-      expiryDate.setHours(expiryDate.getHours() + matchidFind.level);
-    }
+        //console.log(timestamp);
+       
+        
+         dateExpired = item.expire;
+        
+        if (matchidFind && item.gameMode != "Tournament") {
+          if (!item.players[1]) {
+            item.players.push(nullplayer);
+          }
+          if (matchidFind && !matchidFind.matchPlayers[1]) {
+            matchidFind.matchPlayers.push(nullplayer);
+          }
+          matchidFind.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
+        }
+         isInPlayers = false;
+        if (item.gameMode != "League") {
+        if((matchidFind.matchPlayers[0].username ==
+          this.state.currentUserTag.username ||
+          matchidFind.matchPlayers[1].username ==
+            this.state.currentUserTag.username)){
+              isInPlayers = true;
+            }
+          }
+        if(item.gameMode == "Tournament" && !this.state.matchid){
+          var expiryDate = new Date(dateExpired);
+          expiryDate.setHours(expiryDate.getHours() + matchidFind.level);
+        }
+    return item;
+  }
+  render() {
+    var { progress, isUpLoading, progressLable, event,events, eventid,currentUserTag } = this.state;
+    var currentUser = currentUserTag;
+    
+    
+    //const { id } = useParams();
+    //var { data: eventGet , isLoading } = useEvent(eventid)
+   // var eventGet = false;
+   
+    if (  !event) {
+      
+      //this.reGetevents()
+      
+
+      return (
+        <>
+          <div
+            className="full-page lock-page"
+            data-color="black"
+            style={{ height: "100vh", overflow: "auto" }}
+            data-image={require("assets/img/bg.jpg").default}
+          >
+            <div
+              className="content "
+              style={{
+                fontSize: 50,
+                color: "#fff",
+                position: "relative",
+                zIndex: "23",
+              }}
+            >
+              <Container className="text-center">
+                <h4 style={{ textAlign: "center" }}>
+                  Loading
+                  <Spinner animation="grow" size="sm" />
+                  <Spinner animation="grow" size="sm" />
+                  <Spinner animation="grow" size="sm" />
+                </h4>
+              </Container>
+            </div>
+            <div
+              className="full-page-background"
+              style={{
+                backgroundImage:
+                  "url(" + require("assets/img/bg.jpg").default + ")",
+              }}
+            ></div>
+          </div>
+        </>
+      );
+            }
+           
     
 
-    var isJoin = false;
-    var activePlayer = 0;
+    
    
     return (
       <>
@@ -1992,7 +2039,7 @@ if(item.status=='Pending' || item.gameMode == "League"){tItem = item.totalPlayer
                                                                           <>
                                                                             
                                                                             
-                                                                            <div style={{lineHeight:'80px'}}>
+                                                                            <div style={{lineHeight:avSize +'px'}}>
                                                                               {
                                                                                 mtch.status}
                                                                               

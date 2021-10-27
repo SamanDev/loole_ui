@@ -15,7 +15,6 @@ import {
     Container,
 
 } from "react-bootstrap";
-
 class AdminNavbar extends Component {
     constructor(props) {
         super(props);

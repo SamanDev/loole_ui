@@ -63,7 +63,7 @@ class UserWebsocket {
                      
                      
                       eventBus.dispatch("eventsData", msg.data);
-                      //eventBus.dispatch("eventsDataEvent", msg.data);
+                    eventBus.dispatch("eventsDataEvent", msg.data);
                       
                   } else if (message.Command === 'startTick') {
                       // setYvalStart(msg.tick);

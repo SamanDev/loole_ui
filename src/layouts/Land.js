@@ -4,6 +4,7 @@ import { Switch, Route,Redirect } from "react-router-dom";
 import Avatar, { ConfigProvider } from "react-avatar";
 import { DEFCOLORS } from "const";
 
+import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
 import $ from "jquery";
 // react-bootstrap components
 import {
@@ -22,7 +23,7 @@ import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 import AuthService from "services/auth.service";
 // dinamically create auth routes
 import routes from "routes.js";
-
+const queryClient = new QueryClient()
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
@@ -69,7 +70,7 @@ class Auth extends Component {
   
   return (
     <>
-   
+    <QueryClientProvider client={queryClient}>
     <ConfigProvider colors={DEFCOLORS}>
       <div className="landing-page landing-page1 landing-mobile">
         {/* Navbar */}
@@ -80,6 +81,7 @@ class Auth extends Component {
       
       </div>
       </ConfigProvider>
+      </QueryClientProvider>
     </>
   );
     }

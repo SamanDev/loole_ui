@@ -442,7 +442,7 @@ handleTagForm(game,platform) {
 
   handleCreateMatch(e) {
     e.preventDefault();
-    allValid = true;
+    //allValid = true;
     reqnum = 0;
     this.setState({
     submit: true,
@@ -577,7 +577,21 @@ handleTagForm(game,platform) {
   }
   handleCreateTournament(e) {
     e.preventDefault();
-
+    allValid = true;
+    console.log(
+      this.state.GName.value.split(" - ")[0],
+      this.state.GName.value.split(" - ")[1],
+      'Tournament',
+      
+      this.state.BetAmount,
+      this.state.StartTime.value,
+     // "1",
+      this.state.TournamentMode.value,
+      '1-8, 65.00, 35.00|9-16, 50.00, 30.00, 20.00|17-64, 48.00, 27.00, 15.00, 10.00',
+      this.state.inSign.value,
+      this.state.outSign.value,
+      this.state.Rules
+    )
     if (allValid) {
       this.setState({
         message: "",
@@ -749,7 +763,7 @@ handleTagForm(game,platform) {
   }
   
   render() {
-    console.log(this.props)
+    
     const currentUser = authService.getCurrentUser();
     var _mode = " 1 v 1 ";
     var _color = "#404040";

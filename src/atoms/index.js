@@ -8,6 +8,6 @@ import {
   } from 'recoil';
 const userState = atom({
     key: 'userState',
-    default: AuthService.getCurrentUser(),
+    default: '',
   });
   export {userState}

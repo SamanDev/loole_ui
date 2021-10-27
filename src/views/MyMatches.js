@@ -1,15 +1,20 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 // react component used to create charts
 import ChartistGraph from "react-chartist";
 import { Link, useLocation } from "react-router-dom";
 // react components used to create a SVG / Vector map
+
+import PropTypes from "prop-types";
 import { VectorMap } from "react-jvectormap";
 import AuthService from "services/auth.service";
 import userService from "services/user.service";
+import { useAllEvents,useUser } from "services/hooks"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
 import { printMatchBlock } from "components/include";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import Active  from "components/active.component";
 // react-bootstrap components
 import {
   Badge,
@@ -28,98 +33,95 @@ import {
   TabContent,
   TabPane,
   Tab,
-  Spinner
+  Spinner,
+  Alert
 
 } from "react-bootstrap";
-
-
-
-//const EventList = JSON.parse(userService.getEvents());
-
-
-class Dashboard extends Component {
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
+import {
+  userState
+} from 'atoms';
+function Dashboard(props) {
+  const [token,setToken] = useRecoilState(userState);
   
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      events: null
-    };
-
-  }
-
-  componentDidMount() {
   
-      
-    eventBus.on("eventsData", (event) => {
-      // console.log("socket events: "+events);
-    
-      this.setState({ events: event, isLoading: false });
-      console.log("change state: " + this.state.isLoading);
-      
-    });
-
+  if ( !token) {return  <h4 style={{textAlign: "center"}}>Loading 
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" /></h4>;
   }
   
+ 
 
-  render() {
-    
-    if (!this.state.events){
-      userService.getEvents();
+    var currentUser = token;
+  const { data: eventsGet , isLoading } = useAllEvents()
+  
+  
+  if (isLoading || !eventsGet ) {return  <h4 style={{textAlign: "center"}}>Loading 
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" /></h4>;
+  }
+  var events=JSON.parse(eventsGet);
+  
+  
+  
+  
+  if (!events) return <p>loading...</p>
+  
+  
+  const getBlockChallenge = (filtermode) => {
       
-      return <h4 style={{textAlign: "center"}}>Loading 
-      <Spinner animation="grow" size="sm" />
-      <Spinner animation="grow" size="sm" />
-      <Spinner animation="grow" size="sm" /></h4>;
+    if (events != []) {
+      return events.map((item, i) => {
+        if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
+          item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+          {item.players.map((player, j) => {
+           //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
+          })}
+          var timestamp = item.expire
+          var date = new Date(timestamp);
+          //date.setMinutes(date.getMinutes() + item.timeMinute);
+          var now = new Date();
+          var dateExpired = date.toISOString();
+          
+           
+          var dateNow = now.toISOString();
+          
+          if(dateExpired<dateNow && item.status !='Pending' && item.status !='InPlay' && item.status !='Ready')return null
+          return (
+
+            <Col lg="4" xl="3" key={i}>
+              {printMatchBlock(item)}
+
+            </Col>
+          )
+        } else {
+          return null;
+        }
+      }
+      )
     }
+
+  }
+  
     
-    let { events, isLoading } = this.state;
-    events=JSON.parse(events);
-   
-    const currentUser = AuthService.getCurrentUser();
+  
     var Balance = currentUser.balance;
     if (!Balance) { Balance = 0 }
-    //console.log("dash = "+EventList)
     
-    console.log('e-l : ' + events);
-    const getBlockChallenge = (filtermode) => {
+  return (
       
-      if (events != []) {
-        return events.map((item, i) => {
-          if ((filtermode == 'Wins' && item.status == 'Finished') || item.status == filtermode || ('All' == filtermode && item.status != 'Expire')) {
-            item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
-            var blnShow = false;
-            {item.players.map((player, j) => {
-             if(player.username == currentUser.username ){blnShow=true}
-            })}
-            var timestamp = item.expire
-            var date = new Date(timestamp);
-            //date.setMinutes(date.getMinutes() + item.timeMinute);
-            var now = new Date();
-            var dateExpired = date.toISOString();
-            
-             
-            var dateNow = now.toISOString();
-            
-            if(!blnShow)return null
-            return (
-
-              <Col lg="4" xl="3" key={i}>
-                {printMatchBlock(item)}
-
-              </Col>
-            )
-          } else {
-            return null;
-          }
-        }
-        )
-      }
-
-    }
-
-    return (
-      <>
+        
+    <>
+    
+    <Active token={currentUser}/>
 
         <Row>
           <Col md="12">
@@ -179,7 +181,7 @@ class Dashboard extends Component {
 
       </>
     );
-  }
+  
 }
 
 export default Dashboard;

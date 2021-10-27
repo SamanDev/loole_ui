@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { VectorMap } from "react-jvectormap";
 import AuthService from "services/auth.service";
 import userService from "services/user.service";
-import {getAllEvents} from "services/user.service";
+import { useAllEvents,useUser } from "services/hooks"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
 import { printMatchBlock } from "components/include";
@@ -48,32 +48,25 @@ import {
   userState
 } from 'atoms';
 function Dashboard(props) {
-  const token = useRecoilValue(userState);
-  const [event,setEvent] = useState("");
- 
-  const  { events } = getAllEvents();
+  const [token,setToken] = useRecoilState(userState);
+  const { data: eventsGet , isLoading } = useAllEvents()
+  const { data: userGet } = useUser()
+  //const token = userGet;
+  
+  if (isLoading || !userGet) {return  <h4 style={{textAlign: "center"}}>Loading 
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" /></h4>;
+  }
+  setToken(userGet)
+  var events=JSON.parse(eventsGet);
+  
+  
+  
+  
   if (!events) return <p>loading...</p>
   var currentUser = token;
-  setEvent(events);
-  useEffect(() => {
-    
-    eventBus.on("eventsData", (event) => {
-      // console.log("socket events: "+events);
-    try{
-      setEvent(event);
-      setEvents(JSON.parse(event));
-    }catch(e){}
-      
-     // console.log("change state: " + this.state.loading);
-      
-    });
-    // return a function to execute at unmount
-    return () => {
-      
-      //setEvents('');
-    
-    }
-  }, []) // notice the empty array
+  
   const getBlockChallenge = (filtermode) => {
       
     if (events != []) {
@@ -108,15 +101,7 @@ function Dashboard(props) {
     }
 
   }
-  if (!event){
-    
-    userService.getEvents();
-    
-    return <h4 style={{textAlign: "center"}}>Loading 
-    <Spinner animation="grow" size="sm" />
-    <Spinner animation="grow" size="sm" />
-    <Spinner animation="grow" size="sm" /></h4>;
-  }
+  
     
   
     var Balance = currentUser.balance;

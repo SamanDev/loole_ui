@@ -2,22 +2,10 @@ import React ,{useEffect, useState} from "react";
 import { Switch, Route,Redirect } from "react-router-dom";
 import Avatar, { ConfigProvider } from "react-avatar";
 import $ from "jquery";
-
+//import { GlobalProvider } from 'context/GlobalState';
 import Active  from "components/active.component";
 // react-bootstrap components
 import {
-  Badge,
-  Button,
-  ButtonGroup,
-  Card,
-  Form,
-  InputGroup,
-  Navbar,
-  Nav,
-  Pagination,
-  Container,
-  Row,
-  Col,
   Spinner
 } from "react-bootstrap";
 import { DEFCOLORS } from "const";
@@ -38,6 +26,9 @@ import image4 from "assets/img/bg.jpg";
 import UserWebsocket from 'services/user.websocket'
 import AuthService from "services/auth.service";
 import userService from "services/user.service";
+import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
+
+ 
 import {
   RecoilRoot,
   atom,
@@ -101,12 +92,12 @@ const getPage = (routes) => {
 };
 var currentUser = '';
 function  Panel() {
-  
+  const queryClient = new QueryClient()
    
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
   const [token,setToken] = useRecoilState(userState);
-  
+  currentUser = token;
   var currpage = "Dashboard"
   useEffect(() => {
     //userService.getUser()
@@ -140,14 +131,11 @@ function  Panel() {
   
   
 
-  
-
   //console.log(currentUser)
   return (
     
     <>
    
-    
    <ConfigProvider colors={DEFCOLORS} >
       
       {getPage(routes).indexOf('Match Lobby') > -1 ? (
@@ -166,8 +154,9 @@ function  Panel() {
         <div className="main-panel">
         <AdminNavbar page={getPage(routes)} token={token}/>
         <div className="content">
-         
+        <QueryClientProvider client={queryClient}>
             <Switch>{getRoutes(routes,token)}</Switch>
+            </QueryClientProvider>
           </div>
           <AdminFooter />
           <div
