@@ -23,6 +23,7 @@ import {
 import {
   userState
 } from 'atoms';
+
 function Active(props) {
   const token = useRecoilValue(userState);
   
@@ -104,7 +105,10 @@ userService
     
   }
   if(!currentUser.userActivate){
-    $('.btn:not(.actbtn)').attr('disabled', 'disabled');
+    setTimeout(() => {
+      $('.btn:not(.actbtn)').attr('onclick', 'window.scrollTo({top: 0,behavior: "smooth" });return false;');
+    },500)
+    
     return (
         <>
            

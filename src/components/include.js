@@ -127,7 +127,12 @@ export const  setAvatar  = (name) =>{
       return mTitle
     }
     export const  getGroupBadge  = (sign,amount,classes) =>{
-      var nAmount = parseInt(amount, 10);
+      if (sign == 'Dollar'){
+        var nAmount = Number.parseFloat(amount).toFixed(2);
+      }else{
+        var nAmount = Number.parseFloat(amount).toFixed(0);
+      }
+      
      
         return (
           <div style={{height:30,padding:'2px 0'}}><Badge variant={getColor(amount)} className={"badgegroup "+classes}>
@@ -142,9 +147,31 @@ export const  setAvatar  = (name) =>{
         )
        
       }
-      export const  getGroupBadgePrice  = (sign,amount,classes) =>{
-        var nAmount = parseInt(amount, 10);
+    export const  getGroupBadgeList  = (sign,amount,classes) =>{
+      if (sign == 'Dollar'){
+        var nAmount = Number.parseFloat(amount).toFixed(2);
+      }else{
+        var nAmount = Number.parseFloat(amount).toFixed(0);
+      }
+        return (
+          <Badge variant={getColor(amount)} className={classes}>
+                                          <span className="cur" style={{float:'left'}}><img
+                                alt={"loole dollar"}
+                               
+                                src={"/assets/images/"+sign+".svg"}
+                              ></img></span>
+                              <CurrencyFormat value={nAmount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">&nbsp; <b>{value}</b></span>} />
+                                         
+                                          </Badge>
+        )
        
+      }
+      export const  getGroupBadgePrice  = (sign,amount,classes) =>{
+        if (sign == 'Dollar'){
+          var nAmount = Number.parseFloat(amount).toFixed(2);
+        }else{
+          var nAmount = Number.parseFloat(amount).toFixed(0);
+        }
           return (
             <div style={{height:30,padding:'2px 0',transform:'scale(1.2)',zIndex:-1,position:'relative'}}><Badge variant={getColor(amount)} className={"badgegroup"}>
                                           <span className="cur"><img
@@ -688,30 +715,46 @@ if(res== 'Not Connected') {
 return (val)
    };
 
-      export const haveGameTag = ( game,userTags ) => {
-        var res = 'Not Connected'
-        var resName = ''
+   export const haveGameTag = ( game,userTags ) => {
+    var res = 'Not Connected'
+    var resName = ''
 if(userTags){
-  userTags.map(function(tag){
-          
-    if (tag.gameName==game){
+userTags.map(function(tag){
+      
+if (tag.gameName==game){
 res=tag.tagId
 res=res.split('@@')[0]
-    }
+}
 
-   
+
 })
 }
 if(res== 'Not Connected') {
-  return false
+return false
 }else{
-  return true
+return true
 }
-  
 
-   
+
+
+  
+  };
+  export const haveAdmin = ( userTags ) => {
+  var isAdmin = false;
+userTags.map(function(tag){
       
-      };
+if (tag.name=='ROLE_ADMIN'){
+isAdmin = true;
+}
+})
+
+return isAdmin
+
+
+
+
+  
+  };
       export const  printRequired = () => {
      
     

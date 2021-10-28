@@ -157,7 +157,7 @@ function Dashboard(props) {
                           alt="loole coin"
                          
                           src="/assets/images/dollar.svg"
-                        ></img> {Balance}</Card.Title>
+                        ></img> {Number.parseFloat(Balance).toFixed(2)}</Card.Title>
                   </div>
                 </Col>
               </Row>
@@ -187,7 +187,7 @@ function Dashboard(props) {
                           alt="loole coin"
                          
                           src="/assets/images/point.svg"
-                        ></img> 1,000</Card.Title>
+                        ></img> {Number.parseFloat(currentUser.point).toFixed(0)}</Card.Title>
                   </div>
                 </Col>
               </Row>
@@ -195,8 +195,8 @@ function Dashboard(props) {
             <Card.Footer>
               <hr></hr>
               <div className="stats">
-                <i className="nc-icon nc-bank icon-bold mr-1"></i>
-                <Link to={'/panel/cashier'}>Go to Cashier</Link>
+                <i className="nc-icon  nc-notification-70 icon-bold mr-1"></i>
+                <Link to={'/panel/rewards'}>Go to Rewards</Link>
               </div>
             </Card.Footer>
           </Card>

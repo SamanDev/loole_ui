@@ -22,50 +22,26 @@ import {
 } from "react-bootstrap";
 import GameSlide from "components/GameSlide";
 
-export default class Landing extends Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      events: userService.getCurrentEvent()
-    };
+import { useAllEvents } from "services/hooks"
+const Landing = () => {
+  const { data: eventsGet , isLoading } = useAllEvents()
 
-  }
+  
 
-  componentDidMount() {
-  
-      
-    eventBus.on("eventsData", (event) => {
-      // console.log("socket events: "+events);
-    
-      this.setState({ events: event, isLoading: false });
-      console.log("change state: " + this.state.isLoading);
-      
-    });
+  if (isLoading || !eventsGet) {return  <div className="parallax filter-gradient gray section-gray" data-color="red">
+  <div className="parallax-background">
+      <img className="parallax-background-image" src="assets/img/showcases/showcase-1/bg.jpg"/>
+  </div>
+  <div className= "container">
+  <h4 style={{textAlign: "center",marginTop:300,color:'#fff'}}>Loading 
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" /></h4>
+  </div>
+</div>;}
+  var events=JSON.parse(eventsGet);
+  var _game = window.location.href.split('game/')[1].replace('%20',' ')
 
-  }
-  
-  render() {
-    var _game = window.location.href.split('game/')[1].replace('%20',' ')
-    if (!this.state.events){
-      userService.getEvents();
-      
-      return  <div className="parallax filter-gradient orange section-gray" data-color="red">
-      <div className="parallax-background">
-                    <img className="parallax-background-image" src={require("assets/images/games/"+_game+".jpg").default}/>
-                </div>
-      <div className= "container">
-      <h4 style={{textAlign: "center",marginTop:300,color:'#fff'}}>Loading 
-      <Spinner animation="grow" size="sm" />
-      <Spinner animation="grow" size="sm" />
-      <Spinner animation="grow" size="sm" /></h4>
-      </div>
-  </div>;
-    }
-  
-    let { events, isLoading } = this.state;
-    events=JSON.parse(events);
     const getBlockGames = () => {
       
       if (Games != []) {
@@ -202,5 +178,6 @@ export default class Landing extends Component {
         </div>
       </>
     );
-  }
+  
 }
+export default Landing

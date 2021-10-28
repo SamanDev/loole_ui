@@ -36,73 +36,50 @@ import Market from "server/Market";
 
 //const EventList = JSON.parse(userService.getEvents());
 
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
+import {
+  userState
+} from 'atoms';
 
-class Dashboard extends Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      events: null,
-      products: Market.getMarketplace
-    };
-
-  }
-
-  componentDidMount() {
-  
+const getBlockChallenge = (products,filtermode) => {
       
-    eventBus.on("eventsData", (event) => {
-      // console.log("socket events: "+events);
-    
-      this.setState({ events: event, isLoading: false });
-      console.log("change state: " + this.state.isLoading);
-      
-    });
+ 
+    return products.map((item, i) => {
+     if (item.name.indexOf(filtermode) > -1){
+      return (
 
-  }
-  
+        <Col lg="4" xl="3" key={i}>
+          {printProductBlock(item)}
 
-  render() {
-    
-    if (!this.state.events){
-      userService.getEvents();
-      
-      return <h4 style={{textAlign: "center"}}>Loading 
-      <Spinner animation="grow" size="sm" />
-      <Spinner animation="grow" size="sm" />
-      <Spinner animation="grow" size="sm" /></h4>;
+        </Col>
+      )
+     }
+        
+     
     }
-    
-    let { events, isLoading,products } = this.state;
-    
-    events=JSON.parse(events);
-    
-    const currentUser = AuthService.getCurrentUser();
-    var Balance = currentUser.balance;
-    if (!Balance) { Balance = 0 }
-    //console.log("dash = "+EventList)
-    
-    console.log('e-l : ' + products.length);
-    const getBlockChallenge = (filtermode) => {
-      
-      if (events != []) {
-        return products.map((item, i) => {
-         
-            return (
+    )
+  
 
-              <Col lg="4" xl="3" key={i}>
-                {printProductBlock(item)}
+}
 
-              </Col>
-            )
-         
-        }
-        )
-      }
 
-    }
-
+function Dashboard(props) {
+  const [token,setToken] = useRecoilState(userState);
+  const products = Market.getMarketplace
+  
+  if (!token) {return  <h4 style={{textAlign: "center"}}>Loading 
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" /></h4>;
+  }
+  
+   
     return (
       <>
 
@@ -118,13 +95,13 @@ class Dashboard extends Component {
                   <Nav.Link eventKey="all-match">All</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="wins-match">My Wins</Nav.Link>
+                  <Nav.Link eventKey="wins-match">Amazon</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="con-match">Expired</Nav.Link>
+                  <Nav.Link eventKey="con-match">PSN</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="tour-match">Pending</Nav.Link>
+                  <Nav.Link eventKey="tour-match">XBox</Nav.Link>
                 </Nav.Item>
               </Nav>
               <Card>
@@ -134,23 +111,23 @@ class Dashboard extends Component {
                   <Tab.Content >
                   <Tab.Pane eventKey="all-match" >
                       <Row >
-                        {getBlockChallenge('All')}
+                        {getBlockChallenge(products,' ')}
                       </Row>
                     </Tab.Pane>
                     <Tab.Pane eventKey="wins-match" >
                       <Row >
-                        {getBlockChallenge('Wins')}
+                        {getBlockChallenge(products,'Amazon')}
                       </Row>
                     </Tab.Pane>
                    
                     <Tab.Pane eventKey="con-match">
                       <Row>
-                        {getBlockChallenge('Expire')}
+                        {getBlockChallenge(products,'PSN')}
                       </Row>
                     </Tab.Pane>
                     <Tab.Pane eventKey="tour-match">
                       <Row>
-                        {getBlockChallenge('Pending')}
+                        {getBlockChallenge(products,'Xbox')}
                       </Row>
                     </Tab.Pane>
                   </Tab.Content>
@@ -164,7 +141,7 @@ class Dashboard extends Component {
 
       </>
     );
-  }
+  
 }
 
 export default Dashboard;

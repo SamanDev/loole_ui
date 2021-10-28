@@ -58,13 +58,15 @@ import {
   getQueryVariable,
   getCode,
   getGroupBadge,
+  getGroupBadgeList,
   getGroupBadgePrice,
   getModalTag,
   getGameTag,
   getMatchTitle,
   haveGameTag,
   getPlayerTag,
-  isJson
+  isJson,
+  haveAdmin
 } from "components/include";
 import { UPLOADURL, POSTURLTest } from "const";
 import Swal from "sweetalert2";
@@ -600,7 +602,7 @@ class LockScreenPage extends Component {
 
     userService.deleteEvent(this.state.eventid).then(
       (response) => {
-        //this.props.history.push("/panel/dashboard");
+        this.props.history.push("/panel/dashboard");
       },
       (error) => {}
     );
@@ -963,6 +965,49 @@ $('.gdetails.no'+player).removeClass('hide');
         </>
       );
             }
+            if (  !event.gameName) {
+      
+              //this.reGetevents()
+              
+        
+              return (
+                <>
+                  <div
+                    className="full-page lock-page"
+                    data-color="black"
+                    style={{ height: "100vh", overflow: "auto" }}
+                    data-image={require("assets/img/bg.jpg").default}
+                  >
+                    <div
+                      className="content "
+                      style={{
+                        fontSize: 50,
+                        color: "#fff",
+                        position: "relative",
+                        zIndex: "23",
+                      }}
+                    >
+                      <Container className="text-center">
+                      <Button
+                                    className="btn-round actbtn hid2e"
+                                    onClick={this.handleDelete}
+                                    variant="primary"
+                                  >
+                                    Delet Match
+                                  </Button>
+                      </Container>
+                    </div>
+                    <div
+                      className="full-page-background"
+                      style={{
+                        backgroundImage:
+                          "url(" + require("assets/img/bg.jpg").default + ")",
+                      }}
+                    ></div>
+                  </div>
+                </>
+              );
+                    }
            
     
 
@@ -1023,26 +1068,30 @@ $('.gdetails.no'+player).removeClass('hide');
                   <Active/>
                 {(getQueryVariable("matchid")) ? (
                               
-                              <Link to={"/panel/lobby?id="+item.id} className="btn btn-danger btn-round "> Back </Link>
+                              <Link to={"/panel/lobby?id="+item.id} className="btn actbtn btn-danger btn-round "> Back </Link>
                             ):(
                               <>
                               {getQueryVariable("ref")? (
                               
-                              <Link to={"/panel/"+getQueryVariable("ref")} className="btn btn-danger btn-round "> Back </Link>
+                              <Link to={"/panel/"+getQueryVariable("ref")} className="btn  actbtn btn-danger btn-round "> Back </Link>
                               ):(
-                                <Link to="/panel/dashboard" className="btn btn-danger btn-round "> Back </Link>
+                                <Link to="/panel/dashboard" className="btn actbtn btn-danger btn-round "> Back </Link>
                                 )}
                                 </>
                             )}
-                             
-                             
-                              <Button
-                                    className="btn-round hid2e"
+                              {(haveAdmin(currentUser.roles))&&(
+              <>
+               <Button
+                                    className="btn-round actbtn hid2e"
                                     onClick={this.handleDelete}
                                     variant="primary"
                                   >
                                     Delet Match
                                   </Button>
+              </>
+            )}
+                             
+                              
                                  
                                   
                                
@@ -1225,7 +1274,7 @@ $('.gdetails.no'+player).removeClass('hide');
                                   <h4 className="vertical-timeline-element-subtitle">
                                     <Countdown
                                       renderer={renderer}
-                                      date={dateExpiredTest2}
+                                      date={dateExpired}
                                     />
                                   </h4>
 
@@ -1329,7 +1378,7 @@ $('.gdetails.no'+player).removeClass('hide');
                                   <h4 className="vertical-timeline-element-subtitle">
                                     <Countdown
                                       renderer={renderer}
-                                      date={dateExpiredTest3}
+                                      date={dateExpired}
                                     />
                                   </h4>
                                   <div
@@ -1352,15 +1401,8 @@ $('.gdetails.no'+player).removeClass('hide');
                                                   {" "}
                                                   {icShow} <small> - %{win.percent}</small>
                                                 </span>
-                                                <Badge variant={getColor(item.prize*win.percent/100)} className={"badgegroup"}>
-                                          <span className="cur" style={{float:'left'}}><img
-                                alt={"loole dollar"}
-                               
-                                src={"/assets/images/"+item.outSign+".svg"}
-                              ></img></span>
-                              <CurrencyFormat value={item.prize*win.percent/100} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">&nbsp; <b>{value}</b></span>} />
-                                         
-                                          </Badge>
+                                                {getGroupBadgeList(item.inSign,item.prize*win.percent/100,'badgegroup')}
+                                                
                                                
                                               </ListGroup.Item>
                                             );
@@ -2108,15 +2150,8 @@ $('.gdetails.no'+player).removeClass('hide');
                                                   {" "}
                                                   {icShow} <small> - %{win.percent}</small>
                                                 </span>
-                                                <Badge variant={getColor(win.prize)} className={"badgegroup"}>
-                                          <span className="cur" style={{float:'left'}}><img
-                                alt={"loole dollar"}
-                               
-                                src={"/assets/images/"+item.outSign+".svg"}
-                              ></img></span>
-                              <CurrencyFormat value={win.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span className="lable">&nbsp; <b>{value}</b></span>} />
-                                         
-                                          </Badge>
+                                                {getGroupBadgeList(item.inSign,win.prize,'badgegroup')}
+                                                
                                                
                                               </ListGroup.Item>
                                             );
