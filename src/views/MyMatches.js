@@ -80,10 +80,11 @@ function Dashboard(props) {
       
     if (events != []) {
       return events.map((item, i) => {
-        if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
+        if ((filtermode == 'Wins' && item.status == 'Finished') ||(filtermode == 'Expired' && item.status == 'Expired') || item.status == filtermode || ('All' == filtermode )) {
           item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+          var blnShow = false;
           {item.players.map((player, j) => {
-           //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
+           if(player.username == currentUser.username ){blnShow=true}
           })}
           var timestamp = item.expire
           var date = new Date(timestamp);
@@ -94,7 +95,7 @@ function Dashboard(props) {
            
           var dateNow = now.toISOString();
           
-          if(dateExpired<dateNow && item.status !='Pending' && item.status !='InPlay' && item.status !='Ready')return null
+          if(!blnShow)return null
           return (
 
             <Col lg="4" xl="3" key={i}>
@@ -105,8 +106,7 @@ function Dashboard(props) {
         } else {
           return null;
         }
-      }
-      )
+      })
     }
 
   }

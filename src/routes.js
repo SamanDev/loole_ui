@@ -99,7 +99,7 @@ var routes = [
     name: "MarketPlace",
     icon: "nc-icon nc-refresh-02",
     component: Market,
-    show:true
+    show:false
   },
   {
     path: "/cashier",

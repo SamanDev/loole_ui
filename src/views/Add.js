@@ -60,9 +60,11 @@ import {
   getMatchTitle,
   haveGameTag,
   printRequired,
+  haveAdmin
   
 } from "components/include";
 import Games from "server/Games";
+
 import authService from "services/auth.service";
 var allValid = true;
 var reqnum = 0;
@@ -75,6 +77,7 @@ const required = (value) => {
     );
   }
 };
+
 const getBlockGames = (filtermode) => {
   var gamemap = [];
   Games.games.map((item, i) => {
@@ -238,6 +241,7 @@ class CreateMatch extends Component {
       GName: { value: "", label: "" },
       GameMode: { value: "", label: "" },
       TournamentMode: getBlockTournamentVal(10, 4),
+      currentUser: AuthService.getCurrentUser(),
       gamemaplocal: [],
       BetAmount: 10,
       Prize: '',
@@ -442,7 +446,7 @@ handleTagForm(game,platform) {
 
   handleCreateMatch(e) {
     e.preventDefault();
-    //allValid = true;
+    allValid = true;
     reqnum = 0;
     this.setState({
     submit: true,
@@ -552,7 +556,7 @@ handleTagForm(game,platform) {
           let jsonBool = isJson(response);
    
           if (jsonBool) {
-            setToken(AuthService.getCurrentUser())
+            
               this.setUserTag(response)
               localStorage.setItem("user", JSON.stringify(response));
               Swal.fire("", "Data saved successfully.", "success");
@@ -763,11 +767,17 @@ handleTagForm(game,platform) {
   }
   
   render() {
+    var { currentUser } = this.state;
     
-    const currentUser = authService.getCurrentUser();
+    
     var _mode = " 1 v 1 ";
     var _color = "#404040";
-    
+    if (  !currentUser.roles) {return  <h4 style={{textAlign: "center"}}>Loading 
+    <Spinner animation="grow" size="sm" />
+    <Spinner animation="grow" size="sm" />
+    <Spinner animation="grow" size="sm" /></h4>;
+    }
+         
     return (
       <>
       <Active token={currentUser}/>
@@ -776,12 +786,17 @@ handleTagForm(game,platform) {
             <Nav.Item>
               <Nav.Link eventKey="match">1v1 Match</Nav.Link>
             </Nav.Item>
-            <Nav.Item>
+            {(haveAdmin(currentUser.roles))&&(
+              <>
+               <Nav.Item>
               <Nav.Link eventKey="tournsment">Tournament</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link eventKey="league">League</Nav.Link>
             </Nav.Item>
+              </>
+            )}
+           
           </Nav>
           <Card>
             <Card.Body>

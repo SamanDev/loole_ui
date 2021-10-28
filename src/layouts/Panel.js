@@ -46,11 +46,12 @@ function scrollToTop() {
     behavior: "smooth"
     });
     
+    
 
 
 };
 var getRoutes = (routes,tokensend) => {
-    
+  scrollToTop();
   return routes.map((prop, key) => {
     
     if (prop.collapse) {
@@ -58,7 +59,7 @@ var getRoutes = (routes,tokensend) => {
     }
     if (prop.layout === "/panel" ) {
       
-      scrollToTop();
+     
      
       return (
         
