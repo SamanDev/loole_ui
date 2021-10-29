@@ -161,6 +161,7 @@ var matchidFind = []
 var lists = [];
 var item = false;
 var dateExpired = null;
+var dateStart = null;
             var icEnd = 0;
             var icStart = 0;
             var icStartL = 0;
@@ -887,7 +888,7 @@ $('.gdetails.no'+player).removeClass('hide');
         }
         //console.log(timestamp);
        
-        
+         dateStart = item.startTime;
          dateExpired = item.expire;
         
         if (matchidFind && item.gameMode != "Tournament") {
@@ -1236,7 +1237,7 @@ $('.gdetails.no'+player).removeClass('hide');
                                   <h3 className="vertical-timeline-element-title">
                                       <Countdown
                                           renderer={renderer}
-                                          date={dateExpired}
+                                          date={dateStart}
                                         />
                                         
                                       </h3>
@@ -2597,7 +2598,7 @@ $('.gdetails.no'+player).removeClass('hide');
                                           {matchidFind.status}
                                         </td>
                                       </tr>
-                                      <tr>
+                                      <tr style={{ background: "black" }}>
                                         <td>Prizes</td>
 
                                         <td style={{ textAlign: "right" }}>
@@ -2609,11 +2610,11 @@ $('.gdetails.no'+player).removeClass('hide');
                                           icStart = icStart + 1;
                                           icEnd = icEnd + parseInt(win.number);
                                           var icShow = "#" + icStart;
-                                          
+                                          var nAmount = Number.parseFloat(win.prize).toFixed(2);
                                             return (
                                               <tr>
                                               <td>{icShow}</td>
-                                              <td style={{ textAlign: "right" }}>{item.outSign.replace('Dollar','$')} <CurrencyFormat value={win.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} /></td>
+                                              <td style={{ textAlign: "right" }}>{item.outSign.replace('Dollar','$')} <CurrencyFormat value={nAmount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} /></td>
                                                 </tr>
                                             );
                                           

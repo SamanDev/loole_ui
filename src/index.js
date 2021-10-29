@@ -39,6 +39,7 @@ ReactDOM.render(
       <Route path="/mobile" render={(props) => <LandLayout {...props} />} />
       <Route path="/home" render={(props) => <LandLayout {...props} />} />
       <Route path="/user" render={(props) => <LandLayout {...props} />} />
+      <Route path="/content" render={(props) => <LandLayout {...props} />} />
       <Redirect from="/" to="/home" />
       
     </Switch>

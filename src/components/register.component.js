@@ -16,6 +16,15 @@ const required = value => {
     );
   }
 };
+const check = value => {
+  if (!value) {
+    return (
+      <div className="alert alert-danger" role="alert" style={{padding:5}}>
+      
+    </div>
+    );
+  }
+};
 
 const email = value => {
   if (!isEmail(value)) {
@@ -46,6 +55,15 @@ const vpassword = value => {
     );
   }
 };
+const checked = value => {
+  if (value.length < 6 || value.length > 40) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The password must be between 6 and 40 characters.
+      </div>
+    );
+  }
+};
 
 class Register extends Component {
   constructor(props) {
@@ -54,11 +72,13 @@ class Register extends Component {
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
+    this.updateCheckbox = this.updateCheckbox.bind(this);
 
     this.state = {
       username: "",
       email: "",
       password: "",
+      checkbox:"",
       successful: false,
       loading: false,
       message: ""
@@ -80,6 +100,11 @@ class Register extends Component {
   onChangePassword(e) {
     this.setState({
       password: e.target.value
+    });
+  }
+  updateCheckbox(e) {
+    this.setState({
+      checkbox: e.target.checked
     });
   }
 
@@ -178,6 +203,24 @@ class Register extends Component {
                     onChange={this.onChangePassword}
                     validations={[required, vpassword]}
                   />
+                </div>
+                <div className="form-group" style={{textAlign: 'left'}}>
+                  <span style={{float:'left',marginRight: 10,width:20,height:60}}>
+                <Input
+                    type="checkbox"
+                    className="form-control"
+                    onChange={this.updateCheckbox}
+                    id="terms"
+                    value={this.state.checkbox}
+                    validations={[check]}
+                    
+                  />
+                  </span>
+                  <label for="terms">
+                  <small>By clicking Create Account, you are indicating that you have read and acknowledge the <a class="AFA0E7A2B453-repeatApp-396" href="/content/terms-and-conditions" target="_blank">Terms &amp; Conditions</a> and <a class="AFA0E7A2B453-repeatApp-396" href="/content/privacy-policy" target="_blank">Privacy policy</a>.</small>
+                    
+                    </label>
+                   
                 </div>
                 <div className="form-group" style={{marginTop: 45}}>
               <button

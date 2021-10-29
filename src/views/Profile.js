@@ -116,27 +116,35 @@ function profile() {
 }
   const handleChangePassword = (evt) => {
     evt.preventDefault();
-    setSubmit(true);
-    setLoading(true);
+    if(oldPassword == '' || newPassword == '') {
+      Swal.fire("", "Enter Passwords", "error");
+    }else if(oldPassword != newPassword) {
+        Swal.fire("", "Passwords not match.", "error");
+
+    }else{
+      setSubmit(true);
+      setLoading(true);
+      
+          userService
+            .changePassword(
+              newPassword
+            )
+            .then(
+              
+              (response) => {
+                setSubmit(false);
+      setLoading(false);
+                if (response=='Ok'){
+                  Swal.fire("", "Data saved successfully.", "success").then(
+                    (result) => {
+                   
+                      props.history.push("/panel/dashboard");
+                    }
+                  );
+                }
+      })
+    }
     
-        userService
-          .changePassword(
-            oldPassword,newPassword
-          )
-          .then(
-            
-            (response) => {
-              setSubmit(false);
-    setLoading(false);
-              if (response=='Ok'){
-                Swal.fire("", "Data saved successfully.", "success").then(
-                  (result) => {
-                 
-                    props.history.push("/panel/dashboard");
-                  }
-                );
-              }
-    })
 }
 function setSelectedTag (e,p){
   Promise.resolve()

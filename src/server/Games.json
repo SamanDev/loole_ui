@@ -57,25 +57,7 @@
                 }
             ]
         },
-        {
-            "id": 4,
-            "name": "SoccerStars",
-            "haveMatch": true,
-            "haveTournament": true,
-            "haveLeague": false,
-            "gameconsole": [
-                {
-                    "id": 1,
-                    "consolename": "Mobile"
-                }
-            ],
-            "modes": [
-                {
-                    "id": 1,
-                    "modename": "Duel"
-                }
-            ]
-        },
+        
         {
             "id": 5,
             "name": "Fifa2021",

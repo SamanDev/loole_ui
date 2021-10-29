@@ -49,6 +49,7 @@ import LockScreen from "views/LockScreen.js";
 import Landing from "views/Pages/Landing.js";
 import LandingMobile from "views/Pages/LandingMobile.js";
 import Games from "views/Pages/Games.js";
+import Content from "views/Pages/Content.js";
 import User from "views/Pages/User.js";
 
 var routes = [
@@ -180,6 +181,14 @@ var routes = [
     icon: "nc-icon nc-circle-09",
     component: Games,
     show:true
+  }  ,
+  {
+    path: "/*",
+    layout: "/content",
+    name: "User",
+    icon: "nc-icon nc-circle-09",
+    component: Content,
+    show:false
   },
 ];
 export default routes;

@@ -79,7 +79,7 @@ function Dashboard(props) {
                           ></img>
                 <Card.Title as="h4"> Earn Free Points!</Card.Title>
                 <p className="card-category">
-                Maximise your daily earning by taking advantage of Repeat.gg's bonuses and start earning free Points every day. You can earn Points by logging in, playing games, inviting friends and many other ways. Then all you have to do is go to the market place and spend your spare Points on plenty of great things. It's that simple!
+                Maximise your daily earning by taking advantage of loole.gg's bonuses and start earning free Points every day. You can earn Points by logging in, playing games, inviting friends and many other ways. Then all you have to do is go to the market place and spend your spare Points on plenty of great things. It's that simple!
                 </p>
               </Card.Header>
 
@@ -118,7 +118,7 @@ function Dashboard(props) {
 
               <Card.Body>
                 <p className="text-center">Share your unique invite link:<br/>
-https://www.repeat.gg/i/salidesign
+https://loole.gg/i/{currentUser.username}
 
 </p>
 
@@ -131,7 +131,7 @@ https://www.repeat.gg/i/salidesign
               <Card.Header>
                 <Card.Title as="h4">Daily Rewards</Card.Title>
                 <p className="card-category">
-                Maximize your profits and earn big daily at Repeat.gg. By simply logging in, you can earn big!
+                Maximize your profits and earn big daily at loole.gg. By simply logging in, you can earn big!
                 </p>
               </Card.Header>
 
