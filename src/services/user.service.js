@@ -301,11 +301,11 @@ class UserService {
         }
       });
   }
-  changePassword(oldPassword,newPassword) {
+  changePassword(newPassword) {
     return axios
       .put(
         API_URL_TEST + "changePassword",
-        { oldPassword,newPassword},
+        { newPassword},
         { headers: authHeader() }
       )
       .then((response) => {
