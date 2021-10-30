@@ -32,7 +32,7 @@ import {
   TabPane,
   Tab,
 } from "react-bootstrap";
-import { printRequired } from "components/include";
+import { printRequired,haveGetway,haveGetwayMode } from "components/include";
 var allValid = true;
 var sendPass = false;
 var reqnum = 0;
@@ -625,27 +625,23 @@ class Cashier extends Component {
         },
       ];
       currentUser.payMethod = [
+        
         {
           value: "",
 
           label: "Select  Method...",
         },
-        {
-          value: "HamrahCart",
-
-          label: "HamrahCart",
-        },
-        {
-          value: "HamrahCart",
-
-          label: "Iva App",
-        },
-        {
-          value: "HamrahCart",
-
-          label: "Kipod",
-        },
+        
       ];
+      currentUser.cashierGateways.map((item, i) => {
+        if(item.mode=='IranShetab' && item.active){
+        currentUser.payMethod.push({
+          value: item.name,
+          label: item.name,
+        })
+      }
+      })
+      console.log(currentUser.payMethod)
       this.setCardDef(currentUser.cards[1]);
       this.handleShetabMethod(currentUser.payMethod[0]);
     }
@@ -709,6 +705,7 @@ class Cashier extends Component {
                       defaultActiveKey="shetab"
                     >
                       <Nav role="tablist" variant="tabs">
+                      {(haveGetwayMode(this.state.currentUserCarts.cashierGateways,'IranShetab'))&&(
                         <Nav.Item>
                           <Nav.Link
                             eventKey="shetab"
@@ -724,6 +721,8 @@ class Cashier extends Component {
                             Iran Shetab
                           </Nav.Link>
                         </Nav.Item>
+                      )}
+                        {(haveGetway(this.state.currentUserCarts.cashierGateways,'PerfectMoney'))&&(
                         <Nav.Item>
                           <Nav.Link
                             eventKey="pm"
@@ -739,6 +738,8 @@ class Cashier extends Component {
                             PerfectMoney
                           </Nav.Link>
                         </Nav.Item>
+                        )}
+                        {(haveGetway(this.state.currentUserCarts.cashierGateways,'Crypto'))&&(
                         <Nav.Item>
                           <Nav.Link eventKey="cr">
                             <img
@@ -749,6 +750,7 @@ class Cashier extends Component {
                             Crypto Currencies
                           </Nav.Link>
                         </Nav.Item>
+                        )}
                       </Nav>
                       <Tab.Content>
                         <Tab.Pane eventKey="shetab">

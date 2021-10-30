@@ -120,12 +120,12 @@ class UserService {
         }
       });;
   }
-  saveSocial(socialPlatform,socialID) {
+  saveSocial(accountName,accountID) {
 
     return axios
       .post(
         API_URL_TEST + "saveSocial",
-        { socialPlatform,socialID },
+        { accountName,accountID },
         { headers: authHeader() }
       )
       .then((response) => {

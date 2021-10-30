@@ -739,6 +739,52 @@ return true
 
   
   };
+   export const haveGetway = ( userTags,game ) => {
+    var res = 'Not Connected'
+    
+if(userTags){
+userTags.map(function(tag){
+      
+if (tag.name==game && tag.active){
+res=tag.name
+}
+
+
+})
+}
+if(res== 'Not Connected') {
+return false
+}else{
+return true
+}
+
+
+
+  
+  };
+   export const haveGetwayMode = ( userTags,game ) => {
+    var res = 'Not Connected'
+    
+if(userTags){
+userTags.map(function(tag){
+      
+if (tag.mode==game && tag.active){
+res=tag.name
+}
+
+
+})
+}
+if(res== 'Not Connected') {
+return false
+}else{
+return true
+}
+
+
+
+  
+  };
   export const haveAdmin = ( userTags ) => {
   var isAdmin = false;
 userTags.map(function(tag){

@@ -85,6 +85,7 @@ function profile() {
   const [socialPlatform,setSocialPlatform] = useState("");
   const [socialID,setSocialID] = useState("");
   const [flag,setFlag] = useState('ir');
+  
   useEffect(() => {
     
     //do something here
@@ -236,8 +237,8 @@ function setSelectedTag (e,p){
         }
       );
   }
-  const handleSaveSocial = () => {
-  
+  const handleSaveSocial = (accountName,accountID) => {
+   
     Swal.fire({
       title: '<br/>Please Wait...',
       text: 'Is working..',
@@ -254,8 +255,8 @@ function setSelectedTag (e,p){
       .saveSocial(
        
      
-        socialPlatform,
-        socialID,
+        accountName,
+        accountID,
     
 
       )
@@ -289,19 +290,20 @@ function setSelectedTag (e,p){
       );
   }
   const handlecSetInstagram = (game,platform) => {
+    
     setSocialPlatform(platform)
     const resetPw2= async () => {
       const swalval = await Swal.fire(getModalTag(game));
 
       let v = (swalval && swalval.value) || swalval.dismiss;
-      console.log(swalval);
+      console.log(socialPlatform);
       if (v) {
         if (v.tagid) {
           
             
               setSocialID(v.tagid)
             
-          handleSaveSocial();
+          handleSaveSocial(platform,v.tagid);
               
             }
             
