@@ -3,16 +3,23 @@ import { withRouter } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import AuthService from "services/auth.service";
-import NumericInput from "react-numeric-input";
+
 
 import $ from "jquery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import userService from "services/user.service";
-import Select from "react-select";
+
+
 import NotificationAlert from "react-notification-alert";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import Active from "components/active.component";
+import PMDeposit  from "components/deposit/pmdeposit.component";
+import ShetabDeposit  from "components/deposit/shetabdeposit.component";
+import PaparaDeposit  from "components/deposit/paparadeposit.component";
+import ShetabCashout  from "components/deposit/shetabcashout.component"; 
+import PaparaCashout  from "components/deposit/paparacashout.component"; 
+import PMCashout  from "components/deposit/pmcashout.component"; 
+import CheckButton from "react-validation/build/button";
 // react-bootstrap components
 import {
   Badge,
@@ -32,7 +39,82 @@ import {
   TabPane,
   Tab,
 } from "react-bootstrap";
-import { printRequired,haveGetway,haveGetwayMode } from "components/include";
+import { printRequired,haveGetway,haveGetwayMode,get_date_locale,getGroupBadge } from "components/include";
+import DataTable from 'react-data-table-component';
+const conditionalRowStyles = [
+  {
+    when: row => row.endBalance < row.startBalance,
+    style: {
+      backgroundColor: 'rgba(255,0,0,.1)',
+      
+    },
+  },
+  // You can also pass a callback to style for additional customization
+  {
+    when: row => row.endBalance > row.startBalance,
+    style: {
+      backgroundColor: 'rgba(0,255,0,.1)',
+      
+    },
+  },
+];
+const columns = [
+  {
+    name: 'ID',
+    selector: row => row.id,
+    sortable: true,
+    width:'60px',
+},
+    {
+        name: 'Date',
+        selector: row => row.createDate,
+        format: row => get_date_locale(row.createDate),
+        
+    },
+    {
+      name: 'Description',
+      selector: row => row.description,
+      sortable: true,
+  },
+  {
+    name: 'Mode',
+    selector: row => 'Dollar',
+    
+    sortable: true,
+},
+  {
+    name: 'Amount',
+    selector: row => row.amount,
+    format: row =>  getGroupBadge('Dollar', row.amount, "small left"),
+    sortable: true,
+},
+{
+  name: 'EndBank',
+  selector: row => row.endBalance,
+  format: row =>  getGroupBadge('Dollar', row.endBalance, "small left"),
+  sortable: true,
+},
+];
+
+var dataTransaction = [
+  {
+    "id": 10,
+    "amount": 18,
+    "startBalance": 5,
+    "endBalance": 23,
+    "status": "Done",
+    "mode": "DuelWin",
+    "gateway": "",
+    "voucherNumber": "",
+    "voucherCode": "",
+    "cardNumber": "",
+    "description": "25 - Fifa2021",
+    "transactionId": "",
+    "createDate": "2021-10-30T14:07:40.000+00:00",
+    "updateDate": "2021-10-30T14:07:40.000+00:00"
+  }
+]
+
 var allValid = true;
 var sendPass = false;
 var reqnum = 0;
@@ -51,162 +133,28 @@ class Cashier extends Component {
   constructor(props) {
     super(props);
     this.setAmount = this.setAmount.bind(this);
-    this.seteVoucher = this.seteVoucher.bind(this);
-    this.setCardDef = this.setCardDef.bind(this);
-    this.setMobile = this.setMobile.bind(this);
-    this.setMobileCode = this.setMobileCode.bind(this);
-    this.setCardNo = this.setCardNo.bind(this);
-    this.setExpiration = this.setExpiration.bind(this);
-    this.setCvv = this.setCvv.bind(this);
-    this.setPass = this.setPass.bind(this);
-    this.setactivatioCode = this.setactivatioCode.bind(this);
+    
     this.selectrequired = this.selectrequired.bind(this);
-    this.setDepositPage = this.setDepositPage.bind(this);
-
-    this.handleGoNext = this.handleGoNext.bind(this);
-    this.handleSendVerify = this.handleSendVerify.bind(this);
-    this.handleSendVerifyConfirm = this.handleSendVerifyConfirm.bind(this);
-    this.handleShetabDeposit = this.handleShetabDeposit.bind(this);
-    this.handleShetabMethod = this.handleShetabMethod.bind(this);
-    this.handleSendPass = this.handleSendPass.bind(this);
-    this.handlePMDeposit = this.handlePMDeposit.bind(this);
-
+   
+    
     this.state = {
       currentUserCarts: AuthService.getCurrentUser(),
-      cartSelected: {
-        value: "",
-
-        label: "Select Cart...",
-      },
-      shetabMethod: {
-        value: "",
-
-        label: "Select Method...",
-      },
-      shetabGo: 0,
       Amount: "10",
-      Mobile: "9122266208",
-      MobileCode: "",
-      eVoucher: "",
-      activatioCode: "",
-      CardNo: "",
-      Expiration: "",
-      cvv: "1",
-      pass: "",
+      
       loading: false,
       submit: false,
       successful: false,
       message: "",
     };
   }
-  seteVoucher(e) {
-    this.setState({
-      eVoucher: e.target.value.replace(/\D/, ""),
-      submit: false,
-    });
-  }
+  
   setAmount(e) {
     this.setState({
       Amount: e,
       submit: false,
     });
   }
-  setMobile(e) {
-    console.log(e);
-    console.log(this.state);
-    this.setState({
-      Mobile: e,
-      submit: false,
-    });
-  }
-  setMobileCode(e) {
-    console.log(e);
-    console.log(this.state);
-    this.setState({
-      MobileCode: e,
-      submit: false,
-    });
-  }
-  handleShetabMethod(e) {
-    console.log(e);
-
-    this.setState({
-      shetabMethod: e,
-      submit: false,
-    });
-    allValid = false;
-  }
-  setDepositPage(e) {
-    //reqnum=0;
-    this.setState({
-      shetabGo: e,
-      successful: false,
-      message: "",
-      submit: false,
-      loading: false,
-    });
-    if (allValid) {
-      allValid = false;
-      setTimeout(function () {
-        $(".btn.btn-danger:visible:first").trigger("click");
-        //allValid = false;
-      }, 100);
-    } else {
-      //allValid = true;
-    }
-  }
-  setPass(e) {
-    this.setState({
-      pass: e,
-      submit: false,
-    });
-  }
-  setCardNo(e) {
-    this.setState({
-      CardNo: e,
-      submit: false,
-    });
-    console.log(e);
-    console.log(this.state);
-  }
-  setCardDef(e) {
-    console.log(e);
-    console.log(this.state);
-    if ($(".CardNo:visible").length > 0) {
-      setTimeout(function () {
-        $(".CardNo").focus();
-        allValid = false;
-        sendPass = false;
-      }, 100);
-    }
-    this.setState({
-      cartSelected: e,
-      CardNo: e.value,
-      Expiration: e.expiration,
-      cvv: e.cvv,
-      submit: false,
-    });
-  }
-  setExpiration(e) {
-    console.log(e);
-    console.log(this.state);
-    this.setState({
-      Expiration: e,
-      submit: false,
-    });
-  }
-  setCvv(e) {
-    this.setState({
-      cvv: e,
-      submit: false,
-    });
-  }
-  setactivatioCode(e) {
-    this.setState({
-      activatioCode: e.target.value.replace(/\D/, ""),
-      submit: false,
-    });
-  }
+  
 
   selectrequired(field, value) {
     var _val = value;
@@ -227,7 +175,7 @@ class Cashier extends Component {
       if (field == "Mobile" && value.length < 9) {
         _val = false;
       }
-      if (field == "selectMethod" && value == "") {
+      if (field == "selectMethod" && value.value == "") {
         _val = false;
       }
       if (field == "Amount" && value != "") {
@@ -254,343 +202,18 @@ class Cashier extends Component {
         );
         allValid = true;
         sendPass = false;
+        //return printRequired();
       }
-    }
-  }
-  handleGoNext(e) {
-    e.preventDefault();
-
-    reqnum = 0;
-    if (allValid) {
-      //allValid = false;
-
-      this.setState({ shetabGo: this.state.shetabGo + 1 });
-    } else {
+    }else{
       //allValid = true;
-      setTimeout(function () {
-        $(".btn.btn-danger:visible:first").trigger("click");
-      }, 100);
-      this.setState({
-        submit: true,
-      });
-
-      this.form.validateAll();
+      //sendPass = false;
+      //return printRequired();
     }
   }
-  handleShetabDeposit(e) {
-    e.preventDefault();
+  
+  
 
-    reqnum = 0;
-    if (allValid) {
-      this.setState({
-        message: "",
-        loading: true,
-      });
-
-      userService
-        .createDepositShetab(
-          this.state.Amount,
-          this.state.CardNo,
-          this.state.Expiration,
-          this.state.cvv,
-          this.state.pass
-        )
-        .then(
-          (response) => {
-            if (response == "Create event successful") {
-              Swal.fire("", "Data saved successfully.", "success").then(
-                (result) => {
-                  this.props.history.push("/panel/dashboard");
-                }
-              );
-            } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-            }
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
-          }
-        );
-    } else {
-      this.setState({
-        submit: true,
-      });
-
-      this.form.validateAll();
-    }
-  }
-  handleSendVerify(e) {
-    e.preventDefault();
-
-    reqnum = 0;
-    if (allValid) {
-      this.setState({
-        message: "",
-        loading: true,
-      });
-      allValid = false;
-      userService.createDepositShetabVerify(this.state.Mobile).then(
-        (response) => {
-          if (response.data == "OK") {
-            Swal.fire("", "Data saved successfully.", "success").then(
-              (result) => {
-                allValid = false;
-
-                this.setState({
-                  shetabGo: this.state.shetabGo + 1,
-                  successful: false,
-                  message: "",
-                  submit: false,
-                  loading: false,
-                });
-              }
-            );
-          } else {
-            const resMessage =
-              (response.response &&
-                response.response.data &&
-                response.response.data.message) ||
-              response.message ||
-              response.toString();
-
-            this.setState({
-              successful: false,
-              message: "",
-              submit: false,
-              loading: false,
-            });
-
-            Swal.fire("", resMessage, "error");
-          }
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          this.setState({
-            successful: false,
-            message: resMessage,
-            submit: false,
-            loading: false,
-          });
-        }
-      );
-    } else {
-      this.setState({
-        submit: true,
-      });
-
-      this.form.validateAll();
-    }
-  }
-  handleSendVerifyConfirm(e) {
-    e.preventDefault();
-
-    reqnum = 0;
-    if (allValid) {
-      allValid = false;
-
-      this.setState({
-        message: "",
-        loading: true,
-      });
-
-      userService
-        .createDepositShetabVerifyConfirm(
-          this.state.Mobile,
-          this.state.MobileCode
-        )
-        .then(
-          (response) => {
-            if (response == "OK") {
-              Swal.fire("", "Data saved successfully.", "success").then(
-                (result) => {
-                  allValid = false;
-                  this.setState({
-                    shetabGo: this.state.shetabGo + 1,
-                    successful: false,
-                    message: "",
-                    submit: false,
-                    loading: false,
-                  });
-                }
-              );
-            } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-            }
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
-          }
-        );
-    } else {
-      this.setState({
-        submit: true,
-      });
-
-      this.form.validateAll();
-    }
-  }
-  handleSendPass(e) {
-    e.preventDefault();
-
-    if (!sendPass) {
-      reqnum = 0;
-      sendPass = true;
-      this.setState({
-        message: "",
-        loading: true,
-      });
-      //allValid = false;
-      userService
-        .createDepositShetabPass(
-          this.state.Amount,
-          this.state.CardNo,
-          this.state.Expiration,
-          this.state.cvv
-        )
-        .then(
-          (response) => {
-            if (response == "Ok") {
-              Swal.fire("", "Password sent successfully.", "success").then(
-                (result) => {
-                  sendPass = false;
-
-                  this.setState({
-                    successful: false,
-                    message: "",
-                    submit: false,
-                    loading: false,
-                  });
-                }
-              );
-            } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-            }
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
-          }
-        );
-    } else {
-      this.setState({
-        submit: true,
-      });
-      sendPass = false;
-      this.form.validateAll();
-    }
-  }
-  handlePMDeposit(e) {
-    e.preventDefault();
-    reqnum = 0;
-    if (allValid) {
-      this.setState({
-        message: "",
-        loading: true,
-      });
-      userService
-        .createDepositPM(this.state.eVoucher, this.state.activatioCode)
-        .then(
-          (response) => {
-            if (response == "Create event successful") {
-              Swal.fire("", "Data saved successfully.", "success").then(
-                (result) => {
-                  this.props.history.push("/panel/dashboard");
-                }
-              );
-            } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-            }
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
-          }
-        );
-    } else {
-      this.setState({
-        submit: true,
-      });
-
-      this.form.validateAll();
-    }
-  }
-  onKeyPress(event) {
-    const keyCode = event.keyCode || event.which;
-    const keyValue = String.fromCharCode(keyCode);
-    if (/\+|-/.test(keyValue)) event.preventDefault();
-  }
+  
   componentDidMount() {
     Swal.close();
     this._isMounted = true;
@@ -600,52 +223,53 @@ class Cashier extends Component {
   render() {
     if (!this.state.currentUserCarts.cards) {
       var currentUser = this.state.currentUserCarts;
-
-      currentUser.cards = [
-        {
-          value: "",
-          id: 0,
-          label: "New Cart...",
-          expiration: "",
-          cvv: "",
-        },
-        {
-          value: "6104337830282164",
-          id: 1,
-          label: "6104-3378-3028-2164",
-          expiration: "0203",
-          cvv: "237",
-        },
-        {
-          value: "6666502205225022",
-          id: 2,
-          label: "6666-5022-0522-5022",
-          expiration: "1020",
-          cvv: "6800",
-        },
-      ];
-      currentUser.payMethod = [
+      dataTransaction =  this.state.currentUserCarts.usersReports
+      if (  !currentUser) {
+      
+        //this.reGetevents()
         
-        {
-          value: "",
-
-          label: "Select  Method...",
-        },
-        
-      ];
-      currentUser.cashierGateways.map((item, i) => {
-        if(item.mode=='IranShetab' && item.active){
-        currentUser.payMethod.push({
-          value: item.name,
-          label: item.name,
-        })
-      }
-      })
-      console.log(currentUser.payMethod)
-      this.setCardDef(currentUser.cards[1]);
-      this.handleShetabMethod(currentUser.payMethod[0]);
+  
+        return (
+          <>
+            <div
+              className="full-page lock-page"
+              data-color="black"
+              style={{ height: "100vh", overflow: "auto" }}
+              data-image={require("assets/img/bg.jpg").default}
+            >
+              <div
+                className="content "
+                style={{
+                  fontSize: 50,
+                  color: "#fff",
+                  position: "relative",
+                  zIndex: "23",
+                }}
+              >
+                <Container className="text-center">
+                  <h4 style={{ textAlign: "center" }}>
+                    Loading
+                    <Spinner animation="grow" size="sm" />
+                    <Spinner animation="grow" size="sm" />
+                    <Spinner animation="grow" size="sm" />
+                  </h4>
+                </Container>
+              </div>
+              <div
+                className="full-page-background"
+                style={{
+                  backgroundImage:
+                    "url(" + require("assets/img/bg.jpg").default + ")",
+                }}
+              ></div>
+            </div>
+          </>
+        );
+              }
+      
+     // this.handleShetabMethod(currentUser.payMethod[0]);
     }
-
+    
     return (
       <>
         <Active />
@@ -701,11 +325,12 @@ class Cashier extends Component {
                   </Card.Header>
                   <Card.Body>
                     <Tab.Container
-                      id="plain-tabs-example"
+                      
                       defaultActiveKey="shetab"
                     >
                       <Nav role="tablist" variant="tabs">
                       {(haveGetwayMode(this.state.currentUserCarts.cashierGateways,'IranShetab'))&&(
+                        <>
                         <Nav.Item>
                           <Nav.Link
                             eventKey="shetab"
@@ -714,21 +339,35 @@ class Cashier extends Component {
                             }}
                           >
                             <img
-                              alt="pm"
+                              alt="Shetab"
                               style={{ height: 20 }}
                               src="/assets/images/shetab.svg"
                             ></img>{" "}
                             Iran Shetab
                           </Nav.Link>
                         </Nav.Item>
+                        <Nav.Item>
+                          <Nav.Link
+                            eventKey="papara"
+                            onClick={() => {
+                              allValid = false;
+                            }}
+                          >
+                            <img
+                              alt="PAPARA"
+                              style={{ height: 20 }}
+                              src="/assets/images/turkey.svg"
+                            ></img>{" "}
+                            Turkey Papara
+                          </Nav.Link>
+                        </Nav.Item>
+                        </>
                       )}
                         {(haveGetway(this.state.currentUserCarts.cashierGateways,'PerfectMoney'))&&(
                         <Nav.Item>
                           <Nav.Link
                             eventKey="pm"
-                            onClick={() => {
-                              allValid = false;
-                            }}
+                           
                           >
                             <img
                               alt="pm"
@@ -739,7 +378,7 @@ class Cashier extends Component {
                           </Nav.Link>
                         </Nav.Item>
                         )}
-                        {(haveGetway(this.state.currentUserCarts.cashierGateways,'Crypto'))&&(
+                        {(haveGetway(this.state.currentUserCarts.cashierGateways,'Crypto')  ||  haveGetway(this.state.currentUserCarts.cashierGateways,'PerfectMoney'))&&(
                         <Nav.Item>
                           <Nav.Link eventKey="cr">
                             <img
@@ -753,508 +392,20 @@ class Cashier extends Component {
                         )}
                       </Nav>
                       <Tab.Content>
-                        <Tab.Pane eventKey="shetab">
-                          <Row>
-                            <Col md="6">
-                              <Form
-                                onSubmit={this.handleShetabDeposit}
-                                ref={(c) => {
-                                  this.form = c;
-                                }}
-                              >
-                                <Card className="stacked-form border-0">
-                                  <Card.Header>
-                                    <Card.Title as="h4">
-                                      Iran Shetab Deposit
-                                    </Card.Title>
-                                  </Card.Header>
-                                  <Card.Body>
-                                    {this.state.shetabGo == 0 && (
-                                      <>
-                                        <div className="form-group form-group-lg2">
-                                          <label>Amount</label>
-                                          <div className="input-group">
-                                            <span
-                                              className="input-group-text"
-                                              id="inputGroup-sizing-lg"
-                                            >
-                                              $
-                                            </span>
-                                            <IMaskInput
-                                              className="form-control Amount form-control-lg2"
-                                              type="tel"
-                                              pattern="[1-9]{1}[0-9]"
-                                              mask={"0000"}
-                                              inputRef={(el) =>
-                                                (this.input = el)
-                                              }
-                                              value={this.state.Amount}
-                                              onAccept={this.setAmount}
-                                            />
-                                          </div>
-                                        </div>
-                                        {this.selectrequired(
-                                          "Amount",
-                                          this.state.Amount
-                                        )}
-                                      </>
-                                    )}
-                                    {this.state.shetabGo == 1 && (
-                                      <>
-                                        <div className="form-group form-group-lg2">
-                                          <label>Select Method</label>
-                                          <Select
-                                            className="react-select default selectMethod"
-                                            classNamePrefix="react-select selectMethod"
-                                            value={this.state.shetabMethod}
-                                            onChange={this.handleShetabMethod}
-                                            options={
-                                              this.state.currentUserCarts
-                                                .payMethod
-                                            }
-                                          />
-                                        </div>
-                                        {this.selectrequired(
-                                          "selectMethod",
-                                          this.state.shetabMethod.value
-                                        )}
-                                      </>
-                                    )}
-                                    {this.state.shetabGo == 2 && (
-                                      <>
-                                        <div className="form-group form-group-lg2">
-                                          <label>Mobile</label>
-                                          <div className="input-group">
-                                            <span
-                                              className="input-group-text"
-                                              id="inputGroup-sizing-lg"
-                                            >
-                                              +98
-                                            </span>
-                                            <IMaskInput
-                                              className="form-control Mobile form-control-lg2"
-                                              type="tel"
-                                              pattern="[0-9]"
-                                              unmask={true}
-                                              mask={"000 000 0000"}
-                                              inputRef={(el) =>
-                                                (this.input = el)
-                                              }
-                                              value={this.state.Mobile}
-                                              onAccept={this.setMobile}
-                                            />
-                                          </div>
-                                        </div>
-
-                                        {this.selectrequired(
-                                          "Mobile",
-                                          this.state.Mobile
-                                        )}
-                                      </>
-                                    )}
-                                    {this.state.shetabGo == 3 && (
-                                      <>
-                                        <div className="form-group ">
-                                          <label>Code</label>
-
-                                          <IMaskInput
-                                            className="form-control MobileCode"
-                                            type="tel"
-                                            pattern="[0-9]"
-                                            unmask={true}
-                                            mask={"0000000"}
-                                            inputRef={(el) => (this.input = el)}
-                                            value={this.state.MobileCode}
-                                            onAccept={this.setMobileCode}
-                                          />
-                                        </div>
-
-                                        {this.selectrequired(
-                                          "MobileCode",
-                                          this.state.MobileCode
-                                        )}
-                                      </>
-                                    )}
-
-                                    {this.state.shetabGo == 4 && (
-                                      <>
-                                        <div className="form-group form-group-lg2">
-                                          <label>Cart Number</label>
-                                          <Select
-                                            className="react-select default selectCart"
-                                            classNamePrefix="react-select"
-                                            value={this.state.cartSelected}
-                                            onChange={this.setCardDef}
-                                            options={
-                                              this.state.currentUserCarts.cards
-                                            }
-                                            placeholder="Cart Number"
-                                          />
-                                        </div>
-                                        {!this.state.cartSelected.value && (
-                                          <>
-                                            <div className="form-group">
-                                              <label>Cart Number</label>
-                                              <IMaskInput
-                                                className="form-control CardNo"
-                                                inputMode="numeric"
-                                                autoComplete="cc-number"
-                                                unmask={true}
-                                                name="cardNumber"
-                                                placeholder="Cart Number"
-                                                value={this.state.CardNo}
-                                                onAccept={this.setCardNo}
-                                                mask={"0000-0000-0000-0000"}
-                                              />
-                                            </div>
-
-                                            {this.selectrequired(
-                                              "CardNo",
-                                              this.state.CardNo
-                                            )}
-
-                                            <div className="row">
-                                              <div className="col">
-                                                <div className="form-group">
-                                                  <label>
-                                                    Expiration (mm/yy)
-                                                  </label>
-                                                  <IMaskInput
-                                                    inputMode="numeric"
-                                                    pattern="[0-9]{4}"
-                                                    mask={"MM/YY"}
-                                                    blocks={{
-                                                      YY: {
-                                                        mask: "00",
-                                                      },
-                                                      MM: {
-                                                        mask: IMask.MaskedRange,
-                                                        from: 1,
-                                                        to: 12,
-                                                      },
-                                                    }}
-                                                    className="form-control Expiration"
-                                                    autoComplete="cc-exp"
-                                                    value={
-                                                      this.state.Expiration
-                                                    }
-                                                    unmask={true}
-                                                    name="expDate"
-                                                    inputRef={(el) =>
-                                                      (this.input = el)
-                                                    } // access to nested input
-                                                    // DO NOT USE onChange TO HANDLE CHANGES!
-                                                    // USE onAccept INSTEAD
-                                                    onAccept={
-                                                      this.setExpiration
-                                                    }
-                                                    placeholder="MM/YY"
-                                                  />
-                                                </div>
-
-                                                {this.selectrequired(
-                                                  "Expiration",
-                                                  this.state.Expiration
-                                                )}
-                                              </div>
-                                              <div className="col">
-                                                <div className="form-group">
-                                                  <label>CVV</label>
-                                                  <IMaskInput
-                                                    className="form-control cvv"
-                                                    pattern="[0-9]*"
-                                                    inputMode="numeric"
-                                                    type="text"
-                                                    maxLength="4"
-                                                    mask={Number}
-                                                    autoComplete="off"
-                                                    unmask={true} // true|false|'typed'
-                                                    inputRef={(el) =>
-                                                      (this.input = el)
-                                                    }
-                                                    value={this.state.cvv}
-                                                    onAccept={this.setCvv}
-                                                  />
-                                                </div>
-
-                                                {this.selectrequired(
-                                                  "cvv",
-                                                  this.state.cvv
-                                                )}
-                                              </div>
-                                            </div>
-                                          </>
-                                        )}
-                                        <div className="form-group">
-                                          <label>Password</label>
-                                          <div className="input-group">
-                                            <IMaskInput
-                                              className="form-control pass"
-                                              pattern="[0-9]*"
-                                              inputMode="numeric"
-                                              type="text"
-                                              mask={Number}
-                                              autoComplete="off"
-                                              unmask={true} // true|false|'typed'
-                                              inputRef={(el) =>
-                                                (this.input = el)
-                                              }
-                                              value={this.state.pass}
-                                              onAccept={this.setPass}
-                                            />
-                                            <Button
-                                              className="btn btn-danger"
-                                              variant="danger"
-                                              type="button"
-                                              disabled={sendPass}
-                                              onClick={this.handleSendPass}
-                                            >
-                                              Send Password
-                                            </Button>
-                                          </div>
-                                        </div>
-
-                                        {this.selectrequired(
-                                          "pass",
-                                          this.state.pass
-                                        )}
-                                      </>
-                                    )}
-                                  </Card.Body>
-                                  <Card.Footer>
-                                    {this.state.shetabGo < 4 ? (
-                                      <>
-                                        {this.state.shetabGo == 2 && (
-                                          <>
-                                            <div className="form-group">
-                                              <button
-                                                className="btn btn-danger btn-block"
-                                                variant="secondary"
-                                                type="button"
-                                                disabled={this.state.loading}
-                                                onClick={this.handleSendVerify}
-                                              >
-                                                {this.state.loading && (
-                                                  <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                                                )}
-
-                                                <span> Send Code</span>
-                                              </button>
-                                            </div>
-                                          </>
-                                        )}
-                                        {this.state.shetabGo == 3 && (
-                                          <>
-                                            <div className="form-group">
-                                              <button
-                                                className="btn btn-danger btn-block"
-                                                variant="danger"
-                                                type="button"
-                                                disabled={this.state.loading}
-                                                onClick={
-                                                  this.handleSendVerifyConfirm
-                                                }
-                                              >
-                                                {this.state.loading && (
-                                                  <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                                                )}
-
-                                                <span> Verify</span>
-                                              </button>
-                                            </div>
-                                          </>
-                                        )}
-
-                                        {this.state.shetabGo < 2 && (
-                                          <>
-                                            <div className="form-group">
-                                              <button
-                                                className="btn btn-danger btn-block"
-                                                variant="danger"
-                                                type="button"
-                                                disabled={this.state.loading}
-                                                onClick={this.handleGoNext}
-                                              >
-                                                <span> Next</span>
-                                              </button>
-                                            </div>
-                                          </>
-                                        )}
-                                      </>
-                                    ) : (
-                                      <div className="form-group">
-                                        <button
-                                          className="btn btn-danger btn-wd btn-block"
-                                          disabled={this.state.loading}
-                                        >
-                                          {this.state.loading && (
-                                            <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                                          )}
-                                          <span> Deposit</span>
-                                        </button>
-                                      </div>
-                                    )}
-                                  </Card.Footer>
-                                </Card>
-                              </Form>
-                            </Col>
-                            <Col md="6">
-                              <Card className="stacked-form border-0">
-                                <Card.Header>
-                                  <Card.Title as="h4">
-                                    Select another method.
-                                  </Card.Title>
-                                </Card.Header>
-                                <Card.Body>
-                                  <div className="list-group">
-                                    <button
-                                      type="button"
-                                      className={
-                                        this.state.shetabGo == 0
-                                          ? "list-group-item list-group-item-action  list-group-item-success"
-                                          : "list-group-item list-group-item-action list-group-item-warning"
-                                      }
-                                      onClick={() => {
-                                        this.setDepositPage(0);
-                                      }}
-                                      aria-current="true"
-                                    >
-                                      Enter Amount
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className={
-                                        this.state.shetabGo == 1
-                                          ? "list-group-item list-group-item-action  list-group-item-success"
-                                          : "list-group-item list-group-item-action list-group-item-warning"
-                                      }
-                                      onClick={() => {
-                                        this.setDepositPage(1);
-                                      }}
-                                    >
-                                      Select Method
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className={
-                                        this.state.shetabGo == 2
-                                          ? "list-group-item list-group-item-action  list-group-item-success"
-                                          : "list-group-item list-group-item-action list-group-item-warning"
-                                      }
-                                      onClick={() => {
-                                        this.setDepositPage(2);
-                                      }}
-                                    >
-                                      Enter Mobile Number
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className={
-                                        this.state.shetabGo == 3
-                                          ? "list-group-item list-group-item-action  list-group-item-success"
-                                          : "list-group-item list-group-item-action list-group-item-warning"
-                                      }
-                                      onClick={() => {
-                                        this.setDepositPage(3);
-                                      }}
-                                    >
-                                      Verify Mobile
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className={
-                                        this.state.shetabGo == 4
-                                          ? "list-group-item list-group-item-action  list-group-item-success"
-                                          : "list-group-item list-group-item-action list-group-item-warning"
-                                      }
-                                      onClick={() => {
-                                        this.setDepositPage(4);
-                                      }}
-                                    >
-                                      Enter Cart Number
-                                    </button>
-                                  </div>
-                                </Card.Body>
-                              </Card>
-                            </Col>
-                          </Row>
+                      <Tab.Pane eventKey="shetab">
+                      <ShetabDeposit/>
+                          
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="papara">
+                          <PaparaDeposit/>
+                          
                         </Tab.Pane>
                         <Tab.Pane eventKey="pm">
-                          <Row>
-                            <Col md="6">
-                              <Form
-                                onSubmit={this.handlePMDeposit}
-                                ref={(c) => {
-                                  this.form = c;
-                                }}
-                              >
-                                <Card className="stacked-form border-0">
-                                  <Card.Header>
-                                    <Card.Title as="h4">
-                                      eVoucher PerfectMoney Deposit
-                                    </Card.Title>
-                                  </Card.Header>
-                                  <Card.Body>
-                                    <div className="form-group">
-                                      <label>Voucher Number</label>
-                                      <Input
-                                        type="tel"
-                                        className="form-control eVoucher"
-                                        pattern="[0-9]*"
-                                        value={this.state.eVoucher}
-                                        onChange={this.seteVoucher}
-                                        onKeyPress={this.onKeyPress.bind(this)}
-                                      />
-                                    </div>
-
-                                    {this.selectrequired(
-                                      "eVoucher",
-                                      this.state.eVoucher
-                                    )}
-                                    <div className="form-group">
-                                      <label>Activation Code</label>
-                                      <Input
-                                        type="tel"
-                                        className="form-control  activatioCode"
-                                        pattern="[0-9]*"
-                                        value={this.state.activatioCode}
-                                        onChange={this.setactivatioCode}
-                                        onKeyPress={this.onKeyPress.bind(this)}
-                                      />
-                                    </div>
-
-                                    {this.selectrequired(
-                                      "activatioCode",
-                                      this.state.activatioCode
-                                    )}
-                                  </Card.Body>
-                                  <Card.Footer>
-                                    <div className="form-group">
-                                      <button
-                                        className="btn btn-danger btn-wd "
-                                        disabled={this.state.loading}
-                                      >
-                                        {this.state.loading && (
-                                          <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                                        )}
-                                        <span> Deposit</span>
-                                      </button>
-                                    </div>
-                                  </Card.Footer>
-                                </Card>
-                              </Form>
-                            </Col>
-                            <Col md="6">
-                              <Card className="stacked-form border-0">
-                                <Card.Header>
-                                  <Card.Title as="h4">
-                                    How find eVoucher PerfectMoney?
-                                  </Card.Title>
-                                </Card.Header>
-                                <Card.Body>hi</Card.Body>
-                              </Card>
-                            </Col>
-                          </Row>
+                        <PMDeposit/>
+                          
+                            
+                              
+                            
                         </Tab.Pane>
                         <Tab.Pane eventKey="cr">
                           <Row>
@@ -1268,7 +419,7 @@ class Cashier extends Component {
                                 <Card.Body></Card.Body>
                                 <Card.Footer>
                                   <Button
-                                    className="btn-fill"
+                                    className="btn-fill "
                                     type="submit"
                                     variant="danger"
                                   >
@@ -1302,23 +453,85 @@ class Cashier extends Component {
                   </Card.Header>
                   <Card.Body>
                     <Tab.Container
-                      id="plain-tabs-example"
-                      defaultActiveKey="info-plain"
+                      id="plain-tabs-cash"
+                      defaultActiveKey="shetabc"
                     >
                       <Nav role="tablist" variant="tabs">
+                      {(haveGetwayMode(this.state.currentUserCarts.cashierGateways,'IranShetab'))&&(
+                        <>
                         <Nav.Item>
-                          <Nav.Link eventKey="info-plain">
-                            PerfectMoney
+                          <Nav.Link
+                            eventKey="shetabc"
+                            onClick={() => {
+                              allValid = false;
+                            }}
+                          >
+                            <img
+                              alt="pm"
+                              style={{ height: 20 }}
+                              src="/assets/images/shetab.svg"
+                            ></img>{" "}
+                            Iran Shetab
                           </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                          <Nav.Link eventKey="account-plain">
+                        <Nav.Link
+                          eventKey="paparac"
+                          onClick={() => {
+                            allValid = false;
+                          }}
+                        >
+                          <img
+                            alt="PAPARA"
+                            style={{ height: 20 }}
+                            src="/assets/images/turkey.svg"
+                          ></img>{" "}
+                          Turkey Papara
+                        </Nav.Link>
+                      </Nav.Item>
+                      </>
+                      )}
+                      {(haveGetway(this.state.currentUserCarts.cashierGateways,'PerfectMoney'))&&(
+                        <Nav.Item>
+                          <Nav.Link
+                            eventKey="pmc"
+                            onClick={() => {
+                              allValid = false;
+                            }}
+                          >
+                            <img
+                              alt="pm"
+                              style={{ height: 25 }}
+                              src="/assets/images/pm.svg"
+                            ></img>{" "}
+                            PerfectMoney
+                          </Nav.Link>
+                          
+                        </Nav.Item>
+                        )}
+                        {(haveGetway(this.state.currentUserCarts.cashierGateways,'Crypto'))&&(
+                        <Nav.Item>
+                          <Nav.Link eventKey="crc">
+                            <img
+                              alt="btc"
+                              style={{ height: 25 }}
+                              src="/assets/images/btc.svg"
+                            ></img>{" "}
                             Crypto Currencies
                           </Nav.Link>
                         </Nav.Item>
+                        )}
+                       
                       </Nav>
                       <Tab.Content>
-                        <Tab.Pane eventKey="info-plain">
+                      <Tab.Pane eventKey="shetabc">
+                      <ShetabCashout/>
+                        </Tab.Pane>
+                      <Tab.Pane eventKey="paparac">
+                      <PaparaCashout/>
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="pmc">
+                          <PMCashout/>
                           <Row>
                             <Col md="6">
                               <Card className="stacked-form border-0">
@@ -1351,7 +564,7 @@ class Cashier extends Component {
                             </Col>
                           </Row>
                         </Tab.Pane>
-                        <Tab.Pane eventKey="account-plain">
+                        <Tab.Pane eventKey="crc">
                           <Row>
                             <Col md="6">
                               <Card className="stacked-form border-0">
@@ -1395,68 +608,17 @@ class Cashier extends Component {
                     <Card.Title as="h4">Trasactions</Card.Title>
                   </Card.Header>
                   <Card.Body className="table-responsive p-0">
-                    <Table className="table-hover">
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Name</th>
-                          <th>Salary</th>
-                          <th>Country</th>
-                          <th>City</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr className="success">
-                          <td>1</td>
-                          <td>Dakota Rice (Success)</td>
-                          <td>$36,738</td>
-                          <td>Niger</td>
-                          <td>Oud-Turnhout</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Minerva Hooper</td>
-                          <td>$23,789</td>
-                          <td>Curaçao</td>
-                          <td>Sinaai-Waas</td>
-                        </tr>
-                        <tr className="info">
-                          <td>3</td>
-                          <td>Sage Rodriguez (Info)</td>
-                          <td>$56,142</td>
-                          <td>Netherlands</td>
-                          <td>Baileux</td>
-                        </tr>
-                        <tr>
-                          <td>4</td>
-                          <td>Philip Chaney</td>
-                          <td>$38,735</td>
-                          <td>Korea, South</td>
-                          <td>Overland Park</td>
-                        </tr>
-                        <tr className="danger">
-                          <td>5</td>
-                          <td>Doris Greene (Danger)</td>
-                          <td>$63,542</td>
-                          <td>Malawi</td>
-                          <td>Feldkirchen in Kärnten</td>
-                        </tr>
-                        <tr>
-                          <td>6</td>
-                          <td>Mason Porter</td>
-                          <td>$78,615</td>
-                          <td>Chile</td>
-                          <td>Gloucester</td>
-                        </tr>
-                        <tr className="warning">
-                          <td>7</td>
-                          <td>Mike Chaney (Warning)</td>
-                          <td>$38,735</td>
-                          <td>Romania</td>
-                          <td>Bucharest</td>
-                        </tr>
-                      </tbody>
-                    </Table>
+                  <DataTable
+                  
+            columns={columns}
+            data={dataTransaction}
+            defaultSortFieldId={1}
+            defaultSortAsc={false}
+            pagination
+            conditionalRowStyles={conditionalRowStyles}
+            
+        />
+                    
                   </Card.Body>
                 </Card>
               </Tab.Pane>

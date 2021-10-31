@@ -104,9 +104,10 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        localStorage.setItem("user", JSON.stringify(response.data));
-
-        return response.data;
+        if (response.data.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          return response.data;
+        }
 
 
       }).catch(error => {
@@ -120,18 +121,18 @@ class UserService {
         }
       });;
   }
-  saveSocial(accountName,accountID) {
+  saveSocial(accountName,accountId) {
 
     return axios
       .post(
         API_URL_TEST + "saveSocial",
-        { accountName,accountID },
+        { accountName,accountId },
         { headers: authHeader() }
       )
       .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
-          return "Ok";
+          return response.data;
         }
 
 

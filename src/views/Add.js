@@ -5,6 +5,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import Avatar from "react-avatar";
 
+import CheckButton from "react-validation/build/button";
 import $ from "jquery";
 import Countdown from "react-countdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -446,17 +447,23 @@ handleTagForm(game,platform) {
 
   handleCreateMatch(e) {
     e.preventDefault();
-    allValid = true;
-    reqnum = 0;
+    
+
     this.setState({
-    submit: true,
-  });
-    if (allValid) {
+      message: "",
+      successful: false,
+   
+        
+      
      
-        this.setState({
-          message: "",
-          loading: true,
-        });
+    });
+   
+
+    this.form.validateAll();
+
+    if (this.checkBtn.context._errors.length === 0) {
+     
+      
         userService
           .createEvent(
             this.state.GName.value.split(" - ")[0],
@@ -522,10 +529,13 @@ handleTagForm(game,platform) {
       
     } else {
       this.setState({
-        submit: true,
+        successful: false,
+                message: "",
+                submit: false,
+                loading: false,
       });
 
-      this.form.validateAll();
+     
     }
   }
   handleSaveTags() {
@@ -777,7 +787,7 @@ handleTagForm(game,platform) {
     <Spinner animation="grow" size="sm" />
     <Spinner animation="grow" size="sm" /></h4>;
     }
-         
+        
     return (
       <>
       <Active token={currentUser}/>
@@ -826,7 +836,15 @@ handleTagForm(game,platform) {
                                 options={getBlockGames("Match")}
                                 placeholder=""
                               />
-                              {this.selectrequired('GameName',this.state.GName.value)}
+                               <Input
+                                        type="text"
+                                        
+                                        value={this.state.GName.value}
+                                       
+                                        
+                                        validations={[required]}
+                                      />
+                             
                             </div>
                             <div className="form-group">
                               <label>Mode</label>
@@ -840,7 +858,7 @@ handleTagForm(game,platform) {
                                 placeholder=""
                                 isSearchable={false}
                               />
-                              {this.selectrequired('GameMode',this.state.GameMode.value)}
+                              
                             </div>
                             <div className="form-group">
                               <label>Bet</label>
@@ -851,7 +869,7 @@ handleTagForm(game,platform) {
                               
                               
                             
-                              {this.selectrequired('BetAmount',this.state.BetAmount)}
+                              
                             </div>
                             <div className="form-group">
                               <label>Avalable for</label>
@@ -870,7 +888,7 @@ handleTagForm(game,platform) {
                                 placeholder=""
                                 isSearchable={false}
                               />
-                              {this.selectrequired('AvalableFor',this.state.AvalableFor.value)}
+                             
                             </div>
 
                             {this.state.message && (
@@ -898,6 +916,12 @@ handleTagForm(game,platform) {
                             </div>
                           </Card.Footer>
                         </Card>
+                        <CheckButton
+              style={{ display: "none" }}
+              ref={c => {
+                this.checkBtn = c;
+              }}
+            />
                       </Form>
                     </Col>
                     <Col sm="5" md="4">

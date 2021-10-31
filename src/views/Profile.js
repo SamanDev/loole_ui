@@ -266,9 +266,8 @@ function setSelectedTag (e,p){
           let jsonBool = isJson(response);
    
           if (jsonBool) {
-           
-              
-              localStorage.setItem("user", JSON.stringify(response));
+            setToken(AuthService.getCurrentUser())
+            setUserTag(response)
               Swal.fire("", "Data saved successfully.", "success");
           
           } else {

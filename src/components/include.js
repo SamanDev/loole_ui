@@ -51,12 +51,18 @@ export const  getPageVariable  = () =>{
     
 }
 
-      export const  date_locale  = (thisDate) =>{
+export const  get_date_locale  = (thisDate) =>{
        
-          var d = new Date(thisDate);
+  var d = new Date(thisDate);
+  var b =d.toLocaleDateString()+' '+d.toTimeString().split(' ')[0]
+return b;
+}
+export const  date_locale  = (thisDate) =>{
        
-        return d.toLocaleDateString();
-    }
+  var d = new Date(thisDate);
+
+return d.toLocaleDateString();
+}
 export const isJson = (item) =>{
   item = typeof item !== "string"
       ? JSON.stringify(item)

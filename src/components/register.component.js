@@ -14,6 +14,7 @@ const required = value => {
         This field is required!
       </div>
     );
+    
   }
 };
 const check = value => {
@@ -230,7 +231,7 @@ class Register extends Component {
                 {this.state.loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
-                <span> Sign Up</span>
+                <span> Create Account</span>
               </button>
             </div>
                
