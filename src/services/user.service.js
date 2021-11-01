@@ -310,10 +310,8 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        if (response.data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-          return "Ok";
-        }
+        return response.data;
+        
       });
   }
   createTournament(gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer,tournamentPayout,inSign,outSign,rules) {
@@ -329,9 +327,9 @@ class UserService {
         }
       });
   }
-  createEvent(gameName, gameConsole, gameMode, amount, timeMinute) {
+  createEvent(gameName, gameConsole, gameMode, amount,inSign, timeMinute) {
     console.log(
-      { gameName, gameConsole, gameMode, amount, timeMinute },
+      { gameName, gameConsole, gameMode, amount,inSign, timeMinute },
       { headers: authHeader() }
     );
     return axios

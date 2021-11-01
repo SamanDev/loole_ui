@@ -8,6 +8,7 @@ import {
   import $ from "jquery";
 import {  withRouter} from 'react-router-dom';
 import userService from "services/user.service";
+import { bounce } from 'animate.css';
 
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
@@ -106,15 +107,18 @@ userService
   }
   if(!currentUser.userActivate){
     setTimeout(() => {
-      $('.btn:not(.actbtn)').attr('onclick', 'window.scrollTo({top: 0,behavior: "smooth" });return false;');
-    },500)
+     
+     
+      $('.btn:not(.actbtn)').attr('disabled', 'disabled')
+      $('.btn:not(.actbtn)').parent().attr('onclick', "var container = document.querySelector('.full-page'); if( container===null) { container = window};container.scrollTo({top: 0,behavior: 'smooth' });var element = document.querySelector('.myalert'); element.classList.add('animate__animated', 'animate__bounce');element.addEventListener('animationend', () => {element.classList.remove('animate__animated', 'animate__bounce');});");
+    },100)
     
     return (
         <>
-           
+          
             <Form
              
-              
+              className="myalert"
             >
              
                 <Alert variant="danger">
@@ -164,6 +168,7 @@ userService
   
               
             </Form>
+          
           </>
       );
     }else{

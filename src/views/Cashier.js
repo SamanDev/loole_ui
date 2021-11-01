@@ -73,7 +73,7 @@ const columns = [
     },
     {
       name: 'Description',
-      selector: row => row.description,
+      selector: row => row.description + ' '+ row.mode,
       sortable: true,
   },
   {

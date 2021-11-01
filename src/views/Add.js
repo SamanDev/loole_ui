@@ -18,6 +18,7 @@ import AuthService from "services/auth.service";
 import NumericInput from 'react-numeric-input';
 import Active  from "components/active.component";
 import userService from "services/user.service";
+import AddMatch  from "components/add/addmatch.component"; 
 import {
   RecoilRoot,
   atom,
@@ -215,7 +216,7 @@ var nowE  = new Date()
 class CreateMatch extends Component {
   constructor(props) {
     super(props);
-    this.handleCreateMatch = this.handleCreateMatch.bind(this);
+    
     this.handleCreateTournament = this.handleCreateTournament.bind(this);
     this.handleCreateLeague = this.handleCreateLeague.bind(this);
     this.setGameName = this.setGameName.bind(this);
@@ -812,231 +813,10 @@ handleTagForm(game,platform) {
             <Card.Body>
               <Tab.Content>
                 <Tab.Pane eventKey="match">
-                  <Row>
-                    <Col sm="7" md="8">
-                      <Form
-                        onSubmit={this.handleCreateMatch}
-                        ref={(c) => {
-                          this.form = c;
-                        }}
-                      >
-                        <Card className="card-plain" style={{ margin: -10 }}>
-                          <Card.Header>
-                            <Card.Title>Create 1v1 Match</Card.Title>
-                          </Card.Header>
-                          <Card.Body>
-                            <div className="form-group">
-                              <label>Game</label>
-                              <Select
-                                className="react-select default GameName"
-                                classNamePrefix="react-select"
-                                name="GameName"
-                                value={this.state.GName}
-                                onChange={this.setGameName}
-                                options={getBlockGames("Match")}
-                                placeholder=""
-                              />
-                               <Input
-                                        type="text"
-                                        
-                                        value={this.state.GName.value}
-                                       
-                                        
-                                        validations={[required]}
-                                      />
-                             
-                            </div>
-                            <div className="form-group">
-                              <label>Mode</label>
-                              <Select
-                                className="react-select default GameMode"
-                                classNamePrefix="react-select"
-                                name="GameMode"
-                                value={this.state.GameMode}
-                                onChange={this.setGameMode}
-                                options={getBlockGameModes(this.state.GName)}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                              
-                            </div>
-                            <div className="form-group">
-                              <label>Bet</label>
-                              <NumericInput min={1} step={1} max={1000} className="form-control BetAmount"
-                    name="BetAmount"
-                                value={this.state.BetAmount}
-                                onChange={this.setBetAmount}/>
-                              
-                              
-                            
-                              
-                            </div>
-                            <div className="form-group">
-                              <label>Avalable for</label>
-                              <Select
-                                className="react-select default AvalableFor"
-                                classNamePrefix="react-select"
-                                name="AvalableFor"
-                                value={this.state.AvalableFor}
-                                onChange={this.setAvalableFor}
-                                options={[
-                                  { value: "1", label: "30 Minutes" },
-                                  { value: "60", label: "1 Hour" },
-                                  { value: "360", label: "6 Hours" },
-                                  { value: "1440", label: "1 Day" },
-                                ]}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                             
-                            </div>
-
-                            {this.state.message && (
-                              <div className="form-group">
-                                <div
-                                  className="alert alert-danger"
-                                  role="alert"
-                                >
-                                  {this.state.message}
-                                </div>
-                              </div>
-                            )}
-                          </Card.Body>
-                          <Card.Footer>
-                            <div className="form-group">
-                              <button
-                                className="btn btn-primary btn-wd "
-                                disabled={this.state.loading}
-                              >
-                                {this.state.loading && (
-                                  <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                                )}
-                                <span> Create Match</span>
-                              </button>
-                            </div>
-                          </Card.Footer>
-                        </Card>
-                        <CheckButton
-              style={{ display: "none" }}
-              ref={c => {
-                this.checkBtn = c;
-              }}
-            />
-                      </Form>
-                    </Col>
-                    <Col sm="5" md="4">
-                      {(this.state.GName.value.indexOf(' - ') > -1) && (
-                        <Card className="card-user chall">
-                        <Card.Header className="no-padding">
-                          <div className="card-image">
-                            <img
-                              src={
-                                require("assets/images/games/" +
-                                  this.state.GName.value.split(" - ")[0] +
-                                  ".jpg").default
-                              }
-                            ></img>
-                          </div>
-                          <div
-                            className="text-center"
-                            style={{
-                              position: "absolute",
-                              right: 0,
-                              left: 0,
-                              marginTop: -50,
-                            }}
-                          >
-                            <Avatar
-                              size="80"
-                              textSizeRatio={6}
-                              style={{
-                                boxShadow: "0px 0px 20px 20px rgba(0,0,0,0.2)",
-                              }}
-                              color={_color}
-                              round={true}
-                              value={_mode}
-                            />
-                          </div>
-                        </Card.Header>
-                        <Card.Body>
-                          <Row>
-                            <Col style={{ lineHeight: "30px" }}>
-                              <Card.Title as="h4">
-                                {this.state.GName.value.split(" - ")[0]}
-                              </Card.Title>
-                              <small className="text-muted">
-                                {this.state.GameMode.value}
-                              </small>
-                              <br />
-
-                              <span>
-                                <Avatar
-                                  size="25"
-                                  title={currentUser.username}
-                                  round={true}
-                                  name={setAvatar(currentUser.username)}
-                                />
-                                <Avatar
-                                  size="25"
-                                  round={true}
-                                  name="?"
-                                  src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
-                                  color="lightgray"
-                                />
-                              </span>
-
-                              <br />
-                              <small className="text-muted">
-                                Avalable until
-                              </small>
-                            </Col>
-                            <Col
-                              style={{ lineHeight: "30px" }}
-                              className="text-muted text-right"
-                            >
-                              <small className="text-muted">
-                                <FontAwesomeIcon
-                                  fixedWidth
-                                  icon={getIcon(
-                                    this.state.GName.value.split(" - ")[1]
-                                  )}
-                                />{" "}
-                                {this.state.GName.value.split(" - ")[1]}
-                              </small>
-                              <br />
-                              <Badge
-                                variant={getColor(this.state.BetAmount)}
-                              >
-                                ${this.state.BetAmount}
-                              </Badge>
-                              <br />
-                              <small className="text-muted">1/2</small>
-                              <br />
-                              <small className="text-muted">
-                                {" "}
-                                {this.state.AvalableFor.value ? (
-                                  <div>
-                                    {" "}
-                                    <Countdown
-                                      renderer={renderer}
-                                      date={
-                                        Date.now() +
-                                        this.state.AvalableFor.value * 1000 * 60
-                                      }
-                                    />
-                                  </div>
-                                ) : (
-                                  <div> No limit</div>
-                                )}
-                              </small>
-                            </Col>
-                          </Row>
-                        </Card.Body>
-                      </Card>
-                      )}
+                <AddMatch/>
+                  
                       
-                    </Col>
-                  </Row>
+                    
                 </Tab.Pane>
                 <Tab.Pane eventKey="tournsment">
                   <Row>

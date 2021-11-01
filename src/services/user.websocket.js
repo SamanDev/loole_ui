@@ -74,7 +74,7 @@ class UserWebsocket {
                       //localStorage.clear();
                           //window.location.reload();
                   }else if(message === 'PasswordChanged'){
-                      
+                    eventBus.dispatch("eventsDataPass", 'Your password has been updated.');
                   }
               }
             }

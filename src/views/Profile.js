@@ -19,8 +19,10 @@ import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timel
 import 'react-vertical-timeline-component/style.min.css';
 import userService from "services/user.service";
 import Active  from "components/active.component";
-import CountryList from 'components/CountryList'
-import Birthday from 'components/Birthday'
+
+
+import ProfileForm  from "components/profile/profile.component"; 
+import PasswordForm  from "components/profile/password.component"; 
 // react-bootstrap components
 import {
   Badge,
@@ -76,11 +78,7 @@ function profile() {
   const [submit,setSubmit] = useState(false);
   const [currentUserTag,SetCurrentUserTag] = useState(token);
   var currentUser = token;
-  const [name,setName] = useState(currentUser.fullName);
-  const [country,setCountry] = useState(currentUser.country);
-  const [birthday,setBirthday] = useState(currentUser.birthday);
-  const [oldPassword,setOldPassword] = useState("");
-  const [newPassword,setNewPassword] = useState("");
+  
   
   const [socialPlatform,setSocialPlatform] = useState("");
   const [socialID,setSocialID] = useState("");
@@ -90,63 +88,8 @@ function profile() {
     
     //do something here
   }, [gameName,gamePlatform,gameID,gameNickname]);
-  const handleSubmitInfo = (evt) => {
-    evt.preventDefault();
-    setSubmit(true);
-    setLoading(true);
-    
-        userService
-          .editInfo(
-            name,country,birthday
-          )
-          .then(
-            
-            (response) => {
-              setSubmit(false);
-    setLoading(false);
-              if (response=='Ok'){
-                
-                Swal.fire("", "Data saved successfully.", "success").then(
-                  (result) => {
-                   
-                    setToken(AuthService.getCurrentUser())
-                  }
-                );
-              }
-    })
-}
-  const handleChangePassword = (evt) => {
-    evt.preventDefault();
-    if(oldPassword == '' || newPassword == '') {
-      Swal.fire("", "Enter Passwords", "error");
-    }else if(oldPassword != newPassword) {
-        Swal.fire("", "Passwords not match.", "error");
-
-    }else{
-      setSubmit(true);
-      setLoading(true);
-      
-          userService
-            .changePassword(
-              newPassword
-            )
-            .then(
-              
-              (response) => {
-                setSubmit(false);
-      setLoading(false);
-                if (response=='Ok'){
-                  Swal.fire("", "Data saved successfully.", "success").then(
-                    (result) => {
-                   
-                      props.history.push("/panel/dashboard");
-                    }
-                  );
-                }
-      })
-    }
-    
-}
+  
+  
 function setSelectedTag (e,p){
   Promise.resolve()
       .then(() => { 
@@ -175,16 +118,7 @@ function setSelectedTag (e,p){
     
   }
   
-  const setLok = (e) => {
-    setCountry(e)
-   
-  }
-  const setBirt = (e) => {
-    
-    var newe = date_locale(e);
-    setBirthday(newe)
-    
-  }
+  
   const handleSaveTags = (gameName,gamePlatform,gameID,gameNickname) => {
   
     Swal.fire({
@@ -444,157 +378,8 @@ if(!haveGameTag(game,currentUserTag.userTags))                  resetPw();
   </VerticalTimelineElement>
   
 </VerticalTimeline>
-<Form
-
-onSubmit={handleSubmitInfo} 
-            style={{borderBottom:'1px lightgray solid',paddingBottom:10,marginBottom:30}}
-          >
-                      <Card className="card-plain" style={{margin: -10}}>
-                      <Card.Header>
-                         <Card.Title >Proffile</Card.Title></Card.Header>
-                        <Card.Body>
-                        
-                        <div className="form-group">
-                              <label>Username</label>
-                              <Input
-                    type="text"
-                    className="form-control"
-                    
-                    value={currentUser.username}
-                    disabled={true}
-                  />
-                             
-                               
-                            </div>
-                            <div className="form-group">
-                              <label>Email</label>
-                              <Input
-                    type="text"
-                    className="form-control"
-                    
-                    value={currentUser.email}
-                    disabled={true}
-                  />
-                             
-                               
-                            </div>
-                            <div className="form-group">
-                              <label>Full Name</label>
-                              <Input
-                    type="text"
-                    className="form-control"
-                    name="name"
-                    value={(name !== null) ? name : " "}
-                    
-                    onChange={e => setName(e.target.value)}
-                  />
-                             
-                               
-                            </div>
-                            <div className="form-group">
-                              <label>Country</label>
-                             
-<CountryList value={country}
-passedFunction={setLok}
-/>
-                              
-                            </div>
-                            <div className="form-group">
-                              <label>Birthday</label>
-                             <Birthday passedFunction={setBirt} value={(birthday != null) ? (birthday) : "01/01/1990"}/>
-                            </div>
-                            
-                            
-                            {message && (
-              <div className="form-group">
-                <div className="alert alert-danger" role="alert">
-                  {message}
-                </div>
-              </div>
-            )}
-            
-                          
-                        </Card.Body>
-                        <Card.Footer>
-                        <div className="form-group">
-              <button
-                className="btn btn-primary btn-wd "
-                disabled={loading}
-              >
-                {loading && (
-                  <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                )}
-                <span> Update</span>
-              </button>
-            </div>
-                        </Card.Footer>
-                      </Card>
-                      </Form>
-                      <Form
-          
-onSubmit={handleChangePassword} 
-           
-          >
-                      <Card className="card-plain" style={{margin: -10}}>
-                      <Card.Header>
-                         <Card.Title>Change Password</Card.Title></Card.Header>
-                        <Card.Body>
-                        
-                        
-                            <div className="form-group">
-                              <label>New Password</label>
-                              <Input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    
-                    
-                    onChange={e => setOldPassword(e.target.value)}
-                  />
-                             
-                               
-                            </div>
-                            <div className="form-group">
-                              <label>Repeat Password</label>
-                              <Input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    
-                    
-                    onChange={e => setNewPassword(e.target.value)}
-                  />
-                             
-                               
-                            </div>
-                            
-                            
-                            
-                            {message && (
-              <div className="form-group">
-                <div className="alert alert-danger" role="alert">
-                  {message}
-                </div>
-              </div>
-            )}
-            
-                          
-                        </Card.Body>
-                        <Card.Footer>
-                        <div className="form-group">
-              <button
-                className="btn btn-primary btn-wd "
-                disabled={loading}
-              >
-                {loading && (
-                  <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                )}
-                <span> Save</span>
-              </button>
-            </div>
-                        </Card.Footer>
-                      </Card>
-                      </Form>
+<ProfileForm/>
+                      <PasswordForm/>
                     
                 </Tab.Pane>
                 <Tab.Pane eventKey="tags">
@@ -676,19 +461,7 @@ onSubmit={handleChangePassword}
           </Card>
                           
                         </Card.Body>
-                        <Card.Footer>
-                        <div className="form-group">
-              <button
-                className="btn btn-primary btn-wd "
-                disabled={loading}
-              >
-                {loading && (
-                  <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                )}
-                <span> Create Tournament</span>
-              </button>
-            </div>
-                        </Card.Footer>
+                       
                       </Card>
                       </Form>
                   

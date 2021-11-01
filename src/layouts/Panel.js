@@ -143,7 +143,7 @@ function  Panel() {
         <Switch>{getRoutes(routes,currentUser)}</Switch>
       ):(
         <>
-        <div className="wrapper" >
+        <div className="wrapper " >
 <Sidebar
           routes={routes}
           image={sidebarImage}

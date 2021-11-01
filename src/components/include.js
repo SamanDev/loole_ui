@@ -628,6 +628,7 @@ if(res== 'Not Connected') {
       export const getSocialTag = ( game,userTags ) => {
         var res = 'Not Connected'
         var resName = ''
+        
 if(userTags){
   userTags.map(function(tag){
           
