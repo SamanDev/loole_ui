@@ -73,6 +73,8 @@ class UserWebsocket {
                       //localStorage.removeItem("events");
                       //localStorage.clear();
                           //window.location.reload();
+                  }else if(message === 'PasswordChanged'){
+                      
                   }
               }
             }
