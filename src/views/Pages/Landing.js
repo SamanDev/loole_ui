@@ -1,5 +1,5 @@
 
-import { useAllEvents } from "services/hooks"
+import { useAllEventsByStatus,useAllEvents } from "services/hooks"
 import React, { Component } from "react";
 import $ from "jquery";
 import Countdown from "react-countdown";
@@ -25,11 +25,11 @@ import {
 } from "react-bootstrap";
 import GameSlide from "components/GameSlide";
 const Landing = () => {
-  const { data: eventsGet , isLoading } = useAllEvents()
+  const { data: eventsGet  } = useAllEventsByStatus('Finished')
 
   
-
-  if (isLoading || !eventsGet) {return  <div className="parallax filter-gradient gray section-gray" data-color="red">
+console.log(eventsGet)
+  if ( !eventsGet) {return  <div className="parallax filter-gradient gray section-gray" data-color="red">
   <div className="parallax-background">
       <img className="parallax-background-image" src="assets/img/showcases/showcase-1/bg.jpg"/>
   </div>
@@ -40,12 +40,13 @@ const Landing = () => {
   <Spinner animation="grow" size="sm" /></h4>
   </div>
 </div>;}
-  var events=JSON.parse(eventsGet);
+  var events=(eventsGet);
   const getBlockChallenge = (filtermode,f,t) => {
         
     if (events != []) {
       return events.map((item, i) => {
         if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
+            if (item.status != 'Expired' && item.status != 'Canceled' ){
           item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
           {item.players.map((player, j) => {
            //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
@@ -73,6 +74,7 @@ const Landing = () => {
           return null;
         }
       }
+    }
       )
     }
 
@@ -82,6 +84,9 @@ const getBlockChallengeMobile = (filtermode,f,t) => {
   if (events != []) {
     return events.map((item, i) => {
       if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
+        if (item.status != 'Expired' && item.status != 'Canceled' ){
+
+        
         item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
         {item.players.map((player, j) => {
          //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
@@ -109,6 +114,7 @@ const getBlockChallengeMobile = (filtermode,f,t) => {
         return null;
       }
     }
+}
     )
   }
 
@@ -268,7 +274,7 @@ return (
                 <div className="info">
                 
                 <h4 className="header-text text-center" style={{color: '#fff'}}>How it works</h4>
-                <p>Gaming Frog is a platform where you can challenge other gamers for real money on the line. Once you find a match you’ll play on your console (PS4/Xbox One), report results and we’ll deposit the money to the winner. There are other ways to win through multiplayer tourneys and monthly leader-board challenges.</p>
+                <p>Loole.gg is a platform where you can challenge other gamers for real money on the line. Once you find a match you’ll play on your console (PS4/Xbox One), report results and we’ll deposit the money to the winner. There are other ways to win through multiplayer tourneys and monthly leader-board challenges.</p>
                 <div className="row">
                 {elements.map((value, index) => {
     return <div className="col-md-3" key={index}><img src={"https://www.gamingfrog.com/wp-content/uploads/2020/08/How-it-works-"+value+".jpg"} style={{width: '100%'}}/></div>
@@ -467,7 +473,7 @@ return (
                     <div className="container">
                     
                     <h4 className="header-text text-center" style={{color: '#fff'}}>How it works</h4>
-                    <p>Gaming Frog is a platform where you can challenge other gamers for real money on the line. Once you find a match you’ll play on your console (PS4/Xbox One), report results and we’ll deposit the money to the winner. There are other ways to win through multiplayer tourneys and monthly leader-board challenges.</p>
+                    <p>Loole.gg is a platform where you can challenge other gamers for real money on the line. Once you find a match you’ll play on your console (PS4/PS5/Xbox One), report results and we’ll deposit the money to the winner. There are other ways to win through multiplayer tourneys and monthly leader-board challenges.</p>
                 
 
                     <Carousel>

@@ -43,7 +43,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      events: userService.getCurrentEvent()
+      events: this.props.token
     };
 
   }
@@ -64,15 +64,7 @@ class Dashboard extends Component {
 
   render() {
     
-    if (!this.state.events){
-      userService.getEvents();
-      
-      return <h4 style={{textAlign: "center"}}>Loading 
-      <Spinner animation="grow" size="sm" />
-      <Spinner animation="grow" size="sm" />
-      <Spinner animation="grow" size="sm" /></h4>;
-    }
-    
+   
     let { events, isLoading } = this.state;
     events=JSON.parse(events);
    

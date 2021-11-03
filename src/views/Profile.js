@@ -23,6 +23,7 @@ import Active  from "components/active.component";
 
 import ProfileForm  from "components/profile/profile.component"; 
 import PasswordForm  from "components/profile/password.component"; 
+import TagsForm  from "components/profile/tags.component"; 
 // react-bootstrap components
 import {
   Badge,
@@ -90,138 +91,7 @@ function profile() {
   }, [gameName,gamePlatform,gameID,gameNickname]);
   
   
-function setSelectedTag (e,p){
-  Promise.resolve()
-      .then(() => { 
-        setGameName(e);
-    
-    setGamePlatform(p);
-      })
-      .then(() => {
-        setGameName(e);
-    
-    setGamePlatform(p);
-        console.log(e)
-        console.log(gameName)
-        handleTagForm(e,p);
-      })
-    
-    
-    
-    
-    
-}
- 
-  const setUserTag = (e) => {
-    SetCurrentUserTag(e)
-  
-    
-  }
-  
-  
-  const handleSaveTags = (gameName,gamePlatform,gameID,gameNickname) => {
-  
-    Swal.fire({
-      title: '<br/>Please Wait...',
-      text: 'Is working..',
-      customClass:'tag',
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      allowEnterKey: false,
-      didOpen: () => {
-          Swal.showLoading()
-      }
-  })
-  
-    userService
-      .saveTags(
-       
-        gameName,
-        gamePlatform,
-        gameID,
-        gameNickname,
 
-      )
-      .then(
-        (response) => {
-         
-          let jsonBool = isJson(response);
-   
-          if (jsonBool) {
-            setToken(AuthService.getCurrentUser())
-              setUserTag(response)
-              
-              Swal.fire("", "Data saved successfully.", "success");
-          
-          } else {
-           
-              Swal.fire("", response, "error");
-           
-          }
-        
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          Swal.fire("Error!", resMessage, "error");
-        }
-      );
-  }
-  const handleSaveSocial = (accountName,accountID) => {
-   
-    Swal.fire({
-      title: '<br/>Please Wait...',
-      text: 'Is working..',
-      customClass:'tag',
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      allowEnterKey: false,
-      didOpen: () => {
-          Swal.showLoading()
-      }
-  })
-  
-    userService
-      .saveSocial(
-       
-     
-        accountName,
-        accountID,
-    
-
-      )
-      .then(
-        (response) => {
-         
-          let jsonBool = isJson(response);
-   
-          if (jsonBool) {
-            setToken(AuthService.getCurrentUser())
-            setUserTag(response)
-              Swal.fire("", "Data saved successfully.", "success");
-          
-          } else {
-           
-              Swal.fire("", response, "error");
-           
-          }
-        
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          Swal.fire("Error!", resMessage, "error");
-        }
-      );
-  }
   const handlecSetInstagram = (game,platform) => {
     
     setSocialPlatform(platform)
@@ -266,54 +136,7 @@ function setSelectedTag (e,p){
       //allValid = true;
     }
   }
-  var handleTagForm = (game,platform) => {
-    
-    const resetPw = async () => {
-      const swalval = await Swal.fire(getModalTag(game));
-      
-      let v = (swalval && swalval.value) || swalval.dismiss;
-      console.log(swalval);
-      if (v) {
-        if (v.tagid) {
-          var gameName,gamePlatform,gameID,gameNickname;
-          gameName = game;
-            if (v.tagid == game+"2") {
-              handleTagForm(game+'2')
-            }else if (v.tagid == game+"3") {
-              handleTagForm(game+'3')
-            }else{
-              setGameNickname('');
-              setGameID('');
-              gameID = '';
-              gameNickname = '';
-              if (v.tagid != "") {
-              
-              setGameID(v.tagid.replace('#',''));
-                gameID = v.tagid.replace('#','')
-              }
-              if (v.tagname && v.tagname != "") {
-                setGameNickname(v.tagname);
-                gameNickname = v.tagname;
-              }
-              if (v.tagplatform && v.tagplatform != "") {
-                setGamePlatform(v.tagplatform);
-                gamePlatform = v.tagplatform
-              }
-              
-            
-                handleSaveTags(gameName,gamePlatform,gameID,gameNickname);
-              
-            }
-            
-          }
-          
-          //setformdata(swalval);
-          
-        
-      }
-    };
-if(!haveGameTag(game,currentUserTag.userTags))                  resetPw();
-  }
+  
 
 
   var _mode=' 1 v 1 '
@@ -324,9 +147,7 @@ if(!haveGameTag(game,currentUserTag.userTags))                  resetPw();
         var str = currentUser.username;
         var res = str.substring(0, 1);
         res  = res + ' '+ str.substring(1, 2);
-   var arrLogos = ['psn.svg','xbox.svg','8pool.png','clashroyale.png','activition.png','epic.svg']
-    var arrTagMode = ['PSN','XBOX','8Pool','ClashRoyale','CallOfDuty','Fortnite']
-    var arrPlatform = ['PSN','XBOX','Mobile','Mobile','Activition','All']
+   
     if (currentUser.country.value && currentUser.country.value !=  flag){setFlag(currentUser.country.value)}
    
   return (
@@ -383,43 +204,15 @@ if(!haveGameTag(game,currentUserTag.userTags))                  resetPw();
                     
                 </Tab.Pane>
                 <Tab.Pane eventKey="tags">
-               
-                  
-                      <Card className="card-plain" style={{margin: -10}}>
+                <Card className="card-plain" style={{margin: -10}}>
                       <Card.Header>
                          <Card.Title>Game Tags</Card.Title></Card.Header>
                         <Card.Body>
-                         
-                        <Row className="card-tags">
-                        {arrLogos.map((number,i) =>
-                        <>
-                       
-                         <Col lg="4" xl="3" key={i} onClick={() => setSelectedTag(arrTagMode[i],arrPlatform[i])}>
-                        <div className="counter-box bg-color-1 card">
-                        <div className="img">
-                        <img
-                                                    alt={number}
-                                                   
-                                                    src={"/assets/images/logos/"+number}
-                                                  ></img>
-                                                  {getGameTag(arrTagMode[i],currentUserTag.userTags)}
-                       
-                        </div>
-                       
-                        </div>
+                <TagsForm token={currentUser}/>
+                  
+                </Card.Body>
                         
-                        </Col>
-</>
-)}
-
-
-                    </Row>
-
-                          
-                          
-                        </Card.Body>
-                        
-                      </Card>
+                        </Card>
                      
                   
                 </Tab.Pane>
@@ -483,9 +276,9 @@ if(!haveGameTag(game,currentUserTag.userTags))                  resetPw();
                   </Card.Header>
                   <Card.Body>
                   <div className="author  avatar">
-                      
-                      <Avatar size="114" round={true} name={res} />
-              
+                  <a href={"/user/"+currentUser.username}  target="_blank">
+                      <Avatar size="114" round={true} title={currentUser.username} name={res} />
+              </a>
                           
                       </div>
                     {userDetails(currentUser )}
@@ -632,22 +425,6 @@ const required = (value) => {
       
     return gamemaplocal[0]
   };
-  function isJson(item) {
-    item = typeof item !== "string"
-        ? JSON.stringify(item)
-        : item;
-
-    try {
-        item = JSON.parse(item);
-    } catch (e) {
-        return false;
-    }
-
-    if (typeof item === "object" && item !== null) {
-        return true;
-    }
-
-    return false;
-}
+  
 
 export default (profile) ;

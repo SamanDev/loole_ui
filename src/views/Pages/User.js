@@ -12,38 +12,33 @@ import {
   Container,
   Row,
   Col,
+  Spinner
 } from "react-bootstrap";
+import { useAllEvents,useUserProfile } from "services/hooks"
 import Profile from "views/ProfileUser";
-export default class Landing extends Component {
-  constructor(props) {
-    super(props);
-
-  }
-
-  componentDidMount() {
-    
-  }
-  render() {
-	const renderer = ({ days,hours, minutes, seconds, completed }) => {
-		if (completed) {
-		  // Render a complete state
-		  return <Completionist />;
-		} else {
-		  // Render a countdown
-		  return (
-			<span>
-			  {days} <small>days</small> {hours}:{minutes}:{seconds}
-			</span>
-		  );
-		}
-	  };
+function profile() {
+  var currentUser = window.location.href.split('user/')[1].replace('%20',' ');
+  const { data: userGet } = useUserProfile(currentUser)
+  //const token = userGet;
+  
+  if ( !userGet) {return  <div className="parallax filter-gradient gray section-gray" data-color="red">
+  <div className="parallax-background">
+      <img className="parallax-background-image" src="assets/img/showcases/showcase-1/bg.jpg"/>
+  </div>
+  <div className= "container">
+  <h4 style={{textAlign: "center",marginTop:300,color:'#fff'}}>Loading 
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" /></h4>
+  </div>
+</div>;}
     return (
     <>
   <div
         
       >
     
-      <Profile/>
+      <Profile token={userGet}/>
 	
 		
         <div
@@ -58,5 +53,7 @@ export default class Landing extends Component {
       </div>
       </>
     );
-  }
+  
 }
+
+export default (profile) ;

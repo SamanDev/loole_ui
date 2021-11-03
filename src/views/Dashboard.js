@@ -11,7 +11,7 @@ import userService from "services/user.service";
 import { useAllEvents,useUser } from "services/hooks"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
-import { printMatchBlock } from "components/include";
+import { printBlockChallenge } from "components/include";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Active  from "components/active.component";
@@ -68,9 +68,9 @@ function Dashboard(props) {
   var currentUser = token;
   
   const getBlockChallenge = (filtermode) => {
-      
+    var newItem = []
     if (events != []) {
-      return events.map((item, i) => {
+       events.map((item, i) => {
         if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
           item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
           {item.players.map((player, j) => {
@@ -85,19 +85,17 @@ function Dashboard(props) {
            
           var dateNow = now.toISOString();
           
-          if(dateExpired<dateNow && item.status !='Pending' && item.status !='InPlay' && item.status !='Ready')return null
-          return (
-
-            <Col lg="4" xl="3" key={i}>
-              {printMatchBlock(item)}
-
-            </Col>
-          )
-        } else {
-          return null;
-        }
+          if(dateExpired<dateNow && item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){}else{
+            newItem.push(item);
+          }
+          
+          
+         
+        } 
       }
+      
       )
+      return printBlockChallenge(newItem,filtermode)
     }
 
   }

@@ -1133,12 +1133,14 @@ $('.gdetails.no'+player).removeClass('hide');
                                     {z < 5 ? (
                                       <>
                                         {z < 4 ? (
+                                          <a href={"/user/"+user.username}  target="_blank">
                                           <Avatar
                                             size="25"
                                             title={user.username}
                                             round={true}
                                             name={setAvatar(user.username)}
                                           />
+                                          </a>
                                         ) : (
                                           <Avatar
                                             size="25"
@@ -2292,6 +2294,7 @@ $('.gdetails.no'+player).removeClass('hide');
                                         >
                                           <div>
                                             {player.username ? (
+                                              <a href={"/user/"+player.username}  target="_blank">
                                               <Avatar
                                                 size="50"
                                                 round={true}
@@ -2300,6 +2303,7 @@ $('.gdetails.no'+player).removeClass('hide');
                                                   player.username
                                                 )}
                                               />
+                                              </a>
                                             ) : (
                                               <Avatar
                                                 size="50"

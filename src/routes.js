@@ -63,12 +63,12 @@ var routes = [
     show:false
   },
   {
-    path: "/profile",
+    path: "/*",
     layout: "/user",
     name: "User",
     icon: "nc-icon nc-circle-09",
     component: User,
-    show:true
+    show:false
   },
   {
     path: "/dashboard",
@@ -180,7 +180,7 @@ var routes = [
     name: "User",
     icon: "nc-icon nc-circle-09",
     component: Games,
-    show:true
+    show:false
   }  ,
   {
     path: "/*",

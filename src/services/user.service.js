@@ -235,6 +235,8 @@ class UserService {
         }
         return response.data;
       }).catch( (err) => {
+        
+      localStorage.removeItem("user");
         window.location.replace("/auth/login-page");
       });
   }
@@ -286,7 +288,7 @@ class UserService {
        
   }
   getCurrentEvent(token) {
-    return useQuery("Events", api.getAllEvents)
+    //return useQuery("Events", api.getAllEvents)
   }
   editInfo(name,country,birthday) {
     return axios

@@ -8,10 +8,10 @@ import PropTypes from "prop-types";
 import { VectorMap } from "react-jvectormap";
 import AuthService from "services/auth.service";
 import userService from "services/user.service";
-import { useAllEvents,useUser } from "services/hooks"
+import { useUserEvents,useUser } from "services/hooks"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
-import { printMatchBlock } from "components/include";
+import { printBlockChallenge } from "components/include";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Active  from "components/active.component";
@@ -60,7 +60,7 @@ function Dashboard(props) {
  
 
     var currentUser = token;
-  const { data: eventsGet , isLoading } = useAllEvents()
+  const { data: eventsGet , isLoading } = useUserEvents()
   
   
   if (isLoading || !eventsGet ) {return  <h4 style={{textAlign: "center"}}>Loading 
@@ -77,12 +77,13 @@ function Dashboard(props) {
   
   
   const getBlockChallenge = (filtermode) => {
-      
+    var newItem = []
     if (events != []) {
-      return events.map((item, i) => {
-        if ((filtermode == 'Wins' && item.status == 'Finished') ||(filtermode == 'Expired' && item.status == 'Expired') || item.status == filtermode || ('All' == filtermode )) {
+       events.map((item, i) => {
+        if ((filtermode == 'Wins' && item.status == 'Finished') ||(filtermode == 'Expired' && item.status == 'Expired') ||(filtermode == 'Pending' && (item.status == 'Pending' || item.status == 'Ready' || item.status == 'InPlay')) || item.status == filtermode || ('All' == filtermode )) {
           item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
-          var blnShow = false;
+          
+          
           {item.players.map((player, j) => {
            if(player.username == currentUser.username ){blnShow=true}
           })}
@@ -95,21 +96,21 @@ function Dashboard(props) {
            
           var dateNow = now.toISOString();
           
-          if(!blnShow)return null
-          return (
-
-            <Col lg="4" xl="3" key={i}>
-              {printMatchBlock(item)}
-
-            </Col>
-          )
-        } else {
-          return null;
-        }
-      })
+          if(!blnShow){}else{
+            newItem.push(item);
+          }
+          
+          
+         
+        } 
+      }
+      
+      )
+      return printBlockChallenge(newItem,filtermode)
     }
 
   }
+  
   
     
   
@@ -127,13 +128,14 @@ function Dashboard(props) {
           <Col md="12">
             <Tab.Container
               id="matches-tabs"
-              defaultActiveKey="all-match"
+              defaultActiveKey="pending-match"
 
             >
               <Nav role="tablist" variant="tabs">
-                <Nav.Item>
-                  <Nav.Link eventKey="all-match">All</Nav.Link>
+              <Nav.Item>
+                  <Nav.Link eventKey="pending-match">Pending</Nav.Link>
                 </Nav.Item>
+                
                 <Nav.Item>
                   <Nav.Link eventKey="wins-match">My Wins</Nav.Link>
                 </Nav.Item>
@@ -141,7 +143,7 @@ function Dashboard(props) {
                   <Nav.Link eventKey="con-match">Expired</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="tour-match">Pending</Nav.Link>
+                  <Nav.Link eventKey="all-match">All</Nav.Link>
                 </Nav.Item>
               </Nav>
               <Card>
@@ -149,7 +151,13 @@ function Dashboard(props) {
                 <Card.Body  >
 
                   <Tab.Content >
+                  <Tab.Pane eventKey="pending-match">
+                      <Row>
+                        {getBlockChallenge('Pending')}
+                      </Row>
+                    </Tab.Pane>
                   <Tab.Pane eventKey="all-match" >
+                    
                       <Row >
                         {getBlockChallenge('All')}
                       </Row>
@@ -162,14 +170,10 @@ function Dashboard(props) {
                    
                     <Tab.Pane eventKey="con-match">
                       <Row>
-                        {getBlockChallenge('Expire')}
+                        {getBlockChallenge('Expired')}
                       </Row>
                     </Tab.Pane>
-                    <Tab.Pane eventKey="tour-match">
-                      <Row>
-                        {getBlockChallenge('Pending')}
-                      </Row>
-                    </Tab.Pane>
+                    
                   </Tab.Content>
 
                 </Card.Body>

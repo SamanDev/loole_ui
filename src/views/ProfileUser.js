@@ -16,7 +16,7 @@ import AuthService from "services/auth.service";
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 import userService from "services/user.service";
-
+import TagsForm  from "components/profile/tags.component"; 
 import MyMatches from 'views/UserMatches.js'
 import Birthday from 'components/Birthday'
 // react-bootstrap components
@@ -44,51 +44,7 @@ import {setAvatar,getColor,getIcon,renderer,printMatchBlock,userDetails} from "c
 import Games from "server/Games";
 var allValid = true;
 
-const required = (value) => {
-  
-    if (!value) {
-      return (
-        <div className="alert alert-danger" role="alert">
-          This field is required!
-        </div>
-      );
-    }
-  };
-  const getBlockGames = (filtermode) => {
-    var gamemap = [];
-    Games.games.map((item, i) => {
-        item.gameconsole.map((consoles, j) => {
-            if (
-              'All' == filtermode || consoles.consolename == filtermode ||
-              (consoles.consolename != "Mobile" && filtermode == "NoMobile")
-            ) {
-              
-                gamemap.push({
-                value: item.name + " - " + consoles.consolename,
-                label: item.name + " - " + consoles.consolename,
-              });
-              
-            }
-          });
-        
-        
-        });
-     
-    return gamemap;
-  };
-  const getBlockTournament = (betval) => {
-    var tourmap = [
-      { value: "4", label: "4 Players - Prize: $" + (4 * betval)*90/100 },
-      { value: "8", label: "8 Players - Prize: $" + (8 * betval)*90/100 }
- 
-    
-     
-    ];
-    
-     
-    return tourmap;
-  };
-  
+
   const getBlockTournamentVal = (betval,tourmode) => {
     var tourmap = { value: tourmode, label: tourmode+" Players - Prize: $" + (tourmode * betval)*90/100 };
   
@@ -179,235 +135,17 @@ const required = (value) => {
   class CreateMatch extends Component {
     constructor(props) {
       super(props);
-      this.handleCreateMatch = this.handleCreateMatch.bind(this);
-      this.handleCreateTournament = this.handleCreateTournament.bind(this);
-      this.setGameName = this.setGameName.bind(this);
-      this.setGameMode = this.setGameMode.bind(this);
-      this.setTournamentMode = this.setTournamentMode.bind(this);
-      this.setBetAmount = this.setBetAmount.bind(this);
-      this.setAvalableFor = this.setAvalableFor.bind(this);
-      this.setStartTime = this.setStartTime.bind(this);
-      this.selectrequired = this.selectrequired.bind(this);
-      this.handlecSetInstagram = this.handlecSetInstagram.bind(this);
+     
       
       this.state = {
-        GameName: getBlockGamesVal("All"),
-        GameMode: getBlockGameModesVal(getBlockGamesVal("All")),
-        TournamentMode:getBlockTournamentVal(10,4),
-        gamemaplocal : [],
-        BetAmount:{ value: "10", label: "$10" },
-        AvalableFor:{ value: "60", label: "1 Hour" },
-        StartTime:{ value: "60", label: "1 Hour Later" },
-        loading: false,
-        submit:false,
-        message: ""
+       
       };
     }
-    handlecSetInstagram(checked) {
-      const MySwal = withReactContent(Swal)
     
-      Swal.fire({
-        title: 'Connect your Instagram',
-        input: 'text',
-        inputAttributes: {
-          autocapitalize: 'off'
-        },
-        showCancelButton: true,
-        confirmButtonText: 'Save',
-        cancelButtonText:
-        'Back',
-        showLoaderOnConfirm: true,
-        preConfirm: (login) => {
-          return fetch(`//api.github.com/users/${login}`)
-            .then(response => {
-              if (!response.ok) {
-                throw new Error(response.statusText)
-              }
-              return response.json()
-            })
-            .catch(error => {
-              Swal.showValidationMessage(
-                `Request failed: ${error}`
-              )
-            })
-        },
-        allowOutsideClick: () => !Swal.isLoading()
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: `${result.value.login}'s avatar`,
-            imageUrl: result.value.avatar_url
-          })
-        }
-      })
-      }
-    selectrequired(value) {
-      if (!value) {
-        allValid = false;
-        if(this.state.submit){
-          return (
-            <div className="alert alert-danger" role="alert">
-              This field is required!
-            </div>
-          );
-        }
-        
-      }else{
-        //allValid = true;
-      }
-    }
-    setGameName(e) {
-        
-        this.setState({
-            GameName: e,
-            GameMode: getBlockGameModesVal(e),
-        });
-      }
-      setTournamentMode(e) {
-        
-        this.setState({
-           
-            TournamentMode: e,
-        });
-     
-      }
-    
-      setGameMode(e) {
-        this.setState({
-            GameMode: e
-        });
-        
-      }
-      setBetAmount(e) {
-        this.setState({
-          BetAmount: e
-        });
-      
-        this.setTournamentMode(getBlockTournamentVal(e.value,4))
-      }
-      setAvalableFor(e) {
-        this.setState({
-          AvalableFor: e
-        });
-      }
-      setStartTime(e) {
-        this.setState({
-          StartTime: e
-        });
-      }
-   
-
-  handleCreateMatch(e) {
-    e.preventDefault();
-    console.log(this.state)
-    if(allValid){
-      this.setState({
-        message: "",
-        loading: true,
-        
-      });
-      
-        userService.createEvent(
-          this.state.GameName.value.split(' - ')[0],
-          this.state.GameName.value.split(' - ')[1],
-          this.state.GameMode.value,
-          this.state.BetAmount.value,
-          this.state.AvalableFor.value
-        ).then(
-          response => {
-          
-            this.props.history.push("/panel/dashboard");
-          },
-          error => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-              localStorage.clear();
-  
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false
-            });
-            
-          }
-        );
-      
-    }
-    else{
-      this.setState({
-   
-        submit: true
-      });
-  
-      this.form.validateAll();
-
-    }
-    
-
-    
-  }
-  handleCreateTournament(e) {
-    e.preventDefault();
-    console.log(this.state)
-    if(allValid){
-      this.setState({
-        message: "",
-        loading: true,
-        
-      });
-      
-        userService.createTournament(
-          this.state.GameName.value.split(' - ')[0],
-          this.state.GameName.value.split(' - ')[1],
-          this.state.TournamentMode.value,
-          this.state.BetAmount.value,
-          this.state.AvalableFor.value
-        ).then(
-          response => {
-            
-            
-            this.props.history.push("/panel/dashboard");
-          },
-          error => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-  
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false
-            });
-          }
-        );
-      
-    }
-    else{
-      this.setState({
-   
-        submit: true
-      });
-  
-      this.form.validateAll();
-
-    }
-    
-
-    
-  }
   render() {
     var _mode=' 1 v 1 '
         var _color = '#404040'
-        const currentUser = AuthService.getCurrentUser();
+        const currentUser = this.props.token;
         var str = currentUser.username;
     var res = str.substring(0, 1);
     res  = res + ' '+ str.substring(1, 2);
@@ -430,7 +168,7 @@ const required = (value) => {
                                  
                                 <div className="author  avatar text-center">
                       
-                      <Avatar size="114" round={true} name={res} />
+                      <Avatar size="114" round={true} title={currentUser.username} name={res} />
               
                           
                       </div>
@@ -438,6 +176,7 @@ const required = (value) => {
                       {userDetails(currentUser)}   
                       
                         </div>
+                        
                       <div className="row card-stats card-profile">
 <div className="col-lg-3 col-md-6 col-xs-12 ">
 <div className="counter-box bg-color-1 card">
@@ -486,10 +225,19 @@ const required = (value) => {
                 
                 </div>
             </div>
+            
+            <div className="section  section-clients section-no-padding">
+                <div className="container">
+                    <h4 className="header-text  text-center">Game Tags</h4>
+                    
+                    <TagsForm token={currentUser}/>
+                  
+                </div>
+            </div>
             <div className="section section-gray section-clients section-no-padding">
                 <div className="container">
                     <h4 className="header-text  text-center">Last Activity</h4>
-                    <MyMatches/>
+                    
                    
                   
                 </div>

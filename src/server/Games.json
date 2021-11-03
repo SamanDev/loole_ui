@@ -1,142 +1,112 @@
 {
     "games": [
         {
-            "id": 1,
+            
             "name": "8Pool",
             "haveMatch": true,
             "haveTournament": true,
             "haveLeague": false,
             "gameconsole": [
                 {
-                    "id": 1,
+                    
                     "consolename": "Mobile"
                 }
             ],
             "modes": [
                 {
-                    "id": 1,
+                    
                     "modename": "Duel"
                 }
             ]
         },
         {
-            "id": 2,
+           
             "name": "ClashRoyale",
             "haveMatch": true,
             "haveTournament": true,
             "haveLeague": false,
             "gameconsole": [
                 {
-                    "id": 1,
+                    
                     "consolename": "Mobile"
                 }
             ],
             "modes": [
                 {
-                    "id": 1,
-                    "modename": "Duel"
-                }
-            ]
-        },
-        {
-            "id": 3,
-            "name": "CallOfDuty",
-            "haveMatch": true,
-            "haveTournament": false,
-            "haveLeague": false,
-            "gameconsole": [
-                {
-                    "id": 1,
-                    "consolename": "Mobile"
-                }
-            ],
-            "modes": [
-                {
-                    "id": 1,
+                    
                     "modename": "Duel"
                 }
             ]
         },
         
         {
-            "id": 5,
+            
             "name": "Fifa2021",
             "haveMatch": true,
             "haveTournament": true,
             "haveLeague": false,
             "gameconsole": [
                 {
-                    "id": 1,
+                    
                     "consolename": "PS4"
                 },
                 {
-                    "id": 2,
+                   
                     "consolename": "PS5"
                 },{
-                    "id": 3,
+                    
                     "consolename": "XBOX"
-                },{
-                    "id": 4,
-                    "consolename": "PC"
                 }
             ],
             "modes": [
                 {
-                    "id": 1,
+                    
                     "modename": "Duel"
                 }
             ]
         },
         {
-            "id": 6,
+            
             "name": "RainbowSix",
             "haveMatch": false,
             "haveTournament": false,
             "haveLeague": true,
             "gameconsole": [
                 {
-                    "id": 1,
+                    
                     "consolename": "PS4"
                 },
                 {
-                    "id": 2,
+                   
                     "consolename": "PC"
                 }
             ],
             "modes": [
                 {
-                    "id": 1,
+                    
                     "modename": "KillRace"
                 },
                 {
-                    "id": 2,
+                   
                     "modename": "Duel"
                 }
             ]
         },
         {
-            "id": 7,
+           
             "name": "CallOfDuty",
             "haveMatch": false,
             "haveTournament": false,
             "haveLeague": true,
             "gameconsole": [
                 {
-                    "id": 1,
+              
                     "consolename": "All"
-                },
-                {
-                    "id": 2,
-                    "consolename": "PS4"
-                },
-                {
-                    "id": 3,
-                    "consolename": "PC"
                 }
             ],
             "modes": [
                 {
-                    "id": 1,
+                    
                     "modename": "KillRace"
                 }
             ]
@@ -150,17 +120,14 @@
             "haveLeague": true,
             "gameconsole": [
                 {
-                    "id": 1,
-                    "consolename": "PS4"
-                },
-                {
-                    "id": 2,
-                    "consolename": "PC"
+                    
+                    "consolename": "All"
                 }
+               
             ],
             "modes": [
                 {
-                    "id": 1,
+                    
                     "modename": "KillRace"
                 }
             ]

@@ -13,12 +13,28 @@ const client = axios.create({
 
 const getAllEvents=async () => {
   
-    const { data } = await client.get("/getEvents")
-    return data.data
-  }
+  const { data } = await client.get("/getEvents")
+  return data.data
+}
+const getAllEventsByStatus=async (status) => {
+  const getstatus = status.queryKey[1];
+  const { data } = await client.get(`/getEventsByStatus/?status=${getstatus}`)
+  console.log(data)
+  return data
+}
   const getUser=async () => {
   
     const { data } = await client.get("/getUser",{ headers: authHeader() })
+    return data
+  }
+  const getUserProfile=async (username) => {
+  const user = username.queryKey[1];
+    const { data } = await client.get(`/getUserPublic/?username=${user }`)
+    return data
+  }
+  const getUserEvents=async () => {
+  
+    const { data } = await client.get("/getUserEvents",{ headers: authHeader() })
     return data
   }
 const getEvent = async (_, id) => {
@@ -27,6 +43,9 @@ const getEvent = async (_, id) => {
   }
 export {
   getAllEvents,
+  getAllEventsByStatus,
+  getUserEvents,
+  getUserProfile,
   getEvent,
   getUser
 }
