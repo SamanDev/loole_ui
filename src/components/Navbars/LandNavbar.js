@@ -30,14 +30,19 @@ class LandNavbar extends Component {
         this.state = {
             showModeratorBoard: false,
             showAdminBoard: false,
-            currentUser: undefined,
+            currentUser: this.props.token,
             collapseOpen: false,
           
             navExpanded: false
         };
 
     }
+    componentWillReceiveProps(newProps) {
     
+       
+        this.setState({ currentUser: newProps.token });
+        console.log('Props updated')
+      }
     setNavbarColor(expanded) {
         if($('.landing-page').length>0){
             $('nav.navbar').removeClass('bg-light bg-dark navbar-light navbar-dark bg-transparent')
@@ -172,27 +177,9 @@ class LandNavbar extends Component {
             return ((elemTop < viewportBottom) && (elemBottom > viewportTop));
         }
      
-        const user = AuthService.getCurrentUser();
+        
         var headerClass = ""
-        if (user) {
-          this.setState({
-              currentUser: user,
-              
-             
-          });
-         
-          if (window.location.href.indexOf('auth') > -1 && window.location.href.indexOf('lock') == -1) { 
-            //this.props.history.push("/panel/dashboard");
-            //window.location.href="/panel/dashboard";
-          }
-      } else {
-          //window.location.href = "/";
-         
-          if (window.location.href.indexOf('lock') > -1) { 
-            //window.location.href="/home";
-          //this.props.history.push("/home");
-          }
-      }
+        
       
     }
 
@@ -212,7 +199,7 @@ class LandNavbar extends Component {
          
     }
     render() {
-        const { currentUser, showModeratorBoard, showAdminBoard, collapseOpen, currPage, isExpanded } = this.state;
+        let { currentUser, showModeratorBoard, showAdminBoard, collapseOpen, currPage, isExpanded } = this.state;
        
         return (
             
@@ -229,7 +216,7 @@ class LandNavbar extends Component {
   <Navbar.Toggle id="myCheck" aria-controls="basic-navbar-nav" />
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="ml-auto navbar-dark" onClick={this.closeNav}>
-    {currentUser ? (
+    {currentUser.accessToken ? (
     <Nav.Link to="/panel/dashboard" as={Link}>Dashboard
 </Nav.Link>
     ):(

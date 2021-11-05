@@ -57,13 +57,14 @@ class UserWebsocket {
             }
             if (isJson(message)) {
                 var msg = JSON.parse(message);
-                 // console.log("serverMessage: "+msg.data)
+                  //log("serverMessage: "+msg.data)
                   
                   if (msg.Command === 'event') {
                      
                      
                       eventBus.dispatch("eventsData", msg.data);
                     eventBus.dispatch("eventsDataEvent", msg.data);
+                    
                       
                   } else if (message.Command === 'startTick') {
                       // setYvalStart(msg.tick);

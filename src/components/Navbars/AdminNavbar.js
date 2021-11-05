@@ -23,7 +23,7 @@ class AdminNavbar extends Component {
         this.logOut = this.logOut.bind(this);
 
         this.state = {
-          currentUser: false,
+          currentUser: this.props.token,
             showModeratorBoard: false,
             showAdminBoard: false,
             collapseOpen: false,

@@ -48,8 +48,9 @@ import League from "server/league";
 import eventBus from "views/eventBus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "react-countdown";
-import BootstrapSwitchButton from "bootstrap-switch-button-react";
 
+import LeagueSection  from "components/events/league.component"; 
+import MatchSection  from "components/events/match.component"; 
 import {
   setAvatar,
   getColor,
@@ -167,9 +168,7 @@ var dateStart = null;
             var icStartL = 0;
             var nullplayer = {
               id: 100000,
-              username: false,
-              rank: null,
-              winAmount: null,
+              
               ready: false,
             };
             var mymatchFind = null;
@@ -179,23 +178,12 @@ var dateStart = null;
 class LockScreenPage extends Component {
   constructor(props) {
     super(props);
-    this.handleJoinMatch = this.handleJoinMatch.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    this.handleLeaveMatch = this.handleLeaveMatch.bind(this);
-    this.handlechangeReadyEvent = this.handlechangeReadyEvent.bind(this);
-    this.handlecAlertLost = this.handlecAlertLost.bind(this);
-    this.handlecAlertWin = this.handlecAlertWin.bind(this);
-    this.handleClashFinished = this.handleClashFinished.bind(this);
     this.handleHowStream = this.handleHowStream.bind(this);
     this.reGetevents = this.reGetevents.bind(this);
     this.fileUpload = React.createRef();
-    this.showDetails = this.showDetails.bind(this);
-
+   
     this.editEvent = this.editEvent.bind(this);
-    this.setProgress = this.setProgress.bind(this);
-
-    this.handleChatUpload = this.handleChatUpload.bind(this);
-    this.onChangeHandler = this.onChangeHandler.bind(this);
     this.setEvent = this.setEvent.bind(this);
     this.setMatchId = this.setMatchId.bind(this);
     this.showFileUpload = this.showFileUpload.bind(this);
@@ -204,9 +192,9 @@ class LockScreenPage extends Component {
     this.setSelectedTag = this.setSelectedTag.bind(this);
     this.setUserTag = this.setUserTag.bind(this);
     this.state = {
-      event: this.reGetevents(),
+      event: userService.getEventById(getQueryVariable("id")),
       events: null,
-      currentUserTag: AuthService.getCurrentUser(),
+      currentUserTag: userService.getCurrentUser(),
       tag: "R0P0C8R89",
       eventid: getQueryVariable("id"),
       matchid: getQueryVariable("matchid"),
@@ -231,45 +219,18 @@ class LockScreenPage extends Component {
     this._isMounted = true;
     if (this._isMounted) {
       eventBus.on("eventsDataEventDo", (event) => {
-         isJoin = false;
-          item = false;
-     activePlayer = 0;
-      isInPlayers = false;
- matchidFind = []
- lists = [];
-
-             icEnd = 0;
-             icStart = 0;
-             icStartL = 0;
+         
             
-        var newitem = this.editEvent(event);
-        try{
-          this.setEvent(JSON.parse(newitem));
-          //events = JSON.parse(event);
-        }catch(err){
-          this.setEvent((newitem));
-         // events = (event);
-        }
+        this.editEvent(event);
+        
         
         
         //this.reGetevents();
-        console.log("socket events: "+JSON.stringify(newitem));
+       // console.log("socket events: "+JSON.stringify(newitem));
       });
       eventBus.on("eventsDataEvent", (event) => {
-         
-       this.reGetevents();
-        try{
-          //this.setEvent(JSON.parse(event));
-          //events = JSON.parse(event);
-        }catch(err){
-          //this.setEvent((event));
-         // events = (event);
-        }
-        //this.setEvent(JSON.parse(event));
-        //const ids = event.map(entity => entity.id);
-        //console.log("socket events: "+JSON.stringify(event));
-        //this.setEvent(event);
-      });
+        this.reGetevents()
+      })
     }
   }
   componentWillUnmount() {
@@ -416,7 +377,7 @@ class LockScreenPage extends Component {
                   const swalval = await Swal.fire(getModalTag(game));
         
                   let v = (swalval && swalval.value) || swalval.dismiss;
-                  console.log(platform);
+                  //console.log(platform);
                   if (v) {
                     if (v.tagid) {
                       
@@ -448,7 +409,7 @@ class LockScreenPage extends Component {
                             });
                           }
                           
-                            console.log(this.state);
+                           // console.log(this.state);
                             this.handleSaveTags();
                           
                         }
@@ -465,139 +426,19 @@ class LockScreenPage extends Component {
   reGetevents(){
     if(getQueryVariable("id") ){
       
-      userService.getEventById(getQueryVariable("id"))
-      
-    }
-   
-  }
-  handleJoinMatch(e) {
-    e.preventDefault();
-    this.setState({
-      isloading: true,
-    });
-    userService.joinEvent(this.state.eventid).then(
-      (response) => {
-        this.setState({
-          isloading: false,
-        });
-        //alert(response)
-        if (response.indexOf("successful") > -1) {
-         // this.reGetevents();
-          Toast.fire({
-            icon: "success",
-            title: "Joined.",
-          });
-          
-        } else {
-          if (response == "balanceError") {
-            var resMessage =
-              "To enter this event you need to have more balance!";
-            Swal.fire({
-              title: "Error!",
-              text: resMessage,
-              icon: "error",
-              showCancelButton: true,
-              confirmButtonText: `Go to Cashier`,
-              canceleButtonText: `Back`,
-            }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
-              if (result.isConfirmed) {
-                this.props.history.push("/panel/cashier");
-              }
-            });
-          } else if (response == "tagError") {
-            this.setSelectedTag(this.state.event.gameName,this.state.event.gameConsole)
-          }
-        }
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        Swal.fire("", resMessage, "error");
-      }
-    );
-  }
-  handleClashFinished(e) {
-    this.setState({
-      isloading: true,
-    });
-    userService
-      .saveTags("ClashRoyale", "finish", this.state.tag, this.state.eventid)
-      .then(
+      userService.getEventById(getQueryVariable("id")).then(
         (response) => {
           this.setState({
             isloading: false,
           });
-          //this.props.history.push("/panel/dashboard");
         },
         (error) => {}
       );
-  }
-  handleLoseMatch(e) {
-    this.setState({
-      isloading: true,
-    });
-    if(this.state.matchid){
-      userService.loseEvent(this.state.eventid,this.state.matchid).then(
-        (response) => {
-          //this.reGetevents();
-          
-          //this.props.history.push("/panel/dashboard");
-        },
-        (error) => {}
-      );
-    }else{
-      userService.loseEvent(this.state.eventid).then(
-        (response) => {
-          //this.reGetevents();
-          //this.props.history.push("/panel/dashboard");
-        },
-        (error) => {}
-      );
+      
     }
-
-    
+   
   }
-  handleChatUpload = () => {
-    this.setState({
-      progress: 1,
-      progressLable: "0%",
-      isUpLoading: true,
-    });
-    let uploadInfo = new FormData();
-    uploadInfo.append("id", this.state.eventid);
-    if(this.state.matchid){uploadInfo.append("idMatch", this.state.matchid);}
-    uploadInfo.append("file", this.state.selectedFile);
-    
-    //console.log(uploadInfo);
-    axios
-      .post(API_URL_TEST + "uploadFile", uploadInfo, {
-        headers: uploadHeader(),
-        onUploadProgress: (data) => {
-          //Set the progress value to show the progress bar
-          this.setProgress(Math.round((100 * data.loaded) / data.total));
-        },
-      })
-      .then((response) => {
-        this.setState({
-          progress: 0,
-          progressLable: "I win",
-          isUpLoading: false,
-        });
-        document.documentElement.classList.toggle("nav-open");
-      })
-      .catch((error) => {
-        alert(error.response.data.error);
-        this.setState({
-          progressLable: "I win",
-          isUpLoading: false,
-        });
-      });
-  };
+  
   handleDelete(e) {
     e.preventDefault();
 
@@ -608,98 +449,20 @@ class LockScreenPage extends Component {
       (error) => {}
     );
   }
-  handleLeaveMatch(e) {
-    e.preventDefault();
-    this.setState({
-      isloading: true,
-    });
-    userService.leaveEvent(this.state.eventid).then(
-      (response) => {
-        if (response.indexOf("successful") > -1) {
-          this.setState({
-            isloading: false,
-          });
-          //this.reGetevents();
-          Toast.fire({
-            icon: "success",
-            title: "UnJoined.",
-          });
-        }
-        //this.props.history.push("/panel/dashboard");
-      },
-      (error) => {}
-    );
-  }
-  handlechangeReadyEvent(checked) {
-    firstLoad = false;
-    this.setState({ curPlayerReady: checked });
-    userService.changeReadyEvent(this.state.eventid).then(
-      (response) => {
-        if (response == "changeReadyEvent successful") {
-          Toast.fire({
-            icon: "success",
-            title: "Updated.",
-          });
-          this.reGetevents();
-        }
-        //this.props.history.push("/panel/dashboard");
-      },
-      (error) => {}
-    );
-  }
-  handlecAlertLost(checked) {
-    const MySwal = withReactContent(Swal);
+  
+  editEvent(item) {
+   
+    isJoin = false;
+          
+     activePlayer = 0;
+      isInPlayers = false;
+ matchidFind = []
+ lists = [];
 
-    MySwal.fire({
-      title: "Are you sure? ",
-      icon: "question",
-      iconColor: "#FB404B",
-      text: "Please confirm your lose.",
-      customClass: "dark",
-      showCancelButton: true,
-      focusConfirm: false,
-      confirmButtonText: "Yes, I lost.",
-
-      cancelButtonText: "Back",
-      confirmButtonColor: "#FB404B",
-      cancelButtonColor: "rgba(255, 255, 255,.2)",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.handleLoseMatch();
-      }
-    });
-  }
-  showDetails(player){
-$('.gdetails').addClass('hide');
-$('.gdetails.no'+player).removeClass('hide');
-
-  }
-  handlecAlertWin(checked) {
-    const MySwal = withReactContent(Swal);
-
-    MySwal.fire({
-      title: "Confirm needed",
-      text: "Upload a  video to approve  your win.",
-      icon: "info",
-      iconColor: "#87CB16",
-      customClass: "dark",
-      showCancelButton: true,
-      focusConfirm: false,
-      confirmButtonText: "Upload video",
-
-      cancelButtonText: "Back",
-      confirmButtonColor: "#87CB16",
-      cancelButtonColor: "rgba(255, 255, 255,.2)",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.fileUpload.current.click();
-      }
-    });
-  }
-  editEvent(event) {
-    var getItem = event
-    item = (getItem);
-    
+             icEnd = 0;
+             icStart = 0;
+             icStartL = 0;
+    activePlayer = 0;
   
     if (typeof item === "undefined") {
       //this.props.history.push("/panel/dashboard");
@@ -913,20 +676,70 @@ $('.gdetails.no'+player).removeClass('hide');
           var expiryDate = new Date(dateExpired);
           expiryDate.setHours(expiryDate.getHours() + matchidFind.level);
         }
+        try{
+          this.setEvent(JSON.parse(item));
+          //events = JSON.parse(event);
+        }catch(err){
+          this.setEvent((item));
+         // events = (event);
+        }
     return item;
   }
   render() {
-    var { progress, isUpLoading, progressLable, event,events, eventid,currentUserTag } = this.state;
-    var currentUser = currentUserTag;
+    let { progress, isUpLoading, progressLable, event,events, eventid,currentUserTag,isloading } = this.state;
+    var item = event
     
     
     //const { id } = useParams();
     //var { data: eventGet , isLoading } = useEvent(eventid)
    // var eventGet = false;
+   console.log(currentUserTag)
+   if(!currentUserTag){
    
+    
+
+    return (
+      <>
+        <div
+          className="full-page lock-page"
+          data-color="black"
+          style={{ height: "100vh", overflow: "auto" }}
+          data-image={require("assets/img/bg.jpg").default}
+        >
+          <div
+            className="content "
+            style={{
+              fontSize: 50,
+              color: "#fff",
+              position: "relative",
+              zIndex: "23",
+            }}
+          >
+            <Container className="text-center">
+              <h4 style={{ textAlign: "center" }}>
+                Loading
+                <Spinner animation="grow" size="sm" />
+                <Spinner animation="grow" size="sm" />
+                <Spinner animation="grow" size="sm" />
+              </h4>
+            </Container>
+          </div>
+          <div
+            className="full-page-background"
+            style={{
+              backgroundImage:
+                "url(" + require("assets/img/bg.jpg").default + ")",
+            }}
+          ></div>
+        </div>
+      </>
+    );
+          }
     if (  !event) {
+      //this.editEvent(event);
       
-      //this.reGetevents()
+                    
+      this.reGetevents()
       
 
       return (
@@ -1012,7 +825,10 @@ $('.gdetails.no'+player).removeClass('hide');
            
     
 
-    
+                   // console.log(item)
+                        
+                    var currentUser = currentUserTag;
+                    console.log(item)
    
     return (
       <>
@@ -1073,8 +889,13 @@ $('.gdetails.no'+player).removeClass('hide');
                             ):(
                               <>
                               {getQueryVariable("ref")? (
-                              
-                              <Link to={"/panel/"+getQueryVariable("ref")} className="btn  actbtn btn-danger btn-round "> Back </Link>
+                              <>
+                              {getQueryVariable("ref") == 'home'? (
+                                <Link to={"/"+getQueryVariable("ref")} className="btn  actbtn btn-danger btn-round "> Back </Link>
+                                ):(
+                                  <Link to={"/panel/"+getQueryVariable("ref")} className="btn  actbtn btn-danger btn-round "> Back </Link>
+                                  )}
+                              </>
                               ):(
                                 <Link to="/panel/dashboard" className="btn actbtn btn-danger btn-round "> Back </Link>
                                 )}
@@ -1097,550 +918,11 @@ $('.gdetails.no'+player).removeClass('hide');
                                   
                                
                   {item.gameMode == "League" ? (
-                    <Col className="mx-auto" lg="10" md="11">
-                      <Card
-                        className="card-lock text-center card-plain card-league"
-                        style={{ color: "#fff" }}
-                      >
-                        <Card.Header>
-                          <Row>
-                            <Col
-                              xs="12"
-                              style={{
-                                lineHeight: "20px",
-                                color: "#fff",
-                                fontSize: "20px",
-                              }}
-                            >
-                              {getGroupBadge(item.inSign, item.amount, "")}
-                              <h5 style={{ marginTop: 5 }}>
-                                {item.gameName} <br />
-                                <small>{item.gameMode}</small> <br />
-                                <small className="text-muted">
-                                  <FontAwesomeIcon
-                                    fixedWidth
-                                    icon={getIcon(item.gameConsole)}
-                                  />{" "}
-                                  {item.gameConsole}
-                                </small>
-                              </h5>
-                              {getGroupBadgePrice(item.outSign, item.prize , "")}
-                              <small>
-                                {item.players.map((user, z) => (
-                                  <span key={z}>
-                                    {currentUser.username == user.username &&
-                                      (isJoin = true)}
-                                    {z < 5 ? (
-                                      <>
-                                        {z < 4 ? (
-                                          <a href={"/user/"+user.username}  target="_blank">
-                                          <Avatar
-                                            size="25"
-                                            title={user.username}
-                                            round={true}
-                                            name={setAvatar(user.username)}
-                                          />
-                                          </a>
-                                        ) : (
-                                          <Avatar
-                                            size="25"
-                                            round={true}
-                                            value={
-                                              "+" + (item.players.length - 4)
-                                            }
-                                            color="gray"
-                                          />
-                                        )}
-                                      </>
-                                    ) : null}
-                                  </span>
-                                ))}
-                              </small>
-                              <small
-                                        style={{
-                                          marginTop: 10,
-                                          marginBottom: 10,
-                                          display: "block",
-                                          fontSize: 20,
-                                        }}
-                                      >
-                                        {item.players.length}/{item.totalPlayer}
-                                      </small>
-                                      <ProgressBar
-                                        animated
-                                        variant="danger"
-                                        now={
-                                          (item.players.length /
-                                            item.totalPlayer) *
-                                          100
-                                        }
-                                        style={{
-                                          marginLeft: "auto",
-                                          marginRight: "auto",
-                                          maxWidth: "50%",
-                                        }}
-                                      />
-                              <VerticalTimeline
-                                layout="1-column-left"
-                                className="hide2"
-                                style={{
-                                  marginLeft: "-30px",
-                                  marginRight: "-30px",
-                                  width: "110%",
-                                }}
-                              >
-                                <VerticalTimelineElement
-                                  className="vertical-timeline-element--work"
-                                  contentStyle={{
-                                    background: "rgb(33, 150, 243)",
-                                    color: "#fff",
-                                  }}
-                                  contentArrowStyle={{
-                                    borderRight: "7px solid  rgb(33, 150, 243)",
-                                  }}
-                                  iconStyle={{
-                                    background: "rgb(33, 150, 243)",
-                                    color: "#fff",
-                                  }}
-                                >
-                                  <img
-                                    alt={item.gameName}
-                                    style={{
-                                      maxWidth: "60%",
-                                      marginBottom: 15,
-                                    }}
-                                    src={
-                                      require("assets/images/games/" +
-                                        item.gameName +
-                                        ".jpg").default
-                                    }
-                                  ></img>
-                                  <h3 className="vertical-timeline-element-title">
-                                    Registration Open
-                                  </h3>
-                                  
-
-                                  <small
-                                    style={{
-                                      marginBottom: 15,
-                                      display: "block",
-                                      fontSize: 13,
-                                    }}
-                                  >
-                                    Score Update: Every 60 minutes
-                                    <br />
-                                    Total Score: Top 10 games
-                                    <br />
-                                    Regions: All Regions
-                                    <br />
-                                    Servers: All Servers
-                                    
-                                  </small>
-                                  <h3 className="vertical-timeline-element-title">
-                                      <Countdown
-                                          renderer={renderer}
-                                          date={dateStart}
-                                        />
-                                        
-                                      </h3>
-                                        
-                                   {!isJoin && item.totalPlayer > item.players.length && (
-                                    <h4 className="vertical-timeline-element-subtitle"  style={{paddingBottom:0}}>
-                                    <Button
-                                      className="btn-roun2d"
-                                      onClick={this.handleJoinMatch}
-                                      variant="danger"
-                                      disabled={this.state.isloading}
-                                    >
-                                      <b>Join League</b><br/> {item.inSign.replace('Dollar','$')} <CurrencyFormat value={item.amount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
-                                    </Button>
-                                    </h4>
-                                  )}
-                                </VerticalTimelineElement>
-                                <VerticalTimelineElement
-                                  className="vertical-timeline-element--education my-list"
-                                  contentStyle={{
-                                    background: "rgb(233, 30, 99)",
-                                    color: "#fff",
-                                  }}
-                                  contentArrowStyle={{
-                                    borderRight: "7px solid  rgb(233, 30, 99)",
-                                  }}
-                                  iconStyle={{
-                                    background: "rgb(233, 30, 99)",
-                                    color: "#fff",
-                                  }}
-                                >
-                                  <h3 className="vertical-timeline-element-title">
-                                    Results Tracking
-                                  </h3>
-                                  <h4 className="vertical-timeline-element-subtitle">
-                                    <Countdown
-                                      renderer={renderer}
-                                      date={dateExpired}
-                                    />
-                                  </h4>
-
-                                  <ListGroup>
-                                    <ListGroup.Item>
-                                      Kills{" "}
-                                      <Badge variant="primary">
-                                        x 20 Points
-                                      </Badge>
-                                    </ListGroup.Item>
-                                    <ListGroup.Item>
-                                      Damage Done
-                                      <Badge variant="primary">
-                                        x 0.06 Points
-                                      </Badge>
-                                    </ListGroup.Item>
-                                    <ListGroup.Item>
-                                      Time Played
-                                      <Badge variant="primary">
-                                        x 0.04 Points
-                                      </Badge>
-                                    </ListGroup.Item>
-                                    <ListGroup.Item>
-                                      1st Place
-                                      <Badge variant="primary">
-                                        + 240 Points
-                                      </Badge>
-                                    </ListGroup.Item>
-                                    <ListGroup.Item>
-                                      2nd or 3rd Place
-                                      <Badge variant="primary">
-                                        + 60 Points
-                                      </Badge>
-                                    </ListGroup.Item>
-                                    <ListGroup.Item>
-                                      4th to 8th Place +{" "}
-                                      <Badge variant="primary">
-                                        + 20 Points
-                                      </Badge>
-                                    </ListGroup.Item>
-                                  </ListGroup>
-                                </VerticalTimelineElement>
-                                <VerticalTimelineElement
-                                  className="vertical-timeline-element--education"
-                                  contentStyle={{
-                                    background: "#7209b7",
-                                    color: "#fff",
-                                  }}
-                                  contentArrowStyle={{
-                                    borderRight: "7px solid #7209b7",
-                                  }}
-                                  iconStyle={{
-                                    background: "#7209b7",
-                                    color: "#fff",
-                                  }}
-                                >
-                                  <h3 className="vertical-timeline-element-title">
-                                    Watch Live
-                                  </h3>
-                                  <p>
-                                    <FontAwesomeIcon
-                                      icon={faTwitch}
-                                      style={{ color: "#fff", fontSize: 40 }}
-                                    />
-                                  </p>
-                                  <h5>Nobody is currently live</h5>
-                                  <p>
-                                    By connecting your Twitch account you will
-                                    automatically be shown on the Watch Live
-                                    pages of the tournaments you are playing in
-                                  </p>
-                                  <br />
-                                  <Button
-                                    className="btn-round"
-                                    onClick={this.handleHowStream}
-                                    variant="warning"
-                                  >
-                                    How to Stream
-                                  </Button>
-                                </VerticalTimelineElement>
-                                <VerticalTimelineElement
-                                  className="vertical-timeline-element--education  my-list"
-                                  contentStyle={{
-                                    background: "#2a9d8f",
-                                    color: "#fff",
-                                  }}
-                                  contentArrowStyle={{
-                                    borderRight: "7px solid #2a9d8f",
-                                  }}
-                                  iconStyle={{
-                                    background: "#2a9d8f",
-                                    color: "#fff",
-                                  }}
-                                >
-                                  <h3 className="vertical-timeline-element-title">
-                                    Prizes
-                                    <div style={{position:'relative',zIndex:1,margin:20}}>
-                                    {getGroupBadgePrice(item.outSign, item.prize , "")}
-                                    </div>
-                                  </h3>
-                                  <h4 className="vertical-timeline-element-subtitle">
-                                    <Countdown
-                                      renderer={renderer}
-                                      date={dateExpired}
-                                    />
-                                  </h4>
-                                  <div
-                                    style={{ maxHeight: 230, overflow: "auto" }}
-                                  >
-                                    <ListGroup>
-                                      {item.current_brackets.map(
-                                        (win, i) => {
-                                          icStart = icStart + 1;
-                                          icEnd = icEnd + parseInt(win.number);
-                                          var icShow = "#" + icStart;
-                                          if (icStart != icEnd) {
-                                            icShow = icShow + " - #" + icEnd;
-                                            icStart = icEnd;
-                                          }
-                                          if (icStart <= 2005) {
-                                            return (
-                                              <ListGroup.Item>
-                                                <span style={{ fontSize: 17 }}>
-                                                  {" "}
-                                                  {icShow} <small> - %{win.percent}</small>
-                                                </span>
-                                                {getGroupBadgeList(item.inSign,item.prize*win.percent/100,'badgegroup')}
-                                                
-                                               
-                                              </ListGroup.Item>
-                                            );
-                                          }
-                                        }
-                                      )}
-                                    </ListGroup>
-                                  </div>
-                                </VerticalTimelineElement>
-                                <VerticalTimelineElement
-                                  className="vertical-timeline-element--education"
-                                  contentStyle={{
-                                    background: "#e76f51",
-                                    color: "#fff",
-                                  }}
-                                  contentArrowStyle={{
-                                    borderRight: "7px solid #e76f51",
-                                  }}
-                                  iconStyle={{
-                                    background: "#e76f51",
-                                    color: "#fff",
-                                  }}
-                                >
-                                  <h3 className="vertical-timeline-element-title">
-                                    Finished &amp; Paid
-                                  </h3>
-                                  <h4 className="vertical-timeline-element-subtitle">
-                                    <Countdown
-                                      renderer={renderer}
-                                      date={item.finished}
-                                    />
-                                  </h4>
-                                  <div
-                                    style={{ maxHeight: 580, overflow: "auto" }}
-                                  >
-                                    <Table striped  variant="dark">
-                                      <thead>
-                                        <tr>
-                                          <th>#</th>
-                                          <th>Username</th>
-                                          <th>Average Score</th>
-                                          <th></th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {item.players.map((player, i) => {
-                                          icStartL = icStartL + 1;
-                                          if (icStartL <= 225) {
-                                            return (
-                                              <>
-                                                <tr>
-                                                  <td>#{icStartL}</td>
-                                                  <td
-                                                    style={{
-                                                      textAlign: "left",
-                                                    }}
-                                                  >
-                                                    <Avatar
-                                                      size="25"
-                                                      round={true}
-                                                      title={player.username}
-                                                      name={setAvatar(
-                                                        player.username
-                                                      )}
-                                                    />{" "}
-                                                    {player.username} ---
-                                                    
-                                                    {player.nickName}
-                                                    {player.social && (
-                                                      <ListGroup
-                                                        horizontal
-                                                        style={{
-                                                          display:
-                                                            "inline-flex",
-                                                          marginTop: 0,
-                                                          lineHeight: "20px",
-                                                          float: "right",
-                                                        }}
-                                                      >
-                                                        {player.social
-                                                          .instagram && (
-                                                          <ListGroup.Item
-                                                            action
-                                                          >
-                                                            <FontAwesomeIcon
-                                                              icon={faInstagram}
-                                                              style={{
-                                                                color:
-                                                                  "#e95950",
-                                                              }}
-                                                            />
-                                                          </ListGroup.Item>
-                                                        )}
-
-                                                        <ListGroup.Item action>
-                                                          <FontAwesomeIcon
-                                                            icon={faTwitch}
-                                                            style={{
-                                                              color: "#fff",
-                                                            }}
-                                                          />
-                                                        </ListGroup.Item>
-                                                        <ListGroup.Item action>
-                                                          <FontAwesomeIcon
-                                                            icon={faYoutube}
-                                                            style={{
-                                                              color: "#FF0000",
-                                                            }}
-                                                          />
-                                                        </ListGroup.Item>
-                                                        <ListGroup.Item action>
-                                                          <FontAwesomeIcon
-                                                            icon={faTwitter}
-                                                            style={{
-                                                              color: "#00acee",
-                                                            }}
-                                                          />
-                                                        </ListGroup.Item>
-                                                      </ListGroup>
-                                                    )}
-                                                  </td>
-                                                  <td>{item.score} 1000</td>
-                                                  <td>
-                                                    <Button
-                                                      variant="dark"
-                                                      className="btn-block"
-                                                      onClick={ () => this.showDetails(player.username) }
-                                                      
-                                                    >
-                                                      View
-                                                    </Button>
-                                                  </td>
-                                                </tr>
-                                                <tr className={"hide gdetails no"+player.username}>
-                                                 
-                                                  <td colSpan={4} style={{
-                                                              display: "table-cell",
-                                                              background:"#eee"
-                                                            }}>
-                                                    <Table
-                                                      striped size="sm"
-                                                      
-                                                    >
-                                                      <thead>
-                                                        <tr>
-                                                          <th>Date</th>
-                                                          <th>Score</th>
-                                                          <th>Kills</th>
-                                                          <th>Damage Done</th>
-                                                          <th>Time Played</th>
-                                                          <th>Rank</th>
-                                                        </tr>
-                                                      </thead>
-                                                      <tbody>
-                                                        {player.callOfDuties.map(
-                                                          (callOfDuties, i) => {
-                                                            return (
-                                                              <tr>
-                                                                <td>
-                                                                  {
-                                                                    callOfDuties.utcStartTime
-                                                                  }
-                                                                </td>
-                                                                <td>
-                                                                  {
-                                                                    callOfDuties.score
-                                                                  }
-                                                                </td>
-                                                                <td>
-                                                                  {
-                                                                    callOfDuties.kills
-                                                                  }
-                                                                </td>
-                                                                <td>
-                                                                  {
-                                                                    callOfDuties.damageDone
-                                                                  }
-                                                                </td>
-                                                                <td>
-                                                                  {
-                                                                    callOfDuties.timePlayed
-                                                                  }
-                                                                </td>
-                                                                <td>
-                                                                  {
-                                                                    callOfDuties.ranking
-                                                                  }
-                                                                </td>
-                                                              </tr>
-                                                            );
-                                                          }
-                                                        )}
-                                                      </tbody>
-                                                    </Table>
-                                                  </td>
-                                                </tr>
-                                              </>
-                                            );
-                                          }
-                                        })}
-                                      </tbody>
-                                    </Table>
-                                  </div>
-                                </VerticalTimelineElement>
-                                <VerticalTimelineElement
-                                  className="vertical-timeline-element--education"
-                                  contentStyle={{
-                                    background: "#264653",
-                                    color: "#fff",
-                                  }}
-                                  contentArrowStyle={{
-                                    borderRight: "7px solid #264653",
-                                  }}
-                                  iconStyle={{
-                                    background: "#264653",
-                                    color: "#fff",
-                                  }}
-                                >
-                                  <h3 className="vertical-timeline-element-title">
-                                    League Rules
-                                  </h3>
-                                  <p id="jsonhtml"></p>
-                                  <span id="jsonhtml2" className="hide">
-                                    {item.rules}
-                                  </span>
-                                </VerticalTimelineElement>
-                              </VerticalTimeline>
-                            </Col>
-                          </Row>
-                        </Card.Header>
-                      </Card>
-                    </Col>
+                    <LeagueSection item={item} token={currentUser} />
                   ) : (
                     <>
                       {(item.gameMode == "Tournament" && !this.state.matchid) ? (
+                        
                         <Col className="mx-auto" lg="10" md="11">
                           <Card
                             className="card-lock text-center card-plain card-league"
@@ -2195,784 +1477,8 @@ $('.gdetails.no'+player).removeClass('hide');
                           </Card>
                         </Col>
                       ) : (
-                        <Col className="mx-auto" lg="7" md="10">
-                          <Card
-                            className="card-lock text-center card-plain card-match"
-                            style={{ color: "#fff" }}
-                          >
-                            <Card.Header>
-                              <Row>
-                                {
-                                
-                                matchidFind.matchPlayers.map(
-                                  (player, j) => {
-                                    if (player.username) {
-                                      activePlayer++;
-                                    }
-                                    if (
-                                      player.username == currentUser.username &&
-                                      player.ready &&
-                                      !this.state.curPlayerReady &&
-                                      firstLoad
-                                    ) {
-                                      this.setState({ curPlayerReady: true });
-                                    }
-                                    return (
-                                      <>
-                                        {j == 1 && (
-                                          <Col
-                                            xs="4"
-                                            style={{
-                                              lineHeight: "20px",
-                                              color: "#fff",
-                                              fontSize: "20px",
-                                            }}
-                                          >
-                                            {getGroupBadge(
-                                              item.outSign,
-                                              item.amount,
-                                              ""
-                                            )}
-                                            <h5 style={{ marginTop: 5 }}>
-                                              {item.gameName} <br />
-                                              <small>
-                                                {item.gameMode}
-                                              </small>{" "}
-                                              <br />
-                                              <small className="text-muted">
-                                                <FontAwesomeIcon
-                                                  fixedWidth
-                                                  icon={getIcon(
-                                                    item.gameConsole
-                                                  )}
-                                                />{" "}
-                                                {item.gameConsole}
-                                              </small>
-                                            </h5>
-                                           
-                              {getGroupBadgePrice(item.outSign, item.prize , "")}
-                             
-                                          </Col>
-                                        )}
-                                        {(j == 3 || j == 5) && (
-                                          <Col
-                                            xs="4"
-                                            style={{
-                                              lineHeight: "20px",
-                                              color: "#fff",
-                                              fontSize: "20px",
-                                            }}
-                                          >
-                                            <Badge
-                                              variant={getColor(item.amount)}
-                                            >
-                                              ${item.amount}
-                                            </Badge>
-                                            <h4 style={{ marginTop: 5 }}>
-                                              {item.game} <br />
-                                              <small className="text-muted">
-                                                <FontAwesomeIcon
-                                                  fixedWidth
-                                                  icon={getIcon(
-                                                    item.gameconsole
-                                                  )}
-                                                />{" "}
-                                                {item.gameconsole}
-                                              </small>
-                                            </h4>
-                                            
-                                          </Col>
-                                        )}
-                                        <Col
-                                          xs="4"
-                                          key={j}
-                                          style={
-                                            !player.username
-                                              ? { opacity: 0.3 }
-                                              : null
-                                          }
-                                        >
-                                          <div>
-                                            {player.username ? (
-                                              <a href={"/user/"+player.username}  target="_blank">
-                                              <Avatar
-                                                size="50"
-                                                round={true}
-                                                title={player.username}
-                                                name={setAvatar(
-                                                  player.username
-                                                )}
-                                              />
-                                              </a>
-                                            ) : (
-                                              <Avatar
-                                                size="50"
-                                                round={true}
-                                                src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
-                                                color="lightgray"
-                                              />
-                                            )}
-                                          </div>
-                                          {!player.username && <>...</>}
-                                          <small> {player.username}</small>
-                                          {(!this.state.matchid) && (
-                                            <>
-                                          {(matchidFind.status == "Pending" ||
-                                            matchidFind.status == "Ready") && (
-                                            <>
-                                              <br />
-                                              {(matchidFind.status != "Ready" ||
-                                                player.username !=
-                                                  currentUser.username) && (
-                                                <div
-                                                  style={{
-                                                    position: "absolute",
-                                                    width: "100%",
-                                                    height: 30,
-                                                    zIndex: 3,
-                                                  }}
-                                                ></div>
-                                              )}
-
-                                              <div
-                                                style={
-                                                  matchidFind.status != "Ready" ||
-                                                  player.username !=
-                                                    currentUser.username
-                                                    ? { opacity: 0.5 }
-                                                    : null
-                                                }
-                                              >
-                                                <BootstrapSwitchButton
-                                                  checked={player.ready}
-                                                  size="xs"
-                                                  onlabel="Ready"
-                                                  onstyle="success"
-                                                  offlabel="Ready"
-                                                  onChange={(
-                                                    checked: boolean
-                                                  ) => {
-                                                    this.handlechangeReadyEvent(
-                                                      checked
-                                                    );
-                                                  }}
-                                                  style="w-100 mx-1"
-                                                />
-                                              </div>
-                                            </>
-                                          )}
-                                          </>
-                                          )}
-                                          {(player.username && matchidFind.status=='InPlay') && (
-                                            <>
-                                          {(isInPlayers) && (
-                                            <>
-                                          <div>---------</div>
-
-                                          <p><small className="text-muted">{getPlayerTag(player.username,item.players,'console',item.gameName)} ID</small><br/>{getPlayerTag(player.username,item.players,'tagid',item.gameName)}</p>
-                                          {(getPlayerTag(player.username,item.players,'nickname',item.gameName).length > 3) &&(
-                                            <p><small className="text-muted">Nickname</small><br/>{getPlayerTag(player.username,item.players,'nickname',item.gameName)}</p>
-                                          )}
-                                          
-                                          </>
-                                          )}
-                                          </>
-                                          )}
-                                        </Col>
-                                      </>
-                                    );
-                                  }
-                                )}
-                              </Row>
-                            </Card.Header>
-                            {(item.gameMode == "Tournament" && this.state.matchid) ? (
-                              
-                              <>
-                            <Card.Body>
-                              <Row>
-                                <Col xs="12">
-                                <h2>{getMatchTitle(matchidFind.level,item.totalPlayer)}</h2>
-                                {(matchidFind.status == 'Pending') && (
-                                    <>
-                                  
-                                  <h3>
-                                  
-                                  <small className="text-muted">Start at</small><br/>
-                                              <Countdown
-                                                  renderer={renderer}
-                                                  date={matchidFind.startTime}
-                                                />
-                                                
-                                              </h3>
-                                              </>
-                                )}
-                                
-                                  {item.gameName == "ClashRoyale" &&
-                                  matchidFind.status == "InPlay" ? (
-                                    <>
-                                      <Button
-                                        className="btn-fill btn-block btn-lg"
-                                        type="button"
-                                        variant="danger"
-                                        style={{
-                                          position: "relative",
-                                          zIndex: 1,
-                                        }}
-                                        onClick={this.handleClashFinished}
-                                        disabled={this.state.isloading}
-                                      >
-                                        Game finished
-                                      </Button>
-                                    </>
-                                  ) : (
-                                    <>
-                                      {(isInPlayers) && (
-                                        <>
-                                          {matchidFind.status == "InPlay" && (
-                                            <>
-                                              <p>Match Code</p>
-
-                                              <Card.Title
-                                                as="h1"
-                                                className="matchcode"
-                                              >
-                                                {getCode(matchidFind.matchCode)}
-                                              </Card.Title>
-                                              <Row>
-                                                <Col xs="6">
-                                                  <Button
-                                                    className="btn-fill btn-block btn-lg"
-                                                    type="button"
-                                                    variant="danger"
-                                                    style={{
-                                                      position: "relative",
-                                                      zIndex: 1,
-                                                    }}
-                                                    onClick={
-                                                      this.handlecAlertLost
-                                                    }
-                                                  >
-                                                    I Lost
-                                                  </Button>
-                                                </Col>
-
-                                                <Col xs="6">
-                                                  <input
-                                                    type="file"
-                                                    id="uploadfile"
-                                                    accept="video/*"
-                                                    name="file"
-                                                    className="hide"
-                                                    ref={this.fileUpload}
-                                                    onChange={
-                                                      this.onChangeHandler
-                                                    }
-                                                  />
-                                                  <Button
-                                                    className="btn-fill btn-block btn-lg"
-                                                    type="button"
-                                                    variant="success"
-                                                    style={{
-                                                      position: "relative",
-                                                      zIndex: 1,
-                                                    }}
-                                                    onClick={
-                                                      this.handlecAlertWin
-                                                    }
-                                                    disabled={isUpLoading}
-                                                  >
-                                                    {progressLable}
-                                                  </Button>
-                                                  {progress > 0 && (
-                                                    <div className="prosbar">
-                                                      <ProgressBar
-                                                        variant="success"
-                                                        now={progress}
-                                                        label={""}
-                                                      />
-                                                    </div>
-                                                  )}
-                                                </Col>
-                                              </Row>
-                                            </>
-                                          )}
-                                          
-                                          
-                                              
-                                          
-                                        </>
-                                      )}
-                                    </>
-                                  )}
-
-                                 
-                                      {matchidFind.winner && (
-                                        <>
-                                        <div
-                                            
-                                            style={{ position:'relative',top:20}}
-                                          >
-                                          <div
-                                            className=" winner avatar"
-                                            style={{ width: 92, height: 92}}
-                                          ></div>
-                                          <div className=" ">
-                                            <Avatar
-                                              size="92"
-                                              round={true}
-                                              title={matchidFind.winner}
-                                              name={setAvatar(
-                                                matchidFind.winner
-                                              )}
-                                            />
-                                          </div>
-                                          </div>
-                                          <h3 style={{color:'gold'}}>
-                                            {matchidFind.winner}<br/><small className="text-muted" style={{position:'relative',top:-5}}>is
-                                            winner</small>
-                                          </h3>
-                                        </>
-                                      )}
-                                </Col>
-                                
-                              </Row>
-                            </Card.Body>
-                            <Card.Footer>
-                              <Card
-                                style={{
-                                  backgroundColor: "black",
-                                  overflow: "auto",
-                                  margin: "0 auto",
-                                  maxWidth: 300,
-                                }}
-                              >
-                                <Card.Body
-                                  style={{
-                                    lineHeight: "10px",
-                                    overflow: "auto",
-                                    textAlign: "initial",
-                                  }}
-                                >
-                                  <img
-                                    alt={item.gameName}
-                                    style={{ width: "100%" }}
-                                    src={
-                                      require("assets/images/games/" +
-                                        item.gameName +
-                                        ".jpg").default
-                                    }
-                                  ></img>
-                                  <Table
-                                    striped
-                                    hover
-                                    borderless={true}
-                                    variant="dark"
-                                  >
-                                    <tbody>
-                                      
-                                    <tr>
-                                        <td>Mode</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.gameMode}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Event ID</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.id}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Event Status</td>
-
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.status}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Match ID</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {matchidFind.id}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Match Status</td>
-
-                                        <td style={{ textAlign: "right" }}>
-                                          {matchidFind.status}
-                                        </td>
-                                      </tr>
-                                      <tr style={{ background: "black" }}>
-                                        <td>Prizes</td>
-
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.outSign.replace('Dollar','$')} <CurrencyFormat value={item.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
-                                        </td>
-                                      </tr>
-                                      {item.current_brackets.map(
-                                        (win, w) => {
-                                          icStart = icStart + 1;
-                                          icEnd = icEnd + parseInt(win.number);
-                                          var icShow = "#" + icStart;
-                                          var nAmount = Number.parseFloat(win.prize).toFixed(2);
-                                            return (
-                                              <tr>
-                                              <td>{icShow}</td>
-                                              <td style={{ textAlign: "right" }}>{item.outSign.replace('Dollar','$')} <CurrencyFormat value={nAmount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} /></td>
-                                                </tr>
-                                            );
-                                          
-                                        }
-                                      )}
-                                    </tbody>
-                                  </Table>
-                                </Card.Body>
-                              </Card>
-                              
-                            </Card.Footer>
-                            </>):(
-                              <>
-                              <Card.Body>
-                              <Row>
-                                <Col xs="12">
-                                  <h2>{matchidFind.status}</h2>
-                                  {item.gameName == "ClashRoyale" &&
-                                  matchidFind.status == "InPlay" ? (
-                                    <>
-                                      <Button
-                                        className="btn-fill btn-block btn-lg"
-                                        type="button"
-                                        variant="danger"
-                                        style={{
-                                          position: "relative",
-                                          zIndex: 1,
-                                        }}
-                                        onClick={this.handleClashFinished}
-                                        disabled={this.state.isloading}
-                                      >
-                                        Game finished
-                                      </Button>
-                                    </>
-                                  ) : (
-                                    <>
-                                      {(item.players[0].username ==
-                                        currentUser.username ||
-                                        item.players[1].username ==
-                                          currentUser.username) && (
-                                        <>
-                                          {matchidFind.status == "InPlay" && (
-                                            <>
-                                              <p>Match Code</p>
-
-                                              <Card.Title
-                                                as="h1"
-                                                className="matchcode"
-                                              >
-                                                {getCode(matchidFind.matchCode)}
-                                              </Card.Title>
-                                              <Row>
-                                                <Col xs="6">
-                                                  <Button
-                                                    className="btn-fill btn-block btn-lg"
-                                                    type="button"
-                                                    variant="danger"
-                                                    style={{
-                                                      position: "relative",
-                                                      zIndex: 1,
-                                                    }}
-                                                    onClick={
-                                                      this.handlecAlertLost
-                                                    }
-                                                  >
-                                                    I Lost
-                                                  </Button>
-                                                </Col>
-
-                                                <Col xs="6">
-                                                  <input
-                                                    type="file"
-                                                    id="uploadfile"
-                                                    accept="video/*"
-                                                    name="file"
-                                                    className="hide"
-                                                    ref={this.fileUpload}
-                                                    onChange={
-                                                      this.onChangeHandler
-                                                    }
-                                                  />
-                                                  <Button
-                                                    className="btn-fill btn-block btn-lg"
-                                                    type="button"
-                                                    variant="success"
-                                                    style={{
-                                                      position: "relative",
-                                                      zIndex: 1,
-                                                    }}
-                                                    onClick={
-                                                      this.handlecAlertWin
-                                                    }
-                                                    disabled={isUpLoading}
-                                                  >
-                                                    {progressLable}
-                                                  </Button>
-                                                  {progress > 0 && (
-                                                    <div className="prosbar">
-                                                      <ProgressBar
-                                                        variant="success"
-                                                        now={progress}
-                                                        label={""}
-                                                      />
-                                                    </div>
-                                                  )}
-                                                </Col>
-                                              </Row>
-                                            </>
-                                          )}
-                                          {matchidFind.status == "InPlay" && (
-                                            <>
-                                              <p>
-                                                <small className="text-muted">
-                                                  Avalable until
-                                                </small>
-                                                <br />
-                                                <Countdown
-                                                  renderer={renderer}
-                                                  date={dateExpired}
-                                                />
-                                              </p>
-                                            </>
-                                          )}
-                                        </>
-                                      )}
-                                    </>
-                                  )}
-
-                                  {matchidFind.status !== "" ? (
-                                    <>
-                                      {matchidFind.winner ? (
-                                        <>
-                                          <div
-                                            
-                                            style={{ position:'relative',top:20}}
-                                          >
-                                          <div
-                                            className=" winner avatar"
-                                            style={{ width: 92, height: 92}}
-                                          ></div>
-                                          <div className=" ">
-                                            <Avatar
-                                              size="92"
-                                              round={true}
-                                              title={matchidFind.winner}
-                                              name={setAvatar(
-                                                matchidFind.winner
-                                              )}
-                                            />
-                                          </div>
-                                          </div>
-                                          <h3 style={{color:'gold'}}>
-                                            {matchidFind.winner}<br/><small className="text-muted" style={{position:'relative',top:-5}}>is
-                                            winner</small>
-                                          </h3>
-                                        </>
-                                      ) : (
-                                        <>
-                                          {(matchidFind.status == "Pending" ||
-                                            matchidFind.status == "Ready") && (
-                                            <>
-                                              {item.players[0].username ==
-                                                currentUser.username ||
-                                              item.players[1].username ==
-                                                currentUser.username ? (
-                                                <>
-                                                  <p>
-                                                    <small className="text-muted">
-                                                      Avalable until
-                                                    </small>
-                                                    <br />
-                                                    <Countdown
-                                                      renderer={renderer}
-                                                      date={dateExpired}
-                                                    />
-                                                  </p>
-                                                  {item.players[0].username &&
-                                                  item.players[1].username &&
-                                                  matchidFind.status == "Ready" ? (
-                                                    <>
-                                                      <p
-                                                        style={{
-                                                          color: "#fff",
-                                                          fontSize: "14px",
-                                                          padding: 20,
-                                                        }}
-                                                      >
-                                                        Waiting for ready...
-                                                      </p>
-                                                    </>
-                                                  ) : (
-                                                    <>
-                                                      <p
-                                                        style={{
-                                                          color: "#fff",
-                                                          fontSize: "14px",
-                                                          padding: 20,
-                                                        }}
-                                                      >
-                                                        Waiting for another
-                                                        player...
-                                                      </p>
-                                                    </>
-                                                  )}
-
-                                                  {matchidFind
-                                                    .matchPlayers[0].username !=
-                                                    currentUser.username && (
-                                                    <Button
-                                                      className="btn-round"
-                                                      onClick={
-                                                        this.handleLeaveMatch
-                                                      }
-                                                      variant="warning"
-                                                      disabled={
-                                                        this.state.isloading
-                                                      }
-                                                    >
-                                                      Leave Match
-                                                    </Button>
-                                                  )}
-                                                </>
-                                              ) : (
-                                                <>
-                                                  <p>
-                                                    <small className="text-muted">
-                                                      Avalable until
-                                                    </small>
-                                                    <br />
-                                                    <Countdown
-                                                      renderer={renderer}
-                                                      date={dateExpired}
-                                                    />
-                                                  </p>
-                                                  <p
-                                                    style={{
-                                                      color: "#fff",
-                                                      fontSize: "14px",
-                                                      padding: 20,
-                                                    }}
-                                                  >
-                                                    Match is open, join now
-                                                    before someone else takes
-                                                    your spot. Winner takes $
-                                                    {item.prize}
-                                                    , let's get it! Match open
-                                                    for limited time.
-                                                  </p>
-                                                  {parseInt(item.totalPlayer) >
-                                                    activePlayer && (
-                                                    <Button
-                                                      className="btn-round"
-                                                      onClick={
-                                                        this.handleJoinMatch
-                                                      }
-                                                      variant="danger"
-                                                      disabled={
-                                                        this.state.isloading
-                                                      }
-                                                    >
-                                                      Join Match {item.inSign.replace('Dollar','$')}  {item.amount}
-                                                    </Button>
-                                                  )}
-                                                </>
-                                              )}
-                                            </>
-                                          )}
-                                        </>
-                                      )}
-                                    </>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </Col>
-                                <Col className="text-center">
-                                  {!item.players[1].username && <></>}
-                                </Col>
-                              </Row>
-                            </Card.Body>
-                            <Card.Footer>
-                              <Card
-                                style={{
-                                  backgroundColor: "black",
-                                  overflow: "auto",
-                                  margin: "0 auto",
-                                  maxWidth: 300,
-                                }}
-                              >
-                                <Card.Body
-                                  style={{
-                                    lineHeight: "10px",
-                                    overflow: "auto",
-                                    textAlign: "initial",
-                                  }}
-                                >
-                                  <img
-                                    alt={item.gameName}
-                                    style={{ width: "100%" }}
-                                    src={
-                                      require("assets/images/games/" +
-                                        item.gameName +
-                                        ".jpg").default
-                                    }
-                                  ></img>
-                                  <Table
-                                    striped
-                                    hover
-                                    borderless={true}
-                                    variant="dark"
-                                  >
-                                    <tbody>
-                                    <tr>
-                                        <td>Event ID</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.id}
-                                        </td>
-                                      </tr>
-                                      
-                                      <tr>
-                                        <td>Match ID</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {matchidFind.id}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Match Status</td>
-
-                                        <td style={{ textAlign: "right" }}>
-                                          {matchidFind.status}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Winner takes</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.outSign.replace('Dollar','$')} <CurrencyFormat value={item.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Mode</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.gameMode}
-                                        </td>
-                                      </tr>
-                                      
-                                    </tbody>
-                                  </Table>
-                                </Card.Body>
-                              </Card>
-                              
-                            </Card.Footer>
-                              </>
-                            )}
-                          </Card>
-                        </Col>
+                        <MatchSection item={item} token={currentUserTag} />
+                        
                       )}
                     </>
                   )}

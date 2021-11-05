@@ -2,7 +2,7 @@ import axios from "axios";
 import authHeader from "./auth-header";
 import uploadHeader from "./upload-header";
 
-import { POSTURLTest } from "const";
+import { POSTURLTest,defUser } from "const";
 
 const API_URL_TEST = POSTURLTest;
 
@@ -19,13 +19,20 @@ const getAllEvents=async () => {
 const getAllEventsByStatus=async (status) => {
   const getstatus = status.queryKey[1];
   const { data } = await client.get(`/getEventsByStatus/?status=${getstatus}`)
-  console.log(data)
+  //console.log(data)
   return data
 }
   const getUser=async () => {
   
     const { data } = await client.get("/getUser",{ headers: authHeader() })
-    return data
+    if (data.accessToken) {
+      
+      return data;
+    }else{
+      
+return defUser;
+    }
+    
   }
   const getUserProfile=async (username) => {
   const user = username.queryKey[1];

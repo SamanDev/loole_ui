@@ -1,5 +1,5 @@
 import axios from "axios";
-import { POSTURL } from 'const';
+import { POSTURL,defUser } from 'const';
 import UserWebsocket from 'services/user.websocket'
 import authHeader from "./auth-header";
 const API_URL = POSTURL;
@@ -77,7 +77,10 @@ class AuthService {
     }
     return usr;
     }else{
-      this.logout()
+      localStorage.setItem("user", JSON.stringify(defUser));
+         
+    return defUser;
+      //this.logout()
     }
   
   }

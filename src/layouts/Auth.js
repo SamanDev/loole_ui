@@ -1,6 +1,11 @@
 import React, { Component }from "react";
 import { Switch, Route,Redirect } from "react-router-dom";
 
+
+import Avatar, { ConfigProvider } from "react-avatar";
+import { DEFCOLORS,defUser } from "const";
+import { useAllEvents,useUser } from "services/hooks";
+import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
 import $ from "jquery";
 // react-bootstrap components
 import {
@@ -11,13 +16,25 @@ import {
   Nav,
   Container,
   Col,
+  Spinner
 } from "react-bootstrap";
-import AuthNavbar from "components/Navbars/LandNavbar.js";
+import LandNavbar from "components/Navbars/LandNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
-
+import userService from "services/user.service";
 import AuthService from "services/auth.service";
 // dinamically create auth routes
+
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
+import {
+  userState
+} from 'atoms';
 import routes from "routes.js";
 function scrollToTop() {
 
@@ -53,35 +70,42 @@ const getRoutes = (routes) => {
     }
   });
 };
-  class Auth extends Component {
+function  Auth() {
+  const queryClient = new QueryClient()
+  const [token,setToken] = useRecoilState(userState);
+  const   userGet  = defUser
+  //const token = userGet;
   
-componentDidMount() {
-  
+  if (!userGet) {return  <h4 style={{textAlign: "center"}}>Loading 
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" />
+  <Spinner animation="grow" size="sm" /></h4>;
+  }
+  setToken(userGet)
   
       var responsive = $(window).width();
-      if (responsive >= 768) {
-        $('.landing-page').removeClass('landing-mobile')
-    }
-    
-
-}
-  
-  render() {
-    return (
-      <>
-        
-     <div className="landing-page landing-page1 landing-mobile">
-          {/* Navbar */}
-          <AuthNavbar/>
-          {/* End Navbar */}
-          <Switch>{getRoutes(routes)}</Switch>
-        
-        </div>
+        if (responsive >= 768) {
+          $('.landing-page').removeClass('landing-mobile')
+      }
       
-      </>
-    );
-  }
- 
+  return (
+    <>
+   
+    <ConfigProvider colors={DEFCOLORS}>
+      <div className="landing-page landing-page1 landing-mobile">
+        {/* Navbar */}
+        <LandNavbar token={userGet}/>
+        {/* End Navbar */}
+        <QueryClientProvider client={queryClient}>
+        <Switch>{getRoutes(routes)}</Switch>
+        </QueryClientProvider>
+      </div>
+      </ConfigProvider>
+    
+    </>
+  );
+    
 }
+
 
 export default (Auth);

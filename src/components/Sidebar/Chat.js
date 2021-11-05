@@ -73,7 +73,8 @@ class Chatbar extends Component {
     this.setState({ masterplayer: newProps.masterplayer });
     this.setState({ secondplayer: newProps.secondplayer });
     this.setState({ currentUser: newProps.username });
-    console.log('Props updated')
+    
+    //console.log('Props updated')
   }
   changeMessageBox(e) {
     console.log(e.target.value)
@@ -200,7 +201,6 @@ this.setState({
                 <h4 style={{ margin: "10px 0px" }}>Lobby</h4>
               )}
                 
-                <h4 style={{ margin: "10px 0px" }}>{currentUser.username}</h4>
               </Card.Header>
               <Card.Body
                 style={{
@@ -472,6 +472,8 @@ this.setState({
               <Card.Footer style={{ padding: 10 }}>
                 <Card style={{ backgroundColor: "#222", margin: 0 }}>
                   <Card.Body style={{ padding: 10 }}>
+              {currentUser.accessToken!=''&&(
+                
                     <Form
                       onSubmit={this.handleChat}
                       ref={(c) => {
@@ -500,7 +502,9 @@ this.setState({
                         
                       </Row>
                     </Form>
-                  </Card.Body>
+                  
+              )}
+              </Card.Body>
                 </Card>
               </Card.Footer>
             </Card>

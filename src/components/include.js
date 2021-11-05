@@ -46,6 +46,7 @@ export const  getQueryVariable  = (variable) =>{
 export const  getPageVariable  = () =>{
   var query = window.location.href;
   var vars = query.split("/")[4];
+  if(typeof vars == 'undefined'){vars = query.split("/")[3];}
   //console.log(vars)
       return vars;
     
@@ -830,12 +831,15 @@ return true
   };
   export const haveAdmin = ( userTags ) => {
   var isAdmin = false;
-userTags.map(function(tag){
+  if(userTags){
+    userTags.map(function(tag){
       
-if (tag.name=='ROLE_ADMIN'){
-isAdmin = true;
-}
-})
+      if (tag.name=='ROLE_ADMIN'){
+      isAdmin = true;
+      }
+      })
+  }
+
 
 return isAdmin
 

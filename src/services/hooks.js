@@ -13,8 +13,8 @@ const useAllEventsByStatus = (status) => {
 }
   const useUser = () => {
   
-    const result = useQuery("User",api.getUser)
-    queryClient.setQueriesData('User', result)
+    const result = useQuery(["User"],api.getUser)
+   
     return result
   }
   const useUserProfile = (username) => {
