@@ -18,7 +18,7 @@ const getAllEvents=async () => {
 }
 const getAllEventsByStatus=async (status) => {
   const getstatus = status.queryKey[1];
-  const { data } = await client.get(`/getEventsByStatus/?status=${getstatus}`)
+  const { data } = await client.get(`/getEventsByStatus/?status=${getstatus}&page=1&number=6&order=desc`)
   //console.log(data)
   return data
 }

@@ -73,8 +73,6 @@ import { UPLOADURL, POSTURLTest } from "const";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-var firstLoad = true;
-var isLoading = true;
 
 const API_URL_TEST = POSTURLTest;
 const Toast = Swal.mixin({
@@ -175,6 +173,7 @@ var dateStart = null;
             var matchLevelFind =null
             var isJoin = false;
     var activePlayer = 0;
+    var isLoading= false;
 class LockScreenPage extends Component {
   constructor(props) {
     super(props);
@@ -194,7 +193,7 @@ class LockScreenPage extends Component {
     this.state = {
       event: userService.getEventById(getQueryVariable("id")),
       events: null,
-      currentUserTag: userService.getCurrentUser(),
+      currentUserTag: AuthService.getCurrentUser(),
       tag: "R0P0C8R89",
       eventid: getQueryVariable("id"),
       matchid: getQueryVariable("matchid"),
@@ -219,22 +218,23 @@ class LockScreenPage extends Component {
     this._isMounted = true;
     if (this._isMounted) {
       eventBus.on("eventsDataEventDo", (event) => {
-         
+         alert(JSON.stringify(event))
             
         this.editEvent(event);
         
         
         
         //this.reGetevents();
-       // console.log("socket events: "+JSON.stringify(newitem));
+       console.log("socket events: "+JSON.stringify(event));
       });
       eventBus.on("eventsDataEvent", (event) => {
+        console.log("socket events: "+JSON.stringify(event));
         this.reGetevents()
       })
     }
   }
   componentWillUnmount() {
-    //this._isMounted = false;
+    
   }
   setSelectedGameName(e) {
     
@@ -424,13 +424,15 @@ class LockScreenPage extends Component {
         if(!haveGameTag(game,this.state.currentUserTag.userTags))                  resetPw();
               }
   reGetevents(){
-    if(getQueryVariable("id") ){
+    console.log(isLoading);
+    if(getQueryVariable("id") && isLoading==false){
+      isLoading= true;
       
       userService.getEventById(getQueryVariable("id")).then(
         (response) => {
-          this.setState({
-            isloading: false,
-          });
+          
+          //isLoading= false
+        
         },
         (error) => {}
       );
@@ -686,14 +688,14 @@ class LockScreenPage extends Component {
     return item;
   }
   render() {
-    let { progress, isUpLoading, progressLable, event,events, eventid,currentUserTag,isloading } = this.state;
+    let { progress, isUpLoading, progressLable, event,events, eventid,currentUserTag } = this.state;
     var item = event
     
     
     //const { id } = useParams();
     //var { data: eventGet , isLoading } = useEvent(eventid)
    // var eventGet = false;
-   console.log(currentUserTag)
+  
    if(!currentUserTag){
    
     
@@ -802,13 +804,24 @@ class LockScreenPage extends Component {
                       }}
                     >
                       <Container className="text-center">
-                      <Button
+                <h4 style={{ textAlign: "center" }}>
+                  Loading
+                  <Spinner animation="grow" size="sm" />
+                  <Spinner animation="grow" size="sm" />
+                  <Spinner animation="grow" size="sm" />
+                </h4>
+             
+                {(haveAdmin(currentUserTag.roles))&&(
+              <>
+               <Button
                                     className="btn-round actbtn hid2e"
                                     onClick={this.handleDelete}
                                     variant="primary"
                                   >
                                     Delet Match
                                   </Button>
+              </>
+            )}
                       </Container>
                     </div>
                     <div
@@ -828,7 +841,7 @@ class LockScreenPage extends Component {
                    // console.log(item)
                         
                     var currentUser = currentUserTag;
-                    console.log(item)
+                    
    
     return (
       <>
@@ -1089,7 +1102,7 @@ class LockScreenPage extends Component {
                                           className="btn-roun2d"
                                           onClick={this.handleJoinMatch}
                                           variant="danger"
-                                          disabled={this.state.isloading}
+                                          disabled={isLoading}
                                         >
                                           <b>Join Tournament</b><br/> {item.inSign.replace('Dollar','$')} <CurrencyFormat value={item.amount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
                                         </Button>
@@ -1166,7 +1179,7 @@ class LockScreenPage extends Component {
                                         className="btn-round"
                                         onClick={this.handleHowStream}
                                         variant="warning"
-                                        disabled={this.state.isloading}
+                                        disabled={isLoading}
                                       >
                                         How to Stream
                                       </Button>

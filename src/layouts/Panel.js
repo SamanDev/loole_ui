@@ -28,6 +28,7 @@ import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
 
+import eventBus from "views/eventBus";
  
 import {
   RecoilRoot,
@@ -91,37 +92,22 @@ const getPage = (routes) => {
     }
   });
 };
-var currentUser = '';
 function  Panel() {
   const queryClient = new QueryClient()
    
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
   const [token,setToken] = useRecoilState(userState);
-  currentUser = token;
-  var currpage = "Dashboard"
-  useEffect(() => {
-    //userService.getUser()
-    
-    //setToken(AuthService.getCurrentUser())
-    
-      //alert()
-     // console.log("change state: " + this.state.loading);
-      
-   
-    // return a function to execute at unmount
-    return () => {
-      
-      //setEvents('');
-    
-    }
-  }, []) // notice the empty array
+  const [currentUser,setCurrentUser] = useState(token);
   
-  if (currentUser==''){
+  
+  var currpage = "Dashboard"
+  
+  if (currentUser.accessToken == '') {
     userService.getUser()
     
-    setToken(AuthService.getCurrentUser())
-     currentUser = token;
+    
+    setCurrentUser(token);
     
     
     return <h4 style={{textAlign: "center"}}>Loading 
@@ -129,9 +115,6 @@ function  Panel() {
     <Spinner animation="grow" size="sm" />
     <Spinner animation="grow" size="sm" /></h4>;
   }
-  
-  
-
   //console.log(currentUser)
   return (
     

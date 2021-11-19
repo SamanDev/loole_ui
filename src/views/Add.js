@@ -19,6 +19,8 @@ import NumericInput from 'react-numeric-input';
 import Active  from "components/active.component";
 import userService from "services/user.service";
 import AddMatch  from "components/add/addmatch.component"; 
+
+import eventBus from "views/eventBus";
 import {
   RecoilRoot,
   atom,
@@ -266,7 +268,11 @@ class CreateMatch extends Component {
         gameNickname: '',
     };
   }
-  
+  componentDidMount() {
+    eventBus.on("eventsDataUser", (event) => {
+     // userService.getUser()
+    });
+  }
   
   setSelectedGameName(e) {
     
@@ -445,100 +451,6 @@ handleTagForm(game,platform) {
     });
   }
   
-
-  handleCreateMatch(e) {
-    e.preventDefault();
-    
-
-    this.setState({
-      message: "",
-      successful: false,
-   
-        
-      
-     
-    });
-   
-
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-     
-      
-        userService
-          .createEvent(
-            this.state.GName.value.split(" - ")[0],
-            this.state.GName.value.split(" - ")[1],
-            this.state.GameMode.value,
-            this.state.BetAmount,
-            this.state.AvalableFor.value
-          )
-          .then(
-            
-            (response) => {
-              if (response.indexOf("successful") > -1) {
-                Swal.fire("", "Data saved successfully.", "success").then(
-                  (result) => {
-                    this.props.history.push("/panel/dashboard");
-                  }
-                );
-              }else{
-                this.setState({
-                  successful: false,
-                  message: "",
-                  submit: false,
-                  loading: false,
-                });
-                if (response=='balanceError'){
-                var resMessage = "To enter this event you need to have more balance!"
-        Swal.fire({
-          title: 'Error!',
-          text:resMessage,
-          icon:"error",
-          showCancelButton: true,
-          confirmButtonText: `Go to Cashier`,
-          canceleButtonText: `Back`,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            this.props.history.push("/panel/cashier");
-          }
-        })
-              }else if (response=='tagError'){
-                this.setSelectedTag(this.state.gameName,this.state.gameConsole)
-                this.setSelectedTag(this.state.GName.value.split(" - ")[0],this.state.GName.value.split(" - ")[1])
-              }
-            }
-            },
-            (error) => {
-              const resMessage =
-                (error.response &&
-                  error.response.data &&
-                  error.response.data.message) ||
-                error.message ||
-                error.toString();
-            
-
-              this.setState({
-                successful: false,
-                message: resMessage,
-                submit: false,
-                loading: false,
-              });
-            }
-          );
-      
-    } else {
-      this.setState({
-        successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-      });
-
-     
-    }
-  }
   handleSaveTags() {
     Swal.fire({
       title: '<br/>Please Wait...',
@@ -813,7 +725,7 @@ handleTagForm(game,platform) {
             <Card.Body>
               <Tab.Content>
                 <Tab.Pane eventKey="match">
-                <AddMatch/>
+                <AddMatch token={currentUser}/>
                   
                       
                     

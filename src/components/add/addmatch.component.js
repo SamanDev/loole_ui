@@ -49,6 +49,7 @@ import {
   getMatchTitle,
   haveGameTag,
   printRequired,
+  handleTagForm,
   haveAdmin
   
 } from "components/include";
@@ -214,29 +215,22 @@ class AddMatch extends Component {
     this.handleCreateMatch = this.handleCreateMatch.bind(this);
     this.setGameName = this.setGameName.bind(this);
     this.setGameMode = this.setGameMode.bind(this);
-    this.setTournamentMode = this.setTournamentMode.bind(this);
+   
     this.setBetAmount = this.setBetAmount.bind(this);
-    this.setTotalPlayer = this.setTotalPlayer.bind(this);
+    
     this.setAvalableFor = this.setAvalableFor.bind(this);
-    this.setStartTime = this.setStartTime.bind(this);
+    this.setSelectedTag = this.setSelectedTag.bind(this);
     
     
     this.setInSign = this.setInSign.bind(this);
-    this.setOutSign = this.setOutSign.bind(this);
-    this.setRules = this.setRules.bind(this);
-    this.setStartTimeLeague = this.setStartTimeLeague.bind(this);
-    this.setEndTimeLeague = this.setEndTimeLeague.bind(this);
-    this.setPrize = this.setPrize.bind(this);
-    this.handleSaveTags = this.handleSaveTags.bind(this);
-    this.handleTagForm = this.handleTagForm.bind(this);
-    this.setSelectedTag = this.setSelectedTag.bind(this);
-    this.setUserTag = this.setUserTag.bind(this);
+    
+    
 
     this.state = {
       GName: { value: "8Pool - Mobile", label: "8Pool - Mobile" },
       GameMode: { value: "Duel", label: "Duel" },
-      TournamentMode: getBlockTournamentVal(10, 4),
-      currentUser: AuthService.getCurrentUser(),
+     
+      currentUser: this.props.token,
       gamemaplocal: [],
       BetAmount: 10,
       Prize: '',
@@ -246,17 +240,9 @@ class AddMatch extends Component {
       submit: false,
       GameTag: "",
       message: "",
-      Rules: "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>",
       inSign:{ value: "Dollar", label: "Dollar" },
-      outSign:{ value: "Dollar", label: "Dollar" },
-      StartTimeLeague:nowS,
-      EndTimeLeague:nowE,
-      TotalPlayer:200,
-      TournamentPayout:"2-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00",
-      gameName: '',
-        gamePlatform: '',
-        gameID: '',
-        gameNickname: '',
+      gamePlatform:'',
+      gameName:'',
     };
   }
   
@@ -272,41 +258,7 @@ class AddMatch extends Component {
       inSign: e,
     });
   }
-  setOutSign(e) {
-    this.setState({
-      outSign: e,
-    });
-  }
-  setRules(e) {
-    this.setState({
-      Rules: e.target.value
-    });
-    
-  }
-  setStartTimeLeague(e) {
-    this.setState({
-      StartTimeLeague: e.target.value
-    });
-    
-  }
-  setEndTimeLeague(e) {
-    this.setState({
-      EndTimeLeague: e.target.value
-    });
-    
-  }
-  setPrize(e) {
-    this.setState({
-      Prize: e
-    });
-    
-  }
-  setTournamentMode(e) {
-    this.setState({
-      TournamentMode: e,
-    });
-  }
-
+  
   setGameMode(e) {
     this.setState({
       GameMode: e,
@@ -325,19 +277,8 @@ class AddMatch extends Component {
       AvalableFor: e,
     });
   }
-  setStartTime(e) {
-    this.setState({
-      StartTime: e,
-    });
-  }
   
-  setTotalPlayer(e) {
-    console.log(this.state)
-    this.setState({
-      TotalPlayer: e,
-    });
-  }
-  setSelectedTag(e,p) {
+  setSelectedTag(e,p,currentUser) {
     if(p=='PS4'||e=='PS4'){e='PSN';p='PSN';}
   if(p=='PS5'||e=='PS5'){e='PSN';p='PSN';}
   if(p=='XBOX'||e=='XBOX'){e='XBOX';p='XBOX';}
@@ -345,8 +286,8 @@ class AddMatch extends Component {
       gameName: e.replace(' Warzone',''),
       gamePlatform: p
     });
+    handleTagForm(e.replace(' Warzone',''),p,currentUser)
     
-    this.handleTagForm(e.replace(' Warzone',''),p)
   }
   setUserTag(e) {
     this.setState({
@@ -354,83 +295,7 @@ class AddMatch extends Component {
     });
     
   }
-  handleTagForm(game,platform) {
   
-  
-    // console.log(game);
-                   const resetPw = async () => {
-                     const swalval = await Swal.fire(getModalTag(game));
-           
-                     let v = (swalval && swalval.value) || swalval.dismiss;
-                     console.log(swalval);
-                     if (v) {
-                       if (v.tagid) {
-                         
-                           if (v.tagid == game+"2") {
-                             this.handleTagForm(game+'2')
-                           }else if (v.tagid == game+"3") {
-                             this.handleTagForm(game+'3')
-                           }else{
-                             this.setState({
-                               gameID: '',
-                               gameNickname: '',
-                             });
-                             if (v.tagid != "") {
-                               this.setState({
-                                 gameID: v.tagid.replace('#',''),
-                                 
-                               });
-                             }
-                             if (v.tagname && v.tagname != "") {
-                               this.setState({
-                                 gameNickname: v.tagname,
-                                 
-                               });
-                             }
-                             if (v.tagplatform && v.tagplatform != "") {
-                               this.setState({
-                                 gamePlatform: v.tagplatform,
-                                 
-                               });
-                             }
-                             
-                               console.log(this.state);
-                               this.handleSaveTags();
-                             
-                           }
-                           
-                         }
-                         
-                         //setformdata(swalval);
-                         
-                       
-                     }
-                   };
-                   resetPw();
-                 }
-                 selectrequired(field,value) {
-                   //console.log(field+': '+value+' -' + allValid+': '+reqnum+' -' + this.state.submit);
-                   if (!value ) {
-                       allValid = false;
-                       if (this.state.submit && reqnum==0) {
-                         //console.log(field)
-                         reqnum = reqnum+1;
-                        
-                         $('input.'+field+'').focus()
-   
-                         return (
-                           printRequired()
-                         )
-                   
-               }
-               } else {
-                 if (reqnum==1 ) {
-                   reqnum=0;
-                 allValid = true;
-                 }
-               }
-                   
-                 }
   handleCreateMatch(e) {
     e.preventDefault();
     
@@ -469,7 +334,31 @@ class AddMatch extends Component {
                   }
                 );
               }else{
-                
+                this.setState({
+                  successful: false,
+                  message: "",
+                  submit: false,
+                  loading: false,
+                });
+                if (response=='balanceError'){
+                var resMessage = "To enter this event you need to have more balance!"
+        Swal.fire({
+          title: 'Error!',
+          text:resMessage,
+          icon:"error",
+          showCancelButton: true,
+          confirmButtonText: `Go to Cashier`,
+          canceleButtonText: `Back`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            this.props.history.push("/panel/cashier");
+          }
+        })
+              }else if (response=='tagError'){
+               
+                this.setSelectedTag(this.state.GName.value.split(" - ")[0],this.state.GName.value.split(" - ")[1],this.state.currentUser)
+              }
             }
             },
             (error) => {
@@ -528,57 +417,7 @@ class AddMatch extends Component {
      
     }
   }
-  handleSaveTags() {
-    Swal.fire({
-      title: '<br/>Please Wait...',
-      text: 'Is working..',
-      customClass:'tag',
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-      allowEnterKey: false,
-      didOpen: () => {
-          Swal.showLoading()
-      }
-  })
   
-    userService
-      .saveTags(
-       
-        this.state.gameName,
-        this.state.gamePlatform,
-        this.state.gameID,
-        this.state.gameNickname,
-
-      )
-      .then(
-        (response) => {
-         
-          let jsonBool = isJson(response);
-   
-          if (jsonBool) {
-            
-              this.setUserTag(response)
-              localStorage.setItem("user", JSON.stringify(response));
-              Swal.fire("", "Data saved successfully.", "success");
-          
-          } else {
-           
-              Swal.fire("", response, "error");
-           
-          }
-        
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          Swal.fire("Error!", resMessage, "error");
-        }
-      );
-  }
   render() {
     var { currentUser } = this.state;
     var _mode = " 1 v 1 ";

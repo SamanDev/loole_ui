@@ -4,6 +4,7 @@ import UserWebsocket from 'services/user.websocket'
 import authHeader from "./auth-header";
 const API_URL = POSTURL;
 
+import eventBus from "views/eventBus";
 class AuthService {
   serverCheck() {
     return axios.post(API_URL + "serverCheck", { headers: authHeader() }).then((response) => {
@@ -36,6 +37,7 @@ class AuthService {
         if (response.data.accessToken) {
 
           localStorage.setItem("user", JSON.stringify(response.data));
+          //eventBus.dispatch("eventsDataUser", response.data);
           //UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username);
         }
 
@@ -47,8 +49,9 @@ class AuthService {
     var loc = window.location.href;
     if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
       UserWebsocket.disconnect();
-      localStorage.removeItem("user");
-      window.location.replace("/");
+      localStorage.setItem("user", JSON.stringify(defUser));
+      eventBus.dispatch("eventsDataUser", defUser);
+      //window.location.replace("/");
     }
     
   }
@@ -72,12 +75,13 @@ class AuthService {
     if(localStorage.getItem('user')){
     const usr = JSON.parse(localStorage.getItem('user'));
     var loc = window.location.href;
+    eventBus.dispatch("eventsDataUser", usr);
     if (loc.indexOf("/panel") > -1){
     UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
     }
     return usr;
     }else{
-      localStorage.setItem("user", JSON.stringify(defUser));
+      //localStorage.setItem("user", JSON.stringify(defUser));
          
     return defUser;
       //this.logout()

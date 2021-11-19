@@ -5,7 +5,7 @@ import CheckButton from "react-validation/build/button";
 import AuthService from "../services/auth.service";
 import { Redirect, Route } from "react-router";
 import {  withRouter} from 'react-router-dom';
-
+import {setUserToken} from  'components/include'
 const required = value => {
   if (!value) {
     return (
@@ -30,7 +30,7 @@ class Login extends Component {
       message: ""
     };
   }
-
+  
   onChangeUsername(e) {
     this.setState({
       username: e.target.value
@@ -56,11 +56,12 @@ class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.username, this.state.password).then(
         (response) => {
-          //console.log(response)
+         // setUserToken(response);
           if (response.accessToken) {
+            //setUserToken(response);
                      //return <Redirect to="/panel/dashboard" />;
-          this.props.history.push("/panel/dashboard");
-          //window.location.href="/panel/dashboard";
+          //this.props.history.push("/panel/dashboard");
+          window.location.href="/panel/dashboard";
           //window.location.reload();
           }
           

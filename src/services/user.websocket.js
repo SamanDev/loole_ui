@@ -57,8 +57,8 @@ class UserWebsocket {
             }
             if (isJson(message)) {
                 var msg = JSON.parse(message);
-                  //log("serverMessage: "+msg.data)
-                  
+               
+                alert((msg.Command))
                   if (msg.Command === 'event') {
                      
                      
@@ -66,16 +66,22 @@ class UserWebsocket {
                     eventBus.dispatch("eventsDataEvent", msg.data);
                     
                       
-                  } else if (message.Command === 'startTick') {
-                      // setYvalStart(msg.tick);
-                  }
+                  } else if (message.Command === 'eventid') {
+                      
+                    alert(JSON.stringify(msg.data))
+                    eventBus.dispatch("eventsDataEventDo", msg.data);
+                }else if (message.Command === 'startTick') {
+                    // setYvalStart(msg.tick);
+                }
               } else {
                   if (message === 'closeConnection') {
                       //localStorage.removeItem("events");
                       //localStorage.clear();
                           //window.location.reload();
-                  }else if(message === 'PasswordChanged'){
-                    eventBus.dispatch("eventsDataPass", 'Your password has been updated.');
+                        }else if(message === 'PasswordChanged'){
+                            eventBus.dispatch("eventsDataPass", 'Your password has been updated.');
+                        }else if(message === 'AccountActivated'){
+                            eventBus.dispatch("eventsDataActive", 'Your account has been activated.');
                   }
               }
             }

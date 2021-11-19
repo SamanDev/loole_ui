@@ -145,7 +145,7 @@ class LeagueSection extends Component {
   componentWillReceiveProps(newProps) {
     
        
-    console.log('Props updated' + JSON.stringify(newProps.token))
+    //console.log('Props updated' + JSON.stringify(newProps.token))
     
 
     this.setState({ currentUser: newProps.token });
@@ -384,7 +384,7 @@ class LeagueSection extends Component {
   render() {
     let { currentUser, item,progress, isUpLoading, progressLable } = this.state;
        
-    console.log(item)
+    //console.log(item)
     matchidFind = item.matchTables[0];
     dateStart = item.startTime;
          dateExpired = item.expire;

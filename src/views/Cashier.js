@@ -138,7 +138,7 @@ class Cashier extends Component {
    
     
     this.state = {
-      currentUserCarts: AuthService.getCurrentUser(),
+      currentUser: AuthService.getCurrentUser(),
       Amount: "10",
       
       loading: false,
@@ -221,55 +221,7 @@ class Cashier extends Component {
     }
   }
   render() {
-    if (!this.state.currentUserCarts.cards) {
-      var currentUser = this.state.currentUserCarts;
-      dataTransaction =  this.state.currentUserCarts.usersReports
-      if (  !currentUser) {
-      
-        //this.reGetevents()
-        
-  
-        return (
-          <>
-            <div
-              className="full-page lock-page"
-              data-color="black"
-              style={{ height: "100vh", overflow: "auto" }}
-              data-image={require("assets/img/bg.jpg").default}
-            >
-              <div
-                className="content "
-                style={{
-                  fontSize: 50,
-                  color: "#fff",
-                  position: "relative",
-                  zIndex: "23",
-                }}
-              >
-                <Container className="text-center">
-                  <h4 style={{ textAlign: "center" }}>
-                    Loading
-                    <Spinner animation="grow" size="sm" />
-                    <Spinner animation="grow" size="sm" />
-                    <Spinner animation="grow" size="sm" />
-                  </h4>
-                </Container>
-              </div>
-              <div
-                className="full-page-background"
-                style={{
-                  backgroundImage:
-                    "url(" + require("assets/img/bg.jpg").default + ")",
-                }}
-              ></div>
-            </div>
-          </>
-        );
-              }
-      
-     // this.handleShetabMethod(currentUser.payMethod[0]);
-    }
-    
+    dataTransaction = this.state.currentUser.usersReports
     return (
       <>
         <Active />
@@ -329,7 +281,7 @@ class Cashier extends Component {
                       defaultActiveKey="shetab"
                     >
                       <Nav role="tablist" variant="tabs">
-                      {(haveGetwayMode(this.state.currentUserCarts.cashierGateways,'IranShetab'))&&(
+                      {(haveGetwayMode(this.state.currentUser.cashierGateways,'IranShetab'))&&(
                         <>
                         <Nav.Item>
                           <Nav.Link
@@ -363,7 +315,7 @@ class Cashier extends Component {
                         </Nav.Item>
                         </>
                       )}
-                        {(haveGetway(this.state.currentUserCarts.cashierGateways,'PerfectMoney'))&&(
+                        {(haveGetway(this.state.currentUser.cashierGateways,'PerfectMoney'))&&(
                         <Nav.Item>
                           <Nav.Link
                             eventKey="pm"
@@ -378,7 +330,7 @@ class Cashier extends Component {
                           </Nav.Link>
                         </Nav.Item>
                         )}
-                        {(haveGetway(this.state.currentUserCarts.cashierGateways,'Crypto')  ||  haveGetway(this.state.currentUserCarts.cashierGateways,'PerfectMoney'))&&(
+                        {(haveGetway(this.state.currentUser.cashierGateways,'Crypto')  ||  haveGetway(this.state.currentUser.cashierGateways,'PerfectMoney'))&&(
                         <Nav.Item>
                           <Nav.Link eventKey="cr">
                             <img
@@ -393,7 +345,7 @@ class Cashier extends Component {
                       </Nav>
                       <Tab.Content>
                       <Tab.Pane eventKey="shetab">
-                      <ShetabDeposit/>
+                      <ShetabDeposit token={this.state.currentUser}/>
                           
                         </Tab.Pane>
                         <Tab.Pane eventKey="papara">
@@ -457,7 +409,7 @@ class Cashier extends Component {
                       defaultActiveKey="shetabc"
                     >
                       <Nav role="tablist" variant="tabs">
-                      {(haveGetwayMode(this.state.currentUserCarts.cashierGateways,'IranShetab'))&&(
+                      {(haveGetwayMode(this.state.currentUser.cashierGateways,'IranShetab'))&&(
                         <>
                         <Nav.Item>
                           <Nav.Link
@@ -491,7 +443,7 @@ class Cashier extends Component {
                       </Nav.Item>
                       </>
                       )}
-                      {(haveGetway(this.state.currentUserCarts.cashierGateways,'PerfectMoney'))&&(
+                      {(haveGetway(this.state.currentUser.cashierGateways,'PerfectMoney'))&&(
                         <Nav.Item>
                           <Nav.Link
                             eventKey="pmc"
@@ -509,7 +461,7 @@ class Cashier extends Component {
                           
                         </Nav.Item>
                         )}
-                        {(haveGetway(this.state.currentUserCarts.cashierGateways,'Crypto'))&&(
+                        {(haveGetway(this.state.currentUser.cashierGateways,'Crypto'))&&(
                         <Nav.Item>
                           <Nav.Link eventKey="crc">
                             <img
@@ -525,7 +477,7 @@ class Cashier extends Component {
                       </Nav>
                       <Tab.Content>
                       <Tab.Pane eventKey="shetabc">
-                      <ShetabCashout/>
+                      <ShetabCashout token={this.state.currentUser}/>
                         </Tab.Pane>
                       <Tab.Pane eventKey="paparac">
                       <PaparaCashout/>

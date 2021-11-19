@@ -29,7 +29,7 @@ class SiteNavbar extends Component {
     }
 
     componentDidMount() {
-        const user = AuthService.getCurrentUser();
+        
 
         if (user) {
             this.setState({

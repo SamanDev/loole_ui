@@ -73,15 +73,14 @@ const getRoutes = (routes) => {
 function  Auth() {
   const queryClient = new QueryClient()
   const [token,setToken] = useRecoilState(userState);
-  const   userGet  = defUser
-  //const token = userGet;
   
-  if (!userGet) {return  <h4 style={{textAlign: "center"}}>Loading 
+  
+  if (!token) {return  <h4 style={{textAlign: "center"}}>Loading 
   <Spinner animation="grow" size="sm" />
   <Spinner animation="grow" size="sm" />
   <Spinner animation="grow" size="sm" /></h4>;
   }
-  setToken(userGet)
+  
   
       var responsive = $(window).width();
         if (responsive >= 768) {
@@ -94,7 +93,7 @@ function  Auth() {
     <ConfigProvider colors={DEFCOLORS}>
       <div className="landing-page landing-page1 landing-mobile">
         {/* Navbar */}
-        <LandNavbar token={userGet}/>
+        <LandNavbar token={token}/>
         {/* End Navbar */}
         <QueryClientProvider client={queryClient}>
         <Switch>{getRoutes(routes)}</Switch>

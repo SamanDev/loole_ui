@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { VectorMap } from "react-jvectormap";
 import AuthService from "services/auth.service";
 import userService from "services/user.service";
-import { useAllEvents,useUser } from "services/hooks"
+import { useAllEvents,useUser,useAllEventsByStatus } from "services/hooks"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
 import { printBlockChallenge } from "components/include";
@@ -49,23 +49,47 @@ import {
 } from 'atoms';
 function Dashboard(props) {
   const [token,setToken] = useRecoilState(userState);
-  const { data: eventsGet , isLoading } = useAllEvents()
-  const { data: userGet } = useUser()
-  //const token = userGet;
+  const { data: eventsGet , isLoading } = useAllEventsByStatus('All');
+  const [currentUser,setCurrentUser] = useState(token);
+  if (token.accessToken == '') {
+    userService.getUser()
+    
+    
+    setCurrentUser(token);
+    
+    
+    return <h4 style={{textAlign: "center"}}>Loading 
+    <Spinner animation="grow" size="sm" />
+    <Spinner animation="grow" size="sm" />
+    <Spinner animation="grow" size="sm" /></h4>;
+  }
+  useEffect(() => {
+    eventBus.on("eventsDataUser", (event) => {
+      
+      setCurrentUser(event);
+      setToken(event);
+    });
+    return () => {
+      
+      //setEvents('');
+    
+    }
+  }, []) // notice the empty array
+
   
-  if (isLoading || !userGet) {return  <h4 style={{textAlign: "center"}}>Loading 
+  if (isLoading ) {return  <h4 style={{textAlign: "center"}}>Loading 
   <Spinner animation="grow" size="sm" />
   <Spinner animation="grow" size="sm" />
   <Spinner animation="grow" size="sm" /></h4>;
   }
-  setToken(userGet)
-  var events=JSON.parse(eventsGet);
+
+  var events=(eventsGet);
   
   
   
   
   if (!events) return <p>loading...</p>
-  var currentUser = token;
+  
   
   const getBlockChallenge = (filtermode) => {
     var newItem = []
@@ -101,7 +125,6 @@ function Dashboard(props) {
   }
   
     
-  
     var Balance = currentUser.balance;
     if (!Balance) { Balance = 0 }
     
@@ -155,7 +178,7 @@ function Dashboard(props) {
                           alt="loole coin"
                          
                           src="/assets/images/dollar.svg"
-                        ></img> {Number.parseFloat(Balance).toFixed(2)}</Card.Title>
+                        ></img> {Number.parseFloat(currentUser.balance).toFixed(2)}</Card.Title>
                   </div>
                 </Col>
               </Row>

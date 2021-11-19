@@ -543,54 +543,7 @@ class PMCashout extends Component {
   
 
   render() {
-    if (!this.state.currentUserCarts.cards) {
-        var currentUser = this.state.currentUserCarts;
-       
-        
-        currentUser.cards = [
-          {
-            value: "",
-            id: 0,
-            label: "New Cart...",
-            expiration: "",
-            cvv: "",
-          },
-          {
-            value: "6104337830282164",
-            id: 1,
-            label: "6104-3378-3028-2164",
-            expiration: "0203",
-            cvv: "237",
-          },
-          {
-            value: "6666502205225022",
-            id: 2,
-            label: "6666-5022-0522-5022",
-            expiration: "1020",
-            cvv: "6800",
-          },
-        ];
-        currentUser.payMethod = [
-          
-          {
-            value: "",
-  
-            label: "Select  Method...",
-          },
-          
-        ];
-        currentUser.cashierGateways.map((item, i) => {
-          if(item.mode=='IranShetab' && item.active){
-          currentUser.payMethod.push({
-            value: item.name,
-            label: item.name,
-          })
-        }
-        })
-       
-        this.setCardDef(currentUser.cards[1]);
-       // this.handleShetabMethod(currentUser.payMethod[0]);
-      }
+    
     return (
       <>
       <Row>

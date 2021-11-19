@@ -20,6 +20,20 @@ import {
   
   } from "react-bootstrap";
   import {
+    setAvatar,
+    getColor,
+    getIcon,
+    renderer,
+    printMatchBlock,
+    getModalTag,
+    getGameTag,
+    getSocialTag,
+    haveSocialTag,
+    haveGameTag,
+    date_locale,
+    userDetails
+  } from "components/include";
+  import {
     RecoilRoot,
     atom,
     selector,

@@ -58,6 +58,7 @@ import {
   date_locale,
   userDetails
 } from "components/include";
+import eventBus from "views/eventBus";
 import {
   RecoilRoot,
   atom,
@@ -69,16 +70,11 @@ import {
   userState
 } from 'atoms';
 function profile() {
-  const [token,setToken] = useRecoilState(userState);
-  const [gameName,setGameName] = useState();
-  const [gamePlatform,setGamePlatform] = useState("");
-  const [gameID,setGameID] = useState("");
-  const [gameNickname,setGameNickname] = useState("");
-  const [message,setMessage] = useState("");
+  const token = useRecoilValue(userState);
+  const [currentUser,setCurrentUser] = useState(token);
   const [loading,setLoading] = useState(false);
   const [submit,setSubmit] = useState(false);
-  const [currentUserTag,SetCurrentUserTag] = useState(token);
-  var currentUser = token;
+  
   
   
   const [socialPlatform,setSocialPlatform] = useState("");
@@ -86,10 +82,16 @@ function profile() {
   const [flag,setFlag] = useState('ir');
   
   useEffect(() => {
+    eventBus.on("eventsDataUser", (event) => {
+      
+      setCurrentUser(event);
+    });
+    return () => {
+      
+      //setEvents('');
     
-    //do something here
-  }, [gameName,gamePlatform,gameID,gameNickname]);
-  
+    }
+  }, []) // notice the empty array
   
 
   const handlecSetInstagram = (game,platform) => {
@@ -99,7 +101,7 @@ function profile() {
       const swalval = await Swal.fire(getModalTag(game));
 
       let v = (swalval && swalval.value) || swalval.dismiss;
-      console.log(socialPlatform);
+     
       if (v) {
         if (v.tagid) {
           
@@ -137,7 +139,6 @@ function profile() {
     }
   }
   
-
 
   var _mode=' 1 v 1 '
         var _color = '#404040'
@@ -231,25 +232,25 @@ function profile() {
        
           <Card.Body>
           <FontAwesomeIcon  icon={faInstagram} style={{color: '#e95950'}}/>  
-          {getSocialTag('Instagram',currentUserTag.userSocialAccounts)}
+          {getSocialTag('Instagram',currentUser.userSocialAccounts)}
           </Card.Body>
           </Card>
           <Card  onClick={() => handlecSetInstagram('Social - Twitch','Twitch')}>
        
           <Card.Body>
-          <FontAwesomeIcon  icon={faTwitch} style={{color: '#6441a5'}} /> {getSocialTag('Twitch',currentUserTag.userSocialAccounts)}
+          <FontAwesomeIcon  icon={faTwitch} style={{color: '#6441a5'}} /> {getSocialTag('Twitch',currentUser.userSocialAccounts)}
           </Card.Body>
           </Card>
           <Card  onClick={() => handlecSetInstagram('Social - Youtube','Youtube')}>
        
           <Card.Body>
-          <FontAwesomeIcon  icon={faYoutube} style={{color: '#FF0000'}}/>  {getSocialTag('Youtube',currentUserTag.userSocialAccounts)}
+          <FontAwesomeIcon  icon={faYoutube} style={{color: '#FF0000'}}/>  {getSocialTag('Youtube',currentUser.userSocialAccounts)}
           </Card.Body>
           </Card>
           <Card  onClick={() => handlecSetInstagram('Social - Twitter','Twitter')}>
        
           <Card.Body>
-          <FontAwesomeIcon  icon={faTwitter} style={{color: '#00acee'}} />  {getSocialTag('Twitter',currentUserTag.userSocialAccounts)}
+          <FontAwesomeIcon  icon={faTwitter} style={{color: '#00acee'}} />  {getSocialTag('Twitter',currentUser.userSocialAccounts)}
           </Card.Body>
           </Card>
                           

@@ -1,4 +1,4 @@
-import React, { Component, useRef, useEffect } from "react";
+import React, { Component, useRef, useEffect,useState } from "react";
 import { Switch, Route,Redirect } from "react-router-dom";
 
 import Avatar, { ConfigProvider } from "react-avatar";
@@ -69,32 +69,19 @@ function scrollToTop() {
 function  Auth() {
   const queryClient = new QueryClient()
   const [token,setToken] = useRecoilState(userState);
-  currentUser = token;
-  console.log(token)
-  var currpage = "Dashboard"
-  useEffect(() => {
-    //userService.getUser()
-    
-    //setToken(AuthService.getCurrentUser())
-    
-      //alert()
-     // console.log("change state: " + this.state.loading);
-      
-   
-    // return a function to execute at unmount
-    return () => {
-      
-      //setEvents('');
-    
-    }
-  }, []) // notice the empty array
+  const [currentUser,setCurrentUser] = useState(token);
+  
+  console.log('Land.js token:'+ JSON.stringify(token))
+  
   
   if (currentUser==''){
     userService.getUser()
+   
     
-    setToken(AuthService.getCurrentUser())
-     currentUser = token;
-     console.log(token)
+    
+    setCurrentUser(token);
+   
+   
     
     return <h4 style={{textAlign: "center"}}>Loading 
     <Spinner animation="grow" size="sm" />
@@ -113,7 +100,7 @@ function  Auth() {
     <ConfigProvider colors={DEFCOLORS}>
       <div className="landing-page landing-page1 landing-mobile">
         {/* Navbar */}
-        <LandNavbar token={currentUser}/>
+        <LandNavbar token={token}/>
         {/* End Navbar */}
         <QueryClientProvider client={queryClient}>
         <Switch>{getRoutes(routes)}</Switch>

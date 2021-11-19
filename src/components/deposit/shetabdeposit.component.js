@@ -10,6 +10,7 @@ import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import eventBus from "views/eventBus";
 import {
     Row,
     Col,
@@ -42,7 +43,6 @@ import {
   };
   
 
-
 class ShetabDeposit extends Component {
   constructor(props) {
     super(props);
@@ -67,7 +67,7 @@ class ShetabDeposit extends Component {
     this.updateCheckbox = this.updateCheckbox.bind(this);
 
     this.state = {
-        currentUserCarts: AuthService.getCurrentUser(),
+      currentUserCarts: this.props.token,
       cartSelected: {
         value: "",
 
@@ -543,18 +543,14 @@ class ShetabDeposit extends Component {
   
 
   render() {
-    if (!this.state.currentUserCarts.cards) {
-        var currentUser = this.state.currentUserCarts;
+    var currentUser = this.state.currentUserCarts;
+    console.log(currentUser)
+    if (!currentUser.cardsdef) {
+         
        
         
-        currentUser.cards = [
-          {
-            value: "",
-            id: 0,
-            label: "New Cart...",
-            expiration: "",
-            cvv: "",
-          },
+        currentUser.cardsdef = [
+       
           {
             value: "6104337830282164",
             id: 1,
@@ -588,9 +584,10 @@ class ShetabDeposit extends Component {
         }
         })
        
-        this.setCardDef(currentUser.cards[1]);
-       // this.handleShetabMethod(currentUser.payMethod[0]);
+        this.setCardDef(currentUser.cardsdef[0]);
+        this.handleShetabMethod(currentUser.payMethod[0]);
       }
+     //eventBus.dispatch("eventsDataUser", currentUser);
     return (
       <>
       <Row>
@@ -655,7 +652,7 @@ class ShetabDeposit extends Component {
                                             onChange={this.handleShetabMethod}
                                             
                                             options={
-                                              this.state.currentUserCarts
+                                              currentUser
                                                 .payMethod
                                             }
                                           />
@@ -747,7 +744,7 @@ class ShetabDeposit extends Component {
                                             value={this.state.cartSelected}
                                             onChange={this.setCardDef}
                                             options={
-                                              this.state.currentUserCarts.cards
+                                              currentUser.cardsdef
                                             }
                                             placeholder="Cart Number"
                                           />

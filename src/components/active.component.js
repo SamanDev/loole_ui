@@ -10,6 +10,7 @@ import {  withRouter} from 'react-router-dom';
 import userService from "services/user.service";
 import { bounce } from 'animate.css';
 
+import eventBus from "views/eventBus";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -31,6 +32,16 @@ function Active(props) {
   const [activeLoading,setLoading] = useState(false);
   const [submit,setSubmit] = useState(false);
   const [currentUser,SetCurrentUser] = useState(token);
+  useEffect(() => {
+    eventBus.on("eventsDataActive", (event) => {
+      Swal.fire("", event, "success");
+    });
+    return () => {
+      
+      //setEvents('');
+    
+    }
+  }, []) // notice the empty array
   
   
   const handleResend = (e) => {

@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link, useLocation } from "react-router-dom";
 import CurrencyFormat from 'react-currency-format';
+import userService from "services/user.service";
+import eventBus from "views/eventBus";
 import { faInstagram,faTwitch, faYoutube,faTwitter } from '@fortawesome/free-brands-svg-icons'
 // react-bootstrap components
 import {
@@ -32,6 +34,25 @@ import {
   
 } from "react-bootstrap";
 
+
+  import {
+    RecoilRoot,
+    atom,
+    selector,
+    useRecoilState,
+    useRecoilValue,
+  } from 'recoil';
+  import {
+    userState
+  } from 'atoms';
+  export const  setUserToken  = (tokenUser) =>{
+    const [token,setToken] = useRecoilState(userState);
+    console.log(token);
+        setToken(tokenUser);
+        console.log(token);
+  }
+  
+    
 export const  getQueryVariable  = (variable) =>{
   var query = window.location.search.substring(1);
   var vars = query.split("&");
@@ -829,6 +850,106 @@ return true
 
   
   };
+  export const handleTagForm = (game,platform,currentUser) => {
+    if(currentUser.accessToken){
+        const resetPw = async () => {
+          const swalval = await Swal.fire(getModalTag(game));
+          
+          let v = (swalval && swalval.value) || swalval.dismiss;
+          
+          if (v) {
+            if (v.tagid) {
+              var gameName,gamePlatform,gameID,gameNickname;
+              gameName = game;
+                if (v.tagid == game+"2") {
+                  handleTagForm(game+'2',platform,currentUser)
+                }else if (v.tagid == game+"3") {
+                  handleTagForm(game+'3',platform,currentUser)
+                }else{
+                  
+                  gameID = '';
+                  gameNickname = '';
+                  if (v.tagid != "") {
+                  
+                  
+                    gameID = v.tagid.replace('#','')
+                  }
+                  if (v.tagname && v.tagname != "") {
+                 
+                    gameNickname = v.tagname;
+                  }
+                  if (v.tagplatform && v.tagplatform != "") {
+                 
+                    gamePlatform = v.tagplatform
+                  }
+                  
+                
+                    handleSaveTags(gameName,gamePlatform,gameID,gameNickname);
+                  
+                }
+                
+              }
+              
+              //setformdata(swalval);
+              
+            
+          }
+        };
+    if(!haveGameTag(game,currentUser.userTags))                  resetPw();
+    }
+      }
+      export const handleSaveTags = (gameName,gamePlatform,gameID,gameNickname) => {
+        
+        Swal.fire({
+          title: '<br/>Please Wait...',
+          text: 'Is working..',
+          customClass:'tag',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false,
+          didOpen: () => {
+              Swal.showLoading()
+          }
+      })
+      
+        userService
+          .saveTags(
+           
+            gameName,
+            gamePlatform,
+            gameID,
+            gameNickname,
+    
+          )
+          .then(
+            (response) => {
+             
+              let jsonBool = isJson(response);
+       
+              if (jsonBool) {
+               
+                
+                  
+                  Swal.fire("", "Data saved successfully.", "success");
+                  //window.location.reload(false);
+              } else {
+               
+                  Swal.fire("", response, "error");
+               
+              }
+            
+            },
+            (error) => {
+              const resMessage =
+                (error.response &&
+                  error.response.data &&
+                  error.response.data.message) ||
+                error.message ||
+                error.toString();
+              Swal.fire("Error!", resMessage, "error");
+            }
+          );
+      }
   export const haveAdmin = ( userTags ) => {
   var isAdmin = false;
   if(userTags){

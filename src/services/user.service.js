@@ -2,6 +2,7 @@ import axios from "axios";
 import authHeader from "./auth-header";
 import uploadHeader from "./upload-header";
 
+import UserWebsocket from 'services/user.websocket'
 import { POSTURLTest,defUser } from "const";
 import { useState } from "react"
 import eventBus from "views/eventBus";
@@ -45,6 +46,7 @@ class UserService {
       .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
+          eventBus.dispatch("eventsDataUser", response.data);
           return response.data;
         }
       });
@@ -106,6 +108,7 @@ class UserService {
       .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
+          eventBus.dispatch("eventsDataUser", response.data);
           return response.data;
         }
 
@@ -172,7 +175,8 @@ class UserService {
       .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
-         //this.getEventById(id)
+          eventBus.dispatch("eventsDataUser", response.data);
+         this.getEventById(id)
           return "successful";
           
         }
@@ -197,7 +201,7 @@ class UserService {
       .put(API_URL_TEST + "loseEvent", { id }, { headers: authHeader() })
       .then((response) => {
         console.log("ok");
-        this.getEventById(id)
+        //this.getEventById(id)
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
         return response.data;
@@ -211,7 +215,8 @@ class UserService {
         if (response.data.accessToken) {
           
           localStorage.setItem("user", JSON.stringify(response.data));
-          //this.getEventById(id)
+          eventBus.dispatch("eventsDataUser", response.data);
+          this.getEventById(id)
           return "successful";
         }
         else{
@@ -221,18 +226,21 @@ class UserService {
       });
   }
    getUser() {
-    return  axios
+    // console.log(JSON.stringify(authHeader()))
+     if(JSON.stringify(authHeader()) != '{}'){
+      return  axios
       .get(API_URL_TEST + "getUser", { headers: authHeader() })
       .then( (response) => {
         if (response.data.accessToken) {
           //console.log(JSON.stringify(response.data))
           localStorage.setItem("user", JSON.stringify(response.data));
-          UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username);
+          //UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username);
+         // eventBus.dispatch("eventsDataUser", response.data);
           return response.data;
         }else{
           var loc = window.location.href;
         if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
-          localStorage.removeItem("user");
+          //localStorage.removeItem("user");
         window.location.replace("/auth/login-page");
         }else{
           //localStorage.setItem("user", JSON.stringify(defUser));
@@ -242,25 +250,45 @@ class UserService {
       }).catch( (err) => {
         var loc = window.location.href;
         if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
-          localStorage.removeItem("user");
-        window.location.replace("/auth/login-page");
+          localStorage.setItem("user", JSON.stringify(defUser));
+          //localStorage.removeItem("user");
+        //window.location.replace("/auth/login-page");
         }else{
-          //localStorage.setItem("user", JSON.stringify(defUser));
-          return defUser
+          localStorage.setItem("user", JSON.stringify(defUser));
+          
         }
-        
+        return defUser
       
       });
+     }else{
+      var loc = window.location.href;
+      if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
+        //localStorage.removeItem("user");
+        localStorage.setItem("user", JSON.stringify(defUser));
+      window.location.replace("/auth/login-page");
+      }else{
+        localStorage.setItem("user", JSON.stringify(defUser));
+        eventBus.dispatch("eventsDataUser", defUser);
+        
+      }
+      return defUser
+      
+    
+    }
+    
   }
   getCurrentUser() {
     if(localStorage.getItem('user')){
     const usr = JSON.parse(localStorage.getItem('user'));
     var loc = window.location.href;
-    
+    eventBus.dispatch("eventsDataUser", usr);
+    if (loc.indexOf("/panel") > -1){
+      //UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
+    }
     return usr;
     }else{
       localStorage.setItem("user", JSON.stringify(defUser));
-         
+      eventBus.dispatch("eventsDataUser", defUser);
     return defUser;
       //this.logout()
     }
@@ -302,13 +330,13 @@ class UserService {
       .post(API_URL_TEST + "getEventById",{id})
       .then( (response) => {
         localStorage.setItem("eventsid", JSON.stringify(response.data));
-        eventBus.dispatch("eventsDataEventDo", response.data);
+        //eventBus.dispatch("eventsDataEventDo", response.data);
         return response.data;
       }).catch(error => {
         return axios.get(API_URL_TEST + "getEvents").then((response) => {
         var _d = JSON.parse(response.data.data).filter( (list) => list.id === id);
         
-          eventBus.dispatch("eventsDataEventDo", _d);
+          //eventBus.dispatch("eventsDataEventDo", _d);
           
         })
       })
@@ -364,12 +392,13 @@ class UserService {
     return axios
       .post(
         API_URL_TEST + "createEvent",
-        { gameName, gameConsole, gameMode, amount, timeMinute },
+        { gameName, gameConsole, gameMode, amount,inSign, timeMinute },
         { headers: authHeader() }
       )
       .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
+          eventBus.dispatch("eventsDataUser", response.data);
           return "successful";
         }
         else{

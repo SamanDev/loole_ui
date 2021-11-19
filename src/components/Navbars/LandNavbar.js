@@ -32,7 +32,7 @@ class LandNavbar extends Component {
             showAdminBoard: false,
             currentUser: this.props.token,
             collapseOpen: false,
-          
+            
             navExpanded: false
         };
 
