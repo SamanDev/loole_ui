@@ -176,7 +176,8 @@ class UserService {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
           eventBus.dispatch("eventsDataUser", response.data);
-         this.getEventById(id)
+          eventBus.remove("eventsDataUser");
+         
           return "successful";
           
         }
@@ -216,7 +217,8 @@ class UserService {
           
           localStorage.setItem("user", JSON.stringify(response.data));
           eventBus.dispatch("eventsDataUser", response.data);
-          this.getEventById(id)
+          eventBus.remove("eventsDataUser");
+          
           return "successful";
         }
         else{
@@ -282,6 +284,8 @@ class UserService {
     const usr = JSON.parse(localStorage.getItem('user'));
     var loc = window.location.href;
     eventBus.dispatch("eventsDataUser", usr);
+    eventBus.remove("eventsDataUser");
+          
     if (loc.indexOf("/panel") > -1){
       //UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
     }
@@ -289,6 +293,8 @@ class UserService {
     }else{
       localStorage.setItem("user", JSON.stringify(defUser));
       eventBus.dispatch("eventsDataUser", defUser);
+      eventBus.remove("eventsDataUser");
+       
     return defUser;
       //this.logout()
     }
@@ -312,9 +318,8 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-       // eventBus.dispatch("eventsData", "");
-        console.log("ok");
-        //this.getEventById(id)
+       
+        //eventBus.remove("eventsDataEventDo");
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
         return response.data;
@@ -325,12 +330,13 @@ class UserService {
 
   }
   getEventById =  ( id) => {
-    
+    console.log(id);
     return   axios
       .post(API_URL_TEST + "getEventById",{id})
       .then( (response) => {
         localStorage.setItem("eventsid", JSON.stringify(response.data));
-        //eventBus.dispatch("eventsDataEventDo", response.data);
+        eventBus.dispatch("eventsDataEventDo", response.data);
+        eventBus.remove("eventsDataEventDo");
         return response.data;
       }).catch(error => {
         return axios.get(API_URL_TEST + "getEvents").then((response) => {

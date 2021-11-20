@@ -58,17 +58,19 @@ class UserWebsocket {
             if (isJson(message)) {
                 var msg = JSON.parse(message);
                
-                alert((msg.Command))
+                //alert((msg.Command))
                   if (msg.Command === 'event') {
                      
                      
                       eventBus.dispatch("eventsData", msg.data);
-                    eventBus.dispatch("eventsDataEvent", msg.data);
+                      eventBus.remove("eventsData");
+                     
                     
+                    //alert(JSON.stringify(msg.data))
                       
                   } else if (message.Command === 'eventid') {
                       
-                    alert(JSON.stringify(msg.data))
+                    //alert(JSON.stringify(msg.data))
                     eventBus.dispatch("eventsDataEventDo", msg.data);
                 }else if (message.Command === 'startTick') {
                     // setYvalStart(msg.tick);

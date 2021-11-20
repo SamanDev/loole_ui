@@ -247,7 +247,9 @@ class LeagueSection extends Component {
     userService.leaveEvent(this.state.eventid).then(
       (response) => {
         if (response.indexOf("successful") > -1) {
-          
+          this.setState({
+            isloading: false,
+          });
          // this.reGetevents();
           Toast.fire({
             icon: "success",
@@ -271,6 +273,9 @@ class LeagueSection extends Component {
           Toast.fire({
             icon: "success",
             title: "Updated.",
+          });
+          this.setState({
+            isloading: false,
           });
           //this.reGetevents();
         }
@@ -535,7 +540,7 @@ class LeagueSection extends Component {
                                                 style={
                                                   matchidFind.status != "Ready" ||
                                                   player.username !=
-                                                    currentUser.username
+                                                    currentUser.username || this.state.isloading
                                                     ? { opacity: 0.5 }
                                                     : null
                                                 }

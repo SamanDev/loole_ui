@@ -218,7 +218,7 @@ class LockScreenPage extends Component {
     this._isMounted = true;
     if (this._isMounted) {
       eventBus.on("eventsDataEventDo", (event) => {
-         alert(JSON.stringify(event))
+        // alert(JSON.stringify(event))
             
         this.editEvent(event);
         
@@ -229,6 +229,7 @@ class LockScreenPage extends Component {
       });
       eventBus.on("eventsDataEvent", (event) => {
         console.log("socket events: "+JSON.stringify(event));
+      //isLoading= false
         this.reGetevents()
       })
     }
@@ -430,8 +431,8 @@ class LockScreenPage extends Component {
       
       userService.getEventById(getQueryVariable("id")).then(
         (response) => {
+          setTimeout(function(){isLoading= false},3000)
           
-          //isLoading= false
         
         },
         (error) => {}
@@ -696,7 +697,7 @@ class LockScreenPage extends Component {
     //var { data: eventGet , isLoading } = useEvent(eventid)
    // var eventGet = false;
   
-   if(!currentUserTag){
+   if(!currentUserTag || !event){
    
     
 
@@ -737,11 +738,12 @@ class LockScreenPage extends Component {
       </>
     );
           }
+          console.log(event)  
     if (  !event) {
       //this.editEvent(event);
       
-                    
-      this.reGetevents()
+                  
+     // this.reGetevents()
       
 
       return (

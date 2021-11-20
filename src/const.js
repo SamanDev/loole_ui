@@ -16,6 +16,7 @@ function getPort() {
     }else{
         protocol = "ws://";
     }
+    protocol = "wss://";
     let loc =  protocol+host+"/users?token=";
     //console.log("location = "+loc);
     return loc;

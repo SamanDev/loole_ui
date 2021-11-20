@@ -222,6 +222,37 @@ class Cashier extends Component {
   }
   render() {
     dataTransaction = this.state.currentUser.usersReports
+    var newToken = this.state.currentUser;
+    if (!newToken.cardsdef) {
+         
+       
+        
+      newToken.cardsdef = [
+        {
+          value: "",
+
+          label: "Select Cart...",
+        },
+        {
+          value: "6104337830282164",
+          id: 1,
+          label: "6104-3378-3028-2164",
+          expiration: "0203",
+          cvv: "237",
+        },
+        {
+          value: "6666502205225022",
+          id: 2,
+          label: "6666-5022-0522-5022",
+          expiration: "1020",
+          cvv: "6800",
+        },
+      ];
+      
+     
+      
+      
+    }
     return (
       <>
         <Active />
@@ -345,7 +376,7 @@ class Cashier extends Component {
                       </Nav>
                       <Tab.Content>
                       <Tab.Pane eventKey="shetab">
-                      <ShetabDeposit token={this.state.currentUser}/>
+                      <ShetabDeposit token={newToken}/>
                           
                         </Tab.Pane>
                         <Tab.Pane eventKey="papara">
