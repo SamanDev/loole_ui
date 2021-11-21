@@ -19,6 +19,7 @@ import PaparaDeposit  from "components/deposit/paparadeposit.component";
 import ShetabCashout  from "components/deposit/shetabcashout.component"; 
 import PaparaCashout  from "components/deposit/paparacashout.component"; 
 import PMCashout  from "components/deposit/pmcashout.component"; 
+import CrDeposit  from "components/deposit/crdeposit.component"; 
 import CheckButton from "react-validation/build/button";
 // react-bootstrap components
 import {
@@ -222,7 +223,8 @@ class Cashier extends Component {
   }
   render() {
     dataTransaction = this.state.currentUser.usersReports
-    var newToken = this.state.currentUser;
+    
+    var newToken = JSON.parse(JSON.stringify(this.state.currentUser));
     if (!newToken.cardsdef) {
          
        
@@ -391,6 +393,7 @@ class Cashier extends Component {
                             
                         </Tab.Pane>
                         <Tab.Pane eventKey="cr">
+                        <CrDeposit  token={newToken}/>
                           <Row>
                             <Col md="6">
                               <Card className="stacked-form border-0">

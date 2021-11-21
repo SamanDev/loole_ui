@@ -51,17 +51,7 @@ return (
                             <p>Any gamer or player who wants to make money from his skill must install the Loole app on his phone because you can make money with the Loole. He only plays with players around the world who claim to be like you.</p>
                             <h5><br/><br/></h5>
                         </div>
-                        <div className="buttons">
-                            <button className="btn btn-fill btn-neutral">
-                            <i className="fa fa-apple"></i> Appstore
-                            </button>
-                            <button className="btn btn-simple btn-neutral">
-                            <i className="fa fa-android"></i>
-                            </button>
-                            <button className="btn btn-simple btn-neutral">
-                            <i className="fa fa-windows"></i>
-                            </button>
-                        </div>
+                        
                     </div>
                     <div className="col-md-5  hidden-xs">
                         <div className="parallax-image">
