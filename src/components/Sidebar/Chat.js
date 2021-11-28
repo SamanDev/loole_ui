@@ -2,6 +2,7 @@ import React, { Component ,useState } from "react";
 import { Link, useLocation, Redirect } from "react-router-dom";
 import Avatar, { ConfigProvider } from "react-avatar";
 import axios from "axios";
+import Moment from 'moment';
 
 import uploadHeader from "services/upload-header";
 import PropTypes from "prop-types";
@@ -40,7 +41,10 @@ import {
   Col,
 } from "react-bootstrap";
 import { faHourglassEnd } from "@fortawesome/free-solid-svg-icons";
-
+function toTimestamp(strDate) {
+  var datum = Date.parse(strDate);
+  return datum / 1000;
+}
 
 class Chatbar extends Component {
   
@@ -74,10 +78,9 @@ class Chatbar extends Component {
     this.setState({ secondplayer: newProps.secondplayer });
     this.setState({ currentUser: newProps.username });
     
-    //console.log('Props updated')
   }
   changeMessageBox(e) {
-    console.log(e.target.value)
+    
     this.setState({
       messageBox: e.target.value,
     });
@@ -175,10 +178,11 @@ this.setState({
       finalChat.push(item)
     })}
   }
+  finalChat.sort((a, b) => ((a.time < b.time) ? 1 : -1));
     // this creates the intial state of this component based on the collapse routes
     // that it gets through routes prop
-
-    finalChat.sort((a, b) => ((a.time < b.time) ? 1 : -1));
+    
+    
     
 
     return (
@@ -240,12 +244,9 @@ this.setState({
                       </small>
                     </p>
                     {finalChat.map((item, i) => {
-                      var timestamp = item.time;
-                      var date = new Date(timestamp);
-
-                      var dateExpired = date.toISOString();
-                      var today = new Date(dateExpired),
-                        dateExpired = 
+                    
+                    var today = new Date(item.time),
+                    dateExpired = 
                           today.getHours() +
                           ":" +
                           today.getMinutes() +

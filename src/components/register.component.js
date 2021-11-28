@@ -133,7 +133,8 @@ class Register extends Component {
            
             loading: false
           });
-          this.props.history.push("/panel/dashboard");
+          window.location.href="/panel/dashboard";
+          //his.props.history.push("/panel/dashboard");
         },
         error => {
           const resMessage =

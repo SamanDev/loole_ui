@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { VectorMap } from "react-jvectormap";
 import AuthService from "services/auth.service";
 import userService from "services/user.service";
-import { useUserEvents,useUser } from "services/hooks"
+import { useUserEvents,useUser,useAllEventsByStatus } from "services/hooks"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
 import { printBlockChallenge } from "components/include";
@@ -60,7 +60,7 @@ function Dashboard(props) {
  
 
     var currentUser = token;
-  const { data: eventsGet , isLoading } = useUserEvents()
+  const { data: eventsGet , isLoading } = useAllEventsByStatus('All')
   
   
   if (isLoading || !eventsGet ) {return  <h4 style={{textAlign: "center"}}>Loading 
@@ -68,7 +68,7 @@ function Dashboard(props) {
   <Spinner animation="grow" size="sm" />
   <Spinner animation="grow" size="sm" /></h4>;
   }
-  var events=JSON.parse(eventsGet);
+  var events=(eventsGet);
   
   
   
@@ -78,6 +78,7 @@ function Dashboard(props) {
   
   const getBlockChallenge = (filtermode) => {
     var newItem = []
+    var blnShow = false;
     if (events != []) {
        events.map((item, i) => {
         if ((filtermode == 'Wins' && item.status == 'Finished') ||(filtermode == 'Expired' && item.status == 'Expired') ||(filtermode == 'Pending' && (item.status == 'Pending' || item.status == 'Ready' || item.status == 'InPlay')) || item.status == filtermode || ('All' == filtermode )) {
@@ -85,7 +86,7 @@ function Dashboard(props) {
           
           
           {item.players.map((player, j) => {
-           if(player.username == currentUser.username ){blnShow=true}
+           if(player.username == token.username ){blnShow=true}
           })}
           var timestamp = item.expire
           var date = new Date(timestamp);
@@ -114,7 +115,7 @@ function Dashboard(props) {
   
     
   
-    var Balance = currentUser.balance;
+    var Balance = token.balance;
     if (!Balance) { Balance = 0 }
     
   return (
@@ -122,7 +123,7 @@ function Dashboard(props) {
         
     <>
     
-    <Active token={currentUser}/>
+    <Active token={token}/>
 
         <Row>
           <Col md="12">

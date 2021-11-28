@@ -25,14 +25,24 @@ import {
   useRecoilState,
   useRecoilValue,
 } from 'recoil';
+import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider } from 'react-query'
+
+const queryClient = new QueryClient({
+defaultOptions: {
+queries: {
+refetchOnWindowFocus: false,
+},
+},
+})
 
 ReactDOM.render(
   <RecoilRoot>
   <BrowserRouter>
+  <QueryClientProvider client={queryClient} contextSharing={true}>
     <Switch>
-      
+    
       <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-      <Route path="/panel" render={(props) => <PanelLayout text="hi" {...props} />} />
+      <Route path="/panel" render={(props) => <PanelLayout {...props} />} />
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
       <Route path="/lock" render={(props) => <LockLayout {...props} />} />
       <Route path="/game/:id" render={(props) => <LandLayout {...props} />} />
@@ -41,8 +51,9 @@ ReactDOM.render(
       <Route path="/user" render={(props) => <LandLayout {...props} />} />
       <Route path="/content" render={(props) => <LandLayout {...props} />} />
       <Redirect from="/" to="/home" />
-      
+     
     </Switch>
+    </QueryClientProvider>
   </BrowserRouter>
   </RecoilRoot>
   ,

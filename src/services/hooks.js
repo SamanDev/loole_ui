@@ -1,20 +1,34 @@
 import * as api from "services/api"
-import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
-const queryClient = new QueryClient()
+import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider,useInfiniteQuery, QueryCache} from 'react-query'
+
 const useAllEvents = () => {
+
   const result = useQuery(["Events"],api.getAllEvents)
-  //queryClient.setQueriesData(['Events'], result)
+ 
   return result
 }
 const useAllEventsByStatus = (status) => {
   const result = useQuery(["Events", status],api.getAllEventsByStatus);
- 
+  //sconsole.log(result)
   return result
+}
+const useEventByID = (id) => {
+  
+  if(id){
+    const result = useQuery(["Event", parseInt(id)],api.getEventByID);
+    return result
+  }else{
+    const result = useQuery(["Event", id]);
+    return result
+    
+  }
+
+  
 }
   const useUser = () => {
   
     const result = useQuery(["User"],api.getUser)
-   
+    
     return result
   }
   const useUserProfile = (username) => {
@@ -43,5 +57,5 @@ export {
   useUser,
   useUserProfile,
   useEvent,
-
+  useEventByID
 }

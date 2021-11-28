@@ -268,11 +268,6 @@ class CreateMatch extends Component {
         gameNickname: '',
     };
   }
-  componentDidMount() {
-    eventBus.on("eventsDataUser", (event) => {
-     // userService.getUser()
-    });
-  }
   
   setSelectedGameName(e) {
     

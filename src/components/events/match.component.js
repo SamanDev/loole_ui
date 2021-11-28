@@ -17,6 +17,8 @@ import {
   faYoutube,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
+
+import Moment from 'moment';
 import CurrencyFormat from "react-currency-format";
 import { IMaskInput } from "react-imask";
 import {  withRouter} from 'react-router-dom';
@@ -28,6 +30,9 @@ import withReactContent from "sweetalert2-react-content";
 import eventBus from "views/eventBus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "react-countdown";
+import uploadHeader from "services/upload-header";
+import PropTypes from "prop-types";
+import axios from "axios";
 import {
     Badge,
     Button,
@@ -61,7 +66,8 @@ import {
     haveGameTag,
     getPlayerTag,
     isJson,
-    haveAdmin
+    haveAdmin,
+    handleTagForm
   } from "components/include";
   import { UPLOADURL, POSTURLTest } from "const";
   
@@ -82,24 +88,11 @@ import {
     },
   });
 
-  function toTimestamp(strDate) {
-    var datum = Date.parse(strDate);
-    return datum / 1000;
-  }
-   //console.log(item);
-  function addDays(date, days) {
-    var result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-  }
-  function addHoursToDate(date, hours) {
-    return new Date(new Date(date).setHours(date.getHours() + hours));
-  }
   var isInPlayers = false;
   var matchidFind = []
   var lists = [];
   var item = false;
-  var dateExpired = null;
+  var expiryDate = new Date();
   var dateStart = null;
               var icEnd = 0;
               var icStart = 0;
@@ -114,7 +107,7 @@ import {
               var mymatchFind = null;
               var matchLevelFind =null
               var isJoin = false;
-      var activePlayer = 0;
+     
 class LeagueSection extends Component {
   constructor(props) {
     super(props);
@@ -125,15 +118,17 @@ class LeagueSection extends Component {
     this.handlecAlertLost = this.handlecAlertLost.bind(this);
     this.handlecAlertWin = this.handlecAlertWin.bind(this);
     this.handleClashFinished = this.handleClashFinished.bind(this);
-  
+    this.setProgress = this.setProgress.bind(this);
+    this.fileUpload = React.createRef();
     this.state = {
-        eventid: getQueryVariable("id"),
+        eventid: this.props.item.id,
         matchid: getQueryVariable("matchid"),
         item : this.props.item,
     currentUser : this.props.token,
         curPlayerReady: false,
         progress: 0,
         selectedFile: null,
+        matchidFind: this.props.matchidFind,
         isloading: this.props.isLoading,
         isUpLoading: false,
         progressLable: "I Win",
@@ -145,12 +140,13 @@ class LeagueSection extends Component {
   componentWillReceiveProps(newProps) {
     
        
-    //console.log('Props updated' + JSON.stringify(newProps.token))
-    
-
+    this.setState({ eventid: newProps.item.id });
     this.setState({ currentUser: newProps.token });
+    this.setState({ matchidFind: newProps.matchidFind });
     this.setState({ item: newProps.item });
-    this.setState({ isloading: newProps.isLoading });
+    
+    this.setState({ isloading:false });
+    
   }
   handleClashFinished(e) {
     this.setState({
@@ -229,6 +225,12 @@ class LeagueSection extends Component {
         });
       });
   };
+  setProgress(e) {
+    this.setState({
+      progress: e,
+      progressLable: e + "%",
+    });
+  }
   handleDelete(e) {
     e.preventDefault();
 
@@ -262,11 +264,11 @@ class LeagueSection extends Component {
     );
   }
   handlechangeReadyEvent(checked) {
-    firstLoad = false;
+    //firstLoad = false;
     this.setState({
       isloading: true,
     });
-    this.setState({ curPlayerReady: checked });
+    //this.setState({ curPlayerReady: checked });
     userService.changeReadyEvent(this.state.eventid).then(
       (response) => {
         if (response == "changeReadyEvent successful") {
@@ -274,9 +276,7 @@ class LeagueSection extends Component {
             icon: "success",
             title: "Updated.",
           });
-          this.setState({
-            isloading: false,
-          });
+          
           //this.reGetevents();
         }
         //this.props.history.push("/panel/dashboard");
@@ -329,6 +329,18 @@ class LeagueSection extends Component {
       }
     });
   }
+  showFileUpload() {
+    this.fileUpload.current.click();
+  }
+  onChangeHandler = (event) => {
+    this.setState({
+      selectedFile: this.fileUpload.current.files[0],
+    });
+
+    setTimeout(() => {
+      this.handleChatUpload();
+    }, 500);
+  };
   showDetails(player){
     $('.gdetails').addClass('hide');
     $('.gdetails.no'+player).removeClass('hide');
@@ -352,6 +364,9 @@ class LeagueSection extends Component {
           
           
         } else {
+          this.setState({
+            isloading: true,
+          });
           if (response == "balanceError") {
             var resMessage =
               "To enter this event you need to have more balance!";
@@ -369,7 +384,8 @@ class LeagueSection extends Component {
               }
             });
           } else if (response == "tagError") {
-            this.setSelectedTag(this.state.item.gameName,this.state.item.gameConsole)
+            handleTagForm(this.state.item.gameName,this.state.item.gameConsole,this.state.currentUser)
+           
           }
         }
       },
@@ -387,14 +403,9 @@ class LeagueSection extends Component {
   
 
   render() {
-    let { currentUser, item,progress, isUpLoading, progressLable } = this.state;
-       
-    //console.log(item)
-    matchidFind = item.matchTables[0];
-    dateStart = item.startTime;
-         dateExpired = item.expire;
-         activePlayer = 0;
-         
+    let { currentUser, item,progress, isUpLoading, progressLable,matchidFind } = this.state;
+    
+    var activePlayer = 0; 
     return (
       <>
      <Col className="mx-auto" lg="7" md="10">
@@ -408,14 +419,14 @@ class LeagueSection extends Component {
                                 
                                 matchidFind.matchPlayers.map(
                                   (player, j) => {
-                                    if (player.username) {
+                                    if (player.username !='') {
                                       activePlayer++;
                                     }
+                                    
                                     if (
                                       player.username == currentUser.username &&
                                       player.ready &&
-                                      !this.state.curPlayerReady &&
-                                      firstLoad
+                                      !this.state.curPlayerReady 
                                     ) {
                                       this.setState({ curPlayerReady: true });
                                     }
@@ -596,12 +607,12 @@ class LeagueSection extends Component {
                                             <>
                                               <p>
                                                     <small className="text-muted">
-                                                      Avalable until
+                                                      Avalable until {item.expire}
                                                     </small>
                                                     <br />
                                                     <Countdown
                                                       renderer={renderer}
-                                                      date={dateExpired}
+                                                      date={item.expire}
                                                     />
                                                   </p>
                                                   
@@ -841,12 +852,12 @@ class LeagueSection extends Component {
                                             <>
                                               <p>
                                                 <small className="text-muted">
-                                                  Avalable until
+                                                  Avalable until {item.expire}
                                                 </small>
                                                 <br />
                                                 <Countdown
                                                   renderer={renderer}
-                                                  date={dateExpired}
+                                                  date={item.expire}
                                                 />
                                               </p>
                                             </>

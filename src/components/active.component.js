@@ -27,13 +27,17 @@ import {
 } from 'atoms';
 
 function Active(props) {
-  const token = useRecoilValue(userState);
-  
+  const [token,setToken] = useRecoilState(userState);
   const [activeLoading,setLoading] = useState(false);
   const [submit,setSubmit] = useState(false);
   const [currentUser,SetCurrentUser] = useState(token);
   useEffect(() => {
     eventBus.on("eventsDataActive", (event) => {
+      var curU = currentUser;
+      curU.userActivate = true;
+      SetCurrentUser(curU);
+      setToken(curU);
+      localStorage.setItem("user", JSON.stringify(curU));
       Swal.fire("", event, "success");
     });
     return () => {

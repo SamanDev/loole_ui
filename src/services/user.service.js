@@ -47,6 +47,7 @@ class UserService {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
           eventBus.dispatch("eventsDataUser", response.data);
+          eventBus.remove("eventsDataUser");
           return response.data;
         }
       });
@@ -63,7 +64,7 @@ class UserService {
        // eventBus.dispatch("eventsData", "");
       });
   }
-  sendChatMatch(message, id,) {
+  sendChatMatch(message, id,idMatch) {
 
     return axios
       .put(
@@ -109,6 +110,7 @@ class UserService {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
           eventBus.dispatch("eventsDataUser", response.data);
+          eventBus.remove("eventsDataUser");
           return response.data;
         }
 
@@ -228,6 +230,7 @@ class UserService {
       });
   }
    getUser() {
+    
     // console.log(JSON.stringify(authHeader()))
      if(JSON.stringify(authHeader()) != '{}'){
       return  axios
@@ -258,6 +261,7 @@ class UserService {
         }else{
           localStorage.setItem("user", JSON.stringify(defUser));
           
+          
         }
         return defUser
       
@@ -271,6 +275,7 @@ class UserService {
       }else{
         localStorage.setItem("user", JSON.stringify(defUser));
         eventBus.dispatch("eventsDataUser", defUser);
+        eventBus.remove("eventsDataUser");
         
       }
       return defUser
@@ -278,27 +283,6 @@ class UserService {
     
     }
     
-  }
-  getCurrentUser() {
-    if(localStorage.getItem('user')){
-    const usr = JSON.parse(localStorage.getItem('user'));
-    var loc = window.location.href;
-    eventBus.dispatch("eventsDataUser", usr);
-    eventBus.remove("eventsDataUser");
-          
-    if (loc.indexOf("/panel") > -1){
-      //UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
-    }
-    return usr;
-    }else{
-      localStorage.setItem("user", JSON.stringify(defUser));
-      eventBus.dispatch("eventsDataUser", defUser);
-      eventBus.remove("eventsDataUser");
-       
-    return defUser;
-      //this.logout()
-    }
-  
   }
   deleteEvent(id) {
     return axios
@@ -330,13 +314,13 @@ class UserService {
 
   }
   getEventById =  ( id) => {
-    console.log(id);
+    alert()
     return   axios
       .post(API_URL_TEST + "getEventById",{id})
       .then( (response) => {
-        localStorage.setItem("eventsid", JSON.stringify(response.data));
-        eventBus.dispatch("eventsDataEventDo", response.data);
-        eventBus.remove("eventsDataEventDo");
+        
+        //eventBus.dispatch("eventsDataEventDo", response.data);
+        //eventBus.remove("eventsDataEventDo");
         return response.data;
       }).catch(error => {
         return axios.get(API_URL_TEST + "getEvents").then((response) => {
@@ -390,15 +374,12 @@ class UserService {
         }
       });
   }
-  createEvent(gameName, gameConsole, gameMode, amount,inSign, timeMinute) {
-    console.log(
-      { gameName, gameConsole, gameMode, amount,inSign, timeMinute },
-      { headers: authHeader() }
-    );
+  createEvent(gameName, gameConsole, gameMode, amount,inSign,outSign,currency, timeMinute) {
+    
     return axios
       .post(
         API_URL_TEST + "createEvent",
-        { gameName, gameConsole, gameMode, amount,inSign, timeMinute },
+        { gameName, gameConsole, gameMode, amount,inSign,outSign,currency,  timeMinute },
         { headers: authHeader() }
       )
       .then((response) => {

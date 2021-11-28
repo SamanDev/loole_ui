@@ -6,12 +6,7 @@ import AuthService from "services/auth.service";
 
 
 import $ from "jquery";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-
-import NotificationAlert from "react-notification-alert";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
 import Active from "components/active.component";
 import PMDeposit  from "components/deposit/pmdeposit.component";
 import ShetabDeposit  from "components/deposit/shetabdeposit.component";
@@ -96,7 +91,23 @@ const columns = [
   sortable: true,
 },
 ];
+const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
+const noDataComponent =  (
+    
+  <Col xl="12" style={{textAlign: "center",color:'rgba(0,0,0,.5)'}}>
+  <div >
+  <img
+                  alt="nodata"
+                  style={{ height: 80 }}
+                  src="/assets/images/nodata.svg"
+                ></img>
+<h4>Empty List.</h4>
+<h5>You currently don't have any record.</h5>
+</div>
+    
 
+  </Col>
+)
 var dataTransaction = [
   {
     "id": 10,
@@ -117,25 +128,14 @@ var dataTransaction = [
 ]
 
 var allValid = true;
-var sendPass = false;
+
 var reqnum = 0;
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
-import InputMask from "react-input-mask";
-import { IMaskInput } from "react-imask";
+
+
 class Cashier extends Component {
   constructor(props) {
     super(props);
-    this.setAmount = this.setAmount.bind(this);
     
-    this.selectrequired = this.selectrequired.bind(this);
    
     
     this.state = {
@@ -149,78 +149,8 @@ class Cashier extends Component {
     };
   }
   
-  setAmount(e) {
-    this.setState({
-      Amount: e,
-      submit: false,
-    });
-  }
   
 
-  selectrequired(field, value) {
-    var _val = value;
-    console.log(
-      field + ": " + $("." + field + ":visible").length + " - " + allValid
-    );
-
-    if ($("." + field + ":visible").length > 0) {
-      if (field == "CardNo" && value.length < 16) {
-        _val = false;
-      }
-      if (field == "Expiration" && value.length < 4) {
-        _val = false;
-      }
-      if (field == "cvv" && value.length < 3) {
-        _val = false;
-      }
-      if (field == "Mobile" && value.length < 9) {
-        _val = false;
-      }
-      if (field == "selectMethod" && value.value == "") {
-        _val = false;
-      }
-      if (field == "Amount" && value != "") {
-        _val = true;
-      }
-
-      if (!_val) {
-        allValid = false;
-        sendPass = true;
-        if (this.state.submit && reqnum == 0) {
-          reqnum = reqnum + 1;
-
-          $("." + field).focus();
-          return printRequired();
-        } else {
-          allValid = false;
-        }
-        console.log(
-          field + ": " + $("." + field + ":visible").length + " - " + _val
-        );
-      } else {
-        console.log(
-          field + ": " + $("." + field + ":visible").length + " - " + _val
-        );
-        allValid = true;
-        sendPass = false;
-        //return printRequired();
-      }
-    }else{
-      //allValid = true;
-      //sendPass = false;
-      //return printRequired();
-    }
-  }
-  
-  
-
-  
-  componentDidMount() {
-    Swal.close();
-    this._isMounted = true;
-    if (this._isMounted) {
-    }
-  }
   render() {
     dataTransaction = this.state.currentUser.usersReports
     
@@ -296,7 +226,7 @@ class Cashier extends Component {
                   >
                     <i className="nc-icon nc-bullet-list-67"></i>
                     <br></br>
-                    Trasactions
+                    Transactions
                   </Nav.Link>
                 </Nav.Item>
               </Nav>
@@ -518,37 +448,7 @@ class Cashier extends Component {
                         </Tab.Pane>
                         <Tab.Pane eventKey="pmc">
                           <PMCashout/>
-                          <Row>
-                            <Col md="6">
-                              <Card className="stacked-form border-0">
-                                <Card.Header>
-                                  <Card.Title as="h4">
-                                    eVoucher PerfectMoney Cashout
-                                  </Card.Title>
-                                </Card.Header>
-                                <Card.Body></Card.Body>
-                                <Card.Footer>
-                                  <Button
-                                    className="btn-fill"
-                                    type="submit"
-                                    variant="success"
-                                  >
-                                    Cashout
-                                  </Button>
-                                </Card.Footer>
-                              </Card>
-                            </Col>
-                            <Col md="6">
-                              <Card className="stacked-form border-0">
-                                <Card.Header>
-                                  <Card.Title as="h4">
-                                    How find eVoucher PerfectMoney?
-                                  </Card.Title>
-                                </Card.Header>
-                                <Card.Body>hi</Card.Body>
-                              </Card>
-                            </Col>
-                          </Row>
+                          
                         </Tab.Pane>
                         <Tab.Pane eventKey="crc">
                           <Row>
@@ -591,7 +491,8 @@ class Cashier extends Component {
               <Tab.Pane eventKey="legal-info-page-subcategories">
                 <Card className="regular-table-with-color">
                   <Card.Header>
-                    <Card.Title as="h4">Trasactions</Card.Title>
+                    <Card.Title as="h4">Transactions</Card.Title>
+                    <div className="card-category">Your activity list</div>
                   </Card.Header>
                   <Card.Body className="table-responsive p-0">
                   <DataTable
@@ -602,7 +503,8 @@ class Cashier extends Component {
             defaultSortAsc={false}
             pagination
             conditionalRowStyles={conditionalRowStyles}
-            
+            expandableRows expandableRowsComponent={ExpandedComponent}
+            noDataComponent={noDataComponent}
         />
                     
                   </Card.Body>

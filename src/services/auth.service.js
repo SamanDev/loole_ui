@@ -75,10 +75,12 @@ class AuthService {
     if(localStorage.getItem('user')){
     const usr = JSON.parse(localStorage.getItem('user'));
     var loc = window.location.href;
-    eventBus.dispatch("eventsDataUser", usr);
+    if(usr.accessToken!=''){
+    //eventBus.dispatch("eventsDataUser", usr);
     if (loc.indexOf("/panel") > -1){
     UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
     }
+  }
     return usr;
     }else{
       //localStorage.setItem("user", JSON.stringify(defUser));

@@ -115,7 +115,7 @@ import {
               var matchLevelFind =null
               var isJoin = false;
       var activePlayer = 0;
-class LeagueSection extends Component {
+class MatchTourSection extends Component {
   constructor(props) {
     super(props);
     this.showDetails = this.showDetails.bind(this);
@@ -126,18 +126,32 @@ class LeagueSection extends Component {
     this.handlecAlertWin = this.handlecAlertWin.bind(this);
     this.handleClashFinished = this.handleClashFinished.bind(this);
     this.state = {
-        eventid: getQueryVariable("id"),
-        matchid: getQueryVariable("matchid"),
-        curPlayerReady: false,
-        progress: 0,
-        selectedFile: null,
-        isloading: false,
-        isUpLoading: false,
-        progressLable: "I Win",
-      successful: false,
-      loading: false,
-      message: ""
+      eventid: getQueryVariable("id"),
+      matchid: getQueryVariable("matchid"),
+      item : this.props.item,
+  currentUser : this.props.token,
+      curPlayerReady: false,
+      progress: 0,
+      selectedFile: null,
+      matchidFind: this.props.matchidFind,
+      isloading: this.props.isLoading,
+      isUpLoading: false,
+      progressLable: "I Win",
+    successful: false,
+    loading: false,
+    message: ""
     };
+  }
+  componentWillReceiveProps(newProps) {
+    
+       
+
+    this.setState({ currentUser: newProps.token });
+    this.setState({ matchidFind: newProps.matchidFind });
+    this.setState({ item: newProps.item });
+    
+    this.setState({ isloading:false });
+    
   }
   handleClashFinished(e) {
     this.setState({
@@ -373,10 +387,11 @@ $('.gdetails.no'+player).removeClass('hide');
   
 
   render() {
-    var item = this.props.item;
-    var currentUser = this.props.token;
+    let { currentUser, item,progress, isUpLoading, progressLable,matchidFind } = this.state;
+      
+    
     setTimeout(() => {$("#jsonhtml").html($("#jsonhtml2").text());},1000)
-    matchidFind = item.matchTables[0];
+    
     dateStart = item.startTime;
          dateExpired = item.expire;
     return (
@@ -1164,4 +1179,4 @@ $('.gdetails.no'+player).removeClass('hide');
   }
 }
 
-export default withRouter(LeagueSection) ;
+export default withRouter(MatchTourSection) ;

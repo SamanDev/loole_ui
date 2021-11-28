@@ -63,16 +63,19 @@ class UserWebsocket {
                      
                      
                       eventBus.dispatch("eventsData", msg.data);
-                      eventBus.remove("eventsData");
+                     // eventBus.remove("eventsData");
                      
                     
                     //alert(JSON.stringify(msg.data))
                       
-                  } else if (message.Command === 'eventId') {
+                } else if (msg.Command === 'eventId') {
                       
-                    //alert(JSON.stringify(msg.data))
-                    eventBus.dispatch("eventsDataEventDo", msg.data);
-                }else if (message.Command === 'startTick') {
+                
+                    eventBus.dispatch("eventsDataEventDo", msg.data[0]);
+        //eventBus.remove("eventsDataEventDo");
+                   
+                }
+                else if (msg.Command === 'startTick') {
                     // setYvalStart(msg.tick);
                 }
               } else {
@@ -96,8 +99,9 @@ class UserWebsocket {
                 if(e.type === 'error'){
                     
                     ws=null;
-                    //localStorage.clear();
+                    localStorage.clear();
                     //window.location.reload();
+                    window.location.replace("/auth/login-page");
                 }
             }
             ws.onclose = function(e){

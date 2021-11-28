@@ -64,23 +64,25 @@ function scrollToTop() {
         }
     });
   };
-  var currentUser = '';
+  
   
 function  Auth() {
   const queryClient = new QueryClient()
   const [token,setToken] = useRecoilState(userState);
+  const { data: userGet , isLoading } = useUser();
   const [currentUser,setCurrentUser] = useState(token);
   
-  console.log('Land.js token:'+ JSON.stringify(token))
+  
+  //console.log('Land.js token:'+ JSON.stringify(token))
   
   
-  if (currentUser==''){
-    userService.getUser()
+  if (!currentUser  &&  isLoading){
+    //userService.getUser()
    
     
     
-    setCurrentUser(token);
-   
+    setCurrentUser(userGet);
+   setToken(userGet);
    
     
     return <h4 style={{textAlign: "center"}}>Loading 
@@ -100,11 +102,11 @@ function  Auth() {
     <ConfigProvider colors={DEFCOLORS}>
       <div className="landing-page landing-page1 landing-mobile">
         {/* Navbar */}
-        <LandNavbar token={token}/>
+        <LandNavbar token={currentUser}/>
         {/* End Navbar */}
-        <QueryClientProvider client={queryClient}>
+       
         <Switch>{getRoutes(routes)}</Switch>
-        </QueryClientProvider>
+    
       </div>
       </ConfigProvider>
     

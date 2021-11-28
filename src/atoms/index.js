@@ -7,7 +7,7 @@ import {
     useRecoilState,
     useRecoilValue,
   } from 'recoil';
-  userService.getUser();
+  //userService.getUser();
 const userState = atom({
     key: 'userState',
     default: AuthService.getCurrentUser(),

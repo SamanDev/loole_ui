@@ -14,12 +14,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "views/Dashboard.js";
-import Rewards from "views/Rewards.js";
-import MyMatches from "views/MyMatches.js";
-import Market from "views/Market.js";
-import Cashier from "views/Cashier.js";
-import CreateMatch from "views/Add.js";
+
+
 import Buttons from "views/Components/Buttons.js";
 import GridSystem from "views/Components/GridSystem.js";
 import Panels from "views/Components/Panels.js";
@@ -40,7 +36,7 @@ import VectorMap from "views/Maps/VectorMap.js";
 import Charts from "views/Charts.js";
 import Calendar from "views/Calendar.js";
 import UserPage from "views/Pages/UserPage.js";
-import Profile from "views/Profile.js";
+
 import LoginPage from "views/Pages/LoginPage.js";
 import ForgetPassPage from "views/Pages/ForgetPassPage.js";
 import RegisterPage from "views/Pages/RegisterPage.js";
@@ -59,7 +55,7 @@ var routes = [
     layout: "/panel",
     name: "Profile",
     icon: "nc-icon nc-circle-09",
-    component: Profile,
+    component: 'Profile',
     show:false
   },
   {
@@ -75,7 +71,7 @@ var routes = [
     layout: "/panel",
     name: "Dashboard",
     icon: "nc-icon nc-chart-pie-35",
-    component: Dashboard,
+    component: 'Dashboard',
     show:true
   },
   {
@@ -83,7 +79,7 @@ var routes = [
     layout: "/panel",
     name: "Rewards",
     icon: "nc-icon nc-notification-70",
-    component: Rewards,
+    component: 'Rewards',
     show:true
   },
   {
@@ -91,7 +87,7 @@ var routes = [
     layout: "/panel",
     name: "My Matches",
     icon: "nc-icon nc-controller-modern",
-    component: MyMatches,
+    component: 'MyMatches',
     show:true
   },
   {
@@ -99,7 +95,7 @@ var routes = [
     layout: "/panel",
     name: "MarketPlace",
     icon: "nc-icon nc-refresh-02",
-    component: Market,
+    component: 'Market',
     show:false
   },
   {
@@ -107,7 +103,7 @@ var routes = [
     layout: "/panel",
     name: "Cashier",
     icon: "nc-icon nc-bank",
-    component: Cashier,
+    component: 'Cashier',
     show:true
   },
   {
@@ -115,7 +111,7 @@ var routes = [
     layout: "/panel",
     name: "Create",
     icon: "nc-icon nc-simple-add",
-    component: CreateMatch,
+    component: 'CreateMatch',
     show:true
   },
   {
@@ -123,7 +119,7 @@ var routes = [
     layout: "/panel",
     name: "Match Lobby",
     icon: "nc-icon nc-simple-add",
-    component: LockScreenPage,
+    component: 'LockScreenPage',
     show:false
   },
   {
@@ -131,7 +127,7 @@ var routes = [
     layout: "/panel",
     name: "Match Lobby",
     icon: "nc-icon nc-simple-add",
-    component: LockScreenPage,
+    component: 'LockScreenPage',
     show:false
   },
   {

@@ -22,17 +22,29 @@ const getAllEventsByStatus=async (status) => {
   //console.log(data)
   return data
 }
-  const getUser=async () => {
+const getEventByID= async(ids) => {
+  console.log(ids)
+  const id = ids.queryKey[1];
+  console.log(id)
+  const { data } = await client.post(`/getEventById`,{ id })
+  //console.log(data)
+ 
+  return data
   
+}
+  const getUser=async () => {
+    //alert()
+    if(JSON.stringify(authHeader()) != '{}'){
     const { data } = await client.get("/getUser",{ headers: authHeader() })
+   
     if (data.accessToken) {
-      
+      localStorage.setItem("user", JSON.stringify(data));
       return data;
     }else{
-      
-return defUser;
+      return data;
+//return defUser;
     }
-    
+  }
   }
   const getUserProfile=async (username) => {
   const user = username.queryKey[1];
@@ -54,5 +66,6 @@ export {
   getUserEvents,
   getUserProfile,
   getEvent,
-  getUser
+  getUser,
+  getEventByID
 }

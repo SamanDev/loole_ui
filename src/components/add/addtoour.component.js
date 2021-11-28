@@ -50,8 +50,7 @@ import {
   haveGameTag,
   printRequired,
   handleTagForm,
-  haveAdmin,
-  date_edit
+  haveAdmin
   
 } from "components/include";
   const required = (value,props) => {
@@ -443,7 +442,7 @@ class AddMatch extends Component {
       "inSign": this.state.inSign.value,
       "outSign": this.state.inSign.value,
       "rules": null,
-      "expire": date_edit(Date.now() + this.state.AvalableFor.value * 1000 * 60),
+      "expire": Date.now() + this.state.AvalableFor.value * 1000 * 60,
       "startTime": "2021-11-01T20:34:39.000+00:00",
       "finished": "2021-11-01T20:34:39.000+00:00",
       "players": [

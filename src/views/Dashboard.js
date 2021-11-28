@@ -11,10 +11,12 @@ import userService from "services/user.service";
 import { useAllEvents,useUser,useAllEventsByStatus } from "services/hooks"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
-import { printBlockChallenge } from "components/include";
+import { printBlockChallenge,date_locale,date_edit } from "components/include";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Active  from "components/active.component";
+
+import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
 // react-bootstrap components
 import {
   Badge,
@@ -47,66 +49,41 @@ import {
 import {
   userState
 } from 'atoms';
-function Dashboard(props) {
-  const [token,setToken] = useRecoilState(userState);
-  const { data: eventsGet , isLoading } = useAllEventsByStatus('All');
-  const [currentUser,setCurrentUser] = useState(token);
-  if (token.accessToken == '') {
-    userService.getUser()
-    
-    
-    setCurrentUser(token);
-    
-    
-    return <h4 style={{textAlign: "center"}}>Loading 
-    <Spinner animation="grow" size="sm" />
-    <Spinner animation="grow" size="sm" />
-    <Spinner animation="grow" size="sm" /></h4>;
-  }
+function Dashboard(prop) {
+ 
+  const [currentUser,setCurrentUser] = useState(prop.token);
+  
+  const [events,setEvents] = useState(prop.events);
+  
   useEffect(() => {
-    eventBus.on("eventsDataUser", (event) => {
-      
-      setCurrentUser(event);
-      setToken(event);
-    });
-    return () => {
-      
-      //setEvents('');
+    setEvents(prop.events)
+     
     
-    }
-  }, []) // notice the empty array
-
+   },[prop.events]);
+   useEffect(() => {
+    setCurrentUser(prop.token)
+     
+    
+   },[prop.token]);
   
-  if (isLoading ) {return  <h4 style={{textAlign: "center"}}>Loading 
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" /></h4>;
-  }
-
-  var events=(eventsGet);
-  
-  
-  
-  
-  if (!events) return <p>loading...</p>
   
   
   const getBlockChallenge = (filtermode) => {
     var newItem = []
-    if (events != []) {
+    if (events) {
        events.map((item, i) => {
         if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
           item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+          
           {item.players.map((player, j) => {
            //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
           })}
-          var timestamp = item.expire
-          var date = new Date(timestamp);
-          //date.setMinutes(date.getMinutes() + item.timeMinute);
-          var now = new Date();
-          var dateExpired = date.toISOString();
+        
+          var dateEdited = date_edit(item.expire);
+      
+          var dateExpired = date_locale(dateEdited);
           
-           
+          var now = new Date();
           var dateNow = now.toISOString();
           
           if(dateExpired<dateNow && item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){}else{
