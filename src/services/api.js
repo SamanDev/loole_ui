@@ -23,9 +23,9 @@ const getAllEventsByStatus=async (status) => {
   return data
 }
 const getEventByID= async(ids) => {
-  console.log(ids)
+  
   const id = ids.queryKey[1];
-  console.log(id)
+
   const { data } = await client.post(`/getEventById`,{ id })
   //console.log(data)
  
