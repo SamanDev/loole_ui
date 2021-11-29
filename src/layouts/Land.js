@@ -17,6 +17,8 @@ import {
   Col,
   Spinner
 } from "react-bootstrap";
+
+import eventBus from "views/eventBus";
 import LandNavbar from "components/Navbars/LandNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
@@ -35,6 +37,7 @@ import {
   userState
 } from 'atoms';
 import routes from "routes.js";
+import authService from "services/auth.service";
 function scrollToTop() {
 
   window.scrollTo({
@@ -67,29 +70,15 @@ function scrollToTop() {
   
   
 function  Auth() {
-  const queryClient = new QueryClient()
-  const [token,setToken] = useRecoilState(userState);
-  const { data: userGet , isLoading } = useUser();
-  const [currentUser,setCurrentUser] = useState(token);
+  
+  
+  const currentUser =AuthService.getCurrentUser()
   
   
   //console.log('Land.js token:'+ JSON.stringify(token))
   
   
-  if (!currentUser  &&  isLoading){
-    //userService.getUser()
-   
-    
-    
-    setCurrentUser(userGet);
-   setToken(userGet);
-   
-    
-    return <h4 style={{textAlign: "center"}}>Loading 
-    <Spinner animation="grow" size="sm" />
-    <Spinner animation="grow" size="sm" />
-    <Spinner animation="grow" size="sm" /></h4>;
-  }
+  
   
       var responsive = $(window).width();
         if (responsive >= 768) {

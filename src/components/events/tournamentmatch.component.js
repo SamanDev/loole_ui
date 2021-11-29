@@ -61,7 +61,8 @@ import {
     haveGameTag,
     getPlayerTag,
     isJson,
-    haveAdmin
+    haveAdmin,
+    handleTagForm
   } from "components/include";
   import { UPLOADURL, POSTURLTest } from "const";
   
@@ -119,33 +120,34 @@ class MatchTourSection extends Component {
   constructor(props) {
     super(props);
     this.showDetails = this.showDetails.bind(this);
-    this.handleJoinMatch = this.handleJoinMatch.bind(this);
-    this.handleLeaveMatch = this.handleLeaveMatch.bind(this);
-    this.handlechangeReadyEvent = this.handlechangeReadyEvent.bind(this);
+   
+   
     this.handlecAlertLost = this.handlecAlertLost.bind(this);
+    this.handleLoseMatch = this.handleLoseMatch.bind(this);
     this.handlecAlertWin = this.handlecAlertWin.bind(this);
     this.handleClashFinished = this.handleClashFinished.bind(this);
     this.state = {
-      eventid: getQueryVariable("id"),
-      matchid: getQueryVariable("matchid"),
-      item : this.props.item,
-  currentUser : this.props.token,
-      curPlayerReady: false,
-      progress: 0,
-      selectedFile: null,
-      matchidFind: this.props.matchidFind,
-      isloading: this.props.isLoading,
-      isUpLoading: false,
-      progressLable: "I Win",
-    successful: false,
-    loading: false,
-    message: ""
+      eventid: this.props.item.id,
+        matchid: getQueryVariable("matchid"),
+        item : this.props.item,
+    currentUser : this.props.token,
+        curPlayerReady: false,
+        progress: 0,
+        selectedFile: null,
+        matchidFind: this.props.matchidFind,
+        isloading: this.props.isLoading,
+        isUpLoading: false,
+        progressLable: "I Win",
+      successful: false,
+      loading: false,
+      message: ""
     };
   }
   componentWillReceiveProps(newProps) {
     
        
-
+ 
+    this.setState({ eventid: newProps.item.id });
     this.setState({ currentUser: newProps.token });
     this.setState({ matchidFind: newProps.matchidFind });
     this.setState({ item: newProps.item });
@@ -230,55 +232,7 @@ class MatchTourSection extends Component {
         });
       });
   };
-  handleDelete(e) {
-    e.preventDefault();
-
-    userService.deleteEvent(this.state.eventid).then(
-      (response) => {
-        this.props.history.push("/panel/dashboard");
-      },
-      (error) => {}
-    );
-  }
-  handleLeaveMatch(e) {
-    e.preventDefault();
-    this.setState({
-      isloading: true,
-    });
-    userService.leaveEvent(this.state.eventid).then(
-      (response) => {
-        if (response.indexOf("successful") > -1) {
-          this.setState({
-            isloading: false,
-          });
-          //this.reGetevents();
-          Toast.fire({
-            icon: "success",
-            title: "UnJoined.",
-          });
-        }
-        //this.props.history.push("/panel/dashboard");
-      },
-      (error) => {}
-    );
-  }
-  handlechangeReadyEvent(checked) {
-    firstLoad = false;
-    this.setState({ curPlayerReady: checked });
-    userService.changeReadyEvent(this.state.eventid).then(
-      (response) => {
-        if (response == "changeReadyEvent successful") {
-          Toast.fire({
-            icon: "success",
-            title: "Updated.",
-          });
-          //this.reGetevents();
-        }
-        //this.props.history.push("/panel/dashboard");
-      },
-      (error) => {}
-    );
-  }
+  
   handlecAlertLost(checked) {
     const MySwal = withReactContent(Swal);
 
@@ -333,57 +287,7 @@ $('.gdetails.no'+player).removeClass('hide');
     $('.gdetails.no'+player).removeClass('hide');
     
       }
-  handleJoinMatch(e) {
-    e.preventDefault();
-    this.setState({
-      isloading: true,
-    });
-    userService.joinEvent(this.props.item.id).then(
-      (response) => {
-        this.setState({
-          isloading: false,
-        });
-        //alert(response)
-        if (response.indexOf("successful") > -1) {
-         // this.reGetevents();
-          Toast.fire({
-            icon: "success",
-            title: "Joined.",
-          });
-          
-        } else {
-          if (response == "balanceError") {
-            var resMessage =
-              "To enter this event you need to have more balance!";
-            Swal.fire({
-              title: "Error!",
-              text: resMessage,
-              icon: "error",
-              showCancelButton: true,
-              confirmButtonText: `Go to Cashier`,
-              canceleButtonText: `Back`,
-            }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
-              if (result.isConfirmed) {
-                this.props.history.push("/panel/cashier");
-              }
-            });
-          } else if (response == "tagError") {
-            this.setSelectedTag(this.props.item.gameName,this.props.item.gameConsole)
-          }
-        }
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        Swal.fire("", resMessage, "error");
-      }
-    );
-  }
+  
   
 
   render() {

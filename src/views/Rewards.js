@@ -66,7 +66,7 @@ function Dashboard(props) {
 
     return (
       <>
-      <Active/>
+      <Active token={currentUser}/>
         <Row>
         <Col sm="12">
             <Card>

@@ -6,7 +6,8 @@ import $ from "jquery";
 import Active  from "components/active.component";
 // react-bootstrap components
 import {
-  Spinner
+  Spinner,
+  Container
 } from "react-bootstrap";
 import { DEFCOLORS } from "const";
 // core components
@@ -68,10 +69,9 @@ function scrollToTop() {
 
 
 var eventDefID = getQueryVariable("id");
+var eventDefMatchID = getQueryVariable("matchid");
 //if(!eventDefID){eventDefID = 203}
-const queryCache = new QueryCache({onError: error => {console.log(error)},
-  onSuccess: data => {console.log(data)}
-  });
+
 function  Panel(prop) {
   
   const queryClient =  useQueryClient();
@@ -83,13 +83,14 @@ function  Panel(prop) {
    // const query = mutationCache.findAll("User");
     //const query = mutationCache.getAll()
 const [eventIDQ,setEventIDQ] = useState(eventDefID);
+const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
   
 
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
   
   
-  var matchIDQ = getQueryVariable("matchid");
+
   
   const url = window.location.search.substring(1);
 
@@ -136,6 +137,13 @@ const [eventIDQ,setEventIDQ] = useState(eventDefID);
     //useEventByID(eventIDQ);
 
   }, [eventIDQ]);
+  useEffect(() => {
+  
+    setMatchIDQ(() => matchIDQ)
+    //queryClient.invalidateQueries()
+    //useEventByID(eventIDQ);
+
+  }, [matchIDQ]);
   useEffect(() => {
     
   }, [eventID]);
@@ -185,8 +193,12 @@ const [eventIDQ,setEventIDQ] = useState(eventDefID);
             key={key}
             render={(props) => (
               <>
+              {(prop.component=='Profile') && (<Profile authed={true}  token={currentUser} />)}
               {(prop.component=='Dashboard') && (<Dashboard authed={true} events={events} token={currentUser} />)}
-              {(prop.component=='LockScreenPage') && (<LockScreenPage authed={true} event={eventID} token={currentUser} handleID={setEventIDQ} />)}
+              {(prop.component=='LockScreenPage') && (<LockScreenPage authed={true} event={eventID} token={currentUser} handleID={setEventIDQ} handleMatchID={setMatchIDQ} />)}
+              {(prop.component=='Cashier') && (<Cashier authed={true} token={currentUser} />)}
+              {(prop.component=='Rewards') && (<Rewards authed={true} token={currentUser} />)}
+              {(prop.component=='MyMatches') && (<MyMatches authed={true} token={currentUser} />)}
               {(prop.component=='CreateMatch') && (<CreateMatch authed={true} token={currentUser} />)}
               
               </>
@@ -217,10 +229,69 @@ const [eventIDQ,setEventIDQ] = useState(eventDefID);
     
   
   
-  if(!currentUser )return <h4 style={{textAlign: "center"}}>Loading User Data
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" /></h4>;
+  if(!currentUser )
+  if(eventDefID){
+return(
+  <div
+              className="full-page lock-page"
+              data-color="black"
+              style={{ height: "100vh", overflow: "auto" }}
+              data-image={require("assets/img/bg.jpg").default}
+            >
+              <div
+                className="content "
+                style={{
+                  fontSize: 50,
+                  color: "#fff",
+                  position: "relative",
+                  zIndex: "23",
+                }}
+              >
+                <Container className="text-center">
+                  <h4 style={{ textAlign: "center" }}>
+                  Loading User Data
+                    <Spinner animation="grow" size="sm" />
+                    <Spinner animation="grow" size="sm" />
+                    <Spinner animation="grow" size="sm" />
+                  </h4>
+                  
+                </Container>
+              </div>
+              <div
+                className="full-page-background"
+                style={{
+                  backgroundImage:
+                    "url(" + require("assets/img/bg.jpg").default + ")",
+                }}
+              ></div>
+            </div>
+)
+  }else{
+    return (
+      <div className="wrapper " >
+  
+  <div class="sidebar" data-color="orange" data-image="/static/media/bg.3cef9caf.jpg"><div class="sidebar-wrapper"></div><div class="sidebar-background" style={{backgroundImages: "url(&quot;/static/media/bg.3cef9caf.jpg&quot;)"}}></div></div>
+          <div className="main-panel">
+          <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style={{background: "rgb(17, 17, 17)"}}><div class="container-fluid"><div class="navbar-wrapper"><span class="navbar-brand"><span class="">Dashboard</span></span></div></div></nav>
+          <div className="content">
+          <h4 style={{textAlign: "center"}}>Loading User Data
+    <Spinner animation="grow" size="sm" />
+    <Spinner animation="grow" size="sm" />
+    <Spinner animation="grow" size="sm" /></h4>
+             
+            </div>
+            <AdminFooter />
+            <div
+              className="close-layer"
+              onClick={() =>
+                document.documentElement.classList.toggle("nav-open")
+              }
+            />
+            </div>
+            </div>
+    );
+  }
+  
   return (
     
     <>

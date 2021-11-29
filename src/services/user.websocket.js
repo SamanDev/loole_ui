@@ -81,7 +81,7 @@ class UserWebsocket {
               } else {
                   if (message === 'closeConnection') {
                       //localStorage.removeItem("events");
-                      //localStorage.clear();
+                      localStorage.clear();
                           //window.location.reload();
                         }else if(message === 'PasswordChanged'){
                             eventBus.dispatch("eventsDataPass", 'Your password has been updated.');
@@ -113,7 +113,7 @@ class UserWebsocket {
                     ws.close();
                     ws=null;
                             //localStorage.clear();
-                            //window.location.reload();
+                            window.location.reload();
                 console.log("Websocket is in disconnected state");
                 }
             }

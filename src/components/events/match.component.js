@@ -384,8 +384,15 @@ class LeagueSection extends Component {
               }
             });
           } else if (response == "tagError") {
-            handleTagForm(this.state.item.gameName,this.state.item.gameConsole,this.state.currentUser)
-           
+            var e = this.state.item.gameName;
+            var p = this.state.item.gameConsole;
+            var currentUser = this.state.currentUser;
+          if(p=='PS4'||e=='PS4'){e='PSN';p='PSN';}
+          if(p=='PS5'||e=='PS5'){e='PSN';p='PSN';}
+          if(p=='XBOX'||e=='XBOX'){e='XBOX';p='XBOX';}
+          
+            handleTagForm(e.replace(' Warzone',''),p,currentUser)
+            
           }
         }
       },

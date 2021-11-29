@@ -2,7 +2,7 @@ import React, { Component, useState,useEffect} from "react";
 
 import $ from "jquery";
 import { NavLink, Link } from "react-router-dom";
-
+import { useHistory } from "react-router";
 // react-bootstrap components
 import {
   Badge,
@@ -67,6 +67,7 @@ const Toast = Swal.mixin({
     
     function LockScreenPage(prop) {
       const queryClient = new QueryClient();
+      const history = useHistory();
       const eventIDQ = getQueryVariable("id");
       const matchIDQ = getQueryVariable("matchid");
       const [currentUser,setCurrentUser] = useState(prop.token);
@@ -78,16 +79,17 @@ const Toast = Swal.mixin({
    
     
     if(prop.event){
-      console.log(eventIDQ)
-      console.log(prop.event.id)
+      
+      prop.handleMatchID(matchIDQ)
       if(eventIDQ != prop.event.id){
         prop.handleID(eventIDQ)
       }else{
-        
+       
         var  NewEv  = editEvent(prop.event,eventIDQ,matchIDQ,currentUser);
     
         setEventMatch(NewEv);
         setMatch(NewEv.matchidFind);
+        $("#jsonhtml").html($("#jsonhtml2").text());
         setEventDef(() => prop.event)
       }
       
@@ -112,15 +114,15 @@ const Toast = Swal.mixin({
   
       userService.deleteEvent(eventIDQ).then(
         (response) => {
-          //this.props.history.push("/panel/dashboard");
-          window.location.replace("/panel/dashboard");
+          history.push("/panel/dashboard");
+          //window.location.replace("/panel/dashboard");
           //return <Redirect to="/panel/dashboard" />;
         },
         (error) => {}
       );
     }
         
-      if (!eventMatch || !currentUser || !match) {
+      if (!eventMatch || !currentUser || (!match)) {
        
       
       
@@ -148,9 +150,9 @@ const Toast = Swal.mixin({
                     <Spinner animation="grow" size="sm" />
                     <Spinner animation="grow" size="sm" />
                   </h4>
-                  {(getQueryVariable("matchid")) ? (
+                  {(matchIDQ) ? (
                                 
-                                <Link to={"/panel/lobby?id="+eventMatch.id} className="btn actbtn btn-danger btn-round "> Back </Link>
+                                <Link to={"/panel/lobby?id="+eventIDQ} className="btn actbtn btn-danger btn-round "> Back </Link>
                               ):(
                                 <>
                                 {getQueryVariable("ref")? (
@@ -195,7 +197,7 @@ const Toast = Swal.mixin({
       return (
         <>
           <div className="wrapper">
-            {match && eventMatch.gameMode != "Tournament" ? (
+            {match && eventMatch.gameMode != "Tournament" && eventMatch.gameMode != "League" ? (
               <Chatbar
              
                 eventID={eventIDQ}
@@ -209,7 +211,7 @@ const Toast = Swal.mixin({
               />
             ) : (
               <>
-              {eventIDQ ? (
+              {matchIDQ   ? (
               <Chatbar
              
                 eventID={eventIDQ}
@@ -249,7 +251,7 @@ const Toast = Swal.mixin({
   
                 <div className="content d-flex align-items-center p-0">
                   <Container style={{ marginTop: 50 }}>
-                    <Active/>
+                    <Active token={currentUser}/>
                   {(getQueryVariable("matchid")) ? (
                                 
                                 <Link to={"/panel/lobby?id="+eventMatch.id} className="btn actbtn btn-danger btn-round "> Back </Link>
@@ -285,7 +287,7 @@ const Toast = Swal.mixin({
                                     
                                  
                     {eventMatch.gameMode == "League" ? (
-                      <LeagueSection item={eventMatch} token={currentUser} />
+                      <LeagueSection item={eventMatch} matchidFind={match} token={currentUser} />
                     ) : (
                       <>
                         {(eventMatch.gameMode == "Tournament" && !matchIDQ) ? (

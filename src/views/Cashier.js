@@ -139,7 +139,7 @@ class Cashier extends Component {
    
     
     this.state = {
-      currentUser: AuthService.getCurrentUser(),
+      currentUser: this.props.token,
       Amount: "10",
       
       loading: false,
@@ -152,9 +152,10 @@ class Cashier extends Component {
   
 
   render() {
-    dataTransaction = this.state.currentUser.usersReports
+    let { currentUser } = this.state;
+    dataTransaction = currentUser.usersReports
     
-    var newToken = JSON.parse(JSON.stringify(this.state.currentUser));
+    var newToken = JSON.parse(JSON.stringify(currentUser));
     if (!newToken.cardsdef) {
          
        
@@ -187,7 +188,7 @@ class Cashier extends Component {
     }
     return (
       <>
-        <Active />
+        <Active token={currentUser} />
         <Container>
           <Tab.Container
             id="page-subcategories-tabs-example"

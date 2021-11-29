@@ -61,7 +61,8 @@ import {
     haveGameTag,
     getPlayerTag,
     isJson,
-    haveAdmin
+    haveAdmin,
+    handleTagForm
   } from "components/include";
   import { UPLOADURL, POSTURLTest } from "const";
   
@@ -122,6 +123,17 @@ class LeagueSection extends Component {
     this.handleJoinMatch = this.handleJoinMatch.bind(this);
     this.state = {
        
+      eventid: this.props.item.id,
+       
+        item : this.props.item,
+    currentUser : this.props.token,
+        curPlayerReady: false,
+        progress: 0,
+        selectedFile: null,
+        matchidFind: this.props.matchidFind,
+        isloading: this.props.isLoading,
+        isUpLoading: false,
+        progressLable: "I Win",
       successful: false,
       loading: false,
       message: ""
@@ -168,7 +180,16 @@ class LeagueSection extends Component {
               }
             });
           } else if (response == "tagError") {
-            this.setSelectedTag(this.props.item.gameName,this.props.item.gameConsole)
+            var e = this.state.item.gameName;
+            var p = this.state.item.gameConsole;
+            var currentUser = this.state.currentUser;
+          if(p=='PS4'||e=='PS4'){e='PSN';p='PSN';}
+          if(p=='PS5'||e=='PS5'){e='PSN';p='PSN';}
+          if(p=='XBOX'||e=='XBOX'){e='XBOX';p='XBOX';}
+          
+            
+            handleTagForm(e.replace(' Warzone',''),p,currentUser)
+            //this.setSelectedTag(this.props.item.gameName,this.props.item.gameConsole)
           }
         }
       },
@@ -184,12 +205,19 @@ class LeagueSection extends Component {
     );
   }
   
-
+  componentWillReceiveProps(newProps) {
+    
+    this.setState({ eventid: newProps.item.id });
+    this.setState({ currentUser: newProps.token });
+    this.setState({ matchidFind: newProps.matchidFind });
+    this.setState({ item: newProps.item });
+    this.setState({ isloading:false });
+    
+  }
   render() {
-    var item = this.props.item;
-    var currentUser = this.props.token;
-    setTimeout(() => {$("#jsonhtml").html($("#jsonhtml2").text());},1000)
+    let { currentUser, item,progress, isUpLoading, progressLable,matchidFind } = this.state;
    
+    setTimeout(() => {$("#jsonhtml").html($("#jsonhtml2").text());},1000)
     return (
       <>
      <Col className="mx-auto" lg="10" md="11">
@@ -331,12 +359,15 @@ class LeagueSection extends Component {
                                     Servers: All Servers
                                     
                                   </small>
+                                  
                                   <h3 className="vertical-timeline-element-title">
                                       <Countdown
                                           renderer={renderer}
                                           date={dateStart}
                                         />
-                                        
+                                        <small className="text-muted">
+                                                      Avalable until {item.expire}
+                                                    </small>
                                       </h3>
                                       {(parseInt(item.totalPlayer) >=
                                                     activePlayer) && (
@@ -566,7 +597,7 @@ class LeagueSection extends Component {
                                       <tbody>
                                         {item.players.map((player, i) => {
                                           icStartL = icStartL + 1;
-                                          if (icStartL <= 225) {
+                                          if (icStartL <= 225 && player.username) {
                                             return (
                                               <>
                                                 <tr>

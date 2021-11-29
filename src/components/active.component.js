@@ -26,18 +26,18 @@ import {
   userState
 } from 'atoms';
 
-function Active(props) {
-  const [token,setToken] = useRecoilState(userState);
+function Active(prop) {
+  
   const [activeLoading,setLoading] = useState(false);
   const [submit,setSubmit] = useState(false);
-  const [currentUser,SetCurrentUser] = useState(token);
+  const [currentUser,SetCurrentUser] = useState(prop.token);
   useEffect(() => {
     eventBus.on("eventsDataActive", (event) => {
       var curU = currentUser;
       curU.userActivate = true;
       SetCurrentUser(curU);
-      setToken(curU);
       localStorage.setItem("user", JSON.stringify(curU));
+          eventBus.dispatch("eventsDataUser", curU);
       Swal.fire("", event, "success");
     });
     return () => {

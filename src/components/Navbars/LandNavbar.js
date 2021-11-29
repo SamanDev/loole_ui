@@ -216,8 +216,8 @@ class LandNavbar extends Component {
   <Navbar.Toggle id="myCheck" aria-controls="basic-navbar-nav" />
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="ml-auto navbar-dark" onClick={this.closeNav}>
-    {currentUser.accessToken ? (
-    <Nav.Link to="/panel/dashboard" as={Link}>Dashboard
+    {currentUser && currentUser.accessToken ? (
+    <Nav.Link to={"/panel/dashboard"} as={Link}>Dashboard
 </Nav.Link>
     ):(
         <>

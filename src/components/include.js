@@ -35,7 +35,7 @@ import {
   Tab,ListGroup
   
 } from "react-bootstrap";
-
+import { useHistory } from "react-router";
 
   import {
     RecoilRoot,
@@ -47,6 +47,8 @@ import {
   import {
     userState
   } from 'atoms';
+  var moment = require('moment');
+
   export const  setUserToken  = (tokenUser) =>{
     const [token,setToken] = useRecoilState(userState);
     console.log(token);
@@ -87,21 +89,25 @@ export const  get_date_locale  = (thisDate) =>{
 return b;
 }
 export const  date_edit  = (thisDate) =>{
-  var  newThisDate = thisDate.toString()
-  //console.log(newThisDate)
+  var  newThisDate = thisDate.toString();
+  
+  
   if(newThisDate.indexOf(' ')==-1 && newThisDate.indexOf('-')==-1 ){
     
     thisDate  = date_locale(thisDate)
-    //console.log(newThisDate)
+    
+    
   }
   if(newThisDate.indexOf(' ')>-1 && newThisDate.indexOf('-')>-1 ){
     thisDate = thisDate.replace(' ','T')+'00-08:00';
+    //thisDate  = date_locale(thisDate)
    
-    //console.log(newThisDate)
   }
-  thisDate = thisDate.replace('+00:00','-08:00');
-  //console.log(thisDate)
-  return thisDate;
+  //console.log('thisDate: '+thisDate)
+    var mom = moment(thisDate).format();
+  //thisDate = thisDate.replace('+00:00','-08:00');
+  //console.log('momennt: '+mom)
+  return mom;
 }
 export const  date_locale  = (thisDate) =>{
        
@@ -794,10 +800,12 @@ return true
   
   };
   export const printBlockChallenge = (newItem,filtermode) => {
+    const history = useHistory();
     var filter = filtermode;
     if  (filter == "all"){filter=''}
     if  (filter == "NoMobile"){filter='Console'}
     if(newItem.length == 0){
+      //history.push("/home");
       return (
     
         <Col xl="12" style={{textAlign: "center",color:'rgba(0,0,0,.5)'}}>
@@ -1284,10 +1292,10 @@ var isEditTime = 0;
          lists = item.matchTables;
          matchidFind = item.matchTables[0];
         
-        if(eventIDQ){
+        if(matchIDQ){
           lists.map((tblmatch, w) => {
             //console.log(tblmatch.id == parseInt(eventIDQ))
-            if(parseInt(tblmatch.id) == parseInt(eventIDQ)){
+            if(parseInt(tblmatch.id) == parseInt(matchIDQ)){
               matchidFind = tblmatch;
             }
           }
@@ -1296,8 +1304,10 @@ var isEditTime = 0;
           
             //matchidFind = lists.filter( (list) => list.id === );
           }
+          
           if((item.status=='InPlay' || item.status=='Pending' || item.status=='Ready') && item.gameMode=='Tournament'){
             lists.map((tblmatch, w) => {
+              tblmatch.startTime = date_edit(tblmatch.startTime)
               if(tblmatch.status=='InPlay' || tblmatch.status=='Pending' || tblmatch.status=='Ready'){
                 if(!matchLevelFind){matchLevelFind = tblmatch;}
               }
@@ -1315,8 +1325,18 @@ var isEditTime = 0;
         item.expire = date_edit(item.expire)
        item.startTime = date_edit(item.startTime)
        item.finished = date_edit(item.finished)
-        var chats = item.chats;
-        var eventchats = matchidFind.matchChats;
+      
+       if(!matchidFind){matchidFind = {
+        "id": item.id,
+        "winner": null,
+        "status": item.status,
+        "level": null,
+        "matchCode": null,
+        "startTime": "2021-11-29T12:18:01.000+00:00",
+        "matchPlayers": [],
+        "matchChats": []
+    }}
+    console.log(matchidFind)
         if(item.chats!='null'){
           {item.chats.map((itemnew, i) => {
             finalChat.push(itemnew)
@@ -1351,13 +1371,17 @@ var isEditTime = 0;
         }
         
        
-       //item.expire = toTimestamp(item.expire)
+       item.expire = date_edit(item.expire)
          var dateExpired = item.expire;
          
-        if (matchidFind && item.gameMode != "Tournament") {
+        if (matchidFind && item.gameMode != "Tournament" && item.gameMode != "League") {
           
+         
           if (!item.players[1]) {
             item.players.push(nullplayer);
+          }
+          if (matchidFind && !matchidFind.matchPlayers[0]) {
+            matchidFind.matchPlayers.push(nullplayer);
           }
           if (matchidFind && !matchidFind.matchPlayers[1]) {
             matchidFind.matchPlayers.push(nullplayer);
@@ -1408,7 +1432,7 @@ var isEditTime = 0;
           var _color = '#404040'
           var dateEdited = date_edit(item.expire);
       
-          var dateExpired = date_locale(dateEdited);
+          var dateExpired = dateEdited;
         
   var now = new Date();
  
@@ -1511,7 +1535,7 @@ var isEditTime = 0;
   {item.gameMode=='Tournament3' ? (
       <span>
    
-  <small className="text-muted"> <Countdown renderer={renderer} date={addTime(dateExpired,0)} /></small>
+  <small className="text-muted"> <Countdown renderer={renderer} date={dateExpired} /></small>
     {item.totalPlayer == "4" ? (
       <>
               <br/>

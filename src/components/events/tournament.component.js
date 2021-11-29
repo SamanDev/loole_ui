@@ -106,29 +106,25 @@ import {
               };
               var mymatchFind = null;
               var matchLevelFind =null
-              var isJoin = false;
+             
      
 class TournamentSection extends Component {
   constructor(props) {
     super(props);
     this.showDetails = this.showDetails.bind(this);
     this.handleJoinMatch = this.handleJoinMatch.bind(this);
-    this.handleLeaveMatch = this.handleLeaveMatch.bind(this);
-    this.handlechangeReadyEvent = this.handlechangeReadyEvent.bind(this);
-    this.handlecAlertLost = this.handlecAlertLost.bind(this);
+   
     this.handleHowStream = this.handleHowStream.bind(this);
-    this.handleClashFinished = this.handleClashFinished.bind(this);
-    this.setProgress = this.setProgress.bind(this);
-    this.fileUpload = React.createRef();
+   
     this.state = {
-        eventid: getQueryVariable("id"),
+        eventid: this.props.item.id,
         matchid: getQueryVariable("matchid"),
         item : this.props.item,
     currentUser : this.props.token,
         curPlayerReady: false,
         progress: 0,
         selectedFile: null,
-        matchidFind: this.props.item.matchTables[0],
+        matchidFind: this.props.matchidFind,
         isloading: this.props.isLoading,
         isUpLoading: false,
         progressLable: "I Win",
@@ -139,13 +135,14 @@ class TournamentSection extends Component {
   }
   componentWillReceiveProps(newProps) {
     
-       
+    this.setState({ eventid: newProps.item.id });
     this.setState({ currentUser: newProps.token });
+    this.setState({ matchidFind: newProps.matchidFind });
     this.setState({ item: newProps.item });
-    this.setState({ matchidFind: newProps.item.matchTables[0] });
     this.setState({ isloading:false });
     
   }
+  
   handleHowStream(e) {
     e.preventDefault();
 
@@ -177,199 +174,6 @@ class TournamentSection extends Component {
       }
     });
   }
-  handleClashFinished(e) {
-    this.setState({
-      isloading: true,
-    });
-    userService
-      .saveTags("ClashRoyale", "finish", this.state.tag, this.state.eventid)
-      .then(
-        (response) => {
-          this.setState({
-            isloading: false,
-          });
-          //this.props.history.push("/panel/dashboard");
-        },
-        (error) => {}
-      );
-  }
-  handleLoseMatch(e) {
-    this.setState({
-      isloading: true,
-    });
-    if(this.state.matchid){
-      userService.loseEvent(this.state.eventid,this.state.matchid).then(
-        (response) => {
-          //this.reGetevents();
-          
-          //this.props.history.push("/panel/dashboard");
-        },
-        (error) => {}
-      );
-    }else{
-      userService.loseEvent(this.state.eventid).then(
-        (response) => {
-          //this.reGetevents();
-          //this.props.history.push("/panel/dashboard");
-        },
-        (error) => {}
-      );
-    }
-
-    
-  }
-  handleChatUpload = () => {
-    this.setState({
-      progress: 1,
-      progressLable: "0%",
-      isUpLoading: true,
-    });
-    let uploadInfo = new FormData();
-    uploadInfo.append("id", this.state.eventid);
-    if(this.state.matchid){uploadInfo.append("idMatch", this.state.matchid);}
-    uploadInfo.append("file", this.state.selectedFile);
-    
-    //console.log(uploadInfo);
-    axios
-      .post(API_URL_TEST + "uploadFile", uploadInfo, {
-        headers: uploadHeader(),
-        onUploadProgress: (data) => {
-          //Set the progress value to show the progress bar
-          this.setProgress(Math.round((100 * data.loaded) / data.total));
-        },
-      })
-      .then((response) => {
-        this.setState({
-          progress: 0,
-          progressLable: "I win",
-          isUpLoading: false,
-        });
-        document.documentElement.classList.toggle("nav-open");
-      })
-      .catch((error) => {
-        alert(error.response.data.error);
-        this.setState({
-          progressLable: "I win",
-          isUpLoading: false,
-        });
-      });
-  };
-  setProgress(e) {
-    this.setState({
-      progress: e,
-      progressLable: e + "%",
-    });
-  }
-  handleDelete(e) {
-    e.preventDefault();
-
-    userService.deleteEvent(this.state.eventid).then(
-      (response) => {
-        this.props.history.push("/panel/dashboard");
-      },
-      (error) => {}
-    );
-  }
-  handleLeaveMatch(e) {
-    e.preventDefault();
-    this.setState({
-      isloading: true,
-    });
-    userService.leaveEvent(this.state.eventid).then(
-      (response) => {
-        if (response.indexOf("successful") > -1) {
-          this.setState({
-            isloading: false,
-          });
-         // this.reGetevents();
-          Toast.fire({
-            icon: "success",
-            title: "UnJoined.",
-          });
-        }
-        //this.props.history.push("/panel/dashboard");
-      },
-      (error) => {}
-    );
-  }
-  handlechangeReadyEvent(checked) {
-    //firstLoad = false;
-    this.setState({
-      isloading: true,
-    });
-    //this.setState({ curPlayerReady: checked });
-    userService.changeReadyEvent(this.state.eventid).then(
-      (response) => {
-        if (response == "changeReadyEvent successful") {
-          Toast.fire({
-            icon: "success",
-            title: "Updated.",
-          });
-          
-          //this.reGetevents();
-        }
-        //this.props.history.push("/panel/dashboard");
-      },
-      (error) => {}
-    );
-  }
-  handlecAlertLost(checked) {
-    const MySwal = withReactContent(Swal);
-
-    MySwal.fire({
-      title: "Are you sure? ",
-      icon: "question",
-      iconColor: "#FB404B",
-      text: "Please confirm your lose.",
-      customClass: "dark",
-      showCancelButton: true,
-      focusConfirm: false,
-      confirmButtonText: "Yes, I lost.",
-
-      cancelButtonText: "Back",
-      confirmButtonColor: "#FB404B",
-      cancelButtonColor: "rgba(255, 255, 255,.2)",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.handleLoseMatch();
-      }
-    });
-  }
-  
-  handlecAlertWin(checked) {
-    const MySwal = withReactContent(Swal);
-
-    MySwal.fire({
-      title: "Confirm needed",
-      text: "Upload a  video to approve  your win.",
-      icon: "info",
-      iconColor: "#87CB16",
-      customClass: "dark",
-      showCancelButton: true,
-      focusConfirm: false,
-      confirmButtonText: "Upload video",
-
-      cancelButtonText: "Back",
-      confirmButtonColor: "#87CB16",
-      cancelButtonColor: "rgba(255, 255, 255,.2)",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.fileUpload.current.click();
-      }
-    });
-  }
-  showFileUpload() {
-    this.fileUpload.current.click();
-  }
-  onChangeHandler = (event) => {
-    this.setState({
-      selectedFile: this.fileUpload.current.files[0],
-    });
-
-    setTimeout(() => {
-      this.handleChatUpload();
-    }, 500);
-  };
   showDetails(player){
     $('.gdetails').addClass('hide');
     $('.gdetails.no'+player).removeClass('hide');
@@ -413,7 +217,15 @@ class TournamentSection extends Component {
               }
             });
           } else if (response == "tagError") {
-            handleTagForm(this.state.item.gameName,this.state.item.gameConsole,this.state.currentUser)
+            var e = this.state.item.gameName;
+            var p = this.state.item.gameConsole;
+            var currentUser = this.state.currentUser;
+          if(p=='PS4'||e=='PS4'){e='PSN';p='PSN';}
+          if(p=='PS5'||e=='PS5'){e='PSN';p='PSN';}
+          if(p=='XBOX'||e=='XBOX'){e='XBOX';p='XBOX';}
+          
+            
+            handleTagForm(e.replace(' Warzone',''),p,currentUser)
            
           }
         }
@@ -433,6 +245,7 @@ class TournamentSection extends Component {
 
   render() {
     let { currentUser, item,progress, isUpLoading, progressLable,matchidFind } = this.state;
+    var isJoin = false;
    var  lists = item.matchTables;
    if((item.status=='InPlay' || item.status=='Pending' || item.status=='Ready') && item.gameMode=='Tournament'){
     lists.map((tblmatch, w) => {
@@ -449,6 +262,8 @@ class TournamentSection extends Component {
       //matchidFind = lists.filter( (list) => list.id === );
     }
     var activePlayer = 0; 
+   
+    setTimeout(() => {$("#jsonhtml").html($("#jsonhtml2").text());},1000)
     return (
       <>
       <Col className="mx-auto" lg="10" md="11">
@@ -602,10 +417,13 @@ class TournamentSection extends Component {
                                         }
                                       ></img>
                                       
-                                      
+                                      <p>
+                                                      Avalable until {item.expire}
+                                                    </p>
                                       {!isJoin && item.totalPlayer > item.players.length ? (
                                         <>
                                         <h3 className="vertical-timeline-element-title">
+                                        
                                       <Countdown
                                           renderer={renderer}
                                           date={item.expire}
