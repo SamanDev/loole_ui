@@ -325,37 +325,7 @@ class Cashier extends Component {
                         </Tab.Pane>
                         <Tab.Pane eventKey="cr">
                         <CrDeposit  token={newToken}/>
-                          <Row>
-                            <Col md="6">
-                              <Card className="stacked-form border-0">
-                                <Card.Header>
-                                  <Card.Title as="h4">
-                                    Crypto Currency Deposit
-                                  </Card.Title>
-                                </Card.Header>
-                                <Card.Body></Card.Body>
-                                <Card.Footer>
-                                  <Button
-                                    className="btn-fill "
-                                    type="submit"
-                                    variant="danger"
-                                  >
-                                    Deposit
-                                  </Button>
-                                </Card.Footer>
-                              </Card>
-                            </Col>
-                            <Col md="6">
-                              <Card className="stacked-form border-0">
-                                <Card.Header>
-                                  <Card.Title as="h4">
-                                    How find Crypto Currencies?
-                                  </Card.Title>
-                                </Card.Header>
-                                <Card.Body>hi</Card.Body>
-                              </Card>
-                            </Col>
-                          </Row>
+                        
                         </Tab.Pane>
                       </Tab.Content>
                     </Tab.Container>

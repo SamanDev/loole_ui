@@ -19,12 +19,19 @@ function Active(prop) {
   
   const [activeLoading,setLoading] = useState(false);
   const [submit,setSubmit] = useState(false);
-  const [currentUser,SetCurrentUser] = useState(prop.token);
+  const [currentUser,setCurrentUser] = useState(prop.token);
+  useEffect(() => {
+   
+    setCurrentUser(() => prop.token)
+  
+
+  
+}, [prop.token]);
   useEffect(() => {
     eventBus.on("eventsDataActive", (event) => {
       var curU = currentUser;
       curU.userActivate = true;
-      SetCurrentUser(curU);
+      setCurrentUser(curU);
       localStorage.setItem("user", JSON.stringify(curU));
           eventBus.dispatch("eventsDataUser", curU);
       Swal.fire("", event, "success");

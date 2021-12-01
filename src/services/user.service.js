@@ -428,6 +428,21 @@ class UserService {
 
       });
   }
+  createDepositCyripto(amount,coin) {
+    
+    return axios
+      .post(
+        API_URL_TEST + "createDepositCyripto",
+        { amount,coin },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        console.log("ok");
+        // localStorage.setItem("events", JSON.stringify(response.data));
+        //localStorage.setItem("user", JSON.stringify(response.data));
+        return response.data;
+      });
+  }
   createDepositShetab(amount,CardNo, Expiration, cvv,pass) {
     
     return axios
