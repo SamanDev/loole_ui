@@ -46,6 +46,7 @@
     "react-medium-editor": "^1.8.1",
     "react-notification-alert": "0.0.13",
     "react-numeric-input": "^2.2.3",
+    "react-qr-code": "^2.0.3",
     "react-query": "^3.27.0",
     "react-rainbow-components": "^1.26.0",
     "react-responsive-navbar": "^1.0.11",

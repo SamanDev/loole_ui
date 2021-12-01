@@ -10,7 +10,7 @@ import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
+import QRCode from "react-qr-code";
 import CryptoList from 'components/CryptoList'
 import {
     Row,
@@ -273,8 +273,12 @@ class CrDeposit extends Component {
                                     )}
                                     {this.state.shetabGo == 1 && (
                                       <>
-                                       <img src="https://bin.bnbstatic.com/image/admin_mgs_image_upload/20201110/87496d50-2408-43e1-ad4c-78b47b448a6a.png" />
-                                        
+                                      
+                                      <p>Address</p>
+                                      <p>TT3RGXTvPZoFYPFXQQD1R2KLPFcwvai1WB</p>
+                                      <p>Send only <span className="text-danger">{Coin.toUpperCase()}</span> to this deposit address.</p>
+                                      <p>Ensure the network is <span className="text-danger">Tron (TRC20)</span>.</p>
+                                      <QRCode value="hey" />
                                       </>
                                     )}
                                     
