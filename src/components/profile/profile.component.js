@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import CountryList from 'components/CountryList'
 import Birthday from 'components/Birthday'
+
 import {
     Row,
     Col,
@@ -57,7 +58,14 @@ import {
     }
 }
   };
-  
+  function editCounry(item){
+    
+      var _val = item.value.toLowerCase();
+      var _txt = item.label;
+      var newItem = { key: _val, value: _val, flag: _val, text: _txt }
+     
+    return newItem
+  }
   function ProfileForm(prop) {
     const [currentUser,setCurrentUser] = useState(prop.token);
     const [gameName,setGameName] = useState();
@@ -81,7 +89,9 @@ import {
       evt.preventDefault();
       setSubmit(true);
       setLoading(true);
-      
+      console.log(
+        name,country,birthday
+      )
           userService
             .editInfo(
               name,country,birthday
@@ -99,6 +109,7 @@ import {
       })
   }
   const setLok = (e) => {
+    //console.log(e.SyntheticBaseEvent)
     setCountry(e)
    
   }
