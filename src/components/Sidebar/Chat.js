@@ -183,7 +183,11 @@ this.setState({
     // that it gets through routes prop
     
     
-    
+    if(currentUser.accessToken == '' && !this.state.isLoading){
+      this.setState({
+        isLoading: true,
+      });
+    }
 
     return (
       <>
@@ -473,10 +477,11 @@ this.setState({
               <Card.Footer style={{ padding: 10 }}>
                 <Card style={{ backgroundColor: "#222", margin: 0 }}>
                   <Card.Body style={{ padding: 10 }}>
-              {currentUser.accessToken!=''&&(
+            
                 
                     <Form
                       onSubmit={this.handleChat}
+                      
                       ref={(c) => {
                         this.form = c;
                       }}
@@ -486,6 +491,7 @@ this.setState({
                         <Form.Control
                           placeholder="type something..."
                           value={this.state.messageBox}
+                          disabled={isLoading}
                           onChange={this.changeMessageBox}
                         ></Form.Control>
                       </Form.Group>
@@ -504,7 +510,7 @@ this.setState({
                       </Row>
                     </Form>
                   
-              )}
+            
               </Card.Body>
                 </Card>
               </Card.Footer>

@@ -59,44 +59,24 @@ import {
   userDetails
 } from "components/include";
 import eventBus from "views/eventBus";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
-import {
-  userState
-} from 'atoms';
-function profile() {
-  const token = useRecoilValue(userState);
-  const [currentUser,setCurrentUser] = useState(token);
-  const [loading,setLoading] = useState(false);
-  const [submit,setSubmit] = useState(false);
-  
-  
-  
-  const [socialPlatform,setSocialPlatform] = useState("");
-  const [socialID,setSocialID] = useState("");
-  const [flag,setFlag] = useState('ir');
-  
+
+function profile(prop) {
+  const [key, setKey] = useState(prop.tabkeyprofile);
+  const [currentUser,setCurrentUser] = useState(prop.token);
   useEffect(() => {
-    eventBus.on("eventsDataUser", (event) => {
-      
-      setCurrentUser(event);
-    });
-    return () => {
-      
-      //setEvents('');
-    
-    }
-  }, []) // notice the empty array
+   
+    setCurrentUser(() => prop.token)
   
 
+  
+}, [prop.token]);
+useEffect(() => {
+  setKey(prop.tabkey)
+   
+  
+ },[prop.tabkey]);
+
   const handlecSetInstagram = (game,platform) => {
-    
-    setSocialPlatform(platform)
     const resetPw2= async () => {
       const swalval = await Swal.fire(getModalTag(game));
 
@@ -105,8 +85,7 @@ function profile() {
       if (v) {
         if (v.tagid) {
           
-            
-              setSocialID(v.tagid)
+        
             
           handleSaveSocial(platform,v.tagid);
               
@@ -122,6 +101,31 @@ function profile() {
     
     
     }
+    const handleSaveSocial = (accountName,accountId) => {
+     
+      Swal.fire({
+        title: '<br/>Please Wait...',
+        text: 'Is working..',
+        customClass:'tag',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    })
+      
+          userService.saveSocial(accountName,accountId)
+            .then(
+              
+              (response) => {
+               
+                if (response.data.accessToken) {
+                  
+                  Swal.fire("", "Data saved successfully.", "success")
+                }
+      })
+  }
     const selectrequired = (value) => {
   
     if (!value) {
@@ -149,7 +153,7 @@ function profile() {
         var res = str.substring(0, 1);
         res  = res + ' '+ str.substring(1, 2);
    
-    if (currentUser.country.value && currentUser.country.value !=  flag){setFlag(currentUser.country.value)}
+   // if (currentUser.country.value && currentUser.country.value !=  flag){setFlag(currentUser.country.value)}
    
   return (
     
@@ -159,7 +163,8 @@ function profile() {
               <Col md="8" sm="6">
       <Tab.Container
               id="plain-tabs-profile"
-              defaultActiveKey="profile"
+              activeKey={key}
+            onSelect={(k) => prop.handleProfileTabID(k)}
             >
               <Nav role="tablist" variant="tabs">
                 <Nav.Item>
@@ -200,7 +205,7 @@ function profile() {
   </VerticalTimelineElement>
   
 </VerticalTimeline>
-<ProfileForm/>
+<ProfileForm token={currentUser}/>
                       <PasswordForm/>
                     
                 </Tab.Pane>

@@ -21,15 +21,14 @@ export default class Profile extends Component {
     this.state = {
       redirect: null,
       userReady: false,
-      currentUser: { username: "" }
+      currentUser: this.props.token
     };
   }
-
-  componentDidMount() {
-    const currentUser = AuthService.getCurrentUser();
-
-    if (!currentUser) this.setState({ redirect: "/home" });
-    this.setState({ currentUser: currentUser, userReady: true })
+  componentWillReceiveProps(newProps) {
+    
+    this.setState({ currentUser: newProps.token });
+    
+    
   }
 
   render() {

@@ -13,18 +13,7 @@ import { bounce } from 'animate.css';
 import eventBus from "views/eventBus";
 import PropTypes from "prop-types";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import AuthService from "services/auth.service";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
-import {
-  userState
-} from 'atoms';
+
 
 function Active(prop) {
   

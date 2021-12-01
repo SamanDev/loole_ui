@@ -764,10 +764,10 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .navbar, .brand, .btn-s
     border-bottom: 1px solid #dddddd;
   }
   .landing-page .carousel-indicators {
-    bottom: -50px;
+    bottom: -10px;
   }
   .landing-page .carousel-indicators li {
-    margin: 1px 10px;
+    margin: 5px 10px;
     border-color: #888888;
   }
   .landing-page .carousel-indicators .active{

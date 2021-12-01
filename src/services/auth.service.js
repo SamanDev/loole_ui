@@ -11,7 +11,7 @@ class AuthService {
         var response = response.data
       if(response=='Expire token' || response=='Not registered'){
         try{
-        localStorage.removeItem("user");
+        //localStorage.removeItem("user");
         }catch(e){}
    // window.location.replace("/auth/login-page");
       }
@@ -37,6 +37,7 @@ class AuthService {
         if (response.data.accessToken) {
 
           localStorage.setItem("user", JSON.stringify(response.data));
+          UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username,response.data);
           //eventBus.dispatch("eventsDataUser", response.data);
           //UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username);
         }

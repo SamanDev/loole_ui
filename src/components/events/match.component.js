@@ -411,6 +411,11 @@ class LeagueSection extends Component {
 
   render() {
     let { currentUser, item,progress, isUpLoading, progressLable,matchidFind } = this.state;
+    if(currentUser.accessToken == '' && !this.state.isloading){
+      this.setState({
+        isloading: true,
+      });
+    }
     
     var activePlayer = 0; 
     return (
@@ -610,6 +615,29 @@ class LeagueSection extends Component {
                               <Row>
                                 <Col xs="12">
                                   <h2>{matchidFind.status}</h2>
+                                  {currentUser.accessToken == '' ? (
+                                    
+                                                        <>
+                                                        <p>
+                                                    <small className="text-muted">
+                                                      Avalable until
+                                                    </small>
+                                                    <br />
+                                                    <Countdown
+                                                      renderer={renderer}
+                                                      date={item.expire}
+                                                    />
+                                                  </p>
+                                                        <Link to="/auth/login-page" className="btn btn-round btn-danger" style={{marginTop:30}} as={Link}>Login to Join
+</Link>
+ <br/>
+  <Link to="/auth/register-page"  className="btn btn-round btn-link" as={Link}>Don’t have an account? Create Account
+</Link>
+                                                        </>
+                                                        
+                                                      ):(<>
+                                                      
+                                                      
                                   {(matchidFind.status == "Pending" || matchidFind.status == "Ready") && (
                                             <>
                                               <p>
@@ -696,7 +724,7 @@ class LeagueSection extends Component {
                                                   {((item.totalPlayer) >
                                                     activePlayer) && (
                                                       <>
-                                                      {currentUser.accessToken != '' ? (
+                                                      
                                                         <Button
                                                       className="btn-round"
                                                       onClick={
@@ -709,16 +737,7 @@ class LeagueSection extends Component {
                                                     >
                                                       Join Match {item.inSign.replace('Dollar','$')}  {item.amount}
                                                     </Button>
-                                                      ):(
-                                                        <>
-                                                        <Link to="/auth/login-page" className="btn btn-round btn-danger" as={Link}>Login to Join
-</Link>
- <br/>
-  <Link to="/auth/register-page"  className="btn btn-round btn-link" as={Link}>Don’t have an account? Create Account
-</Link>
-                                                        </>
-                                                        
-                                                      )}
+                                                     
                                                     
                                                     </>
                                                     )}
@@ -873,7 +892,7 @@ class LeagueSection extends Component {
                                       )}
                                     </>
                                   )}
-
+ </>)}
                                   
                                 </Col>
                                 <Col className="text-center">

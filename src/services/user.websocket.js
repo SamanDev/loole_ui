@@ -7,13 +7,16 @@ var timerId = 0;
 class UserWebsocket {
    
 
-    connect(token) {
+    connect(token,user) {
         if (ws == null) {
             ws = new WebSocket(USERSOCKETURL + token);
             //userService.getEvents();
             //localStorage.removeItem("events");
             //userService.getEvents();
+
             console.log("Websocket is connect");
+            eventBus.dispatch("eventsDataUser", user);
+            eventBus.remove("eventsDataUser");
             ws.onopen = function live() {
                 var timeout = 20000;
             if (ws.readyState == ws.OPEN) {
@@ -29,6 +32,7 @@ class UserWebsocket {
                     //localStorage.removeItem("events");
                     //userService.getEvents();
                     console.log("Websocket is connect");
+                    //eventBus.dispatch("eventsDataUser", user);
                     ws.onopen = function live() {
                         var timeout = 20000;
                     if (ws.readyState == ws.OPEN) {
@@ -81,7 +85,7 @@ class UserWebsocket {
               } else {
                   if (message === 'closeConnection') {
                       //localStorage.removeItem("events");
-                      localStorage.clear();
+                     // localStorage.clear();
                           //window.location.reload();
                         }else if(message === 'PasswordChanged'){
                             eventBus.dispatch("eventsDataPass", 'Your password has been updated.');
@@ -99,7 +103,7 @@ class UserWebsocket {
                 if(e.type === 'error'){
                     
                     ws=null;
-                    localStorage.clear();
+                   // localStorage.clear();
                     //window.location.reload();
                     window.location.replace("/auth/login-page");
                 }
@@ -112,8 +116,9 @@ class UserWebsocket {
             
                     ws.close();
                     ws=null;
+                    alert('Websocket is in disconnected state')
                             //localStorage.clear();
-                            window.location.reload();
+                           //window.location.reload();
                 console.log("Websocket is in disconnected state");
                 }
             }
@@ -126,6 +131,7 @@ class UserWebsocket {
              
              ws.close();
              ws = null
+             alert('Websocket is in disconnected state')
              //localStorage.removeItem("events");
          console.log("Websocket is in disconnected state");
          }

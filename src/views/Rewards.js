@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,useState,useEffect } from "react";
 // react component used to create charts
 import ChartistGraph from "react-chartist";
 import { Link, useLocation } from "react-router-dom";
@@ -32,29 +32,11 @@ import {
   Spinner,
   ListGroup
 } from "react-bootstrap";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
-import {
-  userState
-} from 'atoms';
-function Dashboard(props) {
-  const [token,setToken] = useRecoilState(userState);
-  
-  
-  if ( !token) {return  <h4 style={{textAlign: "center"}}>Loading 
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" /></h4>;
-  }
-  
- 
 
-    var currentUser = token;
+function Dashboard(prop) {
+  const [currentUser,setCurrentUser] = useState(prop.token);
+  
+  
     var Balance = currentUser.balance;
     if (!Balance) {
       Balance = 0;

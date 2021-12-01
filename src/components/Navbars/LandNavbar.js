@@ -41,7 +41,7 @@ class LandNavbar extends Component {
     
        
         this.setState({ currentUser: newProps.token });
-        console.log('Props updated')
+      
       }
     setNavbarColor(expanded) {
         if($('.landing-page').length>0){

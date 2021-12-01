@@ -36,24 +36,61 @@ function scrollToTop() {
 
 
 };
-function Auth() {
-  const currentUser = AuthService.getCurrentUser();
+function Auth(prop) {
+  const [events,setEvents] = useState(prop.events);
+  
+  const [currentUser,setCurrentUser] = useState(prop.token);
+  
+  useEffect(() => {
+   
+      setCurrentUser(() => prop.token)
+    
+  
+    
+  }, [prop.token]);
+  
+  useEffect(() => {
+    
+    setEvents(() => prop.events)
+    var responsive = $(window).width();
+    if (responsive >= 768) {
+      $('.landing-page').removeClass('landing-mobile')
+  }
+  }, [prop.events]);
 
   const getRoutes = (routes) => {
+    //scrollToTop();
     return routes.map((prop, key) => {
+      
+      if (prop.collapse) {
+        return getRoutes(prop.views);
+      }
       if (prop.layout !== "/panel" ) {
-     
-      scrollToTop();
+        //sconsole.log(prop.component)
         return (
+          
+          
           <Route
             path={prop.layout + prop.path}
             key={key}
-            component={prop.component}
-            page={prop.name}
-          
+            render={(props) => (
+              <>
+             
+              {(prop.component=='Landing') && (<Landing authed={true} events={events} token={currentUser}  />)}
+            
+              
+              </>
+            )}
+           
+            
+            
           />
+            
+          
         );
-        }
+      } else {
+        return null;
+      }
     });
   };
   
@@ -63,7 +100,7 @@ function Auth() {
     <ConfigProvider colors={DEFCOLORS}>
       <div className="landing-page landing-mobile">
         {/* Navbar */}
-        <LandNavbar/>
+        <LandNavbar token={currentUser}/>
         {/* End Navbar */}
         
         <Switch>{getRoutes(routes)}</Switch>

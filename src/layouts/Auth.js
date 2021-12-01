@@ -1,4 +1,4 @@
-import React, { Component }from "react";
+import React, { Component, useState, useEffect}from "react";
 import { Switch, Route,Redirect } from "react-router-dom";
 
 
@@ -25,16 +25,7 @@ import userService from "services/user.service";
 import AuthService from "services/auth.service";
 // dinamically create auth routes
 
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
-import {
-  userState
-} from 'atoms';
+
 import routes from "routes.js";
 function scrollToTop() {
 
@@ -56,7 +47,7 @@ const getRoutes = (routes) => {
     }
     if (prop.layout === "/auth") {
       //alert(prop.name )
-      scrollToTop()
+     // scrollToTop()
       return (
         <Route
           path={prop.layout + prop.path}
@@ -70,16 +61,9 @@ const getRoutes = (routes) => {
     }
   });
 };
-function  Auth() {
-  const queryClient = new QueryClient()
-  const [token,setToken] = useRecoilState(userState);
+function  Auth(prop) {
+  const [currentUser,setCurrentUser] = useState(prop.token);
   
-  
-  if (!token) {return  <h4 style={{textAlign: "center"}}>Loading 
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" /></h4>;
-  }
   
   
       var responsive = $(window).width();
@@ -93,11 +77,11 @@ function  Auth() {
     <ConfigProvider colors={DEFCOLORS}>
       <div className="landing-page landing-page1 landing-mobile">
         {/* Navbar */}
-        <LandNavbar token={token}/>
+        <LandNavbar token={currentUser}/>
         {/* End Navbar */}
-        <QueryClientProvider client={queryClient}>
+     
         <Switch>{getRoutes(routes)}</Switch>
-        </QueryClientProvider>
+  
       </div>
       </ConfigProvider>
     

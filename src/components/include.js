@@ -37,25 +37,9 @@ import {
 } from "react-bootstrap";
 import { useHistory } from "react-router";
 
-  import {
-    RecoilRoot,
-    atom,
-    selector,
-    useRecoilState,
-    useRecoilValue,
-  } from 'recoil';
-  import {
-    userState
-  } from 'atoms';
+ 
   var moment = require('moment');
 
-  export const  setUserToken  = (tokenUser) =>{
-    const [token,setToken] = useRecoilState(userState);
-    console.log(token);
-        setToken(tokenUser);
-        console.log(token);
-  }
-  
     
 export const  getQueryVariable  = (variable ,q) =>{
   if(q){

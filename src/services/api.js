@@ -1,7 +1,9 @@
 import axios from "axios";
 import authHeader from "./auth-header";
 import uploadHeader from "./upload-header";
+import { useHistory } from "react-router";
 
+import UserWebsocket from 'services/user.websocket'
 import { POSTURLTest,defUser } from "const";
 
 const API_URL_TEST = POSTURLTest;
@@ -33,17 +35,26 @@ const getEventByID= async(ids) => {
   
 }
   const getUser=async () => {
-    //alert()
+   // alert(JSON.stringify(authHeader()))
     if(JSON.stringify(authHeader()) != '{}'){
     const { data } = await client.get("/getUser",{ headers: authHeader() })
    
     if (data.accessToken) {
       localStorage.setItem("user", JSON.stringify(data));
+      
+    var loc = window.location.href;
+  
+    //eventBus.dispatch("eventsDataUser", usr);
+    if (loc.indexOf("/user")== -1){
+    UserWebsocket.connect(data.accessToken+"&user="+data.username);
+    
+  }
       return data;
     }else{
-      return data;
-//return defUser;
+      return defUser;
     }
+  }else{
+    return defUser;
   }
   }
   const getUserProfile=async (username) => {

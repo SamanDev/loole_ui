@@ -252,24 +252,7 @@ const Toast = Swal.mixin({
                 <div className="content d-flex align-items-center p-0">
                   <Container style={{ marginTop: 50 }}>
                     <Active token={currentUser}/>
-                  {(getQueryVariable("matchid")) ? (
-                                
-                                <Link to={"/panel/lobby?id="+eventMatch.id} className="btn actbtn btn-danger btn-round "> Back </Link>
-                              ):(
-                                <>
-                                {getQueryVariable("ref")? (
-                                <>
-                                {getQueryVariable("ref") == 'home'? (
-                                  <Link to={"/"+getQueryVariable("ref")} className="btn  actbtn btn-danger btn-round "> Back </Link>
-                                  ):(
-                                    <Link to={"/panel/"+getQueryVariable("ref")} className="btn  actbtn btn-danger btn-round "> Back </Link>
-                                    )}
-                                </>
-                                ):(
-                                  <Link to="/panel/dashboard" className="btn actbtn btn-danger btn-round "> Back </Link>
-                                  )}
-                                  </>
-                              )}
+                    <button onClick={() => history.goBack()} className="btn  actbtn btn-danger btn-round ">Back</button>
                                 {(haveAdmin(currentUser.roles))&&(
                 <>
                  <Button

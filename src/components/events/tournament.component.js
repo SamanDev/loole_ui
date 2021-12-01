@@ -416,9 +416,29 @@ class TournamentSection extends Component {
                                             ".jpg").default
                                         }
                                       ></img>
-                                      
+                                      {currentUser.accessToken == '' ? (
+                                    
+                                    <>
+                                    <p>
+                                <small >
+                                  Avalable until
+                                </small>
+                                <br />
+                                <Countdown
+                                  renderer={renderer}
+                                  date={item.expire}
+                                />
+                              </p>
+                                    <Link to="/auth/login-page" className="btn btn-round btn-danger" style={{marginTop:30}} as={Link}>Login to Join
+</Link>
+<br/>
+<Link to="/auth/register-page"  className="btn btn-round btn-link" style={{color: '#fff'}} as={Link}>Don’t have an account? Create Account
+</Link>
+                                    </>
+                                    
+                                  ):(<>
                                       <p>
-                                                      Avalable until {item.expire}
+                                                      Avalable until
                                                     </p>
                                       {!isJoin && item.totalPlayer > item.players.length ? (
                                         <>
@@ -469,7 +489,8 @@ class TournamentSection extends Component {
                                         </>
                                       )}
                                       
-
+                                      </>
+                                        )}
                                       
                                       
                                     </VerticalTimelineElement>

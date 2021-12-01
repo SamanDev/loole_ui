@@ -1,15 +1,7 @@
 
-import { useAllEventsByStatus,useAllEvents } from "services/hooks"
-import React, { Component } from "react";
+import React, { Component,useState, useEffect} from "react";
 import $ from "jquery";
-import Countdown from "react-countdown";
-import userService from "services/user.service";
-import authService from "services/auth.service";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import eventBus from "views/eventBus";
-import { printMatchBlock,printGameBlock } from "components/include";
 
-// react-bootstrap components
 import {
   Badge,
   Button,
@@ -26,8 +18,22 @@ import {
 import HomeEvents from "components/events/home.component"
 import GameSlide from "components/GameSlide";
 
-function  Landing() {
-   
+function  Landing(prop) {
+    const [currentUser,setCurrentUser] = useState(prop.token);
+  
+    const [events,setEvents] = useState(prop.events);
+    
+    useEffect(() => {
+      setEvents(prop.events)
+       
+      
+     },[prop.events]);
+     
+     useEffect(() => {
+      setCurrentUser(prop.token)
+       
+      
+     },[prop.token]);
   
 const elements = ['1', '2-4_01', '2-4_02','2-4_03'];
 var responsive = $(window).width();
@@ -177,7 +183,7 @@ return (
                 <h4 className="header-text text-center">Is it Real Cash?</h4>
                 <p className="header-text text-center">Absolutly YES! Cash on the table.</p>
 
-                <HomeEvents/>
+                <HomeEvents events={events} token={currentUser}/>
                 
              
             </div>
@@ -374,7 +380,7 @@ return (
                 <div className="container">
                     <h4 className="header-text text-center">Is it Real Cash?</h4>
                     <p className="header-text text-center">Absolutly YES! Cash on the table.</p>
-                    <HomeEvents/>
+                    <HomeEvents events={events} token={currentUser}/>
                     
                  
                 </div>

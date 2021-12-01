@@ -33,16 +33,7 @@ import {
     date_locale,
     userDetails
   } from "components/include";
-  import {
-    RecoilRoot,
-    atom,
-    selector,
-    useRecoilState,
-    useRecoilValue,
-  } from 'recoil';
-  import {
-    userState
-  } from 'atoms';
+  
   const required = (value,props) => {
       
       if(typeof props.passReadyprp !== "undefined"){
@@ -67,8 +58,8 @@ import {
 }
   };
   
-  function ProfileForm() {
-    const [token,setToken] = useRecoilState(userState);
+  function ProfileForm(prop) {
+    const [currentUser,setCurrentUser] = useState(prop.token);
     const [gameName,setGameName] = useState();
     const [gamePlatform,setGamePlatform] = useState("");
     const [gameID,setGameID] = useState("");
@@ -76,8 +67,7 @@ import {
     const [message,setMessage] = useState("");
     const [loading,setLoading] = useState(false);
     const [submit,setSubmit] = useState(false);
-    const [currentUserTag,SetCurrentUserTag] = useState(token);
-    var currentUser = token;
+    
     const [name,setName] = useState(currentUser.fullName);
     const [country,setCountry] = useState(currentUser.country);
     const [birthday,setBirthday] = useState(currentUser.birthday);
@@ -103,12 +93,8 @@ import {
       setLoading(false);
                 if (response=='Ok'){
                   
-                  Swal.fire("", "Data saved successfully.", "success").then(
-                    (result) => {
-                     
-                      setToken(AuthService.getCurrentUser())
-                    }
-                  );
+                  Swal.fire("", "Data saved successfully.", "success")
+                  
                 }
       })
   }
@@ -122,6 +108,13 @@ import {
     setBirthday(newe)
     
   }
+  useEffect(() => {
+   
+    setCurrentUser(() => prop.token)
+  
+
+  
+}, [prop.token]);
     return (
       <>
     <Form

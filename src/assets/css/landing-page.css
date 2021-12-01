@@ -449,14 +449,15 @@ color: #fff !important;
   border-bottom: 1px solid #dddddd;
 }
 .landing-page .carousel-indicators {
-  bottom: -50px;
+  bottom: -10px;
 }
 .landing-page .carousel-indicators li {
-  margin: 1px 10px;
+  margin: 5px 10px;
   border-color: #888888;
+  background-color: #888888;
 }
 .landing-page .carousel-indicators .active{
-  background-color: #888888;
+  background-color: #1f1f1f;
 }
 .landing-page .carousel-indicators.carousel-indicators-blue li {
   border-color: #00bbff;

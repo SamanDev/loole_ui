@@ -1,6 +1,8 @@
 import React ,{useEffect, useState} from "react";
 import { Switch, Route,Redirect } from "react-router-dom";
 import Avatar, { ConfigProvider } from "react-avatar";
+import { useHistory } from "react-router";
+
 import $ from "jquery";
 //import { GlobalProvider } from 'context/GlobalState';
 import Active  from "components/active.component";
@@ -31,30 +33,7 @@ import Cashier from "views/Cashier.js";
 import Profile from "views/Profile.js";
 import CreateMatch from "views/Add.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
-import UserWebsocket from 'services/user.websocket'
-import AuthService from "services/auth.service";
-import userService from "services/user.service";
 
-import eventBus from "views/eventBus";
-import {
-  
-  getQueryVariable,
- editEvent,
-  haveAdmin,
-  editDateTime
-} from "components/include";
-import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, QueryCache,MutationCache} from 'react-query'
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
-import {
-  userState
-} from 'atoms';
-import { useAllEvents,useUser,useAllEventsByStatus,useEventByID } from "services/hooks"
 function scrollToTop() {
 
   window.scrollTo({
@@ -63,27 +42,15 @@ function scrollToTop() {
     });
     
     
+  
 
 
 };
 
-
-var eventDefID = getQueryVariable("id");
-var eventDefMatchID = getQueryVariable("matchid");
-//if(!eventDefID){eventDefID = 203}
-
 function  Panel(prop) {
   
-  const queryClient =  useQueryClient();
-  //queryClient.clear()
   
   
-  
-    
-   // const query = mutationCache.findAll("User");
-    //const query = mutationCache.getAll()
-const [eventIDQ,setEventIDQ] = useState(eventDefID);
-const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
   
 
   const [sidebarImage, setSidebarImage] = React.useState(image3);
@@ -91,52 +58,55 @@ const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
   
   
 
-  
-  const url = window.location.search.substring(1);
-
     
-  const [events,setEvents] = useState();
-  const [eventID,setEventID] = useState();
-  const [currentUser,setCurrentUser] = useState();
-  const { data: userGet  } = useUser();
-  
-  const { data: eventsGet } = useAllEventsByStatus('All');
-  const { data: eventGet } = useEventByID(eventIDQ);
-  var currpage = "Dashboard";
+  const [events,setEvents] = useState(prop.events);
+  const [eventID,setEventID] = useState(prop.eventID);
+  const [currentUser,setCurrentUser] = useState(prop.token);
+  const [keyDash, setKeyDash] = useState(prop.tabkey);
+  const [keyProfile, setKeyProfile] = useState(prop.tabkeyprofile);
+  const [keyMyMatch, setKeyMyMatch] = useState(prop.tabkeymatch);
+   // const query = mutationCache.findAll("User");
+    //const query = mutationCache.getAll()
+const [eventIDQ,setEventIDQ] = useState(prop.eventIDQ);
+const [matchIDQ,setMatchIDQ] = useState(prop.matchIDQ);
   useEffect(() => {
-    setCurrentUser(() => userGet)
-    eventBus.on("eventsDataUser", (userGet) => {
    
-        setCurrentUser(userGet)
-      queryClient.setQueryData(["User"], userGet)
-      
-      
-      
-    });
-  }, [userGet]);
+    setCurrentUser(() => prop.token)
+  
+
+  
+}, [prop.token]);
+
+useEffect(() => {
+  
+  setEvents(() => prop.events)
+  
+}, [prop.events]);
+  
+  var currpage = "Dashboard";
   
   useEffect(() => {
-    
-    setEvents(() => eventsGet)
-    eventBus.on("eventsData", (eventsGet) => {
-      
-      if(eventsGet && eventsGet !=events) {
-        setEvents(eventsGet);
-        queryClient.setQueryData(['Events','All'], eventsGet)
-      
-      }
-     
- 
-        });
-    
-  }, [eventsGet]);
-  useEffect(() => {
-  
-    setEventIDQ(() => eventIDQ)
+  //alert(eventIDQ)
+    //setEventIDQ(() => eventIDQ)
+    prop.handleID(eventIDQ)
     //queryClient.invalidateQueries()
     //useEventByID(eventIDQ);
 
   }, [eventIDQ]);
+  useEffect(() => {
+  prop.handleTabID(keyDash)
+    //setKeyDash(() => keyDash)
+    //queryClient.invalidateQueries()
+    //useEventByID(eventIDQ);
+
+  }, [keyDash]);
+  useEffect(() => {
+  prop.handleProfileTabID(keyProfile)
+    //setKeyDash(() => keyDash)
+    //queryClient.invalidateQueries()
+    //useEventByID(eventIDQ);
+
+  }, [keyProfile]);
   useEffect(() => {
   
     setMatchIDQ(() => matchIDQ)
@@ -145,26 +115,18 @@ const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
 
   }, [matchIDQ]);
   useEffect(() => {
-    
-  }, [eventID]);
+    prop.handleID(eventIDQ)
+  }, [prop.eventIDQ]);
   useEffect(() => {
     
-  if(eventIDQ && eventGet){
+  if(eventIDQ && prop.eventID){
     
-    setEventID(() => eventGet)
-    eventBus.on("eventsDataEventDo", (eventGet) => {
-      if(eventIDQ == eventGet.id){
-          //setEventIDQ(eventGet.id)
-          setEventID(() => eventGet)
-        
-          
-         /queryClient.setQueriesData(['Event',eventGet.id], eventGet)
-      }
-            });
+    setEventID(() => prop.eventID)
+    
   }
     
     
-  }, [eventGet]);
+  }, [prop.eventID]);
   
     
     
@@ -193,12 +155,12 @@ const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
             key={key}
             render={(props) => (
               <>
-              {(prop.component=='Profile') && (<Profile authed={true}  token={currentUser} />)}
-              {(prop.component=='Dashboard') && (<Dashboard authed={true} events={events} token={currentUser} />)}
+              {(prop.component=='Profile') && (<Profile authed={true}  token={currentUser} tabkey={keyProfile} handleProfileTabID={setKeyProfile} />)}
+              {(prop.component=='Dashboard') && (<Dashboard authed={true} events={events} token={currentUser} tabkey={keyDash} handleTabID={setKeyDash}   />)}
               {(prop.component=='LockScreenPage') && (<LockScreenPage authed={true} event={eventID} token={currentUser} handleID={setEventIDQ} handleMatchID={setMatchIDQ} />)}
               {(prop.component=='Cashier') && (<Cashier authed={true} token={currentUser} />)}
               {(prop.component=='Rewards') && (<Rewards authed={true} token={currentUser} />)}
-              {(prop.component=='MyMatches') && (<MyMatches authed={true} token={currentUser} />)}
+              {(prop.component=='MyMatches') && (<MyMatches authed={true} token={currentUser} tabkey={keyMyMatch} handleTabID={setKeyMyMatch} />)}
               {(prop.component=='CreateMatch') && (<CreateMatch authed={true} token={currentUser} />)}
               
               </>
@@ -230,7 +192,7 @@ const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
   
   
   if(!currentUser )
-  if(eventDefID){
+  if(eventIDQ){
 return(
   <div
               className="full-page lock-page"
@@ -270,9 +232,9 @@ return(
     return (
       <div className="wrapper " >
   
-  <div class="sidebar" data-color="orange" data-image="/static/media/bg.3cef9caf.jpg"><div class="sidebar-wrapper"></div><div class="sidebar-background" style={{backgroundImages: "url(&quot;/static/media/bg.3cef9caf.jpg&quot;)"}}></div></div>
+  <div className="sidebar" data-color="orange" data-image="/static/media/bg.3cef9caf.jpg"><div className="sidebar-wrapper"></div><div className="sidebar-background" style={{backgroundImages: "url(&quot;/static/media/bg.3cef9caf.jpg&quot;)"}}></div></div>
           <div className="main-panel">
-          <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style={{background: "rgb(17, 17, 17)"}}><div class="container-fluid"><div class="navbar-wrapper"><span class="navbar-brand"><span class="">Dashboard</span></span></div></div></nav>
+          <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={{background: "rgb(17, 17, 17)"}}><div className="container-fluid"><div className="navbar-wrapper"><span className="navbar-brand"><span className="">Dashboard</span></span></div></div></nav>
           <div className="content">
           <h4 style={{textAlign: "center"}}>Loading User Data
     <Spinner animation="grow" size="sm" />

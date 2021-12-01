@@ -20,17 +20,6 @@ import Active  from "components/active.component";
 import userService from "services/user.service";
 import AddMatch  from "components/add/addmatch.component"; 
 
-import eventBus from "views/eventBus";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
-import {
-  userState
-} from 'atoms';
 // react-bootstrap components
 import {
   Badge,

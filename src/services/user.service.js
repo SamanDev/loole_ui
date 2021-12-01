@@ -137,6 +137,8 @@ class UserService {
       .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
+          eventBus.dispatch("eventsDataUser", response.data);
+          eventBus.remove("eventsDataUser");
           return response.data;
         }
 
@@ -345,6 +347,7 @@ class UserService {
       .then((response) => {
         if (response.data.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
+          eventBus.dispatch("eventsDataUser", response.data);
           return "Ok";
         }
       });

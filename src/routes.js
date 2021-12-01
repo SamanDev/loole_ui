@@ -63,7 +63,7 @@ var routes = [
     layout: "/user",
     name: "User",
     icon: "nc-icon nc-circle-09",
-    component: User,
+    component: 'User',
     show:false
   },
   {
@@ -159,7 +159,7 @@ var routes = [
     layout: "/home",
     name: "Home",
     icon: "nc-icon nc-chart-pie-35",
-    component: Landing,
+    component: 'Landing',
     show:false
   },
   {
@@ -167,7 +167,7 @@ var routes = [
     layout: "/mobile",
     name: "Mobbile",
     icon: "nc-icon nc-chart-pie-35",
-    component: LandingMobile,
+    component: 'LandingMobile',
     show:false
   },
   {

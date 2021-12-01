@@ -50,7 +50,7 @@ import {
   userState
 } from 'atoms';
 function Dashboard(prop) {
- 
+  const [key, setKey] = useState(prop.tabkey);
   const [currentUser,setCurrentUser] = useState(prop.token);
   
   const [events,setEvents] = useState(prop.events);
@@ -61,6 +61,11 @@ function Dashboard(prop) {
     
    },[prop.events]);
    useEffect(() => {
+    setKey(prop.tabkey)
+     
+    
+   },[prop.tabkey]);
+   useEffect(() => {
     setCurrentUser(prop.token)
      
     
@@ -68,9 +73,10 @@ function Dashboard(prop) {
   
   
   
-  const getBlockChallenge = (filtermode) => {
+  const getBlockChallenge = (filtermode,events) => {
     var newItem = []
     if (events) {
+     
        events.map((item, i) => {
         if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
           item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
@@ -233,8 +239,9 @@ function Dashboard(prop) {
         <Col md="12" style={{overflow:'hidden'}}>
           <Tab.Container
             id="matches-tabs"
-            defaultActiveKey="all-match"
-
+         
+            activeKey={key}
+            onSelect={(k) => prop.handleTabID(k)}
           >
             <div style={{width:'90vw',overflow:'auto'}}>
             <Nav role="tablist" variant="tabs" style={{minWidth:600}}>
@@ -260,22 +267,22 @@ function Dashboard(prop) {
                 <Tab.Content >
                   <Tab.Pane eventKey="all-match" >
                     <Row >
-                      {getBlockChallenge('all')}
+                      {getBlockChallenge('all',events)}
                     </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="mob-match">
                     <Row>
-                      {getBlockChallenge('Mobile')}
+                      {getBlockChallenge('Mobile',events)}
                     </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="con-match">
                     <Row>
-                      {getBlockChallenge('NoMobile')}
+                      {getBlockChallenge('NoMobile',events)}
                     </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="tour-match">
                     <Row>
-                      {getBlockChallenge('Tournament')}
+                      {getBlockChallenge('Tournament',events)}
                     </Row>
                   </Tab.Pane>
                 </Tab.Content>

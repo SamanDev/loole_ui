@@ -37,29 +37,21 @@ import {
   Alert
 
 } from "react-bootstrap";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
-import {
-  userState
-} from 'atoms';
-function Dashboard(props) {
-  const [token,setToken] = useRecoilState(userState);
-  
-  
-  if ( !token) {return  <h4 style={{textAlign: "center"}}>Loading 
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" /></h4>;
-  }
-  
- 
 
-    var currentUser = token;
+function Dashboard(prop) {
+
+  const [key, setKey] = useState(prop.tabkey);
+  const [currentUser,setCurrentUser] = useState(prop.token);
+  useEffect(() => {
+    setKey(prop.tabkey)
+     
+    
+   },[prop.tabkey]);
+   useEffect(() => {
+    setCurrentUser(prop.token)
+     
+    
+   },[prop.token]);
   const { data: eventsGet , isLoading } = useAllEventsByStatus('All')
   
   
@@ -86,16 +78,9 @@ function Dashboard(props) {
           
           
           {item.players.map((player, j) => {
-           if(player.username == token.username ){blnShow=true}
+           if(player.username == currentUser.username ){blnShow=true}
           })}
-          var timestamp = item.expire
-          var date = new Date(timestamp);
-          //date.setMinutes(date.getMinutes() + item.timeMinute);
-          var now = new Date();
-          var dateExpired = date.toISOString();
-          
-           
-          var dateNow = now.toISOString();
+        
           
           if(!blnShow){}else{
             newItem.push(item);
@@ -115,7 +100,7 @@ function Dashboard(props) {
   
     
   
-    var Balance = token.balance;
+    var Balance = currentUser.balance;
     if (!Balance) { Balance = 0 }
     
   return (
@@ -123,14 +108,15 @@ function Dashboard(props) {
         
     <>
     
-    <Active token={token}/>
+    <Active token={currentUser}/>
 
         <Row>
           <Col md="12">
             <Tab.Container
               id="matches-tabs"
-              defaultActiveKey="pending-match"
-
+              
+              activeKey={key}
+              onSelect={(k) => prop.handleTabID(k)}
             >
               <Nav role="tablist" variant="tabs">
               <Nav.Item>
