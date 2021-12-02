@@ -13,7 +13,16 @@ import {
   Spinner,
   Accordion,
 } from "react-bootstrap";
-
+import {
+  Checkbox,
+  Grid,
+  Header,
+  Icon,
+  Image,
+  Menu,
+  Segment,
+  Sidebar,
+} from 'semantic-ui-react'
 import Active  from "components/active.component";
 
 import AdminNavbar from "components/Navbars/ChatNavbar.js";
@@ -71,7 +80,7 @@ const Toast = Swal.mixin({
       const eventIDQ = getQueryVariable("id");
       const matchIDQ = getQueryVariable("matchid");
       const [currentUser,setCurrentUser] = useState(prop.token);
-  
+      const [visible, setVisible] = React.useState(false)
   const [eventDef,setEventDef] = useState(prop.event);
   const [eventMatch,setEventMatch] = useState();
   const [match,setMatch]  = useState();
@@ -196,7 +205,25 @@ const Toast = Swal.mixin({
       
       return (
         <>
-          <div className="wrapper">
+          
+                <Checkbox
+          checked={visible}
+          label={{ children: <code>visible</code> }}
+          onChange={(e, data) => setVisible(data.checked)}
+        />
+                <AdminNavbar page="dashboard" />
+         
+        <Sidebar.Pushable as={Segment}>
+          <Sidebar
+            as={Menu}
+            animation='overlay'
+            icon='labeled'
+            inverted
+            onHide={() => setVisible(false)}
+            vertical
+            visible={visible}
+            width='thin'
+          >
             {match && eventMatch.gameMode != "Tournament" && eventMatch.gameMode != "League" ? (
               <Chatbar
              
@@ -239,15 +266,11 @@ const Toast = Swal.mixin({
               </>
              
             )}
-  
-            <div className="main-panel lobby">
-              <div
-                className="full-page lock-page"
-                data-color="black"
-                style={{ height: "100vh", overflow: "auto" }}
-                data-image={require("assets/img/bg.jpg").default}
-              >
-                <AdminNavbar page="dashboard" />
+          </Sidebar>
+
+          <Sidebar.Pusher>
+            <Segment basic>
+            
   
                 <div className="content d-flex align-items-center p-0">
                   <Container style={{ marginTop: 50 }}>
@@ -291,18 +314,12 @@ const Toast = Swal.mixin({
                     )}
                    
                   </Container>
-                </div>
-  
-                <div
-                  className="full-page-background"
-                  style={{
-                    backgroundImage:
-                      "url(" + require("assets/img/bg.jpg").default + ")",
-                  }}
-                ></div>
-              </div>
+                
             </div>
-          </div>
+            </Segment>
+          </Sidebar.Pusher>
+        </Sidebar.Pushable>
+     
         </>
       );
                 }

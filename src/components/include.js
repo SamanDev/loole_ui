@@ -784,7 +784,7 @@ return true
   
   };
   export const printBlockChallenge = (newItem,filtermode) => {
-    const history = useHistory();
+   // const history = useHistory();
     var filter = filtermode;
     if  (filter == "all"){filter=''}
     if  (filter == "NoMobile"){filter='Console'}

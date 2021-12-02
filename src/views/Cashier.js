@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,useState, useEffect} from "react";
 import { withRouter } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -7,6 +7,7 @@ import AuthService from "services/auth.service";
 
 import $ from "jquery";
 
+import { useAllCoins } from "services/hooks"
 import Active from "components/active.component";
 import PMDeposit  from "components/deposit/pmdeposit.component";
 import ShetabDeposit  from "components/deposit/shetabdeposit.component";
@@ -130,62 +131,28 @@ var dataTransaction = [
 var allValid = true;
 
 var reqnum = 0;
-
-
-class Cashier extends Component {
-  constructor(props) {
-    super(props);
-    
-   
-    
-    this.state = {
-      currentUser: this.props.token,
-      Amount: "10",
-      
-      loading: false,
-      submit: false,
-      successful: false,
-      message: "",
-    };
-  }
+function Cashier(prop) {
+const { data: eventCoins } = useAllCoins();
+const [coins,setCoins] = useState();
+const [currentUser,setCurrentUser] = useState(prop.token);
   
-  
+ 
 
-  render() {
-    let { currentUser } = this.state;
+ 
     dataTransaction = currentUser.usersReports
+    useEffect(() => {
     
-    var newToken = JSON.parse(JSON.stringify(currentUser));
-    if (!newToken.cardsdef) {
-         
-       
-        
-      newToken.cardsdef = [
-        {
-          value: "",
-
-          label: "Select Cart...",
-        },
-        {
-          value: "6104337830282164",
-          id: 1,
-          label: "6104-3378-3028-2164",
-          expiration: "0203",
-          cvv: "237",
-        },
-        {
-          value: "6666502205225022",
-          id: 2,
-          label: "6666-5022-0522-5022",
-          expiration: "1020",
-          cvv: "6800",
-        },
-      ];
-      
+      setCoins(() => eventCoins)
      
+    }, [eventCoins]);
+     
+    useEffect(() => {
+      setCurrentUser(prop.token)
+       
       
-      
-    }
+     },[prop.token]);
+      console.log(currentUser)
+    
     return (
       <>
         <Active token={currentUser} />
@@ -245,7 +212,7 @@ class Cashier extends Component {
                       defaultActiveKey="shetab"
                     >
                       <Nav role="tablist" variant="tabs">
-                      {(haveGetwayMode(this.state.currentUser.cashierGateways,'IranShetab'))&&(
+                      {(haveGetwayMode(currentUser.cashierGateways,'IranShetab'))&&(
                         <>
                         <Nav.Item>
                           <Nav.Link
@@ -279,7 +246,7 @@ class Cashier extends Component {
                         </Nav.Item>
                         </>
                       )}
-                        {(haveGetway(this.state.currentUser.cashierGateways,'PerfectMoney'))&&(
+                        {(haveGetway(currentUser.cashierGateways,'PerfectMoney'))&&(
                         <Nav.Item>
                           <Nav.Link
                             eventKey="pm"
@@ -294,7 +261,7 @@ class Cashier extends Component {
                           </Nav.Link>
                         </Nav.Item>
                         )}
-                        {(haveGetway(this.state.currentUser.cashierGateways,'Crypto')  ||  haveGetway(this.state.currentUser.cashierGateways,'PerfectMoney'))&&(
+                        {(haveGetway(currentUser.cashierGateways,'CryptoCurrencies'))&&(
                         <Nav.Item>
                           <Nav.Link eventKey="cr">
                             <img
@@ -309,7 +276,7 @@ class Cashier extends Component {
                       </Nav>
                       <Tab.Content>
                       <Tab.Pane eventKey="shetab">
-                      <ShetabDeposit token={newToken}/>
+                      <ShetabDeposit token={currentUser}/>
                           
                         </Tab.Pane>
                         <Tab.Pane eventKey="papara">
@@ -324,7 +291,7 @@ class Cashier extends Component {
                             
                         </Tab.Pane>
                         <Tab.Pane eventKey="cr">
-                        <CrDeposit  token={newToken}/>
+                        <CrDeposit  token={currentUser} coins={coins}/>
                         
                         </Tab.Pane>
                       </Tab.Content>
@@ -344,7 +311,7 @@ class Cashier extends Component {
                       defaultActiveKey="shetabc"
                     >
                       <Nav role="tablist" variant="tabs">
-                      {(haveGetwayMode(this.state.currentUser.cashierGateways,'IranShetab'))&&(
+                      {(haveGetwayMode(currentUser.cashierGateways,'IranShetab'))&&(
                         <>
                         <Nav.Item>
                           <Nav.Link
@@ -378,7 +345,7 @@ class Cashier extends Component {
                       </Nav.Item>
                       </>
                       )}
-                      {(haveGetway(this.state.currentUser.cashierGateways,'PerfectMoney'))&&(
+                      {(haveGetway(currentUser.cashierGateways,'PerfectMoney'))&&(
                         <Nav.Item>
                           <Nav.Link
                             eventKey="pmc"
@@ -396,7 +363,7 @@ class Cashier extends Component {
                           
                         </Nav.Item>
                         )}
-                        {(haveGetway(this.state.currentUser.cashierGateways,'Crypto'))&&(
+                        {(haveGetway(currentUser.cashierGateways,'Crypto'))&&(
                         <Nav.Item>
                           <Nav.Link eventKey="crc">
                             <img
@@ -412,7 +379,7 @@ class Cashier extends Component {
                       </Nav>
                       <Tab.Content>
                       <Tab.Pane eventKey="shetabc">
-                      <ShetabCashout token={this.state.currentUser}/>
+                      <ShetabCashout token={currentUser}/>
                         </Tab.Pane>
                       <Tab.Pane eventKey="paparac">
                       <PaparaCashout/>
@@ -508,7 +475,7 @@ class Cashier extends Component {
         </Container>
       </>
     );
-  }
+  
 }
 
 export default withRouter(Cashier);

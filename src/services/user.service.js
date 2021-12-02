@@ -428,12 +428,12 @@ class UserService {
 
       });
   }
-  createDepositCyripto(amount,coin) {
+  createDepositCyripto(action,amount,coin) {
     
     return axios
       .post(
-        API_URL_TEST + "createDepositCyripto",
-        { amount,coin },
+        API_URL_TEST + "coinPayments",
+        { action,coin,amount },
         { headers: authHeader() }
       )
       .then((response) => {

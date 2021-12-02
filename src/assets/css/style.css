@@ -1264,3 +1264,6 @@ background:#222;
     position: relative;
     top: 2px;
 }
+.ui.steps .step>.icon~.content{
+    min-height: auto !important;
+}

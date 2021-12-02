@@ -1,4 +1,4 @@
-import { USERSOCKETURL } from 'const';
+import { USERSOCKETURL,USERSOCKETPUBLICURL } from 'const';
 //import Dashboard from 'views/Dashboard'
 import eventBus from "views/eventBus";
 import userService from "services/user.service";
@@ -9,14 +9,23 @@ class UserWebsocket {
 
     connect(token,user) {
         if (ws == null) {
-            ws = new WebSocket(USERSOCKETURL + token);
+            if(token){
+                ws = new WebSocket(USERSOCKETURL + token);
+            }else{
+                ws = new WebSocket(USERSOCKETPUBLICURL);
+                
+            }
+            
             //userService.getEvents();
             //localStorage.removeItem("events");
             //userService.getEvents();
 
             console.log("Websocket is connect");
-            eventBus.dispatch("eventsDataUser", user);
-            eventBus.remove("eventsDataUser");
+           
+                eventBus.dispatch("eventsDataUser", user);
+                eventBus.remove("eventsDataUser");
+            
+            
             ws.onopen = function live() {
                 var timeout = 20000;
             if (ws.readyState == ws.OPEN) {
@@ -27,7 +36,12 @@ class UserWebsocket {
                 if (timerId) {
                     clearTimeout(timerId);
                     }
-                    ws = new WebSocket(USERSOCKETURL + token);
+                    if(token){
+                        ws = new WebSocket(USERSOCKETURL + token);
+                    }else{
+                        ws = new WebSocket(USERSOCKETPUBLICURL);
+                        
+                    }
                     //userService.getEvents();
                     //localStorage.removeItem("events");
                     //userService.getEvents();
@@ -112,15 +126,7 @@ class UserWebsocket {
                 if (timerId) {
                     clearTimeout(timerId);
                     }
-                if (ws != null) {
-            
-                    ws.close();
-                    ws=null;
-                    alert('Websocket is in disconnected state')
-                            //localStorage.clear();
-                           //window.location.reload();
-                console.log("Websocket is in disconnected state");
-                }
+                
             }
         }
     }
@@ -131,7 +137,7 @@ class UserWebsocket {
              
              ws.close();
              ws = null
-             alert('Websocket is in disconnected state')
+             //alert('Websocket is in disconnected state')
              //localStorage.removeItem("events");
          console.log("Websocket is in disconnected state");
          }

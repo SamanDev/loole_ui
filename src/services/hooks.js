@@ -12,6 +12,11 @@ const useAllEventsByStatus = (status) => {
   //sconsole.log(result)
   return result
 }
+const useAllCoins = (status) => {
+  const result = useQuery(["Cois"],api.getAllCoins);
+  //sconsole.log(result)
+  return result
+}
 const useEventByID = (id) => {
   
   if(id){
@@ -57,5 +62,6 @@ export {
   useUser,
   useUserProfile,
   useEvent,
-  useEventByID
+  useEventByID,
+  useAllCoins
 }

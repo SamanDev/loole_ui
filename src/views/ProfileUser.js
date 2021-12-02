@@ -40,7 +40,7 @@ import {
   Tab,
 } from "react-bootstrap";
 
-import {setAvatar,getColor,getIcon,renderer,printMatchBlock,userDetails} from "components/include";
+import {setAvatar,getColor,getIcon,renderer,printMatchBlock,userDetails,printBlockChallenge,date_locale,date_edit} from "components/include";
 import Games from "server/Games";
 var allValid = true;
 
@@ -132,6 +132,39 @@ var allValid = true;
       
     return gamemaplocal[0]
   };
+
+  const getBlockChallenge = (filtermode,events) => {
+    var newItem = []
+    if (events) {
+     
+       events.map((item, i) => {
+        if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
+          item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+          
+          {item.players.map((player, j) => {
+           //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
+          })}
+        
+          var dateEdited = date_edit(item.expire);
+      
+          var dateExpired = date_locale(dateEdited);
+          
+          var now = new Date();
+          var dateNow = now.toISOString();
+         
+            newItem.push(item);
+          
+          
+          
+         
+        } 
+      }
+      
+      )
+      return printBlockChallenge(newItem,filtermode)
+    }
+
+  }
   class CreateMatch extends Component {
     constructor(props) {
       super(props);
@@ -235,11 +268,11 @@ var allValid = true;
                 </div>
             </div>
             <div className="section section-gray section-clients section-no-padding">
-                <div className="container">
+                <div className="container-fluid">
                     <h4 className="header-text  text-center">Last Activity</h4>
-                    
-                   
-                  
+                    <Row >
+                    {getBlockChallenge('all',currentUser.events)}
+                    </Row >
                 </div>
             </div>
            

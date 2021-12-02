@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect} from 'react'
 import Select from 'react-select'
 import countryList from 'react-select-country-list'
 import { Dropdown } from 'semantic-ui-react'
@@ -6,23 +6,35 @@ import myCountry from "server/country.json"
 import CryptoList from "server/crypto.json";
 function editCounry(options){
   var  newArray = []
-  options.map((item, w) => {
-    
-      var _val = item.key;
-      var _txt = item.text + ' ('+ item.key.toUpperCase()+')';
+ 
+  if(options){
+    var getC = options.result;
+    console.log(getC)
+    //options.map((item, w) => {
+      Object.keys(getC).map(function(key) {
+      var _obj = getC[key];
+      var _val = key;
+      var _txt = key;
       
-      var newItem = { key: _val, value: _val, image: { avatar: true, src: "https://cdn.jsdelivr.net/npm/cryptocoins-icons@2.9.0/SVG/"+_val.toUpperCase()+".svg"}, text: _txt }
+      var newItem = { key: _val, value: _val, image: { avatar: true, src: _obj.image}, text: _txt }
      
       newArray.push(newItem)
     
     
   })
+  }
   
+  console.log(newArray)
   return newArray
 }
 function CountrySelector(props) {
-  
-  const options = editCounry(CryptoList.data)
+
+  const [options,setOptions] = useState(editCounry(props.coins))
+  useEffect(() => {
+    
+    setOptions(() => editCounry(props.coins))
+   
+  }, [props.coins]);
   const changeHandler = (value,data) => {
    
     props.passedFunction(data.value)

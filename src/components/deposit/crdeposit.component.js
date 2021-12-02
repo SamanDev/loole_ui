@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import QRCode from "react-qr-code";
 import CryptoList from 'components/CryptoList'
+import { Icon, Step } from 'semantic-ui-react'
 import {
     Row,
     Col,
@@ -61,7 +62,8 @@ class CrDeposit extends Component {
 
     this.state = {
       currentUser: this.props.token,
-      
+      coins: this.props.coins,
+      paydetails: '',
       shetabGo: 0,
       Amount: "10",
       Coin: "btc",
@@ -71,6 +73,14 @@ class CrDeposit extends Component {
       loading: false,
       message: ""
     };
+  }
+  componentWillReceiveProps(newProps) {
+    
+     
+    this.setState({ currentUser: newProps.token });
+    this.setState({ coins: newProps.coins });
+
+    
   }
   setAmount(e) {
     this.setState({
@@ -150,6 +160,7 @@ class CrDeposit extends Component {
 
       userService
         .createDepositCyripto(
+          'deposit',
           this.state.Amount,
           this.state.Coin,
          
@@ -158,12 +169,10 @@ class CrDeposit extends Component {
           
           (response) => {
             
-            if (response == "Create event successful") {
-              Swal.fire("", "Data saved successfully.", "success").then(
-                (result) => {
-                  this.props.history.push("/panel/dashboard");
-                }
-              );
+            if (response.txn_id) {
+              this.setDepositPage(1);
+              this.setState({paydetails: response})
+              
             } else {
               this.setState({
                 successful: false,
@@ -174,7 +183,7 @@ class CrDeposit extends Component {
             }
           },
           (error) => {
-            this.setDepositPage(1);
+            
             const resMessage =
               (error.response &&
                 error.response.data &&
@@ -201,7 +210,7 @@ class CrDeposit extends Component {
  
 
   render() {
-   let { currentUser,Coin,Amount } = this.state;
+   let { currentUser,Coin,Amount,coins } = this.state;
   
    
     
@@ -226,7 +235,7 @@ class CrDeposit extends Component {
                                       <>
                                          <div className="form-group form-group-lg2">
                                           <label>Select Crypto</label>
-                                          <CryptoList passedFunction={this.setCoin} value={Coin}
+                                          <CryptoList passedFunction={this.setCoin} coins={coins} value={Coin}
 />
                                           <Input
                                         type="hidden"
@@ -273,12 +282,13 @@ class CrDeposit extends Component {
                                     )}
                                     {this.state.shetabGo == 1 && (
                                       <>
+                                      <img src={this.state.paydetails.qrcode_url}/>
+                                      <p>Send To Address</p>
+                                      <p><b>{this.state.paydetails.address}</b></p>
+                                      <p>Total Amount To Send</p>
+                                      <p><b>{this.state.paydetails.amount}</b> {Coin}</p>
+                                      <p>Send only <span className="text-danger">{Coin}</span> to this deposit address.</p>
                                       
-                                      <p>Address</p>
-                                      <p>TT3RGXTvPZoFYPFXQQD1R2KLPFcwvai1WB</p>
-                                      <p>Send only <span className="text-danger">{Coin.toUpperCase()}</span> to this deposit address.</p>
-                                      <p>Ensure the network is <span className="text-danger">Tron (TRC20)</span>.</p>
-                                      <QRCode value="hey" />
                                       </>
                                     )}
                                     
@@ -311,45 +321,31 @@ class CrDeposit extends Component {
                               </Form>
                             </Col>
                             <Col md="6">
-                              <Card className="stacked-form border-0">
-                                <Card.Header>
-                                  <Card.Title as="h4">
-                                    Select another method.
-                                  </Card.Title>
-                                </Card.Header>
-                                <Card.Body>
-                                  <div className="list-group">
-                                    <button
-                                      type="button"
-                                      className={
-                                        this.state.shetabGo == 0
-                                          ? "list-group-item list-group-item-action  list-group-item-success"
-                                          : "list-group-item list-group-item-action list-group-item-warning"
-                                      }
-                                      onClick={() => {
-                                        this.setDepositPage(0);
-                                      }}
-                                      aria-current="true"
-                                    >
-                                      Enter Amount
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className={
-                                        this.state.shetabGo == 1
-                                          ? "list-group-item list-group-item-action  list-group-item-success"
-                                          : "list-group-item list-group-item-action list-group-item-warning"
-                                      }
-                                      onClick={() => {
-                                        this.setDepositPage(1);
-                                      }}
-                                    >
-                                      Pay
-                                    </button>
-                                   
-                                  </div>
-                                </Card.Body>
-                              </Card>
+                            <Step.Group fluid vertical size='mini'>
+    <Step completed={(this.state.shetabGo == 0) ? (false):(true)} active={(this.state.shetabGo == 0) ? (true):(false)}>
+      <Icon name='dollar sign' />
+      <Step.Content>
+        <Step.Title>Step 1</Step.Title>
+        <Step.Description>Choose your coin and enter Amount</Step.Description>
+      </Step.Content>
+    </Step>
+
+    <Step completed={(this.state.shetabGo <= 1) ? (false):(true)}   active={(this.state.shetabGo == 1) ? (true):(false)}>
+      <Icon name='payment' />
+      <Step.Content>
+        <Step.Title>Step 2</Step.Title>
+        <Step.Description>Pay coin</Step.Description>
+      </Step.Content>
+    </Step>
+
+    <Step >
+      <Icon name='info' />
+      <Step.Content>
+        <Step.Title>Confirm Order</Step.Title>
+      </Step.Content>
+    </Step>
+  </Step.Group>
+                              
                             </Col>
                           </Row>
         </>

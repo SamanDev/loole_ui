@@ -18,6 +18,11 @@ const getAllEvents=async () => {
   const { data } = await client.get("/getEvents")
   return data.data
 }
+const getAllCoins=async () => {
+
+  const { data } = await client.get(`/getCoinPaymentCoins`,{ headers: authHeader() })
+  return data
+}
 const getAllEventsByStatus=async (status) => {
   const getstatus = status.queryKey[1];
   const { data } = await client.get(`/getEventsByStatus/?status=${getstatus}&page=1&number=6&order=desc`)
@@ -51,9 +56,13 @@ const getEventByID= async(ids) => {
   }
       return data;
     }else{
+      UserWebsocket.connect();
       return defUser;
     }
   }else{
+    
+    UserWebsocket.connect();
+    
     return defUser;
   }
   }
@@ -78,5 +87,6 @@ export {
   getUserProfile,
   getEvent,
   getUser,
-  getEventByID
+  getEventByID,
+  getAllCoins
 }

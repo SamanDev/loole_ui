@@ -37,6 +37,7 @@ class AuthService {
         if (response.data.accessToken) {
 
           localStorage.setItem("user", JSON.stringify(response.data));
+          UserWebsocket.disconnect()
           UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username,response.data);
           //eventBus.dispatch("eventsDataUser", response.data);
           //UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username);
@@ -50,8 +51,9 @@ class AuthService {
     var loc = window.location.href;
     if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
       UserWebsocket.disconnect();
+      UserWebsocket.connect()
       localStorage.setItem("user", JSON.stringify(defUser));
-      eventBus.dispatch("eventsDataUser", defUser);
+     
       //window.location.replace("/");
     }
     

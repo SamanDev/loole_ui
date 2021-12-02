@@ -74,14 +74,7 @@ const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
       setCurrentUser(() => userGet)
     if (userGet.accessToken != '') {
       
-      eventBus.on("eventsDataUser", (userGet) => {
-     
-          setCurrentUser(userGet)
-       
-        
-        
-        
-      });
+      
     }else{
       
     
@@ -92,7 +85,14 @@ const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
         }
     }
   }
-    
+  eventBus.on("eventsDataUser", (userGet) => {
+     
+    setCurrentUser(userGet)
+ 
+  
+  
+  
+});
   }, [userGet]);
   
   useEffect(() => {
