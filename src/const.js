@@ -1,7 +1,7 @@
 //export const POSTURL = "http://51.195.176.97:8081/api/auth/"
-export const POSTURL = "http://localhost:8081/api/auth/"
+export const POSTURL = "https://loole.gg:8443/api/auth/"
 //export const POSTURLTest = "http://51.195.176.97:8081/api/req/"
-export const POSTURLTest = "http://localhost:8081/api/req/"
+export const POSTURLTest = "https://loole.gg:8443/api/req/"
 export const USERSOCKETURL = getPort();
 export const USERSOCKETPUBLICURL = getPortPablic();
 export const DEFCOLORS = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', "#eb5e28","#f27f34","#f9a03f","#f6b049","#f3c053","#a1c349","#94b33d","#87a330","#799431","#6a8532"];
