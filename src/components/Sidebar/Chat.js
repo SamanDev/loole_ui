@@ -40,6 +40,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import { Input } from 'semantic-ui-react'
 import { faHourglassEnd } from "@fortawesome/free-solid-svg-icons";
 function toTimestamp(strDate) {
   var datum = Date.parse(strDate);
@@ -88,76 +89,79 @@ class Chatbar extends Component {
   
   handleChat(e) {
     e.preventDefault();
-    if(this.state.messageBox==''){return false}
-this.setState({
-          
-          isLoading:true
-        });
-        if(this.state.matchid){
-          userService.sendChatMatch(this.state.messageBox, this.state.eventID,this.state.matchid).then(
-            (response) => {
-              this.setState({
-                messageBox: "",
-                isLoading:false
+    if(!this.state.isLoading){
+      if(this.state.messageBox==''){return false}
+      this.setState({
+                
+                isLoading:true
               });
-              const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-              })
-              
-              Toast.fire({
-                icon: 'success',
-                title: 'Saved.'
-              })
-            },
-            (error) => {
-              alert(error.message)
-              this.setState({
-               
-                isLoading:false
-              });
-            }
-          );
-        }else{
-          userService.sendChat(this.state.messageBox, this.state.eventID).then(
-            (response) => {
-              this.setState({
-                messageBox: "",
-                isLoading:false
-              });
-              const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-              })
-              
-              Toast.fire({
-                icon: 'success',
-                title: 'Saved.'
-              })
-            },
-            (error) => {
-              alert(error.message)
-              this.setState({
-               
-                isLoading:false
-              });
-            }
-          );
-        }
+              if(this.state.matchid){
+                userService.sendChatMatch(this.state.messageBox, this.state.eventID,this.state.matchid).then(
+                  (response) => {
+                    this.setState({
+                      messageBox: "",
+                      isLoading:false
+                    });
+                    const Toast = Swal.mixin({
+                      toast: true,
+                      position: 'top-end',
+                      showConfirmButton: false,
+                      timer: 3000,
+                      timerProgressBar: true,
+                      didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                      }
+                    })
+                    
+                    Toast.fire({
+                      icon: 'success',
+                      title: 'Saved.'
+                    })
+                  },
+                  (error) => {
+                    alert(error.message)
+                    this.setState({
+                     
+                      isLoading:false
+                    });
+                  }
+                );
+              }else{
+                userService.sendChat(this.state.messageBox, this.state.eventID).then(
+                  (response) => {
+                    this.setState({
+                      messageBox: "",
+                      isLoading:false
+                    });
+                    const Toast = Swal.mixin({
+                      toast: true,
+                      position: 'top-end',
+                      showConfirmButton: false,
+                      timer: 3000,
+                      timerProgressBar: true,
+                      didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                      }
+                    })
+                    
+                    Toast.fire({
+                      icon: 'success',
+                      title: 'Saved.'
+                    })
+                  },
+                  (error) => {
+                    alert(error.message)
+                    this.setState({
+                     
+                      isLoading:false
+                    });
+                  }
+                );
+              }
+    }
+    
     
   }
   
@@ -192,22 +196,36 @@ this.setState({
     return (
       <>
       
-        <div
-          className="sidebar"
-          data-color="black"
-          style={{ zIndex: 15, height: "100vh" }}
-        >
-          <div className="sidebar-wrapper" style={{ padding: 0 }}>
             <Card
               className="card-lock card-plain card-chat"
-              style={{ color: "#fff", margin: 0, height: "100vh" }}
+              style={{ color: "#fff", margin: 0, height: "100%",zIndex:10000,background: 'rgb(50,50,50)' }}
             >
               <Card.Header>
-              {(getQueryVariable("matchid")) ? (
-                  <h4 style={{ margin: "10px 0px" }}>Match Lobby</h4>
-              ):(
-                <h4 style={{ margin: "10px 0px" }}>Lobby</h4>
-              )}
+              <Form
+                      onSubmit={this.handleChat}
+                      
+                      ref={(c) => {
+                        this.form = c;
+                      }}
+                      
+                    >
+                      <Input loading={(currentUser.accessToken != '' && this.state.isLoading) && (true)} disabled={(currentUser.accessToken == '' || this.state.isLoading) && (true)} fluid value={(this.state.messageBox) && (this.state.messageBox)} placeholder='type something...' onChange={this.changeMessageBox} />
+                      
+                      <Row>
+                        <Col>
+                          <Button
+                            className="btn-fill btn-block btn-sm hide"
+                            type="submit"
+                            variant="danger"
+                            disabled={isLoading}
+                          >
+                            Send
+                          </Button>
+                        </Col>
+                        
+                      </Row>
+                    </Form>
+             
                 
               </Card.Header>
               <Card.Body
@@ -475,50 +493,10 @@ this.setState({
                 </Card>
               </Card.Body>
               <Card.Footer style={{ padding: 10 }}>
-                <Card style={{ backgroundColor: "#222", margin: 0 }}>
-                  <Card.Body style={{ padding: 10 }}>
-            
                 
-                    <Form
-                      onSubmit={this.handleChat}
-                      
-                      ref={(c) => {
-                        this.form = c;
-                      }}
-                      
-                    >
-                      <Form.Group>
-                        <Form.Control
-                          placeholder="type something..."
-                          value={this.state.messageBox}
-                          disabled={isLoading}
-                          onChange={this.changeMessageBox}
-                        ></Form.Control>
-                      </Form.Group>
-                      <Row>
-                        <Col>
-                          <Button
-                            className="btn-fill btn-block btn-sm"
-                            type="submit"
-                            variant="danger"
-                            disabled={isLoading}
-                          >
-                            Send
-                          </Button>
-                        </Col>
-                        
-                      </Row>
-                    </Form>
-                  
-            
-              </Card.Body>
-                </Card>
               </Card.Footer>
             </Card>
-          </div>
-          <div className="sidebar-background"></div>
-        </div>
-        
+          
       </>
     );
   }

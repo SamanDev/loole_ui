@@ -48,17 +48,7 @@ import {
 } from "components/include";
 import { UPLOADURL, POSTURLTest } from "const";
 import Swal from "sweetalert2";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
-import {
-  userState
-} from 'atoms';
-import { useEventByID } from "services/hooks"
+
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -80,7 +70,8 @@ const Toast = Swal.mixin({
       const eventIDQ = getQueryVariable("id");
       const matchIDQ = getQueryVariable("matchid");
       const [currentUser,setCurrentUser] = useState(prop.token);
-      const [visible, setVisible] = React.useState(false)
+      const [visible, setVisible] = React.useState(false);
+      const devWid = document.documentElement.clientWidth;
   const [eventDef,setEventDef] = useState(prop.event);
   const [eventMatch,setEventMatch] = useState();
   const [match,setMatch]  = useState();
@@ -110,9 +101,9 @@ const Toast = Swal.mixin({
   }, [prop.event]);
   useEffect(() => {
     
-    setCurrentUser(() => currentUser)
+    setCurrentUser(() => prop.token)
     
-  }, [currentUser]);
+  }, [prop.token]);
  
       
       
@@ -205,25 +196,40 @@ const Toast = Swal.mixin({
       
       return (
         <>
-          
-                <Checkbox
-          checked={visible}
-          label={{ children: <code>visible</code> }}
-          onChange={(e, data) => setVisible(data.checked)}
-        />
-                <AdminNavbar page="dashboard" />
+          <div
+              className="full-page lock-page"
+              data-color="black"
+              style={{ height: "100vh", overflow: "auto" }}
+              data-image={require("assets/img/bg.jpg").default}
+            >
+              <div
+                className="content "
+                style={{
+                  fontSize: 50,
+                  color: "#fff",
+                  position: "relative",
+                  zIndex: "23",
+                  paddingTop:0
+                }}
+              >
+                
+                
          
-        <Sidebar.Pushable as={Segment}>
+        <Sidebar.Pushable as={Segment} style={{background:'none'}}>
           <Sidebar
-            as={Menu}
-            animation='overlay'
+          
+            animation='push'
             icon='labeled'
-            inverted
-            onHide={() => setVisible(false)}
-            vertical
-            visible={visible}
             width='thin'
+            onHide={() => setVisible(false)}
+            style={{ width: "100vw", maxWidth:300,height: "100vh !important"}}
+            inverted
+            vertical
+            visible={(devWid > 500) ? (true):(visible)}
+         
+           
           >
+         
             {match && eventMatch.gameMode != "Tournament" && eventMatch.gameMode != "League" ? (
               <Chatbar
              
@@ -266,16 +272,18 @@ const Toast = Swal.mixin({
               </>
              
             )}
+          
           </Sidebar>
 
-          <Sidebar.Pusher>
+          <Sidebar.Pusher >
             <Segment basic>
             
-  
-                <div className="content d-flex align-items-center p-0">
-                  <Container style={{ marginTop: 50 }}>
+            
+                  <Container>
                     <Active token={currentUser}/>
-                    <button onClick={() => history.goBack()} className="btn  actbtn btn-danger btn-round ">Back</button>
+                    <Icon name='rocketchat' className={(devWid > 500) && ('hide')} inverted size='large' circular color='teal' onClick={() => setVisible(!visible)} />
+                    <Icon name='chevron left' inverted size='large' circular color='orange' onClick={() => history.goBack()} />
+                    
                                 {(haveAdmin(currentUser.roles))&&(
                 <>
                  <Button
@@ -315,11 +323,19 @@ const Toast = Swal.mixin({
                    
                   </Container>
                 
-            </div>
+          
             </Segment>
           </Sidebar.Pusher>
         </Sidebar.Pushable>
-     
+        </div>
+              <div
+                className="full-page-background"
+                style={{
+                  backgroundImage:
+                    "url(" + require("assets/img/bg.jpg").default + ")",
+                }}
+              ></div>
+            </div>
         </>
       );
                 }

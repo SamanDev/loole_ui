@@ -115,7 +115,7 @@ useEffect(() => {
 
   }, [matchIDQ]);
   useEffect(() => {
-    prop.handleID(eventIDQ)
+    prop.handleID(prop.eventIDQ)
   }, [prop.eventIDQ]);
   useEffect(() => {
     

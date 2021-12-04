@@ -759,16 +759,26 @@ font-size: 11px !important;
 }
 .matchcode .char{
     display: inline-block;
-    padding: 10px;
+    padding: 20px;
     border: 1px solid rgba(255,255,255,.3);
     margin:5px;
+    font-size: 30px !important;
 }
+.ui.buttons .or:before{
+    background:#000 !important;
+    color: rgba(255,255,255,.7) !important;
+    font-size: 20px !important;
+    line-height: 28px !important;
+}
+.ui.statistic>.value img.avatar, .ui.statistics .statistic>.value img.avatar{max-height:50px !important}
+
+
 .prosbar{
 position: absolute;
 right: 0;
 left: 0;
-padding: 0 15px;
-top: -8px;
+padding: 0 5px;
+top: 43px;
 z-index: 0;
 margin: 0;
 }
@@ -1066,7 +1076,7 @@ opacity: .2;
   padding-bottom: 0;
 }
 }
-.winner {
+.winner.avatar {
 position: absolute;
 box-shadow: 0 0 150px 20px gold;
 

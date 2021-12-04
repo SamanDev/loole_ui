@@ -6,6 +6,8 @@ import Select from "react-select";
 import Avatar from "react-avatar";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { NavLink, Link } from "react-router-dom";
+import { Statistic,Divider } from 'semantic-ui-react'
+
 import {
   VerticalTimeline,
   VerticalTimelineElement,
@@ -55,6 +57,7 @@ import {
     getColor,
     getIcon,
     renderer,
+    rendererBig,
     getQueryVariable,
     getCode,
     getGroupBadge,
@@ -67,7 +70,8 @@ import {
     getPlayerTag,
     isJson,
     haveAdmin,
-    handleTagForm
+    handleTagForm,
+    vsComponent
   } from "components/include";
   import { UPLOADURL, POSTURLTest } from "const";
   
@@ -139,13 +143,13 @@ class LeagueSection extends Component {
   }
   componentWillReceiveProps(newProps) {
     
-       
+       console.log(newProps)
     this.setState({ eventid: newProps.item.id });
     this.setState({ currentUser: newProps.token });
     this.setState({ matchidFind: newProps.matchidFind });
     this.setState({ item: newProps.item });
     
-    this.setState({ isloading:false });
+    this.setState({ isloading:newProps.isLoading });
     
   }
   handleClashFinished(e) {
@@ -218,7 +222,7 @@ class LeagueSection extends Component {
         document.documentElement.classList.toggle("nav-open");
       })
       .catch((error) => {
-        alert(error.response.data.error);
+       
         this.setState({
           progressLable: "I win",
           isUpLoading: false,
@@ -420,16 +424,7 @@ class LeagueSection extends Component {
     var activePlayer = 0; 
     return (
       <>
-     <Col className="mx-auto" lg="7" md="10">
-                          <Card
-                            className="card-lock text-center card-plain card-match"
-                            style={{ color: "#fff" }}
-                          >
-                            <Card.Header>
-                              <Row>
-                                {
-                                
-                                matchidFind.matchPlayers.map(
+       { matchidFind.matchPlayers.map(
                                   (player, j) => {
                                     if (player.username !='') {
                                       activePlayer++;
@@ -444,411 +439,37 @@ class LeagueSection extends Component {
                                     }
                                     return (
                                       <>
-                                        {j == 1 && (
-                                          <Col
-                                            xs="4"
-                                            style={{
-                                              lineHeight: "20px",
-                                              color: "#fff",
-                                              fontSize: "20px",
-                                            }}
-                                          >
-                                            {getGroupBadge(
-                                              item.outSign,
-                                              item.amount,
-                                              ""
-                                            )}
-                                            <h5 style={{ marginTop: 5 }}>
-                                              {item.gameName} <br />
-                                              <small>
-                                                {item.gameMode}
-                                              </small>{" "}
-                                              <br />
-                                              <small className="text-muted">
-                                                <FontAwesomeIcon
-                                                  fixedWidth
-                                                  icon={getIcon(
-                                                    item.gameConsole
-                                                  )}
-                                                />{" "}
-                                                {item.gameConsole}
-                                              </small>
-                                            </h5>
-                                           
-                              {getGroupBadgePrice(item.outSign, item.prize , "")}
-                             
-                                          </Col>
-                                        )}
-                                        {(j == 3 || j == 5) && (
-                                          <Col
-                                            xs="4"
-                                            style={{
-                                              lineHeight: "20px",
-                                              color: "#fff",
-                                              fontSize: "20px",
-                                            }}
-                                          >
-                                            <Badge
-                                              variant={getColor(item.amount)}
-                                            >
-                                              ${item.amount}
-                                            </Badge>
-                                            <h4 style={{ marginTop: 5 }}>
-                                              {item.game} <br />
-                                              <small className="text-muted">
-                                                <FontAwesomeIcon
-                                                  fixedWidth
-                                                  icon={getIcon(
-                                                    item.gameconsole
-                                                  )}
-                                                />{" "}
-                                                {item.gameconsole}
-                                              </small>
-                                            </h4>
-                                            
-                                          </Col>
-                                        )}
-                                        <Col
-                                          xs="4"
-                                          key={j}
-                                          style={
-                                            !player.username
-                                              ? { opacity: 0.3 }
-                                              : null
-                                          }
-                                        >
-                                          <div>
-                                            {player.username ? (
-                                              <a href={"/user/"+player.username}  target="_blank">
-                                              <Avatar
-                                                size="50"
-                                                round={true}
-                                                title={player.username}
-                                                name={setAvatar(
-                                                  player.username
-                                                )}
-                                              />
-                                              </a>
-                                            ) : (
-                                              <Avatar
-                                                size="50"
-                                                round={true}
-                                                src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
-                                                color="lightgray"
-                                              />
-                                            )}
-                                          </div>
-                                          {!player.username && <>...</>}
-                                          <small> {player.username}</small>
-                                          {(!this.state.matchid) && (
-                                            <>
-                                          {(matchidFind.status == "Pending" ||
-                                            matchidFind.status == "Ready") && (
-                                            <>
-                                              <br />
-                                              {(matchidFind.status != "Ready" ||
-                                                player.username !=
-                                                  currentUser.username) && (
-                                                <div
-                                                  style={{
-                                                    position: "absolute",
-                                                    width: "100%",
-                                                    height: 30,
-                                                    zIndex: 3,
-                                                  }}
-                                                ></div>
-                                              )}
-
-                                              <div
-                                                style={
-                                                  matchidFind.status != "Ready" ||
-                                                  player.username !=
-                                                    currentUser.username || this.state.isloading
-                                                    ? { opacity: 0.5 }
-                                                    : null
-                                                }
-                                              >
-                                                <BootstrapSwitchButton
-                                                  checked={player.ready}
-                                                  size="xs"
-                                                  onlabel="Ready"
-                                                  onstyle="success"
-                                                  offlabel="Ready"
-                                                  onChange={(
-                                                    checked: boolean
-                                                  ) => {
-                                                    this.handlechangeReadyEvent(
-                                                      checked
-                                                    );
-                                                  }}
-                                                  style="w-100 mx-1"
-                                                />
-                                              </div>
-                                            </>
-                                          )}
-                                          </>
-                                          )}
-                                          {(player.username && matchidFind.status=='InPlay') && (
-                                            <>
-                                          {(isInPlayers) && (
-                                            <>
-                                          <div>---------</div>
-
-                                          <p><small className="text-muted">{getPlayerTag(player.username,item.players,'console',item.gameName)} ID</small><br/>{getPlayerTag(player.username,item.players,'tagid',item.gameName)}</p>
-                                          {(getPlayerTag(player.username,item.players,'nickname',item.gameName).length > 3) &&(
-                                            <p><small className="text-muted">Nickname</small><br/>{getPlayerTag(player.username,item.players,'nickname',item.gameName)}</p>
-                                          )}
-                                          
-                                          </>
-                                          )}
-                                          </>
-                                          )}
-                                        </Col>
+                                        
                                       </>
                                     );
                                   }
                                 )}
-                              </Row>
-                            </Card.Header>
+                               
+      <Col className="mx-auto text-center" lg="8" md="10" style={{padding:0, marginTop:20}}>
+      {vsComponent(item,matchidFind,this.state.matchid,this.state.currentUser,this.state.isloading,activePlayer,this.handlechangeReadyEvent,this.handleJoinMatch,this.handleLeaveMatch,this.handlecAlertLost,
+  this.fileUpload,
+  this.onChangeHandler,
+  this.handlecAlertWin,
+  isUpLoading,
+  progress,
+  progressLable)}
+      </Col>   
+                
+     <Col className="mx-auto" lg="7" md="10">
+                          <Card
+                            className="card-lock text-center card-plain card-match"
+                            style={{ color: "#fff" }}
+                          >
+                            
                             
                               <Card.Body>
                               <Row>
                                 <Col xs="12">
-                                  <h2>{matchidFind.status}</h2>
-                                  {currentUser.accessToken == '' ? (
-                                    
-                                                        <>
-                                                        <p>
-                                                    <small className="text-muted">
-                                                      Avalable until
-                                                    </small>
-                                                    <br />
-                                                    <Countdown
-                                                      renderer={renderer}
-                                                      date={item.expire}
-                                                    />
-                                                  </p>
-                                                        <Link to="/auth/login-page" className="btn btn-round btn-danger" style={{marginTop:30}} as={Link}>Login to Join
-</Link>
- <br/>
-  <Link to="/auth/register-page"  className="btn btn-round btn-link" as={Link}>Don’t have an account? Create Account
-</Link>
-                                                        </>
-                                                        
-                                                      ):(<>
-                                                      
-                                                      
-                                  {(matchidFind.status == "Pending" || matchidFind.status == "Ready") && (
-                                            <>
-                                              <p>
-                                                    <small className="text-muted">
-                                                      Avalable until {item.expire}
-                                                    </small>
-                                                    <br />
-                                                    <Countdown
-                                                      renderer={renderer}
-                                                      date={item.expire}
-                                                    />
-                                                  </p>
-                                                  
-                                                  
-                                                  {matchidFind
-                                                    .matchPlayers[0].username ==
-                                                currentUser.username ||
-                                                matchidFind
-                                                .matchPlayers[1].username ==
-                                                currentUser.username ? (
-                                                  <>
-                                                  
-                                                  {item.players[0].username &&
-                                                  item.players[1].username &&
-                                                  matchidFind.status == "Ready" ? (
-                                                    <>
-                                                      <p
-                                                        style={{
-                                                          color: "#fff",
-                                                          fontSize: "14px",
-                                                          padding: 20,
-                                                        }}
-                                                      >
-                                                        Waiting for ready...
-                                                      </p>
-                                                    </>
-                                                  ) : (
-                                                    <>
-                                                      <p
-                                                        style={{
-                                                          color: "#fff",
-                                                          fontSize: "14px",
-                                                          padding: 20,
-                                                        }}
-                                                      >
-                                                        Waiting for another
-                                                        player...
-                                                      </p>
-                                                    </>
-                                                  )}
-                                                  {matchidFind
-                                                    .matchPlayers[0].username !=
-                                                    currentUser.username    && !matchidFind
-                                                    .matchPlayers[1].ready && (
-                                                    <Button
-                                                      className="btn-round"
-                                                      onClick={
-                                                        this.handleLeaveMatch
-                                                      }
-                                                      variant="warning"
-                                                      disabled={
-                                                        this.state.isloading
-                                                      }
-                                                    >
-                                                      Leave Match
-                                                    </Button>
-                                                  )}
-                                                    </>
-                                                  ):(<>
-                                                  <p
-                                                    style={{
-                                                      color: "#fff",
-                                                      fontSize: "14px",
-                                                      padding: 20,
-                                                    }}
-                                                  >
-                                                    Match is open, join now
-                                                    before someone else takes
-                                                    your spot. Winner takes $
-                                                    {item.prize}
-                                                    , let's get it! Match open
-                                                    for limited time.
-                                                  </p>
-                                                  {((item.totalPlayer) >
-                                                    activePlayer) && (
-                                                      <>
-                                                      
-                                                        <Button
-                                                      className="btn-round"
-                                                      onClick={
-                                                        this.handleJoinMatch
-                                                      }
-                                                      variant="danger"
-                                                      disabled={
-                                                        this.state.isloading
-                                                      }
-                                                    >
-                                                      Join Match {item.inSign.replace('Dollar','$')}  {item.amount}
-                                                    </Button>
-                                                     
-                                                    
-                                                    </>
-                                                    )}
-                                                  </>)}
-                                            </>
-                                          )}
-                                          {matchidFind.status == "InPlay" && (
-                                            <>
-                                            {(matchidFind
-                                                    .matchPlayers[0].username ==
-                                                currentUser.username ||
-                                                matchidFind
-                                                .matchPlayers[1].username ==
-                                                currentUser.username) && (
-                                                  <>
-                                              <p>Match Code</p>
-
-                                              <Card.Title
-                                                as="h1"
-                                                className="matchcode"
-                                              >
-                                                {getCode(matchidFind.matchCode)}
-                                              </Card.Title>
-                                              <Row>
-                                                <Col xs="6">
-                                                  <Button
-                                                    className="btn-fill btn-block btn-lg"
-                                                    type="button"
-                                                    variant="danger"
-                                                    style={{
-                                                      position: "relative",
-                                                      zIndex: 1,
-                                                    }}
-                                                    onClick={
-                                                      this.handlecAlertLost
-                                                    }
-                                                  >
-                                                    I Lost
-                                                  </Button>
-                                                </Col>
-
-                                                <Col xs="6">
-                                                  <input
-                                                    type="file"
-                                                    id="uploadfile"
-                                                    accept="video/*"
-                                                    name="file"
-                                                    className="hide"
-                                                    ref={this.fileUpload}
-                                                    onChange={
-                                                      this.onChangeHandler
-                                                    }
-                                                  />
-                                                  <Button
-                                                    className="btn-fill btn-block btn-lg"
-                                                    type="button"
-                                                    variant="success"
-                                                    style={{
-                                                      position: "relative",
-                                                      zIndex: 1,
-                                                    }}
-                                                    onClick={
-                                                      this.handlecAlertWin
-                                                    }
-                                                    disabled={isUpLoading}
-                                                  >
-                                                    {progressLable}
-                                                  </Button>
-                                                  {progress > 0 && (
-                                                    <div className="prosbar">
-                                                      <ProgressBar
-                                                        variant="success"
-                                                        now={progress}
-                                                        label={""}
-                                                      />
-                                                    </div>
-                                                  )}
-                                                </Col>
-                                              </Row>
-                                              </>
-                                                )}
-                                            </>
-
-                                          )}
-                                          {matchidFind.winner && (
-                                        <>
-                                        <div
-                                            
-                                            style={{ position:'relative',top:20}}
-                                          >
-                                          <div
-                                            className=" winner avatar"
-                                            style={{ width: 92, height: 92}}
-                                          ></div>
-                                          <div className=" ">
-                                            <Avatar
-                                              size="92"
-                                              round={true}
-                                              title={matchidFind.winner}
-                                              name={setAvatar(
-                                                matchidFind.winner
-                                              )}
-                                            />
-                                          </div>
-                                          </div>
-                                          <h3 style={{color:'gold'}}>
-                                            {matchidFind.winner}<br/><small className="text-muted" style={{position:'relative',top:-5}}>is
-                                            winner</small>
-                                          </h3>
-                                        </>
-                                      )}
+                                
+                                                 
+                                     
+                                  
+                                          
                                   {item.gameName == "ClashRoyale" &&
                                   matchidFind.status == "InPlay" ? (
                                     <>
@@ -867,32 +488,11 @@ class LeagueSection extends Component {
                                       </Button>
                                     </>
                                   ) : (
+                                   
                                     <>
-                                      {(item.players[0].username ==
-                                        currentUser.username ||
-                                        item.players[1].username ==
-                                          currentUser.username) && (
-                                        <>
-                                          
-                                          {matchidFind.status == "InPlay" && (
-                                            <>
-                                              <p>
-                                                <small className="text-muted">
-                                                  Avalable until {item.expire}
-                                                </small>
-                                                <br />
-                                                <Countdown
-                                                  renderer={renderer}
-                                                  date={item.expire}
-                                                />
-                                              </p>
-                                            </>
-                                          )}
-                                        </>
-                                      )}
                                     </>
                                   )}
- </>)}
+ 
                                   
                                 </Col>
                                 <Col className="text-center">
