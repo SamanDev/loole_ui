@@ -174,8 +174,7 @@ class CrDeposit extends Component {
             if (response.address) {
               
               this.setDepositPage(1);
-              eventBus.dispatch("updateUser","");
-        eventBus.remove("updateUser");
+              
               this.setState({paydetails: response})
               
             } else {

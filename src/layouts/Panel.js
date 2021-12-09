@@ -77,8 +77,7 @@ function  Panel(prop) {
   })
   const { open, closeOnEscape, closeOnDimmerClick,size } = state
  
-  
-  
+  var loc = window.location.href;
 
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
@@ -86,7 +85,7 @@ function  Panel(prop) {
   
 
     
-  const [myNotification,setMyNotification] = useState();
+  const [myNotification,setMyNotification] = useState([]);
   const [events,setEvents] = useState(prop.events);
   const [eventID,setEventID] = useState(prop.eventID);
   const [currentUser,setCurrentUser] = useState(prop.token);
@@ -98,54 +97,73 @@ function  Panel(prop) {
 const [eventIDQ,setEventIDQ] = useState(prop.eventIDQ);
 const [matchIDQ,setMatchIDQ] = useState(prop.matchIDQ);
   useEffect(() => {
-    if(prop.token){
-    setCurrentUser(() => prop.token)
+    var myNot = [];
+    loc = window.location.href;
+  
   
    
-    var myNot = []
-    prop.token.usersReports.map((item, i) => {
-      if (item.coinValue && item.status ==='Pending') {
+  
+    
+    
+    console.log(currentUser)
+    console.log(events)
+    console.log(myNotification)
+    console.log(loc)
+  
+   
+    currentUser?.usersReports.sort((a, b) => (a.id < b.id) ? 1 : -1)
+    currentUser?.usersReports.map((item, i) => {
+      if (item.coinValue && item.status ==='Pending' && myNot.length  < 3) {
         myNot.push(item)
      
         
         
        
       } 
-    }
-    
-    
-    )
+    })
     myNot.sort((a, b) => (a.id < b.id) ? 1 : -1)
-    prop.token.events.map((item, i) => {
-      if (item.status ==='Pending' || item.status ==='Ready' || item.status ==='InPlay') {
-        myNot.push(item)
-     
-        
-        
-       
-      } 
-    }
+  
+  
+    events?.map((item, i) => {
+      if (item?.status ==='Pending' || item?.status ==='Ready' || item?.status ==='InPlay') {
+      item?.players?.map((user, j) => {
+        if(user.username == currentUser?.username){
+          myNot.push(item)
+          
+        }
+      })
+     } 
+    })
+  
+  
+  
     
-    
-    )
     
     setMyNotification(myNot)
-   
-  }
+    
     
   
-}, [prop.token]);
+}, [currentUser,events ,loc]);
 
-useEffect(() => {
   
-  setEvents(() => prop.events)
-  
-}, [prop.events]);
+
+
   
   var currpage = "Dashboard";
   
   useEffect(() => {
-  //alert(eventIDQ)
+  
+    if(prop.token){
+      setCurrentUser(() => prop.token)}
+
+  }, [prop.token]);
+  useEffect(() => {
+  
+    if(prop.events){setEvents(() => prop.events)}
+
+  }, [prop.events]);
+  useEffect(() => {
+  
     //setEventIDQ(() => eventIDQ)
     prop.handleID(eventIDQ)
     //queryClient.invalidateQueries()
@@ -173,9 +191,7 @@ useEffect(() => {
     //useEventByID(eventIDQ);
 
   }, [matchIDQ]);
-  useEffect(() => {
-    prop.handleID(prop.eventIDQ)
-  }, [prop.eventIDQ]);
+  
   useEffect(() => {
     
   if(eventIDQ && prop.eventID){
@@ -218,7 +234,7 @@ useEffect(() => {
               {(prop.component=='Profile') && (<Profile authed={true}  token={currentUser} tabkey={keyProfile} handleProfileTabID={setKeyProfile} />)}
               {(prop.component=='Dashboard') && (<Dashboard authed={true} events={events} token={currentUser} tabkey={keyDash} handleTabID={setKeyDash}   />)}
               {(prop.component=='LockScreenPage') && (<LockScreenPage authed={true} event={eventID} token={currentUser} handleID={setEventIDQ} handleMatchID={setMatchIDQ} />)}
-              {(prop.component=='Cashier') && (<Cashier authed={true} token={currentUser} />)}
+              {(prop.component=='Cashier') && (<Cashier authed={true} token={currentUser} events={events} />)}
               {(prop.component=='Rewards') && (<Rewards authed={true} token={currentUser} />)}
               {(prop.component=='MyMatches') && (<MyMatches authed={true} token={currentUser} tabkey={keyMyMatch} handleTabID={setKeyMyMatch} />)}
               {(prop.component=='CreateMatch') && (<CreateMatch authed={true} token={currentUser} />)}
@@ -343,7 +359,7 @@ return(
             style={{ width: "100vw", maxWidth:300,height: "100vh !important"}}
             onHide={() => setVisible(false)}
             vertical
-            visible={visible}
+            visible
             width='thin'
            
           >
@@ -352,7 +368,7 @@ return(
                   style={{padding:10,margin:'auto',position:'relative',zIndex:10}}
                 >
                   {myNotification && (<>
-                    {myNotification.map((item, i) => <ModalExampleShorthand note={item}/>)}
+                    {myNotification.map((item, i) => <ModalExampleShorthand key={i} note={item} defaultOpen={(i==0)&&(true)}/>)}
                   </>)}
                   
                   
@@ -374,24 +390,7 @@ return(
           onChange={(e, data) => setVisible(data.checked)}
         />
             <Switch>{getRoutes(routes)}</Switch>
-            <Modal
-        size={size}
-        open={open}
-        onClose={() => dispatch({ type: 'close' })}
-      >
-        <Modal.Header>Delete Your Account</Modal.Header>
-        <Modal.Content>
-          <p>Are you sure you want to delete your account</p>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button negative onClick={() => dispatch({ type: 'close' })}>
-            No
-          </Button>
-          <Button positive onClick={() => dispatch({ type: 'close' })}>
-            Yes
-          </Button>
-        </Modal.Actions>
-      </Modal>
+           
           </div>
           <AdminFooter />
           <div

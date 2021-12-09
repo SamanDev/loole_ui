@@ -29,12 +29,13 @@ import {
 var _content = '';
 function ModalExampleShorthand(prop) {
     const [item, setItem] = useState(prop.note);
+    const [defaultOpen, setDefaultOpen] = useState(prop.defaultOpen);
     useEffect(() => {
         setItem(prop.note)
       
-         
+        setDefaultOpen(prop.defaultOpen)
         
-       },[prop.note]);
+       },[prop.note,prop.defaultOpen]);
     if (item.coinValue) {
    
       
@@ -59,6 +60,7 @@ function ModalExampleShorthand(prop) {
       return (
         <Modal
         basic
+        defaultOpen={defaultOpen}
           trigger={<Menu.Item as='a' className="firstNotice">
                <Icon.Group style={{marginBottom:10}}>
           <Icon loading size='big' color='green' name='circle notch' style={{margin:0}} />
@@ -78,9 +80,8 @@ function ModalExampleShorthand(prop) {
     var _title = item.gameName + ' (' + item.status+')';
     
   return (
-    <Link  to={"/panel/lobby?id=" + item.id}>
-    <Menu.Item as='a'>
-        
+    <Link className="item" to={"/panel/lobby?id=" + item.id}>
+    
            <Icon.Group style={{marginBottom:10}}>
       <Icon loading size='big' color={getColorStatus(item.status)} name='circle notch' style={{margin:0}} />
      
@@ -88,7 +89,7 @@ function ModalExampleShorthand(prop) {
       
       {_title}
       
-    </Menu.Item></Link>
+  </Link>
   )
     }
 }

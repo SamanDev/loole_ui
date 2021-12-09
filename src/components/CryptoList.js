@@ -9,7 +9,7 @@ function editCounry(options){
  
   if(options){
     var getC = options.result;
-    console.log(getC)
+  
     //options.map((item, w) => {
       Object.keys(getC).map(function(key) {
       var _obj = getC[key];
@@ -24,7 +24,7 @@ function editCounry(options){
   })
   }
   
-  console.log(newArray)
+  
   return newArray
 }
 function CountrySelector(props) {

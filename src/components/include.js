@@ -2222,8 +2222,8 @@ export const printMatchBlock = (item) => {
              
         <Card.Description>
         
-      <div class="content left floated " style={{minHeight:10,padding:2}}>{getGroupBadgeBlock(item.outSign, item.prize, "Prize","left","green")}</div>
-      <div class="content right floated " style={{minHeight:10,padding:2}}>
+      <div className="content left floated " style={{minHeight:10,padding:2}}>{getGroupBadgeBlock(item.outSign, item.prize, "Prize","left","green")}</div>
+      <div className="content right floated " style={{minHeight:10,padding:2}}>
       {getGroupBadgeBlock(item.outSign, item.amount, "Fee","right","blue")}
       </div>
   </Card.Description>

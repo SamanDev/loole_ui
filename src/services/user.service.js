@@ -444,12 +444,12 @@ class UserService {
         return response.data;
       });
   }
-  createDepositShetab(amount,CardNo, Expiration, cvv,pass) {
+  createDepositShetab(mobile,cardNumber,amount,cvv,expire,pass) {
     
     return axios
       .post(
         API_URL_TEST + "createDepositShetab",
-        { amount,CardNo, Expiration, cvv,pass },
+        { mobile,cardNumber,amount,cvv,expire,pass },
         { headers: authHeader() }
       )
       .then((response) => {
@@ -459,12 +459,12 @@ class UserService {
         return response.data;
       });
   }
-  createDepositShetabPass(amount,CardNo, Expiration, cvv) {
+  createDepositShetabPass(mobile,cardNumber,amount,cvv,expire) {
     
     return axios
       .post(
         API_URL_TEST + "createDepositShetabPass",
-        { amount,CardNo, Expiration, cvv },
+        { mobile,cardNumber,amount,cvv,expire },
         { headers: authHeader() }
       )
       .then((response) => {

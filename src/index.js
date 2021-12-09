@@ -38,25 +38,12 @@ refetchOnWindowFocus: false,
 },
 },
 })
-var eventDefID = getQueryVariable("id");
-var eventDefMatchID = getQueryVariable("matchid");
 
-function logProps(WrappedComponent) {
-  class LogProps extends React.Component {
-    componentDidUpdate(prevProps) {
-      console.log('old props:', prevProps);
-      console.log('new props:', this.props);
-    }
 
-    render() {
-      return <WrappedComponent {...this.props} />;
-    }
-  }
 
-  return LogProps;
-}
 function Main() {
- 
+  var eventDefID = getQueryVariable("id");
+  var eventDefMatchID = getQueryVariable("matchid");
   const queryClient =  useQueryClient();
   //queryClient.clear()
   
@@ -114,34 +101,42 @@ const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
 }
 */
 setCurrentUser(() => userGet)
+setEvents(() => eventsGet)
+
+  }, [userGet,eventsGet]);
+  useEffect(() => {
+  
+  eventBus.on("eventsData", (eventsGet) => {
+      
+    if(eventsGet && eventsGet !=events) {
+      setEvents(() => eventsGet)
+      queryClient.setQueryData(['Events','All'], eventsGet)
+    
+    }
+   
+
+      });
   eventBus.on("eventsDataUser", (userGet) => {
      
-    setCurrentUser(userGet)
+    setCurrentUser(() => userGet)
  
   
   
   
 });
-
-  }, [userGet]);
-  eventBus.on("updateUser",()=>{
-    queryClient.resetQueries(["User"]);
-  })
-  useEffect(() => {
-    logProps(<PanelLayout salam="hi"/>)
-    setEvents(() => eventsGet)
-    eventBus.on("eventsData", (eventsGet) => {
+eventBus.on("eventsDataEventDo", (eventGet) => {
+  console.log(eventGet.id)
+  console.log(eventIDQ)
+  if(eventIDQ == eventGet.id || !eventIDQ){
+      setEventIDQ(()=>eventGet.id)
+      setEventID(() => eventGet)
+      queryClient.setQueriesData(['Event',eventGet.id], eventGet)
       
-      if(eventsGet && eventsGet !=events) {
-        setEvents(eventsGet);
-        queryClient.setQueryData(['Events','All'], eventsGet)
-      
-      }
-     
- 
+   
+  }
         });
-    
-  }, [eventsGet]);
+}, []);
+  
   useEffect(() => {
   
     setEventIDQ(() => eventIDQ)
@@ -163,23 +158,13 @@ setCurrentUser(() => userGet)
     //useEventByID(eventIDQ);
 
   }, [matchIDQ]);
-  useEffect(() => {
-    
-  }, [eventID]);
+  
   useEffect(() => {
     
   if(eventIDQ && eventGet){
     
     setEventID(() => eventGet)
-    eventBus.on("eventsDataEventDo", (eventGet) => {
-      if(eventIDQ == eventGet.id){
-          //setEventIDQ(eventGet.id)
-          setEventID(() => eventGet)
-          queryClient.setQueriesData(['Event',eventGet.id], eventGet)
-          
-       
-      }
-            });
+    
   }
     
     

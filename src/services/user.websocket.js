@@ -86,7 +86,11 @@ class UserWebsocket {
                     
                     //alert(JSON.stringify(msg.data))
                       
-                } else if (msg.Command === 'eventId') {
+                } else if (msg.Command === 'updateUser') {
+                      
+                    eventBus.dispatch("eventsDataUser", msg.data[0]);
+                   
+                }else if (msg.Command === 'eventId') {
                       
                 
                     eventBus.dispatch("eventsDataEventDo", msg.data[0]);

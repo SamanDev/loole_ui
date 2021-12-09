@@ -48,19 +48,10 @@ function Dashboard(prop) {
   
   useEffect(() => {
     setEvents(prop.events)
-     
-    
-   },[prop.events]);
-   useEffect(() => {
-    setKey(prop.tabkey)
-     
-    
-   },[prop.tabkey]);
-   useEffect(() => {
     setCurrentUser(prop.token)
-     
-    
-   },[prop.token]);
+    setKey(prop.tabkey)
+   },[prop.events,prop.token,prop.tabkey]);
+   
   
   
   
@@ -107,7 +98,6 @@ function Dashboard(prop) {
     if (!Balance) { Balance = 0 }
     var nAmount = Number.parseFloat(currentUser.point).toFixed(0)
     var nBalance = Number.parseFloat(currentUser.balance).toFixed(2)
-    console.log('dash')
   return (
       
         
@@ -280,17 +270,17 @@ function Dashboard(prop) {
                     </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="mob-match">
-                  <Row className="ui four cards">
+                  <Row className="ui fours cards">
                       {getBlockChallenge('Mobile',events)}
                     </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="con-match">
-                  <Row className="ui four cards">
+                  <Row className="ui fours cards">
                       {getBlockChallenge('NoMobile',events)}
                     </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="tour-match">
-                  <Row className="ui four cards">
+                  <Row className="ui fours cards">
                       {getBlockChallenge('Tournament',events)}
                     </Row>
                   </Tab.Pane>

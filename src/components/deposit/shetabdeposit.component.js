@@ -230,10 +230,14 @@ class ShetabDeposit extends Component {
 
       userService
         .createDepositShetab(
-          this.state.Amount,
+          this.state.Mobile,
           this.state.CardNo,
-          this.state.Expiration,
+          this.state.Amount,
+          
+          
           this.state.cvv,
+          this.state.Expiration,
+         
           this.state.pass
         )
         .then(
@@ -431,10 +435,14 @@ class ShetabDeposit extends Component {
         
       userService
         .createDepositShetabPass(
-          this.state.Amount,
+   
+          this.state.Mobile,
           this.state.CardNo,
+          this.state.Amount,
+          
+          
+          this.state.cvv,
           this.state.Expiration,
-          this.state.cvv
         )
         .then(
           (response) => {

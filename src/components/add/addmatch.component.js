@@ -365,7 +365,7 @@ class AddMatch extends Component {
             }
             },
             (error) => {
-              var response  = error.response.data
+              var response  = error.data
               this.setState({
                 successful: false,
                 message: "",

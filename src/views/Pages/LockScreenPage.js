@@ -79,9 +79,23 @@ const Toast = Swal.mixin({
   useEffect(() => {
    
     
+ 
+      
+      prop.handleMatchID(matchIDQ)
+     
+      
+      prop.handleID(eventIDQ)
+    
+    
+    
+  }, []);
+  useEffect(() => {
+   
+    
     if(prop.event){
       
       prop.handleMatchID(matchIDQ)
+
       if(eventIDQ != prop.event.id){
         prop.handleID(eventIDQ)
       }else{

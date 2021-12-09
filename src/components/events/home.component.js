@@ -140,14 +140,7 @@ return (
   
 <>
 
-                <Carousel>
-                <Carousel.Item interval={5000}><Row >
-                    {getBlockChallenge('all',0,3,events)}
-                  </Row></Carousel.Item>
-                  <Carousel.Item interval={5000}><Row >
-                    {getBlockChallenge('all',3,6,events)}
-                  </Row></Carousel.Item>
-</Carousel>
+                
               
   </>
 );

@@ -152,7 +152,7 @@ const [currentUser,setCurrentUser] = useState(prop.token);
        
       
      },[prop.token]);
-      console.log(currentUser)
+     
     
     return (
       <>
