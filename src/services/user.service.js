@@ -448,7 +448,7 @@ class UserService {
     
     return axios
       .post(
-        API_URL_TEST + "createDepositShetab",
+        API_URL_TEST + "createDepositShetabDoTransaction",
         { mobile,cardNumber,amount,cvv,expire,pass },
         { headers: authHeader() }
       )
@@ -463,7 +463,7 @@ class UserService {
     
     return axios
       .post(
-        API_URL_TEST + "createDepositShetabPass",
+        API_URL_TEST + "createDepositShetabGetPassCode",
         { mobile,cardNumber,amount,cvv,expire },
         { headers: authHeader() }
       )
