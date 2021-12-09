@@ -444,12 +444,12 @@ class UserService {
         return response.data;
       });
   }
-  createDepositShetab(mobile,cardNumber,amount,cvv,expire,pass) {
+  createDepositShetab(mobile,cardNumber,amount,cvv,expire,pin) {
     
     return axios
       .post(
         API_URL_TEST + "createDepositShetabDoTransaction",
-        { mobile,cardNumber,amount,cvv,expire,pass },
+        { mobile,cardNumber,amount,cvv,expire,pin },
         { headers: authHeader() }
       )
       .then((response) => {
