@@ -757,6 +757,34 @@ font-size: 11px !important;
     color: #fff;
   
 }
+.ui.fours.cards .fluid.image{
+    text-align: center;
+    height:200px;
+    overflow: hidden;
+}
+.ui.fours.cards .fluid.image img{
+    width: auto;
+    height:200px;
+
+}
+.ui.fours.cards .cover{
+    position: absolute;
+right: 0px;
+left: 0px;
+top: 0px;
+height: 200px;
+background-image: linear-gradient(rgba(0, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.847) 63%, rgba(0, 0, 0, 0) 100%);
+
+}
+.modals.dimmer .ui.modal{
+    left: auto;
+    top: auto;
+    height: 200px !important;
+}
+.modals.dimmer .ui.modal.basic{
+   
+    height: auto !important;
+}
 .matchcode .char{
     display: inline-block;
     padding: 20px;
@@ -771,8 +799,18 @@ font-size: 11px !important;
     line-height: 28px !important;
 }
 .ui.statistic>.value img.avatar, .ui.statistics .statistic>.value img.avatar{max-height:50px !important}
-
-
+.sidebar.sidefalse:before {
+    opacity: 1  !important;
+    background:transparent !important;
+    }
+    .ui.inverted.accordion .title:not(.ui){
+        text-transform: uppercase !important;
+        border-bottom: 1px solid rgba(255,255,255,.1);
+        margin-bottom: 10px;
+    }
+    .ui.inverted.accordion .title:not(.ui) i{
+        display: none !important;
+    }
 .prosbar{
 position: absolute;
 right: 0;
@@ -819,6 +857,15 @@ list-style: none;
     .main-panel .navbar.fixed-top{
         width: 100%;
        
+    }
+    .ui.four.cards{
+    
+        margin-right:-30px!important;
+        margin-left:-30px!important;
+    }
+    .ui.four.cards>.card{
+        width: 100% !important;
+      
     }
     .main-panel .navbar.fixed-top *{
        

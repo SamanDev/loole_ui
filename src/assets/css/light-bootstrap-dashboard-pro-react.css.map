@@ -18,12 +18,12 @@
 		"../scss/lbd/mixins/_cards.scss",
 		"../scss/lbd/mixins/_chartist.scss",
 		"../scss/lbd/mixins/_table-row.scss",
-		"../scss/lbd/_modals.scss",
+		
 		"../scss/lbd/_typography.scss",
 		"../scss/lbd/_misc.scss",
 		"../scss/lbd/_sidebar-and-main-panel.scss",
 		"../scss/lbd/_fixed-plugin.scss",
-		"../scss/lbd/_modal.scss",
+		
 		"../scss/lbd/_buttons.scss",
 		"../scss/lbd/_social-buttons.scss",
 		"../scss/lbd/_inputs.scss",

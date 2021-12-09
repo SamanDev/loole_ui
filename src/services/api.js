@@ -23,6 +23,11 @@ const getAllCoins=async () => {
   const { data } = await client.get(`/getCoinPaymentCoins`,{ headers: authHeader() })
   return data
 }
+const getAdminUsers=async () => {
+
+  const { data } = await client.get(`/getUsersByAdmin?name=username&value=`,{ headers: authHeader() })
+  return data
+}
 const getAllEventsByStatus=async (status) => {
   const getstatus = status.queryKey[1];
   const { data } = await client.get(`/getEventsByStatus/?status=${getstatus}&page=1&number=6&order=desc`)
@@ -88,5 +93,6 @@ export {
   getEvent,
   getUser,
   getEventByID,
-  getAllCoins
+  getAllCoins,
+  getAdminUsers
 }

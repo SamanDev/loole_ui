@@ -286,7 +286,7 @@ class UserService {
     }
     
   }
-  deleteEvent(id) {
+  deleteEvents(id) {
     return axios
       .delete(API_URL_TEST + "deleteEvent?id=" + id, { headers: authHeader() })
       .then((response) => {
@@ -411,9 +411,9 @@ class UserService {
 
       });
   }
-  handleDelete(){
+  deleteEvent(){
     return axios
-      .post(
+      .delete(
         API_URL_TEST + "handleDelete",
        
         { headers: authHeader() }
@@ -438,6 +438,7 @@ class UserService {
       )
       .then((response) => {
         console.log("ok");
+        
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
         return response.data;

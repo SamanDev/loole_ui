@@ -29,8 +29,18 @@ import eventBus from "views/eventBus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "react-countdown";
 import {
+  Statistic,
+  Button,
+  Icon,
+  Label,
+  Divider,
+  Grid,
+  Segment,
+  Transition
+} from "semantic-ui-react";
+import {
     Badge,
-    Button,
+ 
     Card,
     Navbar,
     Nav,
@@ -60,9 +70,13 @@ import {
     getMatchTitle,
     haveGameTag,
     getPlayerTag,
+    vsComponentTitle,
     isJson,
     haveAdmin,
-    handleTagForm
+    handleTagForm,
+    rendererBig,
+    printEventBTN,
+    vsComponentPlayer
   } from "components/include";
   import { UPLOADURL, POSTURLTest } from "const";
   
@@ -291,278 +305,108 @@ $('.gdetails.no'+player).removeClass('hide');
   
 
   render() {
-    let { currentUser, item,progress, isUpLoading, progressLable,matchidFind } = this.state;
+    let { currentUser, item,progress, isUpLoading, progressLable,matchidFind,isloading,matchid } = this.state;
       
     
     setTimeout(() => {$("#jsonhtml").html($("#jsonhtml2").text());},1000)
-    
+    var activePlayer = 0; 
+    {item.players.map((user, z) => (
+     <>
+        {currentUser.username ==
+          user.username && (isJoin = true)}
+       
+
+      </>
+    ))}
     dateStart = item.startTime;
          dateExpired = item.expire;
     return (
       <>
-     <Col className="mx-auto" lg="7" md="10">
-                          <Card
-                            className="card-lock text-center card-plain card-match"
-                            style={{ color: "#fff" }}
-                          >
-                            <Card.Header>
-                              <Row>
-                                {
-                                
-                                matchidFind.matchPlayers.map(
-                                  (player, j) => {
-                                    if (player.username) {
-                                      activePlayer++;
-                                    }
-                                    if (
-                                      player.username == currentUser.username &&
-                                      player.ready &&
-                                      !this.state.curPlayerReady &&
-                                      firstLoad
-                                    ) {
-                                      this.setState({ curPlayerReady: true });
-                                    }
-                                    return (
-                                      <>
-                                        {j == 1 && (
-                                          <Col
-                                            xs="4"
-                                            style={{
-                                              lineHeight: "20px",
-                                              color: "#fff",
-                                              fontSize: "20px",
-                                            }}
-                                          >
-                                            {getGroupBadge(
-                                              item.outSign,
-                                              item.amount,
-                                              ""
-                                            )}
-                                            <h5 style={{ marginTop: 5 }}>
-                                              {item.gameName} <br />
-                                              <small>
-                                                {item.gameMode}
-                                              </small>{" "}
-                                              <br />
-                                              <small className="text-muted">
-                                                <FontAwesomeIcon
-                                                  fixedWidth
-                                                  icon={getIcon(
-                                                    item.gameConsole
-                                                  )}
-                                                />{" "}
-                                                {item.gameConsole}
-                                              </small>
-                                            </h5>
-                                           
-                              {getGroupBadgePrice(item.outSign, item.prize , "")}
-                             
-                                          </Col>
-                                        )}
-                                        {(j == 3 || j == 5) && (
-                                          <Col
-                                            xs="4"
-                                            style={{
-                                              lineHeight: "20px",
-                                              color: "#fff",
-                                              fontSize: "20px",
-                                            }}
-                                          >
-                                            <Badge
-                                              variant={getColor(item.amount)}
-                                            >
-                                              ${item.amount}
-                                            </Badge>
-                                            <h4 style={{ marginTop: 5 }}>
-                                              {item.game} <br />
-                                              <small className="text-muted">
-                                                <FontAwesomeIcon
-                                                  fixedWidth
-                                                  icon={getIcon(
-                                                    item.gameconsole
-                                                  )}
-                                                />{" "}
-                                                {item.gameconsole}
-                                              </small>
-                                            </h4>
-                                            
-                                          </Col>
-                                        )}
-                                        <Col
-                                          xs="4"
-                                          key={j}
-                                          style={
-                                            !player.username
-                                              ? { opacity: 0.3 }
-                                              : null
-                                          }
-                                        >
-                                          <div>
-                                            {player.username ? (
-                                              <a href={"/user/"+player.username}  target="_blank">
-                                              <Avatar
-                                                size="50"
-                                                round={true}
-                                                title={player.username}
-                                                name={setAvatar(
-                                                  player.username
-                                                )}
-                                              />
-                                              </a>
-                                            ) : (
-                                              <Avatar
-                                                size="50"
-                                                round={true}
-                                                src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
-                                                color="lightgray"
-                                              />
-                                            )}
-                                          </div>
-                                          {!player.username && <>...</>}
-                                          <small> {player.username}</small>
-                                          {(!this.state.matchid) && (
-                                            <>
-                                          {(matchidFind.status == "Pending" ||
-                                            matchidFind.status == "Ready") && (
-                                            <>
-                                              <br />
-                                              {(matchidFind.status != "Ready" ||
-                                                player.username !=
-                                                  currentUser.username) && (
-                                                <div
-                                                  style={{
-                                                    position: "absolute",
-                                                    width: "100%",
-                                                    height: 30,
-                                                    zIndex: 3,
-                                                  }}
-                                                ></div>
-                                              )}
+      
+     <Col className="mx-auto text-center" lg="7" md="10">
+     {vsComponentTitle(item)}
+        <Divider fitted style={{ opacity: 0 }} />
+        
+            <Statistic inverted color="violet" size="mini">
+            <Statistic.Label>Match Level</Statistic.Label>
+              <Statistic.Value>{getMatchTitle(matchidFind.level,item.totalPlayer)}</Statistic.Value>
+              
+            </Statistic>
+            <Divider fitted style={{ opacity: 0 }} />
+        <Countdown renderer={rendererBig} match={matchidFind} txt="@@@Start at" finish="@@@" btn={printEventBTN(item,currentUser,isloading,activePlayer,isJoin,mymatchFind,this.handleJoinMatch)} date={item.expire} />
+        
+     
+        <Segment inverted  style={{background:'none !important'}}>
+      
+      <Grid columns={2}>
+        <Grid.Column color={matchidFind.winner == matchidFind.matchPlayers[0].username && ('red')}>
+          {vsComponentPlayer(
+            item,
+            matchidFind,
+            0,
+            matchid,
+            currentUser,
+            isloading,
+            false
+          )}
+        </Grid.Column>
+        <Grid.Column color={matchidFind.winner == matchidFind.matchPlayers[1].username && ('red')}>
+          {vsComponentPlayer(
+            item,
+            matchidFind,
+            1,
+            matchid,
+            currentUser,
+            isloading,
+            false
+          )}
+        </Grid.Column>
+      </Grid>
 
-                                              <div
-                                                style={
-                                                  matchidFind.status != "Ready" ||
-                                                  player.username !=
-                                                    currentUser.username
-                                                    ? { opacity: 0.5 }
-                                                    : null
-                                                }
-                                              >
-                                                <BootstrapSwitchButton
-                                                  checked={player.ready}
-                                                  size="xs"
-                                                  onlabel="Ready"
-                                                  onstyle="success"
-                                                  offlabel="Ready"
-                                                  onChange={(
-                                                    checked: boolean
-                                                  ) => {
-                                                    this.handlechangeReadyEvent(
-                                                      checked
-                                                    );
-                                                  }}
-                                                  style="w-100 mx-1"
-                                                />
-                                              </div>
-                                            </>
-                                          )}
-                                          </>
-                                          )}
-                                          {(player.username && matchidFind.status=='InPlay') && (
+      <Divider vertical inverted>VS</Divider>
+    </Segment>
+    {matchidFind.status == "InPlay" && (
                                             <>
-                                          {(isInPlayers) && (
-                                            <>
-                                          <div>---------</div>
-
-                                          <p><small className="text-muted">{getPlayerTag(player.username,item.players,'console',item.gameName)} ID</small><br/>{getPlayerTag(player.username,item.players,'tagid',item.gameName)}</p>
-                                          {(getPlayerTag(player.username,item.players,'nickname',item.gameName).length > 3) &&(
-                                            <p><small className="text-muted">Nickname</small><br/>{getPlayerTag(player.username,item.players,'nickname',item.gameName)}</p>
-                                          )}
-                                          
-                                          </>
-                                          )}
-                                          </>
-                                          )}
-                                        </Col>
-                                      </>
-                                    );
-                                  }
-                                )}
-                              </Row>
-                            </Card.Header>
-                            {(item.gameMode == "Tournament" && this.state.matchid) ? (
-                              
-                              <>
-                            <Card.Body>
-                              <Row>
-                                <Col xs="12">
-                                <h2>{getMatchTitle(matchidFind.level,item.totalPlayer)}</h2>
-                                {(matchidFind.status == 'Pending') && (
-                                    <>
-                                  
-                                  <h3>
-                                  
-                                  <small className="text-muted">Start at</small><br/>
-                                              <Countdown
-                                                  renderer={renderer}
-                                                  date={matchidFind.startTime}
-                                                />
-                                                
-                                              </h3>
-                                              </>
-                                )}
-                                
-                                  {item.gameName == "ClashRoyale" &&
-                                  matchidFind.status == "InPlay" ? (
-                                    <>
-                                      <Button
-                                        className="btn-fill btn-block btn-lg"
-                                        type="button"
-                                        variant="danger"
-                                        style={{
-                                          position: "relative",
-                                          zIndex: 1,
-                                        }}
-                                        onClick={this.handleClashFinished}
-                                        disabled={this.state.isloading}
-                                      >
-                                        Game finished
-                                      </Button>
-                                    </>
-                                  ) : (
-                                    <>
-                                      {(isInPlayers) && (
-                                        <>
-                                          {matchidFind.status == "InPlay" && (
-                                            <>
-                                              <p>Match Code</p>
-
-                                              <Card.Title
-                                                as="h1"
-                                                className="matchcode"
+                                            {(matchidFind
+                                                    .matchPlayers[0].username ==
+                                                currentUser.username ||
+                                                matchidFind
+                                                .matchPlayers[1].username ==
+                                                currentUser.username) && (
+                                                  <>
+                                                  <Statistic inverted size="small">
+                        <Statistic.Label>
+                        Match Code
+                        </Statistic.Label>
+                        <Statistic.Value className="matchcode"
                                               >
                                                 {getCode(matchidFind.matchCode)}
-                                              </Card.Title>
-                                              <Row>
-                                                <Col xs="6">
-                                                  <Button
-                                                    className="btn-fill btn-block btn-lg"
-                                                    type="button"
-                                                    variant="danger"
-                                                    style={{
-                                                      position: "relative",
-                                                      zIndex: 1,
-                                                    }}
-                                                    onClick={
-                                                      this.handlecAlertLost
-                                                    }
-                                                  >
-                                                    I Lost
-                                                  </Button>
-                                                </Col>
-
-                                                <Col xs="6">
-                                                  <input
+                                             </Statistic.Value>
+                      </Statistic>
+                                              
+                                              
+                                              <Button.Group  size='big'  widths='3'>
+    <Button color="red" onClick={this.handlecAlertLost} disabled={isloading}>I Lost</Button>
+    <Button.Or color="red" style={{minWidth: 5}}/>
+    <Button animated onClick={this.handlecAlertWin}
+                    color="green"
+                    inverted={isUpLoading}
+                    disabled={isUpLoading}>
+  <Button.Content visible>{progressLable}</Button.Content>
+  <Button.Content hidden>Upload video</Button.Content>
+  {progress > 0 && (
+                                                    <div className="prosbar">
+                                                      <ProgressBar
+                                                        variant="success"
+                                                        now={progress}
+                                                        label={""}
+                                                      />
+                                                    </div>
+                                                  )}
+</Button>
+   
+  </Button.Group>
+  <input
                                                     type="file"
                                                     id="uploadfile"
                                                     accept="video/*"
@@ -573,75 +417,21 @@ $('.gdetails.no'+player).removeClass('hide');
                                                       this.onChangeHandler
                                                     }
                                                   />
-                                                  <Button
-                                                    className="btn-fill btn-block btn-lg"
-                                                    type="button"
-                                                    variant="success"
-                                                    style={{
-                                                      position: "relative",
-                                                      zIndex: 1,
-                                                    }}
-                                                    onClick={
-                                                      this.handlecAlertWin
-                                                    }
-                                                    disabled={isUpLoading}
-                                                  >
-                                                    {progressLable}
-                                                  </Button>
-                                                  {progress > 0 && (
-                                                    <div className="prosbar">
-                                                      <ProgressBar
-                                                        variant="success"
-                                                        now={progress}
-                                                        label={""}
-                                                      />
-                                                    </div>
-                                                  )}
-                                                </Col>
-                                              </Row>
-                                            </>
-                                          )}
-                                          
-                                          
                                               
-                                          
-                                        </>
-                                      )}
-                                    </>
-                                  )}
+                                              </>
+                                                )}
+                                            </>
 
-                                 
-                                      {matchidFind.winner && (
-                                        <>
-                                        <div
-                                            
-                                            style={{ position:'relative',top:20}}
-                                          >
-                                          <div
-                                            className=" winner avatar"
-                                            style={{ width: 92, height: 92}}
-                                          ></div>
-                                          <div className=" ">
-                                            <Avatar
-                                              size="92"
-                                              round={true}
-                                              title={matchidFind.winner}
-                                              name={setAvatar(
-                                                matchidFind.winner
-                                              )}
-                                            />
-                                          </div>
-                                          </div>
-                                          <h3 style={{color:'gold'}}>
-                                            {matchidFind.winner}<br/><small className="text-muted" style={{position:'relative',top:-5}}>is
-                                            winner</small>
-                                          </h3>
-                                        </>
-                                      )}
-                                </Col>
-                                
-                              </Row>
-                            </Card.Body>
+                                          )}
+                          <Card
+                            className="card-lock text-center card-plain card-match"
+                            style={{ color: "#fff" }}
+                          >
+                      
+                            {(item.gameMode == "Tournament" && this.state.matchid) ? (
+                              
+                              <>
+                            
                             <Card.Footer>
                               <Card
                                 style={{

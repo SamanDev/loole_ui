@@ -59,6 +59,14 @@ var routes = [
     show:false
   },
   {
+    path: "/admin",
+    layout: "/panel",
+    name: "Admin",
+    icon: "nc-icon nc-circle-09",
+    component: 'Admin',
+    show:true
+  },
+  {
     path: "/*",
     layout: "/user",
     name: "User",

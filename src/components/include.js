@@ -10,6 +10,7 @@ import { Link, useLocation } from "react-router-dom";
 import CurrencyFormat from "react-currency-format";
 import userService from "services/user.service";
 
+import TransitionExampleTransitionExplorer  from "components/anim.component";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import eventBus from "views/eventBus";
 import {
@@ -19,6 +20,7 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import Moment from "moment";
+import SidebarExampleSidebar  from "components/ready.component";
 import {
   Statistic,
   Button,
@@ -27,12 +29,14 @@ import {
   Divider,
   Grid,
   Segment,
-  Transition
+  Card,
+  Image,
+  List
 } from "semantic-ui-react";
 // react-bootstrap components
 import {
   Badge,
-  Card,
+  
   Alert,
   Form,
   InputGroup,
@@ -170,6 +174,15 @@ export const getColor = (amount) => {
     return "red";
   }
 };
+export const getColorStatus = (status) => {
+  var _col = "red";
+  if (status == 'Ready') {_col = "blue"}
+  if (status == 'InPlay') {_col = "purple"}
+  if(status == 'Pending') {_col = 'pink'}
+  if(status == 'Finished') {_col = 'black'}
+    return _col
+  
+};
 export const getMatchTitle = (level, totalPlayer) => {
   var mTitle = "Round 1";
   if (totalPlayer == 4) {
@@ -244,6 +257,35 @@ export const getGroupBadge = (sign, amount, classes) => {
     </div>
   );
 };
+
+export const getGroupBadgeBlock = (sign, amount, label,pos,color) => {
+  if (sign == "Dollar") {
+    var nAmount = Number.parseFloat(amount).toFixed(2);
+  } else {
+    var nAmount = Number.parseFloat(amount).toFixed(0);
+  }
+
+  return (
+    <>
+    {(pos=='right')&&(<Label pointing={pos} size="mini" basic color={color}>{label}</Label>)}
+    
+        <Label  size="small" >
+        <Image avatar alt={"loole " + sign}
+            src={"/assets/images/" + sign + "-icon.svg"} style={{ maxHeight: 13 }} />
+        
+                <CurrencyFormat
+          value={nAmount}
+          displayType={"text"}
+          thousandSeparator={true}
+          prefix={""}
+          renderText={(value) => value}
+        />
+              
+              </Label>
+              {(pos=='left')&&(<Label pointing={pos} size="mini" basic color={color}>{label}</Label>)}
+    </>
+  );
+};
 export const getGroupBadgeList = (sign, amount, classes) => {
   if (sign == "Dollar") {
     var nAmount = Number.parseFloat(amount).toFixed(2);
@@ -280,144 +322,141 @@ export const vsComponentPlayer = (
 ) => {
   
   var player = matchidFind.matchPlayers[num];
-  return (
+var padd = 10;
+if(matchidFind.status == "Ready") {padd = 60}
+if(matchidFind.status == "InPlay") {padd = 60}
+if(matchidFind.status == "InPlay" && item.players[num].nickName) {padd = 150}
+//if(matchidFind.status == "Pending" && item.gameMode == 'Tournament') {padd = padd + 50}
+if(item.gameMode == 'Tournament' && !getQueryVariable("matchid")){padd = 0}
+  var user = (<div style={{padding:'10px 0 '+padd+'px 0'}}
+    >
+            
+    <Statistic inverted size="mini">
+      <Statistic.Value>
+      {player.username == matchidFind.winner && (
+      <Icon circular  color='yellow' size="mini" name='winner' style={{position:'absolute',fontSize:12,marginLeft:-8}} />
+      )}
+        {player.username ? (
+          <a href={"/user/" + player.username} target="_blank">
+            <Avatar
+              size="50"
+              round={true}
+              title={player.username}
+              name={setAvatar(player.username)}
+            />
+          </a>
+        ) : (
+          <Avatar
+            size="50"
+            round={true}
+            src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
+            color="lightgray"
+            className="avatar"
+          />
+        )}
+        
+      </Statistic.Value>
+      <Statistic.Label>
+        <small>{player.username ? <><a href={"/user/" + player.username} target="_blank" style={{color: '#fff'}}>{player.username}</a></> : <>...</>}</small>
+      </Statistic.Label>
+    </Statistic>
+</div>)
+var ready = (
+  <>
+{player.username == currentUser.username ? (
+  <div
+                  
+                  style={
+                    matchidFind.status != "Ready" ||
+                    player.username != currentUser.username ||
+                    isloading
+                      ? { padding:10,width:150,margin:'auto',position:'relative',zIndex:10,opacity: 0.5 }
+                      : {padding:10,width:150,margin:'auto',position:'relative',zIndex:10}
+                  }
+                >
+                  
+                <BootstrapSwitchButton
+                    checked={player.ready}
+                    disabled={player.username != currentUser.username ||
+                      isloading}
+                    onlabel="Ready"
+                    onstyle="success"
+                    offlabel="Ready"
+                    onChange={(checked: boolean) => {
+                      handlechangeReadyEvent(checked);
+                    }}
+                    style="w-100 mx-1"
+                  />
+                
+                  
+                </div>
+):(
+  <div
+                  
+                  style={{ padding:10,width:150,margin:'auto',position:'relative',zIndex:10,opacity: 0.5 }}
+                >
+                  
+                <BootstrapSwitchButton
+                    checked={player.ready}
+                    disabled={true}
+                    onlabel="Ready"
+                    onstyle="success"
+                    offlabel="Ready"
+                    
+                    style="w-100 mx-1"
+                  />
+                
+                  
+                </div>
+)}
+
+</>)
+var _p = null;
+item.players.map(function (plyr) {
+  if (player.username == plyr.username) {
+    _p = plyr
+  }
+});
+var info = (<>
+
+ {_p && _p.username != 'Tournament Player' && (
+   <>
+  {_p.tagId && (
+    <Statistic inverted color="red" size="mini">
+      <Statistic.Label>
+        {getTagName(item.gameName, item.gameConsole)} iD
+      </Statistic.Label>
+      <Statistic.Value>
+        {_p.tagId}
+      </Statistic.Value>
+    </Statistic>
+  )}
+  {_p.nickName && (
+    <>
+      <Divider fitted style={{ opacity: 0 }} />
+      <Statistic inverted color="olive" size="mini">
+        <Statistic.Label>Nickname</Statistic.Label>
+        <Statistic.Value>
+          {_p.nickName}
+        </Statistic.Value>
+      </Statistic>
+    </>
+  )}
+</>)}
+</>)
+  return(
     <>
       
         <div style={!player.username ? { opacity: 0.3 } : null}>
-          <div>
-            <Statistic inverted size="mini">
-              <Statistic.Value>
-              {player.username == matchidFind.winner && (
-              <Icon circular  color='yellow' size="mini" name='winner' style={{position:'absolute',fontSize:12,marginLeft:-8}} />
-              )}
-                {player.username ? (
-                  <a href={"/user/" + player.username} target="_blank">
-                    <Avatar
-                      size="50"
-                      round={true}
-                      title={player.username}
-                      name={setAvatar(player.username)}
-                    />
-                  </a>
-                ) : (
-                  <Avatar
-                    size="50"
-                    round={true}
-                    src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
-                    color="lightgray"
-                    className="avatar"
-                  />
-                )}
-                
-              </Statistic.Value>
-              <Statistic.Label>
-                <small>{player.username ? <>{player.username}</> : <>...</>}</small>
-              </Statistic.Label>
-            </Statistic>
-</div>
+        <SidebarExampleSidebar user={user}  item={item} objanim={ready} info={info} status={matchidFind.status} isUser={player.username == currentUser.username} visible={((matchidFind.status == "Ready" || matchidFind.status == "InPlay")  ) ? (true):(false)} />
 
-            {!matchid && matchidFind.status != "Finished" && (
-              <>
-              <div style={{ maxWidth: 100, margin: "auto" }}>
-                {(matchidFind.status == "Pending" ||
-                  matchidFind.status == "Ready") && (
-                  <>
-                  
-                    <br />
-                    {(matchidFind.status != "Ready" ||
-                      player.username != currentUser.username) && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          width: "100%",
-                          height: 30,
-                          zIndex: 3,
-                        }}
-                      ></div>
-                    )}
-
-                    <div
-                  
-                      style={
-                        matchidFind.status != "Ready" ||
-                        player.username != currentUser.username ||
-                        isloading
-                          ? { opacity: 0.5 }
-                          : null
-                      }
-                    >
-                      
-            <BootstrapSwitchButton
-                        checked={player.ready}
-                        size="xs"
-                        onlabel="Ready"
-                        onstyle="success"
-                        offlabel="Ready"
-                        onChange={(checked: boolean) => {
-                          handlechangeReadyEvent(checked);
-                        }}
-                        style="w-100 mx-1"
-                      />
-         
-                      
-                    </div>
-                  </>
-                )}
-                </div>
-                {matchidFind.status == "InPlay" ? (
-                  <>
-                    <Divider />
-                    {item.players[num].tagId && (
-                      <Statistic inverted color="red" size="mini">
-                        <Statistic.Label>
-                          {getTagName(item.gameName, item.gameConsole)} iD
-                        </Statistic.Label>
-                        <Statistic.Value>
-                          {item.players[num].tagId}
-                        </Statistic.Value>
-                      </Statistic>
-                    )}
-                    {item.players[num].nickName && (
-                      <>
-                        <Divider fitted style={{ opacity: 0 }} />
-                        <Statistic inverted color="olive" size="mini">
-                          <Statistic.Label>Nickname</Statistic.Label>
-                          <Statistic.Value>
-                            {item.players[num].nickName}
-                          </Statistic.Value>
-                        </Statistic>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <Divider />
-                    {item.players[num].tagId && (
-                      <Statistic inverted color="red" size="tiny">
-                        <Statistic.Label>
-                          {getTagName(item.gameName, item.gameConsole)} iD
-                        </Statistic.Label>
-                        <Statistic.Value>********</Statistic.Value>
-                      </Statistic>
-                    )}
-                    {item.players[num].nickName && (
-                      <>
-                        <Divider fitted style={{ opacity: 0 }} />
-                        <Statistic inverted color="olive" size="mini">
-                          <Statistic.Label>Nickname</Statistic.Label>
-                          <Statistic.Value>********</Statistic.Value>
-                        </Statistic>
-                      </>
-                    )}
-                  </>
-                )}
-              </>
-            )}
+            
           
         </div>
     
     </>
   );
+  
 };
 export const printMatchBTN = (
   item,
@@ -482,7 +521,7 @@ return(
               {item.totalPlayer > activePlayer && (
                 <>
                 
-                   <Button animated size='big' onClick={handleJoinMatch}
+                   <Button animated size='big' inverted onClick={handleJoinMatch}
                     color="green"
                     disabled={isloading}>
   <Button.Content visible>Join Match</Button.Content>
@@ -507,6 +546,104 @@ return(
   </>
 )
               }
+export const printEventBTN = (
+  item,currentUser,isloading,activePlayer,isJoin,mymatchFind,handleJoinMatch
+) => {
+return(
+  <>
+  <p style={{ margin: 0 }}>
+  {currentUser.accessToken == "" ? (
+    <>
+      <Link
+        to="/auth/login-page"
+        className="btn btn-round btn-danger"
+        style={{ marginTop: 30 }}
+        as={Link}
+      >
+        Login to Join
+      </Link>
+      <br />
+      <Link
+        to="/auth/register-page"
+        className="btn btn-round btn-link"
+        as={Link}
+      >
+        Don’t have an account? Create Account
+      </Link>
+    </>
+  ) : (
+    <>
+    {!isJoin && item.totalPlayer > item.players.length ? (
+      <>
+                
+      <Button animated size='big' inverted onClick={handleJoinMatch}
+       color="green"
+       disabled={isloading}>
+<Button.Content visible>Join Event</Button.Content>
+<Button.Content hidden>
+for {item.inSign.replace("Dollar", "$")} {item.amount}
+</Button.Content>
+</Button>
+     
+   
+            </>
+          ) : (
+            <>
+             {mymatchFind && (
+                <>
+                <Link to={'/panel/matchlobby?id='+item.id+'&matchid='+mymatchFind.id}>
+                   <Button animated size='big' inverted 
+                    color="orange"
+                    disabled={isloading}>
+  <Button.Content visible>Open My Match</Button.Content>
+  <Button.Content hidden>
+    for {item.inSign.replace("Dollar", "$")} {item.amount}
+  </Button.Content>
+</Button>
+</Link>
+                
+                 
+                </>
+              )}
+            </>
+          )}
+          
+          
+        </>
+      )}
+    
+  </p>
+  </>
+)
+              }
+              export const vsComponentTitle = (
+                item
+               
+                
+              ) => {
+                return (
+                  <>
+                  <div>
+                      {getGroupBadgesmall(item.inSign, item.amount, "small right")}
+                      </div>
+                    <Statistic inverted size='small' color={getColor(item.prize)}>
+                      <Statistic.Value>{item.gameName} </Statistic.Value>
+                      <Statistic.Label>
+                      
+                        {item.gameMode}{" "}
+                        <span className="text-muted">
+                          <FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)} />{" "}
+                          {item.gameConsole}
+                        </span>
+                        
+                      <p style={{ margin: 10 }}>
+                        {getGroupBadgePrice(item.outSign, item.prize, "")}
+                      </p>
+                      </Statistic.Label>
+                      
+                    </Statistic>
+                    </>
+                )}
 export const vsComponent = (
   item,
   match,
@@ -528,30 +665,13 @@ export const vsComponent = (
 ) => {
   return (
     <>
-      <Statistic inverted size='small' color="violet">
-        <Statistic.Value>{item.gameName} </Statistic.Value>
-        <Statistic.Label>
-        
-          {item.gameMode}{" "}
-          <span className="text-muted">
-            <FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)} />{" "}
-            {item.gameConsole}
-          </span>
-          <p style={{ margin: 10 }}>
-        {getGroupBadgesmall(item.inSign, item.amount, "small right")}
-        </p>
-        <p style={{ margin: 10 }}>
-          {getGroupBadgePrice(item.outSign, item.prize, "")}
-        </p>
-        </Statistic.Label>
-        
-      </Statistic>
+     {vsComponentTitle(item)}
       <Divider fitted style={{ opacity: 0 }} />
-      <Countdown renderer={rendererBig} match={match} btn={printMatchBTN(item,match,matchid,currentUser,isloading,activePlayer,handlechangeReadyEvent,handleJoinMatch,handleLeaveMatch)} date={item.expire} />
-      <Segment inverted >
+      <Countdown renderer={rendererBig}  finish={item.status+'@@@Not Avalable'} txt="@@@Avalable until" match={match} btn={printMatchBTN(item,match,matchid,currentUser,isloading,activePlayer,handlechangeReadyEvent,handleJoinMatch,handleLeaveMatch)} date={item.expire} />
+      <Segment inverted  style={{background:'none !important'}}>
       
-      <Grid columns={2} >
-        <Grid.Column color={match.winner == match.matchPlayers[0].username && ('red')}>
+      <Grid columns={2}>
+        <Grid.Column  style={{background:'none !important'}} color={match.winner == match.matchPlayers[0].username && ('red')}>
           {vsComponentPlayer(
             item,
             match,
@@ -1059,77 +1179,104 @@ export const rendererBig = ({
   props
   
 }) => {
-  if (completed) {
-    // Render a complete state
-    //return <Completionist />;
-    return <>{props.match.winner && (
-      <>
-       <Statistic inverted size="large" color="yellow">
-          
-          <Statistic.Value>
-          <div
-          
-          style={{ position:'relative'}}
-        >
-          
-        <div
-          className="winner avatar"
-          style={{ width: 92, height: 92,borderRadius:100}}
-        ></div>
-        <div className=" ">
-        <Icon circular inverted color='yellow' size="mini" name='winner' style={{position:'absolute',fontSize:15}} />
-          <Avatar
-            size="92"
-            round={true}
-            title={props.match.winner}
-            name={setAvatar(
-              props.match.winner
-            )}
-          />
-        </div>
-        </div>
-          </Statistic.Value>
-          <Statistic.Label>
-          {props.match.winner}<br/><small className="text-muted" style={{position:'relative',top:-5}}>is
-                                            winner</small></Statistic.Label>
-        </Statistic>
-      
-      </>
-    )}</>;
-  } else {
-    // Render a countdown
+ var _size = "tiny"
+ if(props.size){_size = props.size}
+ var _mode = props.mode;
+ var _color = props.color
+ var _colorFinish = props.colorfinish
+ if(!_colorFinish){_colorFinish = _color}
+ var timer = (
+  <Statistic inverted size={_size} color="yellow">
+    <Statistic.Label>
+      {props.txt.split('@@@')[0]}</Statistic.Label>
+      {props.txt.split('@@@')[1] && (<Statistic.Label>
+      {props.txt.split('@@@')[1]}</Statistic.Label>)}
+    <Statistic.Value>
+      {days > 0 ? (
+        <>
+          {days} <small style={{ color: "inherit" }}>days </small>
+        </>
+      ) : null}
+      {hours > 0 ? (
+        <>{hours > 9 ? <>{hours}:</> : <>0{hours}:</>}</>
+      ) : null}
+      {minutes > 9 ? <>{minutes}:</> : <>0{minutes}:</>}
+      {seconds > 9 ? <>{seconds}</> : <>0{seconds}</>}
+    </Statistic.Value>
+  </Statistic>
+)
+if(completed || (props.match &&  !props.btn && (props.match.status =='Finished' ||props.match.status =='Ready' ||props.match.status =='InPlay'))){
+  timer = (<Statistic inverted size='tiny' color={_colorFinish}>
+  <Statistic.Label>
+      {props.txt.split('@@@')[0]}</Statistic.Label>
+      {props.finish.split('@@@')[1] && (<Statistic.Label>
+      {props.finish.split('@@@')[1]}</Statistic.Label>)}
+  <Statistic.Value>
+  {props.finish.split('@@@')[0]}
+  </Statistic.Value>
+</Statistic>)
+//timer =''
+}
+try{
+  //timer =console.log(props.match)
+  if((props.match.winner  && props.match.status =='Finished') || (props.btn && completed)){
+    timer = ''
+  //timer =''
+  }
+}catch(e){ }
+
+  
+  
+ 
     return (
       <>
+      {props.match ? (
+        <>
+        {!props.match.winner && props.btn && (
+          <Statistic inverted color="orange" size="mini">
+          <Statistic.Label>Status</Statistic.Label>
+            <Statistic.Value>{props.match.status}</Statistic.Value>
+            
+          </Statistic>
+        )}
+        
                 {props.match.status != 'Finished'  ?(
                   <>
-                  <Statistic inverted size="small" color="yellow">
-          <Statistic.Label>
-            <Statistic inverted color="orange" size="mini">
-            <Statistic.Label>Status</Statistic.Label>
-              <Statistic.Value>{props.match.status}</Statistic.Value>
-              
-            </Statistic>
-          <br/>Avalable Until</Statistic.Label>
-          <Statistic.Value>
-            {days > 0 ? (
-              <>
-                {days} <small style={{ color: "inherit" }}>days </small>
-              </>
-            ) : null}
-            {hours > 0 ? (
-              <>{hours > 9 ? <>{hours}:</> : <>0{hours}:</>}</>
-            ) : null}
-            {minutes > 9 ? <>{minutes}:</> : <>0{minutes}:</>}
-            {seconds > 9 ? <>{seconds}</> : <>0{seconds}</>}
-          </Statistic.Value>
-        </Statistic>
-        {props.btn}
+                  
+                  <Divider fitted style={{ opacity: 0 }} />
+            
+            {props.btn  ? (
+                                        <>
+                                        {timer}
+                                   {props.btn}
+                                        </>
+                                      ):(
+                                        <>
+                                        
+                                        {props.match.winner && props.match.winner !== null ? (
+                                        <Avatar
+                                          size="80"
+                                          style={{ boxShadow: "0px 0px 20px 20px rgba(0,0,0,0.2)" }}
+                                          round={true}
+                                          name={_mode}
+                                        />
+                                      ) : (
+                                       
+                                        <Statistic inverted  size="tiny">
+          
+            <Statistic.Value>{_mode}</Statistic.Value>
+            <Statistic.Label> {timer}</Statistic.Label>
+          </Statistic>
+                                      )}
+                                      
+                                      </>)}
+        
         </>
                 ):(
                   <>
-                  {props.match.winner && (
+                  {props.match.winner  ? (
                                         <>
-                                   <Statistic inverted size="large" color="yellow">
+                                        <TransitionExampleTransitionExplorer objanim={(<Statistic inverted size="large" color="yellow">
           
           <Statistic.Value>
           <div
@@ -1157,15 +1304,44 @@ export const rendererBig = ({
           <Statistic.Label>
           {props.match.winner}<br/><small className="text-muted" style={{position:'relative',top:-5}}>is
                                             winner</small></Statistic.Label>
-        </Statistic>
+        </Statistic>)} animation='jiggle' duration={1000}/>
+                                   
                                         </>
+                                      ):(
+                                        <>
+                                        {props.match.winner && props.match.winner !== null ? (
+                                        <Avatar
+                                          size="80"
+                                          style={{ boxShadow: "0px 0px 20px 20px rgba(0,0,0,0.2)" }}
+                                          round={true}
+                                          name={_mode}
+                                        />
+                                      ) : (
+                                        <Avatar
+                                          size="80"
+                                          textSizeRatio={6}
+                                          style={{ boxShadow: "0px 0px 20px 20px rgba(0,0,0,0.2)" }}
+                                          color={_color}
+                                          round={true}
+                                          value={_mode}
+                                        />
                                       )}
+                                      </>)}
+                                      {timer}
                   </>
                 )}
-        
-      </>
+         </>
+    ):(
+      <>
+      {timer}
+    
+      
+        </>
+    )}
+        </>
     );
-  }
+   
+  
 };
 export const getCode = (code) => {
   if (code) {
@@ -1264,12 +1440,12 @@ export const userDetails = (currentUser) => {
         className="card-description text-center"
         style={{ marginBottom: 30 }}
       >
-        <Card.Title as="h5" style={{ marginBottom: 0, marginTop: 15 }}>
+        <Card.Header as="h5" style={{ marginBottom: 0, marginTop: 15 }}>
           {currentUser.username}{" "}
           <img
             src={"/assets/images/famfamfam_flag_icons/png/" + flag + ".png"}
           />
-        </Card.Title>
+        </Card.Header>
         <small style={{ fontSize: 10 }}>{currentUser.lastLogin}</small>
         <br />
         <ListGroup horizontal style={{ display: "inline-flex", marginTop: 10 }}>
@@ -1381,9 +1557,9 @@ export const printBlockChallenge = (newItem, filtermode) => {
   } else {
     return newItem.map((item, i) => {
       return (
-        <Col lg="4" xl="3" key={i}>
+        <>
           {printMatchBlock(item)}
-        </Col>
+        </>
       );
     });
   }
@@ -1937,81 +2113,60 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
     }
   }
 };
+
 export const printMatchBlock = (item) => {
-  var _mode = " 1 v 1 ";
+  var _mode = " 1 vs 1 ";
   var _color = "#404040";
-  var dateEdited = date_edit(item.expire);
 
-  var dateExpired = dateEdited;
 
-  var now = new Date();
-
-  //console.log(item.gameName)
-  var dateNow = now.toISOString();
+ 
 
   if (item.gameMode == "Tournament" || item.gameMode == "League") {
     _mode = item.gameMode;
   }
-  if (item.gameMode == "Tournament" || item.gameMode == "League") {
-    // _mode = " $"+(item.totalPlayer * item.amount)*90/100+' '
-    //_color = 'orange'
+  
+  if (!item.winner) {
+    item.winner= null;
   }
-
+  if (item.matchTables && item.matchTables[0] && !item.matchTables[0].winner) {
+    item.matchTables[0].winner= null;
+  }
+  if (item.matchTables && !item.matchTables[0] ) {
+    item.matchTables.push({winner :null,status: item.status});
+  }
+  if (item.matchTables && item.matchTables[0] && item.matchTables[0].winner && !item.winner) {
+    item.winner = item.matchTables[0].winner;
+  }
   if (item.winner) {
     _mode = setAvatar(item.winner);
   }
+  
 
   return (
-    <Link to={"/panel/lobby?ref=" + getPageVariable() + "&id=" + item.id}>
-      <Card className="card-user chall">
-        <Card.Header className="no-padding">
-          <div className="card-image">
-            <img
+  
+      
+   
+      <Card   color={getColorStatus(item.status)} as={Link} to={"/panel/lobby?id=" + item.id}>
+       <Label size="mini" color={getColorStatus(item.status)} ribbon style={{zIndex:2,maxWidth:170,position:'absolute',top:15,left:-10}}>
+       {item.status}
+        </Label>
+      <Image
               alt={item.gameName}
               src={
                 require("assets/images/games/" + item.gameName + ".jpg").default
               }
-            ></img>
-          </div>
-          <div
-            className="text-center"
-            style={{ position: "absolute", right: 0, left: 0, marginTop: -50 }}
-          >
-            {item.winner && item.winner !== null ? (
-              <Avatar
-                size="80"
-                style={{ boxShadow: "0px 0px 20px 20px rgba(0,0,0,0.2)" }}
-                round={true}
-                name={_mode}
-              />
-            ) : (
-              <Avatar
-                size="80"
-                textSizeRatio={6}
-                style={{ boxShadow: "0px 0px 20px 20px rgba(0,0,0,0.2)" }}
-                color={_color}
-                round={true}
-                value={_mode}
-              />
-            )}
-          </div>
-        </Card.Header>
-        <Card.Body>
-          <Row>
-            <Col xs="7">
-              <Card.Title as="h5" style={{ fontSize: 15 }}>
-                {item.gameName}
-              </Card.Title>
-              <small className="text-muted">
-                {item.gameMode}
-                <br />
-              </small>
-              <small className="text-muted">
-                Prize
-                <br />
-              </small>
-              {item.players[0] ? (
-                <small>
+              fluid
+        style={{background:'gray !important'}}
+              wrapped ui={false}/>
+              <div
+            className="text-center cover"
+             >
+            <div style={{ transform: "scale(.8)",padding: '30px 0',height:165}}>
+            <Countdown renderer={rendererBig}  txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
+      </div>
+      {item.players[0] ? (
+                <>
+                
                   {item.players.map((user, z) => (
                     <span key={z}>
                       {z < 5 ? (
@@ -2035,7 +2190,7 @@ export const printMatchBlock = (item) => {
                       ) : null}
                     </span>
                   ))}
-                </small>
+                </>
               ) : (
                 <span>
                   <Avatar
@@ -2054,102 +2209,29 @@ export const printMatchBlock = (item) => {
                   />
                 </span>
               )}
-              <br />
-              {item.gameMode == "Tournament3" ? (
-                <span>
-                  <small className="text-muted">Start Time</small>
-                  {item.totalPlayer == "4" ? (
-                    <>
-                      <br />
-                      <small className="text-muted">Final Match</small>
-                    </>
-                  ) : (
-                    <>
-                      <br />
-                      <small className="text-muted">SemiFinal Match</small>
-                      <br />
-                      <small className="text-muted">Final Match</small>
-                    </>
-                  )}
-                </span>
-              ) : (
-                <small className="text-muted">Avalable until</small>
-              )}
-              <br />
-              <small className="text-muted">Status</small>
-            </Col>
-            <Col className="text-muted text-right" xs="5">
-              <small className="text-muted">
+          </div>
+          <div className="content extra">
+            
+          <Card.Header >
+                {item.gameName}<Label style={{ float: "right"}} size="small" basic>
                 <FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)} />{" "}
                 {item.gameConsole}
-                <br />
-              </small>
-
-              {getGroupBadge(item.inSign, item.amount, "small right")}
-
-              {getGroupBadge(item.outSign, item.prize, "small right")}
-
-              <small className="text-muted">
-                {item.players.length}/{item.totalPlayer}
-                <br />
-              </small>
-              {item.gameMode == "Tournament3" ? (
-                <span>
-                  <small className="text-muted">
-                    {" "}
-                    <Countdown renderer={renderer} date={dateExpired} />
-                  </small>
-                  {item.totalPlayer == "4" ? (
-                    <>
-                      <br />
-                      <small className="text-muted">
-                        <Countdown
-                          renderer={renderer}
-                          date={addTime(dateExpired, 1)}
-                        />
-                      </small>
-                    </>
-                  ) : (
-                    <>
-                      <br />
-                      <small className="text-muted">
-                        <Countdown
-                          renderer={renderer}
-                          date={addTime(dateExpired, 1)}
-                        />
-                      </small>
-                      <br />
-                      <small className="text-muted">
-                        <Countdown
-                          renderer={renderer}
-                          date={addTime(dateExpired, 2)}
-                        />
-                      </small>
-                    </>
-                  )}
-                </span>
-              ) : (
-                <small className="text-muted">
-                  {" "}
-                  {dateExpired ? (
-                    <div>
-                      <Countdown
-                        renderer={renderer}
-                        date={addTime(dateExpired, 0)}
-                      />
-                    </div>
-                  ) : (
-                    <div> No limit</div>
-                  )}
-                </small>
-              )}
-
-              <small className="text-muted">{item.status}</small>
-            </Col>
-          </Row>
-        </Card.Body>
+              
+              </Label>
+              </Card.Header>
+             
+        <Card.Description>
+        
+      <div class="content left floated " style={{minHeight:10,padding:2}}>{getGroupBadgeBlock(item.outSign, item.prize, "Prize","left","green")}</div>
+      <div class="content right floated " style={{minHeight:10,padding:2}}>
+      {getGroupBadgeBlock(item.outSign, item.amount, "Fee","right","blue")}
+      </div>
+  </Card.Description>
+  </div>
+  
       </Card>
-    </Link>
+  
+  
   );
 };
 export const printProductBlock = (item) => {
@@ -2164,16 +2246,16 @@ export const printProductBlock = (item) => {
             <img alt={item.name} src={item.image}></img>
           </div>
         </Card.Header>
-        <Card.Body>
-          <Card.Title as="h5" style={{ fontSize: 15 }}>
+        <Card.Description>
+          <Card.Header as="h5" style={{ fontSize: 15 }}>
             {item.name}
-          </Card.Title>
+          </Card.Header>
           <Row>
             <Col className="text-muted text-right">
               {getGroupBadge("point", item.cost, "small right")}
             </Col>
           </Row>
-        </Card.Body>
+        </Card.Description>
       </Card>
     </Link>
   );

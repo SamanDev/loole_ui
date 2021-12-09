@@ -143,7 +143,7 @@ class LeagueSection extends Component {
   }
   componentWillReceiveProps(newProps) {
     
-       console.log(newProps)
+   
     this.setState({ eventid: newProps.item.id });
     this.setState({ currentUser: newProps.token });
     this.setState({ matchidFind: newProps.matchidFind });

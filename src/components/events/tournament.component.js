@@ -17,7 +17,16 @@ import {
   faYoutube,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-
+import {
+  Statistic,
+  Button,
+  Icon,
+  Label,
+  Divider,
+  Grid,
+  Segment,
+  Accordion
+} from "semantic-ui-react";
 import Moment from 'moment';
 import CurrencyFormat from "react-currency-format";
 import { IMaskInput } from "react-imask";
@@ -35,7 +44,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import {
     Badge,
-    Button,
+    
     Card,
     Navbar,
     Nav,
@@ -48,7 +57,7 @@ import {
     ProgressBar,
     ListGroup,
     Spinner,
-    Accordion,
+    
   } from "react-bootstrap";
   import {
     setAvatar,
@@ -60,14 +69,20 @@ import {
     getGroupBadge,
     getGroupBadgeList,
     getGroupBadgePrice,
+    getGroupBadgesmall,
+    rendererBig,
+    printEventBTN,
+    vsComponentTitle,
     getModalTag,
     getGameTag,
     getMatchTitle,
+    getColorStatus,
     haveGameTag,
     getPlayerTag,
     isJson,
     haveAdmin,
-    handleTagForm
+    handleTagForm,
+    vsComponentPlayer
   } from "components/include";
   import { UPLOADURL, POSTURLTest } from "const";
   
@@ -115,8 +130,12 @@ class TournamentSection extends Component {
     this.handleJoinMatch = this.handleJoinMatch.bind(this);
    
     this.handleHowStream = this.handleHowStream.bind(this);
-   
+    this.handleClick = this.handleClick.bind(this);
+    
+
+    
     this.state = {
+      activeIndex: -1,
         eventid: this.props.item.id,
         matchid: getQueryVariable("matchid"),
         item : this.props.item,
@@ -142,7 +161,13 @@ class TournamentSection extends Component {
     this.setState({ isloading:false });
     
   }
-  
+  handleClick = (e, titleProps) => {
+    const { index } = titleProps
+    const { activeIndex } = this.state
+    const newIndex = activeIndex === index ? -1 : index
+
+    this.setState({ activeIndex: newIndex })
+  }
   handleHowStream(e) {
     e.preventDefault();
 
@@ -244,9 +269,10 @@ class TournamentSection extends Component {
   
 
   render() {
-    let { currentUser, item,progress, isUpLoading, progressLable,matchidFind } = this.state;
+    let { currentUser, item,progress, isUpLoading, progressLable,matchidFind,matchid,isloading,activeIndex } = this.state;
     var isJoin = false;
    var  lists = item.matchTables;
+   lists.sort((a, b) => (a.level < b.level) ? 1 : -1)
    if((item.status=='InPlay' || item.status=='Pending' || item.status=='Ready') && item.gameMode=='Tournament'){
     lists.map((tblmatch, w) => {
       if(tblmatch.status=='InPlay' || tblmatch.status=='Pending' || tblmatch.status=='Ready'){
@@ -261,40 +287,140 @@ class TournamentSection extends Component {
     
       //matchidFind = lists.filter( (list) => list.id === );
     }
-    var activePlayer = 0; 
    
+    if(matchLevelFind && activeIndex == -1){this.setState({activeIndex:(matchLevelFind.level-1)})}
+    
+    
+    var activePlayer = 0; 
+    {item.players.map((user, z) => (
+     <>
+        {currentUser.username ==
+          user.username && (isJoin = true)}
+       
+
+      </>
+    ))}
+    const panels = item.matchLevel.map((match, i) => {
+      var hatchbackCar = lists.filter( (list) => list.level === item.matchLevel[i].level);
+       hatchbackCar.sort((a, b) => (a.id > b.id ? 1 : -1));
+       
+      return({
+      key: `panel-${i}`,
+      title: {
+        content: (hatchbackCar.length == 1 ? (getMatchTitle(hatchbackCar[0].level,item.totalPlayer)):(getMatchTitle(hatchbackCar[0].level,item.totalPlayer)+" - "+hatchbackCar.length+" match")),
+        icon: 'none',
+      },
+     
+      content: hatchbackCar.map(
+        (mtch, z) => {
+          
+          return (
+            <>
+            {z==0 && (<Countdown
+        renderer={rendererBig}
+        size="mini"
+        finish={'@@@'+item.status}
+       
+        txt={"@@@Start at"}
+        
+        date={hatchbackCar[0].startTime}
+      />)}
+            <Link key={z} onClick={() =>(this.props.passedFunction(mtch.id))} to={'/panel/matchlobby?id='+item.id+'&matchid='+mtch.id}>
+            <Segment inverted  style={{background:'none !important'}}>
+
+<Grid columns={2}>
+<Grid.Column colowr={mtch.winner == mtch.matchPlayers[0].username && ('red')}>
+{vsComponentPlayer(
+item,
+mtch,
+0,
+matchid,
+currentUser,
+isloading,
+false
+)}
+</Grid.Column>
+<Grid.Column colowr={mtch.winner == mtch.matchPlayers[1].username && ('red')}>
+{vsComponentPlayer(
+item,
+mtch,
+1,
+matchid,
+currentUser,
+isloading,
+false
+)}
+</Grid.Column>
+</Grid>
+
+<Divider vertical inverted>VS</Divider>
+</Segment>
+</Link>
+<Divider  inverted fitted></Divider>
+           
+            </>
+          );
+        })
+        
+      })
+    })
+  
+    
     setTimeout(() => {$("#jsonhtml").html($("#jsonhtml2").text());},1000)
     return (
       <>
-      <Col className="mx-auto" lg="10" md="11">
-                          <Card
-                            className="card-lock text-center card-plain card-league"
-                            style={{ color: "#fff" }}
-                          >
-                            <Card.Header>
-                              <Row>
-                                <Col
-                                  xs="12"
-                                  style={{
-                                    lineHeight: "20px",
-                                    color: "#fff",
-                                    fontSize: "20px",
-                                  }}
-                                >
-                                  {getGroupBadge(item.inSign, item.amount, "")}
-                                  <h5 style={{ marginTop: 5 }}>
-                                    {item.gameName} <br />
-                                    <small>{item.gameMode}</small> <br />
-                                    <small className="text-muted">
-                                      <FontAwesomeIcon
-                                        fixedWidth
-                                        icon={getIcon(item.gameConsole)}
-                                      />{" "}
-                                      {item.gameConsole}
-                                    </small>
-                                  </h5>
-                                  {getGroupBadgePrice(item.outSign, item.prize , "")}
-                                  <small>
+       <Col className="mx-auto text-center" lg="10" md="11">
+      
+        {vsComponentTitle(item)}
+        <Divider fitted style={{ opacity: 0 }} />
+      <Countdown renderer={rendererBig} match={lists[0]} txt="@@@Start at" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} btn={printEventBTN(item,currentUser,isloading,activePlayer,isJoin,mymatchFind,this.handleJoinMatch)} date={item.expire} />
+      
+        {item.status == 'Pending' ? (
+                                    <>
+                                  <small
+                                        style={{
+                                          marginTop: 10,
+                                          marginBottom: 10,
+                                          display: "block",
+                                          fontSize: 20,
+                                        }}
+                                      >
+                                        {item.players.length}/{item.totalPlayer}
+                                      </small>
+                                      <ProgressBar
+                                        animated
+                                        variant="danger"
+                                        now={
+                                          (item.players.length /
+                                            item.totalPlayer) *
+                                          100
+                                        }
+                                        style={{
+                                          marginLeft: "auto",
+                                          marginRight: "auto",
+                                          maxWidth: "50%",
+                                        }}
+                                      />
+                                      </>
+                                  ):(
+                                  <>
+                                      
+                                        {matchLevelFind && item.status !=  'Finished'&& (
+                                          <>
+                                           <Statistic inverted color="violet" size="mini">
+            <Statistic.Label>Match Level</Statistic.Label>
+              <Statistic.Value>{getMatchTitle(matchLevelFind.level,item.totalPlayer)}</Statistic.Value>
+              
+            </Statistic>
+
+</>
+                                        )}
+                                        
+                                      </>
+                                    
+                                  )}
+      
+      
                                     {item.players.map((user, z) => (
                                       <span key={z}>
                                         {currentUser.username ==
@@ -324,62 +450,26 @@ class TournamentSection extends Component {
 
                                       </span>
                                     ))}
-                                  </small>
-                                  {item.status == 'Pending' ? (
-                                    <>
-                                  <small
-                                        style={{
-                                          marginTop: 10,
-                                          marginBottom: 10,
-                                          display: "block",
-                                          fontSize: 20,
-                                        }}
-                                      >
-                                        {item.players.length}/{item.totalPlayer}
-                                      </small>
-                                      <ProgressBar
-                                        animated
-                                        variant="danger"
-                                        now={
-                                          (item.players.length /
-                                            item.totalPlayer) *
-                                          100
-                                        }
-                                        style={{
-                                          marginLeft: "auto",
-                                          marginRight: "auto",
-                                          maxWidth: "50%",
-                                        }}
-                                      />
-                                      </>
-                                  ):(
-                                    <small
-                                        style={{
-                                          marginTop: 10,
-                                          marginBottom: 10,
-                                          display: "block",
-                                          fontSize: 20,
-                                        }}
-                                      >
-                                        {item.status}
-                                        {matchLevelFind && (
-                                          <>
-                                          <small
-                                        style={{
-                                          marginTop: 10,
-                                          marginBottom: 10,
-                                          display: "block",
-                                          fontSize: 30,
-                                        }}
-                                      >
-{getMatchTitle(matchLevelFind.level,item.totalPlayer)}
-</small>
-</>
-                                        )}
-                                        
-                                      </small>
-                                    
-                                  )}
+                                 
+      
+     
+                          <Card
+                            className="card-lock text-center card-plain card-league"
+                            style={{ color: "#fff" }}
+                          >
+                            <Card.Header>
+                              <Row>
+                                <Col
+                                  xs="12"
+                                  style={{
+                                    lineHeight: "20px",
+                                    color: "#fff",
+                                    fontSize: "20px",
+                                  }}
+                                >
+                                 
+                                  
+                                  
                                   <VerticalTimeline
                                     layout="1-column-left"
                                     className="hide2"
@@ -416,82 +506,7 @@ class TournamentSection extends Component {
                                             ".jpg").default
                                         }
                                       ></img>
-                                      {currentUser.accessToken == '' ? (
-                                    
-                                    <>
-                                    <p>
-                                <small >
-                                  Avalable until
-                                </small>
-                                <br />
-                                <Countdown
-                                  renderer={renderer}
-                                  date={item.expire}
-                                />
-                              </p>
-                                    <Link to="/auth/login-page" className="btn btn-round btn-danger" style={{marginTop:30}} as={Link}>Login to Join
-</Link>
-<br/>
-<Link to="/auth/register-page"  className="btn btn-round btn-link" style={{color: '#fff'}} as={Link}>Don’t have an account? Create Account
-</Link>
-                                    </>
-                                    
-                                  ):(<>
-                                      <p>
-                                                      Avalable until
-                                                    </p>
-                                      {!isJoin && item.totalPlayer > item.players.length ? (
-                                        <>
-                                        <h3 className="vertical-timeline-element-title">
-                                        
-                                      <Countdown
-                                          renderer={renderer}
-                                          date={item.expire}
-                                        />
-                                        
-                                      </h3>
-                                        <h4 className="vertical-timeline-element-subtitle"  style={{paddingBottom:0}}>
-                                        <Button
-                                          className="btn-roun2d"
-                                          onClick={this.handleJoinMatch}
-                                          variant="danger"
-                                          disabled={this.state.isloading}
-                                        >
-                                          <b>Join Tournament</b><br/> {item.inSign.replace('Dollar','$')} <CurrencyFormat value={item.amount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
-                                        </Button>
-                                        </h4>
-                                        </>
-                                      ):(
-                                        <>
-                                        {mymatchFind && (
-                                          <>
-                                          <h3 className="vertical-timeline-element-title">
-                                      <Countdown
-                                          renderer={renderer}
-                                          date={mymatchFind.startTime}
-                                        />
-                                        
-                                      </h3>
-                                          <h4 className="vertical-timeline-element-subtitle"  style={{paddingBottom:0}}>
-                                            <Link to={'/panel/matchlobby?id='+item.id+'&matchid='+mymatchFind.id}>
-                                          <Button
-                                            className="btn-roun2d"
-                                            
-                                            variant="warning"
-                                            
-                                          >
-                                            <b>Open My Match</b>
-                                          </Button>
-                                          </Link>
-                                          </h4>
-                                          </>
-                                        )}
-                                        </>
-                                      )}
-                                      
-                                      </>
-                                        )}
-                                      
+                                     
                                       
                                     </VerticalTimelineElement>
 
@@ -552,212 +567,17 @@ class TournamentSection extends Component {
                                         color: "#fff",
                                       }}
                                     >
-                                      <h3 className="vertical-timeline-element-title">
-                                        Matches
-                                      </h3>
-                                      <Accordion >
-                                        {item.matchLevel.map((match, i) => {
-                                          //console.log(match)
-                                          
-                                          
-                                          //lists.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
-                                            var hatchbackCar = lists.filter( (list) => list.level === item.matchLevel[i].level);
-                                            hatchbackCar.sort((a, b) => (a.id > b.id ? 1 : -1));
-                                            
-                                          //console.log(hatchbackCar)
-                                          return (
-                                           
-                                            <Card
-                                              className="card-lock text-center card-plain"
-                                              style={{ color: "#fff" }}
-                                              key={i}
-                                            >
-                                              <Card.Header>
-                                                
-                                                <Accordion.Toggle
-                                                  as={Button}
-                                                  variant="link"
-                                                  eventkey={i}
-                                                >
-                                                  <Card.Title
-                                                    as="h3"
-                                                    style={{ color: "#fff" }}
-                                                  >
-                                                    {getMatchTitle(hatchbackCar[0].level,item.totalPlayer)}
-                                                  </Card.Title>
-                                                  <Countdown
-                                                    renderer={renderer}
-                                                    date={hatchbackCar[0].startTime}
-                                                  />
-                                                </Accordion.Toggle>
-                                              </Card.Header>
-                                              <Accordion.Collapse
-                                                eventkey={i}
-                                                className="show"
-                                              >
-                                                <Card.Body
-                                                  style={{
-                                                    background: "rgba(0,0,0,.9",
-                                                    padding: 0,
-                                                    fontSize: 13,
-                                                  }}
-                                                >
-                                                  {
-                                                  
-                                                  hatchbackCar.map(
-                                                    (mtch, z) => {
-                                                      var avSize = 30;
-                                                      var avT = getMatchTitle(hatchbackCar[0].level,item.totalPlayer);
-                                                      if (avT == 'SemiFinal') {
-                                                        avSize = 40;
-                                                      }
-                                                      if (avT == 'Final') {
-                                                        avSize = 60;
-                                                      }
-                                                      if (avT == '3rd Place') {
-                                                        avSize = 50;
-                                                      }
-                                                      return (
-                                                        <>
-                                                         <Link key={z} onClick={() =>(this.props.passedFunction(mtch.id))} to={'/panel/matchlobby?id='+item.id+'&matchid='+mtch.id}>
-                                                          <Row
-                                                          
-                                                            
-                                                            style={{
-                                                              borderBottom:
-                                                                "1px rgba(255,255,255,.2) solid",
-                                                              paddingBottom: 10,
-                                                              paddingTop: 15,
-                                                            }}
-                                                          >
-                                                            {mtch.matchPlayers.map(
-                                                              (player, j) => {
-                                                                var pName  = player.username;
-                                                              
-                                                                return (
-                                                                  <>
-                                                                    <Col
-                                                                      xs="4"
-                                                                      key={j}
-                                                                      style={
-                                                                        !pName
-                                                                          ? {
-                                                                              opacity: 0.3,
-                                                                            }
-                                                                          : null
-                                                                      }
-                                                                    >
-                                                                      <div>
-                                                                        {pName ? (
-                                                                          <Avatar
-                                                                            size={
-                                                                              avSize
-                                                                            }
-                                                                            round={
-                                                                              true
-                                                                            }
-                                                                            title={
-                                                                              pName
-                                                                            }
-                                                                            name={setAvatar(
-                                                                              pName
-                                                                            )}
-                                                                          />
-                                                                        ) : (
-                                                                          <Avatar
-                                                                            size={
-                                                                              avSize
-                                                                            }
-                                                                            round={
-                                                                              true
-                                                                            }
-                                                                            src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
-                                                                            color="lightgray"
-                                                                          />
-                                                                        )}
-                                                                      </div>
-                                                                      {!pName && (
-                                                                        <>...</>
-                                                                      )}
-                                                                      <small>
-                                                                        {" "}
-                                                                        {
-                                                                          pName
-                                                                        }
-                                                                      </small>
-                                                                    </Col>
-                                                                    {j == 0 && (
-                                                                      <Col
-                                                                        xs="4"
-                                                                        key={j+item.totalPlayer/2}
-                                                                      >
-                                                                        {mtch.winner ? (
-                                                                          <>
-                                                                            <div
-                                                                              className=" winner avatar"
-                                                                              style={{
-                                                                                width:
-                                                                                  avSize,
-                                                                                height:
-                                                                                  avSize,
-                                                                                zIndex: 0,
-                                                                                backgroundColor:
-                                                                                  "transparent",
-                                                                              }}
-                                                                            ></div>
-                                                                            <div className=" ">
-                                                                              <Avatar
-                                                                                size={
-                                                                                  avSize
-                                                                                }
-                                                                                round={
-                                                                                  true
-                                                                                }
-                                                                                title={
-                                                                                  mtch.winner
-                                                                                }
-                                                                                name={setAvatar(
-                                                                                  mtch.winner
-                                                                                )}
-                                                                              />
-                                                                            </div>
-                                                                            <div>
-                                                                              {
-                                                                                mtch.winner
-                                                                              }{" "}
-                                                                              is
-                                                                              winner
-                                                                            </div>
-                                                                          </>
-                                                                        ):(
-                                                                          <>
-                                                                            
-                                                                            
-                                                                            <div style={{lineHeight:avSize +'px'}}>
-                                                                              {
-                                                                                mtch.status}
-                                                                              
-                                                                            </div>
-                                                                          </>
-                                                                        )}
-                                                                      </Col>
-                                                                    )}
-                                                                  </>
-                                                                );
-                                                              }
-                                                            )}
-                                                          </Row>
-                                                          </Link>
-                                                        </>
-                                                      );
-                                                    }
-                                                  )}
-                                                </Card.Body>
-                                              </Accordion.Collapse>
-                                            </Card>
-                                          );
-                                        })}
-                                      </Accordion>
+                                      <Accordion
+    defaultActiveIndex={[0, 1]}
+    panels={panels}
+    exclusive={false}
+    fluid
+    inverted
+    
+  />
+        
+                                   
+                                        
                                     </VerticalTimelineElement>
 
                                     

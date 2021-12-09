@@ -24,6 +24,7 @@ import {
   Sidebar,
 } from 'semantic-ui-react'
 import Active  from "components/active.component";
+import TransitionExampleTransitionExplorer  from "components/anim.component";
 
 import AdminNavbar from "components/Navbars/ChatNavbar.js";
 
@@ -280,6 +281,7 @@ const Toast = Swal.mixin({
             
             
                   <Container>
+                 
                     <Active token={currentUser}/>
                     <Icon name='rocketchat' className={(devWid > 500) && ('hide')} inverted size='large' circular color='teal' onClick={() => setVisible(!visible)} />
                     <Icon name='chevron left' inverted size='large' circular color='orange' onClick={() => history.goBack()} />

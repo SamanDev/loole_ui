@@ -12,7 +12,9 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import QRCode from "react-qr-code";
 import CryptoList from 'components/CryptoList'
+import ModalExampleShorthand from "components/modal.component";
 import { Icon, Step } from 'semantic-ui-react'
+import eventBus from "views/eventBus";
 import {
     Row,
     Col,
@@ -169,8 +171,11 @@ class CrDeposit extends Component {
           
           (response) => {
             
-            if (response.txn_id) {
+            if (response.address) {
+              
               this.setDepositPage(1);
+              eventBus.dispatch("updateUser","");
+        eventBus.remove("updateUser");
               this.setState({paydetails: response})
               
             } else {
@@ -282,12 +287,7 @@ class CrDeposit extends Component {
                                     )}
                                     {this.state.shetabGo == 1 && (
                                       <>
-                                      <img src={this.state.paydetails.qrcode_url}/>
-                                      <p>Send To Address</p>
-                                      <p><b>{this.state.paydetails.address}</b></p>
-                                      <p>Total Amount To Send</p>
-                                      <p><b>{this.state.paydetails.amount}</b> {Coin}</p>
-                                      <p>Send only <span className="text-danger">{Coin}</span> to this deposit address.</p>
+                                      
                                       
                                       </>
                                     )}

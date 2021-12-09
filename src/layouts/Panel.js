@@ -1,7 +1,6 @@
 import React ,{useEffect, useState} from "react";
 import { Switch, Route,Redirect } from "react-router-dom";
 import Avatar, { ConfigProvider } from "react-avatar";
-import { useHistory } from "react-router";
 
 import $ from "jquery";
 //import { GlobalProvider } from 'context/GlobalState';
@@ -11,9 +10,20 @@ import {
   Spinner,
   Container
 } from "react-bootstrap";
+import {
+  Checkbox,
+  Grid,
+  Header,
+  Button, Icon, Modal,
+  Image,
+  Menu,
+  Segment,
+  Sidebar,
+} from 'semantic-ui-react'
 import { DEFCOLORS } from "const";
 // core components
-import Sidebar from "components/Sidebar/Sidebar.js";
+import ModalExampleShorthand from "components/modal.component";
+import SidebarMy from "components/Sidebar/Sidebar.js";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
@@ -25,6 +35,7 @@ import image1 from "assets/img/bg.jpg";
 import image2 from "assets/img/bg.jpg";
 import image3 from "assets/img/bg.jpg";
 import image4 from "assets/img/bg.jpg";
+import Admin from "views/Admin.js";
 import Dashboard from "views/Dashboard.js";
 import Rewards from "views/Rewards.js";
 import MyMatches from "views/MyMatches.js";
@@ -46,19 +57,36 @@ function scrollToTop() {
 
 
 };
-
+function exampleReducer(state, action) {
+  switch (action.type) {
+    case 'close':
+      return { open: false }
+    case 'open':
+      return { open: true, size: action.size }
+    default:
+      throw new Error('Unsupported action...')
+  }
+}
 function  Panel(prop) {
-  
-  
+  const [state, dispatch] = React.useReducer(exampleReducer, {
+    closeOnEscape: true,
+    closeOnDimmerClick: true,
+    open: false,
+    dimmer: undefined,
+    size: undefined,
+  })
+  const { open, closeOnEscape, closeOnDimmerClick,size } = state
+ 
   
   
 
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
-  
+  const [visible, setVisible] = React.useState(false)
   
 
     
+  const [myNotification,setMyNotification] = useState();
   const [events,setEvents] = useState(prop.events);
   const [eventID,setEventID] = useState(prop.eventID);
   const [currentUser,setCurrentUser] = useState(prop.token);
@@ -70,10 +98,41 @@ function  Panel(prop) {
 const [eventIDQ,setEventIDQ] = useState(prop.eventIDQ);
 const [matchIDQ,setMatchIDQ] = useState(prop.matchIDQ);
   useEffect(() => {
-   
+    if(prop.token){
     setCurrentUser(() => prop.token)
   
-
+   
+    var myNot = []
+    prop.token.usersReports.map((item, i) => {
+      if (item.coinValue && item.status ==='Pending') {
+        myNot.push(item)
+     
+        
+        
+       
+      } 
+    }
+    
+    
+    )
+    myNot.sort((a, b) => (a.id < b.id) ? 1 : -1)
+    prop.token.events.map((item, i) => {
+      if (item.status ==='Pending' || item.status ==='Ready' || item.status ==='InPlay') {
+        myNot.push(item)
+     
+        
+        
+       
+      } 
+    }
+    
+    
+    )
+    
+    setMyNotification(myNot)
+   
+  }
+    
   
 }, [prop.token]);
 
@@ -155,6 +214,7 @@ useEffect(() => {
             key={key}
             render={(props) => (
               <>
+              {(prop.component=='Admin') && (<Admin authed={true} />)}
               {(prop.component=='Profile') && (<Profile authed={true}  token={currentUser} tabkey={keyProfile} handleProfileTabID={setKeyProfile} />)}
               {(prop.component=='Dashboard') && (<Dashboard authed={true} events={events} token={currentUser} tabkey={keyDash} handleTabID={setKeyDash}   />)}
               {(prop.component=='LockScreenPage') && (<LockScreenPage authed={true} event={eventID} token={currentUser} handleID={setEventIDQ} handleMatchID={setMatchIDQ} />)}
@@ -253,7 +313,7 @@ return(
             </div>
     );
   }
-  
+
   return (
     
     <>
@@ -265,7 +325,7 @@ return(
       ):(
         <>
         <div className="wrapper " >
-<Sidebar
+<SidebarMy
           routes={routes}
           image={sidebarImage}
           background={sidebarBackground}
@@ -273,12 +333,65 @@ return(
           page={currpage}
         />
         
-        <div className="main-panel">
+        <Sidebar.Pushable>
+          <Sidebar
+            as={Menu}
+            animation='overlay'
+            icon='labeled'
+            direction='right'
+            inverted
+            style={{ width: "100vw", maxWidth:300,height: "100vh !important"}}
+            onHide={() => setVisible(false)}
+            vertical
+            visible={visible}
+            width='thin'
+           
+          >
+             <div
+                  
+                  style={{padding:10,margin:'auto',position:'relative',zIndex:10}}
+                >
+                  {myNotification && (<>
+                    {myNotification.map((item, i) => <ModalExampleShorthand note={item}/>)}
+                  </>)}
+                  
+                  
+      
+                  
+        </div>
+           
+          </Sidebar>
+
+          <Sidebar.Pusher>
+        
+              
+            <div className="main-panel">
         <AdminNavbar page={getPage(routes)} token={currentUser}/>
         <div className="content">
-        
+        <Checkbox
+          checked={visible}
+          label={{ children: <code>visible</code> }}
+          onChange={(e, data) => setVisible(data.checked)}
+        />
             <Switch>{getRoutes(routes)}</Switch>
-           
+            <Modal
+        size={size}
+        open={open}
+        onClose={() => dispatch({ type: 'close' })}
+      >
+        <Modal.Header>Delete Your Account</Modal.Header>
+        <Modal.Content>
+          <p>Are you sure you want to delete your account</p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button negative onClick={() => dispatch({ type: 'close' })}>
+            No
+          </Button>
+          <Button positive onClick={() => dispatch({ type: 'close' })}>
+            Yes
+          </Button>
+        </Modal.Actions>
+      </Modal>
           </div>
           <AdminFooter />
           <div
@@ -288,6 +401,10 @@ return(
             }
           />
           </div>
+      
+          </Sidebar.Pusher>
+        </Sidebar.Pushable>
+        
           </div>
           </>
       )}

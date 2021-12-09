@@ -459,6 +459,20 @@ class AddMatch extends Component {
           "callOfDuties": []
         }
       ],
+      "matchTables": [{
+        "id": 172,
+        "winner": null,
+        "status": "Pending",
+        "level": null,
+        "matchCode": null,
+        "startTime": date_edit(Date.now()) + this.state.AvalableFor.value * 1000 * 60,
+        "matchPlayers": [{
+            "id": 371,
+            "username": currentUser.username,
+            "ready": false
+        }],
+        "matchChats": []
+    }]
       
     }
     return (
@@ -607,6 +621,7 @@ class AddMatch extends Component {
                       </Form>
                       </Col>
                     <Col sm="5" md="4">
+                    <Row className="ui one cards">
                       {(this.state.GName.value.indexOf(' - ') > -1) && (
                         <>
                         {printMatchBlock(item)}
@@ -614,7 +629,7 @@ class AddMatch extends Component {
                        
                       </>
                       )}
-                      
+                      </Row>
                     </Col>
                   </Row>
         </>

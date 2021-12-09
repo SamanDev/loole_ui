@@ -83,17 +83,21 @@ export const defUser = {
       
     ],
     "cashierGateways":[
-        {
-          "id": 1,
-          "name": "Hamrahcart",
-          "mode": "IranShetab",
-          "active": true
-        },
-        {
-          "id": 2,
-          "name": "PerfectMoney",
-          "mode": "PerfectMoney",
-          "active": true
-        }
-      ]
+      {
+        "id": 1,
+        "name": "Hamrahcart",
+        "mode": "IranShetab",
+        "active": true
+      },
+      {
+        "id": 2,
+        "name": "PerfectMoney",
+        "mode": "PerfectMoney",
+        "active": true
+      }
+    ],
+    "usersReports":[
+      
+    ],
+    "events":[]
   }

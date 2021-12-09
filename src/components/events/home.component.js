@@ -2,7 +2,7 @@
 import React, { Component,useState, useEffect } from "react";
 import $ from "jquery";
 
-import { printMatchBlock,printGameBlock } from "components/include";
+import { printMatchBlock,printGameBlock,date_edit } from "components/include";
 
 // react-bootstrap components
 import {
@@ -35,76 +35,78 @@ const HomeEvents = (prop) => {
     
    },[prop.token]);
 
-  const getBlockChallenge = (filtermode,f,t,events) => {
-        
+   const getBlockChallenge = (filtermode,events) => {
+    var newItem = []
     if (events) {
-      return events.map((item, i) => {
+     
+       events.map((item, i) => {
         if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
-            if (item.status != 'Expired' && item.status != 'Canceled' ){
-          item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+          //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+          
           {item.players.map((player, j) => {
            //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
           })}
-         
+        
+          var dateEdited = date_edit(item.expire);
+      
+          var dateExpired = date_locale(dateEdited);
           
-          if(i>=f  &&  i<t){
+          var now = new Date();
+          var dateNow = now.toISOString();
+          item.expire = date_edit(item.expire);
+      item.startTime = date_edit(item.startTime);
+      item.finished = date_edit(item.finished);
           
-          return (
-
-            <Col md="3" xl="4" key={i}>
-              {printMatchBlock(item)}
-
-            </Col>
-          )
+          if(dateExpired<dateNow && item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){}else{
+            //newItem.push(item);
           }
-        } else {
-          return null;
-        }
+          newItem.push(item);
+          
+          
+         
+        } 
       }
-    }
+      
       )
+      return printBlockChallenge(newItem,filtermode)
     }
 
   }
 const getBlockChallengeMobile = (filtermode,f,t,events) => {
-  
-  if (events) {
-    return events.map((item, i) => {
-      if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
-        if (item.status != 'Expired' && item.status != 'Canceled' ){
-
+  var newItem = []
+    if (events) {
+     
+       events.map((item, i) => {
+        if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
+          //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+          
+          {item.players.map((player, j) => {
+           //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
+          })}
         
-        item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
-        {item.players.map((player, j) => {
-         //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
-        })}
-        var timestamp = item.expire
-        var date = new Date(timestamp);
-        //date.setMinutes(date.getMinutes() + item.timeMinute);
-        var now = new Date();
-        var dateExpired = date.toISOString();
-        
+          var dateEdited = date_edit(item.expire);
+      
+          var dateExpired = date_locale(dateEdited);
+          
+          var now = new Date();
+          var dateNow = now.toISOString();
+          item.expire = date_edit(item.expire);
+      item.startTime = date_edit(item.startTime);
+      item.finished = date_edit(item.finished);
+          
+          if(dateExpired<dateNow && item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){}else{
+            //newItem.push(item);
+          }
+          newItem.push(item);
+          
+          
          
-        var dateNow = now.toISOString();
-        
-        if(i>=f  &&  i<t){
-        
-        return (
-
-          <Carousel.Item interval={5000} key={i}>
-            {printMatchBlock(item)}
-
-          </Carousel.Item>
-        )
-        }
-      } else {
-        return null;
+        } 
       }
+      
+      )
+      return printBlockChallenge(newItem,filtermode)
     }
-}
-    )
-  }
-
 }
 const renderer = ({ days,hours, minutes, seconds, completed }) => {
     if (completed) {

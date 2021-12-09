@@ -42,6 +42,7 @@
     "react-identicons": "^1.1.7",
     "react-imask": "^6.1.0",
     "react-input-mask": "^2.0.4",
+    "react-json-to-table": "^0.1.7",
     "react-jvectormap": "0.0.16",
     "react-medium-editor": "^1.8.1",
     "react-notification-alert": "0.0.13",

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import ChartistGraph from "react-chartist";
 import { Link, useLocation } from "react-router-dom";
 // react components used to create a SVG / Vector map
-
+import CurrencyFormat from "react-currency-format";
 import PropTypes from "prop-types";
 import { VectorMap } from "react-jvectormap";
 import AuthService from "services/auth.service";
@@ -39,16 +39,7 @@ import {
   Alert
 
 } from "react-bootstrap";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from 'recoil';
-import {
-  userState
-} from 'atoms';
+
 function Dashboard(prop) {
   const [key, setKey] = useState(prop.tabkey);
   const [currentUser,setCurrentUser] = useState(prop.token);
@@ -79,7 +70,7 @@ function Dashboard(prop) {
      
        events.map((item, i) => {
         if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
-          item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+          //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
           
           {item.players.map((player, j) => {
            //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
@@ -91,10 +82,14 @@ function Dashboard(prop) {
           
           var now = new Date();
           var dateNow = now.toISOString();
+          item.expire = date_edit(item.expire);
+      item.startTime = date_edit(item.startTime);
+      item.finished = date_edit(item.finished);
           
           if(dateExpired<dateNow && item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){}else{
-            newItem.push(item);
+            //newItem.push(item);
           }
+          newItem.push(item);
           
           
          
@@ -110,7 +105,9 @@ function Dashboard(prop) {
     
     var Balance = currentUser.balance;
     if (!Balance) { Balance = 0 }
-    
+    var nAmount = Number.parseFloat(currentUser.point).toFixed(0)
+    var nBalance = Number.parseFloat(currentUser.balance).toFixed(2)
+    console.log('dash')
   return (
       
         
@@ -161,7 +158,13 @@ function Dashboard(prop) {
                           alt="loole coin"
                          
                           src="/assets/images/dollar.svg"
-                        ></img> {Number.parseFloat(currentUser.balance).toFixed(2)}</Card.Title>
+                        ></img> <CurrencyFormat
+                        value={nBalance}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        prefix={""}
+                        renderText={(value) => value}
+                      /></Card.Title>
                   </div>
                 </Col>
               </Row>
@@ -191,7 +194,13 @@ function Dashboard(prop) {
                           alt="loole coin"
                          
                           src="/assets/images/point.svg"
-                        ></img> {Number.parseFloat(currentUser.point).toFixed(0)}</Card.Title>
+                        ></img> <CurrencyFormat
+                        value={nAmount}
+                        displayType={"text"}
+                        thousandSeparator={true}
+                        prefix={""}
+                        renderText={(value) => value}
+                      /></Card.Title>
                   </div>
                 </Col>
               </Row>
@@ -266,22 +275,22 @@ function Dashboard(prop) {
 
                 <Tab.Content >
                   <Tab.Pane eventKey="all-match" >
-                    <Row >
+                    <Row className="ui fours cards">
                       {getBlockChallenge('all',events)}
                     </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="mob-match">
-                    <Row>
+                  <Row className="ui four cards">
                       {getBlockChallenge('Mobile',events)}
                     </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="con-match">
-                    <Row>
+                  <Row className="ui four cards">
                       {getBlockChallenge('NoMobile',events)}
                     </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="tour-match">
-                    <Row>
+                  <Row className="ui four cards">
                       {getBlockChallenge('Tournament',events)}
                     </Row>
                   </Tab.Pane>

@@ -2,7 +2,7 @@
 import React,{useEffect, useState} from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, Redirect,useHistory } from "react-router-dom";
-
+import { POSTURLTest,defUser } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
@@ -40,8 +40,23 @@ refetchOnWindowFocus: false,
 })
 var eventDefID = getQueryVariable("id");
 var eventDefMatchID = getQueryVariable("matchid");
+
+function logProps(WrappedComponent) {
+  class LogProps extends React.Component {
+    componentDidUpdate(prevProps) {
+      console.log('old props:', prevProps);
+      console.log('new props:', this.props);
+    }
+
+    render() {
+      return <WrappedComponent {...this.props} />;
+    }
+  }
+
+  return LogProps;
+}
 function Main() {
-  const history = useHistory();
+ 
   const queryClient =  useQueryClient();
   //queryClient.clear()
   
@@ -57,19 +72,21 @@ const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
   
 
   
-  const url = window.location.search.substring(1);
 
     
   const [events,setEvents] = useState();
   const [eventID,setEventID] = useState();
   const [currentUser,setCurrentUser] = useState();
+  
   const { data: userGet  } = useUser();
   
-  const { data: eventsGet } = useAllEventsByStatus('All');
+  //const { data: eventsGet } = useAllEventsByStatus('All');
+  const { data: eventsGet } = useAllEvents();
   const { data: eventGet } = useEventByID(eventIDQ);
 
   useEffect(() => {
     //console.log(userGet)
+    /*
     if (userGet) {
       setCurrentUser(() => userGet)
     if (userGet.accessToken != '') {
@@ -80,11 +97,23 @@ const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
     
         if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
           //localStorage.removeItem("user");
-          history.push("/auth/login-page");
+          localStorage.setItem("user", JSON.stringify(defUser));
+         // history.push("/auth/login-page");
         //window.location.replace("/auth/login-page");
         }
     }
-  }
+  }else{
+      
+    
+    if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
+      localStorage.setItem("user", JSON.stringify(defUser));
+      //localStorage.removeItem("user");
+      //history.push("/auth/login-page");
+    //window.location.replace("/auth/login-page");
+    }
+}
+*/
+setCurrentUser(() => userGet)
   eventBus.on("eventsDataUser", (userGet) => {
      
     setCurrentUser(userGet)
@@ -93,10 +122,13 @@ const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
   
   
 });
+
   }, [userGet]);
-  
+  eventBus.on("updateUser",()=>{
+    queryClient.resetQueries(["User"]);
+  })
   useEffect(() => {
-    
+    logProps(<PanelLayout salam="hi"/>)
     setEvents(() => eventsGet)
     eventBus.on("eventsData", (eventsGet) => {
       
@@ -152,6 +184,7 @@ const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
     
     
   }, [eventGet]);
+  
   return (
     
     <Switch>
@@ -171,6 +204,7 @@ const [matchIDQ,setMatchIDQ] = useState(eventDefMatchID);
       );
 }
   function App() {
+   
   return (
     <QueryClientProvider client={queryClient} contextSharing={true}>
       <Main/>

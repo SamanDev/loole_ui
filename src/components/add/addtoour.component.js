@@ -561,7 +561,7 @@ class AddMatch extends Component {
                                 value={this.state.AvalableFor}
                                 onChange={this.setAvalableFor}
                                 options={[
-                                  { value: "30", label: "30 Minutes" },
+                                  { value: "1", label: "30 Minutes" },
                                   { value: "60", label: "1 Hour" },
                                   { value: "360", label: "6 Hours" },
                                   { value: "1440", label: "1 Day" },

@@ -30,12 +30,18 @@ const useEventByID = (id) => {
 
   
 }
-  const useUser = () => {
+const useUser = () => {
   
-    const result = useQuery(["User"],api.getUser)
-    
-    return result
-  }
+  const result = useQuery(["User"],api.getUser)
+  
+  return result
+}
+const useAdminUsers = () => {
+  
+  const result = useQuery(["AdminUsers"],api.getAdminUsers)
+  
+  return result
+}
   const useUserProfile = (username) => {
   
     const result = useQuery(["User",username],api.getUserProfile)
@@ -63,5 +69,6 @@ export {
   useUserProfile,
   useEvent,
   useEventByID,
-  useAllCoins
+  useAllCoins,
+  useAdminUsers
 }

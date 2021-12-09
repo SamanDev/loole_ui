@@ -9,6 +9,7 @@ import $ from "jquery";
 
 import { useAllCoins } from "services/hooks"
 import Active from "components/active.component";
+import Report from "components/report.component";
 import PMDeposit  from "components/deposit/pmdeposit.component";
 import ShetabDeposit  from "components/deposit/shetabdeposit.component";
 import PaparaDeposit  from "components/deposit/paparadeposit.component";
@@ -433,17 +434,8 @@ const [currentUser,setCurrentUser] = useState(prop.token);
                     <div className="card-category">Your activity list</div>
                   </Card.Header>
                   <Card.Body className="table-responsive p-0">
-                  <DataTable
+                    <Report usersReports={dataTransaction}/>
                   
-            columns={columns}
-            data={dataTransaction}
-            defaultSortFieldId={1}
-            defaultSortAsc={false}
-            pagination
-            conditionalRowStyles={conditionalRowStyles}
-            expandableRows expandableRowsComponent={ExpandedComponent}
-            noDataComponent={noDataComponent}
-        />
                     
                   </Card.Body>
                 </Card>
