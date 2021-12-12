@@ -28,6 +28,8 @@ import withReactContent from "sweetalert2-react-content";
 import eventBus from "views/eventBus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "react-countdown";
+
+import MatchCard  from "components/matchcard.component";
 import {
   Statistic,
   Button,
@@ -423,8 +425,9 @@ $('.gdetails.no'+player).removeClass('hide');
                                             </>
 
                                           )}
+                                          <MatchCard item={item} matchidFind={matchidFind}/> 
                           <Card
-                            className="card-lock text-center card-plain card-match"
+                            className="card-lock text-center card-plain card-match hide"
                             style={{ color: "#fff" }}
                           >
                       

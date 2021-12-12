@@ -2,6 +2,9 @@ import React,{useState, useEffect} from 'react'
 import { Button, Modal,Menu ,Icon,Container, Header,Popup,Label} from 'semantic-ui-react'
 import { Link, useLocation } from "react-router-dom";
 import CopyText  from "components/copy.component";
+
+import { BrowserRouter, Route, Switch, Redirect,useHistory } from "react-router-dom";
+import $ from "jquery";
 import {
     setAvatar,
     getColor,
@@ -27,15 +30,35 @@ import {
     getColorStatus
   } from "components/include";
 var _content = '';
+var _open = false;
 function ModalExampleShorthand(prop) {
+    const [key, setKey] = useState(prop.mykey);
     const [item, setItem] = useState(prop.note);
-    const [defaultOpen, setDefaultOpen] = useState(prop.defaultOpen);
+    const history = useHistory()
+    const [defaultOpen, setDefaultOpen] = useState(_open);
+    
+   
     useEffect(() => {
         setItem(prop.note)
       
-        setDefaultOpen(prop.defaultOpen)
         
-       },[prop.note,prop.defaultOpen]);
+        
+        
+       },[prop.note]);
+   
+  useEffect(() => {
+    
+    
+        return history.listen((location) => {
+          if(location.pathname.toString().indexOf('cashier') > -1){
+            console.log(key + '' + item.coin)
+            if(key == 0){setDefaultOpen(true)}
+            console.log(`You changed the page to: ${location.pathname}`)
+          }
+         
+      })
+      
+    }, [history]);
     if (item.coinValue) {
    
       
@@ -56,12 +79,13 @@ function ModalExampleShorthand(prop) {
          
                                           
                                           </>)
-           
+        console.log(defaultOpen)   
       return (
         <Modal
         basic
+        id={'mod'+key}
         defaultOpen={defaultOpen}
-          trigger={<Menu.Item as='a' className="firstNotice">
+          trigger={<Menu.Item as='a' id={'linkmod'+key}>
                <Icon.Group style={{marginBottom:10}}>
           <Icon loading size='big' color='green' name='circle notch' style={{margin:0}} />
           <Icon name='dollar' />

@@ -25,7 +25,7 @@ import {
 } from 'semantic-ui-react'
 import Active  from "components/active.component";
 import TransitionExampleTransitionExplorer  from "components/anim.component";
-
+import { useAllEvents,useUser,useAllEventsByStatus,useEventByID } from "services/hooks"
 import AdminNavbar from "components/Navbars/ChatNavbar.js";
 
 import Chatbar from "components/Sidebar/Chat.js";
@@ -66,60 +66,34 @@ const Toast = Swal.mixin({
 
     
     function LockScreenPage(prop) {
-      const queryClient = new QueryClient();
+     
       const history = useHistory();
       const eventIDQ = getQueryVariable("id");
       const matchIDQ = getQueryVariable("matchid");
-      const [currentUser,setCurrentUser] = useState(prop.token);
+      const [myState, setMyState] = useState(prop.myState)
+  useEffect(() => {
+    setMyState(prop.myState)
+   
+    
+}, [prop.myState]);
+  useEffect(() => {
+    prop.onUpdateItem('eventIDQ',getQueryVariable("id"))
+    prop.onUpdateItem('matchIDQ',getQueryVariable("matchid"))
+    $("#jsonhtml").html($("#jsonhtml2").text());
+    
+}, []);
+const currentUser = prop.findStateId(myState,'currentUser');
+const eventMatch = prop.findStateId(myState,'eventMatch');
+
+const match = prop.findStateId(myState,'match');
+
+      
       const [visible, setVisible] = React.useState(false);
       const devWid = document.documentElement.clientWidth;
-  const [eventDef,setEventDef] = useState(prop.event);
-  const [eventMatch,setEventMatch] = useState();
-  const [match,setMatch]  = useState();
-  useEffect(() => {
-   
-    
- 
-      
-      prop.handleMatchID(matchIDQ)
-     
-      
-      prop.handleID(eventIDQ)
-    
-    
-    
-  }, []);
-  useEffect(() => {
-   
-    
-    if(prop.event){
-      
-      prop.handleMatchID(matchIDQ)
-
-      if(eventIDQ != prop.event.id){
-        prop.handleID(eventIDQ)
-      }else{
-       
-        var  NewEv  = editEvent(prop.event,eventIDQ,matchIDQ,currentUser);
-    
-        setEventMatch(NewEv);
-        setMatch(NewEv.matchidFind);
-        $("#jsonhtml").html($("#jsonhtml2").text());
-        setEventDef(() => prop.event)
-      }
-      
-    }else{
-      prop.handleID(eventIDQ)
-    }
-    
-    
-  }, [prop.event]);
-  useEffect(() => {
-    
-    setCurrentUser(() => prop.token)
-    
-  }, [prop.token]);
- 
+  
+  
+  
+  
       
       
       
@@ -296,7 +270,7 @@ const Toast = Swal.mixin({
             
                   <Container>
                  
-                    <Active token={currentUser}/>
+                    <Active {...prop}/>
                     <Icon name='rocketchat' className={(devWid > 500) && ('hide')} inverted size='large' circular color='teal' onClick={() => setVisible(!visible)} />
                     <Icon name='chevron left' inverted size='large' circular color='orange' onClick={() => history.goBack()} />
                     
@@ -321,7 +295,7 @@ const Toast = Swal.mixin({
                     ) : (
                       <>
                         {(eventMatch.gameMode == "Tournament" && !matchIDQ) ? (
-                          <TournamentSection item={eventMatch} token={currentUser} passedFunction={setMatch} />
+                          <TournamentSection item={eventMatch} token={currentUser} />
                          
                         ) : (
                           <>

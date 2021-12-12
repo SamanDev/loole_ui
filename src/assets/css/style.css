@@ -776,6 +776,16 @@ height: 200px;
 background-image: linear-gradient(rgba(0, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.847) 63%, rgba(0, 0, 0, 0) 100%);
 
 }
+.ui.fours.cards .cover.Pending{
+   
+    background-image: linear-gradient(rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.8) 63%, rgba(0, 0, 0, 0) 100%);
+    
+    }
+    .ui.fours.cards .cover.Expired,.ui.fours.cards .cover.Cancel{
+   
+        background-image: linear-gradient(rgba(255, 0, 0, 0.682) 0%, rgba(255, 0, 0, 0.85) 63%, rgba(255, 0, 0, 0) 100%);
+        filter: grayscale(40%);
+        }
 .modals.dimmer .ui.modal{
     left: auto;
     top: auto;
@@ -819,6 +829,9 @@ padding: 0 5px;
 top: 43px;
 z-index: 0;
 margin: 0;
+}
+.dash-stat .ui.statistic * {
+    text-align: left !important;
 }
 @media (min-width: 768px){
 .navbar-nav {

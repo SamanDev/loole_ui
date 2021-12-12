@@ -286,7 +286,7 @@ class UserService {
     }
     
   }
-  deleteEvents(id) {
+  deleteEvent(id) {
     return axios
       .delete(API_URL_TEST + "deleteEvent?id=" + id, { headers: authHeader() })
       .then((response) => {
@@ -364,11 +364,11 @@ class UserService {
         
       });
   }
-  createTournament(gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer,tournamentPayout,inSign,outSign,rules) {
+  createTournament(gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer,tournamentPayout,inSign,outSign,currency,prize,rules) {
     return axios
       .post(
         API_URL_TEST + "createEvent",
-        { gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer,tournamentPayout,inSign,outSign,rules },
+        { gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer,tournamentPayout,inSign,outSign,currency,prize,rules },
         { headers: authHeader() }
       )
       .then((response) => {
@@ -411,7 +411,7 @@ class UserService {
 
       });
   }
-  deleteEvent(){
+  deleteEvents(){
     return axios
       .delete(
         API_URL_TEST + "handleDelete",
@@ -444,12 +444,12 @@ class UserService {
         return response.data;
       });
   }
-  createDepositShetab(mobile,cardNumber,amount,cvv,expire,pin) {
+  createDepositShetabDoTransaction(mobile,cardNumber,amount,cvv,expire,pin,txID) {
     
     return axios
       .post(
         API_URL_TEST + "createDepositShetabDoTransaction",
-        { mobile,cardNumber,amount,cvv,expire,pin },
+        { mobile,cardNumber,amount,cvv,expire,pin,txID,txID },
         { headers: authHeader() }
       )
       .then((response) => {
@@ -459,7 +459,7 @@ class UserService {
         return response.data;
       });
   }
-  createDepositShetabPass(mobile,cardNumber,amount,cvv,expire) {
+  createDepositShetabGetPassCode(mobile,cardNumber,amount,cvv,expire) {
     
     return axios
       .post(

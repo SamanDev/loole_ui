@@ -1,57 +1,18 @@
 import React, { useEffect, useState } from "react";
-// react component used to create charts
-import ChartistGraph from "react-chartist";
-import { Link, useLocation } from "react-router-dom";
-// react components used to create a SVG / Vector map
-import CurrencyFormat from "react-currency-format";
-import PropTypes from "prop-types";
-import { VectorMap } from "react-jvectormap";
-import AuthService from "services/auth.service";
-import userService from "services/user.service";
-import { useAllEvents,useUser,useAllEventsByStatus } from "services/hooks"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import eventBus from "views/eventBus";
 import { printBlockChallenge,date_locale,date_edit } from "components/include";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import { Tab,Card } from 'semantic-ui-react'
 import Active  from "components/active.component";
-
-import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
-// react-bootstrap components
-import {
-  Badge,
-  Button,
-  Card,
-  Form,
-  InputGroup,
-  Navbar,
-  Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
-  Container,
-  Row,
-  Col,
-  TabContent,
-  TabPane,
-  Tab,
-  Spinner,
-  Alert
-
-} from "react-bootstrap";
-
+import DashStat  from "components/dashstat.component";
+import Moment from "moment";
+var moment = require("moment");
 function Dashboard(prop) {
-  const [key, setKey] = useState(prop.tabkey);
-  const [currentUser,setCurrentUser] = useState(prop.token);
-  
-  const [events,setEvents] = useState(prop.events);
-  
+  const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
-    setEvents(prop.events)
-    setCurrentUser(prop.token)
-    setKey(prop.tabkey)
-   },[prop.events,prop.token,prop.tabkey]);
-   
+    setMyState(prop.myState)
+}, [prop.myState]);
+const key = prop.findStateId(myState,'keyDash');
+const events = prop.findStateId(myState,'events');
+
   
   
   
@@ -66,21 +27,20 @@ function Dashboard(prop) {
           {item.players.map((player, j) => {
            //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
           })}
-        
-          var dateEdited = date_edit(item.expire);
-      
-          var dateExpired = date_locale(dateEdited);
+          var timestring1 = item.expire;
+          var timestring2 = new Date();
+          var startdate = moment(timestring1).format();
+          var expected_enddate = moment(timestring2).format();
+         startdate = moment(startdate).add(20, 'days').format()
+         
           
-          var now = new Date();
-          var dateNow = now.toISOString();
-          item.expire = date_edit(item.expire);
-      item.startTime = date_edit(item.startTime);
-      item.finished = date_edit(item.finished);
-          
-          if(dateExpired<dateNow && item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){}else{
-            //newItem.push(item);
+          if(item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){
+            //item.gameConsole = startdate + ' '+ expected_enddate;
+            if(startdate>expected_enddate){newItem.push(item);}
+          }else{
+            newItem.push(item);
           }
-          newItem.push(item);
+          //newItem.push(item);
           
           
          
@@ -88,209 +48,28 @@ function Dashboard(prop) {
       }
       
       )
-      return printBlockChallenge(newItem,filtermode)
+      return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem,filtermode)}</Card.Group>)
     }
 
   }
   
+  const panes = [
+    { menuItem: 'All', render: () => <Tab.Pane>{getBlockChallenge('all',events)}</Tab.Pane> },
+    { menuItem: 'Mobile', render: () => <Tab.Pane>{getBlockChallenge('Mobile',events)}</Tab.Pane> },
+    { menuItem: 'Console', render: () => <Tab.Pane>{getBlockChallenge('NoMobile',events)}</Tab.Pane> },
+    { menuItem: 'Tournament', render: () => <Tab.Pane>{getBlockChallenge('Tournament',events)}</Tab.Pane> },
+  ]
     
-    var Balance = currentUser.balance;
-    if (!Balance) { Balance = 0 }
-    var nAmount = Number.parseFloat(currentUser.point).toFixed(0)
-    var nBalance = Number.parseFloat(currentUser.balance).toFixed(2)
   return (
       
         
     <>
     
-    <Active token={currentUser}/>
-<Row>
-        <Col lg="3" xs="6">
-          <Card className="card-stats">
-            <Card.Body>
-              <Row>
-                <Col xs="4">
-                  <div className="icon-big text-center icon-warning">
-                    <i className="nc-icon nc-tap-01 text-warning"></i>
-                  </div>
-                </Col>
-                <Col xs="8">
-                  <div className="numbers">
-                    <p className="card-category">Total Match</p>
-                    <Card.Title as="h4">150</Card.Title>
-                  </div>
-                </Col>
-              </Row>
-            </Card.Body>
-            <Card.Footer>
-              <hr></hr>
-              <div className="stats">
-                <i className="nc-icon nc-simple-add icon-bold mr-1"></i>
-                <Link to={'/panel/create'}>Create a Match</Link>
+    <Active {...prop}/>
+    <DashStat {...prop}/>
+    <Tab panes={panes} defaultActiveIndex={key} onTabChange={(e, data) => {prop.onUpdateItem('keyDash',data.activeIndex)}}  />
 
-              </div>
-            </Card.Footer>
-          </Card>
-        </Col>
-        <Col lg="3" xs="6">
-          <Card className="card-stats">
-            <Card.Body>
-              <Row>
-                <Col xs="4">
-                  <div className="icon-big text-center icon-warning">
-                    <i className="nc-icon nc-bank text-success"></i>
-                  </div>
-                </Col>
-                <Col xs="8">
-                  <div className="numbers">
-                    <p className="card-category">Balance</p>
-                    <Card.Title as="h4"><img
-                          alt="loole coin"
-                         
-                          src="/assets/images/dollar.svg"
-                        ></img> <CurrencyFormat
-                        value={nBalance}
-                        displayType={"text"}
-                        thousandSeparator={true}
-                        prefix={""}
-                        renderText={(value) => value}
-                      /></Card.Title>
-                  </div>
-                </Col>
-              </Row>
-            </Card.Body>
-            <Card.Footer>
-              <hr></hr>
-              <div className="stats">
-                <i className="nc-icon nc-bank icon-bold mr-1"></i>
-                <Link to={'/panel/cashier'}>Go to Cashier</Link>
-              </div>
-            </Card.Footer>
-          </Card>
-        </Col>
-        <Col lg="3" xs="6">
-          <Card className="card-stats">
-            <Card.Body>
-              <Row>
-                <Col xs="5">
-                <div className="icon-big text-center icon-warning">
-                    <i className="nc-icon nc-bank text-muted"></i>
-                  </div>
-                </Col>
-                <Col xs="7">
-                  <div className="numbers">
-                    <p className="card-category">Points</p>
-                    <Card.Title as="h4"><img
-                          alt="loole coin"
-                         
-                          src="/assets/images/point.svg"
-                        ></img> <CurrencyFormat
-                        value={nAmount}
-                        displayType={"text"}
-                        thousandSeparator={true}
-                        prefix={""}
-                        renderText={(value) => value}
-                      /></Card.Title>
-                  </div>
-                </Col>
-              </Row>
-            </Card.Body>
-            <Card.Footer>
-              <hr></hr>
-              <div className="stats">
-                <i className="nc-icon  nc-notification-70 icon-bold mr-1"></i>
-                <Link to={'/panel/rewards'}>Go to Rewards</Link>
-              </div>
-            </Card.Footer>
-          </Card>
-        </Col>
-        <Col lg="3" xs="6">
-          <Card className="card-stats">
-            <Card.Body>
-              <Row>
-                <Col xs="5">
-                  <div className="icon-big text-center icon-warning">
-                    <i className="nc-icon nc-favourite-28 text-primary"></i>
-                  </div>
-                </Col>
-                <Col xs="7">
-                  <div className="numbers">
-                    <p className="card-category">% Trust</p>
-                    <Card.Title as="h4">%100</Card.Title>
-                  </div>
-                </Col>
-              </Row>
-            </Card.Body>
-            <Card.Footer>
-              <hr></hr>
-              <div className="stats">
-                <i className="fas fa-redo mr-1"></i>
-                Update now
-              </div>
-            </Card.Footer>
-          </Card>
-        </Col>
-      </Row>
-
-
-
-      <Row>
-        <Col md="12" style={{overflow:'hidden'}}>
-          <Tab.Container
-            id="matches-tabs"
-         
-            activeKey={key}
-            onSelect={(k) => prop.handleTabID(k)}
-          >
-            <div style={{width:'90vw',overflow:'auto'}}>
-            <Nav role="tablist" variant="tabs" style={{minWidth:600}}>
-              <Nav.Item>
-                <Nav.Link eventKey="all-match">All</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="mob-match">Mobile</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="con-match">Console</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="tour-match">Tournament</Nav.Link>
-              </Nav.Item>
-             
-            </Nav>
-            </div>
-            <Card>
-
-              <Card.Body  >
-
-                <Tab.Content >
-                  <Tab.Pane eventKey="all-match" >
-                    <Row className="ui fours cards">
-                      {getBlockChallenge('all',events)}
-                    </Row>
-                  </Tab.Pane>
-                  <Tab.Pane eventKey="mob-match">
-                  <Row className="ui fours cards">
-                      {getBlockChallenge('Mobile',events)}
-                    </Row>
-                  </Tab.Pane>
-                  <Tab.Pane eventKey="con-match">
-                  <Row className="ui fours cards">
-                      {getBlockChallenge('NoMobile',events)}
-                    </Row>
-                  </Tab.Pane>
-                  <Tab.Pane eventKey="tour-match">
-                  <Row className="ui fours cards">
-                      {getBlockChallenge('Tournament',events)}
-                    </Row>
-                  </Tab.Pane>
-                </Tab.Content>
-
-              </Card.Body>
-            </Card>
-          </Tab.Container>
-        </Col>
-      </Row>
+     
 
 
     </>

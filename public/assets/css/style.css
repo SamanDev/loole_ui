@@ -765,7 +765,7 @@ font-size: 11px !important;
     font-size: 40px !important;
 }
 .ui.buttons .or:before{
-    background:#000 !important
+    background:#000 !important;
 }
 .prosbar{
 position: absolute;

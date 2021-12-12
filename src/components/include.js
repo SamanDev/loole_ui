@@ -166,20 +166,67 @@ export const getTagName = (game, console) => {
   }
 };
 export const getColor = (amount) => {
-  if (amount < 24) {
+  if (amount <= 10) {
     return "green";
-  } else if (amount < 40) {
+  } else if (amount <= 40) {
     return "orange";
-  } else if (amount >= 40) {
+  } else if (amount >= 10) {
     return "red";
   }
 };
+export const printJoinalerts = (response,GName,currentUser,setSelectedTag) => {
+ 
+  if (response=='balanceError'){
+    var resMessage = "To enter this event you need to have more balance!"
+Swal.fire({
+title: 'Error!',
+text:resMessage,
+icon:"error",
+showCancelButton: true,
+confirmButtonText: `Go to Cashier`,
+canceleButtonText: `Back`,
+}).then((result) => {
+/* Read more about isConfirmed, isDenied below */
+if (result.isConfirmed) {
+this.props.history.push("/panel/cashier");
+}
+})
+  } else if (response == "pointBalanceError") {
+
+    var resMessage =
+      "To enter this event you need to have more balance!";
+    Swal.fire({
+      title: "Error!",
+      text: resMessage,
+      icon: "error",
+      showCancelButton: true,
+      confirmButtonText: `Go to Cashier`,
+      canceleButtonText: `Back`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.state.history.push("/panel/cashier");
+      }
+    });
+  }else if (response=='tagError'){
+    var e = GName.value.split(" - ")[0];
+    var p = GName.value.split(" - ")[1];
+  
+  if(p=='PS4'||e=='PS4'){e='PSN';p='PSN';}
+  if(p=='PS5'||e=='PS5'){e='PSN';p='PSN';}
+  if(p=='XBOX'||e=='XBOX'){e='XBOX';p='XBOX';}
+  
+  setSelectedTag(e.replace(' Warzone',''),p,currentUser)
+   
+  }
+}
 export const getColorStatus = (status) => {
   var _col = "red";
   if (status == 'Ready') {_col = "blue"}
   if (status == 'InPlay') {_col = "purple"}
-  if(status == 'Pending') {_col = 'pink'}
+  if(status == 'Pending') {_col = 'green'}
   if(status == 'Finished') {_col = 'black'}
+  if(status=='Cancel' || status=='Expired') {_col = 'gray'}
     return _col
   
 };
@@ -261,17 +308,21 @@ export const getGroupBadge = (sign, amount, classes) => {
 export const getGroupBadgeBlock = (sign, amount, label,pos,color) => {
   if (sign == "Dollar") {
     var nAmount = Number.parseFloat(amount).toFixed(2);
+    var nIcon = 'dollar'
+    var nColor = 'red'
+   
   } else {
     var nAmount = Number.parseFloat(amount).toFixed(0);
+    var nIcon = 'diamond'
+    var nColor = 'teal'
   }
 
   return (
     <>
-    {(pos=='right')&&(<Label pointing={pos} size="mini" basic color={color}>{label}</Label>)}
+    {(pos=='right')&&(<Label pointing={pos} size="mini" basic color="green">{label}</Label>)}
     
-        <Label  size="small" >
-        <Image avatar alt={"loole " + sign}
-            src={"/assets/images/" + sign + "-icon.svg"} style={{ maxHeight: 13 }} />
+        <Label  size="small"   basic>
+        <Icon name={nIcon}   color={nColor}  />
         
                 <CurrencyFormat
           value={nAmount}
@@ -282,7 +333,7 @@ export const getGroupBadgeBlock = (sign, amount, label,pos,color) => {
         />
               
               </Label>
-              {(pos=='left')&&(<Label pointing={pos} size="mini" basic color={color}>{label}</Label>)}
+              {(pos=='left')&&(<Label pointing={pos} size="mini" basic color="blue">{label}</Label>)}
     </>
   );
 };
@@ -382,7 +433,7 @@ var ready = (
                     onlabel="Ready"
                     onstyle="success"
                     offlabel="Ready"
-                    onChange={(checked: boolean) => {
+                    onChange={(checked) => {
                       handlechangeReadyEvent(checked);
                     }}
                     style="w-100 mx-1"
@@ -623,9 +674,7 @@ for {item.inSign.replace("Dollar", "$")} {item.amount}
               ) => {
                 return (
                   <>
-                  <div>
-                      {getGroupBadgesmall(item.inSign, item.amount, "small right")}
-                      </div>
+                  
                     <Statistic inverted size='small' color={getColor(item.prize)}>
                       <Statistic.Value>{item.gameName} </Statistic.Value>
                       <Statistic.Label>
@@ -636,12 +685,16 @@ for {item.inSign.replace("Dollar", "$")} {item.amount}
                           {item.gameConsole}
                         </span>
                         
-                      <p style={{ margin: 10 }}>
-                        {getGroupBadgePrice(item.outSign, item.prize, "")}
-                      </p>
+                      
                       </Statistic.Label>
                       
                     </Statistic>
+                    <p style={{ margin: 10,transform:'scale(1.4)' }}>
+                      <div className="content left floated " style={{minHeight:10,padding:2}}>{getGroupBadgeBlock(item.outSign, item.prize, "Prize","left",getColor(item.prize))}</div>
+      <div className="content right floated " style={{minHeight:10,padding:2}}>
+      {getGroupBadgeBlock(item.inSign, item.amount, "Fee","right",getColor(item.amount))}
+      </div>
+                      </p>
                     </>
                 )}
 export const vsComponent = (
@@ -1233,14 +1286,17 @@ try{
       {props.match ? (
         <>
         {!props.match.winner && props.btn && (
+          <>
           <Statistic inverted color="orange" size="mini">
           <Statistic.Label>Status</Statistic.Label>
             <Statistic.Value>{props.match.status}</Statistic.Value>
             
           </Statistic>
+          <Divider fitted style={{ opacity: 0 }} />
+          </>
         )}
         
-                {props.match.status != 'Finished'  ?(
+                {props.match.status != 'Finished' && props.match.status != 'Expired'  &&  props.match.status != 'Cancel'  ?(
                   <>
                   
                   <Divider fitted style={{ opacity: 0 }} />
@@ -1252,7 +1308,7 @@ try{
                                         </>
                                       ):(
                                         <>
-                                        
+                                         <Divider fitted style={{ opacity: 0 }} />
                                         {props.match.winner && props.match.winner !== null ? (
                                         <Avatar
                                           size="80"
@@ -1317,14 +1373,7 @@ try{
                                           name={_mode}
                                         />
                                       ) : (
-                                        <Avatar
-                                          size="80"
-                                          textSizeRatio={6}
-                                          style={{ boxShadow: "0px 0px 20px 20px rgba(0,0,0,0.2)" }}
-                                          color={_color}
-                                          round={true}
-                                          value={_mode}
-                                        />
+                                        <></>
                                       )}
                                       </>)}
                                       {timer}
@@ -1542,8 +1591,8 @@ export const printBlockChallenge = (newItem, filtermode) => {
   if (newItem.length == 0) {
     //history.push("/home");
     return (
-      <Col xl="12" style={{ textAlign: "center", color: "rgba(0,0,0,.5)" }}>
-        <div>
+
+        <div style={{ textAlign: "center", color: "rgba(0,0,0,.5)",paddingTop:30,width:'100%' }}>
           <img
             alt="nodata"
             style={{ height: 80 }}
@@ -1552,12 +1601,14 @@ export const printBlockChallenge = (newItem, filtermode) => {
           <h4>Empty List.</h4>
           <h5>You currently don't have any {filter} event.</h5>
         </div>
-      </Col>
+
     );
   } else {
     return newItem.map((item, i) => {
       return (
+        
         <>
+        
           {printMatchBlock(item)}
         </>
       );
@@ -2070,7 +2121,7 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
         item.gameMode != "League"
       ) {
         if (!item.players[1]) {
-          item.players.push(nullplayer);
+          //item.players.push(nullplayer);
         }
         if (matchidFind && !matchidFind.matchPlayers[0]) {
           matchidFind.matchPlayers.push(nullplayer);
@@ -2095,10 +2146,10 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
       }
       if (item.gameMode == "Tournament" && matchIDQ) {
         if (!item.players[0]) {
-          item.players.push(nullplayer);
+          //item.players.push(nullplayer);
         }
         if (!item.players[1]) {
-          item.players.push(nullplayer);
+          //item.players.push(nullplayer);
         }
       }
       item.matchidFind = matchidFind;
@@ -2109,7 +2160,7 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
       isEditTime = setTimeout(() => {
         //console.log('isedit:'+isEdit)
         isEdit = false;
-      }, 2000);
+      }, 20000);
     }
   }
 };
@@ -2117,8 +2168,10 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
 export const printMatchBlock = (item) => {
   var _mode = " 1 vs 1 ";
   var _color = "#404040";
-
-
+  item.expire = date_edit(item.expire);
+  item.startTime = date_edit(item.startTime);
+  item.finished = date_edit(item.finished);
+  item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
  
 
   if (item.gameMode == "Tournament" || item.gameMode == "League") {
@@ -2140,14 +2193,20 @@ export const printMatchBlock = (item) => {
   if (item.winner) {
     _mode = setAvatar(item.winner);
   }
+  if (item.status=='Cancel' || item.status=='Expired') {
+    _color = "black"; 
+  }
   
 
   return (
   
       
    
-      <Card   color={getColorStatus(item.status)} as={Link} to={"/panel/lobby?id=" + item.id}>
-       <Label size="mini" color={getColorStatus(item.status)} ribbon style={{zIndex:2,maxWidth:170,position:'absolute',top:15,left:-10}}>
+      <Card   color={getColorStatus(item.status)}   as={Link} to={"/panel/lobby?id=" + item.id} raised>
+       <Label inverted size="mini" color={getColorStatus(item.status)} ribbon style={{zIndex:2,maxWidth:170,position:'absolute',top:15,left:-10}}>
+       {item.status == 'Pending' &&  ( <Icon loading name='spinner' />)}
+       {item.status == 'Finished' &&  ( <Icon  name='check' color="green" />)}
+       {(item.status=='Cancel' || item.status=='Expired') &&  ( <Icon  name='times' color="red" />)}
        {item.status}
         </Label>
       <Image
@@ -2159,9 +2218,9 @@ export const printMatchBlock = (item) => {
         style={{background:'gray !important'}}
               wrapped ui={false}/>
               <div
-            className="text-center cover"
+            className={"text-center cover "+item.status}
              >
-            <div style={{ transform: "scale(.8)",padding: '30px 0',height:165}}>
+            <div style={{ transform: "scale(.8)",padding: '30px 0',height:185}}>
             <Countdown renderer={rendererBig}  txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
       </div>
       {item.players[0] ? (
@@ -2224,7 +2283,7 @@ export const printMatchBlock = (item) => {
         
       <div className="content left floated " style={{minHeight:10,padding:2}}>{getGroupBadgeBlock(item.outSign, item.prize, "Prize","left","green")}</div>
       <div className="content right floated " style={{minHeight:10,padding:2}}>
-      {getGroupBadgeBlock(item.outSign, item.amount, "Fee","right","blue")}
+      {getGroupBadgeBlock(item.inSign, item.amount, "Fee","right","blue")}
       </div>
   </Card.Description>
   </div>

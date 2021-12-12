@@ -162,21 +162,13 @@ function Sidebar({ routes, image, background,token }) {
     return location.pathname === routeName ? "active" : "";
   };
 
-  if(token !=''){
+  if(token.accessToken !='' && token.username){
 
     var str = token.username;
     var res = str.substring(0, 1);
     res  = res + ' '+ str.substring(1, 2);
 
-    useEffect(() => {
-   
-      var str = token.username;
-      var res = str.substring(0, 1);
-      res  = res + ' '+ str.substring(1, 2);
     
-  
-    
-  }, [token]);
   return (
     <>
       <div className="sidebar"  data-color={background} data-image={image} >

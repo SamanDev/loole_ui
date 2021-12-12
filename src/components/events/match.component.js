@@ -6,7 +6,7 @@ import Select from "react-select";
 import Avatar from "react-avatar";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { NavLink, Link } from "react-router-dom";
-import { Statistic,Divider } from 'semantic-ui-react'
+import { Statistic,Divider,Card,Label,Icon,Image } from 'semantic-ui-react'
 
 import {
   VerticalTimeline,
@@ -35,10 +35,12 @@ import Countdown from "react-countdown";
 import uploadHeader from "services/upload-header";
 import PropTypes from "prop-types";
 import axios from "axios";
+
+import MatchCard  from "components/matchcard.component";
 import {
     Badge,
     Button,
-    Card,
+    
     Navbar,
     Nav,
     Container,
@@ -71,7 +73,10 @@ import {
     isJson,
     haveAdmin,
     handleTagForm,
-    vsComponent
+    vsComponent,
+    getColorStatus,
+    getGroupBadgeBlock,
+    printJoinalerts
   } from "components/include";
   import { UPLOADURL, POSTURLTest } from "const";
   
@@ -355,6 +360,7 @@ class LeagueSection extends Component {
     this.setState({
       isloading: true,
     });
+    var GName= { value: this.state.item.gameName + ' - '+ this.state.item.gameConsole, label: this.state.item.gameName + ' - '+ this.state.item.gameConsole}
     userService.joinEvent(this.state.item.id).then(
       (response) => {
       
@@ -371,43 +377,35 @@ class LeagueSection extends Component {
           this.setState({
             isloading: true,
           });
-          if (response == "balanceError") {
-            var resMessage =
-              "To enter this event you need to have more balance!";
-            Swal.fire({
-              title: "Error!",
-              text: resMessage,
-              icon: "error",
-              showCancelButton: true,
-              confirmButtonText: `Go to Cashier`,
-              canceleButtonText: `Back`,
-            }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
-              if (result.isConfirmed) {
-                this.state.history.push("/panel/cashier");
-              }
-            });
-          } else if (response == "tagError") {
-            var e = this.state.item.gameName;
-            var p = this.state.item.gameConsole;
-            var currentUser = this.state.currentUser;
-          if(p=='PS4'||e=='PS4'){e='PSN';p='PSN';}
-          if(p=='PS5'||e=='PS5'){e='PSN';p='PSN';}
-          if(p=='XBOX'||e=='XBOX'){e='XBOX';p='XBOX';}
           
-            handleTagForm(e.replace(' Warzone',''),p,currentUser)
-            
-          }
+          {printJoinalerts(response,GName,this.state.currentUser,handleTagForm)}
+           
         }
       },
       (error) => {
+        this.setState({
+          successful: false,
+          message: "",
+          submit: false,
+          loading: false,
+        });
         const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
+          (error.response.data 
+            ) ||
+         
           error.toString();
-        Swal.fire("", resMessage, "error");
+    
+        if (resMessage.indexOf('Error')>-1){
+          {printJoinalerts(resMessage,GName,this.state.currentUser,handleTagForm)}
+      }else{
+
+        this.setState({
+          successful: false,
+          message: resMessage,
+          submit: false,
+          loading: false,
+        });
+      }
       }
     );
   }
@@ -420,8 +418,14 @@ class LeagueSection extends Component {
         isloading: true,
       });
     }
-    
+    var _mode = " 1 vs 1 ";
+  var _color = "#404040";
+
+
+ 
+
     var activePlayer = 0; 
+    item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
     return (
       <>
        { matchidFind.matchPlayers.map(
@@ -445,7 +449,7 @@ class LeagueSection extends Component {
                                   }
                                 )}
                                
-      <Col className="mx-auto text-center" lg="8" md="10" style={{padding:0, marginTop:20}}>
+      <Col className="mx-auto text-center " lg="8" md="10" style={{padding:0, marginTop:20}}>
       {vsComponent(item,matchidFind,this.state.matchid,this.state.currentUser,this.state.isloading,activePlayer,this.handlechangeReadyEvent,this.handleJoinMatch,this.handleLeaveMatch,this.handlecAlertLost,
   this.fileUpload,
   this.onChangeHandler,
@@ -453,127 +457,11 @@ class LeagueSection extends Component {
   isUpLoading,
   progress,
   progressLable)}
+  <MatchCard item={item} matchidFind={matchidFind}/> 
+    
       </Col>   
                 
-     <Col className="mx-auto" lg="7" md="10">
-                          <Card
-                            className="card-lock text-center card-plain card-match"
-                            style={{ color: "#fff" }}
-                          >
-                            
-                            
-                              <Card.Body>
-                              <Row>
-                                <Col xs="12">
-                                
-                                                 
-                                     
-                                  
-                                          
-                                  {item.gameName == "ClashRoyale" &&
-                                  matchidFind.status == "InPlay" ? (
-                                    <>
-                                      <Button
-                                        className="btn-fill btn-block btn-lg"
-                                        type="button"
-                                        variant="danger"
-                                        style={{
-                                          position: "relative",
-                                          zIndex: 1,
-                                        }}
-                                        onClick={this.handleClashFinished}
-                                        disabled={this.state.isloading}
-                                      >
-                                        Game finished
-                                      </Button>
-                                    </>
-                                  ) : (
-                                   
-                                    <>
-                                    </>
-                                  )}
- 
-                                  
-                                </Col>
-                                <Col className="text-center">
-                                  {!item.players[1].username && <></>}
-                                </Col>
-                              </Row>
-                            </Card.Body>
-                            <Card.Footer>
-                              <Card
-                                style={{
-                                  backgroundColor: "black",
-                                  overflow: "auto",
-                                  margin: "0 auto",
-                                  maxWidth: 300,
-                                }}
-                              >
-                                <Card.Body
-                                  style={{
-                                    lineHeight: "10px",
-                                    overflow: "auto",
-                                    textAlign: "initial",
-                                  }}
-                                >
-                                  <img
-                                    alt={item.gameName}
-                                    style={{ width: "100%" }}
-                                    src={
-                                      require("assets/images/games/" +
-                                        item.gameName +
-                                        ".jpg").default
-                                    }
-                                  ></img>
-                                  <Table
-                                    striped
-                                    hover
-                                    borderless={true}
-                                    variant="dark"
-                                  >
-                                    <tbody>
-                                    <tr>
-                                        <td>Event ID</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.id}
-                                        </td>
-                                      </tr>
-                                      
-                                      <tr>
-                                        <td>Match ID</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {matchidFind.id}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Match Status</td>
-
-                                        <td style={{ textAlign: "right" }}>
-                                          {matchidFind.status}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Winner takes</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.outSign.replace('Dollar','$')} <CurrencyFormat value={item.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Mode</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.gameMode}
-                                        </td>
-                                      </tr>
-                                      
-                                    </tbody>
-                                  </Table>
-                                </Card.Body>
-                              </Card>
-                              
-                            </Card.Footer>
-                              
-                          </Card>
-                        </Col>
+    
         </>
     );
   }

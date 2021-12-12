@@ -1,7 +1,7 @@
 import React ,{useEffect, useState} from "react";
-import { Switch, Route,Redirect } from "react-router-dom";
-import Avatar, { ConfigProvider } from "react-avatar";
 
+import Avatar, { ConfigProvider } from "react-avatar";
+import { BrowserRouter, Route, Switch, Redirect,useHistory } from "react-router-dom";
 import $ from "jquery";
 //import { GlobalProvider } from 'context/GlobalState';
 import Active  from "components/active.component";
@@ -67,7 +67,9 @@ function exampleReducer(state, action) {
       throw new Error('Unsupported action...')
   }
 }
-function  Panel(prop) {
+
+function  Panel(props) {
+ 
   const [state, dispatch] = React.useReducer(exampleReducer, {
     closeOnEscape: true,
     closeOnDimmerClick: true,
@@ -77,42 +79,44 @@ function  Panel(prop) {
   })
   const { open, closeOnEscape, closeOnDimmerClick,size } = state
  
-  var loc = window.location.href;
-
+  
   const [sidebarImage, setSidebarImage] = React.useState(image3);
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
   const [visible, setVisible] = React.useState(false)
+  const [myState, setMyState] = useState(props.myState)
+  useEffect(() => {
+    setMyState(props.myState)
+}, [props.myState]);
+const currentUser = props.findStateId(myState,'currentUser');
+  const [myNotification,setMyNotification] = useState([]);
+  const events = props.findStateId(myState,'events');
+ 
+
+  useEffect(() => {
+    
+    
+      updateNot()
+   
+  
+  
+}, []);
+
   
 
-    
-  const [myNotification,setMyNotification] = useState([]);
-  const [events,setEvents] = useState(prop.events);
-  const [eventID,setEventID] = useState(prop.eventID);
-  const [currentUser,setCurrentUser] = useState(prop.token);
-  const [keyDash, setKeyDash] = useState(prop.tabkey);
-  const [keyProfile, setKeyProfile] = useState(prop.tabkeyprofile);
-  const [keyMyMatch, setKeyMyMatch] = useState(prop.tabkeymatch);
-   // const query = mutationCache.findAll("User");
-    //const query = mutationCache.getAll()
-const [eventIDQ,setEventIDQ] = useState(prop.eventIDQ);
-const [matchIDQ,setMatchIDQ] = useState(prop.matchIDQ);
-  useEffect(() => {
+
+  
+  var currpage = "Dashboard";
+  
+ 
+    const updateNot = () => {
     var myNot = [];
-    loc = window.location.href;
+     
   
-  
-   
-  
-    
-    
+     
     console.log(currentUser)
-    console.log(events)
-    console.log(myNotification)
-    console.log(loc)
-  
-   
-    currentUser?.usersReports.sort((a, b) => (a.id < b.id) ? 1 : -1)
-    currentUser?.usersReports.map((item, i) => {
+     
+    currentUser?.usersReports?.sort((a, b) => (a.id < b.id) ? 1 : -1)
+    currentUser?.usersReports?.map((item, i) => {
       if (item.coinValue && item.status ==='Pending' && myNot.length  < 3) {
         myNot.push(item)
      
@@ -138,80 +142,8 @@ const [matchIDQ,setMatchIDQ] = useState(prop.matchIDQ);
   
   
     
-    
     setMyNotification(myNot)
-    
-    
-  
-}, [currentUser,events ,loc]);
-
-  
-
-
-  
-  var currpage = "Dashboard";
-  
-  useEffect(() => {
-  
-    if(prop.token){
-      setCurrentUser(() => prop.token)}
-
-  }, [prop.token]);
-  useEffect(() => {
-  
-    if(prop.events){setEvents(() => prop.events)}
-
-  }, [prop.events]);
-  useEffect(() => {
-  
-    //setEventIDQ(() => eventIDQ)
-    prop.handleID(eventIDQ)
-    //queryClient.invalidateQueries()
-    //useEventByID(eventIDQ);
-
-  }, [eventIDQ]);
-  useEffect(() => {
-  prop.handleTabID(keyDash)
-    //setKeyDash(() => keyDash)
-    //queryClient.invalidateQueries()
-    //useEventByID(eventIDQ);
-
-  }, [keyDash]);
-  useEffect(() => {
-  prop.handleProfileTabID(keyProfile)
-    //setKeyDash(() => keyDash)
-    //queryClient.invalidateQueries()
-    //useEventByID(eventIDQ);
-
-  }, [keyProfile]);
-  useEffect(() => {
-  
-    setMatchIDQ(() => matchIDQ)
-    //queryClient.invalidateQueries()
-    //useEventByID(eventIDQ);
-
-  }, [matchIDQ]);
-  
-  useEffect(() => {
-    
-  if(eventIDQ && prop.eventID){
-    
-    setEventID(() => prop.eventID)
-    
   }
-    
-    
-  }, [prop.eventID]);
-  
-    
-    
-    
-    
-   
-    
-        
-      
-  
   
   const getRoutes = (routes) => {
     //scrollToTop();
@@ -228,16 +160,16 @@ const [matchIDQ,setMatchIDQ] = useState(prop.matchIDQ);
           <Route
             path={prop.layout + prop.path}
             key={key}
-            render={(props) => (
+            render={() => (
               <>
               {(prop.component=='Admin') && (<Admin authed={true} />)}
               {(prop.component=='Profile') && (<Profile authed={true}  token={currentUser} tabkey={keyProfile} handleProfileTabID={setKeyProfile} />)}
-              {(prop.component=='Dashboard') && (<Dashboard authed={true} events={events} token={currentUser} tabkey={keyDash} handleTabID={setKeyDash}   />)}
-              {(prop.component=='LockScreenPage') && (<LockScreenPage authed={true} event={eventID} token={currentUser} handleID={setEventIDQ} handleMatchID={setMatchIDQ} />)}
-              {(prop.component=='Cashier') && (<Cashier authed={true} token={currentUser} events={events} />)}
+              {(prop.component=='Dashboard') && (<Dashboard authed={true} {...props}  />)}
+              {(prop.component=='LockScreenPage') && (<LockScreenPage {...props} />)}
+              {(prop.component=='Cashier') && (<Cashier {...props} />)}
               {(prop.component=='Rewards') && (<Rewards authed={true} token={currentUser} />)}
               {(prop.component=='MyMatches') && (<MyMatches authed={true} token={currentUser} tabkey={keyMyMatch} handleTabID={setKeyMyMatch} />)}
-              {(prop.component=='CreateMatch') && (<CreateMatch authed={true} token={currentUser} />)}
+              {(prop.component=='CreateMatch') && (<CreateMatch authed={true} {...props}  />)}
               
               </>
             )}
@@ -266,70 +198,6 @@ const [matchIDQ,setMatchIDQ] = useState(prop.matchIDQ);
 
     
   
-  
-  if(!currentUser )
-  if(eventIDQ){
-return(
-  <div
-              className="full-page lock-page"
-              data-color="black"
-              style={{ height: "100vh", overflow: "auto" }}
-              data-image={require("assets/img/bg.jpg").default}
-            >
-              <div
-                className="content "
-                style={{
-                  fontSize: 50,
-                  color: "#fff",
-                  position: "relative",
-                  zIndex: "23",
-                }}
-              >
-                <Container className="text-center">
-                  <h4 style={{ textAlign: "center" }}>
-                  Loading User Data
-                    <Spinner animation="grow" size="sm" />
-                    <Spinner animation="grow" size="sm" />
-                    <Spinner animation="grow" size="sm" />
-                  </h4>
-                  
-                </Container>
-              </div>
-              <div
-                className="full-page-background"
-                style={{
-                  backgroundImage:
-                    "url(" + require("assets/img/bg.jpg").default + ")",
-                }}
-              ></div>
-            </div>
-)
-  }else{
-    return (
-      <div className="wrapper " >
-  
-  <div className="sidebar" data-color="orange" data-image="/static/media/bg.3cef9caf.jpg"><div className="sidebar-wrapper"></div><div className="sidebar-background" style={{backgroundImages: "url(&quot;/static/media/bg.3cef9caf.jpg&quot;)"}}></div></div>
-          <div className="main-panel">
-          <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={{background: "rgb(17, 17, 17)"}}><div className="container-fluid"><div className="navbar-wrapper"><span className="navbar-brand"><span className="">Dashboard</span></span></div></div></nav>
-          <div className="content">
-          <h4 style={{textAlign: "center"}}>Loading User Data
-    <Spinner animation="grow" size="sm" />
-    <Spinner animation="grow" size="sm" />
-    <Spinner animation="grow" size="sm" /></h4>
-             
-            </div>
-            <AdminFooter />
-            <div
-              className="close-layer"
-              onClick={() =>
-                document.documentElement.classList.toggle("nav-open")
-              }
-            />
-            </div>
-            </div>
-    );
-  }
-
   return (
     
     <>
@@ -359,7 +227,7 @@ return(
             style={{ width: "100vw", maxWidth:300,height: "100vh !important"}}
             onHide={() => setVisible(false)}
             vertical
-            visible
+            visible={visible}
             width='thin'
            
           >
@@ -368,7 +236,8 @@ return(
                   style={{padding:10,margin:'auto',position:'relative',zIndex:10}}
                 >
                   {myNotification && (<>
-                    {myNotification.map((item, i) => <ModalExampleShorthand key={i} note={item} defaultOpen={(i==0)&&(true)}/>)}
+                 
+                    {myNotification.map((item, i) => <ModalExampleShorthand key={i} mykey={i} note={item}/>)}
                   </>)}
                   
                   

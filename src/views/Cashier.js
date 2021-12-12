@@ -133,9 +133,13 @@ var allValid = true;
 
 var reqnum = 0;
 function Cashier(prop) {
+  const [myState, setMyState] = useState(prop.myState)
+  useEffect(() => {
+    setMyState(prop.myState)
+}, [prop.myState]);
+const currentUser = prop.findStateId(myState,'currentUser');
 const { data: eventCoins } = useAllCoins();
 const [coins,setCoins] = useState();
-const [currentUser,setCurrentUser] = useState(prop.token);
   
  
 
@@ -146,17 +150,12 @@ const [currentUser,setCurrentUser] = useState(prop.token);
       setCoins(() => eventCoins)
      
     }, [eventCoins]);
-     
-    useEffect(() => {
-      setCurrentUser(prop.token)
-       
-      
-     },[prop.token]);
+    
      
     
     return (
       <>
-        <Active token={currentUser} />
+        <Active {...prop} />
         <Container>
           <Tab.Container
             id="page-subcategories-tabs-example"

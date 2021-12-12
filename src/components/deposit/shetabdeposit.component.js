@@ -65,6 +65,8 @@ class ShetabDeposit extends Component {
     this.handleShetabMethod = this.handleShetabMethod.bind(this);
     this.handleSendPass = this.handleSendPass.bind(this);
     this.updateCheckbox = this.updateCheckbox.bind(this);
+   
+
 
     this.state = {
       currentUserCarts: this.props.token,
@@ -78,6 +80,7 @@ class ShetabDeposit extends Component {
 
         label: "Select Method...",
       },
+      txID: 0,
       shetabGo: 0,
       Amount: "10",
       Mobile: "9122266208",
@@ -229,7 +232,7 @@ class ShetabDeposit extends Component {
     if (this.checkBtn.context._errors.length === 0) {
 
       userService
-        .createDepositShetab(
+        .createDepositShetabDoTransaction(
           this.state.Mobile,
           this.state.CardNo,
           this.state.Amount,
@@ -238,7 +241,8 @@ class ShetabDeposit extends Component {
           this.state.cvv,
           this.state.Expiration,
          
-          this.state.pass
+          this.state.pass,
+          this.state.txID
         )
         .then(
           (response) => {
@@ -434,7 +438,7 @@ class ShetabDeposit extends Component {
     if (this.checkBtn.context._errors.length === 0) {
         
       userService
-        .createDepositShetabPass(
+        .createDepositShetabGetPassCode(
    
           this.state.Mobile,
           this.state.CardNo,
@@ -446,7 +450,12 @@ class ShetabDeposit extends Component {
         )
         .then(
           (response) => {
-            if (response == "Ok") {
+            if (response.status == "SUCCESS") {
+              this.setState({
+                txID: response.txID,
+             
+              });
+              
               Swal.fire("", "Password sent successfully.", "success").then(
                 (result) => {
                   

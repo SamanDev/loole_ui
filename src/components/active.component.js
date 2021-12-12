@@ -17,31 +17,12 @@ import Swal from "sweetalert2";
 
 function Active(prop) {
   
-  const [activeLoading,setLoading] = useState(false);
-  const [submit,setSubmit] = useState(false);
-  const [currentUser,setCurrentUser] = useState(prop.token);
+  const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
-   
-    setCurrentUser(() => prop.token)
+    setMyState(prop.myState)
+}, [prop.myState]);
+const currentUser = prop.findStateId(myState,'currentUser');
   
-
-  
-}, [prop.token]);
-  useEffect(() => {
-    eventBus.on("eventsDataActive", (event) => {
-      var curU = currentUser;
-      curU.userActivate = true;
-      setCurrentUser(curU);
-      localStorage.setItem("user", JSON.stringify(curU));
-          eventBus.dispatch("eventsDataUser", curU);
-      Swal.fire("", event, "success");
-    });
-    return () => {
-      
-      //setEvents('');
-    
-    }
-  }, []) // notice the empty array
   
   
   const handleResend = (e) => {
@@ -116,7 +97,7 @@ userService
           )
     
   }
-  if(!currentUser.userActivate){
+  if(!currentUser?.userActivate){
     setTimeout(() => {
      
      

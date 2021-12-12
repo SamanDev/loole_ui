@@ -51,7 +51,8 @@ import {
   printRequired,
   handleTagForm,
   haveAdmin,
-  date_edit
+  date_edit,
+  printJoinalerts
   
 } from "components/include";
   const required = (value,props) => {
@@ -343,61 +344,25 @@ class AddMatch extends Component {
                   submit: false,
                   loading: false,
                 });
-                if (response=='balanceError'){
-                var resMessage = "To enter this event you need to have more balance!"
-        Swal.fire({
-          title: 'Error!',
-          text:resMessage,
-          icon:"error",
-          showCancelButton: true,
-          confirmButtonText: `Go to Cashier`,
-          canceleButtonText: `Back`,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            this.props.history.push("/panel/cashier");
-          }
-        })
-              }else if (response=='tagError'){
-               
-                this.setSelectedTag(this.state.GName.value.split(" - ")[0],this.state.GName.value.split(" - ")[1],this.state.currentUser)
-              }
+                {printJoinalerts(response,this.state.GName,this.state.currentUser,handleTagForm)}
             }
             },
             (error) => {
-              var response  = error.data
               this.setState({
                 successful: false,
                 message: "",
                 submit: false,
                 loading: false,
               });
-              if (response=='balanceError'){
-              var resMessage = "To enter this event you need to have more balance!"
-      Swal.fire({
-        title: 'Error!',
-        text:resMessage,
-        icon:"error",
-        showCancelButton: true,
-        confirmButtonText: `Go to Cashier`,
-        canceleButtonText: `Back`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          this.props.history.push("/panel/cashier");
-        }
-      })
-            }else if (response=='tagError'){
-              this.setSelectedTag(this.state.gameName,this.state.gameConsole)
-              this.setSelectedTag(this.state.GName.value.split(" - ")[0],this.state.GName.value.split(" - ")[1])
-            }else{
               const resMessage =
-                (error.response &&
-                  error.response.data &&
-                  error.response.data.message) ||
-                error.message ||
+                (error.response.data 
+                  ) ||
+               
                 error.toString();
-            
+          
+              if (resMessage.indexOf('Error')>-1){
+                {printJoinalerts(resMessage,this.state.GName,this.state.currentUser,handleTagForm)}
+            }else{
 
               this.setState({
                 successful: false,

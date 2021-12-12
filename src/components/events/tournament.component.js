@@ -82,7 +82,9 @@ import {
     isJson,
     haveAdmin,
     handleTagForm,
-    vsComponentPlayer
+    vsComponentPlayer,
+    getGroupBadgeBlock,
+    printJoinalerts
   } from "components/include";
   import { UPLOADURL, POSTURLTest } from "const";
   
@@ -103,25 +105,10 @@ import {
     },
   });
 
-  var isInPlayers = false;
-  var matchidFind = []
-  var lists = [];
-  var item = false;
-  var expiryDate = new Date();
-  var dateStart = null;
-              var icEnd = 0;
-              var icStart = 0;
-              var icStartL = 0;
-              var nullplayer = {
-                id: 100000,
-                username: false,
-                rank: null,
-                winAmount: null,
-                ready: false,
-              };
               var mymatchFind = null;
               var matchLevelFind =null
-             
+              var icEnd = 0;
+              var icStart = 0;     
      
 class TournamentSection extends Component {
   constructor(props) {
@@ -159,7 +146,8 @@ class TournamentSection extends Component {
     this.setState({ matchidFind: newProps.matchidFind });
     this.setState({ item: newProps.item });
     this.setState({ isloading:false });
-    
+    icEnd = 0;
+   icStart = 0;
   }
   handleClick = (e, titleProps) => {
     const { index } = titleProps
@@ -209,6 +197,8 @@ class TournamentSection extends Component {
     this.setState({
       isloading: true,
     });
+    var GName= { value: this.state.item.gameName + ' - '+ this.state.item.gameConsole, label: this.state.item.gameName + ' - '+ this.state.item.gameConsole}
+    
     userService.joinEvent(this.state.item.id).then(
       (response) => {
       
@@ -225,44 +215,33 @@ class TournamentSection extends Component {
           this.setState({
             isloading: true,
           });
-          if (response == "balanceError") {
-            var resMessage =
-              "To enter this event you need to have more balance!";
-            Swal.fire({
-              title: "Error!",
-              text: resMessage,
-              icon: "error",
-              showCancelButton: true,
-              confirmButtonText: `Go to Cashier`,
-              canceleButtonText: `Back`,
-            }).then((result) => {
-              /* Read more about isConfirmed, isDenied below */
-              if (result.isConfirmed) {
-                this.state.history.push("/panel/cashier");
-              }
-            });
-          } else if (response == "tagError") {
-            var e = this.state.item.gameName;
-            var p = this.state.item.gameConsole;
-            var currentUser = this.state.currentUser;
-          if(p=='PS4'||e=='PS4'){e='PSN';p='PSN';}
-          if(p=='PS5'||e=='PS5'){e='PSN';p='PSN';}
-          if(p=='XBOX'||e=='XBOX'){e='XBOX';p='XBOX';}
-          
-            
-            handleTagForm(e.replace(' Warzone',''),p,currentUser)
-           
-          }
+          {printJoinalerts(response,GName,this.state.currentUser,handleTagForm)}
         }
       },
       (error) => {
+        this.setState({
+          successful: false,
+          message: "",
+          submit: false,
+          loading: false,
+        });
         const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
+          (error.response.data 
+            ) ||
+         
           error.toString();
-        Swal.fire("", resMessage, "error");
+    
+        if (resMessage.indexOf('Error')>-1){
+          {printJoinalerts(resMessage,GName,this.state.currentUser,handleTagForm)}
+      }else{
+
+        this.setState({
+          successful: false,
+          message: resMessage,
+          submit: false,
+          loading: false,
+        });
+      }
       }
     );
   }
@@ -272,6 +251,8 @@ class TournamentSection extends Component {
     let { currentUser, item,progress, isUpLoading, progressLable,matchidFind,matchid,isloading,activeIndex } = this.state;
     var isJoin = false;
    var  lists = item.matchTables;
+   icEnd = 0;
+   icStart = 0;
    lists.sort((a, b) => (a.level < b.level) ? 1 : -1)
    if((item.status=='InPlay' || item.status=='Pending' || item.status=='Ready') && item.gameMode=='Tournament'){
     lists.map((tblmatch, w) => {
@@ -450,10 +431,18 @@ false
 
                                       </span>
                                     ))}
-                                 
-      
-     
-                          <Card
+                                 {item.status != 'Cancel2' && item.status != 'Expired' && (
+                                   <>
+                                   <Divider  style={{ opacity: 0 }} />
+                                 <Accordion
+    defaultActiveIndex={[0, 1]}
+    panels={panels}
+    exclusive={false}
+    fluid
+    inverted
+    
+  />
+  <Card
                             className="card-lock text-center card-plain card-league"
                             style={{ color: "#fff" }}
                           >
@@ -471,57 +460,28 @@ false
                                   
                                   
                                   <VerticalTimeline
-                                    layout="1-column-left"
-                                    className="hide2"
-                                    style={{
-                                      marginLeft: "-30px",
-                                      marginRight: "-30px",
-                                      width: "110%",
-                                    }}
+                                   
+                                    animate={false}
+                                    lineColor="red"
+                                    
                                   >
-                                    <VerticalTimelineElement
-                                      className="vertical-timeline-element--work"
-                                      contentStyle={{
-                                        background: "rgb(33, 150, 243)",
-                                        color: "#fff",
-                                      }}
-                                      contentArrowStyle={{
-                                        borderRight:
-                                          "7px solid  rgb(33, 150, 243)",
-                                      }}
-                                      iconStyle={{
-                                        background: "rgb(33, 150, 243)",
-                                        color: "#fff",
-                                      }}
-                                    >
-                                      <img
-                                        alt={item.gameName}
-                                        style={{
-                                          maxWidth: "60%",
-                                          marginBottom: 15,
-                                        }}
-                                        src={
-                                          require("assets/images/games/" +
-                                            item.gameName +
-                                            ".jpg").default
-                                        }
-                                      ></img>
-                                     
-                                      
-                                    </VerticalTimelineElement>
+                               
 
                                     <VerticalTimelineElement
                                       className="vertical-timeline-element--education"
+
                                       contentStyle={{
                                         background: "#7209b7",
                                         color: "#fff",
                                       }}
                                       contentArrowStyle={{
                                         borderRight: "7px solid #7209b7",
+                                        display: "none",
                                       }}
                                       iconStyle={{
                                         background: "#7209b7",
                                         color: "#fff",
+                                        display: "none",
                                       }}
                                     >
                                       <h3 className="vertical-timeline-element-title">
@@ -553,39 +513,12 @@ false
                                         How to Stream
                                       </Button>
                                     </VerticalTimelineElement>
-                                    <VerticalTimelineElement
-                                      className="vertical-timeline-element--education  my-list"
-                                      contentStyle={{
-                                        background: "#222",
-                                        color: "#fff",
-                                      }}
-                                      contentArrowStyle={{
-                                        borderRight: "7px solid #222",
-                                      }}
-                                      iconStyle={{
-                                        background: "#222",
-                                        color: "#fff",
-                                      }}
-                                    >
-                                      <Accordion
-    defaultActiveIndex={[0, 1]}
-    panels={panels}
-    exclusive={false}
-    fluid
-    inverted
-    
-  />
-        
-                                   
-                                        
-                                    </VerticalTimelineElement>
-
                                     
                                     <VerticalTimelineElement
                                   className="vertical-timeline-element--education  my-list"
                                   contentStyle={{
-                                    background: "#2a9d8f",
-                                    color: "#fff",
+                                    background: "#222",
+                                        color: "#fff",
                                   }}
                                   contentArrowStyle={{
                                     borderRight: "7px solid #2a9d8f",
@@ -598,7 +531,7 @@ false
                                   <h3 className="vertical-timeline-element-title">
                                     Prizes
                                     <div style={{position:'relative',zIndex:1,margin:20}}>
-                                    {getGroupBadgePrice(item.outSign, item.prize , "")}
+                                    {getGroupBadgeBlock(item.outSign, item.prize, "Prize","left","green")}
                                     </div>
                                   </h3>
                                   
@@ -619,10 +552,18 @@ false
                                             return (
                                               <ListGroup.Item>
                                                 <span style={{ fontSize: 17 }}>
-                                                  {" "}
-                                                  {icShow} <small> - %{win.percent}</small>
+                                                <Label    color="green">
+        
+        %{win.percent}
+                
+              
+              </Label>
+              <Label pointing="left" size="mini" basic color="blue">{icShow}</Label>
+                                                
                                                 </span>
-                                                {getGroupBadgeList(item.inSign,win.prize,'badgegroup')}
+                                                <span style={{ float: "right"}}>
+                                                {getGroupBadgeBlock(item.outSign, win.prize, "Prize","right","green")}
+                                              </span>
                                                 
                                                
                                               </ListGroup.Item>
@@ -662,6 +603,9 @@ false
                             </Card.Header>
                             <Card.Body></Card.Body>
                           </Card>
+  </>
+                                 )}
+                          
                         </Col>
         </>
     );
