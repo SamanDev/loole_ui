@@ -449,7 +449,7 @@ class UserService {
     return axios
       .post(
         API_URL_TEST + "createDepositShetabDoTransaction",
-        { mobile,cardNumber,amount,cvv,expire,pin,txID,txID },
+        { mobile,cardNumber,amount,cvv,expire,pin,txID },
         { headers: authHeader() }
       )
       .then((response) => {
