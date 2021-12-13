@@ -19,6 +19,7 @@ import {
   Menu,
   Segment,
   Sidebar,
+  
 } from 'semantic-ui-react'
 import { DEFCOLORS } from "const";
 // core components
@@ -45,6 +46,7 @@ import Profile from "views/Profile.js";
 import CreateMatch from "views/Add.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 
+import AddMatch  from "components/add/addmatch.component"; 
 function scrollToTop() {
 
   window.scrollTo({
@@ -57,27 +59,9 @@ function scrollToTop() {
 
 
 };
-function exampleReducer(state, action) {
-  switch (action.type) {
-    case 'close':
-      return { open: false }
-    case 'open':
-      return { open: true, size: action.size }
-    default:
-      throw new Error('Unsupported action...')
-  }
-}
+
 
 function  Panel(props) {
- 
-  const [state, dispatch] = React.useReducer(exampleReducer, {
-    closeOnEscape: true,
-    closeOnDimmerClick: true,
-    open: false,
-    dimmer: undefined,
-    size: undefined,
-  })
-  const { open, closeOnEscape, closeOnDimmerClick,size } = state
  
   
   const [sidebarImage, setSidebarImage] = React.useState(image3);
@@ -90,6 +74,7 @@ function  Panel(props) {
 const currentUser = props.findStateId(myState,'currentUser');
   const [myNotification,setMyNotification] = useState([]);
   const events = props.findStateId(myState,'events');
+  const open = props.findStateId(myState,'openModalAdd');
  
 
   useEffect(() => {
@@ -215,6 +200,7 @@ const currentUser = props.findStateId(myState,'currentUser');
           background={sidebarBackground}
           token={currentUser}
           page={currpage}
+          {...props}
         />
         
         <Sidebar.Pushable>
@@ -251,7 +237,7 @@ const currentUser = props.findStateId(myState,'currentUser');
         
               
             <div className="main-panel">
-        <AdminNavbar page={getPage(routes)} token={currentUser}/>
+        <AdminNavbar page={getPage(routes)} token={currentUser} {...props} />
         <div className="content">
         <Checkbox
           checked={visible}
@@ -259,7 +245,16 @@ const currentUser = props.findStateId(myState,'currentUser');
           onChange={(e, data) => setVisible(data.checked)}
         />
             <Switch>{getRoutes(routes)}</Switch>
-           
+            <Modal
+          inverted
+          basic
+          dimmer='blurring'
+          open={open}
+          onClose={() => prop.onUpdateItem('openModalAdd',false)}
+        >
+          <AddMatch token={currentUser} {...props} />
+          
+        </Modal>
           </div>
           <AdminFooter />
           <div

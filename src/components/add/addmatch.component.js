@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
+
+import Moment from "moment";
 import CheckButton from "react-validation/build/button";
-import Select from "react-select";
+
 import { IMaskInput } from "react-imask";
 import {  withRouter} from 'react-router-dom';
 import $ from "jquery";
@@ -13,11 +13,11 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Games from "server/Games";
 import Avatar from "react-avatar";
+import { Modal,Button,Input,Label,Dropdown,Form,Select,Card,Loader,Dimmer } from "semantic-ui-react";
 import {
   Badge,
   Alert,
-  Button,
-  Card,
+
   InputGroup,
   Navbar,
   Nav,
@@ -55,6 +55,7 @@ import {
   printJoinalerts
   
 } from "components/include";
+var moment = require("moment");
   const required = (value,props) => {
       
       if(typeof props.passReadyprp !== "undefined"){
@@ -89,7 +90,7 @@ const getBlockGames = (filtermode) => {
           ) {
             gamemap.push({
               value: item.name + " - " + consoles.consolename,
-              label: item.name + " - " + consoles.consolename,
+              text: item.name + " - " + consoles.consolename,
             });
           }
       }else if(filtermode == 'Tournament'){
@@ -97,7 +98,7 @@ const getBlockGames = (filtermode) => {
           ) {
             gamemap.push({
               value: item.name + " - " + consoles.consolename,
-              label: item.name + " - " + consoles.consolename,
+              text: item.name + " - " + consoles.consolename,
             });
           }
       }else if(filtermode == 'League'){
@@ -105,7 +106,7 @@ const getBlockGames = (filtermode) => {
           ) {
             gamemap.push({
               value: item.name + " - " + consoles.consolename,
-              label: item.name + " - " + consoles.consolename,
+              text: item.name + " - " + consoles.consolename,
             });
           }
       }else{
@@ -116,7 +117,7 @@ const getBlockGames = (filtermode) => {
         ) {
           gamemap.push({
             value: item.name + " - " + consoles.consolename,
-            label: item.name + " - " + consoles.consolename,
+            text: item.name + " - " + consoles.consolename,
           });
         }
       }
@@ -126,45 +127,12 @@ const getBlockGames = (filtermode) => {
 
   return gamemap;
 };
-const getBlockTournament = (betval) => {
-  var tourmap = [
-    { value: "4", label: "4 Players - Prize: $" + (4 * betval * 90) / 100 },
-    { value: "8", label: "8 Players - Prize: $" + (8 * betval * 90) / 100 },
-    { value: "16", label: "16 Players - Prize: $" + (16 * betval * 90) / 100 },
-    { value: "32", label: "32 Players - Prize: $" + (32 * betval * 90) / 100 },
-  ];
+const options = [
+  { key: 'dollar', text: 'Dollar', value: 'Dollar' },
+  { key: 'point', text: 'Diamonds', value: 'Diamonds' },
+  
+]
 
-  return tourmap;
-};
-const getBlockTournamentVal = (betval, tourmode) => {
-  var tourmap = {
-    value: tourmode,
-    label: tourmode + " Players - Prize: $" + (tourmode * betval * 90) / 100,
-  };
-
-  return tourmap;
-};
-const getBlockGamesVal = (filtermode) => {
-  var gamemap = [];
-  Games.games.slice(0, 5).map((item, i) => {
-    item.gameconsole.slice(0, 5).map((consoles, j) => {
-      if (
-        "All" == filtermode ||
-        consoles.consolename == filtermode ||
-        (consoles.consolename != "Mobile" && filtermode == "NoMobile")
-      ) {
-        if (j == 0) {
-          gamemap.push({
-            value: item.name + " - " + consoles.consolename,
-            label: item.name + " - " + consoles.consolename,
-          });
-        }
-      }
-    });
-  });
-
-  return gamemap[0];
-};
 const getBlockGameModes = (filtermode) => {
   var gamemaplocal = [];
 
@@ -176,7 +144,7 @@ const getBlockGameModes = (filtermode) => {
         item.modes.map((mode, j) => {
           gamemaplocal.push({
             value: mode.modename,
-            label: mode.modename,
+            text: mode.modename,
           });
         });
       }
@@ -189,7 +157,7 @@ const getBlockGameModesVal = (filtermode) => {
   var gamemaplocal = [];
 
   if (filtermode != "") {
-    var filter = filtermode.value.split(" - ")[0];
+    var filter = filtermode?.value?.split(" - ")[0];
 
     Games.games.map((item, i) => {
       if (item.name == filter) {
@@ -197,7 +165,7 @@ const getBlockGameModesVal = (filtermode) => {
           if (j == 0) {
             gamemaplocal.push({
               value: mode.modename,
-              label: mode.modename,
+              text: mode.modename,
             });
           }
         });
@@ -229,47 +197,48 @@ class AddMatch extends Component {
     
 
     this.state = {
-      GName: { value: "8Pool - Mobile", label: "8Pool - Mobile" },
-      GameMode: { value: "Duel", label: "Duel" },
+      GName: { value: "8Pool - Mobile", text: "8Pool - Mobile" },
+      GameMode: { value: "Duel", text: "Duel" },
      
       currentUser: this.props.token,
       gamemaplocal: [],
       BetAmount: 10,
       Prize: '',
-      AvalableFor: { value: "60", label: "1 Hour" },
-      StartTime: { value: "60", label: "1 Hour Later" },
+      AvalableFor: { value: "60", text: "1 Hour" },
+      StartTime: { value: "60", text: "1 Hour Later" },
       loading: false,
       submit: false,
       GameTag: "",
       message: "",
-      inSign:{ value: "Dollar", label: "Dollar" },
+      inSign:{ value: "Dollar", text: "Dollar" },
       gamePlatform:'',
       gameName:'',
     };
   }
   
-  setGameName(e) {
+  setGameName(e,data) {
     this.setState({
-      GName: e,
-      GameMode: getBlockGameModesVal(e),
+      GName: data,
+      GameMode: getBlockGameModesVal(data),
     });
     
   }
-  setInSign(e) {
+  setInSign(e,data) {
+    
     this.setState({
-      inSign: e,
+      inSign: data,
     });
   }
   
-  setGameMode(e) {
+  setGameMode(e,data) {
     this.setState({
-      GameMode: e,
+      GameMode: data,
     });
   }
-  setBetAmount(e) {
+  setBetAmount(e,data) {
     
     this.setState({
-      BetAmount: e,
+      BetAmount: data.value,
     });
 
     //this.setTournamentMode(getBlockTournamentVal(e, this.state.TournamentMode));
@@ -312,9 +281,7 @@ class AddMatch extends Component {
     });
    
 
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
+    
      
       
         userService
@@ -334,7 +301,8 @@ class AddMatch extends Component {
               if (response.indexOf("successful") > -1) {
                 Swal.fire("", "Data saved successfully.", "success").then(
                   (result) => {
-                    this.props.history.push("/panel/dashboard");
+                    this.props.onUpdateItem('openModalAdd',false)
+                
                   }
                 );
               }else{
@@ -374,22 +342,16 @@ class AddMatch extends Component {
             }
           );
       
-    } else {
-      this.setState({
-        successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-      });
-
-     
+    
     }
-  }
+  
   
   render() {
     var { currentUser } = this.state;
-    var _mode = " 1 v 1 ";
-    var _color = "#404040";
+    var timestring1 = new Date();
+    var startdate = moment(timestring1).format();
+     
+         startdate = moment(startdate).add(this.state.AvalableFor.value, 'minutes').format()
     var item = {
       "commission": 90,
       "id": 33,
@@ -408,7 +370,7 @@ class AddMatch extends Component {
       "inSign": this.state.inSign.value,
       "outSign": this.state.inSign.value,
       "rules": null,
-      "expire": date_edit(Date.now() + this.state.AvalableFor.value * 1000 * 60),
+      "expire": date_edit(startdate),
       "startTime": "2021-11-01T20:34:39.000+00:00",
       "finished": "2021-11-01T20:34:39.000+00:00",
       "players": [
@@ -442,115 +404,63 @@ class AddMatch extends Component {
     }
     return (
       <>
-      <Row>
-                    <Col sm="7" md="8">
-     <Form
+      <Modal.Header>Create 1vs1 Match</Modal.Header>
+      <Modal.Content image scrolling >
+      <Dimmer active={this.state.loading}>
+        <Loader>Loading</Loader>
+      </Dimmer>
+      <Form inverted  
                         onSubmit={this.handleCreateMatch}
-                        ref={(c) => {
-                          this.form = c;
-                        }}
+                      style={{width: '100%'}}
                       >
-                        <Card className="card-plain" style={{ margin: -10 }}>
-                          <Card.Header>
-                            <Card.Title>Create 1v1 Match</Card.Title>
-                          </Card.Header>
-                          <Card.Body>
-                            <div className="form-group">
-                              <label>Game</label>
-                              <Select
-                                className="react-select default GameName"
-                                classNamePrefix="react-select"
-                                name="GameName"
-                                value={this.state.GName}
+      
+          
+          <Row>
+                    <Col  sm="7">
+                    <Form.Field
+                    inverted
+            control={Select}
+            label='Game'
+        
+            placeholder='Game'
+            value={this.state.GName.value}
                                 onChange={this.setGameName}
                                 options={getBlockGames("Match")}
-                                placeholder=""
-                              />
-                               <Input
-                                        type="hidden"
-                                        
-                                        value={this.state.GName.value}
-                                       
-                                        
-                                        validations={[required]}
-                                      />
+          />
+                            <Form.Field
+                    inverted
+            control={Select}
+            label='Mode'
+           
+            placeholder='Mode'
+            value={this.state.GameMode.value}
+            onChange={this.setGameMode}
+            options={getBlockGameModes(this.state.GName)}
+          />
+           <Form.Field>
+            <label>Bet</label>
+                              <Input  fluid
+    label={<Dropdown defaultValue={this.state.inSign.value} value={this.state.inSign.value}
+    onChange={this.setInSign} options={options} />}
+    labelPosition='right'
+    placeholder='Bet' maxLength="4" value={this.state.BetAmount}
+    onChange={this.setBetAmount}
+  />
+                                   
+                                   </Form.Field>
+                                   <Form.Field>
+            <label>Avalable for</label>
+                           
+                              <Button.Group size="" widths='4' type='button'  buttons={[
+                                  { key: "30", content: "30 Min",type:'button',active:(this.state.AvalableFor.value == "30"&&(true)),onClick:() => this.setAvalableFor({ value: "30"})},
+                                  { key: "60", content: "1 Hour",type:'button',active:(this.state.AvalableFor.value == "60"&&(true)),onClick:() => this.setAvalableFor({ value: "60"}) },
+                                  { key: "360", content: "6 Hours",type:'button' ,active:(this.state.AvalableFor.value == "360"&&(true)),onClick:() => this.setAvalableFor({ value: "360"})},
+                                  { key: "1440", content: "1 Day",type:'button',active:(this.state.AvalableFor.value == "1440"&&(true)),onClick:() => this.setAvalableFor({ value: "1440"}) },
+                                ]} />
+                              
+                              
                              
-                            </div>
-                            <div className="form-group">
-                              <label>Mode</label>
-                              <Select
-                                className="react-select default GameMode"
-                                classNamePrefix="react-select"
-                                name="GameMode"
-                                value={this.state.GameMode}
-                                onChange={this.setGameMode}
-                                options={getBlockGameModes(this.state.GName)}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                              <Input
-                                        type="hidden"
-                                        
-                                        value={this.state.GameMode.value}
-                                       
-                                        
-                                        validations={[required]}
-                                      />
-                            </div>
-                            <div className="form-group">
-                              <label>Bet</label>
-                              <NumericInput min={1} step={1} max={1000}  maxLength="4" className="form-control BetAmount"
-                    name="BetAmount"
-                                value={this.state.BetAmount}
-                                onChange={this.setBetAmount}/>
-                              
-                              
-                            
-                              <Input
-                                        type="hidden"
-                                        
-                                        value={this.state.BetAmount}
-                                       
-                                        
-                                        validations={[required]}
-                                      />
-                            </div>
-                            <div className="form-group">
-                              <label>Currency</label>
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="InSign"
-                                value={this.state.inSign}
-                                onChange={this.setInSign}
-                                options={[
-                                  { value: "Dollar", label: "Dollar" },
-                                  { value: "Point", label: "Point" },
-                                ]}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                              
-                            </div>
-                            <div className="form-group">
-                              <label>Avalable for</label>
-                              <Select
-                                className="react-select default AvalableFor"
-                                classNamePrefix="react-select"
-                                name="AvalableFor"
-                                value={this.state.AvalableFor}
-                                onChange={this.setAvalableFor}
-                                options={[
-                                  { value: "30", label: "30 Minutes" },
-                                  { value: "60", label: "1 Hour" },
-                                  { value: "360", label: "6 Hours" },
-                                  { value: "1440", label: "1 Day" },
-                                ]}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                             
-                            </div>
+                              </Form.Field>
 
                             {this.state.message && (
                               <div className="form-group">
@@ -562,41 +472,38 @@ class AddMatch extends Component {
                                 </div>
                               </div>
                             )}
-                          </Card.Body>
-                          <Card.Footer>
-                            <div className="form-group">
-                              <button
-                                className="btn btn-primary btn-wd "
-                                disabled={this.state.loading}
-                              >
-                                {this.state.loading && (
-                                  <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                                )}
-                                <span> Create Match</span>
-                              </button>
-                            </div>
-                          </Card.Footer>
-                        </Card>
-                        <CheckButton
-              style={{ display: "none" }}
-              ref={c => {
-                this.checkBtn = c;
-              }}
-            />
-                      </Form>
+                          
+                        
                       </Col>
-                    <Col sm="5" md="4">
-                    <Row className="ui one cards">
+                    <Col sm="5" >
+                   
                       {(this.state.GName.value.indexOf(' - ') > -1) && (
                         <>
+                        <Card.Group className="fours one" style={{ marginBottom: 20 }}>
                         {printMatchBlock(item)}
-                        
+                        </Card.Group>
                        
                       </>
                       )}
-                      </Row>
+                   
                     </Col>
                   </Row>
+          
+         
+          <Button.Group size='large' fluid widths='2'>
+          <Button positive fluid loading={this.state.loading}>Create Match</Button>
+    <Button.Or />
+    <Button negative type="button" fluid onClick={() => this.props.onUpdateItem('openModalAdd',false)}>
+              Close
+            </Button>
+  </Button.Group>
+          
+        
+            
+      
+          
+                      </Form>
+                      </Modal.Content>
         </>
     );
   }

@@ -19,9 +19,10 @@ const getAllEvents=async () => {
   return data.data
 }
 const getAllCoins=async () => {
-
+  if(JSON.stringify(authHeader()) != '{}'){
   const { data } = await client.get(`/getCoinPaymentCoins`,{ headers: authHeader() })
   return data
+  }
 }
 const getAdminUsers=async () => {
 
@@ -48,7 +49,7 @@ const getEventByID= async(ids) => {
    // alert(JSON.stringify(authHeader()))
     if(JSON.stringify(authHeader()) != '{}'){
     const { data } = await client.get("/getUser",{ headers: authHeader() })
-   
+
     if (data.accessToken) {
       localStorage.setItem("user", JSON.stringify(data));
       
@@ -61,11 +62,12 @@ const getEventByID= async(ids) => {
   }
       return data;
     }else{
+      localStorage.removeItem("user");
       UserWebsocket.connect();
       return defUser;
     }
   }else{
-    
+    localStorage.removeItem("user");
     UserWebsocket.connect();
     
     return defUser;

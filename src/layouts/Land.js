@@ -55,29 +55,8 @@ function scrollToTop() {
 };
 
 
-function  Auth(prop) {
+function  Auth(props) {
   
-  
-  const [events,setEvents] = useState(prop.events);
-  
-  const [currentUser,setCurrentUser] = useState(prop.token);
-  
-  useEffect(() => {
-   
-      setCurrentUser(() => prop.token)
-    
-  
-    
-  }, [prop.token]);
-  
-  useEffect(() => {
-    
-    setEvents(() => prop.events)
-    var responsive = $(window).width();
-    if (responsive >= 768) {
-      $('.landing-page').removeClass('landing-mobile')
-  }
-  }, [prop.events]);
   
   const getRoutes = (routes) => {
     //scrollToTop();
@@ -97,8 +76,8 @@ function  Auth(prop) {
             render={(props) => (
               <>
              
-              {(prop.component=='Landing') && (<Landing authed={true} events={events} token={currentUser}  />)}
-              {(prop.component=='User') && (<User authed={true} events={events} token={currentUser}  />)}
+              {(prop.component=='Landing') && (<Landing {...props} />)}
+              {(prop.component=='User') && (<User {...props} />)}
             
               
               </>
@@ -129,7 +108,7 @@ function  Auth(prop) {
     <ConfigProvider colors={DEFCOLORS}>
       <div className="landing-page landing-page1 landing-mobile">
         {/* Navbar */}
-        <LandNavbar token={currentUser}/>
+        <LandNavbar {...props}/>
         {/* End Navbar */}
        
         <Switch>{getRoutes(routes)}</Switch>

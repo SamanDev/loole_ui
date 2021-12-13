@@ -17,6 +17,8 @@ import Swal from "sweetalert2";
 
 function Active(prop) {
   
+  const [loading, setLoading] = useState(false)
+
   const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
     setMyState(prop.myState)
@@ -98,12 +100,7 @@ userService
     
   }
   if(!currentUser?.userActivate){
-    setTimeout(() => {
-     
-     
-      $('.btn:not(.actbtn)').attr('disabled', 'disabled')
-      $('.btn:not(.actbtn)').parent().attr('onclick', "var container = document.querySelector('.full-page'); if( container===null) { container = window};container.scrollTo({top: 0,behavior: 'smooth' });var element = document.querySelector('.myalert'); element.classList.add('animate__animated', 'animate__bounce');element.addEventListener('animationend', () => {element.classList.remove('animate__animated', 'animate__bounce');});");
-    },100)
+    
     
     return (
         <>
@@ -123,14 +120,12 @@ userService
                                                                   className="btn-fill actbtn"
                                                                   type="button"
                                                                   variant="danger"
-                                                                  disabled={activeLoading}
+                                                                 
                                                                   onClick={
                                                                     handleResend
                                                                   }
                                             >
-                                              {activeLoading && (
-                                                <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                                              )}
+                                             
                                               <span> Resend</span>
                                                                   
                                                                 
@@ -141,7 +136,7 @@ userService
                                                                   className=" actbtn"
                                                                   type="button"
                                                                   variant="warning"
-                                                                  disabled={activeLoading}
+                                                           
                                                                   onClick={
                                                                     handleDelete
                                                                   }

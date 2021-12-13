@@ -1,104 +1,66 @@
-import React, { Component } from "react";
-import { NavLink, Link } from "react-router-dom";
-import { withRouter } from 'react-router';
+import React, { useState, useEffect } from "react";
+
+import { Redirect, Route } from "react-router";
 import AuthService from "services/auth.service";
-// import { BurgerIcon } from './'
-import styled from "styled-components";
+
 import {
-    Button,
-    Card,
-    Dropdown,
-    Form,
-    InputGroup,
-    Navbar,
-    Nav,
-    Container,
-    Spinner
+  BrowserRouter,
 
+  Switch,
+
+  useHistory,
+  Link
+} from "react-router-dom";
+import { Input, Menu } from "semantic-ui-react";
+
+import {
+  
+  Container,
 } from "react-bootstrap";
-
-class AdminNavbar extends Component {
-    constructor(props) {
-        super(props);
-        this.logOut = this.logOut.bind(this);
-
-        this.state = {
-          currentUser: this.props.token,
-            showModeratorBoard: false,
-            showAdminBoard: false,
-            collapseOpen: false,
-            currpage:false,
-            isExpanded: false
-        };
-
-    }
-
-   
-
-    logOut() {
-        AuthService.logout();
-    }
-
-    handleToggle(e) {
-        e.preventDefault();
-        this.setState({
-            isExpanded: !this.state.isExpanded
-        });
-    }
-    
-    render() {
+import UserWebsocket from 'services/user.websocket'
+import { POSTURL,defUser } from 'const';
+import Swal from 'sweetalert2'
+const LandNavbar = (prop) => {
+  const history = useHistory();
+  const [myState, setMyState] = useState(prop.myState);
+  useEffect(() => {
+    setMyState(prop.myState);
+  }, [prop.myState]);
+  const currentUser = prop.findStateId(myState, "currentUser");
+  const logOut=()=> {
       
-      let { currentUser, showModeratorBoard, showAdminBoard, collapseOpen, isExpanded,currpage } = this.state;
-        
-        return (
-          <Navbar expand="lg" fixed="top" variant="dark" style={{background:'#111'}}>
-          <Container fluid>
-            <div className="navbar-wrapper">
-            
-              <Navbar.Brand onClick={(e) => e.preventDefault()}>
-              <span className={this.props.page.indexOf('Profile')>-1 ? "hide" : ""}>{this.props.page }</span>
-              <span className={this.props.page.indexOf('Profile')==-1 ? "hide" : ""}>{currentUser.username} Profile</span>
-              </Navbar.Brand>
-            </div>
-            <button
-              className="navbar-toggler navbar-toggler-right border-0"
-              type="button"
-              onClick={(e) =>
-                document.documentElement.classList.toggle("nav-open")
-              }
-            >
-              <span className="navbar-toggler-bar burger-lines"></span>
-              <span className="navbar-toggler-bar burger-lines"></span>
-              <span className="navbar-toggler-bar burger-lines"></span>
-            </button>
-            <button
-              className="navbar-toggler navbar-toggler-right border-0 hide"
-              type="button"
-              
-              onClick={() => setCollapseOpen(!collapseOpen)}
-            >
-              <span className="navbar-toggler-bar burger-lines"></span>
-              <span className="navbar-toggler-bar burger-lines"></span>
-              <span className="navbar-toggler-bar burger-lines"></span>
-            </button>
-            </Container>
-            <div className="d-none d-lg-block d-xs-none">
-                    <Nav.Item
-                      className={
-                        location.pathname === "/panel/dashboard"
-                          ? "active mr-1"
-                          : "mr-1"
-                      }
-                    >
-                      <Nav.Link onClick={this.logOut} to="/home" as={Link}>
-
-                        LogOut
-</Nav.Link>
-                    </Nav.Item>
-                  </div>
-            </Navbar>
-        );
-    }
+    prop.onUpdateItem("currentUser", {})
+    history.push("/home");
+    AuthService.logout();
 }
+  return (
+    <>
+     
+        <Menu secondary inverted style={{position:'absolute',top:0,left:0,right:0,background:'#000'}}>
+          <Menu.Item
+            
+           
+          >
+            <b>{prop.page}</b>
+          </Menu.Item>
 
-export default (AdminNavbar);
+          <Menu.Menu position="right">
+            {currentUser && currentUser.accessToken ? (
+              <>
+                <Menu.Item name="Dashboard" to={"/panel/dashboard"} as={Link} />
+                <Menu.Item name="logout" onClick={() =>logOut()} />
+              </>
+            ) : (
+              <Menu.Item
+              as={Link}
+                onClick={() => prop.onUpdateItem("openModalLogin", true)}
+              >Login / Register</Menu.Item>
+            )}
+          </Menu.Menu>
+        </Menu>
+     
+    </>
+  );
+};
+
+export default LandNavbar;

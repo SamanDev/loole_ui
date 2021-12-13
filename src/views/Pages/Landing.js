@@ -20,7 +20,7 @@ import GameSlide from "components/GameSlide";
 
 function  Landing(prop) {
     const [currentUser,setCurrentUser] = useState(prop.token);
-  console.log(prop.token)
+
     const [events,setEvents] = useState(prop.events);
     
     useEffect(() => {

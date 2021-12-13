@@ -3,7 +3,7 @@ import { POSTURL,defUser } from 'const';
 import UserWebsocket from 'services/user.websocket'
 import authHeader from "./auth-header";
 const API_URL = POSTURL;
-
+import Swal from 'sweetalert2'
 import eventBus from "views/eventBus";
 class AuthService {
   serverCheck() {
@@ -34,27 +34,29 @@ class AuthService {
         password
       })
       .then(response => {
-        if (response.data.accessToken) {
-
-          localStorage.setItem("user", JSON.stringify(response.data));
-          UserWebsocket.disconnect()
-          UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username,response.data);
-          //eventBus.dispatch("eventsDataUser", response.data);
-          //UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username);
-        }
-
-        return response.data;
+        return response;
       });
   }
 
   logout() {
     var loc = window.location.href;
-    if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
-      UserWebsocket.disconnect();
-      UserWebsocket.connect()
+    
+    UserWebsocket.disconnect();
+      
       localStorage.setItem("user", JSON.stringify(defUser));
-     
+      
+    if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
+      
+      
       //window.location.replace("/");
+    }else{
+      Swal.fire({
+        icon: 'success',
+        title: 'Done',
+    
+        
+      })
+      UserWebsocket.connect()
     }
     
   }

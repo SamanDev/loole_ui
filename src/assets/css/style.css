@@ -791,6 +791,14 @@ background-image: linear-gradient(rgba(0, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.847) 
     top: auto;
     height: 200px !important;
 }
+.blurring.dimmable>.dimmer {
+    background-color: rgba(0,0,0,.8) !important;
+    }
+    .swal2-container.swal2-center {
+      
+        filter: none !important;
+        }
+      
 .modals.dimmer .ui.modal.basic{
    
     height: auto !important;

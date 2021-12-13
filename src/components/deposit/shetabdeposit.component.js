@@ -560,14 +560,9 @@ class ShetabDeposit extends Component {
   
 
   render() {
-   
     var currentUser = JSON.parse(JSON.stringify(this.state.currentUserCarts));
-    if(this.state.cartSelected.value == '1'){
-      this.setCardDef(currentUser.cardsdef[0]);
-    }
-    
-      
-      if (!currentUser.payMethod) {
+   try{
+    if (!currentUser?.payMethod) {
       currentUser.payMethod = [
           
         {
@@ -577,7 +572,7 @@ class ShetabDeposit extends Component {
         },
         
       ];
-      currentUser.cashierGateways.map((item, i) => {
+      currentUser?.cashierGateways.map((item, i) => {
         if(item.mode=='IranShetab' && item.active){
         currentUser.payMethod.push({
           value: item.name,
@@ -588,6 +583,14 @@ class ShetabDeposit extends Component {
       })
      // this.handleShetabMethod(currentUser.payMethod[0]);
     }
+   }catch(e){}
+    
+    if(this.state.cartSelected.value == '1'){
+      this.setCardDef(currentUser.cardsdef[0]);
+    }
+    
+      
+      
      //eventBus.dispatch("eventsDataUser", currentUser);
     return (
       <>

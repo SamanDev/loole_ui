@@ -21,7 +21,7 @@ import {
 } from "react-bootstrap";
 
 
-function Sidebar({ routes, image, background,token }) {
+function Sidebar({ routes, image, background,token,onUpdateItem}) {
   
   // to check for active links and opened collapses
   let location = useLocation();
@@ -104,14 +104,15 @@ function Sidebar({ routes, image, background,token }) {
           </Nav.Item>
         );
       }
-      if (prop.show && prop.name != 'Profile'){
+      if (prop.show && prop.name != 'Profile' && prop.name != 'Create'){
         return (
           <Nav.Item
             className={activeRoute(prop.layout + prop.path)}
             key={key}
             as="li"
+            
           >
-            <Nav.Link to={prop.layout + prop.path} as={Link}>
+            <Nav.Link  to={prop.layout + prop.path} as={Link}>
               {prop.icon ? (
                 <>
                   <i className={prop.icon} />
@@ -127,6 +128,30 @@ function Sidebar({ routes, image, background,token }) {
           </Nav.Item>
         );
               }
+              if (prop.show &&  prop.name == 'Create'){
+                return (
+                  <Nav.Item
+                    className={activeRoute(prop.layout + prop.path)}
+                    key={key}
+                    as="li"
+                    
+                  >
+                    <Nav.Link onClick={() => {prop.name == 'Create' && (onUpdateItem('openModalAdd',true)); return false}} as={Link}>
+                      {prop.icon ? (
+                        <>
+                          <i className={prop.icon} />
+                          <p>{prop.name}</p>
+                        </>
+                      ) : (
+                        <>
+                          <span className="sidebar-mini">{prop.mini}</span>
+                          <span className="sidebar-normal">{prop.name}</span>
+                        </>
+                      )}
+                    </Nav.Link>
+                  </Nav.Item>
+                );
+                      }
               if (prop.show && prop.name == 'Profile'){
                 return (
                   
@@ -136,7 +161,7 @@ function Sidebar({ routes, image, background,token }) {
             as="li"
             style={{marginTop:20,marginBottom:20}}
           >
-            <Nav.Link to={prop.layout + prop.path} as={Link}>
+            <Nav.Link to={prop.layout + prop.path} as={Link} >
               {prop.icon ? (
                 <>
                   <i className={prop.icon} />
@@ -162,10 +187,17 @@ function Sidebar({ routes, image, background,token }) {
     return location.pathname === routeName ? "active" : "";
   };
 
-  if(token.accessToken !='' && token.username){
-
+  if(token){
+    if(token?.username){
     var str = token.username;
-    var res = str.substring(0, 1);
+    var res = str.substring(0, 1)
+    onUpdateItem("openModalLogin", false)
+    }else{
+      var str = 'Guest User';
+    var res = str.substring(0, 1)
+    onUpdateItem("openModalLogin", true)
+  }
+    
     res  = res + ' '+ str.substring(1, 2);
 
     
