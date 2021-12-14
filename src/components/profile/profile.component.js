@@ -67,7 +67,11 @@ import {
     return newItem
   }
   function ProfileForm(prop) {
-    const [currentUser,setCurrentUser] = useState(prop.token);
+    const [myState, setMyState] = useState(prop.myState)
+  useEffect(() => {
+    setMyState(prop.myState)
+}, [prop.myState]);
+const currentUser = prop.findStateId(myState,'currentUser');
     const [gameName,setGameName] = useState();
     const [gamePlatform,setGamePlatform] = useState("");
     const [gameID,setGameID] = useState("");
@@ -85,13 +89,38 @@ import {
     const [socialPlatform,setSocialPlatform] = useState("");
     const [socialID,setSocialID] = useState("");
     const [flag,setFlag] = useState('ir');
+    const printErr = (error) => {
+     
+    
+      if (error?.response?.data?.status == 401) {
+        prop.onUpdateItem("openModalLogin", true);
+        localStorage.setItem("user", JSON.stringify(defUser));
+        prop.onUpdateItem("currentUser", defUser);
+      } else {
+        const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+  
+       
+         
+  
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: resMessage,
+          });
+        
+      }
+    }
+    
     const handleSubmitInfo = (evt) => {
       evt.preventDefault();
       setSubmit(true);
       setLoading(true);
-      console.log(
-        name,country,birthday
-      )
+    
           userService
             .editInfo(
               name,country,birthday
@@ -101,12 +130,19 @@ import {
               (response) => {
                 setSubmit(false);
       setLoading(false);
-                if (response=='Ok'){
-                  
-                  Swal.fire("", "Data saved successfully.", "success")
-                  
-                }
-      })
+      if (response.data.accessToken) {
+        prop.onUpdateItem("currentUser", response.data);
+       
+        Swal.fire("", "Data saved successfully.", "success")
+      }
+                
+      },
+      (error) => {
+        printErr(error);
+      }
+    ).catch((error) => {
+      printErr(error);
+    });
   }
   const setLok = (e) => {
     //console.log(e.SyntheticBaseEvent)
@@ -119,13 +155,7 @@ import {
     setBirthday(newe)
     
   }
-  useEffect(() => {
-   
-    setCurrentUser(() => prop.token)
   
-
-  
-}, [prop.token]);
     return (
       <>
     <Form

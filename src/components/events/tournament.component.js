@@ -99,10 +99,7 @@ import {
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.addEventListener("mouseenter", Swal.stopTimer);
-      toast.addEventListener("mouseleave", Swal.resumeTimer);
-    },
+   
   });
 
               var mymatchFind = null;
@@ -115,7 +112,7 @@ class TournamentSection extends Component {
     super(props);
     this.showDetails = this.showDetails.bind(this);
     this.handleJoinMatch = this.handleJoinMatch.bind(this);
-   
+    this.printErr = this.printErr.bind(this);
     this.handleHowStream = this.handleHowStream.bind(this);
     this.handleClick = this.handleClick.bind(this);
     
@@ -192,59 +189,91 @@ class TournamentSection extends Component {
     $('.gdetails.no'+player).removeClass('hide');
     
       }
-  handleJoinMatch(e) {
-    e.preventDefault();
-    this.setState({
-      isloading: true,
-    });
-    var GName= { value: this.state.item.gameName + ' - '+ this.state.item.gameConsole, label: this.state.item.gameName + ' - '+ this.state.item.gameConsole}
+      handleJoinMatch(e) {
+        e.preventDefault();
+        this.setState({
+          isloading: true,
+        });
+        var GName = {
+          value: this.state.item.gameName + " - " + this.state.item.gameConsole,
+          label: this.state.item.gameName + " - " + this.state.item.gameConsole,
+        };
+        userService.joinEvent(this.state.item.id).then(
+          (response) => {
+            //alert(response)
+            if (response.data.accessToken) {
+              this.props.onUpdateItem("currentUser", response.data);
     
-    userService.joinEvent(this.state.item.id).then(
-      (response) => {
-      
-        //alert(response)
-        if (response.indexOf("successful") > -1) {
-          //this.reGetevents();
-          Toast.fire({
-            icon: "success",
-            title: "Joined.",
-          });
-          
-          
-        } else {
-          this.setState({
-            isloading: true,
-          });
-          {printJoinalerts(response,GName,this.state.currentUser,handleTagForm)}
-        }
-      },
-      (error) => {
+              Toast.fire({
+                icon: "success",
+                title: "Joined.",
+              });
+            } else {
+              this.setState({
+                isloading: false,
+              });
+    
+              {
+                printJoinalerts(
+                  response.data,
+                  GName,
+                  this.state.currentUser,
+                  handleTagForm
+                );
+              }
+            }
+          },
+          (error) => {
+            this.printErr(error);
+          }
+        ).catch((error) => {
+          this.printErr(error);
+        });
+      }
+   
+      printErr = (error) => {
+        var GName = {
+          value: this.state.item.gameName + " - " + this.state.item.gameConsole,
+          label: this.state.item.gameName + " - " + this.state.item.gameConsole,
+        };
         this.setState({
           successful: false,
           message: "",
           submit: false,
           loading: false,
         });
-        const resMessage =
-          (error.response.data 
-            ) ||
-         
-          error.toString();
+        if (error?.response?.data?.status == 401) {
+          this.props.onUpdateItem("openModalLogin", true);
+          localStorage.setItem("user", JSON.stringify(defUser));
+          this.props.onUpdateItem("currentUser", defUser);
+        } else {
+          const resMessage = error?.response?.data || error.toString();
     
-        if (resMessage.indexOf('Error')>-1){
-          {printJoinalerts(resMessage,GName,this.state.currentUser,handleTagForm)}
-      }else{
-
-        this.setState({
-          successful: false,
-          message: resMessage,
-          submit: false,
-          loading: false,
-        });
+          if (resMessage.indexOf("Error") > -1) {
+            {
+              printJoinalerts(
+                resMessage,
+                GName,
+                this.state.currentUser,
+                handleTagForm
+              );
+            }
+          } else {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+    
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: resMessage,
+            });
+          }
+        }
       }
-      }
-    );
-  }
   
 
   render() {
@@ -350,7 +379,7 @@ false
     setTimeout(() => {$("#jsonhtml").html($("#jsonhtml2").text());},1000)
     return (
       <>
-       <Col className="mx-auto text-center" lg="10" md="11">
+       <Col className="mx-auto text-center" lg="10" md="9">
       
         {vsComponentTitle(item)}
         <Divider fitted style={{ opacity: 0 }} />

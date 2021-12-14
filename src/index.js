@@ -7,6 +7,7 @@ import {
   Redirect,
   useHistory,
 } from "react-router-dom";
+import Swal from "sweetalert2";
 import { POSTURLTest, defUser } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -85,6 +86,8 @@ function Main() {
       { id: "events", val: null },
 
       { id: "keyDash", val: 0 },
+      { id: "keyProfile", val: 0 },
+      { id: "keyMyMatch", val: 0 },
       { id: "eventMatch", val: null },
       { id: "eventDef", val: null },
       { id: "match", val: null },
@@ -100,8 +103,9 @@ function Main() {
     })[0].val;
   };
   const onUpdateItem = (key, val) => {
+    //console.log(val)
     if (findStateId(myState, key) != val){
-      console.log(myState)
+      //console.log(key)
       setMyState(() => {
         const list = myState.list.map((item) => {
           if (item.id === key) {
@@ -117,9 +121,8 @@ function Main() {
     }
     
   };
-  const [keyDash, setKeyDash] = useState(0);
-  const [keyMyMatch, setKeyMyMatch] = useState("pending-match");
-  const [keyProfile, setKeyProfile] = useState("profile");
+  
+  
   // const query = mutationCache.findAll("User");
   //const query = mutationCache.getAll()
 
@@ -143,6 +146,7 @@ function Main() {
     if (eventsGet?.length > 0) {
       onUpdateItem("events", eventsGet);
     }
+    
   }, [eventsGet]);
 
   const { data: eventGet } = useEventByID(eventIDQ);
@@ -170,15 +174,14 @@ function Main() {
         queryClient.setQueryData(["Event", eventGet.id], eventGet);
         var NewEv = editEvent(eventGet, eventIDQ, matchIDQ, currentUser);
         onUpdateItem("eventMatch", NewEv);
-        onUpdateItem("match", NewEv.matchidFind);
+        onUpdateItem("match", NewEv?.matchidFind);
       }
     });
     eventBus.on("eventsDataActive", (event) => {
-      var curU = currentUser;
+      var curU = JSON.parse(JSON.stringify(findStateId(myState, "currentUser")));
       curU.userActivate = true;
       
-      localStorage.setItem("user", JSON.stringify(curU));
-      eventBus.dispatch("eventsDataUser", curU);
+      onUpdateItem("currentUser", curU);
       Swal.fire("", event, "success");
     });
   }, []);
@@ -201,24 +204,31 @@ function Main() {
         closeIcon
         closeOnDimmerClick={false}
         open={openModalLogin}
+        
         onClose={() => onUpdateItem("openModalLogin", false)}
       >
         <div style={{ padding: "45px 45px", margin: "auto" }}>
+        <Modal.Content image scrolling>
           <Segment inverted padded="very">
-            <Grid columns={2}  relaxed="very">
-              <Grid.Column>
-              <Header as='h1' inverted>Login</Header>
+            <Grid  relaxed="very">
+              <Grid.Column mobile={16} tablet={8} computer={8}>
+              <Header as='h2' inverted>Login</Header>
               
                 <Login onUpdateItem={onUpdateItem}/>
+                <Divider horizontal inverted className="mobile only" style={{marginTop: 40}}>Or</Divider>
               </Grid.Column>
-              <Grid.Column>
-              <Header as='h1' inverted>Create Account</Header>
+              
+              <Grid.Column mobile={16} tablet={8} computer={8}>
+              
+              <Header as='h2' inverted>Create Account</Header>
               
                 <Register /></Grid.Column>
               
             </Grid>
-            <Divider vertical inverted>OR</Divider>
+            
+            <Divider vertical inverted  className="mobile hidden">OR</Divider>
           </Segment>
+          </Modal.Content>
         </div>
       </Modal>
       <Switch>
@@ -246,13 +256,7 @@ function Main() {
           )}
         />
         <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-        <Route
-          path="/lock"
-          render={(props) => <LockLayout {...props} />}
-          authed={true}
-          events={events}
-          token={currentUser}
-        />
+       
         <Route
           path="/game/:id"
           render={(props) => (

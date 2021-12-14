@@ -34,7 +34,12 @@ import {
 } from "react-bootstrap";
 
 function Dashboard(prop) {
-  const [currentUser,setCurrentUser] = useState(prop.token);
+  const [myState, setMyState] = useState(prop.myState)
+  useEffect(() => {
+    setMyState(prop.myState)
+}, [prop.myState]);
+
+const currentUser = prop.findStateId(myState,'currentUser');
   
   
     var Balance = currentUser.balance;
@@ -48,7 +53,7 @@ function Dashboard(prop) {
 
     return (
       <>
-      <Active token={currentUser}/>
+      <Active {...prop}/>
         <Row>
         <Col sm="12">
             <Card>

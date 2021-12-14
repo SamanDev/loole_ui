@@ -159,7 +159,7 @@ var moment = require("moment");
             </div>
             <div className="content extra">
               
-            <Card.Header >
+            <Card.Header style={{textAlign: 'left'}}>
                   {item.gameName}<Label style={{ float: "right"}} size="small" basic>
                   <FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)} />{" "}
                   {item.gameConsole}

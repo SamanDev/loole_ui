@@ -98,7 +98,6 @@ const currentUser = props.findStateId(myState,'currentUser');
      
   
      
-    console.log(currentUser)
      
     currentUser?.usersReports?.sort((a, b) => (a.id < b.id) ? 1 : -1)
     currentUser?.usersReports?.map((item, i) => {
@@ -148,13 +147,13 @@ const currentUser = props.findStateId(myState,'currentUser');
             render={() => (
               <>
               {(prop.component=='Admin') && (<Admin authed={true} />)}
-              {(prop.component=='Profile') && (<Profile authed={true}  token={currentUser} tabkey={keyProfile} handleProfileTabID={setKeyProfile} />)}
+              {(prop.component=='Profile') && (<Profile {...props} />)}
               {(prop.component=='Dashboard') && (<Dashboard  {...props}  />)}
               {(prop.component=='LockScreenPage') && (<LockScreenPage {...props} />)}
               {(prop.component=='Cashier') && (<Cashier {...props} />)}
-              {(prop.component=='Rewards') && (<Rewards authed={true} token={currentUser} />)}
-              {(prop.component=='MyMatches') && (<MyMatches authed={true} token={currentUser} tabkey={keyMyMatch} handleTabID={setKeyMyMatch} />)}
-              {(prop.component=='CreateMatch') && (<CreateMatch authed={true} {...props}  />)}
+              {(prop.component=='Rewards') && (<Rewards {...props} />)}
+              {(prop.component=='MyMatches') && (<MyMatches {...props} />)}
+              {(prop.component=='CreateMatch') && (<CreateMatch {...props}  />)}
               
               </>
             )}
@@ -249,11 +248,19 @@ const currentUser = props.findStateId(myState,'currentUser');
           inverted
           basic
           dimmer='blurring'
+          closeIcon
+        closeOnDimmerClick={false}
           open={open}
           onClose={() => props.onUpdateItem('openModalAdd',false)}
         >
+          <div style={{ padding: "45px 45px", margin: "auto" }}>
+     
+        <Modal.Content image scrolling>
+          <Segment inverted padded="very">
           <AddMatch token={currentUser} {...props} />
-          
+          </Segment>
+          </Modal.Content>
+          </div>
         </Modal>
           </div>
           <AdminFooter />

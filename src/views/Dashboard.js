@@ -13,7 +13,7 @@ function Dashboard(prop) {
 const key = prop.findStateId(myState,'keyDash');
 const events = prop.findStateId(myState,'events');
 
-  
+console.log(myState)
   
   
   const getBlockChallenge = (filtermode,events) => {
@@ -54,8 +54,8 @@ const events = prop.findStateId(myState,'events');
   }
   
   const panes = [
-    {id:1, menuItem: 'All', render: () => <Tab.Pane>{getBlockChallenge('all',events)}</Tab.Pane> },
-    {id:2, menuItem: 'Mobile', render: () => <Tab.Pane>{getBlockChallenge('Mobile',events)}</Tab.Pane> },
+    {id:1, menuItem: 'All', render: () => <Tab.Pane  >{getBlockChallenge('all',events)}</Tab.Pane> },
+    {id:2, menuItem: 'Mobile', render: () => <Tab.Pane style={{maxHeight: 'calc(80vh - 10em)', overflow: 'auto'}}>{getBlockChallenge('Mobile',events)}</Tab.Pane> },
     {id:3, menuItem: 'Console', render: () => <Tab.Pane>{getBlockChallenge('NoMobile',events)}</Tab.Pane> },
     {id:4, menuItem: 'Tournament', render: () => <Tab.Pane>{getBlockChallenge('Tournament',events)}</Tab.Pane> },
   ]
@@ -67,7 +67,7 @@ const events = prop.findStateId(myState,'events');
     
     <Active {...prop}/>
     <DashStat {...prop}/>
-    <Tab panes={panes} defaultActiveIndex={key} onTabChange={(e, data) => {prop.onUpdateItem('keyDash',data.activeIndex)}}  />
+    <Tab panes={panes}  defaultActiveIndex={key} onTabChange={(e, data) => {prop.onUpdateItem('keyDash',data.activeIndex)}}  />
 
      
 

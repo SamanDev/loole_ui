@@ -1,5 +1,4 @@
 import React ,{useState,useEffect} from "react";
-import { Link, useLocation,Redirect } from "react-router-dom";
 import Avatar from 'react-avatar';
 import PropTypes from "prop-types";
 import AuthService from "services/auth.service";
@@ -20,9 +19,17 @@ import {
   Col,
 } from "react-bootstrap";
 
+import {
+  BrowserRouter,
 
+  Switch,
+  useLocation,
+  useHistory,
+  Link
+} from "react-router-dom";
+import { POSTURL,defUser } from 'const';
 function Sidebar({ routes, image, background,token,onUpdateItem}) {
-  
+  const history = useHistory();
   // to check for active links and opened collapses
   let location = useLocation();
   // this is for the user collapse
@@ -34,7 +41,14 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
     setState(getCollapseStates(routes));
     
   }, []);
+  const logOut=()=> {
+      
+    onUpdateItem("currentUser", defUser)
   
+    AuthService.logout();
+
+    history.push("/home");
+}
   // this is for the rest of the collapses
   
   // this creates the intial state of this component based on the collapse routes
@@ -130,6 +144,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
               }
               if (prop.show &&  prop.name == 'Create'){
                 return (
+                  <>
                   <Nav.Item
                     className={activeRoute(prop.layout + prop.path)}
                     key={key}
@@ -150,6 +165,28 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
                       )}
                     </Nav.Link>
                   </Nav.Item>
+                  <Nav.Item
+                    className={activeRoute(prop.layout + prop.path)}
+                    key={'logout'}
+                    as="li"
+                    
+                  >
+                  
+                    <Nav.Link onClick={() => logOut()}>
+                      {prop.icon ? (
+                        <>
+                          <i className='nc-icon nc-button-power' />
+                          <p>Logout</p>
+                        </>
+                      ) : (
+                        <>
+                          <span className="sidebar-mini">{prop.mini}</span>
+                          <span className="sidebar-normal">Logout</span>
+                        </>
+                      )}
+                    </Nav.Link>
+                  </Nav.Item>
+                  </>
                 );
                       }
               if (prop.show && prop.name == 'Profile'){
@@ -191,11 +228,11 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
     if(token?.accessToken){
     var str = token.username;
     var res = str.substring(0, 1)
-    onUpdateItem("openModalLogin", false)
+    //onUpdateItem("openModalLogin", false)
     }else{
       var str = 'Guest User';
     var res = str.substring(0, 1)
-    onUpdateItem("openModalLogin", true)
+    //onUpdateItem("openModalLogin", true)
   }
     
     res  = res + ' '+ str.substring(1, 2);

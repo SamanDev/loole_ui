@@ -1324,17 +1324,28 @@ try{
                                       ):(
                                         <>
                                         {props.match.winner && props.match.winner !== null ? (
+                                          <>
                                         <Avatar
                                           size="80"
                                           style={{ boxShadow: "0px 0px 20px 20px rgba(0,0,0,0.2)" }}
                                           round={true}
                                           name={_mode}
                                         />
+                                        {timer}
+                                        </>
                                       ) : (
-                                        <></>
+                                        <>
+                                        <Divider fitted style={{ opacity: 0 }} /><Divider fitted style={{ opacity: 0 }} />
+                                        <Statistic inverted  size="tiny">
+          
+          
+          <Statistic.Value>{_mode}</Statistic.Value>
+          <Statistic.Label>{timer}</Statistic.Label>
+        </Statistic></>
                                       )}
                                       </>)}
-                                      {timer}
+                                      
+                                     
                   </>
                 )}
          </>
@@ -1866,8 +1877,8 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
       }
 
       if (!item.winner) {
-        item.winner = [];
-        item.winner.push(nullplayer);
+        //item.winner = [];
+        //item.winner.push(nullplayer);
       }
       if (!item.rules) {
         item.info = {
@@ -2117,7 +2128,7 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
       isEditTime = setTimeout(() => {
         //console.log('isedit:'+isEdit)
         isEdit = false;
-      }, 20000);
+      }, 2000);
     }
   }
 };

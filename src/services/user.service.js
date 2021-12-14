@@ -107,24 +107,10 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        if (response.data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-          eventBus.dispatch("eventsDataUser", response.data);
-          eventBus.remove("eventsDataUser");
-          return response.data;
-        }
+        return response;
 
 
-      }).catch(error => {
-        //alert(error)
-        if (error=='Error: Request failed with status code 401') {
-          
-    //localStorage.removeItem("user");
-    //window.location.replace("/auth/login-page");
-        }else{
-       
-        }
-      });;
+      });
   }
   saveSocial(accountName,accountId) {
 
@@ -135,24 +121,10 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        if (response.data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-          eventBus.dispatch("eventsDataUser", response.data);
-          eventBus.remove("eventsDataUser");
-          return response.data;
-        }
+        return response;
 
 
-      }).catch(error => {
-        //alert(error)
-        if (error=='Error: Request failed with status code 401') {
-          
-    //localStorage.removeItem("user");
-    //window.location.replace("/auth/login-page");
-        }else{
-       
-        }
-      });;
+      })
   }
   finishClashRoyale(eventID) {
 
@@ -275,11 +247,7 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        if (response.data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-          eventBus.dispatch("eventsDataUser", response.data);
-          return "Ok";
-        }
+        return response;
       });
   }
   changePassword(newPassword) {
@@ -290,7 +258,7 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        return response.data;
+        return response;
         
       });
   }
@@ -316,14 +284,9 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        if (response.data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-          eventBus.dispatch("eventsDataUser", response.data);
-          return "successful";
-        }
-        else{
-          return response.data;
-        }
+        
+          return response;
+   
         
       });
   }

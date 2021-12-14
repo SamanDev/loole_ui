@@ -22,8 +22,8 @@ class UserWebsocket {
 
             console.log("Websocket is connect");
             if(user){
-                eventBus.dispatch("eventsDataUser", user);
-                eventBus.remove("eventsDataUser");
+                //eventBus.dispatch("eventsDataUser", user);
+               // eventBus.remove("eventsDataUser");
             }
             
             ws.onopen = function live() {

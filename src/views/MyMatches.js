@@ -1,57 +1,22 @@
 import React, { useEffect, useState } from "react";
 // react component used to create charts
-import ChartistGraph from "react-chartist";
-import { Link, useLocation } from "react-router-dom";
-// react components used to create a SVG / Vector map
 
-import PropTypes from "prop-types";
-import { VectorMap } from "react-jvectormap";
-import AuthService from "services/auth.service";
-import userService from "services/user.service";
 import { useUserEvents,useUser,useAllEventsByStatus } from "services/hooks"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import eventBus from "views/eventBus";
+
 import { printBlockChallenge } from "components/include";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+
 import Active  from "components/active.component";
 // react-bootstrap components
-import {
-  Badge,
-  Button,
-  Card,
-  Form,
-  InputGroup,
-  Navbar,
-  Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
-  Container,
-  Row,
-  Col,
-  TabContent,
-  TabPane,
-  Tab,
-  Spinner,
-  Alert
-
-} from "react-bootstrap";
+import { Tab,Card } from 'semantic-ui-react'
 
 function Dashboard(prop) {
 
-  const [key, setKey] = useState(prop.tabkey);
-  const [currentUser,setCurrentUser] = useState(prop.token);
+  const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
-    setKey(prop.tabkey)
-     
-    
-   },[prop.tabkey]);
-   useEffect(() => {
-    setCurrentUser(prop.token)
-     
-    
-   },[prop.token]);
+    setMyState(prop.myState)
+}, [prop.myState]);
+const key = prop.findStateId(myState,'keyMyMatch');
+const currentUser = prop.findStateId(myState,'currentUser');
   const { data: eventsGet , isLoading } = useAllEventsByStatus('All')
   
   
@@ -67,24 +32,31 @@ function Dashboard(prop) {
   
   if (!events) return <p>loading...</p>
   
-  
-  const getBlockChallenge = (filtermode) => {
+  const getBlockChallenge = (filtermode,events) => {
     var newItem = []
-    var blnShow = false;
-    if (events != []) {
+    if (events) {
+     
        events.map((item, i) => {
-        if ((filtermode == 'Wins' && item.status == 'Finished') ||(filtermode == 'Expired' && item.status == 'Expired') ||(filtermode == 'Pending' && (item.status == 'Pending' || item.status == 'Ready' || item.status == 'InPlay')) || item.status == filtermode || ('All' == filtermode )) {
-          item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
-          
+        if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
+          //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
           
           {item.players.map((player, j) => {
-           if(player.username == currentUser.username ){blnShow=true}
+           //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
           })}
-        
+          var timestring1 = item.expire;
+          var timestring2 = new Date();
+          var startdate = moment(timestring1).format();
+          var expected_enddate = moment(timestring2).format();
+         startdate = moment(startdate).add(20, 'days').format()
+         
           
-          if(!blnShow){}else{
+          if(item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){
+            //item.gameConsole = startdate + ' '+ expected_enddate;
+            if(startdate>expected_enddate){newItem.push(item);}
+          }else{
             newItem.push(item);
           }
+          //newItem.push(item);
           
           
          
@@ -92,83 +64,26 @@ function Dashboard(prop) {
       }
       
       )
-      return printBlockChallenge(newItem,filtermode)
+      return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem,filtermode)}</Card.Group>)
     }
 
   }
   
-  
-    
-  
-    var Balance = currentUser.balance;
-    if (!Balance) { Balance = 0 }
-    
+  const panes = [
+    {id:1, menuItem: 'Pending', render: () => <Tab.Pane>{getBlockChallenge('Pending',events)}</Tab.Pane> },
+    {id:2, menuItem: 'Wins', render: () => <Tab.Pane>{getBlockChallenge('Wins',events)}</Tab.Pane> },
+    {id:3, menuItem: 'Expired', render: () => <Tab.Pane>{getBlockChallenge('Expired',events)}</Tab.Pane> },
+    {id:4, menuItem: 'All', render: () => <Tab.Pane>{getBlockChallenge('All',events)}</Tab.Pane> },
+  ]
   return (
       
         
     <>
     
-    <Active token={currentUser}/>
+    <Active {...prop}/>
+    <Tab panes={panes} defaultActiveIndex={key} onTabChange={(e, data) => {prop.onUpdateItem('keyMyMatch',data.activeIndex)}}  />
 
-        <Row>
-          <Col md="12">
-            <Tab.Container
-              id="matches-tabs"
-              
-              activeKey={key}
-              onSelect={(k) => prop.handleTabID(k)}
-            >
-              <Nav role="tablist" variant="tabs">
-              <Nav.Item>
-                  <Nav.Link eventKey="pending-match">Pending</Nav.Link>
-                </Nav.Item>
-                
-                <Nav.Item>
-                  <Nav.Link eventKey="wins-match">My Wins</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="con-match">Expired</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="all-match">All</Nav.Link>
-                </Nav.Item>
-              </Nav>
-              <Card>
-
-                <Card.Body  >
-
-                  <Tab.Content >
-                  <Tab.Pane eventKey="pending-match">
-                      <Row>
-                        {getBlockChallenge('Pending')}
-                      </Row>
-                    </Tab.Pane>
-                  <Tab.Pane eventKey="all-match" >
-                    
-                      <Row >
-                        {getBlockChallenge('All')}
-                      </Row>
-                    </Tab.Pane>
-                    <Tab.Pane eventKey="wins-match" >
-                      <Row >
-                        {getBlockChallenge('Wins')}
-                      </Row>
-                    </Tab.Pane>
-                   
-                    <Tab.Pane eventKey="con-match">
-                      <Row>
-                        {getBlockChallenge('Expired')}
-                      </Row>
-                    </Tab.Pane>
-                    
-                  </Tab.Content>
-
-                </Card.Body>
-              </Card>
-            </Tab.Container>
-          </Col>
-        </Row>
-
+       
 
       </>
     );

@@ -23,7 +23,7 @@ function Active(prop) {
   useEffect(() => {
     setMyState(prop.myState)
 }, [prop.myState]);
-const currentUser = prop.findStateId(myState,'currentUser');
+var currentUser = prop.findStateId(myState,'currentUser');
   
   
   
@@ -99,7 +99,7 @@ userService
           )
     
   }
-  if(!currentUser.userActivate){
+  if(!currentUser?.userActivate){
     
     
     return (

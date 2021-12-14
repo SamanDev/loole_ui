@@ -96,7 +96,7 @@ return (
     
                     <Carousel style={{ textAlign:'left',maxWidth:300,margin:'auto'}} controls={false}>
                     
-                        {getBlockChallengeMobile('all',0,3,events)}
+                    {getBlockChallenge('all',events)} 
                     
                      
   </Carousel>

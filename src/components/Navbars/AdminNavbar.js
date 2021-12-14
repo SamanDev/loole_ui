@@ -11,7 +11,7 @@ import {
   useHistory,
   Link
 } from "react-router-dom";
-import { Input, Menu } from "semantic-ui-react";
+import { Input, Menu,Button,Icon } from "semantic-ui-react";
 
 import {
   
@@ -38,26 +38,22 @@ const LandNavbar = (prop) => {
   return (
     <>
      
-        <Menu secondary inverted style={{position:'absolute',top:0,left:0,right:0,background:'#000'}}>
+        <Menu secondary inverted style={{position:'absolute',top:0,left:0,right:0,background:'#000',height:60,lineHeight:'60px'}}>
           <Menu.Item
             
            
           >
             <b>{prop.page}</b>
+            
           </Menu.Item>
 
           <Menu.Menu position="right">
-            {currentUser && currentUser.accessToken ? (
-              <>
-                <Menu.Item name="Dashboard" to={"/panel/dashboard"} as={Link} />
-                <Menu.Item name="logout" onClick={() =>logOut()} />
-              </>
-            ) : (
-              <Menu.Item
-          
-                onClick={() => prop.onUpdateItem("openModalLogin", true)}
-              >Login / Register</Menu.Item>
-            )}
+          <Menu.Item  onClick={(e) =>
+                document.documentElement.classList.toggle("nav-open")
+              }>
+    <Icon name='bars' size="large"/>
+  </Menu.Item>
+         
           </Menu.Menu>
         </Menu>
      

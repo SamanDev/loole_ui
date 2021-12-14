@@ -13,7 +13,9 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Games from "server/Games";
 import Avatar from "react-avatar";
-import { Modal,Button,Input,Label,Dropdown,Form,Select,Card,Loader,Dimmer } from "semantic-ui-react";
+
+import { POSTURL,defUser } from 'const';
+import { Modal,Button,Input,Label,Dropdown,Form,Select,Card,Loader,Dimmer,Divider,Segment,Header } from "semantic-ui-react";
 import {
   Badge,
   Alert,
@@ -57,6 +59,7 @@ import {
 } from "components/include";
 import MatchCard  from "components/matchcard.component";
 var moment = require("moment");
+
   const required = (value,props) => {
       
       if(typeof props.passReadyprp !== "undefined"){
@@ -177,16 +180,14 @@ const getBlockGameModesVal = (filtermode) => {
   return gamemaplocal[0];
 };
 
-const MySwal = withReactContent(Swal);
-var nowS  = new Date()
-var nowE  = new Date()
 class AddMatch extends Component {
   constructor(props) {
     super(props);
     this.handleCreateMatch = this.handleCreateMatch.bind(this);
     this.setGameName = this.setGameName.bind(this);
+    
     this.setGameMode = this.setGameMode.bind(this);
-   
+    this.printErr = this.printErr.bind(this);
     this.setBetAmount = this.setBetAmount.bind(this);
     
     this.setAvalableFor = this.setAvalableFor.bind(this);
@@ -267,86 +268,111 @@ class AddMatch extends Component {
     });
     
   }
-  
-  handleCreateMatch(e) {
-    e.preventDefault();
-    
-
+  printErr = (error) => {
+    var GName = this.state.GName
     this.setState({
-      message: "",
       successful: false,
-      loading:true,
-        
-      
-     
+      message: "",
+      submit: false,
+      loading: false,
     });
-   
+  
+    if (error?.response?.data?.status == 401) {
+      this.props.onUpdateItem("openModalLogin", true);
+      localStorage.setItem("user", JSON.stringify(defUser));
+      this.props.onUpdateItem("currentUser", defUser);
+    } else {
+      const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
 
-    
-     
-      
-        userService
-          .createEvent(
-            this.state.GName.value.split(" - ")[0],
-            this.state.GName.value.split(" - ")[1],
-            this.state.GameMode.value,
-            this.state.BetAmount,
-            this.state.inSign.value,
-            this.state.inSign.value,
-            this.state.inSign.value,
-            this.state.AvalableFor.value
-          )
-          .then(
-            
-            (response) => {
-              if (response.indexOf("successful") > -1) {
-                Swal.fire("", "Data saved successfully.", "success").then(
-                  (result) => {
-                    this.props.onUpdateItem('openModalAdd',false)
-                
-                  }
-                );
-              }else{
-                this.setState({
-                  successful: false,
-                  message: "",
-                  submit: false,
-                  loading: false,
-                });
-                {printJoinalerts(response,this.state.GName,this.state.currentUser,handleTagForm)}
-            }
-            },
-            (error) => {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-              const resMessage =
-                (error.response.data 
-                  ) ||
-               
-                error.toString();
-          
-              if (resMessage.indexOf('Error')>-1){
-                {printJoinalerts(resMessage,this.state.GName,this.state.currentUser,handleTagForm)}
-            }else{
-
-              this.setState({
-                successful: false,
-                message: resMessage,
-                submit: false,
-                loading: false,
-              });
-            }
-            }
+      if (resMessage.indexOf("Error") > -1) {
+        {
+          printJoinalerts(
+            resMessage,
+            GName,
+            this.state.currentUser,
+            handleTagForm
           );
-      
-    
+        }
+      } else {
+       
+
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: resMessage,
+        });
+      }
     }
+  }
   
   
+    handleCreateMatch(e) {
+      e.preventDefault();
+      
+  
+      this.setState({
+        message: "",
+        successful: false,
+        loading:true,
+          
+        
+       
+      });
+     
+  
+      
+       
+        
+          userService
+            .createEvent(
+              this.state.GName.value.split(" - ")[0],
+              this.state.GName.value.split(" - ")[1],
+              this.state.GameMode.value,
+              this.state.BetAmount,
+              this.state.inSign.value,
+              this.state.inSign.value,
+              this.state.inSign.value,
+              this.state.AvalableFor.value
+            )
+            .then(
+         
+                (response) => {
+                  //alert(response)
+                  if (response.data.accessToken) {
+                    this.props.onUpdateItem("currentUser", response.data);
+                    this.props.onUpdateItem("openModalAdd", false);
+                    Swal.fire("", "Data saved successfully.", "success").then(
+                      (result) => {
+                        this.props.history.push("/panel/dashboard");
+                      }
+                    );
+                  } else {
+                    this.setState({
+                      loading: false,
+                    });
+          
+                    {
+                      printJoinalerts(
+                        response.data,
+                        this.state.GName,
+                        this.state.currentUser,
+                        handleTagForm
+                      );
+                    }
+                  }
+                },
+                (error) => {
+                  this.printErr(error);
+                }
+              ).catch((error) => {
+                this.printErr(error);
+              });
+      }
   render() {
     var { currentUser } = this.state;
     var timestring1 = new Date();
@@ -405,11 +431,8 @@ class AddMatch extends Component {
     }
     return (
       <>
-      <Modal.Header>Create 1vs1 Match</Modal.Header>
-      <Modal.Content image scrolling >
-      <Dimmer active={this.state.loading}>
-        <Loader>Loading</Loader>
-      </Dimmer>
+    
+      <Header as='h2' inverted>Create 1vs1 Match</Header>
       <Form inverted  
                         onSubmit={this.handleCreateMatch}
                       style={{width: '100%'}}
@@ -417,7 +440,7 @@ class AddMatch extends Component {
       
           
           <Row>
-                    <Col  sm="7">
+                    <Col  sm="6">
                     <Form.Field
                     
             control={Select}
@@ -429,6 +452,7 @@ class AddMatch extends Component {
                                 options={getBlockGames("Match")}
           />
                             <Form.Field
+                            className="hide"
                     inverted
             control={Select}
             label='Mode'
@@ -452,35 +476,25 @@ class AddMatch extends Component {
                                    <Form.Field>
             <label>Avalable for</label>
                            
-                              <Button.Group size="" widths='4' type='button'  buttons={[
-                                  { key: "30", content: "30 Min",type:'button',active:(this.state.AvalableFor.value == "30"&&(true)),onClick:() => this.setAvalableFor({ value: "30"})},
-                                  { key: "60", content: "1 Hour",type:'button',active:(this.state.AvalableFor.value == "60"&&(true)),onClick:() => this.setAvalableFor({ value: "60"}) },
-                                  { key: "360", content: "6 Hours",type:'button' ,active:(this.state.AvalableFor.value == "360"&&(true)),onClick:() => this.setAvalableFor({ value: "360"})},
-                                  { key: "1440", content: "1 Day",type:'button',active:(this.state.AvalableFor.value == "1440"&&(true)),onClick:() => this.setAvalableFor({ value: "1440"}) },
+                              <Button.Group  widths='4' type='button'   buttons={[
+                                  { key: "30", content: "30 M",type:'button',active:(this.state.AvalableFor.value == "30"&&(true)),onClick:() => this.setAvalableFor({ value: "1"})},
+                                  { key: "60", content: "1 H",type:'button',active:(this.state.AvalableFor.value == "60"&&(true)),onClick:() => this.setAvalableFor({ value: "60"}) },
+                                  { key: "360", content: "6 H",type:'button' ,active:(this.state.AvalableFor.value == "360"&&(true)),onClick:() => this.setAvalableFor({ value: "360"})},
+                                  { key: "1440", content: "1 D",type:'button',active:(this.state.AvalableFor.value == "1440"&&(true)),onClick:() => this.setAvalableFor({ value: "1440"}) },
                                 ]} />
                               
                               
                              
                               </Form.Field>
 
-                            {this.state.message && (
-                              <div className="form-group">
-                                <div
-                                  className="alert alert-danger"
-                                  role="alert"
-                                >
-                                  {this.state.message}
-                                </div>
-                              </div>
-                            )}
-                          
                         
                       </Col>
-                    <Col sm="5" >
+                    <Col sm="6">
                    
                       {(this.state.GName.value.indexOf(' - ') > -1) && (
                         <>
-                        <Card.Group className="fours one" style={{ marginBottom: 20 }}>
+                        <Divider horizontal inverted className="mobile only" style={{marginTop: 40}}>Or</Divider>
+                        <Card.Group className="fours " style={{ marginBottom: 20,float:'right' }}>
                         <MatchCard item={item}/>
                         </Card.Group>
                        
@@ -492,9 +506,9 @@ class AddMatch extends Component {
           
          
           <Button.Group size='large' fluid widths='2'>
-          <Button positive fluid loading={this.state.loading}>Create Match</Button>
+          <Button positive fluid loading={this.state.loading} basic disabled={this.state.loading}>Create Match</Button>
     <Button.Or />
-    <Button negative type="button" fluid onClick={() => this.props.onUpdateItem('openModalAdd',false)}>
+    <Button negative type="button"  disabled={this.state.loading} basic fluid onClick={() => this.props.onUpdateItem('openModalAdd',false)}>
               Close
             </Button>
   </Button.Group>
@@ -504,7 +518,7 @@ class AddMatch extends Component {
       
           
                       </Form>
-                      </Modal.Content>
+                     
         </>
     );
   }

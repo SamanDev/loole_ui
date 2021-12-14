@@ -149,32 +149,7 @@ class LeagueSection extends Component {
         }
       );
   }
-  handleLoseMatch(e) {
-    this.setState({
-      isloading: true,
-    });
-    if (this.state.matchid) {
-      userService.loseEvent(this.state.eventid, this.state.matchid).then(
-        (response) => {
-          //this.reGetevents();
-          //this.props.history.push("/panel/dashboard");
-        },
-        (error) => {
-          this.printErr(error);
-        }
-      );
-    } else {
-      userService.loseEvent(this.state.eventid).then(
-        (response) => {
-          //this.reGetevents();
-          //this.props.history.push("/panel/dashboard");
-        },
-        (error) => {
-          this.printErr(error);
-        }
-      );
-    }
-  }
+  
   handleChatUpload = () => {
     this.setState({
       progress: 1,
@@ -318,7 +293,7 @@ class LeagueSection extends Component {
   handleJoinMatch(e) {
     e.preventDefault();
     this.setState({
-      isloading: true,
+      loading: true,
     });
     var GName = {
       value: this.state.item.gameName + " - " + this.state.item.gameConsole,
@@ -336,7 +311,7 @@ class LeagueSection extends Component {
           });
         } else {
           this.setState({
-            isloading: true,
+            loading: false,
           });
 
           {
@@ -392,6 +367,33 @@ class LeagueSection extends Component {
       this.printErr(error);
     });
   }
+  handleLoseMatch(e) {
+    this.setState({
+      isloading: true,
+    });
+    if (this.state.matchid) {
+      userService.loseEvent(this.state.eventid, this.state.matchid).then(
+        (response) => {
+          //this.reGetevents();
+          //this.props.history.push("/panel/dashboard");
+        },
+        (error) => {
+          this.printErr(error);
+        }
+      );
+    } else {
+      userService.loseEvent(this.state.eventid).then(
+        (response) => {
+          //this.reGetevents();
+          //this.props.history.push("/panel/dashboard");
+        },
+        (error) => {
+          this.printErr(error);
+        }
+      );
+    }
+  }
+  
   printErr = (error) => {
     var GName = {
       value: this.state.item.gameName + " - " + this.state.item.gameConsole,
@@ -403,12 +405,12 @@ class LeagueSection extends Component {
       submit: false,
       loading: false,
     });
-    if (error.response.data.status == 401) {
+    if (error?.response?.data?.status == 401) {
       this.props.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
       this.props.onUpdateItem("currentUser", defUser);
     } else {
-      const resMessage = error.response.data || error.toString();
+      const resMessage = error?.response?.data || error.toString();
 
       if (resMessage.indexOf("Error") > -1) {
         {
@@ -478,7 +480,7 @@ class LeagueSection extends Component {
             matchidFind,
             this.state.matchid,
             this.state.currentUser,
-            this.state.isloading,
+            this.state.loading,
             activePlayer,
             this.handlechangeReadyEvent,
             this.handleJoinMatch,

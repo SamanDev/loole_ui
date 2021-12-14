@@ -306,12 +306,12 @@ const match = prop.findStateId(myState,'match');
                     ) : (
                       <>
                         {(eventMatch.gameMode == "Tournament" && !matchIDQ) ? (
-                          <TournamentSection item={eventMatch} token={currentUser} />
+                          <TournamentSection item={eventMatch} token={currentUser} {...prop} />
                          
                         ) : (
                           <>
                           {(eventMatch.gameMode == "Tournament") ? (
-                          <MatchTourSection item={eventMatch} matchidFind={match} token={currentUser} />
+                          <MatchTourSection item={eventMatch} matchidFind={match} token={currentUser} {...prop} />
                           ) : (
                             
                             <MatchSection item={eventMatch} matchidFind={match} token={currentUser} {...prop} />
@@ -333,7 +333,7 @@ const match = prop.findStateId(myState,'match');
                 className="full-page-background"
                 style={{
                   backgroundImage:
-                    "url(" + require("assets/img/bg.jpg").default + ")",
+                    "url('/assets/img/bg.jpg')",
                 }}
               ></div>
             </div>

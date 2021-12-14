@@ -40,9 +40,6 @@ import {
   Row,
   ListGroup,
   Col,
-  TabContent,
-  TabPane,
-  Tab,
 } from "react-bootstrap";
 import {
   setAvatar,
@@ -58,23 +55,15 @@ import {
   date_locale,
   userDetails
 } from "components/include";
-import eventBus from "views/eventBus";
+import { Tab } from 'semantic-ui-react'
 
 function profile(prop) {
-  const [key, setKey] = useState(prop.tabkeyprofile);
-  const [currentUser,setCurrentUser] = useState(prop.token);
+  const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
-   
-    setCurrentUser(() => prop.token)
-  
-
-  
-}, [prop.token]);
-useEffect(() => {
-  setKey(prop.tabkey)
-   
-  
- },[prop.tabkey]);
+    setMyState(prop.myState)
+}, [prop.myState]);
+const key = prop.findStateId(myState,'keyProfile');
+const currentUser = prop.findStateId(myState,'currentUser');
 
   const handlecSetInstagram = (game,platform) => {
     const resetPw2= async () => {
@@ -126,28 +115,58 @@ useEffect(() => {
                 }
       })
   }
-    const selectrequired = (value) => {
-  
-    if (!value) {
-      allValid = false;
-      if(submit){
-        return (
-          <div className="alert alert-danger" role="alert">
-            This field is required!
-          </div>
-        );
-      }
-      
-    }else{
-      //allValid = true;
-    }
-  }
-  
+  const panes = [
+    {id:1, menuItem: 'Profile', render: () => <Tab.Pane><ProfileForm token={currentUser}  {...prop}/></Tab.Pane> },
+    {id:2, menuItem: 'Game Tags', render: () => <Tab.Pane><Card className="card-plain" style={{margin: -10}}>
+    <Card.Header>
+       <Card.Title>Game Tags</Card.Title></Card.Header>
+      <Card.Body>
+<TagsForm token={currentUser} {...prop}/>
 
-  var _mode=' 1 v 1 '
-        var _color = '#404040'
-       
-     
+</Card.Body>
+      
+      </Card></Tab.Pane> },
+    {id:3, menuItem: 'Social Accounts', render: () => <Tab.Pane><Form
+           
+            
+    >
+                <Card className="card-plain card-social" style={{margin: -10}}>
+                <Card.Header>
+                   <Card.Title>Game Tags</Card.Title></Card.Header>
+                  <Card.Body>
+                  
+                  <Card onClick={() => handlecSetInstagram('Social - Instagram','Instagram')}>
+ 
+    <Card.Body>
+    <FontAwesomeIcon  icon={faInstagram} style={{color: '#e95950'}}/>  
+    {getSocialTag('Instagram',currentUser.userSocialAccounts)}
+    </Card.Body>
+    </Card>
+    <Card  onClick={() => handlecSetInstagram('Social - Twitch','Twitch')}>
+ 
+    <Card.Body>
+    <FontAwesomeIcon  icon={faTwitch} style={{color: '#6441a5'}} /> {getSocialTag('Twitch',currentUser.userSocialAccounts)}
+    </Card.Body>
+    </Card>
+    <Card  onClick={() => handlecSetInstagram('Social - Youtube','Youtube')}>
+ 
+    <Card.Body>
+    <FontAwesomeIcon  icon={faYoutube} style={{color: '#FF0000'}}/>  {getSocialTag('Youtube',currentUser.userSocialAccounts)}
+    </Card.Body>
+    </Card>
+    <Card  onClick={() => handlecSetInstagram('Social - Twitter','Twitter')}>
+ 
+    <Card.Body>
+    <FontAwesomeIcon  icon={faTwitter} style={{color: '#00acee'}} />  {getSocialTag('Twitter',currentUser.userSocialAccounts)}
+    </Card.Body>
+    </Card>
+                    
+                  </Card.Body>
+                 
+                </Card>
+                </Form></Tab.Pane> },
+    
+  ] 
     
         var str = currentUser.username;
         var res = str.substring(0, 1);
@@ -158,117 +177,12 @@ useEffect(() => {
   return (
     
     <>
-    <Active token={currentUser}/>
+    <Active {...prop}/>
+    
       <Row>
               <Col md="8" sm="6">
-      <Tab.Container
-              id="plain-tabs-profile"
-              activeKey={key}
-            onSelect={(k) => prop.handleProfileTabID(k)}
-            >
-              <Nav role="tablist" variant="tabs">
-                <Nav.Item>
-                  <Nav.Link eventKey="profile">Profile</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="tags">Game Tags</Nav.Link>
-                </Nav.Item>
-                
-                <Nav.Item>
-                  <Nav.Link eventKey="social">Social Accounts</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="notification">Notifications</Nav.Link>
-                </Nav.Item>
-              </Nav>
-      <Card>
-            
-              <Card.Body  >
-            
-              <Tab.Content>
+              <Tab panes={panes} defaultActiveIndex={key} onTabChange={(e, data) => {prop.onUpdateItem('keyProfile',data.activeIndex)}}  />
 
-                <Tab.Pane eventKey="profile">
-                <VerticalTimeline layout="1-column-left" className="hide">
-  <VerticalTimelineElement
-    className="vertical-timeline-element--work"
-    contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
-    contentArrowStyle={{ borderRight: '7px solid  rgb(33, 150, 243)' }}
-    date="2011 - present"
-    iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
-    
-  >
-    <h3 className="vertical-timeline-element-title">Creative Director</h3>
-    <h4 className="vertical-timeline-element-subtitle">Miami, FL</h4>
-    <p>
-      Creative Direction, User Experience, Visual Design, Project Management, Team Leading
-    </p>
-  </VerticalTimelineElement>
-  
-</VerticalTimeline>
-<ProfileForm token={currentUser}/>
-                      <PasswordForm/>
-                    
-                </Tab.Pane>
-                <Tab.Pane eventKey="tags">
-                <Card className="card-plain" style={{margin: -10}}>
-                      <Card.Header>
-                         <Card.Title>Game Tags</Card.Title></Card.Header>
-                        <Card.Body>
-                <TagsForm token={currentUser}/>
-                  
-                </Card.Body>
-                        
-                        </Card>
-                     
-                  
-                </Tab.Pane>
-                <Tab.Pane eventKey="social">
-               
-                    <Form
-           
-            
-          >
-                      <Card className="card-plain card-social" style={{margin: -10}}>
-                      <Card.Header>
-                         <Card.Title>Game Tags</Card.Title></Card.Header>
-                        <Card.Body>
-                        
-                        <Card onClick={() => handlecSetInstagram('Social - Instagram','Instagram')}>
-       
-          <Card.Body>
-          <FontAwesomeIcon  icon={faInstagram} style={{color: '#e95950'}}/>  
-          {getSocialTag('Instagram',currentUser.userSocialAccounts)}
-          </Card.Body>
-          </Card>
-          <Card  onClick={() => handlecSetInstagram('Social - Twitch','Twitch')}>
-       
-          <Card.Body>
-          <FontAwesomeIcon  icon={faTwitch} style={{color: '#6441a5'}} /> {getSocialTag('Twitch',currentUser.userSocialAccounts)}
-          </Card.Body>
-          </Card>
-          <Card  onClick={() => handlecSetInstagram('Social - Youtube','Youtube')}>
-       
-          <Card.Body>
-          <FontAwesomeIcon  icon={faYoutube} style={{color: '#FF0000'}}/>  {getSocialTag('Youtube',currentUser.userSocialAccounts)}
-          </Card.Body>
-          </Card>
-          <Card  onClick={() => handlecSetInstagram('Social - Twitter','Twitter')}>
-       
-          <Card.Body>
-          <FontAwesomeIcon  icon={faTwitter} style={{color: '#00acee'}} />  {getSocialTag('Twitter',currentUser.userSocialAccounts)}
-          </Card.Body>
-          </Card>
-                          
-                        </Card.Body>
-                       
-                      </Card>
-                      </Form>
-                  
-                </Tab.Pane>
-              </Tab.Content>
-              </Card.Body>
-            </Card>
-            </Tab.Container>
             </Col>
               <Col md="4">
                 <Card className="card-user">
