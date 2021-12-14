@@ -73,7 +73,7 @@ function  Auth(props) {
           <Route
             path={prop.layout + prop.path}
             key={key}
-            render={(props) => (
+            render={(props2) => (
               <>
              
               {(prop.component=='Landing') && (<Landing {...props} />)}

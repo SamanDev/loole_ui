@@ -19,21 +19,12 @@ import HomeEvents from "components/events/home.component"
 import GameSlide from "components/GameSlide";
 
 function  Landing(prop) {
-    const [currentUser,setCurrentUser] = useState(prop.token);
-
-    const [events,setEvents] = useState(prop.events);
-    
-    useEffect(() => {
-      setEvents(prop.events)
-       
-      
-     },[prop.events]);
-     
-     useEffect(() => {
-      setCurrentUser(prop.token)
-       
-      
-     },[prop.token]);
+    const [myState, setMyState] = useState(prop.myState)
+  useEffect(() => {
+    setMyState(prop.myState)
+}, [prop.myState]);
+const currentUser = prop.findStateId(myState,'currentUser');
+const events = prop.findStateId(myState,'events');
   
 const elements = ['1', '2-4_01', '2-4_02','2-4_03'];
 var responsive = $(window).width();
@@ -183,7 +174,7 @@ return (
                 <h4 className="header-text text-center">Is it Real Cash?</h4>
                 <p className="header-text text-center">Absolutly YES! Cash on the table.</p>
 
-                <HomeEvents events={events} token={currentUser}/>
+                <HomeEvents {...prop}/>
                 
              
             </div>
@@ -380,7 +371,7 @@ return (
                 <div className="container">
                     <h4 className="header-text text-center">Is it Real Cash?</h4>
                     <p className="header-text text-center">Absolutly YES! Cash on the table.</p>
-                    <HomeEvents events={events} token={currentUser}/>
+                    <HomeEvents {...prop}/>
                     
                  
                 </div>

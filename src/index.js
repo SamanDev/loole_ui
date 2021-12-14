@@ -23,7 +23,7 @@ import AdminLayout from "layouts/Admin.js";
 import LockLayout from "layouts/Lock.js";
 import PanelLayout from "layouts/Panel.js";
 import Login from "components/newlogin.component";
-import Register  from "components/register.component";
+import Register  from "components/newregister.component";
 import { Spinner, Container } from "react-bootstrap";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
@@ -81,7 +81,7 @@ function Main() {
 
   const [myState, setMyState] = useState({
     list: [
-      { id: "currentUser", val: {} },
+      { id: "currentUser", val: defUser },
       { id: "events", val: null },
 
       { id: "keyDash", val: 0 },
@@ -176,7 +176,7 @@ function Main() {
     eventBus.on("eventsDataActive", (event) => {
       var curU = currentUser;
       curU.userActivate = true;
-      setCurrentUser(curU);
+      
       localStorage.setItem("user", JSON.stringify(curU));
       eventBus.dispatch("eventsDataUser", curU);
       Swal.fire("", event, "success");
@@ -257,10 +257,10 @@ function Main() {
           path="/game/:id"
           render={(props) => (
             <LandLayout
-              {...props}
-              authed={true}
-              events={events}
-              token={currentUser}
+            {...props}
+            myState={myState}
+            onUpdateItem={onUpdateItem}
+            findStateId={findStateId}
             />
           )}
         />
@@ -268,10 +268,10 @@ function Main() {
           path="/mobile"
           render={(props) => (
             <LandLayout
-              {...props}
-              authed={true}
-              events={events}
-              token={currentUser}
+            {...props}
+            myState={myState}
+            onUpdateItem={onUpdateItem}
+            findStateId={findStateId}
             />
           )}
         />
@@ -279,10 +279,10 @@ function Main() {
           path="/home"
           render={(props) => (
             <LandLayout
-              {...props}
-              myState={myState}
-              onUpdateItem={onUpdateItem}
-              findStateId={findStateId}
+            {...props}
+            myState={myState}
+            onUpdateItem={onUpdateItem}
+            findStateId={findStateId}
             />
           )}
         />
@@ -290,10 +290,10 @@ function Main() {
           path="/user"
           render={(props) => (
             <LandLayout
-              {...props}
-              authed={true}
-              events={events}
-              token={currentUser}
+            {...props}
+            myState={myState}
+            onUpdateItem={onUpdateItem}
+            findStateId={findStateId}
             />
           )}
         />
@@ -301,10 +301,10 @@ function Main() {
           path="/content"
           render={(props) => (
             <LandLayout
-              {...props}
-              authed={true}
-              events={events}
-              token={currentUser}
+            {...props}
+            myState={myState}
+            onUpdateItem={onUpdateItem}
+            findStateId={findStateId}
             />
           )}
         />

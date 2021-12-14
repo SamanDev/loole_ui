@@ -90,7 +90,7 @@ var moment = require("moment");
     
         
      
-        <Card   color={getColorStatus(item.status)} >
+        <Card   color={getColorStatus(item.status)}   as={Link} to={"/panel/lobby?id=" + item.id} >
          <Label inverted size="mini" color={getColorStatus(item.status)} ribbon style={{zIndex:2,maxWidth:170,position:'absolute',top:15,left:-10}}>
          {item.status == 'Pending' &&  ( <Icon loading name='spinner' />)}
          {item.status == 'Finished' &&  ( <Icon  name='check' color="green" />)}

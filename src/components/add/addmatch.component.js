@@ -42,7 +42,7 @@ import {
   getColor,
   getIcon,
   renderer,
-  printMatchBlock,
+  
   isJson,
   getModalTag,
   getGameTag,
@@ -55,6 +55,7 @@ import {
   printJoinalerts
   
 } from "components/include";
+import MatchCard  from "components/matchcard.component";
 var moment = require("moment");
   const required = (value,props) => {
       
@@ -418,7 +419,7 @@ class AddMatch extends Component {
           <Row>
                     <Col  sm="7">
                     <Form.Field
-                    inverted
+                    
             control={Select}
             label='Game'
         
@@ -480,7 +481,7 @@ class AddMatch extends Component {
                       {(this.state.GName.value.indexOf(' - ') > -1) && (
                         <>
                         <Card.Group className="fours one" style={{ marginBottom: 20 }}>
-                        {printMatchBlock(item)}
+                        <MatchCard item={item}/>
                         </Card.Group>
                        
                       </>

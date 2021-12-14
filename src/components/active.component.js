@@ -99,7 +99,7 @@ userService
           )
     
   }
-  if(!currentUser?.userActivate){
+  if(!currentUser.userActivate){
     
     
     return (

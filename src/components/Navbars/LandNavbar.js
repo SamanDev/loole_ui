@@ -21,7 +21,8 @@ const LandNavbar = (prop) => {
   const currentUser = prop.findStateId(myState, "currentUser");
   const logOut=()=> {
       
-    prop.onUpdateItem("currentUser", {})
+    prop.onUpdateItem("currentUser", defUser)
+    
     AuthService.logout();
 }
   return (
@@ -42,7 +43,7 @@ const LandNavbar = (prop) => {
           </Menu.Item>
 
           <Menu.Menu position="right">
-            {currentUser && currentUser.accessToken ? (
+            {currentUser?.accessToken ? (
               <>
                 <Menu.Item name="Dashboard" to={"/panel/dashboard"} as={Link} />
                 <Menu.Item name="logout" onClick={() =>logOut()} />

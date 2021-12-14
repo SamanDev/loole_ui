@@ -177,18 +177,10 @@ class UserService {
     return axios
       .put(API_URL_TEST + "joinEvent", { id }, { headers: authHeader() })
       .then((response) => {
-        if (response.data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-          eventBus.dispatch("eventsDataUser", response.data);
-          eventBus.remove("eventsDataUser");
-         
-          return "successful";
-          
-        }
-        else{
-          return response.data;
-        }
-      });
+        
+          return response;
+        
+      })
   }
   loseEvent(id,idMatch) {
     if(idMatch){
@@ -217,75 +209,13 @@ class UserService {
     return axios
       .put(API_URL_TEST + "leaveEvent", { id }, { headers: authHeader() })
       .then((response) => {
-        if (response.data.accessToken) {
-          
-          localStorage.setItem("user", JSON.stringify(response.data));
-          eventBus.dispatch("eventsDataUser", response.data);
-          eventBus.remove("eventsDataUser");
-          
-          return "successful";
-        }
-        else{
-          return response.data;
-        }
+        
+          return response;
+        
         
       });
   }
-   getUser() {
-    
-    // console.log(JSON.stringify(authHeader()))
-     if(JSON.stringify(authHeader()) != '{}'){
-      return  axios
-      .get(API_URL_TEST + "getUser", { headers: authHeader() })
-      .then( (response) => {
-        if (response.data.accessToken) {
-          //console.log(JSON.stringify(response.data))
-          localStorage.setItem("user", JSON.stringify(response.data));
-          //UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username);
-         // eventBus.dispatch("eventsDataUser", response.data);
-          return response.data;
-        }else{
-          var loc = window.location.href;
-        if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
-          //localStorage.removeItem("user");
-        window.location.replace("/auth/login-page");
-        }else{
-          //localStorage.setItem("user", JSON.stringify(defUser));
-          return defUser
-        }
-        }
-      }).catch( (err) => {
-        var loc = window.location.href;
-        if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
-          localStorage.setItem("user", JSON.stringify(defUser));
-          //localStorage.removeItem("user");
-        //window.location.replace("/auth/login-page");
-        }else{
-          localStorage.setItem("user", JSON.stringify(defUser));
-          
-          
-        }
-        return defUser
-      
-      });
-     }else{
-      var loc = window.location.href;
-      if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
-        //localStorage.removeItem("user");
-        localStorage.setItem("user", JSON.stringify(defUser));
-      window.location.replace("/auth/login-page");
-      }else{
-        localStorage.setItem("user", JSON.stringify(defUser));
-        eventBus.dispatch("eventsDataUser", defUser);
-        eventBus.remove("eventsDataUser");
-        
-      }
-      return defUser
-      
-    
-    }
-    
-  }
+  
   deleteEvent(id) {
     return axios
       .delete(API_URL_TEST + "deleteEvent?id=" + id, { headers: authHeader() })
@@ -308,7 +238,7 @@ class UserService {
         //eventBus.remove("eventsDataEventDo");
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
-        return response.data;
+        return response;
       });
   }
   getEvents() {

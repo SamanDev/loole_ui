@@ -54,10 +54,10 @@ const events = prop.findStateId(myState,'events');
   }
   
   const panes = [
-    { menuItem: 'All', render: () => <Tab.Pane>{getBlockChallenge('all',events)}</Tab.Pane> },
-    { menuItem: 'Mobile', render: () => <Tab.Pane>{getBlockChallenge('Mobile',events)}</Tab.Pane> },
-    { menuItem: 'Console', render: () => <Tab.Pane>{getBlockChallenge('NoMobile',events)}</Tab.Pane> },
-    { menuItem: 'Tournament', render: () => <Tab.Pane>{getBlockChallenge('Tournament',events)}</Tab.Pane> },
+    {id:1, menuItem: 'All', render: () => <Tab.Pane>{getBlockChallenge('all',events)}</Tab.Pane> },
+    {id:2, menuItem: 'Mobile', render: () => <Tab.Pane>{getBlockChallenge('Mobile',events)}</Tab.Pane> },
+    {id:3, menuItem: 'Console', render: () => <Tab.Pane>{getBlockChallenge('NoMobile',events)}</Tab.Pane> },
+    {id:4, menuItem: 'Tournament', render: () => <Tab.Pane>{getBlockChallenge('Tournament',events)}</Tab.Pane> },
   ]
     
   return (

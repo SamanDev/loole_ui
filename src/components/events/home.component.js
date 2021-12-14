@@ -2,13 +2,13 @@
 import React, { Component,useState, useEffect } from "react";
 import $ from "jquery";
 
-import { printMatchBlock,printGameBlock,date_edit } from "components/include";
-
+import { printBlockChallenge,date_locale,date_edit } from "components/include";
+import { Tab,Card } from 'semantic-ui-react'
 // react-bootstrap components
 import {
   Badge,
   Button,
-  Card,
+ 
   Media,
   Navbar,
   Nav,
@@ -19,108 +19,53 @@ import {
   Carousel
 } from "react-bootstrap";
 import GameSlide from "components/GameSlide";
+import Moment from "moment";
+var moment = require("moment");
 const HomeEvents = (prop) => {
-  const [currentUser,setCurrentUser] = useState(prop.token);
-  
-  const [events,setEvents] = useState(prop.events);
+  const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
-    setEvents(prop.events)
-     
-    
-   },[prop.events]);
-  
-   useEffect(() => {
-    setCurrentUser(prop.token)
-     
-    
-   },[prop.token]);
+    setMyState(prop.myState)
+}, [prop.myState]);
 
-   const getBlockChallenge = (filtermode,events) => {
-    var newItem = []
-    if (events) {
-     
-       events.map((item, i) => {
-        if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
-          //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
-          
-          {item.players.map((player, j) => {
-           //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
-          })}
-        
-          var dateEdited = date_edit(item.expire);
-      
-          var dateExpired = date_locale(dateEdited);
-          
-          var now = new Date();
-          var dateNow = now.toISOString();
-          item.expire = date_edit(item.expire);
-      item.startTime = date_edit(item.startTime);
-      item.finished = date_edit(item.finished);
-          
-          if(dateExpired<dateNow && item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){}else{
-            //newItem.push(item);
-          }
-          newItem.push(item);
-          
-          
-         
-        } 
-      }
-      
-      )
-      return printBlockChallenge(newItem,filtermode)
-    }
-
-  }
-const getBlockChallengeMobile = (filtermode,f,t,events) => {
+const events = prop.findStateId(myState,'events');
+const getBlockChallenge = (filtermode,events) => {
   var newItem = []
-    if (events) {
-     
-       events.map((item, i) => {
-        if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
-          //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
-          
-          {item.players.map((player, j) => {
-           //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
-          })}
+  if (events) {
+   
+     events.map((item, i) => {
+      if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
+        //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
         
-          var dateEdited = date_edit(item.expire);
-      
-          var dateExpired = date_locale(dateEdited);
-          
-          var now = new Date();
-          var dateNow = now.toISOString();
-          item.expire = date_edit(item.expire);
-      item.startTime = date_edit(item.startTime);
-      item.finished = date_edit(item.finished);
-          
-          if(dateExpired<dateNow && item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){}else{
-            //newItem.push(item);
-          }
+        {item.players.map((player, j) => {
+         //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
+        })}
+        var timestring1 = item.expire;
+        var timestring2 = new Date();
+        var startdate = moment(timestring1).format();
+        var expected_enddate = moment(timestring2).format();
+       startdate = moment(startdate).add(20, 'days').format()
+       
+        
+        if(item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){
+          //item.gameConsole = startdate + ' '+ expected_enddate;
+          if(startdate>expected_enddate){newItem.push(item);}
+        }else{
           newItem.push(item);
-          
-          
-         
-        } 
-      }
-      
-      )
-      return printBlockChallenge(newItem,filtermode)
+        }
+        //newItem.push(item);
+        
+        
+       
+      } 
     }
+    
+    )
+    return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem,filtermode)}</Card.Group>)
+  }
+
 }
-const renderer = ({ days,hours, minutes, seconds, completed }) => {
-    if (completed) {
-      // Render a complete state
-      return <Completionist />;
-    } else {
-      // Render a countdown
-      return (
-        <span>
-          {days} <small>days</small> {hours}:{minutes}:{seconds}
-        </span>
-      );
-    }
-  };
+
+   
 const elements = ['1', '2-4_01', '2-4_02','2-4_03'];
 var responsive = $(window).width();
 if (!events) {return (
@@ -140,7 +85,7 @@ return (
   
 <>
 
-                
+{getBlockChallenge('all',events)}    
               
   </>
 );

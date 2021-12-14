@@ -74,10 +74,7 @@ const SidebarExampleSidebar = (prop) => {
           <Sidebar
              className={'sisde'+isUser}
             animation='scale down'
-            icon='labeled'
-            inverted
-           
-            vertical
+            icon='labeled' inverted vertical
             direction="bottom"
             visible={visible}
             width='thin'

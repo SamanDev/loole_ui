@@ -62,12 +62,12 @@ const getEventByID= async(ids) => {
   }
       return data;
     }else{
-      localStorage.removeItem("user");
+      localStorage.setItem("user",  JSON.stringify(defUser));
       UserWebsocket.connect();
       return defUser;
     }
   }else{
-    localStorage.removeItem("user");
+    localStorage.setItem("user",  JSON.stringify(defUser));
     UserWebsocket.connect();
     
     return defUser;

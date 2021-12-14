@@ -123,7 +123,7 @@ class UserWebsocket {
                     ws=null;
                    // localStorage.clear();
                     //window.location.reload();
-                    window.location.replace("/auth/login-page");
+                    //window.location.replace("/auth/login-page");
                 }
             }
             ws.onclose = function(e){

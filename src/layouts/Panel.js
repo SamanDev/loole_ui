@@ -149,7 +149,7 @@ const currentUser = props.findStateId(myState,'currentUser');
               <>
               {(prop.component=='Admin') && (<Admin authed={true} />)}
               {(prop.component=='Profile') && (<Profile authed={true}  token={currentUser} tabkey={keyProfile} handleProfileTabID={setKeyProfile} />)}
-              {(prop.component=='Dashboard') && (<Dashboard authed={true} {...props}  />)}
+              {(prop.component=='Dashboard') && (<Dashboard  {...props}  />)}
               {(prop.component=='LockScreenPage') && (<LockScreenPage {...props} />)}
               {(prop.component=='Cashier') && (<Cashier {...props} />)}
               {(prop.component=='Rewards') && (<Rewards authed={true} token={currentUser} />)}
@@ -250,7 +250,7 @@ const currentUser = props.findStateId(myState,'currentUser');
           basic
           dimmer='blurring'
           open={open}
-          onClose={() => prop.onUpdateItem('openModalAdd',false)}
+          onClose={() => props.onUpdateItem('openModalAdd',false)}
         >
           <AddMatch token={currentUser} {...props} />
           

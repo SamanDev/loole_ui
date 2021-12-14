@@ -136,7 +136,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
                     as="li"
                     
                   >
-                    <Nav.Link onClick={() => {prop.name == 'Create' && (onUpdateItem('openModalAdd',true)); return false}} as={Link}>
+                    <Nav.Link onClick={() => {prop.name == 'Create' && (onUpdateItem('openModalAdd',true));}}>
                       {prop.icon ? (
                         <>
                           <i className={prop.icon} />
@@ -188,7 +188,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
   };
 
   if(token){
-    if(token?.username){
+    if(token?.accessToken){
     var str = token.username;
     var res = str.substring(0, 1)
     onUpdateItem("openModalLogin", false)

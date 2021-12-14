@@ -29,9 +29,11 @@ const LandNavbar = (prop) => {
   const currentUser = prop.findStateId(myState, "currentUser");
   const logOut=()=> {
       
-    prop.onUpdateItem("currentUser", {})
-    history.push("/home");
+    prop.onUpdateItem("currentUser", defUser)
+  
     AuthService.logout();
+
+    history.push("/home");
 }
   return (
     <>
@@ -52,7 +54,7 @@ const LandNavbar = (prop) => {
               </>
             ) : (
               <Menu.Item
-              as={Link}
+          
                 onClick={() => prop.onUpdateItem("openModalLogin", true)}
               >Login / Register</Menu.Item>
             )}

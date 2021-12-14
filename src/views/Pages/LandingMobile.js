@@ -4,7 +4,7 @@ import Countdown from "react-countdown";
 import userService from "services/user.service";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
-import { printMatchBlock,printGameBlock } from "components/include";
+import { printGameBlock } from "components/include";
 
 // react-bootstrap components
 import {

@@ -392,7 +392,7 @@ $('.gdetails.no'+player).removeClass('hide');
     <Button.Or color="red" style={{minWidth: 5}}/>
     <Button animated onClick={this.handlecAlertWin}
                     color="green"
-                    inverted={isUpLoading}
+                    inverted
                     disabled={isUpLoading}>
   <Button.Content visible>{progressLable}</Button.Content>
   <Button.Content hidden>Upload video</Button.Content>

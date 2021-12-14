@@ -8,7 +8,7 @@ import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
-import { printMatchBlock } from "components/include";
+import printMatchBlock  from "components/matchblock.component";
 
 // react-bootstrap components
 import {

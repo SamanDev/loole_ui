@@ -1,4 +1,4 @@
-import React, { Component, useState,useEffect} from "react";
+import React, { Component, useState,useEffect,useLayoutEffect} from "react";
 
 import $ from "jquery";
 import { NavLink, Link } from "react-router-dom";
@@ -56,10 +56,7 @@ const Toast = Swal.mixin({
   showConfirmButton: false,
   timer: 3000,
   timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.addEventListener("mouseenter", Swal.stopTimer);
-    toast.addEventListener("mouseleave", Swal.resumeTimer);
-  },
+ 
 });
 
 
@@ -76,11 +73,11 @@ const Toast = Swal.mixin({
    
     
 }, [prop.myState]);
-  useEffect(() => {
+useLayoutEffect(() => {
     prop.onUpdateItem('eventIDQ',getQueryVariable("id"))
     prop.onUpdateItem('matchIDQ',getQueryVariable("matchid"))
     $("#jsonhtml").html($("#jsonhtml2").text());
-    
+    //handleAllDelete(eventIDQ)
 }, []);
 const currentUser = prop.findStateId(myState,'currentUser');
 const eventMatch = prop.findStateId(myState,'eventMatch');
@@ -98,18 +95,31 @@ const match = prop.findStateId(myState,'match');
       
       
     
-     const handleDelete =(e) => {
-      e.preventDefault();
-  
-      userService.deleteEvent(eventIDQ).then(
-        (response) => {
-          history.push("/panel/dashboard");
-          //window.location.replace("/panel/dashboard");
-          //return <Redirect to="/panel/dashboard" />;
-        },
-        (error) => {}
-      );
-    }
+      const handleDelete =(e) => {
+        e.preventDefault();
+    
+        userService.deleteEvent(eventIDQ).then(
+          (response) => {
+            history.push("/panel/dashboard");
+            //window.location.replace("/panel/dashboard");
+            //return <Redirect to="/panel/dashboard" />;
+          },
+          (error) => {}
+        );
+      }
+      const handleAllDelete =(id) => {
+        //e.preventDefault();
+    
+        userService.deleteEvent(id).then(
+          (response) => {
+            //history.push("/panel/dashboard");
+            handleAllDelete(id-1)
+            //window.location.replace("/panel/dashboard");
+            //return <Redirect to="/panel/dashboard" />;
+          },
+          (error) => {}
+        );
+      }
         
       if (!eventMatch || !currentUser || (!match)) {
        
@@ -183,6 +193,7 @@ const match = prop.findStateId(myState,'match');
               
       }
       
+     
       return (
         <>
           <div
@@ -303,7 +314,7 @@ const match = prop.findStateId(myState,'match');
                           <MatchTourSection item={eventMatch} matchidFind={match} token={currentUser} />
                           ) : (
                             
-                            <MatchSection item={eventMatch} matchidFind={match} token={currentUser} />
+                            <MatchSection item={eventMatch} matchidFind={match} token={currentUser} {...prop} />
                             
                           )}
                           </>

@@ -12,7 +12,7 @@ const DashStat = (prop) => {
       setMyState(prop.myState)
   }, [prop.myState]);
   const currentUser = prop.findStateId(myState,'currentUser');
-  const open = prop.findStateId(myState,'openModalAdd');
+
   
 
 
@@ -54,9 +54,7 @@ const DashStat = (prop) => {
               <Icon
                 name="diamond"
                 size="large"
-                circular
-                inverted
-                color="teal"
+                circular inverted color="teal"
               />
             </Grid.Column>
             <Grid.Column  width={12}>
@@ -78,16 +76,15 @@ const DashStat = (prop) => {
         </Card>
       } />
       
-        <Popup content='Create a Match' inverted trigger={<Card onClick={() => prop.onUpdateItem('openModalAdd',true)}>
+        <Popup content='Create a Match' inverted trigger={
+        <Card as={'div'} onClick={() => prop.onUpdateItem('openModalAdd',true)}>
           <div className="content extra">
             <Grid columns={2} divided>
               <Grid.Column width={4} style={{ textAlign: "right" }}>
                 <Icon
                   name="asl"
                   size="large"
-                  circular
-                  inverted
-                  color="pink"
+                  circular inverted color="pink"
                 />
               </Grid.Column>
               <Grid.Column width={12}>
@@ -112,7 +109,8 @@ const DashStat = (prop) => {
               </Grid.Column>
             </Grid>
           </div>
-          </Card>}/>
+          </Card>
+        }/>
           
         
       
@@ -125,9 +123,7 @@ const DashStat = (prop) => {
             <Icon
               name="chart line"
               size="large"
-              circular
-              inverted
-              color="black"
+              circular inverted color="black"
             />
           </Grid.Column>
           <Grid.Column width={12}>

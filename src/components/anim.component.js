@@ -67,7 +67,7 @@ export default class TransitionExampleTransitionExplorer extends Component {
            
            
           >
-           <div centered >{objanim}</div>
+           <div>{objanim}</div>
           </Transition>
  
       </>
