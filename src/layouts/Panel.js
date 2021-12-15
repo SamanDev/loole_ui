@@ -219,12 +219,12 @@ const currentUser = props.findStateId(myState,'currentUser');
            
           </Sidebar>
 
-          <Sidebar.Pusher style={{maxHeight:'100%'}}>
+          <Sidebar.Pusher style={{maxHeight:'100%',overflow:'auto'}}>
         
               
-            <div className="main-panel"  style={{minHeight:'100%'}}>
+            <div className="main-panel">
         
-        <div className="content" style={{paddingBottom:0}}>
+        <div className="content">
         <AdminNavbar page={getPage(routes)} token={currentUser} {...props} />
             <Switch>{getRoutes(routes)}</Switch>
             <Modal

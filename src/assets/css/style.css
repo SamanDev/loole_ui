@@ -792,7 +792,10 @@ background-image: linear-gradient(rgba(0, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.847) 
     height: 200px !important;
 }
 /* Mobile */
-
+.main-panel > .content {
+    padding: 10px 10px;
+    min-height: calc(100vh - 123px);
+}
 @media only screen and (max-width: 767px) {
     [class*="mobile hidden"],
     [class*="tablet only"]:not(.mobile),

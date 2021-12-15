@@ -177,7 +177,7 @@ class ShetabDeposit extends Component {
     });
   }
   settxID(e) {
-    console.log(e)
+   
     this.setState({
       txID: e,
     });
