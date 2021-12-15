@@ -6,10 +6,9 @@ import { useHistory } from "react-router";
 // react-bootstrap components
 import {
   Badge,
-  Button,
-  
+ 
   Container,
-  
+  Col,
   Spinner,
   Accordion,
 } from "react-bootstrap";
@@ -22,6 +21,9 @@ import {
   Menu,
   Segment,
   Sidebar,
+  Dimmer,
+  Loader,
+  Button
 } from 'semantic-ui-react'
 import Active  from "components/active.component";
 import TransitionExampleTransitionExplorer  from "components/anim.component";
@@ -131,60 +133,36 @@ const match = prop.findStateId(myState,'match');
               className="full-page lock-page"
               data-color="black"
               style={{ height: "100vh", overflow: "auto" }}
-              data-image={require("assets/img/bg.jpg").default}
+              data-image={"/assets/img/bg.jpg"}
             >
-              <div
-                className="content "
-                style={{
-                  fontSize: 50,
-                  color: "#fff",
-                  position: "relative",
-                  zIndex: "23",
-                }}
-              >
-                <Container className="text-center">
-                  <h4 style={{ textAlign: "center" }}>
-                    Loading
-                    <Spinner animation="grow" size="sm" />
-                    <Spinner animation="grow" size="sm" />
-                    <Spinner animation="grow" size="sm" />
-                  </h4>
-                  {(matchIDQ) ? (
-                                
-                                <Link to={"/panel/lobby?id="+eventIDQ} className="btn actbtn btn-danger btn-round "> Back </Link>
-                              ):(
-                                <>
-                                {getQueryVariable("ref")? (
-                                <>
-                                {getQueryVariable("ref") == 'home'? (
-                                  <Link to={"/"+getQueryVariable("ref")} className="btn  actbtn btn-danger btn-round "> Back </Link>
-                                  ):(
-                                    <Link to={"/panel/"+getQueryVariable("ref")} className="btn  actbtn btn-danger btn-round "> Back </Link>
-                                    )}
-                                </>
-                                ):(
-                                  <Link to="/panel/dashboard" className="btn actbtn btn-danger btn-round "> Back </Link>
-                                  )}
-                                  </>
-                              )}
-                                {(haveAdmin(currentUser.roles))&&(
+              <Segment style={{ height: "100%", width: "100%", position: "absolute",background:'transparent' }}>
+            <Dimmer active  style={{ background:'transparent' }}>
+              <Loader size="large">Loading
+              <br/><br/>
+              <Button inverted color='pink'  onClick={() => history.goBack()}>
+        Go Back
+      </Button>
+      {(haveAdmin(currentUser.roles))&&(
                 <>
+                <br/><br/> <br/><br/> <br/><br/>
                  <Button
-                                      className="btn-round actbtn hid2e"
+                                     inverted color='red' 
                                       onClick={handleDelete}
-                                      variant="primary"
+                             
                                     >
                                       Delet Match
                                     </Button>
                 </>
               )}
-                </Container>
-              </div>
+              </Loader>
+            </Dimmer>
+          </Segment>
+             
               <div
                 className="full-page-background"
                 style={{
                   backgroundImage:
-                    "url(" + require("assets/img/bg.jpg").default + ")",
+                    "url('/assets/img/bg.jpg')",
                 }}
               ></div>
             </div>
@@ -277,27 +255,37 @@ const match = prop.findStateId(myState,'match');
 
           <Sidebar.Pusher >
             <Segment basic>
-            
-            
-                  <Container>
-                 
-                    <Active {...prop}/>
-                    <Icon name='rocketchat' className={(devWid > 500) && ('hide')} inverted size='large' circular color='teal' onClick={() => setVisible(!visible)} />
-                    <Icon name='chevron left' inverted size='large' circular color='orange' onClick={() => history.goBack()} />
-                    
-                                {(haveAdmin(currentUser.roles))&&(
+            <Col
+          className="mx-auto"
+          lg="8"
+          md="10"
+          style={{ padding: 0, marginTop: 20 }}
+        >
+          <Active {...prop}/>
+          <Button inverted color='pink'  onClick={() => history.goBack()}>
+        Go Back
+      </Button>
+      <Button inverted color='blue' floated="right" className="mobile only" onClick={() => setVisible(!visible)}>
+        Chat...
+      </Button>
+      {(haveAdmin(currentUser.roles))&&(
                 <>
+                
                  <Button
-                                      className="btn-round actbtn hid2e"
+                 floated="right"
+                                     inverted color='red' 
                                       onClick={handleDelete}
-                                      variant="primary"
+                             
                                     >
                                       Delet Match
                                     </Button>
                 </>
               )}
-                               
-                                
+              </Col>
+                  <Container>
+                 
+                    
+                    
                                    
                                     
                                  

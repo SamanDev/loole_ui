@@ -346,9 +346,7 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        console.log("ok");
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
+        
         return response.data;
       });
   }
@@ -361,14 +359,7 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        console.log("ok");
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
-        //return response.data;
-        return 'Ok'
-      }).catch(error => {
-        return 'Ok'
-
+        response.data
       });
   }
   createDepositShetabVerify(mobile) {

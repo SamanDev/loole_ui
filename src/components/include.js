@@ -1234,7 +1234,12 @@ try{
     timer = ''
   //timer =''
   }
-}catch(e){ }
+}catch(e){
+  if((props.btn && completed)){
+    timer = ''
+  //timer =''
+  }
+ }
 
   
   

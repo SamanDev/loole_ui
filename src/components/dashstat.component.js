@@ -7,7 +7,7 @@ import {
   Popup,
   Modal,
   Button,
-  Segment,
+  Segment,Divider
 } from "semantic-ui-react";
 import CurrencyFormat from "react-currency-format";
 import { Link, useLocation } from "react-router-dom";
@@ -24,7 +24,7 @@ const DashStat = (prop) => {
   var nBalance = Number.parseFloat(currentUser.balance).toFixed(2);
   return (
     <>
-      <Grid style={{ marginBottom: 20 }} className="dash-stat">
+      <Grid className="dash-stat">
         <Grid.Column mobile={8} tablet={8} computer={4}>
           <Popup
             content="Go to Cashier"
@@ -121,7 +121,7 @@ const DashStat = (prop) => {
                       color="orange"
                     />
                   </Grid.Column>
-                  <Grid.Column >
+                  <Grid.Column  >
                     <Statistic size="mini">
                       <Statistic.Value>
                         <CurrencyFormat
@@ -140,7 +140,7 @@ const DashStat = (prop) => {
                           renderText={(value) => value}
                         />
                       </Statistic.Value>
-                      <Statistic.Label>win / Match</Statistic.Label>
+                      <Statistic.Label>Win/Match</Statistic.Label>
                     </Statistic>
                   </Grid.Column>
                 </Grid>
@@ -188,11 +188,7 @@ const DashStat = (prop) => {
         />
         </Grid.Column>
       </Grid>
-      <Card.Group style={{ marginBottom: 20 }} className="dash-stat">
-        
-
-        
-      </Card.Group>
+      <Divider  hidden/>
     </>
   );
 };

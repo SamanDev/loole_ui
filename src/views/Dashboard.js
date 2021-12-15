@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { printBlockChallenge,date_locale,date_edit } from "components/include";
-import { Tab,Card } from 'semantic-ui-react'
+import { Tab,Card,Menu,Label } from 'semantic-ui-react'
 import Active  from "components/active.component";
 import DashStat  from "components/dashstat.component";
 import Moment from "moment";
@@ -10,37 +10,74 @@ function Dashboard(prop) {
   useEffect(() => {
     setMyState(prop.myState)
 }, [prop.myState]);
+const [myStateThis, setMyStateThis] = useState({
+  list: [
+    { id: "All", val: 0 },
+    { id: "Mobile", val: 0 },
+
+    { id: "NoMobile", val: 0 },
+    { id: "Tournament", val: 0 },
+   
+  ],
+});
+const findStateId = (st, val) => {
+  return st.list.filter(function (v) {
+    return v.id === val;
+  })[0].val;
+};
+const onUpdateItem = (key, val) => {
+  //console.log(val)
+  if (findStateId(myStateThis, key) != val){
+    //console.log(key)
+    setMyStateThis(() => {
+      const list = myStateThis.list.map((item) => {
+        if (item.id === key) {
+          item.val = val;
+        }
+        return item;
+      });
+
+      return {
+        list: list,
+      };
+    });
+  }
+  
+};
+
+
 const key = prop.findStateId(myState,'keyDash');
 const events = prop.findStateId(myState,'events');
 
-console.log(myState)
   
   
-  const getBlockChallenge = (filtermode,events) => {
-    var newItem = []
-    if (events) {
-     
-       events.map((item, i) => {
-        if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'all') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
-          //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
-          
-          {item.players.map((player, j) => {
-           //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
-          })}
+const updateCount = (events) => {
+  
+  var arrFilters = ['All','Mobile','NoMobile','Tournament']
+  if (events) {
+    for (var ifil = 0; ifil < arrFilters.length; ifil++) {
+      var filtermode = arrFilters[ifil]
+      var newItem = [];
+      events.map((item, i) => {
+        if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'All') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
+        
           var timestring1 = item.expire;
           var timestring2 = new Date();
           var startdate = moment(timestring1).format();
           var expected_enddate = moment(timestring2).format();
-         startdate = moment(startdate).add(20, 'days').format()
+         startdate = moment(startdate).add(10, 'days').format()
          
           
           if(item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){
-            //item.gameConsole = startdate + ' '+ expected_enddate;
-            if(startdate>expected_enddate){newItem.push(item);}
+       
+            if(startdate>expected_enddate){
+              //newItem.push(item)
+            }
           }else{
             newItem.push(item);
           }
-          //newItem.push(item);
+
+          
           
           
          
@@ -48,18 +85,79 @@ console.log(myState)
       }
       
       )
-      return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem,filtermode)}</Card.Group>)
+      if(findStateId(myStateThis,filtermode) != newItem.length){
+        onUpdateItem(filtermode,newItem.length)
+      }
+    }
     }
 
+}
+const getBlockChallenge = (filtermode,events) => {
+  var newItem = []
+  if (events) {
+   
+     events.map((item, i) => {
+      if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'All') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
+        //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+        
+        {item.players.map((player, j) => {
+         //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
+        })}
+        var timestring1 = item.expire;
+        var timestring2 = new Date();
+        var startdate = moment(timestring1).format();
+        var expected_enddate = moment(timestring2).format();
+       startdate = moment(startdate).add(10, 'days').format()
+       
+        
+        if(item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){
+          //item.gameConsole = startdate + ' '+ expected_enddate;
+          if(startdate>expected_enddate){
+            newItem.push(item)
+          }
+        }else{
+          newItem.push(item);
+        }
+        //newItem.push(item);
+        
+        
+        
+       
+      } 
+    }
+    
+    )
+    if(findStateId(myStateThis,filtermode) != newItem.length){
+      //onUpdateItem(filtermode,newItem.length)
+    }
+    return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem,filtermode)}</Card.Group>)
   }
+
+}
   
   const panes = [
-    {id:1, menuItem: 'All', render: () => <Tab.Pane  >{getBlockChallenge('all',events)}</Tab.Pane> },
-    {id:2, menuItem: 'Mobile', render: () => <Tab.Pane style={{maxHeight: 'calc(80vh - 10em)', overflow: 'auto'}}>{getBlockChallenge('Mobile',events)}</Tab.Pane> },
-    {id:3, menuItem: 'Console', render: () => <Tab.Pane>{getBlockChallenge('NoMobile',events)}</Tab.Pane> },
-    {id:4, menuItem: 'Tournament', render: () => <Tab.Pane>{getBlockChallenge('Tournament',events)}</Tab.Pane> },
+    {id:1, menuItem: (
+      <Menu.Item style={{width: '25%'}}>
+        All <Label color='red' size='mini'>{findStateId(myStateThis, "All")}</Label>
+      </Menu.Item>
+    ), render: () => <Tab.Pane  style={{maxHeight: 'calc(88vh - 14em)', overflow: 'auto'}} >{getBlockChallenge('All',events)}</Tab.Pane> },
+    {id:2, menuItem: (
+      <Menu.Item style={{width: '25%'}}>
+        Mobile <Label color='teal' size='mini' >{findStateId(myStateThis, "Mobile")}</Label>
+      </Menu.Item>
+    ), render: () => <Tab.Pane style={{maxHeight: 'calc(88vh - 14em)', overflow: 'auto'}}>{getBlockChallenge('Mobile',events)}</Tab.Pane> },
+    {id:3, menuItem: (
+      <Menu.Item style={{width: '25%'}}>
+        Console <Label color='orange'  size='mini'>{findStateId(myStateThis, "NoMobile")}</Label>
+      </Menu.Item>
+    ), render: () => <Tab.Pane>{getBlockChallenge('NoMobile',events)}</Tab.Pane> },
+    {id:4, menuItem: (
+      <Menu.Item style={{width: '25%'}}>
+        Tournament <Label  size='mini' color='black'>{findStateId(myStateThis, "Tournament")}</Label>
+      </Menu.Item>
+    ), render: () => <Tab.Pane>{getBlockChallenge('Tournament',events)}</Tab.Pane> },
   ]
-    
+  updateCount(events)
   return (
       
         
@@ -67,7 +165,7 @@ console.log(myState)
     
     <Active {...prop}/>
     <DashStat {...prop}/>
-    <Tab panes={panes}  defaultActiveIndex={key} onTabChange={(e, data) => {prop.onUpdateItem('keyDash',data.activeIndex)}}  />
+    <Tab  size='big' panes={panes}  defaultActiveIndex={key}  onTabChange={(e, data) => {prop.onUpdateItem('keyDash',data.activeIndex)}}  />
 
      
 

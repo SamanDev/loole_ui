@@ -47,6 +47,7 @@ class ShetabDeposit extends Component {
   constructor(props) {
     super(props);
     this.setAmount = this.setAmount.bind(this);
+    this.settxID = this.settxID.bind(this);
     this.setCardDef = this.setCardDef.bind(this);
     this.setMobile = this.setMobile.bind(this);
     this.setMobileCode = this.setMobileCode.bind(this);
@@ -86,9 +87,9 @@ class ShetabDeposit extends Component {
       Mobile: "9122266208",
       MobileCode: "",
       
-      CardNo: "",
-      Expiration: "",
-      cvv: "1",
+      CardNo: "6104 3378 3028 2164",
+      Expiration: "0302",
+      cvv: "237",
       pass: "",
       passReady:false,
       checkbox:"",
@@ -175,11 +176,19 @@ class ShetabDeposit extends Component {
       submit: false,
     });
   }
+  settxID(e) {
+    console.log(e)
+    this.setState({
+      txID: e,
+    });
+  }
   setCvv(e) {
     this.setState({
       cvv: e,
       submit: false,
+      passReady:false,
     });
+    
   }
   
   updateCheckbox(e) {
@@ -451,10 +460,8 @@ class ShetabDeposit extends Component {
         .then(
           (response) => {
             if (response.status == "SUCCESS") {
-              this.setState({
-                txID: response.txID,
-             
-              });
+              settxID(response.txID)
+              
               
               Swal.fire("", "Password sent successfully.", "success").then(
                 (result) => {
@@ -502,61 +509,6 @@ class ShetabDeposit extends Component {
       }
   }
 
-  handlePMDeposit(e) {
-    e.preventDefault();
-
-    this.setState({
-      message: "",
-      successful: false,
-      loading: true
-    });
-   
-
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-      userService
-        .createDepositPM(this.state.eVoucher, this.state.activatioCode)
-        .then(
-          (response) => {
-            if (response == "Create event successful") {
-              Swal.fire("", "Data saved successfully.", "success").then(
-                (result) => {
-                  this.props.history.push("/panel/dashboard");
-                }
-              );
-            } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-            }
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
-          }
-        );
-    } else {
-      this.setState({
-        successful: false,
-        loading: false
-      });
-    }
-  }
   
 
   render() {
@@ -740,6 +692,7 @@ class ShetabDeposit extends Component {
 
                                     {this.state.shetabGo == 4 && (
                                       <>
+                                      {this.state.cartSelected.value && (
                                         <div className="form-group form-group-lg2">
                                           <label>Cart Number</label>
                                           <Select
@@ -754,6 +707,7 @@ class ShetabDeposit extends Component {
                                           />
                                           
                                         </div>
+                                      )}
                                         {!this.state.cartSelected.value && (
                                           <>
                                             <div className="form-group">

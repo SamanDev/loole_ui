@@ -232,17 +232,13 @@ const currentUser = props.findStateId(myState,'currentUser');
            
           </Sidebar>
 
-          <Sidebar.Pusher>
+          <Sidebar.Pusher style={{maxHeight:'100%'}}>
         
               
-            <div className="main-panel">
+            <div className="main-panel"  style={{minHeight:'100%'}}>
+        
+        <div className="content" style={{paddingBottom:0}}>
         <AdminNavbar page={getPage(routes)} token={currentUser} {...props} />
-        <div className="content">
-        <Checkbox
-          checked={visible}
-          label={{ children: <code>visible</code> }}
-          onChange={(e, data) => setVisible(data.checked)}
-        />
             <Switch>{getRoutes(routes)}</Switch>
             <Modal
           inverted
