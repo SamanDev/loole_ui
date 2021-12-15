@@ -335,7 +335,7 @@ class TournamentSection extends Component {
         
         date={hatchbackCar[0].startTime}
       />)}
-            <Link key={z} onClick={() =>(this.props.passedFunction(mtch.id))} to={'/panel/matchlobby?id='+item.id+'&matchid='+mtch.id}>
+            <Link key={z} onClick={() =>(this.props.onUpdateItem("matchIDQ", mtch.id))} to={'/panel/matchlobby?id='+item.id+'&matchid='+mtch.id}>
             <Segment inverted  style={{background:'none !important'}}>
 
 <Grid columns={2}>

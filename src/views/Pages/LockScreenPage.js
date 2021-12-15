@@ -76,8 +76,8 @@ const Toast = Swal.mixin({
     
 }, [prop.myState]);
 useLayoutEffect(() => {
-    prop.onUpdateItem('eventIDQ',getQueryVariable("id"))
-    prop.onUpdateItem('matchIDQ',getQueryVariable("matchid"))
+    //prop.onUpdateItem('eventIDQ',getQueryVariable("id"))
+   // prop.onUpdateItem('matchIDQ',getQueryVariable("matchid"))
     $("#jsonhtml").html($("#jsonhtml2").text());
     //handleAllDelete(eventIDQ)
 }, []);
@@ -262,12 +262,7 @@ const match = prop.findStateId(myState,'match');
 
           <Sidebar.Pusher  style={{background:'none',padding:0}}>
            
-          <Col
-          className="mx-auto"
-          lg="8"
-          md="10"
-          style={{ padding: 0, marginTop: 0 }}
-        >
+          <Container >
           <Active {...prop}/>
           {BackBTC()}
       <Button inverted color='blue' floated="right" className="mobile tablet only" onClick={() => setVisible(!visible)}>
@@ -286,10 +281,10 @@ const match = prop.findStateId(myState,'match');
                                     </Button>
                 </>
               )}
-              </Col>
-                  <Container fluid style={{height: 'calc(100vh - 40px)',overflow:'auto'}}>
+              </Container >
+                  <div style={{height: 'calc(100vh - 40px)',overflow:'auto'}}>
                  
-                    
+                  <Container >
                     
                                    
                                     
@@ -317,7 +312,7 @@ const match = prop.findStateId(myState,'match');
                    
                   </Container>
                 
-          
+          </div>
            
           </Sidebar.Pusher>
         </Sidebar.Pushable>

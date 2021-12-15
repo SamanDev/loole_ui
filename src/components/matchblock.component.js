@@ -14,7 +14,7 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import Moment from "moment";
-import {date_edit,setAvatar,getColorStatus,getIcon,getGroupBadgeBlock,rendererBig}  from "components/include.js";
+import {date_edit,setAvatar,getColorStatus,getIcon,getGroupBadgeBlock,rendererBig,printStatus}  from "components/include.js";
 import {
   Statistic,
   Button,
@@ -79,7 +79,7 @@ var moment = require("moment");
       item.winner = item.matchTables[0].winner;
     }
     if (item.winner) {
-      _mode = setAvatar(item.winner);
+      //_mode = setAvatar(item.winner);
     }
     if (item.status=='Canceled' || item.status=='Expired') {
       _color = "black"; 
@@ -90,7 +90,7 @@ var moment = require("moment");
     
         
      
-        <Card   color={getColorStatus(item.status)} link={false}  as={Link} to={"/panel/lobby?id=" + item.id} >
+        <Card  onClick={()=>prop.onUpdateItem('eventIDQ', item.id)} color={getColorStatus(item.status)} link={false}  as={Link} to={"/panel/lobby?id=" + item.id} >
          <Label inverted size="mini" color={getColorStatus(item.status)} ribbon style={{zIndex:2,maxWidth:170,position:'absolute',top:15,left:-10}}>
          {item.status == 'Pending' &&  ( <Icon loading name='spinner' />)}
          {item.status == 'Finished' &&  ( <Icon  name='check' color="green" />)}
@@ -106,7 +106,10 @@ var moment = require("moment");
                 <div
               className={"text-center cover "+item.status}
                >
-              <div style={{ transform: "scale(.8)",padding: '30px 0',height:185}}>
+              <div style={{ transform: "scale(.8)",padding: '10px 0',height:185}}>
+                {printStatus(item,_mode,_color)}
+              
+              
               <Countdown renderer={rendererBig}  txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
         </div>
         {item.players[0] ? (

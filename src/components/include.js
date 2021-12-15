@@ -9,8 +9,8 @@ import withReactContent from "sweetalert2-react-content";
 import { Link, useLocation } from "react-router-dom";
 import CurrencyFormat from "react-currency-format";
 import userService from "services/user.service";
-import MatchCard  from "components/matchblock.component";
-import TransitionExampleTransitionExplorer  from "components/anim.component";
+import MatchCard from "components/matchblock.component";
+import TransitionExampleTransitionExplorer from "components/anim.component";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import eventBus from "views/eventBus";
 import {
@@ -20,7 +20,7 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import Moment from "moment";
-import SidebarExampleSidebar  from "components/ready.component";
+import SidebarExampleSidebar from "components/ready.component";
 import {
   Statistic,
   Button,
@@ -31,12 +31,11 @@ import {
   Segment,
   Card,
   Image,
-  List
+  List,
 } from "semantic-ui-react";
 // react-bootstrap components
 import {
   Badge,
-  
   Alert,
   Form,
   InputGroup,
@@ -132,8 +131,8 @@ export const setAvatar = (name) => {
   if (!isJson(str)) {
     var res = str.substring(0, 1);
     res = res + " " + str.substring(1, 2);
-  }else{
-    var res = ''
+  } else {
+    var res = "";
   }
 
   return res;
@@ -176,27 +175,29 @@ export const getColor = (amount) => {
     return "red";
   }
 };
-export const printJoinalerts = (response,GName,currentUser,setSelectedTag) => {
- 
-  if (response=='balanceError'){
-    var resMessage = "To enter this event you need to have more balance!"
-Swal.fire({
-title: 'Error!',
-text:resMessage,
-icon:"error",
-showCancelButton: true,
-confirmButtonText: `Go to Cashier`,
-canceleButtonText: `Back`,
-}).then((result) => {
-/* Read more about isConfirmed, isDenied below */
-if (result.isConfirmed) {
-this.props.history.push("/panel/cashier");
-}
-})
+export const printJoinalerts = (
+  response,
+  GName,
+  currentUser,
+  setSelectedTag
+) => {
+  if (response == "balanceError") {
+    var resMessage = "To enter this event you need to have more balance!";
+    Swal.fire({
+      title: "Error!",
+      text: resMessage,
+      icon: "error",
+      showCancelButton: true,
+      confirmButtonText: `Go to Cashier`,
+      canceleButtonText: `Back`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.props.history.push("/panel/cashier");
+      }
+    });
   } else if (response == "pointBalanceError") {
-
-    var resMessage =
-      "To enter this event you need to have more balance!";
+    var resMessage = "To enter this event you need to have more balance!";
     Swal.fire({
       title: "Error!",
       text: resMessage,
@@ -210,27 +211,44 @@ this.props.history.push("/panel/cashier");
         this.state.history.push("/panel/cashier");
       }
     });
-  }else if (response=='tagError'){
+  } else if (response == "tagError") {
     var e = GName.value.split(" - ")[0];
     var p = GName.value.split(" - ")[1];
-  
-  if(p=='PS4'||e=='PS4'){e='PSN';p='PSN';}
-  if(p=='PS5'||e=='PS5'){e='PSN';p='PSN';}
-  if(p=='XBOX'||e=='XBOX'){e='XBOX';p='XBOX';}
-  
-  setSelectedTag(e.replace(' Warzone',''),p,currentUser)
-   
+
+    if (p == "PS4" || e == "PS4") {
+      e = "PSN";
+      p = "PSN";
+    }
+    if (p == "PS5" || e == "PS5") {
+      e = "PSN";
+      p = "PSN";
+    }
+    if (p == "XBOX" || e == "XBOX") {
+      e = "XBOX";
+      p = "XBOX";
+    }
+
+    setSelectedTag(e.replace(" Warzone", ""), p, currentUser);
   }
-}
+};
 export const getColorStatus = (status) => {
   var _col = "red";
-  if (status == 'Ready') {_col = "blue"}
-  if (status == 'InPlay') {_col = "purple"}
-  if(status == 'Pending') {_col = 'green'}
-  if(status == 'Finished') {_col = 'black'}
-  if(status=='Canceled' || status=='Expired') {_col = 'grey'}
-    return _col
-  
+  if (status == "Ready") {
+    _col = "blue";
+  }
+  if (status == "InPlay") {
+    _col = "purple";
+  }
+  if (status == "Pending") {
+    _col = "green";
+  }
+  if (status == "Finished") {
+    _col = "black";
+  }
+  if (status == "Canceled" || status == "Expired") {
+    _col = "grey";
+  }
+  return _col;
 };
 export const getMatchTitle = (level, totalPlayer) => {
   var mTitle = "Round 1";
@@ -307,35 +325,41 @@ export const getGroupBadge = (sign, amount, classes) => {
   );
 };
 
-export const getGroupBadgeBlock = (sign, amount, label,pos,color) => {
+export const getGroupBadgeBlock = (sign, amount, label, pos, color) => {
   if (sign == "Dollar") {
     var nAmount = Number.parseFloat(amount).toFixed(2);
-    var nIcon = 'dollar'
-    var nColor = 'red'
-   
+    var nIcon = "dollar";
+    var nColor = "red";
   } else {
     var nAmount = Number.parseFloat(amount).toFixed(0);
-    var nIcon = 'diamond'
-    var nColor = 'teal'
+    var nIcon = "diamond";
+    var nColor = "teal";
   }
 
   return (
     <>
-    {(pos=='right')&&(<Label pointing={pos} size="mini" basic color="green">{label}</Label>)}
-    
-        <Label  size="small"   basic>
-        <Icon name={nIcon}   color={nColor}  />
-        
-                <CurrencyFormat
+      {pos == "right" && (
+        <Label pointing={pos} size="mini" basic color="green">
+          {label}
+        </Label>
+      )}
+
+      <Label size="small" basic>
+        <Icon name={nIcon} color={nColor} />
+
+        <CurrencyFormat
           value={nAmount}
           displayType={"text"}
           thousandSeparator={true}
           prefix={""}
           renderText={(value) => value}
         />
-              
-              </Label>
-              {(pos=='left')&&(<Label pointing={pos} size="mini" basic color="blue">{label}</Label>)}
+      </Label>
+      {pos == "left" && (
+        <Label pointing={pos} size="mini" basic color="blue">
+          {label}
+        </Label>
+      )}
     </>
   );
 };
@@ -373,143 +397,183 @@ export const vsComponentPlayer = (
   isloading,
   handlechangeReadyEvent
 ) => {
-  
   var player = matchidFind.matchPlayers[num];
-var padd = 10;
-if(matchidFind.status == "Ready") {padd = 60}
-if(matchidFind.status == "InPlay") {padd = 60}
-if(matchidFind.status == "InPlay" && item.players[num].nickName) {padd = 150}
-//if(matchidFind.status == "Pending" && item.gameMode == 'Tournament') {padd = padd + 50}
-if(item.gameMode == 'Tournament' && !getQueryVariable("matchid")){padd = 0}
-  var user = (<div style={{padding:'10px 0 '+padd+'px 0'}}
-    >
-            
-    <Statistic inverted size="mini">
-      <Statistic.Value>
-      {player.username == matchidFind.winner && (
-      <Icon circular  color='yellow' size="mini" name='winner' style={{position:'absolute',fontSize:12,marginLeft:-8}} />
-      )}
-        {player.username ? (
-          <a href={"/user/" + player.username} target="_blank">
+  var padd = 10;
+  if (matchidFind.status == "Ready") {
+    padd = 60;
+  }
+  if (matchidFind.status == "InPlay") {
+    padd = 60;
+  }
+  if (matchidFind.status == "InPlay" && item.players[num].nickName) {
+    padd = 150;
+  }
+  //if(matchidFind.status == "Pending" && item.gameMode == 'Tournament') {padd = padd + 50}
+  if (item.gameMode == "Tournament" && !getQueryVariable("matchid")) {
+    padd = 0;
+  }
+  var user = (
+    <div style={{ padding: "10px 0 " + padd + "px 0" }}>
+      <Statistic inverted size="mini">
+        <Statistic.Value>
+          {player.username == matchidFind.winner && (
+            <Icon
+              circular
+              color="yellow"
+              size="mini"
+              name="winner"
+              style={{ position: "absolute", fontSize: 12, marginLeft: -8 }}
+            />
+          )}
+          {player.username ? (
+            <a href={"/user/" + player.username} target="_blank">
+              <Avatar
+                size="50"
+                round={true}
+                title={player.username}
+                name={setAvatar(player.username)}
+              />
+            </a>
+          ) : (
             <Avatar
               size="50"
               round={true}
-              title={player.username}
-              name={setAvatar(player.username)}
+              src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
+              color="lightgray"
+              className="avatar"
             />
-          </a>
-        ) : (
-          <Avatar
-            size="50"
-            round={true}
-            src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
-            color="lightgray"
-            className="avatar"
-          />
-        )}
-        
-      </Statistic.Value>
-      <Statistic.Label>
-        <small>{player.username ? <><a href={"/user/" + player.username} target="_blank" style={{color: '#fff'}}>{player.username}</a></> : <>...</>}</small>
-      </Statistic.Label>
-    </Statistic>
-</div>)
-var ready = (
-  <>
-{player.username == currentUser.username ? (
-  <div
-                  
-                  style={
-                    matchidFind.status != "Ready" ||
-                    player.username != currentUser.username ||
-                    isloading
-                      ? { padding:10,width:150,margin:'auto',position:'relative',zIndex:10,opacity: 0.5 }
-                      : {padding:10,width:150,margin:'auto',position:'relative',zIndex:10}
-                  }
-                >
-                  
-                <BootstrapSwitchButton
-                    checked={player.ready}
-                    disabled={player.username != currentUser.username ||
-                      isloading}
-                    onlabel="Ready"
-                    onstyle="success"
-                    offlabel="Ready"
-                    onChange={(checked) => {
-                      handlechangeReadyEvent(checked);
-                    }}
-                    style="w-100 mx-1"
-                  />
-                
-                  
-                </div>
-):(
-  <div
-                  
-                  style={{ padding:10,width:150,margin:'auto',position:'relative',zIndex:10,opacity: 0.5 }}
-                >
-                  
-                <BootstrapSwitchButton
-                    checked={player.ready}
-                    disabled={true}
-                    onlabel="Ready"
-                    onstyle="success"
-                    offlabel="Ready"
-                    
-                    style="w-100 mx-1"
-                  />
-                
-                  
-                </div>
-)}
-
-</>)
-var _p = null;
-item.players.map(function (plyr) {
-  if (player.username == plyr.username) {
-    _p = plyr
-  }
-});
-var info = (<>
-
- {_p && _p.username != 'Tournament Player' && (
-   <>
-  {_p.tagId && (
-    <Statistic inverted color="red" size="mini">
-      <Statistic.Label>
-        {getTagName(item.gameName, item.gameConsole)} iD
-      </Statistic.Label>
-      <Statistic.Value>
-        {_p.tagId}
-      </Statistic.Value>
-    </Statistic>
-  )}
-  {_p.nickName && (
-    <>
-      <Divider fitted style={{ opacity: 0 }} />
-      <Statistic inverted color="olive" size="mini">
-        <Statistic.Label>Nickname</Statistic.Label>
-        <Statistic.Value>
-          {_p.nickName}
+          )}
         </Statistic.Value>
+        <Statistic.Label>
+          <small>
+            {player.username ? (
+              <>
+                <a
+                  href={"/user/" + player.username}
+                  target="_blank"
+                  style={{ color: "#fff" }}
+                >
+                  {player.username}
+                </a>
+              </>
+            ) : (
+              <>...</>
+            )}
+          </small>
+        </Statistic.Label>
       </Statistic>
-    </>
-  )}
-</>)}
-</>)
-  return(
+    </div>
+  );
+  var ready = (
     <>
-      
-        <div style={!player.username ? { opacity: 0.3 } : null}>
-        <SidebarExampleSidebar user={user}  item={item} objanim={ready} info={info} status={matchidFind.status} isUser={player.username == currentUser.username} visible={((matchidFind.status == "Ready" || matchidFind.status == "InPlay")  ) ? (true):(false)} />
-
-            
-          
+      {player.username == currentUser.username ? (
+        <div
+          style={
+            matchidFind.status != "Ready" ||
+            player.username != currentUser.username ||
+            isloading
+              ? {
+                  padding: 10,
+                  width: 150,
+                  margin: "auto",
+                  position: "relative",
+                  zIndex: 10,
+                  opacity: 0.5,
+                }
+              : {
+                  padding: 10,
+                  width: 150,
+                  margin: "auto",
+                  position: "relative",
+                  zIndex: 10,
+                }
+          }
+        >
+          <BootstrapSwitchButton
+            checked={player.ready}
+            disabled={player.username != currentUser.username || isloading}
+            onlabel="Ready"
+            onstyle="success"
+            offlabel="Ready"
+            onChange={(checked) => {
+              handlechangeReadyEvent(checked);
+            }}
+            style="w-100 mx-1"
+          />
         </div>
-    
+      ) : (
+        <div
+          style={{
+            padding: 10,
+            width: 150,
+            margin: "auto",
+            position: "relative",
+            zIndex: 10,
+            opacity: 0.5,
+          }}
+        >
+          <BootstrapSwitchButton
+            checked={player.ready}
+            disabled={true}
+            onlabel="Ready"
+            onstyle="success"
+            offlabel="Ready"
+            style="w-100 mx-1"
+          />
+        </div>
+      )}
     </>
   );
-  
+  var _p = null;
+  item.players.map(function (plyr) {
+    if (player.username == plyr.username) {
+      _p = plyr;
+    }
+  });
+  var info = (
+    <>
+      {_p && _p.username != "Tournament Player" && (
+        <>
+          {_p.tagId && (
+            <Statistic inverted color="red" size="mini">
+              <Statistic.Label>
+                {getTagName(item.gameName, item.gameConsole)} iD
+              </Statistic.Label>
+              <Statistic.Value>{_p.tagId}</Statistic.Value>
+            </Statistic>
+          )}
+          {_p.nickName && (
+            <>
+              <Divider fitted style={{ opacity: 0 }} />
+              <Statistic inverted color="olive" size="mini">
+                <Statistic.Label>Nickname</Statistic.Label>
+                <Statistic.Value>{_p.nickName}</Statistic.Value>
+              </Statistic>
+            </>
+          )}
+        </>
+      )}
+    </>
+  );
+  return (
+    <>
+      <div style={!player.username ? { opacity: 0.3 } : null}>
+        <SidebarExampleSidebar
+          user={user}
+          item={item}
+          objanim={ready}
+          info={info}
+          status={matchidFind.status}
+          isUser={player.username == currentUser.username}
+          visible={
+            matchidFind.status == "Ready" || matchidFind.status == "InPlay"
+              ? true
+              : false
+          }
+        />
+      </div>
+    </>
+  );
 };
 export const printMatchBTN = (
   item,
@@ -522,144 +586,163 @@ export const printMatchBTN = (
   handleJoinMatch,
   handleLeaveMatch
 ) => {
-return(
-  <>
-  <p style={{ margin: 0 }}>
-  
-      {(match.status == "Pending" || match.status == "Ready") && (
+  var _res = 'VS';
+  {(match.status == "Pending" || match.status == "Ready") && (
+    <>
+      {match.matchPlayers[0].username == currentUser.username ||
+      match.matchPlayers[1].username == currentUser.username ? (
         <>
-       
-        
-          {match.matchPlayers[0].username == currentUser.username ||
-          match.matchPlayers[1].username == currentUser.username ? (
+          {match.matchPlayers[0].username != currentUser.username &&
+            !match.matchPlayers[1].ready && (
+              <>
+                {_res = <Button
+                  animated
+                  size="small"
+                  inverted
+                  onClick={handleLeaveMatch}
+                  color="red"
+                  disabled={isloading}
+                >
+                  <Button.Content visible>Leave Match</Button.Content>
+                  <Button.Content hidden>
+                    <Icon name="arrow left" />
+                  </Button.Content>
+                </Button>
+  }
+              </>
+            )}
+        </>
+      ) : (
+        <>
+          {item.totalPlayer > activePlayer && (
             <>
-              
-              {match.matchPlayers[0].username != currentUser.username &&
-                !match.matchPlayers[1].ready && (
-                  <>
-                  <Button animated size='big' inverted onClick={handleLeaveMatch}
-                    color="red"
-                    disabled={isloading}>
-  <Button.Content visible>Leave Match</Button.Content>
-  <Button.Content hidden>
-    <Icon name='arrow left' />
-  </Button.Content>
-</Button>
-                  
-                  </>
-                )}
-            </>
-          ) : (
-            <>
-              {item.totalPlayer > activePlayer && (
-                <>
-                
-                   <Button animated size='big' inverted onClick={handleJoinMatch}
-                    color="green"
-                    disabled={isloading}>
-  <Button.Content visible>Join Match</Button.Content>
-  <Button.Content hidden>
-    for {item.inSign.replace("Dollar", "$")} {item.amount}
-  </Button.Content>
-</Button>
-                  
-                
-                 
-                </>
-              )}
+              {_res = <Button
+                animated
+                size="small"
+                inverted
+                onClick={handleJoinMatch}
+                color="green"
+                disabled={isloading}
+              >
+                <Button.Content visible>Join Match</Button.Content>
+                <Button.Content hidden>
+                  for {item.inSign.replace("Dollar", "$")} {item.amount}
+                </Button.Content>
+              </Button>
+  }
             </>
           )}
-          
-          
         </>
       )}
-    
-  </p>
-  </>
-)
-              }
+    </>
+  )}
+  return _res 
+};
 export const printEventBTN = (
-  item,currentUser,isloading,activePlayer,isJoin,mymatchFind,handleJoinMatch
+  item,
+  currentUser,
+  isloading,
+  activePlayer,
+  isJoin,
+  mymatchFind,
+  handleJoinMatch
 ) => {
-return(
-  <>
-  <p style={{ margin: 0 }}>
-  
-    {!isJoin && item.totalPlayer > item.players.length ? (
-      <>
-                
-      <Button animated size='big' inverted onClick={handleJoinMatch}
-       color="green"
-       disabled={isloading}>
-<Button.Content visible>Join Event</Button.Content>
-<Button.Content hidden>
-for {item.inSign.replace("Dollar", "$")} {item.amount}
-</Button.Content>
-</Button>
-     
-   
-            </>
-          ) : (
-            <>
-             {mymatchFind && (
-                <>
-                <Link to={'/panel/matchlobby?id='+item.id+'&matchid='+mymatchFind.id}>
-                   <Button animated size='big' inverted 
+  return (
+    <>
+      <p style={{ margin: 0 }}>
+        {!isJoin && item.totalPlayer > item.players.length ? (
+          <>
+            <Button
+              animated
+              size="big"
+              inverted
+              onClick={handleJoinMatch}
+              color="green"
+              disabled={isloading}
+            >
+              <Button.Content visible>Join Event</Button.Content>
+              <Button.Content hidden>
+                for {item.inSign.replace("Dollar", "$")} {item.amount}
+              </Button.Content>
+            </Button>
+          </>
+        ) : (
+          <>
+            {mymatchFind && (
+              <>
+                <Link
+                  to={
+                    "/panel/matchlobby?id=" +
+                    item.id +
+                    "&matchid=" +
+                    mymatchFind.id
+                  }
+                >
+                  <Button
+                    animated
+                    size="big"
+                    inverted
                     color="orange"
-                    disabled={isloading}>
-  <Button.Content visible>Open My Match</Button.Content>
-  <Button.Content hidden>
-    for {item.inSign.replace("Dollar", "$")} {item.amount}
-  </Button.Content>
-</Button>
-</Link>
-                
-                 
-                </>
-              )}
-            </>
-          )}
-          
-          
-      
-    
-  </p>
-  </>
-)
-              }
-              export const vsComponentTitle = (
-                item
-               
-                
-              ) => {
-                return (
-                  <>
-                  
-                    <Statistic inverted size='small' color={getColor(item.prize)}>
-                      <Statistic.Value>{item.gameName} </Statistic.Value>
-                      <Statistic.Label>
-                      
-                        {item.gameMode}{" "}
-                        <span className="text-muted">
-                          <FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)} />{" "}
-                          {item.gameConsole}
-                        </span>
-                        
-                      
-                      </Statistic.Label>
-                      
-                    </Statistic>
-                    <div style={{transform:'scale(1.6)' }}>
-                    <div style={{ margin: '15px 0',overflow:'hidden',width:'100%' }}>
-                    
-                      <div className="content left floated " style={{minHeight:10,padding:2}}>{getGroupBadgeBlock(item.outSign, item.prize, "Prize","left",getColor(item.prize))}</div>
-      <div className="content right floated " style={{minHeight:10,padding:2}}>
-      {getGroupBadgeBlock(item.inSign, item.amount, "Fee","right",getColor(item.amount))}
+                    disabled={isloading}
+                  >
+                    <Button.Content visible>Open My Match</Button.Content>
+                    <Button.Content hidden>
+                      for {item.inSign.replace("Dollar", "$")} {item.amount}
+                    </Button.Content>
+                  </Button>
+                </Link>
+              </>
+            )}
+          </>
+        )}
+      </p>
+    </>
+  );
+};
+export const vsComponentTitle = (item) => {
+  return (
+    <>
+      <Statistic inverted size="small" color={getColor(item.prize)}>
+        <Statistic.Value>{item.gameName} </Statistic.Value>
+        <Statistic.Label>
+          {item.gameMode}{" "}
+          <span className="text-muted">
+            <FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)} />{" "}
+            {item.gameConsole}
+          </span>
+        </Statistic.Label>
+      </Statistic>
+      <div style={{ transform: "scale(1.6)" }}>
+        <div style={{ margin: "15px 0", overflow: "hidden", width: "100%" }}>
+          <div
+            className="content left floated "
+            style={{ minHeight: 10, padding: 2 }}
+          >
+            {getGroupBadgeBlock(
+              item.outSign,
+              item.prize,
+              "Prize",
+              "left",
+              getColor(item.prize)
+            )}
+          </div>
+          <div
+            className="content right floated "
+            style={{ minHeight: 10, padding: 2 }}
+          >
+            {getGroupBadgeBlock(
+              item.inSign,
+              item.amount,
+              "Fee",
+              "right",
+              getColor(item.amount)
+            )}
+          </div>
+        </div>
       </div>
-                      </div>
-                      </div>
-                    </>
-                )}
+    </>
+  );
+};
 export const vsComponent = (
   item,
   match,
@@ -677,100 +760,120 @@ export const vsComponent = (
   isUpLoading,
   progress,
   progressLable
-  
 ) => {
   return (
     <>
-     {vsComponentTitle(item)}
+      {vsComponentTitle(item)}
       <Divider fitted style={{ opacity: 0 }} />
-      <Countdown renderer={rendererBig}  finish={item.status+'@@@Not Avalable'} txt="@@@Avalable until" match={match} btn={printMatchBTN(item,match,matchid,currentUser,isloading,activePlayer,handlechangeReadyEvent,handleJoinMatch,handleLeaveMatch)} date={item.expire} />
-      <Segment inverted  style={{background:'none !important'}}>
       
-      <Grid columns={2}>
-        <Grid.Column  style={{background:'none !important'}} color={match.winner == match.matchPlayers[0].username && ('red')}>
-          {vsComponentPlayer(
-            item,
-            match,
-            0,
-            matchid,
-            currentUser,
-            isloading,
-            handlechangeReadyEvent
-          )}
-        </Grid.Column>
-        <Grid.Column color={match.winner == match.matchPlayers[1].username && ('red')}>
-          {vsComponentPlayer(
-            item,
-            match,
-            1,
-            matchid,
-            currentUser,
-            isloading,
-            handlechangeReadyEvent
-          )}
-        </Grid.Column>
-      </Grid>
+      <Countdown
+        renderer={rendererBig}
+        finish={item.status + "@@@Not Avalable"}
+        txt="@@@Avalable until"
+        match={match}
+        
+        date={item.expire}
+      />
 
-      <Divider vertical inverted>VS</Divider>
-    </Segment>
+      <Segment inverted style={{ background: "none !important" }}>
+        <Grid columns={2}>
+          <Grid.Column
+            style={{ background: "none !important" }}
+            color={match.winner == match.matchPlayers[0].username && "red"}
+          >
+            {vsComponentPlayer(
+              item,
+              match,
+              0,
+              matchid,
+              currentUser,
+              isloading,
+              handlechangeReadyEvent
+            )}
+          </Grid.Column>
+          <Grid.Column
+            color={match.winner == match.matchPlayers[1].username && "red"}
+          >
+            {vsComponentPlayer(
+              item,
+              match,
+              1,
+              matchid,
+              currentUser,
+              isloading,
+              handlechangeReadyEvent
+            )}
+          </Grid.Column>
+        </Grid>
+
+        <Divider vertical inverted>
+        {printMatchBTN(
+          item,
+          match,
+          matchid,
+          currentUser,
+          isloading,
+          activePlayer,
+          handlechangeReadyEvent,
+          handleJoinMatch,
+          handleLeaveMatch
+        )}
+        </Divider>
+      </Segment>
       {match.status == "InPlay" && (
-                                            <>
-                                            {(match
-                                                    .matchPlayers[0].username ==
-                                                currentUser.username ||
-                                                match
-                                                .matchPlayers[1].username ==
-                                                currentUser.username) && (
-                                                  <>
-                                                  <Statistic inverted size="small">
-                        <Statistic.Label>
-                        Match Code
-                        </Statistic.Label>
-                        <Statistic.Value className="matchcode"
-                                              >
-                                                {getCode(match.matchCode)}
-                                             </Statistic.Value>
-                      </Statistic>
-                                              
-                                              
-                                              <Button.Group  size='big'  widths='3'>
-    <Button color="red" onClick={handlecAlertLost} disabled={isloading}>I Lost</Button>
-    <Button.Or color="red" style={{minWidth: 5}}/>
-    <Button animated onClick={handlecAlertWin}
-                    color="green" inverted disabled={isUpLoading}>
-  <Button.Content visible>{progressLable}</Button.Content>
-  <Button.Content hidden>Upload video</Button.Content>
-  {progress > 0 && (
-                                                    <div className="prosbar">
-                                                      <ProgressBar
-                                                        variant="success"
-                                                        now={progress}
-                                                        label={""}
-                                                      />
-                                                    </div>
-                                                  )}
-</Button>
-   
-  </Button.Group>
-  <input
-                                                    type="file"
-                                                    id="uploadfile"
-                                                    accept="video/*"
-                                                    name="file"
-                                                    className="hide"
-                                                    ref={fileUpload}
-                                                    onChange={
-                                                      onChangeHandler
-                                                    }
-                                                  />
-                                              
-                                              </>
-                                                )}
-                                            </>
+        <>
+          {(match.matchPlayers[0].username == currentUser.username ||
+            match.matchPlayers[1].username == currentUser.username) && (
+            <>
+              <Statistic inverted size="small">
+                <Statistic.Label>Match Code</Statistic.Label>
+                <Statistic.Value className="matchcode">
+                  {getCode(match.matchCode)}
+                </Statistic.Value>
+              </Statistic>
 
-                                          )}
-      
-      
+              <Button.Group size="big" widths="3">
+                <Button
+                  color="red"
+                  onClick={handlecAlertLost}
+                  disabled={isloading}
+                >
+                  I Lost
+                </Button>
+                <Button.Or color="red" style={{ minWidth: 5 }} />
+                <Button
+                  animated
+                  onClick={handlecAlertWin}
+                  color="green"
+                  inverted
+                  disabled={isUpLoading}
+                >
+                  <Button.Content visible>{progressLable}</Button.Content>
+                  <Button.Content hidden>Upload video</Button.Content>
+                  {progress > 0 && (
+                    <div className="prosbar">
+                      <ProgressBar
+                        variant="success"
+                        now={progress}
+                        label={""}
+                      />
+                    </div>
+                  )}
+                </Button>
+              </Button.Group>
+              <input
+                type="file"
+                id="uploadfile"
+                accept="video/*"
+                name="file"
+                className="hide"
+                ref={fileUpload}
+                onChange={onChangeHandler}
+              />
+            </>
+          )}
+        </>
+      )}
     </>
   );
 };
@@ -794,13 +897,11 @@ export const getGroupBadgePrice = (sign, amount, classes) => {
           />
         </Button>
         <Label as="div" basic color={getColor(amount)} pointing="left">
-          
-            <img
-             style={{width:'20px'}}
-              alt={"loole " + sign}
-              src={"/assets/images/" + sign + ".svg"}
-            ></img>
-          
+          <img
+            style={{ width: "20px" }}
+            alt={"loole " + sign}
+            src={"/assets/images/" + sign + ".svg"}
+          ></img>
         </Label>
       </Button>
     </>
@@ -825,13 +926,11 @@ export const getGroupBadgesmall = (sign, amount, classes) => {
           />
         </Button>
         <Label as="div" basic color={getColor(amount)} pointing="left">
-      
-            <img
-            style={{width:15}}
-              alt={"loole " + sign}
-              src={"/assets/images/" + sign + ".svg"}
-            ></img>
-        
+          <img
+            style={{ width: 15 }}
+            alt={"loole " + sign}
+            src={"/assets/images/" + sign + ".svg"}
+          ></img>
         </Label>
       </Button>
     </>
@@ -1184,196 +1283,114 @@ export const renderer = ({
   }
 };
 
+export const printStatus = (item, _mode, _color,_btns) => {
+  return (
+    <>
+      <Divider fitted style={{ opacity: 0 }} />
+      {item.winner ? (
+        <Statistic inverted color={getColorStatus(item.status)} size="mini">
+          <Statistic.Label>{_mode}</Statistic.Label>
+          <Statistic.Label>
+            <TransitionExampleTransitionExplorer
+              objanim={
+                <>
+                  <div style={{ position: "relative", transform: "scale(.8)" }}>
+                    <div
+                      className="winner avatar"
+                      style={{ width: 92, height: 92, borderRadius: 100 }}
+                    ></div>
+                    <div className=" ">
+                      <Icon
+                        circular
+                        inverted
+                        color="yellow"
+                        size="mini"
+                        name="winner"
+                        style={{ position: "absolute", fontSize: 15 }}
+                      />
+                      <Avatar
+                        size="92"
+                        round={true}
+                        title={item.winner}
+                        name={setAvatar(item.winner)}
+                      />
+                    </div>
+                  
+                  <Statistic inverted size="mini" color="yellow">
+                    
+                    <Statistic.Value>{item.winner}</Statistic.Value>
+                    <Statistic.Label>is winner</Statistic.Label>
+                  </Statistic>
+                  </div>
+                </>
+              }
+              animation="jiggle"
+              duration={1000}
+            />
+          </Statistic.Label>
+        </Statistic>
+      ) : (
+        <Statistic inverted color={getColorStatus(item.status)} size="tiny">
+          <Statistic.Label>{_mode}</Statistic.Label>
+          <Statistic.Value>{item.status}</Statistic.Value>
+        </Statistic>
+      )}
+      <Divider fitted style={{ opacity: 0 }} />
+      {_btns}
+    </>
+  );
+};
 export const rendererBig = ({
   days,
   hours,
   minutes,
   seconds,
   completed,
-  props
-  
+  props,
 }) => {
- var _size = "tiny"
- if(props.size){_size = props.size}
- var _mode = props.mode;
- var _color = props.color
- var _colorFinish = props.colorfinish
- if(!_colorFinish){_colorFinish = _color}
- var timer = (
-  <Statistic inverted size={_size} color="yellow">
-    <Statistic.Label>
-      {props.txt.split('@@@')[0]}</Statistic.Label>
-      {props.txt.split('@@@')[1] && (<Statistic.Label>
-      {props.txt.split('@@@')[1]}</Statistic.Label>)}
-    <Statistic.Value>
-      {days > 0 ? (
-        <>
-          {days} <small style={{ color: "inherit" }}>days </small>
-        </>
-      ) : null}
-      {hours > 0 ? (
-        <>{hours > 9 ? <>{hours}:</> : <>0{hours}:</>}</>
-      ) : null}
-      {minutes > 9 ? <>{minutes}:</> : <>0{minutes}:</>}
-      {seconds > 9 ? <>{seconds}</> : <>0{seconds}</>}
-    </Statistic.Value>
-  </Statistic>
-)
-if(completed || (props.match &&  !props.btn && (props.match.status =='Finished' ||props.match.status =='Ready' ||props.match.status =='InPlay'))){
-  timer = (<Statistic inverted size='tiny' color={_colorFinish}>
-  <Statistic.Label>
-      {props.txt.split('@@@')[0]}</Statistic.Label>
-      {props.finish.split('@@@')[1] && (<Statistic.Label>
-      {props.finish.split('@@@')[1]}</Statistic.Label>)}
-  <Statistic.Value>
-  {props.finish.split('@@@')[0]}
-  </Statistic.Value>
-</Statistic>)
-//timer =''
-}
-try{
-  //timer =console.log(props.match)
-  if((props.match.winner  && props.match.status =='Finished') || (props.btn  && props.match.winner && completed)){
-    timer = ''
-  //timer =''
+  var _size = "tiny";
+  if (props.size) {
+    _size = props.size;
   }
-}catch(e){
-  if((props.btn && completed)){
-    timer = ''
-  //timer =''
+  var _mode = props.mode;
+  var _color = props.color;
+  var _colorFinish = props.colorfinish;
+  if (!_colorFinish) {
+    _colorFinish = _color;
   }
- }
-
-  
-  
- 
-    return (
-      <>
-      {props.match ? (
-        <>
-        {!props.match.winner && props.btn && !completed && (
-          <>
-          <Statistic inverted color="orange" size="mini">
-          <Statistic.Label>Status</Statistic.Label>
-            <Statistic.Value>{props.match.status}</Statistic.Value>
-            
-          </Statistic>
-          <Divider fitted style={{ opacity: 0 }} />
-          </>
+  if (completed) {
+    // Render a complete state
+    //return <Completionist />;
+    return <>
+    <Statistic inverted size={_size} color={_colorFinish}>
+    {props.finish.split("@@@")[0]}
+        {props.finish.split("@@@")[1] && (
+          <Statistic.Label>{props.finish.split("@@@")[1]}</Statistic.Label>
         )}
         
-                {props.match.status != 'Finished' && props.match.status != 'Expired'  &&  props.match.status != 'Canceled' && !completed  ?(
-                  <>
-                  
-                  
-            
-            {props.btn  ? (
-                                        <>
-                                        {timer}
-                                   {props.btn}
-                                        </>
-                                      ):(
-                                        <>
-                                         <Divider fitted style={{ opacity: 0 }} />
-                                        {props.match.winner && props.match.winner !== null ? (
-                                        <Avatar
-                                          size="80"
-                                          style={{ boxShadow: "0px 0px 20px 20px rgba(0,0,0,0.2)" }}
-                                          round={true}
-                                          name={_mode}
-                                        />
-                                      ) : (
-                                       
-                                        <Statistic inverted  size="tiny">
-          
-            <Statistic.Value>{_mode}</Statistic.Value>
-            <Statistic.Label> {timer}</Statistic.Label>
-          </Statistic>
-                                      )}
-                                      
-                                      </>)}
-        
-        </>
-                ):(
-                  <>
-                  {props.match.winner  ? (
-                                        <>
-                                        <Statistic inverted color="orange" size="mini">
-          <Statistic.Label>Status</Statistic.Label>
-            <Statistic.Value>{props.match.status}</Statistic.Value>
-            
-          </Statistic>
-          <Divider fitted style={{ opacity: 0 }} />
-                                        <TransitionExampleTransitionExplorer objanim={(<Statistic inverted size="large" color="yellow">
-          
-          <Statistic.Value>
-          <div
-          
-          style={{ position:'relative'}}
-        >
-          
-        <div
-          className="winner avatar"
-          style={{ width: 92, height: 92,borderRadius:100}}
-        ></div>
-        <div className=" ">
-        <Icon circular inverted color='yellow' size="mini" name='winner' style={{position:'absolute',fontSize:15}} />
-          <Avatar
-            size="92"
-            round={true}
-            title={props.match.winner}
-            name={setAvatar(
-              props.match.winner
-            )}
-          />
-        </div>
-        </div>
-          </Statistic.Value>
-          <Statistic.Label>
-          {props.match.winner}<br/><small className="text-muted" style={{position:'relative',top:-5}}>is
-                                            winner</small></Statistic.Label>
-        </Statistic>)} animation='jiggle' duration={1000}/>
-                                   
-                                        </>
-                                      ):(
-                                        <>
-                                        {props.match.winner && props.match.winner !== null ? (
-                                          <>
-                                        <Avatar
-                                          size="80"
-                                          style={{ boxShadow: "0px 0px 20px 20px rgba(0,0,0,0.2)" }}
-                                          round={true}
-                                          name={_mode}
-                                        />
-                                        {timer}
-                                        </>
-                                      ) : (
-                                        <>
-                                        <Divider fitted style={{ opacity: 0 }} /><Divider fitted style={{ opacity: 0 }} />
-                                        <Statistic inverted  size="tiny">
-          
-          
-          <Statistic.Value>{_mode}</Statistic.Value>
-          <Statistic.Label>{timer}</Statistic.Label>
-        </Statistic></>
-                                      )}
-                                      </>)}
-                                      
-                                     
-                  </>
-                )}
-         </>
-    ):(
-      <>
-      {timer}
-    
-      
-        </>
-    )}
-        </>
+      </Statistic>
+    </>;
+  } else {
+    // Render a countdown
+    return (
+      <Statistic inverted size={_size} color="yellow">
+        <Statistic.Label>{props.txt.split("@@@")[0]}</Statistic.Label>
+        {props.txt.split("@@@")[1] && (
+          <Statistic.Label>{props.txt.split("@@@")[1]}</Statistic.Label>
+        )}
+        <Statistic.Value>
+          {days > 0 ? (
+            <>
+              {days} <small style={{ color: "inherit" }}>days </small>
+            </>
+          ) : null}
+          {hours > 0 ? <>{hours > 9 ? <>{hours}:</> : <>0{hours}:</>}</> : null}
+          {minutes > 9 ? <>{minutes}:</> : <>0{minutes}:</>}
+          {seconds > 9 ? <>{seconds}</> : <>0{seconds}</>}
+        </Statistic.Value>
+      </Statistic>
     );
-   
-  
+  }
 };
 export const getCode = (code) => {
   if (code) {
@@ -1562,7 +1579,7 @@ export const haveGameTag = (game, userTags) => {
     return true;
   }
 };
-export const printBlockChallenge = (newItem, filtermode) => {
+export const printBlockChallenge = (newItem, filtermode, prop) => {
   // const history = useHistory();
   var filter = filtermode;
   if (filter == "all") {
@@ -1574,26 +1591,26 @@ export const printBlockChallenge = (newItem, filtermode) => {
   if (newItem.length == 0) {
     //history.push("/home");
     return (
-
-        <div style={{ textAlign: "center", color: "rgba(0,0,0,.5)",paddingTop:30,width:'100%' }}>
-          <img
-            alt="nodata"
-            style={{ height: 80 }}
-            src="/assets/images/nodata.svg"
-          ></img>
-          <h4>Empty List.</h4>
-          <h5>You currently don't have any {filter} event.</h5>
-        </div>
-
+      <div
+        style={{
+          textAlign: "center",
+          color: "rgba(0,0,0,.5)",
+          paddingTop: 30,
+          width: "100%",
+        }}
+      >
+        <img
+          alt="nodata"
+          style={{ height: 80 }}
+          src="/assets/images/nodata.svg"
+        ></img>
+        <h4>Empty List.</h4>
+        <h5>You currently don't have any {filter} event.</h5>
+      </div>
     );
   } else {
     return newItem.map((item, i) => {
-      return (
-   
-        
-          <MatchCard key={i.toString()} item={item}/>
-     
-      );
+      return <MatchCard key={i.toString()} item={item} {...prop} />;
     });
   }
 };
@@ -2147,8 +2164,6 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
   }
 };
 
-
- 
 export const printProductBlock = (item) => {
   var _mode = " 1 v 1 ";
   var _color = "#404040";

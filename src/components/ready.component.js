@@ -8,6 +8,7 @@ import {
   Menu,
   Segment,
   Sidebar,
+  Dimmer
   
 } from 'semantic-ui-react'
 import {
@@ -94,8 +95,10 @@ const SidebarExampleSidebar = (prop) => {
             
           </Sidebar>
 
-          <Sidebar.Pusher>
+          <Sidebar.Pusher style={{minHeight:200}}>
+          <Dimmer active inverted style={{background:'none'}}>
             {user}
+            </Dimmer>
           </Sidebar.Pusher>
         </Sidebar.Pushable>
       

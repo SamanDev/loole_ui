@@ -14,7 +14,7 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import Moment from "moment";
-import {date_edit,setAvatar,getColorStatus,getIcon,getGroupBadgeBlock,rendererBig}  from "components/include.js";
+import {date_edit,setAvatar,getColorStatus,getIcon,getGroupBadgeBlock,rendererBig,printStatus}  from "components/include.js";
 import {
   Statistic,
   Button,
@@ -82,7 +82,7 @@ var moment = require("moment");
       _mode = setAvatar(item.winner);
     }
     if (item.status=='Canceled' || item.status=='Expired') {
-      _color = "black"; 
+      //_color = "black"; 
     }
     
   
@@ -109,6 +109,7 @@ var moment = require("moment");
               className={"text-center cover "+item.status}
                >
               <div style={{ transform: "scale(.8)",padding: '30px 0',height:185}}>
+              <printStatus renderer={rendererBig}  txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
               <Countdown renderer={rendererBig}  txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
         </div>
         {item.players[0] ? (
