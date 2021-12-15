@@ -81,7 +81,7 @@ var moment = require("moment");
     if (item.winner) {
       _mode = setAvatar(item.winner);
     }
-    if (item.status=='Cancel' || item.status=='Expired') {
+    if (item.status=='Canceled' || item.status=='Expired') {
       _color = "black"; 
     }
     
@@ -94,7 +94,7 @@ var moment = require("moment");
          <Label inverted size="mini" color={getColorStatus(item.status)} ribbon style={{zIndex:2,maxWidth:170,position:'absolute',top:15,left:-10}}>
          {item.status == 'Pending' &&  ( <Icon loading name='spinner' />)}
          {item.status == 'Finished' &&  ( <Icon  name='check' color="green" />)}
-         {(item.status=='Cancel' || item.status=='Expired') &&  ( <Icon  name='times' color="red" />)}
+         {(item.status=='Canceled' || item.status=='Expired') &&  ( <Icon  name='times' color="red" />)}
          {item.status}
           </Label>
         <Image

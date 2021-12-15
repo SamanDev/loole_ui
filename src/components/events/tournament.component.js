@@ -471,25 +471,11 @@ false
     inverted
     
   />
-  <Card
-                            className="card-lock text-center card-plain card-league"
-                            style={{ color: "#fff" }}
-                          >
-                            <Card.Header>
-                              <Row>
-                                <Col
-                                  xs="12"
-                                  style={{
-                                    lineHeight: "20px",
-                                    color: "#fff",
-                                    fontSize: "20px",
-                                  }}
-                                >
-                                 
+  
                                   
                                   
                                   <VerticalTimeline
-                                   
+                                   className="card-lock text-center card-plain card-league"
                                     animate={false}
                                     lineColor="red"
                                     
@@ -505,12 +491,12 @@ false
                                       }}
                                       contentArrowStyle={{
                                         borderRight: "7px solid #7209b7",
-                                        display: "none",
+                                        
                                       }}
                                       iconStyle={{
                                         background: "#7209b7",
                                         color: "#fff",
-                                        display: "none",
+                                      
                                       }}
                                     >
                                       <h3 className="vertical-timeline-element-title">
@@ -627,11 +613,7 @@ false
                                       </span>
                                     </VerticalTimelineElement>
                                   </VerticalTimeline>
-                                </Col>
-                              </Row>
-                            </Card.Header>
-                            <Card.Body></Card.Body>
-                          </Card>
+                             
   </>
                                  )}
                           

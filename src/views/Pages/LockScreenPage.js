@@ -82,11 +82,11 @@ useLayoutEffect(() => {
     //handleAllDelete(eventIDQ)
 }, []);
 const currentUser = prop.findStateId(myState,'currentUser');
-const eventMatch = prop.findStateId(myState,'eventMatch');
+var eventMatch = prop.findStateId(myState,'eventMatch');
 
 const match = prop.findStateId(myState,'match');
 
-      
+      if(eventIDQ != eventMatch?.id){eventMatch = false}
       const [visible, setVisible] = React.useState(false);
       const devWid = document.documentElement.clientWidth;
   
@@ -96,7 +96,14 @@ const match = prop.findStateId(myState,'match');
       
       
       
-    
+      const BackBTC =() => {
+        return <Button animated  inverted color='pink'  onClick={() => history.goBack()}>
+          <Button.Content visible>Go Back</Button.Content>
+          <Button.Content hidden>
+            <Icon name='arrow left' />
+          </Button.Content>
+        </Button>
+      }
       const handleDelete =(e) => {
         e.preventDefault();
     
@@ -139,9 +146,7 @@ const match = prop.findStateId(myState,'match');
             <Dimmer active  style={{ background:'transparent' }}>
               <Loader size="large">Loading
               <br/><br/>
-              <Button inverted color='pink'  onClick={() => history.goBack()}>
-        Go Back
-      </Button>
+              {BackBTC()}
       {(haveAdmin(currentUser.roles))&&(
                 <>
                 <br/><br/> <br/><br/> <br/><br/>
@@ -177,13 +182,13 @@ const match = prop.findStateId(myState,'match');
           <div
               className="full-page lock-page"
               data-color="black"
-              style={{ height: "100vh", overflow: "auto" }}
-              data-image={require("assets/img/bg.jpg").default}
+              
+              data-image={"/assets/img/bg.jpg"}
             >
               <div
                 className="content "
                 style={{
-                  fontSize: 50,
+                 
                   color: "#fff",
                   position: "relative",
                   zIndex: "23",
@@ -192,18 +197,20 @@ const match = prop.findStateId(myState,'match');
               >
                 
                 
-         
+                <Segment style={{ height: "100%", width: "100%", position: "absolute",background:'transparent',padding:0 ,border:'none'}}>
+                
         <Sidebar.Pushable as={Segment} style={{background:'none'}}>
           <Sidebar
           
             animation='push'
             icon='labeled'
             width='thin'
+            
             onHide={() => setVisible(false)}
             style={{ width: "100vw", maxWidth:300,height: "100vh !important"}}
             inverted
             vertical
-            visible={(devWid > 500) ? (true):(visible)}
+            visible={(devWid > 991) ? (true):(visible)}
          
            
           >
@@ -253,19 +260,17 @@ const match = prop.findStateId(myState,'match');
           
           </Sidebar>
 
-          <Sidebar.Pusher >
-            <Segment basic>
-            <Col
+          <Sidebar.Pusher  style={{background:'none',padding:0}}>
+           
+          <Col
           className="mx-auto"
           lg="8"
           md="10"
-          style={{ padding: 0, marginTop: 20 }}
+          style={{ padding: 0, marginTop: 0 }}
         >
           <Active {...prop}/>
-          <Button inverted color='pink'  onClick={() => history.goBack()}>
-        Go Back
-      </Button>
-      <Button inverted color='blue' floated="right" className="mobile only" onClick={() => setVisible(!visible)}>
+          {BackBTC()}
+      <Button inverted color='blue' floated="right" className="mobile tablet only" onClick={() => setVisible(!visible)}>
         Chat...
       </Button>
       {(haveAdmin(currentUser.roles))&&(
@@ -282,7 +287,7 @@ const match = prop.findStateId(myState,'match');
                 </>
               )}
               </Col>
-                  <Container>
+                  <Container fluid style={{height: 'calc(100vh - 40px)',overflow:'auto'}}>
                  
                     
                     
@@ -313,9 +318,10 @@ const match = prop.findStateId(myState,'match');
                   </Container>
                 
           
-            </Segment>
+           
           </Sidebar.Pusher>
         </Sidebar.Pushable>
+        </Segment>
         </div>
               <div
                 className="full-page-background"

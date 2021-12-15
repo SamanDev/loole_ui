@@ -13,8 +13,9 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
 import "assets/css/landing-page.css";
-import "assets/css/style.css";
+
 import "semantic-ui-css/semantic.min.css";
+import "assets/css/style.css";
 // sections for this page
 export * from "const";
 import AuthLayout from "layouts/Auth.js";

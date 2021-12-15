@@ -505,7 +505,12 @@ label {
     display: block;
     margin-top: 10px;
 }
-
+.dash-stat .ui.statistic * {
+    text-align: left !important;
+}
+.dash-stat  .content{
+    padding: 15px !important;
+}
 .profile-img-card {
     width: 96px;
     height: 96px;
@@ -781,7 +786,7 @@ background-image: linear-gradient(rgba(0, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.847) 
     background-image: linear-gradient(rgba(0, 0, 0, 0.34) 0%, rgba(0, 0, 0, 0.8) 63%, rgba(0, 0, 0, 0) 100%);
     
     }
-    .ui.fours.cards .cover.Expired,.ui.fours.cards .cover.Cancel{
+    .ui.fours.cards .cover.Expired,.ui.fours.cards .cover.Canceled{
    
         background-image: linear-gradient(rgba(255, 0, 0, 0.682) 0%, rgba(255, 0, 0, 0.85) 63%, rgba(255, 0, 0, 0) 100%);
         filter: grayscale(40%);
@@ -792,9 +797,22 @@ background-image: linear-gradient(rgba(0, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.847) 
     height: 200px !important;
 }
 /* Mobile */
+.main-panel  {
+    height: calc(100vh);
+    overflow: hidden;
+}
 .main-panel > .content {
-    padding: 10px 10px;
-    min-height: calc(100vh - 123px);
+    padding: 10px ;
+    height: calc(100vh - 120px);
+    min-height: calc(100vh - 120px) !important;
+}
+.full-page > .content:first-of-type{
+    color: rgb(255, 255, 255);
+    position: relative;
+    z-index: 23;
+  
+    padding: 0;
+    min-height: 100vh;
 }
 @media only screen and (max-width: 767px) {
     [class*="mobile hidden"],
@@ -804,6 +822,25 @@ background-image: linear-gradient(rgba(0, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.847) 
     [class*="widescreen monitor only"]:not(.mobile),
     [class*="or lower hidden"] {
       display: none !important;
+    }
+    .dash-stat  .content{
+        padding: 5px !important;
+    }
+    .dash-stat  i {
+        font-size: 120% !important;
+        margin-left: 10px;
+    }
+    .dash-stat .ui.statistic>.label {
+        font-size: 70% !important;
+    }
+   .dash-stat .ui.statistic>.value {
+        font-size: 90% !important;
+    }
+    .ui.tabular.menu .item {
+        font-size: 70% !important;
+    }
+    .ui.tabular.menu .item .label {
+        margin-left: 2px;
     }
   }
   
@@ -819,7 +856,15 @@ background-image: linear-gradient(rgba(0, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.847) 
     [class*="or lower hidden"]:not(.mobile) {
       display: none !important;
     }
+    
+    .dash-stat .ui.statistic>.label {
+        font-size: 70% !important;
+    }
+   .dash-stat .ui.statistic>.value {
+        font-size: 90% !important;
+    }
   }
+
   
   
   /* Computer / Desktop / iPad Landscape */
@@ -832,6 +877,12 @@ background-image: linear-gradient(rgba(0, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.847) 
     [class*="widescreen monitor only"]:not(.computer),
     [class*="or lower hidden"]:not(.tablet):not(.mobile) {
       display: none !important;
+    }
+    .dash-stat .ui.statistic>.label {
+        font-size: 70% !important;
+    }
+   .dash-stat .ui.statistic>.value {
+        font-size: 90% !important;
     }
   }
   
@@ -861,6 +912,7 @@ background-image: linear-gradient(rgba(0, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.847) 
     [class*="widescreen monitor or lower hidden"] {
       display: none !important;
     }
+    
   }
 .blurring.dimmable>.dimmer {
     background-color: rgba(0,0,0,.8) !important;
@@ -909,10 +961,9 @@ top: 43px;
 z-index: 0;
 margin: 0;
 }
-.dash-stat .ui.statistic * {
-    text-align: left !important;
-}
+
 @media (min-width: 768px){
+    
 .navbar-nav {
 float: left;
 margin: 0;
@@ -946,6 +997,7 @@ list-style: none;
     margin-bottom: 60px;
 }
 @media only screen and (max-width: 600px){
+   
     .main-panel .navbar.fixed-top{
         width: 100%;
        

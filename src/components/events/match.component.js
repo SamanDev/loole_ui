@@ -21,7 +21,7 @@ import { POSTURL,defUser } from 'const';
 import MatchCard from "components/matchcard.component";
 import {
   Badge,
-  Button,
+  
   Navbar,
   Nav,
   Container,
@@ -58,6 +58,12 @@ import {
   getGroupBadgeBlock,
   printJoinalerts,
 } from "components/include";
+import {
+  Card,
+  
+  Button,
+  Segment,Divider
+} from "semantic-ui-react";
 import { UPLOADURL, POSTURLTest } from "const";
 
 var firstLoad = true;
@@ -301,6 +307,9 @@ class LeagueSection extends Component {
     };
     userService.joinEvent(this.state.item.id).then(
       (response) => {
+        this.setState({
+          loading: false,
+        });
         //alert(response)
         if (response.data.accessToken) {
           this.props.onUpdateItem("currentUser", response.data);
@@ -310,9 +319,7 @@ class LeagueSection extends Component {
             title: "Joined.",
           });
         } else {
-          this.setState({
-            loading: false,
-          });
+          
 
           {
             printJoinalerts(
@@ -334,10 +341,13 @@ class LeagueSection extends Component {
   handleLeaveMatch(e) {
     e.preventDefault();
     this.setState({
-      isloading: true,
+      loading: true,
     });
     userService.leaveEvent(this.state.eventid).then(
       (response) => {
+        this.setState({
+          loading: false,
+        });
         if (response.data.accessToken) {
           this.props.onUpdateItem("currentUser", response.data);
 
@@ -346,9 +356,7 @@ class LeagueSection extends Component {
             title: "Un Joined.",
           });
         } else {
-          this.setState({
-            isloading: true,
-          });
+          
 
           {
             printJoinalerts(
@@ -493,6 +501,7 @@ class LeagueSection extends Component {
             progress,
             progressLable
           )}
+           <Divider  hidden/>
           <div  className="ui cards fours centered">
           <MatchCard  item={item} matchidFind={matchidFind} />
           </div>

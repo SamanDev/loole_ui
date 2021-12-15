@@ -137,22 +137,22 @@ const getBlockChallenge = (filtermode,events) => {
   
   const panes = [
     {id:1, menuItem: (
-      <Menu.Item style={{width: '25%'}}>
+      <Menu.Item>
         All <Label color='red' size='mini'>{findStateId(myStateThis, "All")}</Label>
       </Menu.Item>
-    ), render: () => <Tab.Pane  style={{maxHeight: 'calc(88vh - 14em)', overflow: 'auto'}} >{getBlockChallenge('All',events)}</Tab.Pane> },
+    ), render: () => <Tab.Pane  style={{maxHeight: 'calc(100vh - 280px)', overflow: 'auto'}} >{getBlockChallenge('All',events)}</Tab.Pane> },
     {id:2, menuItem: (
-      <Menu.Item style={{width: '25%'}}>
+      <Menu.Item>
         Mobile <Label color='teal' size='mini' >{findStateId(myStateThis, "Mobile")}</Label>
       </Menu.Item>
-    ), render: () => <Tab.Pane style={{maxHeight: 'calc(88vh - 14em)', overflow: 'auto'}}>{getBlockChallenge('Mobile',events)}</Tab.Pane> },
+    ), render: () => <Tab.Pane style={{maxHeight: 'calc(100vh - 280px)', overflow: 'auto'}}>{getBlockChallenge('Mobile',events)}</Tab.Pane> },
     {id:3, menuItem: (
-      <Menu.Item style={{width: '25%'}}>
+      <Menu.Item>
         Console <Label color='orange'  size='mini'>{findStateId(myStateThis, "NoMobile")}</Label>
       </Menu.Item>
     ), render: () => <Tab.Pane>{getBlockChallenge('NoMobile',events)}</Tab.Pane> },
     {id:4, menuItem: (
-      <Menu.Item style={{width: '25%'}}>
+      <Menu.Item>
         Tournament <Label  size='mini' color='black'>{findStateId(myStateThis, "Tournament")}</Label>
       </Menu.Item>
     ), render: () => <Tab.Pane>{getBlockChallenge('Tournament',events)}</Tab.Pane> },

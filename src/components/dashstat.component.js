@@ -33,7 +33,7 @@ const DashStat = (prop) => {
               <Card as={Link}  to={"/panel/cashier"} fluid color="red">
                 <div className="content extra">
                   <Grid columns={2} divided>
-                    <Grid.Column  style={{ textAlign: "right" ,maxWidth:70}}>
+                    <Grid.Column  style={{ textAlign: "right" ,width:'auto'}}>
                       <Icon
                         name="dollar"
                         size="large"
@@ -71,7 +71,7 @@ const DashStat = (prop) => {
               <Card as={Link} to={"/panel/rewards"} fluid color="teal">
                 <div className="content extra">
                   <Grid columns={2} divided>
-                    <Grid.Column  style={{ textAlign: "right",maxWidth:70 }}>
+                    <Grid.Column  style={{ textAlign: "right",width:'auto' }}>
                       <Icon
                         name="diamond"
                         size="large"
@@ -112,7 +112,7 @@ const DashStat = (prop) => {
             >
               <div className="content extra">
                 <Grid columns={2} divided>
-                  <Grid.Column  style={{ textAlign: "right",maxWidth:70 }}>
+                  <Grid.Column  style={{ textAlign: "right",width:'auto' }}>
                     <Icon
                       name="asl"
                       size="large"
@@ -157,7 +157,7 @@ const DashStat = (prop) => {
             <Card   fluid color="black">
               <div className="content extra">
                 <Grid columns={2} divided>
-                  <Grid.Column  style={{ textAlign: "right",maxWidth:70 }}>
+                  <Grid.Column  style={{ textAlign: "right",width:'auto' }}>
                     <Icon
                       name="chart line"
                       size="large"

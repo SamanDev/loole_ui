@@ -85,8 +85,8 @@ const SidebarExampleSidebar = (prop) => {
                   
                   style={{padding:10,margin:'auto',position:'relative',zIndex:10}}
                 >
-                    {prop.status == 'Ready' && (<TransitionExampleTransitionExplorer objanim={objanim} animation='jiggle' duration={isUser ? (1000):(0)}/>)}
-                    {((prop.status == 'InPlay') ||(prop.item.gameMode == 'Tournament' && prop.status == 'Pending')) && (<TransitionExampleTransitionExplorer objanim={prop.info} animation='jiggle' duration={!isUser ? (1000):(0)}/>)}
+                    {prop.status == 'Ready' && (<TransitionExampleTransitionExplorer objanim={objanim} animation='flash' duration={isUser ? (1000):(0)}/>)}
+                    {((prop.status == 'InPlay') ||(prop.item.gameMode == 'Tournament' && prop.status == 'Pending')) && (<TransitionExampleTransitionExplorer objanim={prop.info} animation='flash' duration={!isUser ? (1000):(0)}/>)}
               
         </div>
               )}

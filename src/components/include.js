@@ -228,7 +228,7 @@ export const getColorStatus = (status) => {
   if (status == 'InPlay') {_col = "purple"}
   if(status == 'Pending') {_col = 'green'}
   if(status == 'Finished') {_col = 'black'}
-  if(status=='Cancel' || status=='Expired') {_col = 'grey'}
+  if(status=='Canceled' || status=='Expired') {_col = 'grey'}
     return _col
   
 };
@@ -649,12 +649,15 @@ for {item.inSign.replace("Dollar", "$")} {item.amount}
                       </Statistic.Label>
                       
                     </Statistic>
-                    <p style={{ margin: 10,transform:'scale(1.4)' }}>
+                    <div style={{transform:'scale(1.6)' }}>
+                    <div style={{ margin: '15px 0',overflow:'hidden',width:'100%' }}>
+                    
                       <div className="content left floated " style={{minHeight:10,padding:2}}>{getGroupBadgeBlock(item.outSign, item.prize, "Prize","left",getColor(item.prize))}</div>
       <div className="content right floated " style={{minHeight:10,padding:2}}>
       {getGroupBadgeBlock(item.inSign, item.amount, "Fee","right",getColor(item.amount))}
       </div>
-                      </p>
+                      </div>
+                      </div>
                     </>
                 )}
 export const vsComponent = (
@@ -1230,7 +1233,7 @@ if(completed || (props.match &&  !props.btn && (props.match.status =='Finished' 
 }
 try{
   //timer =console.log(props.match)
-  if((props.match.winner  && props.match.status =='Finished') || (props.btn && completed)){
+  if((props.match.winner  && props.match.status =='Finished') || (props.btn  && props.match.winner && completed)){
     timer = ''
   //timer =''
   }
@@ -1248,7 +1251,7 @@ try{
       <>
       {props.match ? (
         <>
-        {!props.match.winner && props.btn && (
+        {!props.match.winner && props.btn && !completed && (
           <>
           <Statistic inverted color="orange" size="mini">
           <Statistic.Label>Status</Statistic.Label>
@@ -1259,10 +1262,10 @@ try{
           </>
         )}
         
-                {props.match.status != 'Finished' && props.match.status != 'Expired'  &&  props.match.status != 'Cancel' && !completed  ?(
+                {props.match.status != 'Finished' && props.match.status != 'Expired'  &&  props.match.status != 'Canceled' && !completed  ?(
                   <>
                   
-                  <Divider fitted style={{ opacity: 0 }} />
+                  
             
             {props.btn  ? (
                                         <>
@@ -1295,6 +1298,12 @@ try{
                   <>
                   {props.match.winner  ? (
                                         <>
+                                        <Statistic inverted color="orange" size="mini">
+          <Statistic.Label>Status</Statistic.Label>
+            <Statistic.Value>{props.match.status}</Statistic.Value>
+            
+          </Statistic>
+          <Divider fitted style={{ opacity: 0 }} />
                                         <TransitionExampleTransitionExplorer objanim={(<Statistic inverted size="large" color="yellow">
           
           <Statistic.Value>
