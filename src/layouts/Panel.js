@@ -2,14 +2,7 @@ import React ,{useEffect, useState} from "react";
 
 import Avatar, { ConfigProvider } from "react-avatar";
 import { BrowserRouter, Route, Switch, Redirect,useHistory } from "react-router-dom";
-import $ from "jquery";
-//import { GlobalProvider } from 'context/GlobalState';
-import Active  from "components/active.component";
-// react-bootstrap components
-import {
-  Spinner,
-  Container
-} from "react-bootstrap";
+
 import {
   Checkbox,
   Grid,
@@ -27,15 +20,9 @@ import ModalExampleShorthand from "components/modal.component";
 import SidebarMy from "components/Sidebar/Sidebar.js";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
-import Chatbar from "components/Sidebar/Chat.js";
-// dinamically create dashboard routes
+
 import routes from "routes.js";
 
-import image1 from "assets/img/bg.jpg";
-import image2 from "assets/img/bg.jpg";
-import image3 from "assets/img/bg.jpg";
-import image4 from "assets/img/bg.jpg";
 import Admin from "views/Admin.js";
 import Dashboard from "views/Dashboard.js";
 import Rewards from "views/Rewards.js";
@@ -64,7 +51,7 @@ function scrollToTop() {
 function  Panel(props) {
  
   
-  const [sidebarImage, setSidebarImage] = React.useState(image3);
+  const [sidebarImage, setSidebarImage] = React.useState();
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
   const [visible, setVisible] = React.useState(false)
   const [myState, setMyState] = useState(props.myState)
@@ -195,7 +182,7 @@ const currentUser = props.findStateId(myState,'currentUser');
         <div className="wrapper " >
 <SidebarMy
           routes={routes}
-          image={sidebarImage}
+          image="/assets/img/bg.jpg"
           background={sidebarBackground}
           token={currentUser}
           page={currpage}

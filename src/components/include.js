@@ -1259,7 +1259,7 @@ try{
           </>
         )}
         
-                {props.match.status != 'Finished' && props.match.status != 'Expired'  &&  props.match.status != 'Cancel'  ?(
+                {props.match.status != 'Finished' && props.match.status != 'Expired'  &&  props.match.status != 'Cancel' && !completed  ?(
                   <>
                   
                   <Divider fitted style={{ opacity: 0 }} />

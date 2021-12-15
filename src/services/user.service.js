@@ -359,7 +359,7 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        response.data
+        return response.data
       });
   }
   createDepositShetabVerify(mobile) {

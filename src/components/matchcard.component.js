@@ -100,7 +100,7 @@ var moment = require("moment");
         <Image
                 alt={item.gameName}
                 src={
-                  require("assets/images/games/" + item.gameName + ".jpg").default
+                  "/assets/images/games/" + item.gameName + ".jpg"
                 }
                 fluid
           style={{background:'gray !important'}}
