@@ -84,7 +84,7 @@ function FormExampleFieldErrorLabel(prop) {
           onUpdateItem("loading", false);
           console.log(response.data);
           if (response.data.accessToken) {
-            prop.onUpdateItem("openModalLogin", false);
+            prop.onUpdateItem("currentUser", response.data);
             localStorage.setItem("user", JSON.stringify(response.data));
             UserWebsocket.disconnect();
             UserWebsocket.connect(

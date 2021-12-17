@@ -68,6 +68,12 @@ const SidebarExampleSidebar = (prop) => {
     
    },[prop.user]);
    if(prop.item.gameMode == 'Tournament' && visible && !getQueryVariable("matchid")){setVisible(false)}
+   var padd = '200px';
+  
+  //if(matchidFind.status == "Pending" && item.gameMode == 'Tournament') {padd = padd + 50}
+  if (prop.item.gameMode == "Tournament" && !getQueryVariable("matchid")) {
+    padd = '100px';
+  }
   return (
     
         <Sidebar.Pushable>
@@ -95,8 +101,8 @@ const SidebarExampleSidebar = (prop) => {
             
           </Sidebar>
 
-          <Sidebar.Pusher style={{minHeight:200}}>
-          <Dimmer active inverted style={{background:'none'}}>
+          <Sidebar.Pusher style={{minHeight:padd}}>
+          <Dimmer active inverted className="cover" style={{background:'none'}}>
             {user}
             </Dimmer>
           </Sidebar.Pusher>

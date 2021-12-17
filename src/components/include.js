@@ -587,7 +587,7 @@ export const printMatchBTN = (
   handleLeaveMatch
 ) => {
   var _res = 'VS';
-  {(match.status == "Pending" || match.status == "Ready") && (
+  {(item.status == "Pending" || item.status == "Ready") && (
     <>
       {match.matchPlayers[0].username == currentUser.username ||
       match.matchPlayers[1].username == currentUser.username ? (
@@ -645,10 +645,12 @@ export const printEventBTN = (
   activePlayer,
   isJoin,
   mymatchFind,
-  handleJoinMatch
+  handleJoinMatch,
+  onUpdateItem
 ) => {
   return (
     <>
+    {(item.status == "Pending" || item.status == "Ready") && (
       <p style={{ margin: 0 }}>
         {!isJoin && item.totalPlayer > item.players.length ? (
           <>
@@ -671,6 +673,7 @@ export const printEventBTN = (
             {mymatchFind && (
               <>
                 <Link
+                onClick={()=>onUpdateItem('matchIDQ', mymatchFind.id)}
                   to={
                     "/panel/matchlobby?id=" +
                     item.id +
@@ -686,9 +689,7 @@ export const printEventBTN = (
                     disabled={isloading}
                   >
                     <Button.Content visible>Open My Match</Button.Content>
-                    <Button.Content hidden>
-                      for {item.inSign.replace("Dollar", "$")} {item.amount}
-                    </Button.Content>
+                
                   </Button>
                 </Link>
               </>
@@ -696,6 +697,7 @@ export const printEventBTN = (
           </>
         )}
       </p>
+      )}
     </>
   );
 };
@@ -705,7 +707,7 @@ export const vsComponentTitle = (item) => {
       <Statistic inverted size="small" color={getColor(item.prize)}>
         <Statistic.Value>{item.gameName} </Statistic.Value>
         <Statistic.Label>
-          {item.gameMode}{" "}
+        
           <span className="text-muted">
             <FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)} />{" "}
             {item.gameConsole}
@@ -761,26 +763,44 @@ export const vsComponent = (
   progress,
   progressLable
 ) => {
+  var _finishTxt = 'Not Joinable';
+  //if (match.status) { _finishTxt = match.status}
+  //if (match.winner) { _finishTxt = match.winner}
+  var _mode = " 1 vs 1 ";
+    var _color = "#404040";
+   
+ 
+   
+  
+    if (item.gameMode == "Tournament" || item.gameMode == "League") {
+      _mode = item.gameMode;
+    }
+    
+   
+    if (item.status=='Canceled' || item.status=='Expired') {
+      //_color = "black"; 
+    }
   return (
     <>
       {vsComponentTitle(item)}
       <Divider fitted style={{ opacity: 0 }} />
-      
+      {printStatus(item,_mode,_color ,item.status+'@@@'+_finishTxt,item.status)}
       <Countdown
         renderer={rendererBig}
-        finish={item.status + "@@@Not Avalable"}
+        finish={item.status + "@@@"+_finishTxt}
         txt="@@@Avalable until"
         match={match}
-        
+        colorfinish={getColor(item.prize)}
         date={item.expire}
       />
 
-      <Segment inverted style={{ background: "none !important" }}>
+      <Segment inverted style={{ background: "none !important" }} >
         <Grid columns={2}>
           <Grid.Column
             style={{ background: "none !important" }}
-            color={match.winner == match.matchPlayers[0].username && "red"}
-          >
+            
+            
+            className={match.winner == match.matchPlayers[0].username && "coverwinner"}>
             {vsComponentPlayer(
               item,
               match,
@@ -792,8 +812,9 @@ export const vsComponent = (
             )}
           </Grid.Column>
           <Grid.Column
-            color={match.winner == match.matchPlayers[1].username && "red"}
-          >
+            style={{ background: "none !important" }}
+            className={match.winner == match.matchPlayers[1].username && "coverwinner"}>
+          
             {vsComponentPlayer(
               item,
               match,
@@ -1283,12 +1304,13 @@ export const renderer = ({
   }
 };
 
-export const printStatus = (item, _mode, _color,_btns) => {
+export const printStatus = (item, _mode, _color,finish,status) => {
+  //console.log(item, _mode, _color,finish,status)
   return (
     <>
       <Divider fitted style={{ opacity: 0 }} />
       {item.winner ? (
-        <Statistic inverted color={getColorStatus(item.status)} size="mini">
+        <Statistic inverted color={getColorStatus(status)} size="mini">
           <Statistic.Label>{_mode}</Statistic.Label>
           <Statistic.Label>
             <TransitionExampleTransitionExplorer
@@ -1330,13 +1352,46 @@ export const printStatus = (item, _mode, _color,_btns) => {
           </Statistic.Label>
         </Statistic>
       ) : (
-        <Statistic inverted color={getColorStatus(item.status)} size="tiny">
+        <>
+        {(item.status == "Pending" ) ? (
+          <>
+        {_mode=='Tournament' && item.status == 'Pending' && !getQueryVariable("matchid") ? (
+          <Statistic inverted color={getColorStatus(status)} size="tiny">
           <Statistic.Label>{_mode}</Statistic.Label>
-          <Statistic.Value>{item.status}</Statistic.Value>
+          <Statistic.Value>{item?.players?.length}/{item.totalPlayer}</Statistic.Value>
         </Statistic>
+        ):(
+<Statistic inverted color={getColorStatus(status)} size="tiny">
+<Statistic.Label>{_mode}</Statistic.Label>
+<Statistic.Value>{status}</Statistic.Value>
+</Statistic>
+        )}
+        </>
+        ): (
+          <>
+        <Divider fitted style={{ opacity: 0 }} />
+      <Statistic inverted size='mini' color='red'>
+      <Statistic.Label>{_mode}</Statistic.Label>
+    <Statistic.Label>{finish.split("@@@")[0]}</Statistic.Label>
+        {finish.split("@@@")[1] && (
+          <>
+          {finish.split("@@@")[1].indexOf('Not') > -1 ? (
+          <Statistic.Value><br/><br/>{finish.split("@@@")[1]}</Statistic.Value>
+        ):(
+          <>
+          <Statistic.Value>{finish.split("@@@")[1]}</Statistic.Value>
+          <Statistic.Label>is winner</Statistic.Label>
+          </>
+        )}
+          </>
+        )}
+        
+      </Statistic>
+      </>
       )}
-      <Divider fitted style={{ opacity: 0 }} />
-      {_btns}
+      </>
+      )}
+      
     </>
   );
 };
@@ -1348,7 +1403,7 @@ export const rendererBig = ({
   completed,
   props,
 }) => {
-  var _size = "tiny";
+  var _size = "mini";
   if (props.size) {
     _size = props.size;
   }
@@ -1358,21 +1413,17 @@ export const rendererBig = ({
   if (!_colorFinish) {
     _colorFinish = _color;
   }
-  if (completed) {
+  if (completed || props.match?.winner || (props.match?.status != 'Pending')) {
     // Render a complete state
     //return <Completionist />;
     return <>
-    <Statistic inverted size={_size} color={_colorFinish}>
-    {props.finish.split("@@@")[0]}
-        {props.finish.split("@@@")[1] && (
-          <Statistic.Label>{props.finish.split("@@@")[1]}</Statistic.Label>
-        )}
-        
-      </Statistic>
+    
     </>;
   } else {
     // Render a countdown
     return (
+      <>
+       <Divider fitted style={{ opacity: 0 }} />
       <Statistic inverted size={_size} color="yellow">
         <Statistic.Label>{props.txt.split("@@@")[0]}</Statistic.Label>
         {props.txt.split("@@@")[1] && (
@@ -1389,6 +1440,7 @@ export const rendererBig = ({
           {seconds > 9 ? <>{seconds}</> : <>0{seconds}</>}
         </Statistic.Value>
       </Statistic>
+      </>
     );
   }
 };
@@ -2018,7 +2070,7 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
 
       lists = item.matchTables;
       matchidFind = item.matchTables[0];
-
+//console.log(matchIDQ)
       if (matchIDQ) {
         lists.map((tblmatch, w) => {
           //console.log(tblmatch.id == parseInt(eventIDQ))
@@ -2076,7 +2128,7 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
           matchChats: [],
         };
       }
-      console.log(matchidFind);
+      //console.log(matchidFind);
       if (item.chats != "null") {
         {
           item.chats.map((itemnew, i) => {

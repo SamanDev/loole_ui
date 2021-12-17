@@ -8,6 +8,7 @@ class UserWebsocket {
    
 
     connect(token,user) {
+        console.log(ws)
         if (ws == null) {
             if(token){
                 ws = new WebSocket(USERSOCKETURL + token);
@@ -88,12 +89,12 @@ class UserWebsocket {
                       
                 } else if (msg.Command === 'updateUser') {
                       
-                    eventBus.dispatch("eventsDataUser", msg.data[0]);
+                    eventBus.dispatch("eventsDataUser", msg.data);
                    
                 }else if (msg.Command === 'eventId') {
                       
                 
-                    eventBus.dispatch("eventsDataEventDo", msg.data[0]);
+                    eventBus.dispatch("eventsDataEventDo", msg.data);
         //eventBus.remove("eventsDataEventDo");
                    
                 }
@@ -130,6 +131,7 @@ class UserWebsocket {
                 if (timerId) {
                     clearTimeout(timerId);
                     }
+                    ws = null
                 
             }
         }

@@ -75,18 +75,30 @@ const Toast = Swal.mixin({
    
     
 }, [prop.myState]);
-useLayoutEffect(() => {
-    //prop.onUpdateItem('eventIDQ',getQueryVariable("id"))
-   // prop.onUpdateItem('matchIDQ',getQueryVariable("matchid"))
-    $("#jsonhtml").html($("#jsonhtml2").text());
-    //handleAllDelete(eventIDQ)
-}, []);
+
 const currentUser = prop.findStateId(myState,'currentUser');
 var eventMatch = prop.findStateId(myState,'eventMatch');
 
-const match = prop.findStateId(myState,'match');
+var match = prop.findStateId(myState,'match');
+if(eventMatch?.matchTables){
+var lists = eventMatch.matchTables;
+  var matchidFind = match;
 
+      if (matchIDQ) {
+        lists.map((tblmatch, w) => {
+          //console.log(tblmatch.id == parseInt(eventIDQ))
+          if (parseInt(tblmatch.id) == parseInt(matchIDQ)) {
+            matchidFind = tblmatch;
+          }
+        });
+
+        //matchidFind = lists.filter( (list) => list.id === );
+      }
+      match = matchidFind
+
+    }
       if(eventIDQ != eventMatch?.id){eventMatch = false}
+      if(matchIDQ && match && matchIDQ != match?.id){match = false}
       const [visible, setVisible] = React.useState(false);
       const devWid = document.documentElement.clientWidth;
   
@@ -263,6 +275,12 @@ const match = prop.findStateId(myState,'match');
           <Sidebar.Pusher  style={{background:'none',padding:0}}>
            
           <Container >
+          <Col
+          className="mx-auto "
+          lg="8"
+          md="10"
+          style={{ padding: 0, marginTop: 20 }}
+        >
           <Active {...prop}/>
           {BackBTC()}
       <Button inverted color='blue' floated="right" className="mobile tablet only" onClick={() => setVisible(!visible)}>
@@ -281,10 +299,11 @@ const match = prop.findStateId(myState,'match');
                                     </Button>
                 </>
               )}
+              </Col>
               </Container >
-                  <div style={{height: 'calc(100vh - 40px)',overflow:'auto'}}>
+                  <div style={{height: 'calc(100vh - 50px)',overflow:'auto'}}>
                  
-                  <Container >
+                  <Container style={{paddingBottom: 50}}>
                     
                                    
                                     

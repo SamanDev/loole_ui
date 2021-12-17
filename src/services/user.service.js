@@ -146,6 +146,8 @@ class UserService {
       });
   }
   joinEvent(id) {
+    const usr = JSON.parse(localStorage.getItem('user'));
+    UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
     return axios
       .put(API_URL_TEST + "joinEvent", { id }, { headers: authHeader() })
       .then((response) => {
@@ -178,6 +180,8 @@ class UserService {
     }    
   }
   leaveEvent(id) {
+    const usr = JSON.parse(localStorage.getItem('user'));
+    UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
     return axios
       .put(API_URL_TEST + "leaveEvent", { id }, { headers: authHeader() })
       .then((response) => {
@@ -199,6 +203,8 @@ class UserService {
       });
   }
   changeReadyEvent(id) {
+    const usr = JSON.parse(localStorage.getItem('user'));
+    UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
       return axios
       .put(
         API_URL_TEST + "changeReadyEvent",
@@ -251,6 +257,8 @@ class UserService {
       });
   }
   changePassword(newPassword) {
+    const usr = JSON.parse(localStorage.getItem('user'));
+    UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
     return axios
       .put(
         API_URL_TEST + "changePassword",
@@ -276,7 +284,8 @@ class UserService {
       });
   }
   createEvent(gameName, gameConsole, gameMode, amount,inSign,outSign,currency, timeMinute) {
-    
+    const usr = JSON.parse(localStorage.getItem('user'));
+    UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
     return axios
       .post(
         API_URL_TEST + "createEvent",

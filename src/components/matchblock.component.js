@@ -84,8 +84,12 @@ var moment = require("moment");
     if (item.status=='Canceled' || item.status=='Expired') {
       _color = "black"; 
     }
-    
-  
+   
+    var _finishTxt = 'Not Joinable';
+ 
+  if (item?.status=='Canceled' || item?.status=='Expired') { _finishTxt = 'Not Avalable'}
+  //if (item?.winner) { _finishTxt = item.winner}
+  console.log(item);
     return (
     
         
@@ -107,10 +111,10 @@ var moment = require("moment");
               className={"text-center cover "+item.status}
                >
               <div style={{ transform: "scale(.8)",padding: '10px 0',height:185}}>
-                {printStatus(item,_mode,_color)}
+                {printStatus(item,_mode,_color, item.status+'@@@'+_finishTxt,item.status)}
               
               
-              <Countdown renderer={rendererBig}  txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
+              <Countdown renderer={rendererBig} txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
         </div>
         {item.players[0] ? (
                   <>

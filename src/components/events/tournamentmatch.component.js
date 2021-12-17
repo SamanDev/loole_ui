@@ -64,6 +64,7 @@ import {
     renderer,
     getQueryVariable,
     getCode,
+    printStatus,
     getGroupBadge,
     getGroupBadgeList,
     getGroupBadgePrice,
@@ -141,7 +142,7 @@ class MatchTourSection extends Component {
     this.handleClashFinished = this.handleClashFinished.bind(this);
     this.state = {
       eventid: this.props.item.id,
-        matchid: getQueryVariable("matchid"),
+        matchid: this.props.matchidFind?.id,
         item : this.props.item,
     currentUser : this.props.token,
         curPlayerReady: false,
@@ -305,8 +306,37 @@ $('.gdetails.no'+player).removeClass('hide');
 
   render() {
     let { currentUser, item,progress, isUpLoading, progressLable,matchidFind,isloading,matchid } = this.state;
-      
+    var _finishTxt = 'Not Avalable';
+    if (matchidFind.winner) { _finishTxt = matchidFind.winner}
+    var _mode = " 1 vs 1 ";
+      var _color = "#404040";
+     
+   
+     
     
+      if (item.gameMode == "Tournament" || item.gameMode == "League") {
+        _mode = item.gameMode;
+      }
+      
+     
+      if (item.status=='Canceled' || item.status=='Expired') {
+        //_color = "black"; 
+      }
+      if (!item.winner) {
+        item.winner= null;
+      }
+      if (item.matchTables && item.matchTables[0] && !item.matchTables[0].winner) {
+        item.matchTables[0].winner= null;
+      }
+      if (item.matchTables && !item.matchTables[0] ) {
+        item.matchTables.push({winner :null,status: item.status});
+      }
+      if (item.matchTables && item.matchTables[0] && item.matchTables[0].winner && !item.winner) {
+        item.winner = item.matchTables[0].winner;
+      }
+      if (item.winner) {
+        //_mode = setAvatar(item.winner);
+      }
     setTimeout(() => {$("#jsonhtml").html($("#jsonhtml2").text());},1000)
     var activePlayer = 0; 
     {item.players.map((user, z) => (
@@ -321,24 +351,30 @@ $('.gdetails.no'+player).removeClass('hide');
          dateExpired = item.expire;
     return (
       <>
-      
-     <Col className="mx-auto text-center" lg="7" md="10">
+     <Col
+          className="mx-auto text-center "
+          lg="8"
+          md="10"
+          style={{ padding: 0, marginTop: 20 }}
+        >
      {vsComponentTitle(item)}
-        <Divider fitted style={{ opacity: 0 }} />
+        
+            <Divider fitted style={{ opacity: 0 }} />
+            {printStatus(matchidFind,_mode,_color ,item.status+'@@@'+_finishTxt,item.status)}
+            <Divider fitted style={{ opacity: 0 }} />
         
             <Statistic inverted color="violet" size="mini">
             <Statistic.Label>Match Level</Statistic.Label>
               <Statistic.Value>{getMatchTitle(matchidFind.level,item.totalPlayer)}</Statistic.Value>
               
             </Statistic>
-            <Divider fitted style={{ opacity: 0 }} />
-        <Countdown renderer={rendererBig} match={matchidFind} txt="@@@Start at" finish="@@@" btn={printEventBTN(item,currentUser,isloading,activePlayer,isJoin,mymatchFind,this.handleJoinMatch)} date={item.expire} />
+        <Countdown renderer={rendererBig} match={matchidFind} txt="@@@Start at" finish="@@@"  date={item.expire} />
         
      
         <Segment inverted  style={{background:'none !important'}}>
       
       <Grid columns={2}>
-        <Grid.Column color={matchidFind.winner == matchidFind.matchPlayers[0].username && ('red')}>
+        <Grid.Column  className={matchidFind.winner == matchidFind?.matchPlayers[0]?.username && "coverwinner"}>
           {vsComponentPlayer(
             item,
             matchidFind,
@@ -349,7 +385,7 @@ $('.gdetails.no'+player).removeClass('hide');
             false
           )}
         </Grid.Column>
-        <Grid.Column color={matchidFind.winner == matchidFind.matchPlayers[1].username && ('red')}>
+        <Grid.Column  className={matchidFind.winner == matchidFind?.matchPlayers[1]?.username && "coverwinner"}>
           {vsComponentPlayer(
             item,
             matchidFind,
@@ -422,451 +458,12 @@ $('.gdetails.no'+player).removeClass('hide');
                                             </>
 
                                           )}
-                                          <MatchCard item={item} matchidFind={matchidFind}/> 
-                          <Card
-                            className="card-lock text-center card-plain card-match hide"
-                            style={{ color: "#fff" }}
-                          >
-                      
-                            {(item.gameMode == "Tournament" && this.state.matchid) ? (
-                              
-                              <>
-                            
-                            <Card.Footer>
-                              <Card
-                                style={{
-                                  backgroundColor: "black",
-                                  overflow: "auto",
-                                  margin: "0 auto",
-                                  maxWidth: 300,
-                                }}
-                              >
-                                <Card.Body
-                                  style={{
-                                    lineHeight: "10px",
-                                    overflow: "auto",
-                                    textAlign: "initial",
-                                  }}
-                                >
-                                  <img
-                                    alt={item.gameName}
-                                    style={{ width: "100%" }}
-                                    src={
-                                      require("assets/images/games/" +
-                                        item.gameName +
-                                        ".jpg").default
-                                    }
-                                  ></img>
-                                  <Table
-                                    striped
-                                    hover
-                                    borderless={true}
-                                    variant="dark"
-                                  >
-                                    <tbody>
-                                      
-                                    <tr>
-                                        <td>Mode</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.gameMode}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Event ID</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.id}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Event Status</td>
-
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.status}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Match ID</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {matchidFind.id}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Match Status</td>
-
-                                        <td style={{ textAlign: "right" }}>
-                                          {matchidFind.status}
-                                        </td>
-                                      </tr>
-                                      <tr style={{ background: "black" }}>
-                                        <td>Prizes</td>
-
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.outSign.replace('Dollar','$')} <CurrencyFormat value={item.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
-                                        </td>
-                                      </tr>
-                                      {item.current_brackets.map(
-                                        (win, w) => {
-                                          icStart = icStart + 1;
-                                          icEnd = icEnd + parseInt(win.number);
-                                          var icShow = "#" + icStart;
-                                          var nAmount = Number.parseFloat(win.prize).toFixed(2);
-                                            return (
-                                              <tr>
-                                              <td>{icShow}</td>
-                                              <td style={{ textAlign: "right" }}>{item.outSign.replace('Dollar','$')} <CurrencyFormat value={nAmount} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} /></td>
-                                                </tr>
-                                            );
-                                          
-                                        }
-                                      )}
-                                    </tbody>
-                                  </Table>
-                                </Card.Body>
-                              </Card>
-                              
-                            </Card.Footer>
-                            </>):(
-                              <>
-                              <Card.Body>
-                              <Row>
-                                <Col xs="12">
-                                  <h2>{matchidFind.status}</h2>
-                                  {item.gameName == "ClashRoyale" &&
-                                  matchidFind.status == "InPlay" ? (
-                                    <>
-                                      <Button
-                                        className="btn-fill btn-block btn-lg"
-                                        type="button"
-                                        variant="danger"
-                                        style={{
-                                          position: "relative",
-                                          zIndex: 1,
-                                        }}
-                                        onClick={this.handleClashFinished}
-                                        disabled={this.state.isloading}
-                                      >
-                                        Game finished
-                                      </Button>
-                                    </>
-                                  ) : (
-                                    <>
-                                      {(item.players[0].username ==
-                                        currentUser.username ||
-                                        item.players[1].username ==
-                                          currentUser.username) && (
-                                        <>
-                                          {matchidFind.status == "InPlay" && (
-                                            <>
-                                              <p>Match Code</p>
-
-                                              <Card.Title
-                                                as="h1"
-                                                className="matchcode"
-                                              >
-                                                {getCode(matchidFind.matchCode)}
-                                              </Card.Title>
-                                              <Row>
-                                                <Col xs="6">
-                                                  <Button
-                                                    className="btn-fill btn-block btn-lg"
-                                                    type="button"
-                                                    variant="danger"
-                                                    style={{
-                                                      position: "relative",
-                                                      zIndex: 1,
-                                                    }}
-                                                    onClick={
-                                                      this.handlecAlertLost
-                                                    }
-                                                  >
-                                                    I Lost
-                                                  </Button>
-                                                </Col>
-
-                                                <Col xs="6">
-                                                  <input
-                                                    type="file"
-                                                    id="uploadfile"
-                                                    accept="video/*"
-                                                    name="file"
-                                                    className="hide"
-                                                    ref={this.fileUpload}
-                                                    onChange={
-                                                      this.onChangeHandler
-                                                    }
-                                                  />
-                                                  <Button
-                                                    className="btn-fill btn-block btn-lg"
-                                                    type="button"
-                                                    variant="success"
-                                                    style={{
-                                                      position: "relative",
-                                                      zIndex: 1,
-                                                    }}
-                                                    onClick={
-                                                      this.handlecAlertWin
-                                                    }
-                                                    disabled={isUpLoading}
-                                                  >
-                                                    {progressLable}
-                                                  </Button>
-                                                  {progress > 0 && (
-                                                    <div className="prosbar">
-                                                      <ProgressBar
-                                                        variant="success"
-                                                        now={progress}
-                                                        label={""}
-                                                      />
-                                                    </div>
-                                                  )}
-                                                </Col>
-                                              </Row>
-                                            </>
-                                          )}
-                                          {matchidFind.status == "InPlay" && (
-                                            <>
-                                              <p>
-                                                <small className="text-muted">
-                                                  Avalable until
-                                                </small>
-                                                <br />
-                                                <Countdown
-                                                  renderer={renderer}
-                                                  date={dateExpired}
-                                                />
-                                              </p>
-                                            </>
-                                          )}
-                                        </>
-                                      )}
-                                    </>
-                                  )}
-
-                                  {matchidFind.status !== "" ? (
-                                    <>
-                                      {matchidFind.winner ? (
-                                        <>
-                                          <div
-                                            
-                                            style={{ position:'relative',top:20}}
-                                          >
-                                          <div
-                                            className=" winner avatar"
-                                            style={{ width: 92, height: 92}}
-                                          ></div>
-                                          <div className=" ">
-                                            <Avatar
-                                              size="92"
-                                              round={true}
-                                              title={matchidFind.winner}
-                                              name={setAvatar(
-                                                matchidFind.winner
-                                              )}
-                                            />
-                                          </div>
-                                          </div>
-                                          <h3 style={{color:'gold'}}>
-                                            {matchidFind.winner}<br/><small className="text-muted" style={{position:'relative',top:-5}}>is
-                                            winner</small>
-                                          </h3>
-                                        </>
-                                      ) : (
-                                        <>
-                                          {(matchidFind.status == "Pending" ||
-                                            matchidFind.status == "Ready") && (
-                                            <>
-                                              {item.players[0].username ==
-                                                currentUser.username ||
-                                              item.players[1].username ==
-                                                currentUser.username ? (
-                                                <>
-                                                  <p>
-                                                    <small className="text-muted">
-                                                      Avalable until
-                                                    </small>
-                                                    <br />
-                                                    <Countdown
-                                                      renderer={renderer}
-                                                      date={dateExpired}
-                                                    />
-                                                  </p>
-                                                  {item.players[0].username &&
-                                                  item.players[1].username &&
-                                                  matchidFind.status == "Ready" ? (
-                                                    <>
-                                                      <p
-                                                        style={{
-                                                          color: "#fff",
-                                                          fontSize: "14px",
-                                                          padding: 20,
-                                                        }}
-                                                      >
-                                                        Waiting for ready...
-                                                      </p>
-                                                    </>
-                                                  ) : (
-                                                    <>
-                                                      <p
-                                                        style={{
-                                                          color: "#fff",
-                                                          fontSize: "14px",
-                                                          padding: 20,
-                                                        }}
-                                                      >
-                                                        Waiting for another
-                                                        player...
-                                                      </p>
-                                                    </>
-                                                  )}
-
-                                                  {matchidFind
-                                                    .matchPlayers[0].username !=
-                                                    currentUser.username && (
-                                                    <Button
-                                                      className="btn-round"
-                                                      onClick={
-                                                        this.handleLeaveMatch
-                                                      }
-                                                      variant="warning"
-                                                      disabled={
-                                                        this.state.isloading
-                                                      }
-                                                    >
-                                                      Leave Match
-                                                    </Button>
-                                                  )}
-                                                </>
-                                              ) : (
-                                                <>
-                                                  <p>
-                                                    <small className="text-muted">
-                                                      Avalable until
-                                                    </small>
-                                                    <br />
-                                                    <Countdown
-                                                      renderer={renderer}
-                                                      date={dateExpired}
-                                                    />
-                                                  </p>
-                                                  <p
-                                                    style={{
-                                                      color: "#fff",
-                                                      fontSize: "14px",
-                                                      padding: 20,
-                                                    }}
-                                                  >
-                                                    Match is open, join now
-                                                    before someone else takes
-                                                    your spot. Winner takes $
-                                                    {item.prize}
-                                                    , let's get it! Match open
-                                                    for limited time.
-                                                  </p>
-                                                  {parseInt(item.totalPlayer) >
-                                                    activePlayer && (
-                                                    <Button
-                                                      className="btn-round"
-                                                      onClick={
-                                                        this.handleJoinMatch
-                                                      }
-                                                      variant="danger"
-                                                      disabled={
-                                                        this.state.isloading
-                                                      }
-                                                    >
-                                                      Join Match {item.inSign.replace('Dollar','$')}  {item.amount}
-                                                    </Button>
-                                                  )}
-                                                </>
-                                              )}
-                                            </>
-                                          )}
-                                        </>
-                                      )}
-                                    </>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </Col>
-                                <Col className="text-center">
-                                  {!item.players[1].username && <></>}
-                                </Col>
-                              </Row>
-                            </Card.Body>
-                            <Card.Footer>
-                              <Card
-                                style={{
-                                  backgroundColor: "black",
-                                  overflow: "auto",
-                                  margin: "0 auto",
-                                  maxWidth: 300,
-                                }}
-                              >
-                                <Card.Body
-                                  style={{
-                                    lineHeight: "10px",
-                                    overflow: "auto",
-                                    textAlign: "initial",
-                                  }}
-                                >
-                                  <img
-                                    alt={item.gameName}
-                                    style={{ width: "100%" }}
-                                    src={
-                                      require("assets/images/games/" +
-                                        item.gameName +
-                                        ".jpg").default
-                                    }
-                                  ></img>
-                                  <Table
-                                    striped
-                                    hover
-                                    borderless={true}
-                                    variant="dark"
-                                  >
-                                    <tbody>
-                                    <tr>
-                                        <td>Event ID</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.id}
-                                        </td>
-                                      </tr>
-                                      
-                                      <tr>
-                                        <td>Match ID</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {matchidFind.id}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Match Status</td>
-
-                                        <td style={{ textAlign: "right" }}>
-                                          {matchidFind.status}
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Winner takes</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.outSign.replace('Dollar','$')} <CurrencyFormat value={item.prize} displayType={'text'} thousandSeparator={true} prefix={''} renderText={value => <span >{value}</span>} />
-                                        </td>
-                                      </tr>
-                                      <tr>
-                                        <td>Mode</td>
-                                        <td style={{ textAlign: "right" }}>
-                                          {item.gameMode}
-                                        </td>
-                                      </tr>
-                                      
-                                    </tbody>
-                                  </Table>
-                                </Card.Body>
-                              </Card>
-                              
-                            </Card.Footer>
-                              </>
-                            )}
-                          </Card>
+                                          <Divider  hidden/>
+          <div  className="ui cards fours centered">
+          <MatchCard  item={item} matchidFind={matchidFind} />
+          </div>
+                           
+                       
                         </Col>
         </>
     );

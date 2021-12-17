@@ -160,6 +160,7 @@
     margin: 0 auto 40px;
 }
 
+   
 .txt-white {
     color: #FFFFFF;
 }
@@ -762,6 +763,16 @@ font-size: 11px !important;
     color: #fff;
   
 }
+.ui.message {
+    
+    background: rgba(255,255,255,.2);
+    color: #fff;
+}
+.vertical-timeline::before{
+    width: 1px !important;
+    background-color: rgba(255,255,255,.15)!important;
+    margin-left: 1px !important;
+}
 .ui.fours.cards .fluid.image{
     text-align: center;
     height:200px;
@@ -788,9 +799,21 @@ background-image: linear-gradient(rgba(0, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.847) 
     }
     .ui.fours.cards .cover.Expired,.ui.fours.cards .cover.Canceled{
    
-        background-image: linear-gradient(rgba(255, 0, 0, 0.682) 0%, rgba(255, 0, 0, 0.85) 63%, rgba(255, 0, 0, 0) 100%);
-        filter: grayscale(40%);
+        background-image: linear-gradient(rgba(255, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.55) 63%, rgba(255, 0, 0, .5) 100%);
+       
         }
+        .ui.fours.cards .cover.InPlay{
+   
+            background-image: linear-gradient(rgba(0, 0, 255, 0.582) 0%, rgba(0, 0, 0, 0.8) 63%, rgba(0, 0, 255, .3) 100%);
+           
+            }
+     .coverwinner{
+        background: -moz-radial-gradient(center, ellipse cover,  rgba(169,3,41,1) 0%, rgba(143,2,34,0.56) 44%, rgba(109,0,25,0) 100%);
+background: -webkit-radial-gradient(center, ellipse cover,  rgba(169,3,41,1) 0%,rgba(143,2,34,0.56) 44%,rgba(109,0,25,0) 100%);
+background: radial-gradient(ellipse at center,  rgba(169,3,41,1) 0%,rgba(143,2,34,0.56) 44%,rgba(109,0,25,0) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#006d0019',GradientType=1 );
+
+            }
 .modals.dimmer .ui.modal{
     left: auto;
     top: auto;

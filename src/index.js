@@ -227,7 +227,7 @@ function Main() {
               
             </Grid>
             
-            <Divider vertical inverted  className="mobile hidden">OR</Divider>
+            <Divider vertical inverted  className="large screen only">OR</Divider>
           </Segment>
           </Modal.Content>
         </div>

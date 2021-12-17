@@ -276,11 +276,12 @@ class AddMatch extends Component {
       submit: false,
       loading: false,
     });
-  
+    console.log(error?.response?.data);
     if (error?.response?.data?.status == 401) {
       this.props.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
       this.props.onUpdateItem("currentUser", defUser);
+    
     } else {
       const resMessage =
           (error.response &&
@@ -289,10 +290,10 @@ class AddMatch extends Component {
           error.message ||
           error.toString();
 
-      if (resMessage.indexOf("Error") > -1) {
+      if (error?.response?.data.indexOf("Error") > -1) {
         {
           printJoinalerts(
-            resMessage,
+            error?.response?.data,
             GName,
             this.state.currentUser,
             handleTagForm
@@ -465,7 +466,7 @@ class AddMatch extends Component {
            <Form.Field>
             <label>Bet</label>
                               <Input  fluid
-    label={<Dropdown defaultValue={this.state.inSign.value} value={this.state.inSign.value}
+    label={<Dropdown value={this.state.inSign.value}
     onChange={this.setInSign} options={options} />}
     labelPosition='right'
     placeholder='Bet' maxLength="4" value={this.state.BetAmount}

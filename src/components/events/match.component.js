@@ -66,8 +66,6 @@ import {
 } from "semantic-ui-react";
 import { UPLOADURL, POSTURLTest } from "const";
 
-var firstLoad = true;
-var isLoading = true;
 
 const API_URL_TEST = POSTURLTest;
 const Toast = Swal.mixin({
@@ -213,15 +211,14 @@ class LeagueSection extends Component {
   handlechangeReadyEvent(checked) {
     //firstLoad = false;
     this.setState({
-      isloading: true,
+      loading: true,
     });
     //this.setState({ curPlayerReady: checked });
     userService.changeReadyEvent(this.state.eventid).then(
       (response) => {
         if (response.data == "changeReadyEvent successful") {
-          Toast.fire({
-            icon: "success",
-            title: "Updated.",
+          this.setState({
+            loading: false,
           });
 
           //this.reGetevents();

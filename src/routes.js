@@ -123,6 +123,14 @@ var routes = [
     show:true
   },
   {
+    path: "/create",
+    layout: "/panel",
+    name: "CreateEvent",
+    icon: "nc-icon nc-simple-add",
+    component: 'CreateMatch',
+    show:true
+  },
+  {
     path: "/lobby",
     layout: "/panel",
     name: "Match Lobby",

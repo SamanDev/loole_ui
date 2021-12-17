@@ -79,7 +79,7 @@ var moment = require("moment");
       item.winner = item.matchTables[0].winner;
     }
     if (item.winner) {
-      _mode = setAvatar(item.winner);
+      //_mode = setAvatar(item.winner);
     }
     if (item.status=='Canceled' || item.status=='Expired') {
       //_color = "black"; 
@@ -109,7 +109,7 @@ var moment = require("moment");
               className={"text-center cover "+item.status}
                >
               <div style={{ transform: "scale(.8)",padding: '30px 0',height:185}}>
-              <printStatus renderer={rendererBig}  txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
+              {printStatus(item,_mode,_color ,item.status+'@@@Not Avalable',item.status)}
               <Countdown renderer={rendererBig}  txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
         </div>
         {item.players[0] ? (

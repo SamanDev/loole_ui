@@ -37,7 +37,16 @@ class AuthService {
         return response;
       });
   }
-
+  login2(username, password) {
+    return axios
+      .put(API_URL + "setUserPass", {
+        username,
+        password
+      })
+      .then(response => {
+        return response;
+      });
+  }
   logout() {
     var loc = window.location.href;
     
