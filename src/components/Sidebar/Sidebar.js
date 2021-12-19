@@ -225,7 +225,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
                             as="li"
                             
                           >
-                            <Nav.Link>
+                            <Nav.Link   to={prop.layout + prop.path}  as={Link}>
                               {prop.icon ? (
                                 <>
                                   <i className={prop.icon} />
