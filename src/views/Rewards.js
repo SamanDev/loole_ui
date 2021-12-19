@@ -11,10 +11,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import eventBus from "views/eventBus";
 import { printMatchBlock,getGroupBadge } from "components/include";
 import Active  from "components/active.component";
+import {
+  
+  Statistic,
+  Icon,Label,
+  Grid,
+  Popup,
+  Modal,
+  Button,
+  Segment,Divider
+} from "semantic-ui-react";
 // react-bootstrap components
 import {
   Badge,
-  Button,
   Card,
   Form,
   InputGroup,
@@ -42,14 +51,6 @@ function Dashboard(prop) {
 const currentUser = prop.findStateId(myState,'currentUser');
   
   
-    var Balance = currentUser.balance;
-    if (!Balance) {
-      Balance = 0;
-    }
-    //console.log("dash = "+EventList)
-
-    
-    
 
     return (
       <>
@@ -58,12 +59,14 @@ const currentUser = prop.findStateId(myState,'currentUser');
         <Col sm="12">
             <Card>
               <Card.Header >
-              <img
-                            alt="loole Point"
-                           
-                            src="/assets/images/Point.svg"
-                            style={{float:'left',marginRight:10,width:80}}
-                          ></img>
+              <Icon
+                        name="diamond"
+                        size="large"
+                        circular
+                        inverted
+                        color="teal"
+                        style={{float:'left',marginRight:10}}
+                      />
                 <Card.Title as="h4"> Earn Free Points!</Card.Title>
                 <p className="card-category">
                 Maximise your daily earning by taking advantage of loole.gg's bonuses and start earning free Points every day. You can earn Points by logging in, playing games, inviting friends and many other ways. Then all you have to do is go to the market place and spend your spare Points on plenty of great things. It's that simple!
@@ -82,23 +85,29 @@ const currentUser = prop.findStateId(myState,'currentUser');
                 <Card.Title as="h4">Invite A Friend</Card.Title>
                 <p className="card-category">
                   When a friend you have invited plays their first challenge you
-                  will receive <img
-                            alt="loole Point"
-                           
-                            src="/assets/images/Point.svg"
-                            className="Pointicon"
-                          ></img> 1,000 and they will receive <img
-                          alt="loole Point"
-                         
-                          src="/assets/images/Point.svg"
-                          className="Pointicon"
-                        ></img> 500. Then for every
-                  challenge they play on the site you get an extra <img
-                            alt="loole Point"
-                           
-                            src="/assets/images/Point.svg"
-                            className="Pointicon"
-                          ></img> 20 per game
+                  will receive <Label ><Icon
+                        name="diamond"
+                     size="small"
+                        circular
+                        inverted
+                        color="teal"
+                       
+                      /> 1,000</Label> and they will receive <Label ><Icon
+                      name="diamond"
+                   size="small"
+                      circular
+                      inverted
+                      color="teal"
+                     
+                    /> 500</Label>. Then for every
+                  challenge they play on the site you get an extra <Label ><Icon
+                        name="diamond"
+                     size="small"
+                        circular
+                        inverted
+                        color="teal"
+                       
+                      /> 20</Label> per game
                   they play for life.
                 </p>
               </Card.Header>
@@ -123,8 +132,22 @@ https://loole.gg/i/{currentUser.username}
               </Card.Header>
 
               <ListGroup variant="flush">
-    <ListGroup.Item className="d-flex justify-content-between align-items-center">Compete in a Points tournament {getGroupBadge('Point','20','small right')}</ListGroup.Item>
-    <ListGroup.Item className="d-flex justify-content-between align-items-center">Compete in a real money tournament {getGroupBadge('Point','100','small right')}</ListGroup.Item>
+    <ListGroup.Item className="d-flex justify-content-between align-items-center">Compete in a Points tournament <Label ><Icon
+                        name="diamond"
+                     size="small"
+                        circular
+                        inverted
+                        color="teal"
+                       
+                      /> 20</Label></ListGroup.Item>
+    <ListGroup.Item className="d-flex justify-content-between align-items-center">Compete in a real money tournament <Label ><Icon
+                        name="diamond"
+                     size="small"
+                        circular
+                        inverted
+                        color="teal"
+                       
+                      /> 100</Label></ListGroup.Item>
     <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
   </ListGroup>
             </Card>

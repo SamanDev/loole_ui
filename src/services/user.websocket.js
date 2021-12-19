@@ -29,8 +29,8 @@ class UserWebsocket {
             
             ws.onopen = function live() {
                 var timeout = 20000;
-            if (ws.readyState == ws.OPEN) {
-            ws.send('Ping');
+            if (ws?.readyState == ws?.OPEN) {
+            ws?.send('Ping');
             timerId = setTimeout(live, timeout);
             }else{
             try{
@@ -50,8 +50,8 @@ class UserWebsocket {
                     //eventBus.dispatch("eventsDataUser", user);
                     ws.onopen = function live() {
                         var timeout = 20000;
-                    if (ws.readyState == ws.OPEN) {
-                    ws.send('Ping');
+                    if (ws?.readyState == ws?.OPEN) {
+                    ws?.send('Ping');
                     timerId = setTimeout(live, timeout);
                     }
                 }
@@ -120,18 +120,20 @@ class UserWebsocket {
                 console.log(e.type);
 
                 if(e.type === 'error'){
-                    
-                    ws=null;
+            
+             ws = null
                    // localStorage.clear();
                     //window.location.reload();
                     //window.location.replace("/auth/login-page");
                 }
             }
             ws.onclose = function(e){
+       
+             ws = null
                 if (timerId) {
                     clearTimeout(timerId);
                     }
-                    ws = null
+                 
                 
             }
         }

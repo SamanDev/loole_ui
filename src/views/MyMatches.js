@@ -20,11 +20,7 @@ const currentUser = prop.findStateId(myState,'currentUser');
   const { data: eventsGet , isLoading } = useAllEventsByStatus('All')
   
   
-  if (isLoading || !eventsGet ) {return  <h4 style={{textAlign: "center"}}>Loading 
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" /></h4>;
-  }
+ 
   var events=(eventsGet);
   
   

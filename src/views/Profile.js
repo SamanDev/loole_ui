@@ -9,14 +9,7 @@ import withReactContent from 'sweetalert2-react-content'
 import Countdown from "react-countdown";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInstagram,faTwitch, faYoutube,faTwitter } from '@fortawesome/free-brands-svg-icons'
-import { faPlaystation, faXbox } from '@fortawesome/free-brands-svg-icons'
-import { faMobileAlt } from '@fortawesome/free-solid-svg-icons'
-import {  withRouter} from 'react-router-dom';
-import { Redirect, Route } from "react-router";
 
-import AuthService from "services/auth.service";
-import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
-import 'react-vertical-timeline-component/style.min.css';
 import userService from "services/user.service";
 import Active  from "components/active.component";
 
@@ -63,7 +56,7 @@ function profile(prop) {
     setMyState(prop.myState)
 }, [prop.myState]);
 const key = prop.findStateId(myState,'keyProfile');
-const currentUser = prop.findStateId(myState,'currentUser');
+var currentUser = prop.findStateId(myState,'currentUser');
 
   const handlecSetInstagram = (game,platform) => {
     const resetPw2= async () => {
@@ -108,16 +101,27 @@ const currentUser = prop.findStateId(myState,'currentUser');
             .then(
               
               (response) => {
-               
-                if (response.data.accessToken) {
-                  
+                let jsonBool = isJson(response.data);
+
+                if (jsonBool) {
                   Swal.fire("", "Data saved successfully.", "success")
+                } else {
+                  Swal.fire("", response.data, "error");
                 }
+                
+      },(error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        Swal.fire("Error!", resMessage, "error");
       })
   }
   const panes = [
-    {id:1, menuItem: 'Profile', render: () => <Tab.Pane><ProfileForm token={currentUser}  {...prop}/></Tab.Pane> },
-    {id:2, menuItem: 'Game Tags', render: () => <Tab.Pane><Card className="card-plain" style={{margin: -10}}>
+    {id:1, menuItem: 'Profile', render: () => <Tab.Pane style={{maxHeight: 'calc(100vh - 180px)', overflow: 'auto'}}><ProfileForm {...prop}/></Tab.Pane> },
+    {id:2, menuItem: 'Game Tags', render: () => <Tab.Pane style={{maxHeight: 'calc(100vh - 180px)', overflow: 'auto'}}><Card className="card-plain" style={{margin: -10}}>
     <Card.Header>
        <Card.Title>Game Tags</Card.Title></Card.Header>
       <Card.Body>
@@ -181,7 +185,7 @@ const currentUser = prop.findStateId(myState,'currentUser');
     
       <Row>
               <Col md="8" sm="6">
-              <Tab panes={panes} defaultActiveIndex={key} onTabChange={(e, data) => {prop.onUpdateItem('keyProfile',data.activeIndex)}}  />
+              <Tab panes={panes} defaultActiveIndex={key} {...prop} onTabChange={(e, data) => {prop.onUpdateItem('keyProfile',data.activeIndex)}}  />
 
             </Col>
               <Col md="4">
@@ -211,140 +215,5 @@ const currentUser = prop.findStateId(myState,'currentUser');
     </>
   );
 }
-var allValid = true;
-
-const required = (value) => {
-  
-    if (!value) {
-      return (
-        <div className="alert alert-danger" role="alert">
-          This field is required!
-        </div>
-      );
-    }
-  };
-  const getBlockGames = (filtermode) => {
-    var gamemap = [];
-    Games.games.map((item, i) => {
-        item.gameconsole.map((consoles, j) => {
-            if (
-              'All' == filtermode || consoles.consolename == filtermode ||
-              (consoles.consolename != "Mobile" && filtermode == "NoMobile")
-            ) {
-              
-                gamemap.push({
-                value: item.name + " - " + consoles.consolename,
-                label: item.name + " - " + consoles.consolename,
-              });
-              
-            }
-          });
-        
-        
-        });
-     
-    return gamemap;
-  };
-  const getBlockTournament = (betval) => {
-    var tourmap = [
-      { value: "4", label: "4 Players - Prize: $" + (4 * betval)*90/100 },
-      { value: "8", label: "8 Players - Prize: $" + (8 * betval)*90/100 }
- 
-    
-     
-    ];
-    
-     
-    return tourmap;
-  };
-  
-  const getBlockTournamentVal = (betval,tourmode) => {
-    var tourmap = { value: tourmode, label: tourmode+" Players - Prize: $" + (tourmode * betval)*90/100 };
-  
-    return tourmap;
-  };
-  const getBlockGamesVal = (filtermode) => {
-    var gamemap = [];
-    Games.games.slice(0, 5).map((item, i) => {
-        item.gameconsole.slice(0, 5).map((consoles, j) => {
-            if (
-              'All' == filtermode || consoles.consolename == filtermode ||
-              (consoles.consolename != "Mobile" && filtermode == "NoMobile")
-            ) {
-              
-              if(j==0){
-                gamemap.push({
-                  value: item.name + " - " + consoles.consolename,
-                  label: item.name + " - " + consoles.consolename,
-                });
-                
-              }
-                
-              
-            }
-          });
-        
-        
-        });
-     
-    return gamemap[0];
-  };
-  const getBlockGameModes = (filtermode) => {
-    var gamemaplocal = [];
-    
-      if(filtermode!=''){
-        
-        var filter = filtermode.value.split(' - ')[0]
-        
-        Games.games.map((item, i) => {
-            if (
-                item.name == filter 
-                ) {
-          item.modes.map((mode, j) => {
-            
-            gamemaplocal.push({
-                value: mode.modename ,
-                label: mode.modename ,
-              });
-             
-          });
-        }
-        });
-      
-      }
-        
-     
-      
-    return gamemaplocal
-  };
-  const getBlockGameModesVal = (filtermode) => {
-    var gamemaplocal = [];
-    
-      if(filtermode!=''){
-        
-        var filter = filtermode.value.split(' - ')[0]
-        
-        Games.games.map((item, i) => {
-            if (
-                item.name == filter 
-                ) {
-          item.modes.map((mode, j) => {
-            if(j==0){
-            gamemaplocal.push({
-                value: mode.modename ,
-                label: mode.modename ,
-              });
-            }
-          });
-        }
-        });
-      
-      }
-        
-     
-      
-    return gamemaplocal[0]
-  };
-  
 
 export default (profile) ;

@@ -2,6 +2,21 @@ import React ,{useState,useEffect} from "react";
 import Avatar from 'react-avatar';
 import PropTypes from "prop-types";
 import AuthService from "services/auth.service";
+import {
+  setAvatar,
+  getColor,
+  getIcon,
+  renderer,
+  printMatchBlock,
+  isJson,
+  getModalTag,
+  getGameTag,
+  getMatchTitle,
+  haveGameTag,
+  printRequired,
+  haveAdmin
+  
+} from "components/include";
 // react-bootstrap components
 import {
   Badge,
@@ -41,6 +56,18 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
     setState(getCollapseStates(routes));
     
   }, []);
+  if(token){
+    if(token?.accessToken){
+    var str = token.username;
+    var res = str.substring(0, 1)
+    onUpdateItem("openModalLogin", false)
+    }else{
+      var str = 'Guest User';
+    var res = str.substring(0, 1)
+    onUpdateItem("openModalLogin", true)
+  }
+    
+    res  = res + ' '+ str.substring(1, 2);
   const logOut=()=> {
       
     onUpdateItem("currentUser", defUser)
@@ -118,7 +145,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
           </Nav.Item>
         );
       }
-      if (prop.show && prop.name != 'Profile' && prop.name != 'Create'){
+      if (prop.show && prop.name != 'Profile' && prop.name != 'Create'&& prop.name != 'Admin'&& prop.name != 'CreateEvent'){
         return (
           <Nav.Item
             className={activeRoute(prop.layout + prop.path)}
@@ -189,6 +216,33 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
                   </>
                 );
                       }
+                      if (prop.show &&  (prop.name == 'Admin' || prop.name == 'CreateEvent')  && haveAdmin(token.roles)){
+                        return (
+                          <>
+                          <Nav.Item
+                            className={activeRoute(prop.layout + prop.path)}
+                            key={key}
+                            as="li"
+                            
+                          >
+                            <Nav.Link>
+                              {prop.icon ? (
+                                <>
+                                  <i className={prop.icon} />
+                                  <p>{prop.name}</p>
+                                </>
+                              ) : (
+                                <>
+                                  <span className="sidebar-mini">{prop.mini}</span>
+                                  <span className="sidebar-normal">{prop.name}</span>
+                                </>
+                              )}
+                            </Nav.Link>
+                          </Nav.Item>
+                          
+                          </>
+                        );
+                              }
               if (prop.show && prop.name == 'Profile'){
                 return (
                   
@@ -197,11 +251,17 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
             key={key}
             as="li"
             style={{marginTop:20,marginBottom:20}}
+            
           >
             <Nav.Link to={prop.layout + prop.path} as={Link} >
               {prop.icon ? (
                 <>
-                  <i className={prop.icon} />
+              
+                  <Avatar size="30"  name={res} 
+                  round={true}
+                  title={token.username}
+                  style={{float:'left',marginRight:15}}
+                  />
                   <p>{token.username}</p>
                 </>
               ) : (
@@ -224,18 +284,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
     return location.pathname === routeName ? "active" : "";
   };
 
-  if(token){
-    if(token?.accessToken){
-    var str = token.username;
-    var res = str.substring(0, 1)
-    onUpdateItem("openModalLogin", false)
-    }else{
-      var str = 'Guest User';
-    var res = str.substring(0, 1)
-    onUpdateItem("openModalLogin", true)
-  }
-    
-    res  = res + ' '+ str.substring(1, 2);
+ 
 
     
   return (
@@ -247,7 +296,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
           <Link to={'/home'} className="simple-text logo-mini" style={{    height: 45, width: 45}}>
               <div className="logo-img">
                 <img
-                  src={require("assets/img/logoloole.svg").default}
+                  src="/assets/img/logoloole.svg"
                   alt="react-logo"
                   style={{top:0}}
                 />
@@ -258,22 +307,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
               Loole.gg
               </Link>
           </div>
-          <div className="user">
-            <div className="photo">
-            <Avatar size="30"  name={res} />
-            </div>
-            <div className="info">
-            <Link to={'/panel/profile'} onClick={() =>
-      document.documentElement.classList.toggle("nav-open")
-    }>
-              
-                <span>
-                {token.username} 
-                </span>
-                </Link>
-             
-            </div>
-          </div>
+          
           <Nav as="ul" onClick={() =>
       document.documentElement.classList.toggle("nav-open")
     }>{createLinks(routes)}

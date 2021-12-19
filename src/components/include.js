@@ -243,10 +243,10 @@ export const getColorStatus = (status) => {
     _col = "green";
   }
   if (status == "Finished") {
-    _col = "black";
+    _col = "red";
   }
   if (status == "Canceled" || status == "Expired") {
-    _col = "grey";
+    _col = "red";
   }
   return _col;
 };
@@ -1535,19 +1535,30 @@ export const userDetails = (currentUser) => {
   if (currentUser.country.value && currentUser.country.value != flag) {
     flag = currentUser.country.value;
   }
+  var lastLogin = moment(currentUser.lastLogin).startOf('day').fromNow();
   return (
     <>
+    
       <div
-        className="card-description text-center"
+        className="text-center"
         style={{ marginBottom: 30 }}
       >
-        <Card.Header as="h5" style={{ marginBottom: 0, marginTop: 15 }}>
-          {currentUser.username}{" "}
-          <img
+          <Statistic size="mini">
+              
+              <Statistic.Value>{currentUser.username}
+          </Statistic.Value>
+          <Statistic.Label>
+          <small className="text-muted">From</small> <img
             src={"/assets/images/famfamfam_flag_icons/png/" + flag + ".png"}
-          />
+          /><br/><br/><small className="text-muted">Last Login</small><br/> {lastLogin}
+              </Statistic.Label>
+            </Statistic>
+        <Card.Header as="h5" style={{ marginBottom: 0, marginTop: 15 }}>
+      
+          
         </Card.Header>
-        <small style={{ fontSize: 10 }}>{currentUser.lastLogin}</small>
+        
+        <small style={{ fontSize: 10 }}></small>
         <br />
         <ListGroup horizontal style={{ display: "inline-flex", marginTop: 10 }}>
           {haveSocialTag("Instagram", currentUser.userSocialAccounts) && (
@@ -1756,13 +1767,13 @@ export const handleSaveTags = (
 
   userService.saveTags(gameName, gamePlatform, gameID, gameNickname).then(
     (response) => {
-      let jsonBool = isJson(response);
+      let jsonBool = isJson(response.data);
 
       if (jsonBool) {
         Swal.fire("", "Data saved successfully.", "success");
         //window.location.reload(false);
       } else {
-        Swal.fire("", response, "error");
+        Swal.fire("", response.data, "error");
       }
     },
     (error) => {
@@ -1912,9 +1923,7 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
 
       activePlayer = 0;
 
-      if (typeof item === "undefined") {
-        //this.props.history.push("/panel/dashboard");
-      }
+     
 
       if (item.gameMode == "Tournament") {
         if (!item.tournamentPayout) {
@@ -1959,10 +1968,7 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
           "1-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00|11-20, 45.00, 28.00, 17.00, 10.00|21-40, 36.00, 23.00, 15.00, 11.00, 8.00, 7.00|41-70, 30.00, 20.00, 14.00, 10.00, 8.00, 7.00, 6.00, 5.00|71-100, 29.00, 18.00, 12.50, 10.00, 8.00, 6.50, 5.50, 4.50, 3.50, 2.50|101-200, 28.00, 17.50, 11.50, 8.50, 7.00, 5.50, 4.50, 3.50, 2.50, 1.50, 1.00x10|201-400, 27.00, 16.50, 10.50, 8.00, 6.25, 4.75, 3.75, 2.75, 1.75, 1.25, 0.75x10, 0.50x20|401-700, 26.00, 15.50, 10.00, 7.50, 6.00, 4.50, 3.50, 2.50, 1.50, 1.00, 0.65x10, 0.40x20, 0.25x30|701-1000, 25.00, 15.00, 10.00, 7.25, 5.50, 4.25, 3.25, 2.25, 1.25, 0.75, 0.55x10, 0.40x20, 0.25x30, 0.15x30";
       }
 
-      if (!item.winner) {
-        //item.winner = [];
-        //item.winner.push(nullplayer);
-      }
+     
       if (!item.rules) {
         item.info = {
           conditions: [
@@ -2089,7 +2095,7 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
         item.gameMode == "Tournament"
       ) {
         lists.map((tblmatch, w) => {
-          tblmatch.startTime = date_edit(tblmatch.startTime);
+          
           if (
             tblmatch.status == "InPlay" ||
             tblmatch.status == "Pending" ||
@@ -2112,9 +2118,6 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
       }
       //matchidFind.status = 'InPlay'
 
-      item.expire = date_edit(item.expire);
-      item.startTime = date_edit(item.startTime);
-      item.finished = date_edit(item.finished);
 
       if (!matchidFind) {
         matchidFind = {
@@ -2135,11 +2138,7 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
             finalChat.push(itemnew);
           });
         }
-        {
-          finalChat.map((itemnew, i) => {
-            itemnew.time = date_edit(itemnew.time);
-          });
-        }
+      
 
         item.chats = finalChat;
       }
@@ -2154,16 +2153,12 @@ export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
             finalChat.push(itemnew);
           });
         }
-        {
-          finalChat.map((itemnew, i) => {
-            itemnew.time = date_edit(itemnew.time);
-          });
-        }
+      
 
         matchidFind.matchChats = finalChat;
       }
 
-      item.expire = date_edit(item.expire);
+  
       var dateExpired = item.expire;
 
       if (

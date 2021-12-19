@@ -119,6 +119,7 @@ function Main() {
           list: list,
         };
       });
+      //console.log(myState)
     }
     
   };
@@ -187,7 +188,7 @@ function Main() {
     });
   }, []);
 
-  if (!currentUser || !events) {
+  if (!currentUser ) {
     return (
       <Segment style={{ height: "100%", width: "100%", position: "absolute" }}>
         <Dimmer active inverted>

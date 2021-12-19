@@ -56,7 +56,7 @@ var routes = [
     name: "Profile",
     icon: "nc-icon nc-circle-09",
     component: 'Profile',
-    show:false
+    show:true
   },
   {
     path: "/admin",

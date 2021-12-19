@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo,useEffect } from 'react'
 import Select from 'react-select'
 import countryList from 'react-select-country-list'
 import { Dropdown } from 'semantic-ui-react'
@@ -15,23 +15,26 @@ function editCounry(options){
   console.log(newArray)
   return newArray
 }
-function CountrySelector(props) {
-  const values = props.value;
+function CountrySelector(prop) {
+  
+    var country = prop.value?.value;
+    if(country){country = country.toLowerCase()}
   const options = (myCountry.myCountryList)
   const changeHandler = (value,data) => {
-    //props.passedFunction(value)
+    //prop.passedFunction(value)
    
     var _val = {value: data.value.toUpperCase(), label: value.target.innerText}
-    props.passedFunction(_val)
+    
+    prop.onUpdateItem('country',_val)
   }
   
-  console.log(values.value)
+ 
 
-  //return <Select className="picker form-control" options={options} value={value} onChange={props.passedFunction} />
+  //return <Select className="picker form-control" options={options} value={value} onChange={prop.passedFunction} />
   return  <Dropdown
   placeholder='Select Country'
   fluid
-  value={values.value.toLowerCase()}
+  value={country}
   
   onChange={changeHandler}
   search

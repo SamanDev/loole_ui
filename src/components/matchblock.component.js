@@ -53,43 +53,16 @@ import { useHistory } from "react-router";
 
 var moment = require("moment");
  function DashStat(prop) {
+  const history = useHistory();
     var _mode = " 1 vs 1 ";
     var _color = "#404040";
     var item = prop.item;
-    item.expire = date_edit(item.expire);
-    item.startTime = date_edit(item.startTime);
-    item.finished = date_edit(item.finished);
-    item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
-   
-  
-    if (item.gameMode == "Tournament" || item.gameMode == "League") {
-      _mode = item.gameMode;
-    }
     
-    if (!item.winner) {
-      item.winner= null;
-    }
-    if (item.matchTables && item.matchTables[0] && !item.matchTables[0].winner) {
-      item.matchTables[0].winner= null;
-    }
-    if (item.matchTables && !item.matchTables[0] ) {
-      item.matchTables.push({winner :null,status: item.status});
-    }
-    if (item.matchTables && item.matchTables[0] && item.matchTables[0].winner && !item.winner) {
-      item.winner = item.matchTables[0].winner;
-    }
-    if (item.winner) {
-      //_mode = setAvatar(item.winner);
-    }
-    if (item.status=='Canceled' || item.status=='Expired') {
-      _color = "black"; 
-    }
    
     var _finishTxt = 'Not Joinable';
  
-  if (item?.status=='Canceled' || item?.status=='Expired') { _finishTxt = 'Not Avalable'}
-  //if (item?.winner) { _finishTxt = item.winner}
-  console.log(item);
+  if (item?.status=='Canceled' || item?.status=='Expired' || item?.status=='Finished') { _finishTxt = 'Not Avalable'}
+
     return (
     
         
@@ -98,7 +71,7 @@ var moment = require("moment");
          <Label inverted size="mini" color={getColorStatus(item.status)} ribbon style={{zIndex:2,maxWidth:170,position:'absolute',top:15,left:-10}}>
          {item.status == 'Pending' &&  ( <Icon loading name='spinner' />)}
          {item.status == 'Finished' &&  ( <Icon  name='check' color="green" />)}
-         {(item.status=='Canceled' || item.status=='Expired') &&  ( <Icon  name='times' color="red" />)}
+         {(item.status=='Canceled' || item.status=='Expired') &&  ( <Icon  name='times'  />)}
          {item.status}
           </Label>
         <Image
@@ -112,7 +85,7 @@ var moment = require("moment");
                >
               <div style={{ transform: "scale(.8)",padding: '10px 0',height:185}}>
                 {printStatus(item,_mode,_color, item.status+'@@@'+_finishTxt,item.status)}
-              
+             
               
               <Countdown renderer={rendererBig} txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
         </div>

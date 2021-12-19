@@ -133,7 +133,7 @@ const currentUser = props.findStateId(myState,'currentUser');
             key={key}
             render={() => (
               <>
-              {(prop.component=='Admin') && (<Admin authed={true} />)}
+              {(prop.component=='Admin') && (<Admin {...props} />)}
               {(prop.component=='Profile') && (<Profile {...props} />)}
               {(prop.component=='Dashboard') && (<Dashboard  {...props}  />)}
               {(prop.component=='LockScreenPage') && (<LockScreenPage {...props} />)}

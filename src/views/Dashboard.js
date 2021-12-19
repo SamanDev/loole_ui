@@ -58,7 +58,9 @@ const updateCount = (events) => {
     for (var ifil = 0; ifil < arrFilters.length; ifil++) {
       var filtermode = arrFilters[ifil]
       var newItem = [];
-      events.map((item, i) => {
+      events.map((_item, i) => {
+        var item = JSON.parse(JSON.stringify(_item));
+        
         if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'All') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
         
           var timestring1 = item.expire;
@@ -68,7 +70,7 @@ const updateCount = (events) => {
          startdate = moment(startdate).add(1, 'days').format()
          
           
-          if(item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){
+          if(item.status !='Pending'){
        
             if(startdate>expected_enddate){
               //newItem.push(item)
@@ -85,6 +87,7 @@ const updateCount = (events) => {
       }
       
       )
+   
       if(findStateId(myStateThis,filtermode) != newItem.length){
         onUpdateItem(filtermode,newItem.length)
       }
@@ -94,15 +97,17 @@ const updateCount = (events) => {
 }
 const getBlockChallenge = (filtermode,events) => {
   var newItem = []
-  if (events) {
+
    
-     events.map((item, i) => {
+     events?.map((_item, i) => {
+      var item = JSON.parse(JSON.stringify(_item));
       if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'All') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
         //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
         
         {item.players.map((player, j) => {
          //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
         })}
+        
         var timestring1 = item.expire;
         var timestring2 = new Date();
         var startdate = moment(timestring1).format();
@@ -127,11 +132,9 @@ const getBlockChallenge = (filtermode,events) => {
     }
     
     )
-    if(findStateId(myStateThis,filtermode) != newItem.length){
-      //onUpdateItem(filtermode,newItem.length)
-    }
+  
     return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem,filtermode,{...prop})}</Card.Group>)
-  }
+  
 
 }
   

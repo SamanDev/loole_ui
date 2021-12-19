@@ -28,6 +28,7 @@ class AuthService {
   }
   
   login(username, password) {
+    UserWebsocket.disconnect();
     return axios
       .post(API_URL + "signin", {
         username,
@@ -53,7 +54,7 @@ class AuthService {
     UserWebsocket.disconnect();
       
       localStorage.setItem("user", JSON.stringify(defUser));
-      
+      UserWebsocket.connect()
     if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
       
       
