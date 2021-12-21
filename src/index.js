@@ -224,7 +224,7 @@ function Main() {
               
               <Header as='h2' inverted>Create Account</Header>
               
-                <Register /></Grid.Column>
+                <Register onUpdateItem={onUpdateItem} /></Grid.Column>
               
             </Grid>
             

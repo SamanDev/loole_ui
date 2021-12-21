@@ -60,7 +60,7 @@ const getBlockChallenge = (filtermode,events) => {
     }
     
     )
-    return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem,filtermode)}</Card.Group>)
+    return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem,filtermode,{...prop})}</Card.Group>)
   }
 
 }

@@ -56,7 +56,7 @@ h6, .h6 {
 
 p {
   font-size: 16px;
-  line-height: 1.5;
+ 
 }
 
 /*     General overwrite     */
@@ -718,6 +718,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de8e0009', e
   color: white;
   padding: 5px;
 }
+.landing-page .parallax .container.user{
+  background: -moz-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 51%);
+background: -webkit-radial-gradient(center, ellipse cover,  rgba(255,255,255,0.5) 0%,rgba(255,255,255,0) 51%);
+background: radial-gradient(ellipse at center,  rgba(255,255,255,0.5) 0%,rgba(255,255,255,0) 51%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80ffffff', endColorstr='#00ffffff',GradientType=1 );
+
+}
 
 .landing-page .section-presentation .description{
   padding: 50px 5px 0;
@@ -735,7 +742,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#de8e0009', e
   text-shadow: 0 1px 5px rgba(0,0,0,0.5);
   font-size: 18px;
 }
-
+.landing-page .parallax .description * {
+  line-height: 1.8;
+  
+}
 .landing-page .parallax .buttons{
   width: 100%;
   display: inline-block;

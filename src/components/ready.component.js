@@ -63,7 +63,7 @@ const SidebarExampleSidebar = (prop) => {
    },[prop.isUser]);
    useEffect(() => {
     setUser(prop.user)
-  
+   
      
     
    },[prop.user]);

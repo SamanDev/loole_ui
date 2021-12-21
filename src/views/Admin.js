@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import DataTable, { ExpanderComponentProps } from "react-data-table-component";
-import { Input, Segment, Button, Card, Table } from "semantic-ui-react";
+import { Input, Segment, Button, Card, Table,Dropdown } from "semantic-ui-react";
 import Avatar from "react-avatar";
 import { useAdminUsers } from "services/hooks";
 import { JsonToTable } from "react-json-to-table";
@@ -36,7 +36,7 @@ import {
   printBlockChallenge,
   isJson,
 } from "components/include";
-
+import Moment from "moment";
 const conditionalRowStyles = [
   {
     when: (row) => row.endBalance < row.startBalance,
@@ -62,7 +62,22 @@ const noDataComponent = (
   </Col>
 );
 var dataTransaction = [];
-
+var moment = require("moment");
+function isDate(name,myDate,user) {
+  if(name ==='country'){
+    var res = (<td><img
+    src={"/assets/images/famfamfam_flag_icons/png/" + user + ".png"}
+  />  {myDate}</td>
+  )
+  }else{
+    var res = myDate;
+    if(myDate?.toString().indexOf(":") > -1 && myDate?.toString().indexOf("T") > -1 && myDate?.toString().indexOf(":00:00") == -1 ) res = moment(myDate).fromNow();
+    if(myDate?.toString().indexOf(":") > -1 && myDate?.toString().indexOf("T") > -1  && myDate?.toString().indexOf(":00:00") > -1 ) res = moment(myDate).format('MM-DD-YYYY') +" ("+moment(myDate).fromNow()+')'
+  
+  }
+  
+  return res
+}
 function getPathOfKey(object, keys) {
   var newO = JSON.parse(JSON.stringify(object));
   var newOb = {};
@@ -94,7 +109,7 @@ function getPathOfKey(object, keys) {
             }
           } else {
             if (y == "label") {
-              finalObj.push({name: x,value: newO1[y],user:null})
+              finalObj.push({name: x,value: newO1[y],user:newO1['value'].toLowerCase()})
               newOb[x] = newO1[y];
             }
           }
@@ -139,6 +154,7 @@ function Admin(prop) {
       item.username &&
       item.username.toLowerCase().includes(filterText.toLowerCase())
   );
+  
   const updateUserObj = (e, data) => {
     var _key = data.userkey;
     var curU = JSON.parse(JSON.stringify(data.user));
@@ -167,10 +183,11 @@ const renderBodyRow = ({name,value,user}, i) => ({
   user={user}
     userkey={name}
     onChange={updateUserObj}
-  />) :  value
+  />) :  isDate(name,value,user)
 ],
 });
   const ExpandedComponent = ({ data }) => {
+   
     if (exMode == "") {
       return <pre>hi</pre>;
     }
@@ -183,11 +200,11 @@ const renderBodyRow = ({name,value,user}, i) => ({
         ),
       ];
       var jdata  = JSON.parse(JSON.stringify(newdata));
-      console.log( jdata);
+      
       return (
         <Segment>
-          <Table renderBodyRow={renderBodyRow} celled
-    headerRow={headerRow} tableData={jdata[0]} />
+          <Table renderBodyRow={renderBodyRow} celled color='red'
+     tableData={jdata[0]} />
         </Segment>
       );
     }
@@ -208,6 +225,7 @@ const renderBodyRow = ({name,value,user}, i) => ({
       );
     }
   };
+  
   const columns = [
     {
       name: "ID",
@@ -293,6 +311,32 @@ const renderBodyRow = ({name,value,user}, i) => ({
       ),
       sortable: true,
     },
+    {
+      name: "Admin",
+      selector: (row) => row.roles,
+      format: (row) => (
+        <CheckboxToggle
+          check={row.roles[0].name.match('ROLE_ADMIN')}
+          user={row}
+          userkey="Roles"
+          onChange={updateUserObj}
+        />
+      ),
+      sortable: true,
+    },
+    {
+      name: "Moderator",
+      selector: (row) => row.roles,
+      format: (row) => (
+        <CheckboxToggle
+          check={row.roles[0].name.match('ROLE_MODERATOR')}
+          user={row}
+          userkey="Roles"
+          onChange={updateUserObj}
+        />
+      ),
+      sortable: true,
+    },
   ];
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {
@@ -316,10 +360,12 @@ const renderBodyRow = ({name,value,user}, i) => ({
       setDataTransaction(usersList);
     }
   }, [usersList]);
+  
+	
   return (
     <>
       <Segment>
-        <div style={{ height: "calc(100vh - 50px)", overflow: "auto" }}>
+        <div style={{ height: "calc(100vh - 150px)", overflow: "auto" }}>
           <DataTable
             columns={columns}
             data={filteredItems}
@@ -327,7 +373,7 @@ const renderBodyRow = ({name,value,user}, i) => ({
             defaultSortAsc={false}
             title="Users List"
             expandOnRowClicked={true}
-            expandableRowsHideExpander={false}
+            expandableRowsHideExpander={true}
             conditionalRowStyles={conditionalRowStyles}
             expandableRows
             expandableRowsComponent={ExpandedComponent}

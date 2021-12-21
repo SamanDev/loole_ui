@@ -246,7 +246,7 @@ const currentUser = props.findStateId(myState,'currentUser');
           </div>
         </Modal>
           </div>
-          <AdminFooter />
+       
           <div
             className="close-layer"
             onClick={() =>

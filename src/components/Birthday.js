@@ -18,7 +18,7 @@ export default function RainbowDatepicker(props) {
       
       className="picker form-control"
       minDate={new Date("01/01/1960")}
-      maxDate={new Date("01/01/2022")}
+      maxDate={new Date("01/01/2005")}
       value={date}
       onChange={onChange}
       

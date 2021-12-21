@@ -24,31 +24,34 @@ import {
   var arrLogos = ['psn.svg','xbox.svg','8pool.png','clashroyale.png','activition.png','epic.svg']
     var arrTagMode = ['PSN','XBOX','8Pool','ClashRoyale','CallOfDuty','Fortnite']
     var arrPlatform = ['PSN','XBOX','Mobile','Mobile','Activition','All']
-    
-class TagsForm extends Component {
+    function TagsForm(prop) {
+      const [myStateLoc, setMyStateLoc] = useState(prop.myStateLoc);
+      const [myState, setMyState] = useState(prop.myState);
+      useEffect(() => {
+        if(!prop.myStateLoc){
+        setMyState(prop.myState);
+        setCurrentUser(prop.findStateId(prop.myState, "currentUser"))
+        }
+      }, [prop.myState]);
+      var [currentUser, setCurrentUser] = useState(prop.findStateId(myState, "currentUser"));
+      useEffect(() => {
+        if(prop.myStateLoc){
+          setMyState(prop.myStateLoc);
+          setCurrentUser(prop.findStateId(prop.myStateLoc, "currentUser"))
+        }
+       
   
-    constructor(props) {
-      super(props);
+      }, [prop.myStateLoc]);
      
-      
-      
-      this.state = {
-        
-        currentUser: this.props.token,
-        
-      };
-    }
+      return (
+
   
-  componentWillReceiveProps(newProps) {
-    
-    this.setState({ currentUser: newProps.token });
-    
-    
-  }
-    render() {
-   let { currentUser} = this.state;
-    return (
       <>
+      <Card className="card-plain" style={{margin: -10}}>
+        {!prop.myStateLoc && (<Card.Header>
+       <Card.Title>Game Tags</Card.Title></Card.Header>)}
+    
+      <Card.Body>
     
                          
                         <Row className="card-tags">
@@ -63,7 +66,7 @@ class TagsForm extends Component {
                                                    
                                                     src={"/assets/images/logos/"+number}
                                                   ></img>
-                                                  {getGameTag(arrTagMode[i],currentUser.userTags)}
+                                                  {getGameTag(arrTagMode[i],currentUser?.userTags)}
                        
                         </div>
                        
@@ -76,12 +79,14 @@ class TagsForm extends Component {
 
                     </Row>
 
-                          
+                    </Card.Body>
+      
+      </Card>
                           
                        
         </>
     );
-                        }
+                        
 }
 
 export default withRouter(TagsForm) ;

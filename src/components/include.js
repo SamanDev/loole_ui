@@ -399,13 +399,13 @@ export const vsComponentPlayer = (
 ) => {
   var player = matchidFind.matchPlayers[num];
   var padd = 10;
-  if (matchidFind.status == "Ready") {
+  if (matchidFind.status == "Ready" && currentUser.accessToken) {
     padd = 60;
   }
-  if (matchidFind.status == "InPlay") {
+  if (matchidFind.status == "InPlay" && currentUser.accessToken) {
     padd = 60;
   }
-  if (matchidFind.status == "InPlay" && item.players[num].nickName) {
+  if (matchidFind.status == "InPlay" && item.players[num].nickName && currentUser.accessToken) {
     padd = 150;
   }
   //if(matchidFind.status == "Pending" && item.gameMode == 'Tournament') {padd = padd + 50}
@@ -566,7 +566,7 @@ export const vsComponentPlayer = (
           status={matchidFind.status}
           isUser={player.username == currentUser.username}
           visible={
-            matchidFind.status == "Ready" || matchidFind.status == "InPlay"
+            (matchidFind.status == "Ready" || matchidFind.status == "InPlay") && currentUser.accessToken
               ? true
               : false
           }
@@ -1514,19 +1514,23 @@ export const getSocialTag = (game, userTags) => {
   res = res.split("@@")[0];
   if (res == "Not Connected") {
     return (
-      <span style={{ opacity: 0.5 }}>
+      <p style={{ opacity: 0.5, margin: 0, lineHeight: "20px" }}>
         <small className="text-muted">
-          <b>{res}</b> - Connect Your {game}
+          <b>{res}</b>
+          <br />
+          Click to connect
         </small>
-      </span>
+      </p>
     );
   } else {
     return (
-      <span>
+      <p style={{ margin: 0, lineHeight: "20px" }}>
         <small>
-          <b>{resName}</b> - {res}
+          <b>{resName}</b>
+          <br />
+          {res}
         </small>
-      </span>
+      </p>
     );
   }
 };
@@ -1541,14 +1545,14 @@ export const userDetails = (currentUser) => {
     
       <div
         className="text-center"
-        style={{ marginBottom: 30 }}
+       
       >
           <Statistic size="mini">
               
               <Statistic.Value>{currentUser.username}
           </Statistic.Value>
           <Statistic.Label>
-          <small className="text-muted">From</small> <img
+          <span className="text-muted">From </span> <img
             src={"/assets/images/famfamfam_flag_icons/png/" + flag + ".png"}
           /><br/><br/><small className="text-muted">Last Login</small><br/> {lastLogin}
               </Statistic.Label>
@@ -1558,8 +1562,7 @@ export const userDetails = (currentUser) => {
           
         </Card.Header>
         
-        <small style={{ fontSize: 10 }}></small>
-        <br />
+      
         <ListGroup horizontal style={{ display: "inline-flex", marginTop: 10 }}>
           {haveSocialTag("Instagram", currentUser.userSocialAccounts) && (
             <ListGroup.Item action>
@@ -1770,7 +1773,13 @@ export const handleSaveTags = (
       let jsonBool = isJson(response.data);
 
       if (jsonBool) {
+        if (response.data.accessToken) {
+         
+            localStorage.setItem("user", JSON.stringify(response.data));
+            eventBus.dispatch("eventsDataUser", response.data);
+          eventBus.remove("eventsDataUser");
         Swal.fire("", "Data saved successfully.", "success");
+        }
         //window.location.reload(false);
       } else {
         Swal.fire("", response.data, "error");

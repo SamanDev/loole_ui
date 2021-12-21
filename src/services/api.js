@@ -48,24 +48,31 @@ const getEventByID= async(ids) => {
   const getUser=async () => {
    // alert(JSON.stringify(authHeader()))
     if(JSON.stringify(authHeader()) != '{}'){
+      try{
     const { data } = await client.get("/getUser",{ headers: authHeader() })
 
-    if (data.accessToken) {
-      localStorage.setItem("user", JSON.stringify(data));
-      
-    var loc = window.location.href;
-  
-    //eventBus.dispatch("eventsDataUser", usr);
-    if (loc.indexOf("/user")== -1){
-    UserWebsocket.connect(data.accessToken+"&user="+data.username);
+  if (data.accessToken) {
+    localStorage.setItem("user", JSON.stringify(data));
     
+  var loc = window.location.href;
+
+  //eventBus.dispatch("eventsDataUser", usr);
+  if (loc.indexOf("/user")== -1){
+  UserWebsocket.connect(data.accessToken+"&user="+data.username);
+  
+}
+    return data;
+  }else{
+    localStorage.setItem("user",  JSON.stringify(defUser));
+    UserWebsocket.connect();
+    return defUser;
   }
-      return data;
-    }else{
-      localStorage.setItem("user",  JSON.stringify(defUser));
-      UserWebsocket.connect();
-      return defUser;
-    }
+}catch(e){
+  localStorage.setItem("user",  JSON.stringify(defUser));
+  UserWebsocket.connect();
+  return defUser;
+}
+    
   }else{
     localStorage.setItem("user",  JSON.stringify(defUser));
     UserWebsocket.connect();
