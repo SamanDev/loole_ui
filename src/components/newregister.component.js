@@ -84,7 +84,7 @@ function FormExampleFieldErrorLabel(prop) {
                 onUpdateItem('loading', false);
                 console.log(response.data)
               if (response.data.accessToken) {
-                prop.onUpdateItem("openModalLogin", false)
+                prop.onUpdateItem("currentUser", response.data);
                 localStorage.setItem("user", JSON.stringify(response.data));
                 UserWebsocket.disconnect()
                 UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username,response.data);
@@ -168,7 +168,8 @@ function FormExampleFieldErrorLabel(prop) {
      label='By clicking Create Account, you are indicating that you have read and acknowledge the Terms Conditions and Privacy policy.'
     >
     </Form.Checkbox>
-        <Form.Button loading={loading} inverted color='orange' fluid size='small' content="Create Account" />
+        <Form.Button loading={loading}
+        disabled={loading} inverted color='orange' fluid size='small' content="Create Account" />
         <a href="/content/terms-and-conditions" target="_blank">Terms Conditions</a> and <a href="/content/privacy-policy" target="_blank">Privacy policy</a>
       </Form>
    

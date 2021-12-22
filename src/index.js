@@ -96,6 +96,7 @@ function Main() {
       { id: "matchIDQ", val: getQueryVariable("matchid") },
       { id: "openModalAdd", val: false },
       { id: "openModalLogin", val: false },
+      { id: "openModalChart", val: false },
     ],
   });
   const findStateId = (st, val) => {

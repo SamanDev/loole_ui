@@ -42,6 +42,7 @@ const SidebarExampleSidebar = (prop) => {
   const [visible, setVisible] = useState(prop.visible)
   const [isUser, setIsUser] = useState(prop.isUser)
   const [user, setUser] =  useState(prop.user)
+  const [objanimInfo, setObjanimInfo] =  useState(prop.info)
 
   useEffect(() => {
     setVisible(prop.visible)
@@ -55,6 +56,12 @@ const SidebarExampleSidebar = (prop) => {
      
     
    },[prop.objanim]);
+   useEffect(() => {
+    setObjanimInfo(prop.info)
+  
+     
+    
+   },[prop.info]);
    useEffect(() => {
     setIsUser(prop.isUser)
   
@@ -79,7 +86,7 @@ const SidebarExampleSidebar = (prop) => {
         <Sidebar.Pushable>
             
           <Sidebar
-             className={'sisde'+isUser}
+             className={'si4de'+!isUser}
             animation='scale down'
             icon='labeled' inverted vertical
             direction="bottom"
@@ -92,8 +99,20 @@ const SidebarExampleSidebar = (prop) => {
                   
                   style={{padding:10,margin:'auto',position:'relative',zIndex:10}}
                 >
-                    {prop.status == 'Ready' && (<TransitionExampleTransitionExplorer objanim={objanim} animation='flash' duration={isUser ? (1000):(0)}/>)}
-                    {((prop.status == 'InPlay') ||(prop.item.gameMode == 'Tournament' && prop.status == 'Pending')) && (<TransitionExampleTransitionExplorer objanim={prop.info} animation='flash' duration={!isUser ? (1000):(0)}/>)}
+                    {prop.status == 'Ready' && (
+                    
+                    <>
+                    {isUser ? (
+                    <TransitionExampleTransitionExplorer objanim={objanim} animation='flash' duration={1000}/>
+                    ):(<div>{objanim}</div>)}
+                    </>
+               )}
+                    {((prop.status == 'InPlay') ||(prop.item.gameMode == 'Tournament' && prop.status == 'Pending')) && (
+                    <>
+                    {isUser ? (<div>{objanimInfo}</div>):(<TransitionExampleTransitionExplorer objanim={objanimInfo} animation='flash' duration={1000}/>)}
+                    </>
+                    
+                    )}
               
         </div>
               )}

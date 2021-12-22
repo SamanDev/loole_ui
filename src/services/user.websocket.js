@@ -8,7 +8,7 @@ class UserWebsocket {
    
 
     connect(token,user) {
-        console.log(ws)
+        //console.log(ws)
         if (ws == null) {
             if(token){
                 ws = new WebSocket(USERSOCKETURL + token);

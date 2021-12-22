@@ -19,8 +19,10 @@ const DashStat = (prop) => {
     setMyState(prop.myState);
   }, [prop.myState]);
   const currentUser = prop.findStateId(myState, "currentUser");
-
+  
   var nAmount = Number.parseFloat(currentUser.point).toFixed(0);
+  var nMatch = Number.parseFloat(currentUser.totalMatch).toFixed(0);
+  var nWin = Number.parseFloat(currentUser.totalWin).toFixed(0);
   var nBalance = Number.parseFloat(currentUser.balance).toFixed(2);
   return (
     <>
@@ -125,7 +127,7 @@ const DashStat = (prop) => {
                     <Statistic size="mini">
                       <Statistic.Value>
                         <CurrencyFormat
-                          value={2}
+                          value={nWin}
                           displayType={"text"}
                           thousandSeparator={true}
                           prefix={""}
@@ -133,7 +135,7 @@ const DashStat = (prop) => {
                         />{" "}
                         /{" "}
                         <CurrencyFormat
-                          value={18}
+                          value={nMatch}
                           displayType={"text"}
                           thousandSeparator={true}
                           prefix={""}
@@ -151,10 +153,10 @@ const DashStat = (prop) => {
         </Grid.Column>
         <Grid.Column mobile={8} tablet={8} computer={4}>
         <Popup
-          content="Go to Rewards"
+          content="Open Profit Chart"
           inverted
           trigger={
-            <Card   fluid color="black">
+            <Card   fluid color="black" onClick={() => prop.onUpdateItem("openModalChart", true)}>
               <div className="content extra">
                 <Grid columns={2} divided>
                   <Grid.Column  style={{ textAlign: "right",width:'auto' }}>
@@ -189,6 +191,7 @@ const DashStat = (prop) => {
         </Grid.Column>
       </Grid>
       <Divider  hidden/>
+      
     </>
   );
 };

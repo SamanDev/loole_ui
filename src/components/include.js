@@ -491,7 +491,7 @@ export const vsComponentPlayer = (
         >
           <BootstrapSwitchButton
             checked={player.ready}
-            disabled={player.username != currentUser.username || isloading}
+            disabled={player.username != currentUser.username}
             onlabel="Ready"
             onstyle="success"
             offlabel="Ready"
@@ -858,6 +858,7 @@ export const vsComponent = (
                   color="red"
                   onClick={handlecAlertLost}
                   disabled={isloading}
+                  loading={isloading}
                 >
                   I Lost
                 </Button>

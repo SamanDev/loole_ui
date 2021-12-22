@@ -14,6 +14,8 @@ import {
   Sidebar,
   
 } from 'semantic-ui-react'
+
+import UserWebsocket from 'services/user.websocket'
 import { DEFCOLORS } from "const";
 // core components
 import ModalExampleShorthand from "components/modal.component";
@@ -34,6 +36,7 @@ import CreateMatch from "views/Add.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 
 import AddMatch  from "components/add/addmatch.component"; 
+import Chart  from "components/chart.component"; 
 function scrollToTop() {
 
   window.scrollTo({
@@ -62,6 +65,7 @@ const currentUser = props.findStateId(myState,'currentUser');
   const [myNotification,setMyNotification] = useState([]);
   const events = props.findStateId(myState,'events');
   const open = props.findStateId(myState,'openModalAdd');
+  var openModalChart = props.findStateId(myState, "openModalChart");
  
 
   useEffect(() => {
@@ -125,6 +129,8 @@ const currentUser = props.findStateId(myState,'currentUser');
       }
       if (prop.layout === "/panel" ) {
         //sconsole.log(prop.component)
+        const usr = JSON.parse(localStorage.getItem('user'));
+    UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
         return (
           
           
@@ -132,7 +138,9 @@ const currentUser = props.findStateId(myState,'currentUser');
             path={prop.layout + prop.path}
             key={key}
             render={() => (
+              
               <>
+              
               {(prop.component=='Admin') && (<Admin {...props} />)}
               {(prop.component=='Profile') && (<Profile {...props} />)}
               {(prop.component=='Dashboard') && (<Dashboard  {...props}  />)}
@@ -227,6 +235,19 @@ const currentUser = props.findStateId(myState,'currentUser');
         <div className="content">
         <AdminNavbar page={getPage(routes)} token={currentUser} {...props} />
             <Switch>{getRoutes(routes)}</Switch>
+            <Modal
+        
+        size="big"
+        
+        
+        open={openModalChart}
+        
+        onClose={() => props.onUpdateItem("openModalChart", false)}
+      >
+        <Modal.Header>Profit Chart</Modal.Header>
+      <Modal.Content><Chart  {...props} /></Modal.Content>
+        
+        </Modal>
             <Modal
           inverted
           basic

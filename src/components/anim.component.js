@@ -27,15 +27,15 @@ export default class TransitionExampleTransitionExplorer extends Component {
   componentDidMount() {
    
      timer = setInterval(() => {
-      clearTimeout(timer)
+     // clearTimeout(timer)
       this.toggleVisibility()
-      
-    },5000)
+      console.log('hi')
+    },2000)
     
 }
   componentWillReceiveProps(newProps) {
     this.setState({ objanim: newProps.objanim });
-    clearTimeout(timer);
+    //clearTimeout(timer);
     
       
     

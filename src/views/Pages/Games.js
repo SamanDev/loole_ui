@@ -28,17 +28,7 @@ const Landing = () => {
 
   
 
-  if (isLoading || !eventsGet) {return  <div className="parallax filter-gradient gray section-gray" data-color="red">
-  <div className="parallax-background">
-      <img className="parallax-background-image" src="assets/img/showcases/showcase-1/bg.jpg"/>
-  </div>
-  <div className= "container">
-  <h4 style={{textAlign: "center",marginTop:300,color:'#fff'}}>Loading 
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" />
-  <Spinner animation="grow" size="sm" /></h4>
-  </div>
-</div>;}
+ 
   var events=JSON.parse(eventsGet);
   var _game = window.location.href.split('game/')[1].replace('%20',' ')
 

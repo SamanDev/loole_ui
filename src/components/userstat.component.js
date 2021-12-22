@@ -20,8 +20,8 @@ const DashStat = (prop) => {
   }, [prop.myState]);
   const currentUser = prop.findStateId(myState, "currentUser");
 
-  var nAmount = Number.parseFloat(currentUser.point).toFixed(0);
-  var nBalance = Number.parseFloat(currentUser.balance).toFixed(2);
+  var nMatch = Number.parseFloat(currentUser.totalMatch).toFixed(0);
+  var nWin = Number.parseFloat(currentUser.totalWin).toFixed(0);
   return (
     <>
       <Grid className="dash-stat">
@@ -47,7 +47,7 @@ const DashStat = (prop) => {
                     <Statistic size="mini">
                       <Statistic.Value>
                         <CurrencyFormat
-                          value={2}
+                          value={nWin}
                           displayType={"text"}
                           thousandSeparator={true}
                           prefix={""}
@@ -55,7 +55,7 @@ const DashStat = (prop) => {
                         />{" "}
                         /{" "}
                         <CurrencyFormat
-                          value={18}
+                          value={nMatch}
                           displayType={"text"}
                           thousandSeparator={true}
                           prefix={""}
