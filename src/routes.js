@@ -67,6 +67,14 @@ var routes = [
     show:true
   },
   {
+    path: "/adminevents",
+    layout: "/panel",
+    name: "AdminEvents",
+    icon: "nc-icon nc-circle-09",
+    component: 'AdminEvents',
+    show:true
+  },
+  {
     path: "/*",
     layout: "/user",
     name: "User",

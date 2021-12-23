@@ -507,7 +507,7 @@ class AddMatch extends Component {
           
          
           <Button.Group size='large' type="button" fluid widths='2'>
-          <Button positive fluid loading={this.state.loading} basic disabled={this.state.loading}>Create Match</Button>
+          <Button positive fluid loading={this.state.loading} basic disabled={this.state.loading || !currentUser.userActivate}>Create Match</Button>
     <Button.Or />
     <Button negative type="button"  disabled={this.state.loading} basic fluid onClick={() => this.props.onUpdateItem('openModalAdd',false)}>
               Close

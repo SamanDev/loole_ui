@@ -17,7 +17,7 @@ import {
 } from "react-bootstrap";
 import HomeEvents from "components/events/home.component"
 import GameSlide from "components/GameSlide";
-
+import LandStat  from "components/landstat.component";
 function  Landing(prop) {
     const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
@@ -64,7 +64,7 @@ return (
                 <p>
                 How're you? The Loole introduces the players to each other and puts my pair of money in a safe place. After the game, the winner sends a video according to the Loole guide to prove his victory and takes his money.<br/>Also, there is no operator for deposit and withdrawal and everything is instant and automatic.
                 </p>
-               
+                <LandStat {...prop}/>
 <div className="row card-stats">
 <div className="col-lg-3 col-md-6 col-xs-12 ">
 <div className="counter-box bg-color-1 card">
@@ -269,7 +269,7 @@ return (
                     <p>
                     How're you? The Loole introduces the players to each other and puts my pair of money in a safe place. After the game, the winner sends a video according to the Loole guide to prove his victory and takes his money.<br/>Also, there is no operator for deposit and withdrawal and everything is instant and automatic.
                     </p>
-                   
+                    <LandStat {...prop}/>
 <div className="row card-stats">
 <div className="col-lg-3 col-md-6 col-xs-12 ">
 <div className="counter-box bg-color-1 card">

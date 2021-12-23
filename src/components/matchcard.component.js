@@ -57,7 +57,9 @@ var moment = require("moment");
     var _color = "#404040";
     var item = prop.item;
    
-    
+    if (item.gameMode == "Tournament" || item.gameMode == "League") {
+      _mode = item.gameMode;
+    }
   
     return (
     

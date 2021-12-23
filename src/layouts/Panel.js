@@ -26,6 +26,7 @@ import AdminFooter from "components/Footers/AdminFooter.js";
 import routes from "routes.js";
 
 import Admin from "views/Admin.js";
+import AdminEvents from "views/AdminEvents.js";
 import Dashboard from "views/Dashboard.js";
 import Rewards from "views/Rewards.js";
 import MyMatches from "views/MyMatches.js";
@@ -36,7 +37,7 @@ import CreateMatch from "views/Add.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 
 import AddMatch  from "components/add/addmatch.component"; 
-import Chart  from "components/chart.component"; 
+
 function scrollToTop() {
 
   window.scrollTo({
@@ -65,7 +66,7 @@ const currentUser = props.findStateId(myState,'currentUser');
   const [myNotification,setMyNotification] = useState([]);
   const events = props.findStateId(myState,'events');
   const open = props.findStateId(myState,'openModalAdd');
-  var openModalChart = props.findStateId(myState, "openModalChart");
+  
  
 
   useEffect(() => {
@@ -130,7 +131,7 @@ const currentUser = props.findStateId(myState,'currentUser');
       if (prop.layout === "/panel" ) {
         //sconsole.log(prop.component)
         const usr = JSON.parse(localStorage.getItem('user'));
-    UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
+    UserWebsocket.connect(usr?.accessToken+"&user="+usr?.username);
         return (
           
           
@@ -142,6 +143,7 @@ const currentUser = props.findStateId(myState,'currentUser');
               <>
               
               {(prop.component=='Admin') && (<Admin {...props} />)}
+              {(prop.component=='AdminEvents') && (<AdminEvents {...props} />)}
               {(prop.component=='Profile') && (<Profile {...props} />)}
               {(prop.component=='Dashboard') && (<Dashboard  {...props}  />)}
               {(prop.component=='LockScreenPage') && (<LockScreenPage {...props} />)}
@@ -235,19 +237,7 @@ const currentUser = props.findStateId(myState,'currentUser');
         <div className="content">
         <AdminNavbar page={getPage(routes)} token={currentUser} {...props} />
             <Switch>{getRoutes(routes)}</Switch>
-            <Modal
-        
-        size="big"
-        
-        
-        open={openModalChart}
-        
-        onClose={() => props.onUpdateItem("openModalChart", false)}
-      >
-        <Modal.Header>Profit Chart</Modal.Header>
-      <Modal.Content><Chart  {...props} /></Modal.Content>
-        
-        </Modal>
+           
             <Modal
           inverted
           basic

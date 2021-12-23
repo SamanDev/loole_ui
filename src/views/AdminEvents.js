@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import DataTable, { ExpanderComponentProps } from "react-data-table-component";
 import { Input, Segment, Button, Card, Table,Dropdown } from "semantic-ui-react";
 import Avatar from "react-avatar";
-import { useAdminUsers } from "services/hooks";
+import { useAllEvents } from "services/hooks";
 import { JsonToTable } from "react-json-to-table";
 import CurrencyFormat from "react-currency-format";
 import {
@@ -37,16 +37,44 @@ import {
   isJson,
 } from "components/include";
 import Moment from "moment";
+function editCounry(options){
+    //options.sort((a, b) => (a.id > b.id) ? 1 : -1)
+    var moment = require("moment");
+    var  newArray = [];
+
+    options.map((item, w) => {
+        //item.matchTables.sort((a, b) => (a.id < b.id) ? 1 : -1)
+        item.matchTables.map((match, i) => {
+            var newitem = {}
+            newitem.id = match.id;
+            newitem.gameName = item.gameName;
+            newitem.gameMode = item.gameMode;
+            newitem.amount = item.amount;
+            newitem.match = match;
+            newitem.detail = JSON.stringify(newitem) 
+     
+      newArray.push(newitem)
+    })
+    })
+    
+    return newArray
+  }
 const conditionalRowStyles = [
-  {
-    when: (row) => row.endBalance < row.startBalance,
-    style: {
-      backgroundColor: "rgba(255,0,0,.1)",
-    },
-  },
+    {
+        when: (row) => row.match.status === "InPlay",
+        style: {
+          backgroundColor: "rgba(255,0,0,.1)",
+        },
+      },
+      {
+        when: (row) => row.match.status === "Pending",
+        style: {
+          backgroundColor: "rgba(0,0,0,.1)",
+        },
+      },
   // You can also pass a callback to style for additional customization
   {
-    when: (row) => row.endBalance > row.startBalance,
+    when: (row) => row.match.status === "Ready",
     style: {
       backgroundColor: "rgba(0,255,0,.1)",
     },
@@ -126,7 +154,7 @@ function getPathOfKey(object, keys) {
   return finalObj;
 }
 
-const FilterComponent = ({ filterText, onFilter, onClear, setExMode }) => (
+const FilterComponent = ({ filterText, onFilter, onClear }) => (
   <>
     <Input
       icon="search"
@@ -138,12 +166,12 @@ const FilterComponent = ({ filterText, onFilter, onClear, setExMode }) => (
       value={filterText}
       onChange={onFilter}
     />
-    <ButtonGroupColored setExMode={setExMode} />
+    
   </>
 );
 
 function Admin(prop) {
-  const { data: usersList } = useAdminUsers();
+  const { data: usersList } = useAllEvents();
   const [filterText, setFilterText] = React.useState("");
   const [exMode, setExMode] = React.useState("Data");
   const [resetPaginationToggle, setResetPaginationToggle] =
@@ -151,81 +179,11 @@ function Admin(prop) {
   const [dataTransaction, setDataTransaction] = React.useState([]);
   const filteredItems = dataTransaction.filter(
     (item) =>
-      item.username &&
-      item.username.toLowerCase().includes(filterText.toLowerCase())
+     
+      item.detail.toString().toLowerCase().includes(filterText.toLowerCase())
   );
   
-  const updateUserObj = (e, data) => {
-    var _key = data.userkey;
-    var curU = JSON.parse(JSON.stringify(data.user));
-    //curU[''+_key+'']=data.checked
-    
-    //console.log(curU);
-    adminService.updateUserByAdmin(curU.id,_key,data.checked).then((response) => {
-      if (response) {
-        Swal.fire({
-          title: "Success",
-          text: response.data,
-          icon: "success",
-          showCancelButton: false,
-          confirmButtonText: `Ok`,
-        });
-      }
-    });
-  };
-  const headerRow = ['Name', 'Value']
-const renderBodyRow = ({name,value,user}, i) => ({
-  key: name || `row-${i}`,
-  cells: [
-    name,
-    typeof value == "boolean" ? (<CheckboxToggle
-    check={value}
-  user={user}
-    userkey={name}
-    onChange={updateUserObj}
-  />) :  isDate(name,value,user)
-],
-});
-  const ExpandedComponent = ({ data }) => {
-   
-    if (exMode == "") {
-      return <pre>hi</pre>;
-    }
-
-    if (exMode == "Data") {
-      var newdata = [
-        getPathOfKey(
-          data,
-          ",email,country,fullName,reffer,birthday,bankInfos,firstLogin,lastLogin,cashierGateways,"
-        ),
-      ];
-      var jdata  = JSON.parse(JSON.stringify(newdata));
-      
-      return (
-        <Segment>
-          <Table renderBodyRow={renderBodyRow} celled color='red'
-     tableData={jdata[0]} />
-        </Segment>
-      );
-    }
-    if (exMode == "Report") {
-      return (
-        <Segment>
-          <Report usersReports={data.usersReports} />
-        </Segment>
-      );
-    }
-    if (exMode == "Events") {
-      return (
-        <Segment>
-          <Card.Group className="fours" style={{ marginBottom: 20 }}>
-            {printBlockChallenge(data.events, "all", { ...prop })}
-          </Card.Group>
-        </Segment>
-      );
-    }
-  };
-  
+ 
   const columns = [
     {
       name: "ID",
@@ -234,45 +192,31 @@ const renderBodyRow = ({name,value,user}, i) => ({
       grow: 0.5,
     },
 
+    
     {
-      name: "Username",
-      selector: (row) => row.username,
-      format: (row) => (
+        name: "info",
+        selector: (row) => row.gameName,
+        format: (row) => (
         <>
-          <a href={"/user/" + row.username} target="_blank">
-            <Avatar
-              size="20"
-              title={row.username}
-              round={true}
-              name={setAvatar(row.username)}
-            />{" "}
-            {row.username.toUpperCase()}
-          </a>
+        <a href={"/panel/lobby?id="+row.id+'&matchid='+row.match.id} target='_blank'>{row.match.id}: {row.gameName}</a>
         </>
-      ),
-      sortable: true,
-    },
+        ),
+        sortable: true,
+      },
+      {
+        name: "Status",
+        selector: (row) => row.status,
+        format: (row) => (row.match.status),
+        sortable: true,
+      },
     {
-      name: "Active",
-      selector: (row) => row.userActivate,
-      format: (row) => (
-        <CheckboxToggle
-          check={row.userActivate}
-          user={row}
-          userkey="userActivate"
-          onChange={updateUserObj}
-        />
-      ),
-      sortable: true,
-    },
-    {
-      name: "Balance",
-      selector: (row) => row.balance,
+      name: "Amount",
+      selector: (row) => row.amount,
       format: (row) => (
         <>
           ${" "}
           <CurrencyFormat
-            value={Number.parseFloat(row.balance).toFixed(2)}
+            value={Number.parseFloat(row.amount).toFixed(2)}
             displayType={"text"}
             thousandSeparator={true}
             prefix={""}
@@ -283,60 +227,30 @@ const renderBodyRow = ({name,value,user}, i) => ({
       sortable: true,
     },
     {
-      name: "Points",
-      selector: (row) => row.point,
-      format: (row) => (
-        <>
-          <CurrencyFormat
-            value={Number.parseFloat(row.point).toFixed(0)}
-            displayType={"text"}
-            thousandSeparator={true}
-            prefix={""}
-            renderText={(value) => value}
-          />
-        </>
-      ),
+      name: "Code",
+      selector: (row) => row.match.matchCode,
+      format: (row) => (row.match.matchCode),
       sortable: true,
     },
     {
-      name: "Ban",
-      selector: (row) => row.userBlock,
-      format: (row) => (
-        <CheckboxToggle
-          check={row.userBlock}
-          user={row}
-          userkey="userBlock"
-          onChange={updateUserObj}
-        />
-      ),
-      sortable: true,
-    },
-    {
-      name: "Admin",
-      selector: (row) => row.roles,
-      format: (row) => (
-        <CheckboxToggle
-          check={row.roles[0].name.match('ROLE_ADMIN')}
-          user={row}
-          userkey="Roles"
-          onChange={updateUserObj}
-        />
-      ),
-      sortable: true,
-    },
-    {
-      name: "Moderator",
-      selector: (row) => row.roles,
-      format: (row) => (
-        <CheckboxToggle
-          check={row.roles[0].name.match('ROLE_MODERATOR')}
-          user={row}
-          userkey="Roles"
-          onChange={updateUserObj}
-        />
-      ),
-      sortable: true,
-    },
+        name: "P1",
+        selector: (row) => row.match.matchPlayers,
+        format: (row) => (row.match.matchPlayers[0]?.username.replace("Tournament Player1", '').replace("Tournament Player", '')),
+        sortable: true,
+      },
+      {
+        name: "P2",
+        selector: (row) => row.match.matchPlayers,
+        format: (row) => (row.match.matchPlayers[1]?.username.replace("Tournament Player1", '').replace("Tournament Player", '')),
+        sortable: true,
+      },
+      {
+        name: "Winner",
+        selector: (row) => row.match.winner,
+        format: (row) => (row.match.winner),
+        sortable: true,
+      },
+    
   ];
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {
@@ -357,8 +271,8 @@ const renderBodyRow = ({name,value,user}, i) => ({
   }, [filterText, resetPaginationToggle, dataTransaction]);
   useEffect(() => {
     if (usersList) {
-      console.log(usersList)
-      setDataTransaction(usersList);
+     const newdata = editCounry(usersList)
+      setDataTransaction(newdata);
     }
   }, [usersList]);
   
@@ -372,12 +286,10 @@ const renderBodyRow = ({name,value,user}, i) => ({
             data={filteredItems}
             defaultSortFieldId={1}
             defaultSortAsc={false}
-            title="Users List"
-            expandOnRowClicked={true}
-            expandableRowsHideExpander={true}
+            title="Events List"
+           
             conditionalRowStyles={conditionalRowStyles}
-            expandableRows
-            expandableRowsComponent={ExpandedComponent}
+            
             noDataComponent={noDataComponent}
             pagination
             paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1

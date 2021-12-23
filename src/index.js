@@ -29,7 +29,7 @@ import Register  from "components/newregister.component";
 import { Spinner, Container } from "react-bootstrap";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
-
+import Chart  from "components/chart.component"; 
 import eventBus from "views/eventBus";
 import {
   getQueryVariable,
@@ -80,10 +80,13 @@ const queryClient = new QueryClient({
 function Main() {
   const queryClient = useQueryClient();
   const history = useHistory();
-
+  var unUser = defUser;
+  if(localStorage.getItem('user')){
+    unUser = JSON.parse(localStorage.getItem('user'));
+  }
   const [myState, setMyState] = useState({
     list: [
-      { id: "currentUser", val: defUser },
+      { id: "currentUser", val: unUser },
       { id: "events", val: null },
 
       { id: "keyDash", val: 0 },
@@ -99,6 +102,7 @@ function Main() {
       { id: "openModalChart", val: false },
     ],
   });
+  
   const findStateId = (st, val) => {
     return st.list.filter(function (v) {
       return v.id === val;
@@ -134,7 +138,7 @@ function Main() {
   var eventIDQ = findStateId(myState, "eventIDQ");
   var matchIDQ = findStateId(myState, "matchIDQ");
   var openModalLogin = findStateId(myState, "openModalLogin");
-
+  var openModalChart = findStateId(myState, "openModalChart");
   const { data: userGet } = useUser();
 
   //const { data: eventsGet } = useAllEventsByStatus('All');
@@ -200,6 +204,21 @@ function Main() {
   }
   return (
     <>
+     <Modal
+        
+        size="big"
+        
+        
+        open={openModalChart}
+        
+        onClose={() => onUpdateItem("openModalChart", false)}
+      >
+        <Modal.Header>Profit Chart</Modal.Header>
+      <Modal.Content><Chart myState={myState}
+              onUpdateItem={onUpdateItem}
+              findStateId={findStateId} /></Modal.Content>
+        
+        </Modal>
       <Modal
         basic
         size="small"

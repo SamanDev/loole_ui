@@ -58,7 +58,9 @@ var moment = require("moment");
     var _color = "#404040";
     var item = prop.item;
     
-   
+    if (item.gameMode == "Tournament" || item.gameMode == "League") {
+      _mode = item.gameMode;
+    }
     var _finishTxt = 'Not Joinable';
  
   if (item?.status=='Canceled' || item?.status=='Expired' || item?.status=='Finished') { _finishTxt = 'Not Avalable'}

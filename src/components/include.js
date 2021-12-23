@@ -602,6 +602,8 @@ export const printMatchBTN = (
                   onClick={handleLeaveMatch}
                   color="red"
                   disabled={isloading}
+                  loading={isloading}
+                  style={{position: "relative",top:-10}}
                 >
                   <Button.Content visible>Leave Match</Button.Content>
                   <Button.Content hidden>
@@ -622,7 +624,9 @@ export const printMatchBTN = (
                 inverted
                 onClick={handleJoinMatch}
                 color="green"
-                disabled={isloading}
+                disabled={isloading|| !currentUser.userActivate}
+                loading={isloading}
+                style={{position: "relative",top:-10}}
               >
                 <Button.Content visible>Join Match</Button.Content>
                 <Button.Content hidden>
@@ -659,8 +663,9 @@ export const printEventBTN = (
               size="big"
               inverted
               onClick={handleJoinMatch}
+              loading={isloading}
               color="green"
-              disabled={isloading}
+              disabled={isloading|| !currentUser.userActivate}
             >
               <Button.Content visible>Join Event</Button.Content>
               <Button.Content hidden>
