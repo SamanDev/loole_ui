@@ -25,23 +25,13 @@ import {
     var arrTagMode = ['PSN','XBOX','8Pool','ClashRoyale','CallOfDuty','Fortnite']
     var arrPlatform = ['PSN','XBOX','Mobile','Mobile','Activition','All']
     function TagsForm(prop) {
-      const [myStateLoc, setMyStateLoc] = useState(prop.myStateLoc);
       const [myState, setMyState] = useState(prop.myState);
-      useEffect(() => {
-        if(!prop.myStateLoc){
-        setMyState(prop.myState);
-        setCurrentUser(prop.findStateId(prop.myState, "currentUser"))
-        }
-      }, [prop.myState]);
-      var [currentUser, setCurrentUser] = useState(prop.findStateId(myState, "currentUser"));
-      useEffect(() => {
-        if(prop.myStateLoc){
-          setMyState(prop.myStateLoc);
-          setCurrentUser(prop.findStateId(prop.myStateLoc, "currentUser"))
-        }
-       
-  
-      }, [prop.myStateLoc]);
+  useEffect(() => {
+    setMyState(prop.myState);
+  }, [prop.myState]);
+  var _key = prop.findStateId(myState, "profileUser")
+  if (!_key) { _key = prop.findStateId(myState, "currentUser");}
+  const currentUser = _key
      
       return (
 

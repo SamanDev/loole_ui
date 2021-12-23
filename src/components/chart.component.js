@@ -2,10 +2,11 @@ import React, { PureComponent, useState, useEffect} from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Moment from "moment";
 import { Link, useLocation } from "react-router-dom";
+
 function editCounry(options){
     options.sort((a, b) => (a.id > b.id) ? 1 : -1)
     var moment = require("moment");
-    var  newArray = []
+    var  newArray = [data]
     options.map((item, w) => {
       
    var finalmydate = moment(item.date).format('MM-DD-YYYY')
@@ -18,82 +19,26 @@ function editCounry(options){
     console.log(newArray)
     return newArray
   }
-const data = [
-  {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
+const data = {
+  "id": 0,
+  "date": "2021-12-23T17:06:35.000+00:00",
+  "net": 0,
+  "profit": 0,
+  "eventId": 0,
+  "matchId": 0,
+  "newdate": "12-23",
+  "mydate": "12-23-2021"
+};
 
 const ChartStat = (prop) => {
-    const [myState, setMyState] = useState(prop.myState);
-    useEffect(() => {
-      setMyState(prop.myState);
-    }, [prop.myState]);
-    const currentUser = prop.findStateId(myState, "currentUser");
-    const handleClick = (data, index) => {
-        console.log(data)
-        
-      };
-    const getIntroOfPage = (label) => {
-        if (label === 'Page A') {
-          return "Page A is about men's clothing";
-        }
-        if (label === 'Page B') {
-          return "Page B is about women's dress";
-        }
-        if (label === 'Page C') {
-          return "Page C is about women's bag";
-        }
-        if (label === 'Page D') {
-          return 'Page D is about household goods';
-        }
-        if (label === 'Page E') {
-          return 'Page E is about food';
-        }
-        if (label === 'Page F') {
-          return 'Page F is about baby food';
-        }
-        return '';
-      };
+  const [myState, setMyState] = useState(prop.myState);
+  useEffect(() => {
+    setMyState(prop.myState);
+  }, [prop.myState]);
+  var _key = prop.findStateId(myState, "profileUser")
+  if (!_key) { _key = prop.findStateId(myState, "currentUser");}
+  const currentUser = _key
+   
     const CustomTooltip = ({ active, payload, label }) => {
         
         if (active && payload && payload.length) {

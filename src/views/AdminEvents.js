@@ -47,6 +47,7 @@ function editCounry(options){
         item.matchTables.map((match, i) => {
             var newitem = {}
             newitem.id = match.id;
+            newitem.eventid = item.id;
             newitem.gameName = item.gameName;
             newitem.gameMode = item.gameMode;
             newitem.amount = item.amount;
@@ -198,7 +199,12 @@ function Admin(prop) {
         selector: (row) => row.gameName,
         format: (row) => (
         <>
-        <a href={"/panel/lobby?id="+row.id+'&matchid='+row.match.id} target='_blank'>{row.match.id}: {row.gameName}</a>
+        {row.gameName =='Turnament' ? (
+        <a href={"/panel/lobby?id="+row.eventid+'&matchid='+row.match.id} target='_blank'>{row.match.id}: {row.gameName}</a>
+        ):(
+            <a href={"/panel/lobby?id="+row.eventid} target='_blank'>{row.eventid}: {row.gameName}</a>
+        
+        )}
         </>
         ),
         sortable: true,

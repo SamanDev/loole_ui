@@ -28,6 +28,7 @@ class AuthService {
   }
   
   login(username, password) {
+    
     UserWebsocket.disconnect();
     return axios
       .post(API_URL + "signin", {

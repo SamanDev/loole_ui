@@ -145,7 +145,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
           </Nav.Item>
         );
       }
-      if (prop.show && prop.name != 'Profile' && prop.name != 'Create'&& prop.name != 'Admin'&& prop.name != 'CreateEvent'){
+      if (prop.show && prop.name != 'Profile' && prop.name != 'Create'&& prop.name != 'Admin'&& prop.name != 'AdminEvents'&& prop.name != 'CreateEvent'){
         return (
           <Nav.Item
             className={activeRoute(prop.layout + prop.path)}
@@ -216,7 +216,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
                   </>
                 );
                       }
-                      if (prop.show &&  (prop.name == 'Admin' || prop.name == 'CreateEvent')  && haveAdmin(token.roles)){
+                      if (prop.show &&  (prop.name == 'Admin' || prop.name == 'AdminEvents' || prop.name == 'CreateEvent')  && haveAdmin(token.roles)){
                         return (
                           <>
                           <Nav.Item

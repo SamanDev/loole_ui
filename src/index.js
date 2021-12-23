@@ -87,6 +87,7 @@ function Main() {
   const [myState, setMyState] = useState({
     list: [
       { id: "currentUser", val: unUser },
+      { id: "profileUser", val: false },
       { id: "events", val: null },
 
       { id: "keyDash", val: 0 },

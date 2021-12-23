@@ -18,10 +18,19 @@ const DashStat = (prop) => {
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
-  const currentUser = prop.findStateId(myState, "currentUser");
+  var _key = prop.findStateId(myState, "profileUser")
+  if (!_key) { _key = prop.findStateId(myState, "currentUser");}
+  const currentUser = _key
 
   var nMatch = Number.parseFloat(currentUser.totalMatch).toFixed(0);
   var nWin = Number.parseFloat(currentUser.totalWin).toFixed(0);
+  currentUser.userAnalyses?.sort((a, b) => (a.id < b.id) ? 1 : -1)
+  var nProfit = 0
+  try{
+    nProfit = Number.parseFloat(currentUser.userAnalyses[0].profit).toFixed(2);
+  }catch(e){
+    nProfit = 0
+  }
   return (
     <>
       <Grid className="dash-stat">
@@ -90,9 +99,9 @@ const DashStat = (prop) => {
                   <Grid.Column>
                     <Statistic size="mini">
                       <Statistic.Value>
-                        +
+                      
                         <CurrencyFormat
-                          value={1120}
+                          value={nProfit}
                           displayType={"text"}
                           thousandSeparator={true}
                           prefix={""}

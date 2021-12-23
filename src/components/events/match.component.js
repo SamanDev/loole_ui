@@ -374,7 +374,7 @@ class LeagueSection extends Component {
   }
   handleLoseMatch(e) {
     this.setState({
-      isloading: true,
+      loading: true,
     });
     if (this.state.matchid) {
       userService.loseEvent(this.state.eventid, this.state.matchid).then(

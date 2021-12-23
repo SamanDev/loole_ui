@@ -65,15 +65,20 @@ function profile(prop) {
   
   const { data: userGet } = useUserProfile(prop.user);
   //const token = userGet;
-  const [myState, setMyState] = useState({
-    list: [{ id: "currentUser", val: {} }],
-  });
-
+  const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
-    setMyState({
-      list: [{ id: "currentUser", val: userGet }],
-    });
+    setMyState(prop.myState)
+}, [prop.myState]);
+  useEffect(() => {
+    console.log(userGet)
+    if (userGet) {
+      
+      prop.onUpdateItem("profileUser", userGet);
+      
+  }
   }, [userGet]);
+  const currentUser = prop.findStateId(myState, "profileUser");
+  
   const getBlockChallenge = (filtermode, events) => {
     var newItem = [];
     if (events) {
@@ -92,7 +97,8 @@ function profile(prop) {
       return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem, filtermode,{...prop})}</Card.Group>)
     }
   };
-  if (!userGet) {
+  if (!userGet || !currentUser) {
+    
     return (
       <Segment style={{ height: "100%", width: "100%", position: "absolute" }}>
         <Dimmer active inverted>
@@ -101,10 +107,10 @@ function profile(prop) {
       </Segment>
     );
   }
-  var _mode = " 1 v 1 ";
-  var _color = "#404040";
-  const currentUser = userGet;
+ 
+
   var str = currentUser.username;
+  
   var res = str.substring(0, 1);
   res = res + " " + str.substring(1, 2);
 
@@ -144,7 +150,7 @@ function profile(prop) {
                   >
                     {userDetails(currentUser)}
                   </div>
-                  <DashStat {...prop} myStateLoc={myState}/>
+                  <DashStat {...prop} />
                  
                 </div>
               </div>
@@ -155,7 +161,7 @@ function profile(prop) {
         <div className="section  section-clients section-no-padding">
           <div className="container">
             <h4 className="header-text  text-center">Game Tags</h4>
-            <TagsForm {...prop} myStateLoc={myState}/>
+            <TagsForm {...prop}/>
           </div>
         </div>
         <div className="section section-gray section-clients section-no-padding">
