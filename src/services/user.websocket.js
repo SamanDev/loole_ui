@@ -37,7 +37,13 @@ class UserWebsocket {
                  timerId = setTimeout(live, timeout);  
                 }else{
                     try{
-                    cancelKeepAlive();
+                        if (timerId) {  
+                            clearTimeout(timerId);  
+                        }  
+                        res = false;
+                        try{
+                                ws.close();
+                            }catch(e){}
                 }catch(e){}
                     
             }
@@ -68,7 +74,13 @@ class UserWebsocket {
                          timerId = setTimeout(live, timeout);  
                         }else{
                             try{
-                            cancelKeepAlive();
+                                if (timerId) {  
+                                    clearTimeout(timerId);  
+                                }  
+                                res = false;
+                                try{
+                                        ws.close();
+                                    }catch(e){}
                         }catch(e){}
                             
                     }
