@@ -72,9 +72,10 @@ function FormExampleFieldErrorLabel(prop) {
     return _error;
   };
   const handleSubmit = () => {
-    
+    UserWebsocket.disconnect();
     const usr = JSON.parse(localStorage.getItem('user'));
     UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
+    prop.onUpdateItem("openModalSoket", false)
   };
 
   var loading = findStateId(myState, "loading");
@@ -83,9 +84,8 @@ function FormExampleFieldErrorLabel(prop) {
       
 
       <Form.Button
-        loading={loading}
-        disabled={loading} inverted color="green"
-        onClick={() => onUpdateItem("submit", true)}
+         inverted color="green"
+        
         fluid
         size="small"
         content="Login"

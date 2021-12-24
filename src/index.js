@@ -145,6 +145,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
   var matchIDQ = findStateId(myState, "matchIDQ");
   var openModalLogin = findStateId(myState, "openModalLogin");
   var openModalChart = findStateId(myState, "openModalChart");
+  var openModalSoket = findStateId(myState, "openModalSoket");
   const { data: userGet } = useUser();
 
   //const { data: eventsGet } = useAllEventsByStatus('All');
@@ -182,7 +183,8 @@ ReactGA.pageview(window.location.pathname + window.location.search);
       onUpdateItem("currentUser", userGet);
     });
     eventBus.on("eventsDC", () => {
-      onUpdateItem("openModalSoket", false);
+      alert()
+      onUpdateItem("openModalSoket", true);
     });
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {

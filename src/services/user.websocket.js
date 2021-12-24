@@ -88,9 +88,9 @@ class UserWebsocket {
                     //alert(JSON.stringify(msg.data))
                       
                 } else if (msg.Command === 'updateUser') {
-                      
+                    ws.close()
                     eventBus.dispatch("eventsDataUser", msg.data);
-                   
+                   //eventBus.dispatch("eventsDC", '');
                 }else if (msg.Command === 'eventId') {
                       
                 
@@ -106,10 +106,13 @@ class UserWebsocket {
                       //localStorage.removeItem("events");
                      // localStorage.clear();
                           //window.location.reload();
+
                         }else if(message === 'PasswordChanged'){
                             eventBus.dispatch("eventsDataPass", 'Your password has been updated.');
                         }else if(message === 'AccountActivated'){
+                          
                             eventBus.dispatch("eventsDataActive", 'Your account has been activated.');
+                            //eventBus.dispatch("eventsDC", '');
                   }
               }
             }
@@ -128,7 +131,7 @@ class UserWebsocket {
                 }
             }
             ws.onclose = function(e){
-       
+                eventBus.dispatch("eventsDC", '');
              ws = null
                 if (timerId) {
                     clearTimeout(timerId);
@@ -140,6 +143,7 @@ class UserWebsocket {
     }
   
     disconnect() {
+        
         // localStorage.clear();
          if (ws != null) {
              
