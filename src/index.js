@@ -8,7 +8,7 @@ import {
   useHistory,
 } from "react-router-dom";
 import Swal from "sweetalert2";
-import { POSTURLTest, defUser } from "const";
+import { POSTURLTest, defUser,TrackingID } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
@@ -68,6 +68,7 @@ import {
   useAllEventsByStatus,
   useEventByID,
 } from "services/hooks";
+import ReactGA from 'react-ga';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -78,6 +79,8 @@ const queryClient = new QueryClient({
 });
 
 function Main() {
+  ReactGA.initialize(TrackingID);
+ReactGA.pageview(window.location.pathname + window.location.search);
   const queryClient = useQueryClient();
   const history = useHistory();
   var unUser = defUser;

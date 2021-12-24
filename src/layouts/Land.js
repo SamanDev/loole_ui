@@ -2,7 +2,7 @@ import React, { Component, useRef, useEffect,useState } from "react";
 import { Switch, Route,Redirect } from "react-router-dom";
 import { useHistory } from "react-router";
 import Avatar, { ConfigProvider } from "react-avatar";
-import { DEFCOLORS } from "const";
+import { DEFCOLORS,TrackingID } from "const";
 import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
 import $ from "jquery";
 // react-bootstrap components
@@ -42,6 +42,8 @@ import {
 } from "components/include";
 
 import { useAllEvents,useUser,useAllEventsByStatus,useEventByID } from "services/hooks"
+import ReactGA from 'react-ga';
+
 function scrollToTop() {
 
   window.scrollTo({

@@ -16,7 +16,7 @@ import {
 } from 'semantic-ui-react'
 
 import UserWebsocket from 'services/user.websocket'
-import { DEFCOLORS } from "const";
+import { DEFCOLORS,TrackingID } from "const";
 // core components
 import ModalExampleShorthand from "components/modal.component";
 import SidebarMy from "components/Sidebar/Sidebar.js";
@@ -37,6 +37,7 @@ import CreateMatch from "views/Add.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 
 import AddMatch  from "components/add/addmatch.component"; 
+import ReactGA from 'react-ga';
 
 function scrollToTop() {
 
@@ -53,7 +54,7 @@ function scrollToTop() {
 
 
 function  Panel(props) {
- 
+
   
   const [sidebarImage, setSidebarImage] = React.useState();
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");

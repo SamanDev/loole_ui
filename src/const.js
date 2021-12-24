@@ -4,8 +4,8 @@ export const POSTURL = "https://loole.gg:8443/api/auth/"
 export const POSTURLTest = "https://loole.gg:8443/api/req/"
 export const USERSOCKETURL = getPort();
 export const USERSOCKETPUBLICURL = getPortPablic();
-export const DEFCOLORS = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', "#eb5e28","#f27f34","#f9a03f","#f6b049","#f3c053","#a1c349","#94b33d","#87a330","#799431","#6a8532"];
-
+export const DEFCOLORS = ['#db2828', '#f2711c', '#ffe21f', '#b5cc18', "#2ecc40","#00b5ad","#2185d0","#6435c9","#a333c8","#e03997","#a5673f","#767676","#1b1c1d"];
+export const TrackingID = "UA-83705038-3"
 function getPort() {
   // let host = document.location.host;
    //let host = "51.195.176.97:8081";

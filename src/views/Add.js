@@ -678,11 +678,9 @@ handleTagForm(game,platform) {
     return (
       <>
       <Active {...this.props} token={currentUser}/>
-        <Tab.Container id="plain-tabs-example" defaultActiveKey="match">
+        <Tab.Container id="plain-tabs-example" defaultActiveKey="tournsment">
           <Nav role="tablist" variant="tabs">
-            <Nav.Item>
-              <Nav.Link eventKey="match">1v1 Match</Nav.Link>
-            </Nav.Item>
+           
             {(haveAdmin(currentUser.roles))&&(
               <>
                <Nav.Item>
@@ -698,12 +696,7 @@ handleTagForm(game,platform) {
           <Card>
             <Card.Body>
               <Tab.Content>
-                <Tab.Pane eventKey="match">
-                <AddMatch token={currentUser}/>
-                  
-                      
-                    
-                </Tab.Pane>
+             
                 <Tab.Pane eventKey="tournsment">
                   <Row>
                     <Col md="9">

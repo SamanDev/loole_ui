@@ -7,10 +7,7 @@ const Toast = Swal.mixin({
     showConfirmButton: false,
     timer: 1000,
     timerProgressBar: false,
-    didOpen: (toast) => {
-      toast.addEventListener("mouseenter", Swal.stopTimer);
-      toast.addEventListener("mouseleave", Swal.resumeTimer);
-    },
+  
   });
 function copyDo(txxt) {
     navigator.clipboard.writeText(txxt)
@@ -22,12 +19,17 @@ function copyDo(txxt) {
 }
 function copyText(prop) {
     const [item, setItem] = useState(prop.text);
+    const [itemid, setItemid] = useState(prop.itemid);
     const [alter, setAlter] = useState(prop.alter);
     const [size, setSize] = useState(prop.size);
     useEffect(() => {
-        setItem(prop.text)
-  
-       },[prop.text]);
+      setItem(prop.text)
+
+     },[prop.text]);
+     useEffect(() => {
+      setItemid(prop.itemid)
+
+     },[prop.itemid]);
        useEffect(() => {
       
         setSize(prop.size)
@@ -38,10 +40,16 @@ function copyText(prop) {
          
         
        },[prop.alter]);
-           
-      return (
-        <Popup content='Copy to Clipboard' size='mini' inverted position='top center'  trigger={<Label as='a'  size={size}  onClick={() =>  copyDo(item)}>{item} <Label.Detail>{alter}</Label.Detail></Label>} />
-      )
+           if(item){
+            return (
+              <Popup content='Copy to Clipboard' size='mini' {...prop} inverted position='top center'  trigger={<Label as='a'  {...prop}  onClick={() =>  copyDo(item)}>{item} <Label.Detail>{alter}</Label.Detail></Label>} />
+            )
+           }else{
+            return (
+              <Popup content='Copy to Clipboard' size='mini' {...prop} inverted position='top center'  trigger={<p  {...prop}  onClick={() =>  copyDo(itemid)}>{itemid}</p>} />
+            )
+           }
+      
     
 }
 

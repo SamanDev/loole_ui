@@ -127,6 +127,9 @@ class LeagueSection extends Component {
       message: "",
     };
   }
+  componentDidMount() {
+    document.title = this.props.item.gameMode + ' '+ this.props.item.gameName + ' for ' + this.props.item.outSign.replace('Dollar','$') + this.props.item.amount +  ' Prize';
+  }
   componentWillReceiveProps(newProps) {
     this.setState({ eventid: newProps.item.id });
     this.setState({ currentUser: newProps.token });
@@ -134,6 +137,7 @@ class LeagueSection extends Component {
     this.setState({ item: newProps.item });
 
     this.setState({ isloading: newProps.isLoading });
+    
   }
   handleClashFinished(e) {
     this.setState({

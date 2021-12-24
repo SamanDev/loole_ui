@@ -13,6 +13,7 @@ import MatchCard from "components/matchblock.component";
 import TransitionExampleTransitionExplorer from "components/anim.component";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import eventBus from "views/eventBus";
+import CopyText  from "components/copy.component";
 import {
   faInstagram,
   faTwitch,
@@ -31,7 +32,7 @@ import {
   Segment,
   Card,
   Image,
-  List,
+  List,Checkbox
 } from "semantic-ui-react";
 // react-bootstrap components
 import {
@@ -243,7 +244,7 @@ export const getColorStatus = (status) => {
     _col = "green";
   }
   if (status == "Finished") {
-    _col = "red";
+    _col = "black";
   }
   if (status == "Canceled" || status == "Expired") {
     _col = "red";
@@ -473,53 +474,47 @@ export const vsComponentPlayer = (
             player.username != currentUser.username ||
             isloading
               ? {
-                  padding: 10,
-                  width: 150,
+                  
+                  width: '90%',
+                  maxWidth: 150,
                   margin: "auto",
                   position: "relative",
                   zIndex: 10,
                   opacity: 0.5,
                 }
               : {
-                  padding: 10,
-                  width: 150,
+                width: '90%',
+                maxWidth: 150,
                   margin: "auto",
                   position: "relative",
                   zIndex: 10,
                 }
           }
         >
-          <BootstrapSwitchButton
-            checked={player.ready}
-            disabled={player.username != currentUser.username}
-            onlabel="Ready"
-            onstyle="success"
-            offlabel="Ready"
+          <p>Ready</p>
+          <Checkbox toggle defaultChecked={player.ready} disabled={player.username != currentUser.username}
+            
             onChange={(checked) => {
               handlechangeReadyEvent(checked);
-            }}
-            style="w-100 mx-1"
-          />
+            }} />
+          
         </div>
       ) : (
         <div
           style={{
-            padding: 10,
-            width: 150,
+            
+            width: '90%',
+                  maxWidth: 150,
             margin: "auto",
             position: "relative",
             zIndex: 10,
             opacity: 0.5,
           }}
-        >
-          <BootstrapSwitchButton
-            checked={player.ready}
-            disabled={true}
-            onlabel="Ready"
-            onstyle="success"
-            offlabel="Ready"
-            style="w-100 mx-1"
-          />
+        ><p>Ready</p>
+          <Checkbox toggle defaultChecked={player.ready} disabled
+            
+             />
+          
         </div>
       )}
     </>
@@ -535,11 +530,12 @@ export const vsComponentPlayer = (
       {_p && _p.username != "Tournament Player" && (
         <>
           {_p.tagId && (
+            
             <Statistic inverted color="red" size="mini">
               <Statistic.Label>
                 {getTagName(item.gameName, item.gameConsole)} iD
               </Statistic.Label>
-              <Statistic.Value>{_p.tagId}</Statistic.Value>
+              <Statistic.Value><CopyText color="red" size="small" itemid={_p.tagId}/></Statistic.Value>
             </Statistic>
           )}
           {_p.nickName && (
@@ -595,9 +591,11 @@ export const printMatchBTN = (
           {match.matchPlayers[0].username != currentUser.username &&
             !match.matchPlayers[1].ready && (
               <>
-                {_res = <Button
+                {_res = <>
+              <Button
                   animated
                   size="small"
+                  className="mobile hidden"
                   inverted
                   onClick={handleLeaveMatch}
                   color="red"
@@ -610,6 +608,21 @@ export const printMatchBTN = (
                     <Icon name="arrow left" />
                   </Button.Content>
                 </Button>
+              <Button
+                
+                size="small"
+                className="mobile only"
+                inverted
+                onClick={handleLeaveMatch}
+                color="red"
+                disabled={isloading}
+                loading={isloading}
+                style={{position: "relative",top:-10}}
+              >
+                <Button.Content visible>Leave</Button.Content>
+                
+              </Button>
+              </>
   }
               </>
             )}
@@ -618,8 +631,9 @@ export const printMatchBTN = (
         <>
           {item.totalPlayer > activePlayer && (
             <>
-              {_res = <Button
+              {_res = <><Button
                 animated
+                className="mobile hidden"
                 size="small"
                 inverted
                 onClick={handleJoinMatch}
@@ -628,11 +642,27 @@ export const printMatchBTN = (
                 loading={isloading}
                 style={{position: "relative",top:-10}}
               >
-                <Button.Content visible>Join Match</Button.Content>
+           
+                <Button.Content visible  >Join Match</Button.Content>
                 <Button.Content hidden>
                   for {item.inSign.replace("Dollar", "$")} {item.amount}
                 </Button.Content>
               </Button>
+              <Button
+                
+                size="small"
+                className="mobile only"
+                inverted
+                onClick={handleJoinMatch}
+                color="green"
+                disabled={isloading|| !currentUser.userActivate}
+                loading={isloading}
+                style={{position: "relative",top:-10}}
+              >
+                <Button.Content visible>Join</Button.Content>
+                
+              </Button>
+              </>
   }
             </>
           )}

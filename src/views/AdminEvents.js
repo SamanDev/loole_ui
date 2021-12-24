@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import DataTable, { ExpanderComponentProps } from "react-data-table-component";
 import { Input, Segment, Button, Card, Table,Dropdown } from "semantic-ui-react";
 import Avatar from "react-avatar";
@@ -76,6 +76,12 @@ const conditionalRowStyles = [
   // You can also pass a callback to style for additional customization
   {
     when: (row) => row.match.status === "Ready",
+    style: {
+      backgroundColor: "rgba(0,0,0,.1)",
+    },
+  },
+  {
+    when: (row) => row.match.status === "Finished",
     style: {
       backgroundColor: "rgba(0,255,0,.1)",
     },
@@ -172,7 +178,13 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 );
 
 function Admin(prop) {
-  const { data: usersList } = useAllEvents();
+  //const { data: usersList } = useAllEvents();
+  const [myState, setMyState] = useState(prop.myState)
+  useEffect(() => {
+    setMyState(prop.myState)
+}, [prop.myState]);
+  const usersList = prop.findStateId(myState,'events');
+
   const [filterText, setFilterText] = React.useState("");
   const [exMode, setExMode] = React.useState("Data");
   const [resetPaginationToggle, setResetPaginationToggle] =
@@ -199,7 +211,7 @@ function Admin(prop) {
         selector: (row) => row.gameName,
         format: (row) => (
         <>
-        {row.gameName =='Turnament' ? (
+        {row.gameMode =='Tournament' ? (
         <a href={"/panel/lobby?id="+row.eventid+'&matchid='+row.match.id} target='_blank'>{row.match.id}: {row.gameName}</a>
         ):(
             <a href={"/panel/lobby?id="+row.eventid} target='_blank'>{row.eventid}: {row.gameName}</a>

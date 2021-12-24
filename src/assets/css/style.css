@@ -763,6 +763,13 @@ font-size: 11px !important;
     color: #fff;
   
 }
+.ui.toggle.checkbox .box:before, .ui.toggle.checkbox label:before{
+    
+    background: rgba(255,0,0,.5)!important;
+}
+.ui.toggle.checkbox input:checked~.box:before, .ui.toggle.checkbox input:checked~label:before {
+    background: rgba(0,255,0,.9)!important;
+}
 .ui.message {
     
     background: rgba(255,255,255,.2);

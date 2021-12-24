@@ -97,7 +97,7 @@ const SidebarExampleSidebar = (prop) => {
               {visible  && (
                 <div
                   
-                  style={{padding:10,margin:'auto',position:'relative',zIndex:10}}
+                  style={{padding:'10px 0',margin:'auto',position:'relative',zIndex:10}}
                 >
                     {prop.status == 'Ready' && (
                     

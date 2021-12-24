@@ -24,7 +24,7 @@ const DashStat = (prop) => {
   var nMatch = Number.parseFloat(currentUser.totalMatch).toFixed(0);
   var nWin = Number.parseFloat(currentUser.totalWin).toFixed(0);
   var nBalance = Number.parseFloat(currentUser.balance).toFixed(2);
-  currentUser.userAnalyses.sort((a, b) => (a.id < b.id) ? 1 : -1)
+  currentUser.userAnalyses?.sort((a, b) => (a.id < b.id) ? 1 : -1)
   var nProfit = 0
   try{
     nProfit = Number.parseFloat(currentUser.userAnalyses[0].profit).toFixed(2);
