@@ -94,15 +94,7 @@ function Active(prop) {
             >
               Resend
             </Button>
-            <Button
-              style={{ marginLeft: 10 }}
-              className=" actbtn"
-              type="button"
-              variant="warning"
-              onClick={handleDelete}
-            >
-              <span> Edit</span>
-            </Button>
+            
             </Message.Content>
           </Message>
         </Form>

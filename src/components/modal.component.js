@@ -79,13 +79,14 @@ function ModalExampleShorthand(prop) {
          
                                           
                                           </>)
-        console.log(defaultOpen)   
+       
       return (
         <Modal
         basic
+        {...prop}
         id={'mod'+key}
         defaultOpen={defaultOpen}
-          trigger={<Menu.Item as='a' id={'linkmod'+key}>
+          trigger={<Menu.Item as='a' {...prop} id={'linkmod'+key}>
                <Icon.Group style={{marginBottom:10}}>
           <Icon loading size='big' color='green' name='circle notch' style={{margin:0}} />
           <Icon name='dollar' />
@@ -104,7 +105,7 @@ function ModalExampleShorthand(prop) {
     var _title = item.gameName + ' (' + item.status+')';
     
   return (
-    <Link className="item" to={"/panel/lobby?id=" + item.id}>
+    <Link {...prop} className="item" to={"/panel/lobby?id=" + item.id}>
     
            <Icon.Group style={{marginBottom:10}}>
       <Icon loading size='big' color={getColorStatus(item.status)} name='circle notch' style={{margin:0}} />

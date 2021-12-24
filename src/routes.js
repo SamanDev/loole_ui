@@ -56,7 +56,7 @@ var routes = [
     name: "Profile",
     icon: "nc-icon nc-circle-09",
     component: 'Profile',
-    show:true
+    show:false
   },
   {
     path: "/admin",
@@ -64,7 +64,7 @@ var routes = [
     name: "Admin",
     icon: "nc-icon nc-circle-09",
     component: 'Admin',
-    show:true
+    show:false
   },
   {
     path: "/adminevents",
@@ -72,7 +72,15 @@ var routes = [
     name: "AdminEvents",
     icon: "nc-icon nc-circle-09",
     component: 'AdminEvents',
-    show:true
+    show:false
+  },
+  {
+    path: "/create",
+    layout: "/panel",
+    name: "CreateEvent",
+    icon: "nc-icon nc-simple-add",
+    component: 'CreateMatch',
+    show:false
   },
   {
     path: "/*",
@@ -127,17 +135,18 @@ var routes = [
     layout: "/panel",
     name: "Create",
     icon: "nc-icon nc-simple-add",
-    component: 'CreateMatch',
-    show:true
+    component: 'Create',
+    show:false
   },
   {
-    path: "/create",
+    path: "/logut",
     layout: "/panel",
-    name: "CreateEvent",
-    icon: "nc-icon nc-simple-add",
-    component: 'CreateMatch',
-    show:true
+    name: "Logout",
+    icon: "nc-icon nc-button-power",
+    component: 'Logout',
+    show:false
   },
+  
   {
     path: "/lobby",
     layout: "/panel",

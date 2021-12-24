@@ -140,22 +140,22 @@ const getBlockChallenge = (filtermode,events) => {
   
   const panes = [
     {id:1, menuItem: (
-      <Menu.Item>
+      <Menu.Item  key={"1"}>
         All <Label color='red' size='mini'>{findStateId(myStateThis, "All")}</Label>
       </Menu.Item>
     ), render: () => <Tab.Pane >{getBlockChallenge('All',events)}</Tab.Pane> },
     {id:2, menuItem: (
-      <Menu.Item>
+      <Menu.Item key={"2"}>
         Mobile <Label color='teal' size='mini' >{findStateId(myStateThis, "Mobile")}</Label>
       </Menu.Item>
     ), render: () => <Tab.Pane>{getBlockChallenge('Mobile',events)}</Tab.Pane> },
     {id:3, menuItem: (
-      <Menu.Item>
+      <Menu.Item key={"3"}>
         Console <Label color='orange'  size='mini'>{findStateId(myStateThis, "NoMobile")}</Label>
       </Menu.Item>
     ), render: () => <Tab.Pane>{getBlockChallenge('NoMobile',events)}</Tab.Pane> },
     {id:4, menuItem: (
-      <Menu.Item>
+      <Menu.Item key={"4"}>
         Tournament <Label  size='mini' color='black'>{findStateId(myStateThis, "Tournament")}</Label>
       </Menu.Item>
     ), render: () => <Tab.Pane>{getBlockChallenge('Tournament',events)}</Tab.Pane> },
@@ -165,10 +165,10 @@ const getBlockChallenge = (filtermode,events) => {
       
         
     <>
-    
+   
     <Active {...prop}/>
     <DashStat {...prop}/>
-    <Tab  size='big' panes={panes}  className="maxheight dash"  defaultActiveIndex={key}  onTabChange={(e, data) => {prop.onUpdateItem('keyDash',data.activeIndex)}}  />
+    <Tab   panes={panes}  className="maxheight dash"  defaultActiveIndex={key}  onTabChange={(e, data) => {prop.onUpdateItem('keyDash',data.activeIndex)}}  />
 
      
 

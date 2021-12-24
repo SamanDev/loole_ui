@@ -25,7 +25,7 @@ export default class TransitionExampleTransitionExplorer extends Component {
     this.state = { animation: this.props.animation, duration: this.props.duration, objanim: this.props.objanim, visible: true }
   }
   componentDidMount() {
-   
+    this.setState({ objanim: this.props.objanim });
      timer = setInterval(() => {
       clearTimeout(timer)
       this.toggleVisibility()
@@ -33,17 +33,7 @@ export default class TransitionExampleTransitionExplorer extends Component {
     },2000)
     
 }
-  componentWillReceiveProps(newProps) {
-    this.setState({ objanim: newProps.objanim });
-    clearTimeout(timer);
-    
-      
-    
-    
-    //if(newProps.objanim)   {setInterval(() => {this.toggleVisibility()},2000)} 
-    
-  }
- 
+
   toggleVisibility = () => {
     
     this.setState((prevState) => ({ visible: !prevState.visible }))

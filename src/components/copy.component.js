@@ -42,11 +42,11 @@ function copyText(prop) {
        },[prop.alter]);
            if(item){
             return (
-              <Popup content='Copy to Clipboard' size='mini' {...prop} inverted position='top center'  trigger={<Label as='a'  {...prop}  onClick={() =>  copyDo(item)}>{item} <Label.Detail>{alter}</Label.Detail></Label>} />
+              <Popup content='Copy to Clipboard' size='mini' {...prop}  position='top center'  trigger={<Label as='a'  {...prop}  onClick={() =>  copyDo(item)}>{item} <Label.Detail>{alter}</Label.Detail></Label>} />
             )
            }else{
             return (
-              <Popup content='Copy to Clipboard' size='mini' {...prop} inverted position='top center'  trigger={<p  {...prop}  onClick={() =>  copyDo(itemid)}>{itemid}</p>} />
+              <Popup content='Copy to Clipboard' size='mini' {...prop}  position='top center'  trigger={<p  {...prop}  onClick={() =>  copyDo(itemid)}>{itemid}</p>} />
             )
            }
       

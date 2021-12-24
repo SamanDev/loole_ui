@@ -127,7 +127,7 @@ class LeagueSection extends Component {
       message: "",
     };
   }
-  componentDidMount() {
+  componentWillUnmount() {
     document.title = this.props.item.gameMode + ' '+ this.props.item.gameName + ' for ' + this.props.item.outSign.replace('Dollar','$') + this.props.item.amount +  ' Prize';
   }
   componentWillReceiveProps(newProps) {
