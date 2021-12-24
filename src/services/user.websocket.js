@@ -173,7 +173,7 @@ ws.close()
                     eventBus.dispatch("eventsDC", '');
                   }
                   
-  }, 10000);
+  }, 500);
                  
                 
             }
