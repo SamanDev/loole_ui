@@ -4,6 +4,7 @@ import eventBus from "views/eventBus";
 import userService from "services/user.service";
 var ws;
 var timerId = 0;
+var res = false;
 class UserWebsocket {
    
 
@@ -31,7 +32,17 @@ class UserWebsocket {
                 var timeout = 20000;
             if (ws?.readyState == ws?.OPEN) {
             ws?.send('Ping');
-            timerId = setTimeout(live, timeout);
+            setTimeout(function() {		
+                if(res){
+                 timerId = setTimeout(live, timeout);  
+                }else{
+                    try{
+                    cancelKeepAlive();
+                }catch(e){}
+                    
+            }
+            res = false;
+            }, 2000);
             }else{
             try{
                 if (timerId) {
@@ -52,7 +63,17 @@ class UserWebsocket {
                         var timeout = 20000;
                     if (ws?.readyState == ws?.OPEN) {
                     ws?.send('Ping');
-                    timerId = setTimeout(live, timeout);
+                    setTimeout(function() {		
+                        if(res){
+                         timerId = setTimeout(live, timeout);  
+                        }else{
+                            try{
+                            cancelKeepAlive();
+                        }catch(e){}
+                            
+                    }
+                    res = false;
+                    }, 2000);
                     }
                 }
             }catch(e){}
@@ -113,7 +134,9 @@ class UserWebsocket {
                           
                             eventBus.dispatch("eventsDataActive", 'Your account has been activated.');
                             //eventBus.dispatch("eventsDC", '');
-                  }
+                  } else if (message == 'Pong') {
+                    res = true;
+                        }
               }
             }
             ws.onerror = function (e) {
@@ -131,11 +154,14 @@ class UserWebsocket {
                 }
             }
             ws.onclose = function(e){
-                eventBus.dispatch("eventsDC", '');
-             ws = null
-                if (timerId) {
-                    clearTimeout(timerId);
-                    }
+              ws = null;
+              setTimeout(function() {
+                  if (ws != null && ws.readyState == websocket.OPEN) { 
+                  }else{
+                    eventBus.dispatch("eventsDC", '');
+                  }
+                  
+  }, 10000);
                  
                 
             }

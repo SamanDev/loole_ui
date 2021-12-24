@@ -183,7 +183,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
       onUpdateItem("currentUser", userGet);
     });
     eventBus.on("eventsDC", () => {
-      alert()
+    //  alert()
       onUpdateItem("openModalSoket", true);
     });
     eventBus.on("eventsDataEventDo", (eventGet) => {
