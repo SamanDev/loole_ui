@@ -30,6 +30,7 @@ import { Spinner, Container } from "react-bootstrap";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Chart  from "components/chart.component"; 
+import DC  from "components/dc.component"; 
 import eventBus from "views/eventBus";
 import {
   getQueryVariable,
@@ -104,6 +105,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
       { id: "openModalAdd", val: false },
       { id: "openModalLogin", val: false },
       { id: "openModalChart", val: false },
+      { id: "openModalSoket", val: false },
     ],
   });
   
@@ -179,6 +181,9 @@ ReactGA.pageview(window.location.pathname + window.location.search);
     eventBus.on("eventsDataUser", (userGet) => {
       onUpdateItem("currentUser", userGet);
     });
+    eventBus.on("eventsDC", () => {
+      onUpdateItem("openModalSoket", false);
+    });
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {
         onUpdateItem("eventDef", eventGet);
@@ -209,6 +214,19 @@ ReactGA.pageview(window.location.pathname + window.location.search);
   return (
     <>
      <Modal
+        
+    
+        
+        
+        open={openModalSoket}
+        
+        onClose={() => onUpdateItem("openModalSoket", false)}
+      >
+        <Modal.Header>Profit Chart</Modal.Header>
+      <Modal.Content><DC onUpdateItem={onUpdateItem}/></Modal.Content>
+        
+        </Modal>
+        <Modal
         
     
         
