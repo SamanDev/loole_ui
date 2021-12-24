@@ -139,7 +139,7 @@ class UserWebsocket {
                       //localStorage.removeItem("events");
                      // localStorage.clear();
                           //window.location.reload();
-
+ws.close()
                         }else if(message === 'PasswordChanged'){
                             eventBus.dispatch("eventsDataPass", 'Your password has been updated.');
                         }else if(message === 'AccountActivated'){
