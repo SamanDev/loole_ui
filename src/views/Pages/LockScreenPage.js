@@ -37,6 +37,7 @@ import League from "server/league";
 import eventBus from "views/eventBus";
 import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
 
+//import LeagueSection  from "components/events/league.component"; 
 import LeagueSection  from "components/events/league.component"; 
 import TournamentSection  from "components/events/tournament.component"; 
 import MatchSection  from "components/events/match.component"; 
@@ -211,7 +212,7 @@ var lists = eventMatch.matchTables;
                 
                 <Segment style={{ height: "100%", width: "100%", position: "absolute",background:'transparent',padding:0 ,border:'none'}}>
                 
-        <Sidebar.Pushable as={Segment} style={{background:'none'}}>
+        <Sidebar.Pushable as={Segment} basic>
           <Sidebar
           
             animation='push'
@@ -220,10 +221,10 @@ var lists = eventMatch.matchTables;
             
             onHide={() => setVisible(false)}
             style={{ width: "100vw", maxWidth:300,height: "100vh !important"}}
-            inverted
+            
             vertical
             visible={(devWid > 991) ? (true):(visible)}
-         
+            as={Segment} basic
            
           >
          

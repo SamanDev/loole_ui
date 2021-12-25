@@ -3,9 +3,9 @@ import authHeader from "./auth-header";
 import uploadHeader from "./upload-header";
 
 import UserWebsocket from 'services/user.websocket'
-import { POSTURLTest,defUser } from "const";
+import { POSTURLAdmin,defUser } from "const";
 
-const API_URL_TEST = POSTURLTest;
+const API_URL_TEST = POSTURLAdmin;
 
 
 class AdminService {

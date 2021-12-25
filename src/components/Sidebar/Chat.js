@@ -40,13 +40,253 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import { Input } from 'semantic-ui-react'
+import { Input,Comment } from 'semantic-ui-react'
 import { faHourglassEnd } from "@fortawesome/free-solid-svg-icons";
-function toTimestamp(strDate) {
-  var datum = Date.parse(strDate);
-  return datum / 1000;
-}
 
+function getchatTime(date) {
+  var today = new Date(date);
+  var dateExpired = 
+        today.getHours() +
+        ":" +
+        today.getMinutes() +
+        ":" +
+        today.getSeconds();
+        return dateExpired
+
+}
+function getchatClass(message,mode) {
+  if(mode =='Alert'){
+    var classAlert = "alert-primary"
+    if (message.indexOf(' Finished')>-1 ){classAlert = "alert-danger"}
+    return classAlert
+  }else{
+    var classChat = "sys-quote text-center text-muted"
+                          if (message.indexOf(' is  ready ')>-1){classChat = "sys-quote text-center text-success"}
+                          if (message.indexOf(' join ')>-1 ){classChat = "sys-quote text-center text-muted"}
+                          if (message.indexOf(' leave ')>-1 ){classChat = "sys-quote text-center text-warning"}
+                          if (message.indexOf(' not ready')>-1 ){classChat = "sys-quote text-center text-danger"}
+                          if (message.indexOf(' accepted')>-1 ){classChat = "sys-quote text-center text-danger"}
+                          
+                          if (message.indexOf(': ')>-1 ){classChat = "alert-warning sys-quote text-center"}
+        return classChat
+  }
+  
+                          
+
+}
+function mycreateChats(finalChat,masterplayer,secondplayer,matchid) {
+  const listItems = finalChat.map((item, i) => (
+ 
+    <Comment
+          key={i.toString()}
+         >
+          
+          {(item.mode == "CHAT" && (masterplayer == item.username || secondplayer == item.username)) ? (
+                          <>
+                         
+                          <div
+                        
+                        className={
+                          masterplayer != item.username
+                            ? "l-quote quote right"
+                            : "l-quote quote "
+                        }
+                      >
+                            
+                        <small className="text-warning" style={{textTransform: 'uppercase'}}>{item.username}</small><br/>
+                        <div className="text-justify" style={{paddingBottom:10}}>
+                            <small>
+                            
+                              
+                                {item.message}
+                              
+                            </small>
+                            </div>
+                            <Avatar
+                              size="25"
+                              className="chatavatar"
+                              round={true}
+                              title={item.username}
+                              name={setAvatar(item.username)}
+                              style={
+                                masterplayer != item.username
+                                  ? { right: 5 }
+                                  : { left: 5 }
+                              }
+                            />
+                            <div
+                          className="chatdate"
+                        
+                        >
+                          {getchatTime(item.time)}
+                        </div>
+                            </div>
+                          </>
+                        ):(
+                          <>
+                          {(item.mode != "SYSTEM" && item.mode != "ALERT" && item.mode != "FILE") &&  (
+                          <div
+                        
+                        className={getchatClass(item.message,'Chat')}
+                        
+                          style={{opacity:.7}}
+                        >
+                          <Avatar
+                              size="15"
+                              className="chatavatar"
+                              round={true}
+                              title={item.username}
+                              name={setAvatar(item.username)}
+                              style={
+                                masterplayer != item.username
+                                  ? { right: 5 }
+                                  : { left: 5 }
+                              }
+                            />
+                               <div
+                          className="chatdate float"
+                          
+                        >
+                        {getchatTime(item.time)}
+                        </div>
+                        <div style={{padding: 4}}>
+                        <div className="text-warning text-left">{item.username}: </div>
+                            <small>
+                             
+                              <div  className="text-justify" style={{color:'#fff',maxHeight:50,overflow:'auto'}}>{item.message}</div>
+                              </small>
+                              
+                              </div>
+                              
+                              </div>
+                          )}
+                          
+                          </>
+                        )}
+                        {item.mode == "SYSTEM" &&  (
+                          <>
+                           
+                          <div
+                        
+                        className={getchatClass(item.message,'Chat')}
+                        style={(masterplayer != item.username && secondplayer != item.username) ? ({opacity:.9}):({opacity:1})}
+                        >
+                          <Avatar
+                              size="5"
+                              className="chatavatar"
+                              round={true}
+                              title={item.username}
+                              name={setAvatar(item.username)}
+                              style={
+                                masterplayer != item.username
+                                  ? { right: 5,opacity:0 }
+                                  : { left: 5,opacity:0 }
+                              }
+                            />
+                            
+                             <small>{item.mode}<br/>
+                                {item.message}
+                                </small>
+                              <div
+                          className="chatdate"
+                        style={{top:-10}}
+                        >
+                          {getchatTime(item.time)}
+                        </div>
+                              </div>
+                          </>
+
+                        )}
+                        {item.mode == "ALERT" &&  (
+                          <>
+                          
+                          <div
+                        
+                        className={getchatClass(item.message,'Alert')+" sys-quote alertmsg text-center  "}>
+                       
+                         
+                                {item.message}
+                     
+                              <div
+                          className="chatdate"
+                        
+                        >
+                          {getchatTime(item.time)}
+                        </div>
+                        </div>
+                          </>
+
+                        )}
+                        {item.mode == "FILE" && (
+                              <>
+                              <div
+                        
+                        className={
+                          masterplayer != item.username
+                            ? "l-quote quote right"
+                            : "l-quote quote "
+                        }
+                      >
+                            
+                        <small className="text-warning">{item.username} uploaded.</small><br/>
+                        <video preload="none" controls>
+                                 
+                                  <source
+                                  
+                                    src={item.message}
+                                    type="video/mp4"
+                                  />
+                                </video>
+                            <Avatar
+                              size="25"
+                              className="chatavatar"
+                              round={true}
+                              title={item.username}
+                              name={setAvatar(item.username)}
+                              style={
+                                masterplayer != item.username
+                                  ? { right: 5 }
+                                  : { left: 5 }
+                              }
+                            />
+                            <div
+                          className="chatdate"
+                        
+                        >
+                          {getchatTime(item.time)}
+                        </div>
+                            </div>
+                               
+                              </>
+                            )}
+                    
+                       {i == finalChat.length-1 && !matchid &&  (
+                          <>
+                          
+                          <div
+                        
+                        className="sys-quote alertmsg text-center alert-danger hide">
+                       
+                         
+                                Match Created.
+                     
+                              <div
+                          className="chatdate"
+                        
+                        >
+                          {getchatTime(item.time)}
+                        </div>
+                        </div>
+                          </>
+
+                        )}
+        </Comment>
+      
+  )  
+  );
+    
+    return <Comment.Group minimal>{listItems}</Comment.Group>
+  };
 class Chatbar extends Component {
   
   constructor(props) {
@@ -108,10 +348,7 @@ class Chatbar extends Component {
                       showConfirmButton: false,
                       timer: 3000,
                       timerProgressBar: true,
-                      didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                      }
+                     
                     })
                     
                     Toast.fire({
@@ -192,7 +429,10 @@ class Chatbar extends Component {
         isLoading: true,
       });
     }
-
+    
+    
+                          
+    
     return (
       <>
       
@@ -246,248 +486,10 @@ class Chatbar extends Component {
                   }}
                 >
                   <Card.Body
-                    style={{ padding: 10, paddingBottom: 50, overflow: "auto" }}
+                    style={{ padding: '10px 0px 10px 10px',  overflow: "auto" }}
                   >
-                    <p className="l-quote quote alertmsg alert-primary  hide">
-                      <Avatar
-                        className="chatavatar"
-                        size="25"
-                        round={true}
-                        src={require("assets/img/logo.svg").default}
-                      />
-                      Match Finished.
-                      <small>
-                        <small
-                          className="chatdate"
-                          style={{ display: "block", textAlign: "center" }}
-                        >
-                          21:6:43
-                        </small>
-                      </small>
-                    </p>
-                    {finalChat.map((item, i) => {
+                   {mycreateChats(finalChat,masterplayer,secondplayer,this.state.matchid)}
                     
-                    var today = new Date(item.time),
-                    dateExpired = 
-                          today.getHours() +
-                          ":" +
-                          today.getMinutes() +
-                          ":" +
-                          today.getSeconds();
-                          var classAlert = "alert-primary"
-                          var classChat = "sys-quote text-center text-muted"
-                          if (item.message.indexOf(' is  ready ')>-1){classChat = "sys-quote text-center text-success"}
-                          if (item.message.indexOf(' join ')>-1 ){classChat = "sys-quote text-center text-info"}
-                          if (item.message.indexOf(' leave ')>-1 ){classChat = "sys-quote text-center text-warning"}
-                          if (item.message.indexOf(' not ready')>-1 ){classChat = "sys-quote text-center text-danger"}
-                          if (item.message.indexOf(' accepted')>-1 ){classChat = "sys-quote text-center text-danger"}
-                          if (item.message.indexOf(' Finished')>-1 ){classAlert = "alert-danger"}
-                          if (item.message.indexOf(': ')>-1 ){classChat = "alert-warning sys-quote text-center"}
-                      return (
-                        <>
-                        
-                          
-                            {(item.mode == "CHAT" && (masterplayer == item.username || secondplayer == item.username)) ? (
-                              <>
-                             
-                              <div
-                            key={i}
-                            className={
-                              masterplayer != item.username
-                                ? "l-quote quote right"
-                                : "l-quote quote "
-                            }
-                          >
-                                
-                            <small className="text-warning">{item.username}</small><br/>
-                            <div className="text-justify">
-                                <small>
-                                
-                                  
-                                    {item.message}
-                                  
-                                </small>
-                                </div>
-                                <Avatar
-                                  size="25"
-                                  className="chatavatar"
-                                  round={true}
-                                  title={item.username}
-                                  name={setAvatar(item.username)}
-                                  style={
-                                    masterplayer != item.username
-                                      ? { right: 5 }
-                                      : { left: 5 }
-                                  }
-                                />
-                                <div
-                              className="chatdate"
-                            
-                            >
-                              {dateExpired}
-                            </div>
-                                </div>
-                              </>
-                            ):(
-                              <>
-                              {(item.mode != "SYSTEM" && item.mode != "ALERT" && item.mode != "FILE") &&  (
-                              <div
-                            key={i}
-                            className={classChat}
-                            
-                              style={{opacity:.7}}
-                            >
-                              <Avatar
-                                  size="15"
-                                  className="chatavatar"
-                                  round={true}
-                                  title={item.username}
-                                  name={setAvatar(item.username)}
-                                  style={
-                                    masterplayer != item.username
-                                      ? { right: 5 }
-                                      : { left: 5 }
-                                  }
-                                />
-                                   <div
-                              className="chatdate float"
-                              
-                            >
-                            {dateExpired}
-                            </div>
-                            <div style={{padding: 4}}>
-                            <div className="text-warning text-left">{item.username}: </div>
-                                <small>
-                                 
-                                  <div  className="text-justify" style={{color:'#fff',maxHeight:50,overflow:'auto'}}>{item.message}</div>
-                                  </small>
-                                  
-                                  </div>
-                                  
-                                  </div>
-                              )}
-                              
-                              </>
-                            )}
-                            {item.mode == "SYSTEM" &&  (
-                              <>
-                               
-                              <p
-                            key={i}
-                            className={classChat}
-                            style={(masterplayer != item.username && secondplayer != item.username) ? ({opacity:.5}):({opacity:1})}
-                            >
-                              <Avatar
-                                  size="15"
-                                  className="chatavatar"
-                                  round={true}
-                                  title={item.username}
-                                  name={setAvatar(item.username)}
-                                  style={
-                                    masterplayer != item.username
-                                      ? { right: 5 }
-                                      : { left: 5 }
-                                  }
-                                />
-                                 <small>
-                                    {item.message}
-                                    </small>
-                                  <div
-                              className="chatdate"
-                            
-                            >
-                              {dateExpired}
-                            </div>
-                                  </p>
-                              </>
-
-                            )}
-                            {item.mode == "ALERT" &&  (
-                              <>
-                              
-                              <p
-                            key={i}
-                            className={classAlert+" sys-quote alertmsg text-center  "}>
-                           
-                             
-                                    {item.message}
-                         
-                                  <div
-                              className="chatdate"
-                            
-                            >
-                              {dateExpired}
-                            </div>
-                            </p>
-                              </>
-
-                            )}
-                            {item.mode == "FILE" && (
-                                  <>
-                                  <p
-                            key={i}
-                            className={
-                              masterplayer != item.username
-                                ? "l-quote quote right"
-                                : "l-quote quote "
-                            }
-                          >
-                                
-                            <small className="text-warning">{item.username} uploaded.</small><br/>
-                            <video preload="none" controls>
-                                     
-                                      <source
-                                      
-                                        src={item.message}
-                                        type="video/mp4"
-                                      />
-                                    </video>
-                                <Avatar
-                                  size="25"
-                                  className="chatavatar"
-                                  round={true}
-                                  title={item.username}
-                                  name={setAvatar(item.username)}
-                                  style={
-                                    masterplayer != item.username
-                                      ? { right: 5 }
-                                      : { left: 5 }
-                                  }
-                                />
-                                <div
-                              className="chatdate"
-                            
-                            >
-                              {dateExpired}
-                            </div>
-                                </p>
-                                   
-                                  </>
-                                )}
-                        
-                           {i == finalChat.length-1 && !this.state.matchid &&  (
-                              <>
-                              
-                              <p
-                            key={i}
-                            className="sys-quote alertmsg text-center alert-danger hide">
-                           
-                             
-                                    Match Created.
-                         
-                                  <div
-                              className="chatdate"
-                            
-                            >
-                              {dateExpired}
-                            </div>
-                            </p>
-                              </>
-
-                            )}
-                        </>
-                      );
-                    })}
                     
                   </Card.Body>
                 </Card>

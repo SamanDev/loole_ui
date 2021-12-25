@@ -454,7 +454,7 @@ class AddMatch extends Component {
           />
                             <Form.Field
                             className="hide"
-                    inverted
+                    
             control={Select}
             label='Mode'
            

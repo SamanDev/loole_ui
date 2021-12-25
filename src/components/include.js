@@ -414,7 +414,7 @@ export const vsComponentPlayer = (
     padd = 0;
   }
   var user = (
-    <div style={{ padding: "10px 0 " + padd + "px 0" }}>
+    <div style={{ overflow:'hidden',padding: "0px 0 " + padd + "px 0" }}>
       <Statistic inverted size="mini">
         <Statistic.Value>
           {player.username == matchidFind.winner && (
@@ -491,7 +491,7 @@ export const vsComponentPlayer = (
                 }
           }
         >
-          <p>Ready</p>
+          <small>Ready</small><br/>
           <Checkbox toggle defaultChecked={player.ready} disabled={player.username != currentUser.username}
             
             onChange={(checked) => {
@@ -510,7 +510,7 @@ export const vsComponentPlayer = (
             zIndex: 10,
             opacity: 0.5,
           }}
-        ><p>Ready</p>
+        ><small>Ready</small><br/>
           <Checkbox toggle defaultChecked={player.ready} disabled
             
              />
@@ -535,7 +535,7 @@ export const vsComponentPlayer = (
               <Statistic.Label>
                 {getTagName(item.gameName, item.gameConsole)} iD
               </Statistic.Label>
-              <Statistic.Value><CopyText color="red" size="small" itemid={_p.tagId}/></Statistic.Value>
+              <Statistic.Value><CopyText color="red" size="small" myid={_p.tagId}/></Statistic.Value>
             </Statistic>
           )}
           {_p.nickName && (
@@ -553,7 +553,7 @@ export const vsComponentPlayer = (
   );
   return (
     <>
-      <div style={!player.username ? { opacity: 0.3 } : null}>
+      <div style={!player.username ? { opacity: 0.3,overflow:'hidden' } : {overflow:'hidden'}}>
         <SidebarExampleSidebar
           user={user}
           item={item}
@@ -829,13 +829,13 @@ export const vsComponent = (
         date={item.expire}
       />
 
-      <Segment inverted style={{ background: "none !important" }} >
+      <Segment  basic >
         <Grid columns={2}>
           <Grid.Column
             style={{ background: "none !important" }}
             
             
-            className={match.winner == match.matchPlayers[0].username && "coverwinner"}>
+            className={match.winner == match.matchPlayers[0].username ? "coverwinner" : null}>
             {vsComponentPlayer(
               item,
               match,
@@ -848,7 +848,7 @@ export const vsComponent = (
           </Grid.Column>
           <Grid.Column
             style={{ background: "none !important" }}
-            className={match.winner == match.matchPlayers[1].username && "coverwinner"}>
+            className={match.winner == match.matchPlayers[1].username ? "coverwinner":null}>
           
             {vsComponentPlayer(
               item,

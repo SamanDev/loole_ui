@@ -52,7 +52,7 @@ import {
 import { useHistory } from "react-router";
 
 var moment = require("moment");
- function DashStat(prop) {
+ function MatchBlock(prop) {
   const history = useHistory();
     var _mode = " 1 vs 1 ";
     var _color = "#404040";
@@ -69,8 +69,8 @@ var moment = require("moment");
     
         
      
-        <Card  onClick={()=>prop.onUpdateItem('eventIDQ', item.id)} color={getColorStatus(item.status)} link={false}  as={Link} to={"/panel/lobby?id=" + item.id} >
-         <Label inverted size="mini" color={getColorStatus(item.status)} ribbon style={{zIndex:2,maxWidth:170,position:'absolute',top:15,left:-10}}>
+        <Card  onClick={()=>prop.onUpdateItem('eventIDQ', item.id)} color={getColorStatus(item.status)}  as={Link} to={"/panel/lobby?id=" + item.id} >
+         <Label  size="mini" color={getColorStatus(item.status)} ribbon style={{zIndex:2,maxWidth:170,position:'absolute',top:15,left:-10}}>
          {item.status == 'Pending' &&  ( <Icon loading name='spinner' />)}
          {item.status == 'Finished' &&  ( <Icon  name='check' color="green" />)}
          {(item.status=='Canceled' || item.status=='Expired') &&  ( <Icon  name='times'  />)}
@@ -161,4 +161,4 @@ var moment = require("moment");
     
     );
   };
-  export default DashStat;
+  export default MatchBlock;

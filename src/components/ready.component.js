@@ -8,7 +8,7 @@ import {
   Menu,
   Segment,
   Sidebar,
-  Dimmer
+  Dimmer,Label
   
 } from 'semantic-ui-react'
 import {
@@ -83,15 +83,17 @@ const SidebarExampleSidebar = (prop) => {
   }
   return (
     
-        <Sidebar.Pushable>
-            
+        <Sidebar.Pushable as={Segment} basic style={{overflow:'hidden'}}>
+        
           <Sidebar
              className={'si4de'+!isUser}
             animation='scale down'
-            icon='labeled' inverted vertical
+             inverted vertical
             direction="bottom"
             visible={visible}
             width='thin'
+            as={Segment}
+            basic
             
           >
               {visible  && (
@@ -119,7 +121,7 @@ const SidebarExampleSidebar = (prop) => {
               
             
           </Sidebar>
-
+          
           <Sidebar.Pusher style={{minHeight:padd}}>
           <Dimmer active inverted className="cover" style={{background:'none'}}>
             {user}

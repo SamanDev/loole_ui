@@ -88,7 +88,7 @@ class UserWebsocket {
                     //alert(JSON.stringify(msg.data))
                       
                 } else if (msg.Command === 'updateUser') {
-                    ws.close()
+                    //ws.close()
                     eventBus.dispatch("eventsDataUser", msg.data);
                    //eventBus.dispatch("eventsDC", '');
                 }else if (msg.Command === 'eventId') {
@@ -131,7 +131,7 @@ class UserWebsocket {
                 }
             }
             ws.onclose = function(e){
-                eventBus.dispatch("eventsDC", '');
+                //eventBus.dispatch("eventsDC", '');
              ws = null
                 if (timerId) {
                     clearTimeout(timerId);

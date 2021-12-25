@@ -97,7 +97,7 @@ var mymatchFind = null;
 var matchLevelFind = null;
 var isJoin = false;
 
-class LeagueSection extends Component {
+class MatchSection extends Component {
   constructor(props) {
     super(props);
     this.showDetails = this.showDetails.bind(this);
@@ -461,22 +461,23 @@ class LeagueSection extends Component {
 
     var activePlayer = 0;
     item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
+    {matchidFind.matchPlayers.map((player, j) => {
+      if (player.username != "") {
+        activePlayer++;
+      }
+
+      if (
+        player.username == currentUser.username &&
+        player.ready &&
+        !this.state.curPlayerReady
+      ) {
+        //this.setState({ curPlayerReady: true });
+      }
+
+    })}
     return (
       <>
-        {matchidFind.matchPlayers.map((player, j) => {
-          if (player.username != "") {
-            activePlayer++;
-          }
-
-          if (
-            player.username == currentUser.username &&
-            player.ready &&
-            !this.state.curPlayerReady
-          ) {
-            this.setState({ curPlayerReady: true });
-          }
-          return <></>;
-        })}
+        
 
         <Col
           className="mx-auto text-center "
@@ -512,4 +513,4 @@ class LeagueSection extends Component {
   }
 }
 
-export default withRouter(LeagueSection);
+export default MatchSection;

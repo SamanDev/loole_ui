@@ -4,7 +4,7 @@ import Moment from "moment";
 import { Link, useLocation } from "react-router-dom";
 
 function editCounry(options){
-    options.sort((a, b) => (a.id > b.id) ? 1 : -1)
+    options.sort((a, b) => (a.eventId > b.eventId) ? 1 : -1)
     var moment = require("moment");
     var  newArray = [data]
     options.map((item, w) => {
@@ -13,7 +13,7 @@ function editCounry(options){
    var finaldate = moment(item.date).format('MM-DD')
         item.newdate  = finaldate
         item.mydate  = finalmydate
-     
+     item.matchcount = w+1
       newArray.push(item)
     })
     console.log(newArray)
@@ -21,6 +21,7 @@ function editCounry(options){
   }
 const data = {
   "id": 0,
+  "matchcount":0,
   "date": "2021-12-23T17:06:35.000+00:00",
   "net": 0,
   "profit": 0,
@@ -58,7 +59,7 @@ const ChartStat = (prop) => {
       };
       
     return (
-        <div style={{ width: '100%', height: 400 }}>
+        <div style={{ width: '100%', height: 400 ,background: 'rgba(0,0,0,1)', borderRadius: 20, padding: '40px 20px 10px 0px'}}>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
         
@@ -72,9 +73,9 @@ const ChartStat = (prop) => {
             bottom: 15,
           }}
         >
-          <CartesianGrid strokeDasharray="6 6" />
-          <XAxis dataKey="eventId" />
-          <YAxis />
+         
+          <XAxis dataKey="matchcount" stroke="#777" />
+          <YAxis stroke="#777" label="$" />
           <Tooltip  content={<CustomTooltip />}/>
         
           <Line type='linear' dataKey="profit" stroke="#8884d8"   />

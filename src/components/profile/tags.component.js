@@ -46,9 +46,8 @@ import {
                          
                         <Row className="card-tags">
                         {arrLogos.map((number,i) =>
-                        <>
                        
-                         <Col lg="4" xl="3" key={i} onClick={() => handleTagForm(arrTagMode[i],arrPlatform[i],currentUser)}>
+                         <Col lg="4" xl="3" key={i.toString()} onClick={() => handleTagForm(arrTagMode[i],arrPlatform[i],currentUser)}>
                         <div className="counter-box bg-color-1 card">
                         <div className="img">
                         <img
@@ -63,7 +62,7 @@ import {
                         </div>
                         
                         </Col>
-</>
+
 )}
 
 

@@ -4,13 +4,16 @@ import uploadHeader from "./upload-header";
 import { useHistory } from "react-router";
 
 import UserWebsocket from 'services/user.websocket'
-import { POSTURLTest,defUser } from "const";
+import { POSTURLTest,defUser,POSTURLAdmin } from "const";
 
 const API_URL_TEST = POSTURLTest;
 
 
 const client = axios.create({
   baseURL: API_URL_TEST ,
+})
+const clientAdmin = axios.create({
+  baseURL: POSTURLAdmin ,
 })
 
 const getAllEvents=async () => {
@@ -26,7 +29,7 @@ const getAllCoins=async () => {
 }
 const getAdminUsers=async () => {
 
-  const { data } = await client.get(`/getUsersByAdmin?name=username&value=`,{ headers: authHeader() })
+  const { data } = await clientAdmin.get(`/getUsersByAdmin?name=username&value=`,{ headers: authHeader() })
   return data
 }
 const getAllEventsByStatus=async (status) => {

@@ -19,7 +19,7 @@ function copyDo(txxt) {
 }
 function copyText(prop) {
     const [item, setItem] = useState(prop.text);
-    const [itemid, setItemid] = useState(prop.itemid);
+    const [myID, setMyID] = useState(prop.myid);
     const [alter, setAlter] = useState(prop.alter);
     const [size, setSize] = useState(prop.size);
     useEffect(() => {
@@ -27,9 +27,9 @@ function copyText(prop) {
 
      },[prop.text]);
      useEffect(() => {
-      setItemid(prop.itemid)
+      setMyID(prop.myid)
 
-     },[prop.itemid]);
+     },[prop.myid]);
        useEffect(() => {
       
         setSize(prop.size)
@@ -46,7 +46,7 @@ function copyText(prop) {
             )
            }else{
             return (
-              <Popup content='Copy to Clipboard' size='mini' {...prop}  position='top center'  trigger={<p  {...prop}  onClick={() =>  copyDo(itemid)}>{itemid}</p>} />
+              <Popup content='Copy to Clipboard' size='mini' {...prop}  position='top center'  trigger={<p  {...prop}  onClick={() =>  copyDo(myID)}>{myID}</p>} />
             )
            }
       

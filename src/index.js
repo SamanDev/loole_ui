@@ -230,7 +230,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
         </Modal>
         <Modal
         
-    
+        basic
         
         
         open={openModalChart}

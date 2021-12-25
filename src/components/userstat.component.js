@@ -13,7 +13,7 @@ import CurrencyFormat from "react-currency-format";
 import { Link, useLocation } from "react-router-dom";
 import AddMatch from "components/add/addmatch.component";
 
-const DashStat = (prop) => {
+const UserStat = (prop) => {
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
     setMyState(prop.myState);
@@ -122,4 +122,4 @@ const DashStat = (prop) => {
     </>
   );
 };
-export default DashStat;
+export default UserStat;

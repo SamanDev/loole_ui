@@ -2,6 +2,7 @@
 export const POSTURL = "https://loole.gg:8443/api/auth/"
 //export const POSTURLTest = "http://51.195.176.97:8081/api/req/"
 export const POSTURLTest = "https://loole.gg:8443/api/req/"
+export const POSTURLAdmin = "https://loole.gg:8443/api/admin/"
 export const USERSOCKETURL = getPort();
 export const USERSOCKETPUBLICURL = getPortPablic();
 export const DEFCOLORS = ['#db2828', '#f2711c', '#ffe21f', '#b5cc18', "#2ecc40","#00b5ad","#2185d0","#6435c9","#a333c8","#e03997","#a5673f","#767676","#1b1c1d"];
