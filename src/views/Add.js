@@ -669,11 +669,7 @@ handleTagForm(game,platform) {
     
     var _mode = " 1 v 1 ";
     var _color = "#404040";
-    if (  !currentUser.roles) {return  <h4 style={{textAlign: "center"}}>Loading 
-    <Spinner animation="grow" size="sm" />
-    <Spinner animation="grow" size="sm" />
-    <Spinner animation="grow" size="sm" /></h4>;
-    }
+    
         
     return (
       <>

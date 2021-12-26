@@ -29,6 +29,7 @@ class UserWebsocket {
         var timeout = 20000;
         if (ws?.readyState == ws?.OPEN) {
           ws?.send("Ping");
+          eventBus.dispatch("eventsConnect", "");
           setTimeout(function () {
             if (res) {
               timerId = setTimeout(live, timeout);
@@ -79,7 +80,7 @@ class UserWebsocket {
                     } catch (e) {}
                   }
                   res = false;
-                }, 20000);
+                }, 2000);
               }
             };
           } catch (e) {}
@@ -109,9 +110,9 @@ class UserWebsocket {
 
             //alert(JSON.stringify(msg.data))
           } else if (msg.Command === "updateUser") {
-            ws.close();
+          
             eventBus.dispatch("eventsDataUser", msg.data);
-            //eventBus.dispatch("eventsDC", '');
+            
           } else if (msg.Command === "eventId") {
             eventBus.dispatch("eventsDataEventDo", msg.data);
             //eventBus.remove("eventsDataEventDo");
