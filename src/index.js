@@ -78,9 +78,9 @@ const queryClient = new QueryClient({
     },
   },
 });
-
+ReactGA.initialize(TrackingID);
 function Main() {
-  ReactGA.initialize(TrackingID);
+  
 ReactGA.pageview(window.location.pathname + window.location.search);
   const queryClient = useQueryClient();
   const history = useHistory();
@@ -177,14 +177,23 @@ ReactGA.pageview(window.location.pathname + window.location.search);
   useEffect(() => {
     eventBus.on("eventsData", (eventsGet) => {
       onUpdateItem("events", eventsGet);
+      
       queryClient.setQueryData(["Events", "All"], eventsGet);
     });
     eventBus.on("eventsDataUser", (userGet) => {
+      onUpdateItem("openModalSoket", false)
       onUpdateItem("currentUser", userGet);
+      localStorage.setItem("user", JSON.stringify(userGet));
+      queryClient.resetQueries(["Events"]);
+      queryClient.resetQueries(["Event"]);
     });
     eventBus.on("eventsDC", () => {
-      alert()
+    //  alert()
       onUpdateItem("openModalSoket", true);
+    });
+    eventBus.on("eventsConnect", () => {
+    //  alert()
+      onUpdateItem("openModalSoket", false);
     });
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {
@@ -218,13 +227,16 @@ ReactGA.pageview(window.location.pathname + window.location.search);
      <Modal
         
     
-        
-        
+        size="mini"
+        basic
         open={openModalSoket}
         
         onClose={() => onUpdateItem("openModalSoket", false)}
       >
-        <Modal.Header>Profit Chart</Modal.Header>
+        <Modal.Header className="text-center"><Icon.Group size='huge'>
+      <Icon size='big' color='red' name='dont' />
+      <Icon color='grey' name='user' />
+    </Icon.Group><br/>Connection error...</Modal.Header>
       <Modal.Content><DC onUpdateItem={onUpdateItem}/></Modal.Content>
         
         </Modal>
@@ -278,18 +290,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
         </div>
       </Modal>
       <Switch>
-        <Route
-          path="/auth"
-          render={(props) => (
-            <AuthLayout
-              {...props}
-              authed={true}
-              token={currentUser}
-              tabkey={keyProfile}
-              handleTabID={setKeyProfile}
-            />
-          )}
-        />
+        
         <Route
           path="/panel"
           render={(props) => (

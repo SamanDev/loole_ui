@@ -20,6 +20,16 @@ class AdminService {
       })
        
   }
+  usersDisconnectByAdmin =  (user) => {
+    
+    return   axios
+      .get(API_URL_TEST + "usersDisconnectByAdmin?username="+user)
+      .then( (response) => {
+        
+        return response;
+      })
+       
+  }
   
 }
 

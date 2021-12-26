@@ -131,8 +131,7 @@ const currentUser = props.findStateId(myState,'currentUser');
       }
       if (prop.layout === "/panel" ) {
         //sconsole.log(prop.component)
-        const usr = JSON.parse(localStorage.getItem('user'));
-    UserWebsocket.connect(usr?.accessToken+"&user="+usr?.username);
+        
     props.onUpdateItem("profileUser", false);
         return (
           

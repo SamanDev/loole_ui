@@ -72,9 +72,16 @@ function FormExampleFieldErrorLabel(prop) {
     return _error;
   };
   const handleSubmit = () => {
-    UserWebsocket.disconnect();
+    if(localStorage.getItem('user')){
     const usr = JSON.parse(localStorage.getItem('user'));
-    UserWebsocket.connect(usr.accessToken+"&user="+usr.username);
+    if (usr.accessToken) {
+    UserWebsocket.connect(usr.accessToken+"&user="+usr.username,usr);
+    }else{
+      UserWebsocket.connect()
+    }
+  }else{
+    UserWebsocket.connect()
+  }
     prop.onUpdateItem("openModalSoket", false)
   };
 
@@ -84,11 +91,11 @@ function FormExampleFieldErrorLabel(prop) {
       
 
       <Form.Button
-         inverted color="green"
+          color="red"
         
         fluid
         size="small"
-        content="Login"
+        content="Reconnect to server"
       />
     </Form>
   );

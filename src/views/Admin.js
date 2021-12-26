@@ -173,6 +173,25 @@ function Admin(prop) {
       }
     });
   };
+  const updateUserDC = (e, data) => {
+    console.log(data)
+    var _key = data.userkey;
+    var curU = JSON.parse(JSON.stringify(data.user));
+    //curU[''+_key+'']=data.checked
+    
+    //console.log(curU);
+    adminService.usersDisconnectByAdmin(curU.username).then((response) => {
+      if (response) {
+        Swal.fire({
+          title: "Success",
+          text: response.data,
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: `Ok`,
+        });
+      }
+    });
+  };
   const headerRow = ['Name', 'Value']
 const renderBodyRow = ({name,value,user}, i) => ({
   key: name || `row-${i}`,
@@ -302,12 +321,17 @@ const renderBodyRow = ({name,value,user}, i) => ({
       name: "Ban",
       selector: (row) => row.userBlock,
       format: (row) => (
+        <>
+        <Button onClick={updateUserDC} user={row}
+          userkey="userBlock">DC</Button>
         <CheckboxToggle
           check={row.userBlock}
           user={row}
           userkey="userBlock"
           onChange={updateUserObj}
         />
+        </>
+        
       ),
       sortable: true,
     },

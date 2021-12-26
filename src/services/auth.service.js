@@ -27,9 +27,8 @@ class AuthService {
   });
   }
   
-  login(username, password) {
+  login3(username, password) {
     
-    UserWebsocket.disconnect();
     return axios
       .post(API_URL + "signin", {
         username,
@@ -39,23 +38,30 @@ class AuthService {
         return response;
       });
   }
-  login2(username, password) {
+  login(username, password) {
     return axios
       .put(API_URL + "setUserPass", {
         username,
         password
       })
       .then(response => {
+        return axios
+      .post(API_URL + "signin", {
+        username,
+        password
+      })
+      .then(response => {
         return response;
+      });
       });
   }
   logout() {
     var loc = window.location.href;
     
-    UserWebsocket.disconnect();
+    
       
       localStorage.setItem("user", JSON.stringify(defUser));
-      UserWebsocket.connect()
+    
     if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
       
       
@@ -67,9 +73,10 @@ class AuthService {
     
         
       })
-      UserWebsocket.connect()
+      
     }
-    
+    UserWebsocket.disconnect();
+    UserWebsocket.connect()
   }
 
   register(username, email, password) {
