@@ -1933,7 +1933,8 @@ function genMatch(lvl, matchCount, title) {
 
   return nullmatch;
 }
-export const editEvent = (item, eventIDQ, matchIDQ, currentUser) => {
+export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
+  var item = JSON.parse(JSON.stringify(_item))
   //console.log('item:'+JSON.stringify(item))
   var nullplayer = {
     id: 100000,

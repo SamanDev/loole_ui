@@ -347,9 +347,7 @@ class TournamentSection extends Component {
         },
 
         content: hatchbackCar.map((mtch, z) => {
-          {mtch.winner && (
-            item.winner = mtch.winner
-                        )}
+         
           return (
             <>
             

@@ -136,7 +136,7 @@ const getBlockChallenge = (filtermode,events) => {
     )
     if (!events ) {
       return (
-        <Segment style={{ height: "100%", width: "100%", position: "absolute" }}>
+        <Segment>
           <Dimmer active inverted>
             <Loader size="large">Loading</Loader>
           </Dimmer>

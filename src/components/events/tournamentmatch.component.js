@@ -319,24 +319,7 @@ $('.gdetails.no'+player).removeClass('hide');
       }
       
      
-      if (item.status=='Canceled' || item.status=='Expired') {
-        //_color = "black"; 
-      }
-      if (!item.winner) {
-        item.winner= null;
-      }
-      if (item.matchTables && item.matchTables[0] && !item.matchTables[0].winner) {
-        item.matchTables[0].winner= null;
-      }
-      if (item.matchTables && !item.matchTables[0] ) {
-        item.matchTables.push({winner :null,status: item.status});
-      }
-      if (item.matchTables && item.matchTables[0] && item.matchTables[0].winner && !item.winner) {
-        item.winner = item.matchTables[0].winner;
-      }
-      if (item.winner) {
-        //_mode = setAvatar(item.winner);
-      }
+     
     setTimeout(() => {$("#jsonhtml").html($("#jsonhtml2").text());},1000)
     var activePlayer = 0; 
     {item.players.map((user, z) => (
