@@ -1,60 +1,17 @@
-import React, { Component, useRef, useEffect,useState } from "react";
-import { Switch, Route,Redirect } from "react-router-dom";
-import { useHistory } from "react-router";
-import Avatar, { ConfigProvider } from "react-avatar";
-import { DEFCOLORS,TrackingID } from "const";
-import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
-import $ from "jquery";
+import React, {  } from "react";
+import { Switch, Route } from "react-router-dom";
+import { ConfigProvider } from "react-avatar";
+import { DEFCOLORS } from "const";
 // react-bootstrap components
-import {
-  Badge,
-  Button,
-  Card,
-  Navbar,
-  Nav,
-  Container,
-  Col,
-  Spinner
-} from "react-bootstrap";
 
-import eventBus from "views/eventBus";
 import LandNavbar from "components/Navbars/LandNavbar.js";
-import AuthFooter from "components/Footers/AuthFooter.js";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
-import userService from "services/user.service";
-import AuthService from "services/auth.service";
 // dinamically create auth routes
 
 import Landing from "views/Pages/Landing.js";
-import LandingMobile from "views/Pages/LandingMobile.js";
-import Games from "views/Pages/Games.js";
-import Content from "views/Pages/Content.js";
 import User from "views/Pages/User.js";
 import routes from "routes.js";
-import authService from "services/auth.service";
-
-import {
-  
-  getQueryVariable,
- editEvent,
-  haveAdmin,
-  editDateTime
-} from "components/include";
-
-import { useAllEvents,useUser,useAllEventsByStatus,useEventByID } from "services/hooks"
-import ReactGA from 'react-ga';
-
-function scrollToTop() {
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-    });
-    
-    
 
 
-};
 
 
 function  Auth(props) {

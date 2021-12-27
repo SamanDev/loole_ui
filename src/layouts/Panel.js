@@ -1,27 +1,22 @@
 import React ,{useEffect, useState} from "react";
 
-import Avatar, { ConfigProvider } from "react-avatar";
-import { BrowserRouter, Route, Switch, Redirect,useHistory } from "react-router-dom";
+import { ConfigProvider } from "react-avatar";
+import { Route, Switch } from "react-router-dom";
 
 import {
   Checkbox,
-  Grid,
-  Header,
-  Button, Icon, Modal,
-  Image,
+  Modal,
   Menu,
   Segment,
   Sidebar,
   
 } from 'semantic-ui-react'
 
-import UserWebsocket from 'services/user.websocket'
-import { DEFCOLORS,TrackingID } from "const";
+import { DEFCOLORS } from "const";
 // core components
 import ModalExampleShorthand from "components/modal.component";
 import SidebarMy from "components/Sidebar/Sidebar.js";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import AdminFooter from "components/Footers/AdminFooter.js";
 
 import routes from "routes.js";
 
@@ -30,14 +25,12 @@ import AdminEvents from "views/AdminEvents.js";
 import Dashboard from "views/Dashboard.js";
 import Rewards from "views/Rewards.js";
 import MyMatches from "views/MyMatches.js";
-import Market from "views/Market.js";
 import Cashier from "views/Cashier.js";
 import Profile from "views/Profile.js";
 import CreateMatch from "views/Add.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 
 import AddMatch  from "components/add/addmatch.component"; 
-import ReactGA from 'react-ga';
 
 function scrollToTop() {
 

@@ -1,18 +1,8 @@
 
-import React, { Component,useState, useEffect} from "react";
+import React, { useState, useEffect} from "react";
 import $ from "jquery";
 
 import {
-  Badge,
-  Button,
-  Card,
-  Media,
-  Navbar,
-  Nav,
-  Container,
-  Row,
-  Col,
-  Spinner,
   Carousel
 } from "react-bootstrap";
 import HomeEvents from "components/events/home.component"
@@ -23,8 +13,6 @@ function  Landing(prop) {
   useEffect(() => {
     setMyState(prop.myState)
 }, [prop.myState]);
-const currentUser = prop.findStateId(myState,'currentUser');
-const events = prop.findStateId(myState,'events');
   
 const elements = ['1', '2-4_01', '2-4_02','2-4_03'];
 var responsive = $(window).width();

@@ -8,7 +8,7 @@ import {
   useHistory,
 } from "react-router-dom";
 import Swal from "sweetalert2";
-import { POSTURLTest, defUser,TrackingID } from "const";
+import { defUser,TrackingID } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
@@ -18,55 +18,37 @@ import "semantic-ui-css/semantic.min.css";
 import "assets/css/style.css";
 // sections for this page
 export * from "const";
-import AuthLayout from "layouts/Auth.js";
 import LandLayout from "layouts/Land.js";
-import LandMobileLayout from "layouts/LandMobile.js";
 import AdminLayout from "layouts/Admin.js";
-import LockLayout from "layouts/Lock.js";
 import PanelLayout from "layouts/Panel.js";
 import Login from "components/newlogin.component";
 import Register  from "components/newregister.component";
-import { Spinner, Container } from "react-bootstrap";
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import AdminFooter from "components/Footers/AdminFooter.js";
 import Chart  from "components/chart.component"; 
 import DC  from "components/dc.component"; 
 import eventBus from "views/eventBus";
 import {
   getQueryVariable,
   editEvent,
-  haveAdmin,
-  editDateTime,
 } from "components/include";
 import {
-  useQuery,
-  useMutation,
   useQueryClient,
   QueryClient,
   QueryClientProvider,
-  QueryCache,
-  MutationCache,
 } from "react-query";
 import {
-  Checkbox,
   Grid,
   Header,
-  Button,
   Icon,
   Modal,
   Divider,
-  Menu,
   Dimmer,
   Loader,
-  Image,
   Segment,
-  Sidebar,
 
 } from "semantic-ui-react";
 import {
   useAllEvents,
   useUser,
-  useAllEventsByStatus,
   useEventByID,
 } from "services/hooks";
 import ReactGA from 'react-ga';

@@ -1,41 +1,15 @@
-import React, { Component, useRef, useEffect } from "react";
-import { Switch, Route,Redirect } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
 
-import Avatar, { ConfigProvider } from "react-avatar";
+import { ConfigProvider } from "react-avatar";
 import { DEFCOLORS } from "const";
 
 // react-bootstrap components
-import {
-  Badge,
-  Button,
-  Card,
-  Navbar,
-  Nav,
-  Container,
-  Col,
-} from "react-bootstrap";
 import LandNavbar from "components/Navbars/LandNavbar.js";
-import AuthFooter from "components/Footers/AuthFooter.js";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
-import AuthService from "services/auth.service";
 // dinamically create auth routes
 import routes from "routes.js";
-function scrollToTop() {
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-    });
-    try {
-      document.getElementById("myCheck").click();
-    } catch (error) {
-      
-    }
-  
-
-
-};
 function Auth(prop) {
   const [events,setEvents] = useState(prop.events);
   
