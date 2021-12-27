@@ -493,7 +493,7 @@ class TournamentSection extends Component {
               )}
             </>
           )}
-
+<Divider fitted style={{ opacity: 0 }} />
           {item.players.map((user, z) => (
             <span key={z}>
               {currentUser.username == user.username && (isJoin = true)}

@@ -415,9 +415,9 @@ export const vsComponentPlayer = (
   }
   var user = (
     <div style={{ overflow:'hidden',padding: "0px 0 " + padd + "px 0" }}>
-      <Statistic inverted size="mini">
+      <Statistic inverted size="mini" as={Link} to={'/user/'+player?.username} target="_blank">
         <Statistic.Value>
-          {player.username == matchidFind.winner && (
+          {player?.username == matchidFind.winner && matchidFind.winner && (
             <Icon
               circular
               color="yellow"
@@ -426,15 +426,15 @@ export const vsComponentPlayer = (
               style={{ position: "absolute", fontSize: 12, marginLeft: -8 }}
             />
           )}
-          {player.username ? (
-            <a href={"/user/" + player.username} target="_blank">
+          {player?.username ? (
+           
               <Avatar
                 size="50"
                 round={true}
                 title={player.username}
                 name={setAvatar(player.username)}
               />
-            </a>
+      
           ) : (
             <Avatar
               size="50"
@@ -447,15 +447,11 @@ export const vsComponentPlayer = (
         </Statistic.Value>
         <Statistic.Label>
           <small>
-            {player.username ? (
+            {player?.username ? (
               <>
-                <a
-                  href={"/user/" + player.username}
-                  target="_blank"
-                  style={{ color: "#fff" }}
-                >
+               
                   {player.username}
-                </a>
+              
               </>
             ) : (
               <>...</>
@@ -467,7 +463,7 @@ export const vsComponentPlayer = (
   );
   var ready = (
     <>
-      {player.username == currentUser.username ? (
+      {player?.username == currentUser.username ? (
         <div
           style={
             matchidFind.status != "Ready" ||
@@ -511,7 +507,7 @@ export const vsComponentPlayer = (
             opacity: 0.5,
           }}
         ><small>Ready</small><br/>
-          <Checkbox toggle defaultChecked={player.ready} disabled
+          <Checkbox toggle defaultChecked={player?.ready} disabled
             
              />
           
@@ -521,7 +517,7 @@ export const vsComponentPlayer = (
   );
   var _p = null;
   item.players.map(function (plyr) {
-    if (player.username == plyr.username) {
+    if (player?.username == plyr.username) {
       _p = plyr;
     }
   });
@@ -553,14 +549,14 @@ export const vsComponentPlayer = (
   );
   return (
     <>
-      <div style={!player.username ? { opacity: 0.3,overflow:'hidden' } : {overflow:'hidden'}}>
+      <div style={!player?.username ? { opacity: 0.3,overflow:'hidden' } : {overflow:'hidden'}}>
         <SidebarExampleSidebar
           user={user}
           item={item}
           objanim={ready}
           info={info}
           status={matchidFind.status}
-          isUser={player.username == currentUser.username}
+          isUser={player?.username == currentUser.username}
           visible={
             (matchidFind.status == "Ready" || matchidFind.status == "InPlay") && currentUser.accessToken
               ? true
@@ -835,7 +831,7 @@ export const vsComponent = (
             style={{ background: "none !important" }}
             
             
-            className={match.winner == match.matchPlayers[0].username ? "coverwinner" : null}>
+            className={match.winner != null && match.winner == match.matchPlayers[0]?.username ? "coverwinner" : null}>
             {vsComponentPlayer(
               item,
               match,
@@ -848,7 +844,7 @@ export const vsComponent = (
           </Grid.Column>
           <Grid.Column
             style={{ background: "none !important" }}
-            className={match.winner == match.matchPlayers[1].username ? "coverwinner":null}>
+            className={match.winner != null && match.winner == match.matchPlayers[1]?.username ? "coverwinner":null}>
           
             {vsComponentPlayer(
               item,
@@ -1346,7 +1342,7 @@ export const printStatus = (item, _mode, _color,finish,status) => {
     <>
       <Divider fitted style={{ opacity: 0 }} />
       {item.winner ? (
-        <Statistic inverted color={getColorStatus(status)} size="mini">
+        <Statistic inverted color={getColorStatus(status)} size="mini"  as={Link} to={'/user/'+item.winner} target="_blank">
           <Statistic.Label>{_mode}</Statistic.Label>
           <Statistic.Label>
             <TransitionExampleTransitionExplorer
@@ -2154,8 +2150,8 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
           }
           if (
             tblmatch.status != "Finished" &&
-            (tblmatch.matchPlayers[0].username == currentUser.username ||
-              tblmatch.matchPlayers[1].username == currentUser.username)
+            (tblmatch.matchPlayers[0]?.username == currentUser.username ||
+              tblmatch.matchPlayers[1]?.username == currentUser.username)
           ) {
             mymatchFind = tblmatch;
           }
@@ -2171,7 +2167,7 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
           id: item.id,
           winner: null,
           status: item.status,
-          level: null,
+          level: 1,
           matchCode: null,
           startTime: "2021-11-29T12:18:01.000+00:00",
           matchPlayers: [],
@@ -2227,8 +2223,8 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
       isInPlayers = false;
       if (item.gameMode != "League") {
         if (
-          matchidFind.matchPlayers[0].username == currentUser.username ||
-          matchidFind.matchPlayers[1].username == currentUser.username
+          matchidFind.matchPlayers[0]?.username == currentUser.username ||
+          matchidFind.matchPlayers[1]?.username == currentUser.username
         ) {
           isInPlayers = true;
         }

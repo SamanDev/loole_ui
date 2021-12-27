@@ -343,7 +343,7 @@ $('.gdetails.no'+player).removeClass('hide');
      {vsComponentTitle(item)}
         
             <Divider fitted style={{ opacity: 0 }} />
-            {printStatus(matchidFind,_mode,_color ,item.status+'@@@'+_finishTxt,item.status)}
+            {printStatus(matchidFind,_mode,_color ,matchidFind.status+'@@@'+_finishTxt,matchidFind.status)}
             <Divider fitted style={{ opacity: 0 }} />
         
             <Statistic inverted color="violet" size="mini">
