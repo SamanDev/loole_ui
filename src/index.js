@@ -266,7 +266,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
               
             </Grid>
             
-            <Divider vertical inverted  className="large screen only">OR</Divider>
+            <Divider vertical inverted  className="mobile hidden">OR</Divider>
           </Segment>
           </Modal.Content>
         </div>

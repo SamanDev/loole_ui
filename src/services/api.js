@@ -19,7 +19,7 @@ const clientAdmin = axios.create({
 const getAllEvents=async () => {
   
   const { data } = await client.get("/getEvents")
-  return data.data
+  return data
 }
 const getAllCoins=async () => {
   if(JSON.stringify(authHeader()) != '{}'){

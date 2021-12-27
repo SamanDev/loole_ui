@@ -89,7 +89,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
           className={activeRoute(prop.layout + prop.path)}
           key={key.toString()}
           as="li"
-          
+          style={{padding:0}}
         >
           {prop.show  ? (
 

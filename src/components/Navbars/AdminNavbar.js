@@ -39,8 +39,10 @@ const LandNavbar = (prop) => {
     <>
      
         <Menu secondary inverted style={{position:'absolute',top:0,left:0,right:0,background:'#000',height:60,lineHeight:'60px'}}>
-          
-
+        <Menu.Item >
+    {prop.page }
+  </Menu.Item>
+        
           <Menu.Menu position="right">
           <Menu.Item  onClick={(e) =>
                 document.documentElement.classList.toggle("nav-open")

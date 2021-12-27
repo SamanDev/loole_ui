@@ -165,7 +165,7 @@ const currentUser = props.findStateId(myState,'currentUser');
       
       if (window.location.href.indexOf(prop.path)>-1 && prop.path !='/') {
         
-    return prop.name
+    if (prop.name) {return prop.name}
     
       }
     });
@@ -241,19 +241,19 @@ const currentUser = props.findStateId(myState,'currentUser');
           inverted
           basic
           dimmer='blurring'
-          closeIcon
+          
         closeOnDimmerClick={false}
           open={open}
           onClose={() => props.onUpdateItem('openModalAdd',false)}
         >
-          <div style={{ padding: "45px 45px", margin: "auto" }}>
+       
      
         <Modal.Content image scrolling>
           <Segment inverted padded="very">
           <AddMatch token={currentUser} {...props} />
           </Segment>
           </Modal.Content>
-          </div>
+    
         </Modal>
           </div>
        

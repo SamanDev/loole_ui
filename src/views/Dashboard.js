@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { printBlockChallenge,date_locale,date_edit } from "components/include";
-import { Tab,Card,Menu,Label } from 'semantic-ui-react'
+import { Tab,Card,Menu,Label,Dimmer,
+  Loader,
+  Segment, } from 'semantic-ui-react'
 import Active  from "components/active.component";
 import DashStat  from "components/dashstat.component";
 import Moment from "moment";
@@ -132,7 +134,15 @@ const getBlockChallenge = (filtermode,events) => {
     }
     
     )
-  
+    if (!events ) {
+      return (
+        <Segment style={{ height: "100%", width: "100%", position: "absolute" }}>
+          <Dimmer active inverted>
+            <Loader size="large">Loading</Loader>
+          </Dimmer>
+        </Segment>
+      );
+    }
     return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem,filtermode,{...prop})}</Card.Group>)
   
 

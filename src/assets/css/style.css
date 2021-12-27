@@ -824,7 +824,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', end
 .modals.dimmer .ui.modal{
     left: auto;
     top: auto;
-    max-height: 500px !important;
+ 
 }
 
 
@@ -1271,7 +1271,7 @@ width: 100%;
     max-height: calc(-120px + 100vh); overflow: auto;
 }
 .maxheight.dash .ui.segment.tab{
-    max-height: calc(-230px + 100vh); overflow: auto;
+    max-height: calc(-320px + 100vh); overflow: auto;
 }
 .chall.card-user .card-body{
 min-height: 140px;

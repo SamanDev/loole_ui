@@ -1690,6 +1690,7 @@ export const printBlockChallenge = (newItem, filtermode, prop) => {
   if (filter == "NoMobile") {
     filter = "Console";
   }
+  
   if (newItem.length == 0) {
     //history.push("/home");
     return (
