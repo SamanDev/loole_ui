@@ -220,7 +220,7 @@ var lists = eventMatch.matchTables;
             width='thin'
             
             onHide={() => setVisible(false)}
-            style={{ width: "100vw", maxWidth:300,height: "100vh !important"}}
+            style={{ width: "100vw", maxWidth:300,height: "100vh !important",padding:0}}
             
             vertical
             visible={(devWid > 991) ? (true):(visible)}
@@ -273,7 +273,7 @@ var lists = eventMatch.matchTables;
           
           </Sidebar>
 
-          <Sidebar.Pusher  style={{background:'none',padding:0}}>
+          <Sidebar.Pusher  style={{background:'none',padding:0,height:'100vh'}}>
            
           <Container >
           <Col

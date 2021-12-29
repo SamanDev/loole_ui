@@ -1,216 +1,184 @@
-import React, { Component } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-
-import {  withRouter} from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { IMaskInput } from "react-imask";
+import { withRouter } from "react-router-dom";
 import userService from "services/user.service";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import CryptoList from "components/CryptoList";
+import { Card } from "react-bootstrap";
+
 import {
-    Row,
-    Col,
-    Card,
+  Button,
+  Select,
+  Divider,
+  Header,
+  Form,
+  Input,
+  Label,
+  Modal,
+  Segment,
+} from "semantic-ui-react";
+import Swal from "sweetalert2";
+import { useHistory } from "react-router";
+function CrDeposit(prop) {
+  const history = useHistory();
+  const [myState, setMyState] = useState({
+    list: [
+      { id: "Voucher", val: "" },
+      { id: "Code", val: "" },
+      { id: "hasError", val: null },
+      { id: "loading", val: false },
+      { id: "submit", val: false },
+    ],
+  });
   
-  } from "react-bootstrap";
-const required = value => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-    
-  }
-};
 
+  const updateHandler = (e, data) => {
+    var val = data.value;
+    if (!data.value) {
+      val = data.checked;
+      if (data.checked == false) {
+        val = "";
+      }
+    }
+    onUpdateItem(data.name, val);
+    if (val != "") {
+      onUpdateItem("hasError", false);
+    }
+  };
+  const findStateId = (st, val) => {
+    return st.list.filter(function (v) {
+      return v.id === val;
+    })[0].val;
+  };
+  const onUpdateItem = (key, val) => {
+    setMyState(() => {
+      const list = myState.list.map((item) => {
+        if (item.id === key) {
+          item.val = val;
+        }
+        return item;
+      });
 
-class PMDeposit extends Component {
-  constructor(props) {
-    super(props);
-    this.seteVoucher = this.seteVoucher.bind(this);
-    
-    this.setactivatioCode = this.setactivatioCode.bind(this);
-   
-    this.handlePMDeposit = this.handlePMDeposit.bind(this);
-    
-
-    this.state = {
-        eVoucher: "",
-        activatioCode: "",
-      
-      checkbox:"",
-      successful: false,
-      loading: false,
-      message: ""
-    };
-  }
-
-  seteVoucher(e) {
-    this.setState({
-      eVoucher: e.target.value.replace(/\D/, ""),
-      submit: false,
+      return {
+        list: list,
+      };
     });
-  }
-  setactivatioCode(e) {
-    this.setState({
-      activatioCode: e.target.value.replace(/\D/, ""),
-      submit: false,
-    });
-  }
-  onKeyPress(event) {
-    const keyCode = event.keyCode || event.which;
-    const keyValue = String.fromCharCode(keyCode);
-    if (/\+|-/.test(keyValue)) event.preventDefault();
-  }
-  handlePMDeposit(e) {
-    e.preventDefault();
+  };
+  const getError = (data, _content, _pointing) => {
+    var _error = null;
+    if (findStateId(myState, "submit")) {
+      if (data == "") {
+        _error = { content: _content, pointing: _pointing };
+        if (_pointing == "") {
+          _error = true;
+        }
+      }
+    }
+    if (_error && !findStateId(myState, "hasError")) {
+      onUpdateItem("hasError", true);
+    }
+    return _error;
+  };
+  const handleSubmit = () => {
+    console.log(myState)
+    var Voucher = findStateId(myState, "Voucher");
+  var Code = findStateId(myState, "Code");
+    onUpdateItem("submit", true);
+    onUpdateItem("loading", true);
 
-    this.setState({
-      message: "",
-      successful: false,
-      loading: true
-    });
-   
+    if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
+      userService.createDepositPM(Voucher, Code).then(
+        (response) => {
+          onUpdateItem("loading", false);
 
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-      userService
-        .createDepositPM(this.state.eVoucher, this.state.activatioCode)
-        .then(
-          (response) => {
-            if (response == "Create event successful") {
-              Swal.fire("", "Data saved successfully.", "success").then(
-                (result) => {
-                  this.props.history.push("/panel/dashboard");
-                }
-              );
-            } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-            }
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
+          if (response.address) {
+            //prop.onUpdateItem("openModalCashier", false)
+                //history.push("/panel/dashboard");
+            
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: response,
             });
           }
-        );
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+          onUpdateItem("loading", false);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: resMessage,
+          });
+        }
+      );
     } else {
-      this.setState({
-        successful: false,
-        loading: false
-      });
+      onUpdateItem("loading", false);
     }
-  }
-  
+  };
+  var Voucher = findStateId(myState, "Voucher");
+  var Code = findStateId(myState, "Code");
+  var loading = findStateId(myState, "loading");
 
-  render() {
-    return (
-      <>
-      <Row>
-                            <Col md="6">
-         <Form
-                                onSubmit={this.handlePMDeposit}
-                              
-                                ref={(c) => {
-                                  this.form = c;
-                                }}
-                              >
-                                  {!this.state.successful && (
-                                      <div>
-                                <Card className="stacked-form border-0">
-                                  <Card.Header>
-                                    <Card.Title as="h4">
-                                      eVoucher PerfectMoney Deposit
-                                    </Card.Title>
-                                  </Card.Header>
-                                  <Card.Body>
-                                 
-                                    <div className="form-group">
-                                      <label htmlFor="voucher">Voucher Number</label>
-                                      <Input
-                                        type="tel"
-                                        className="form-control eVoucher"
-                                        pattern="[0-9]*"
-                                        name="voucher"
-                                        value={this.state.eVoucher}
-                                        onChange={this.seteVoucher}
-                                        onKeyPress={this.onKeyPress.bind(this)}
-                                        validations={[required]}
-                                      />
-                                    </div>
+  return (
+    <>
+      <Header as="h2" inverted>
+      eVoucher PerfectMoney Deposit
+      </Header>
+      <Form
+        onSubmit={handleSubmit}
+        size="big"
+       inverted
+        style={{ padding: 15 }}
+      >
+        <Modal.Content style={{ paddingBottom: 90 }}>
+        <Form.Input
+        error={getError(Voucher, "Please enter Voucher Number", "")}
+        fluid
+        
+        label="Voucher Number"
+        placeholder="Voucher Number"
+            name="Voucher"
+        onChange={updateHandler}
+      />
+      <Form.Input
+        error={getError(Code, "Please enter Activation Code", "")}
+        fluid
+        
+        label="Activation Code"
+        placeholder="Activation Code"
+            name="Code"
+        onChange={updateHandler}
+      />
+       
+    
+        </Modal.Content>
 
-                                    <div className="form-group">
-                                      <label htmlFor="active">Activation Code</label>
-                                      <Input
-                                        type="tel"
-                                        className="form-control  activatioCode"
-                                        pattern="[0-9]*"
-                                        name="active"
-                                        value={this.state.activatioCode}
-                                        onChange={this.setactivatioCode}
-                                        onKeyPress={this.onKeyPress.bind(this)}
-                                        validations={[required]}
-                                      />
-                                    </div>
-
-                                  </Card.Body>
-                                  <Card.Footer>
-                                   
-                                      <div className="form-group">
-                                        <button
-                                          className="btn btn-danger btn-wd btn-block"
-                                          disabled={this.state.loading}
-                                        >
-                                          {this.state.loading && (
-                                            <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                                          )}
-                                          <span> Deposit</span>
-                                        </button>
-                                      </div>
-                                    
-                                  </Card.Footer>
-                                </Card>
-                                <CheckButton
-              style={{ display: "none" }}
-              ref={c => {
-                this.checkBtn = c;
-              }}
-            />
-            </div>
-                                  )}
-                              </Form>
-                              </Col>
-                            <Col md="6">
-                              <Card className="stacked-form border-0">
-                                <Card.Header>
-                                  <Card.Title as="h4">
-                                    How find eVoucher PerfectMoney?
-                                  </Card.Title>
-                                </Card.Header>
-                                <Card.Body>hi</Card.Body>
-                              </Card>
-                            </Col>
-                          </Row>
-        </>
-    );
-  }
+        <Divider />
+        <Button.Group size='large'  fluid widths='2'>
+      <Button
+          loading={loading}
+          disabled={loading}
+          color="green"
+          onClick={() => onUpdateItem("submit", true)}
+    
+        >
+          Deposit
+        </Button>
+   
+    <Button  type="button"  color='red'   onClick={() => prop.onUpdateItem('openModalCashier',false)}>
+              Close
+            </Button>
+  </Button.Group>
+        
+      </Form>
+    </>
+  );
 }
 
-export default withRouter(PMDeposit) ;
+export default withRouter(CrDeposit);

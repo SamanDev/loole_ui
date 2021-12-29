@@ -816,7 +816,7 @@ background-image: linear-gradient(rgba(0, 0, 0, 0.682) 0%, rgba(0, 0, 0, 0.847) 
             }
      .coverwinner{
         background: rgb(252,70,70);
-background: radial-gradient(circle, rgba(252,70,70,0.5648634453781513) 15%, rgba(252,70,70,0) 30%);
+background: radial-gradient(circle, rgba(252,70,70,0.5648634453781513) 15%, rgba(252,70,70,0) 70%);
 
             }
 .modals.dimmer .ui.modal{

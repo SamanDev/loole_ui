@@ -149,7 +149,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
                   </>
                 )}
               </Nav.Link>
-              <hr style={{marginTop: '1rem', marginBottom: '1rem',borderTop: '1px solid rgba(255,255,255,.4)',    width: '90%'}}/>
+              <hr style={{marginTop: '0', marginBottom: '0',borderTop: '1px solid rgba(255,255,255,.4)',    width: '90%'}}/>
             
               </>
                   

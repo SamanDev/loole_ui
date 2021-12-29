@@ -37,7 +37,7 @@ function CountrySelector(props) {
   }, [props.coins]);
   const changeHandler = (value,data) => {
    
-    props.passedFunction(data.value)
+    props.onUpdateItem('coin',data.value)
   }
   
 
@@ -47,9 +47,9 @@ function CountrySelector(props) {
   fluid
   value={props.value}
   onChange={changeHandler}
-  
+ 
   selection
-  autocomplete='false'
+ 
   options={options}
 />
 }

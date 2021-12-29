@@ -75,22 +75,62 @@ ReactGA.pageview(window.location.pathname + window.location.search);
       { id: "currentUser", val: unUser },
       { id: "profileUser", val: false },
       { id: "events", val: null },
+      { id: "Notifications", val: null },
+      { id: "NotificationsItem", val: null },
 
       { id: "keyDash", val: 0 },
       { id: "keyProfile", val: 0 },
       { id: "keyMyMatch", val: 0 },
+      { id: "keyCashier", val: 0 },
       { id: "eventMatch", val: null },
       { id: "eventDef", val: null },
+      { id: "cashierMethod", val: null },
+      { id: "coins", val: null },
       { id: "match", val: null },
       { id: "eventIDQ", val: getQueryVariable("id") },
       { id: "matchIDQ", val: getQueryVariable("matchid") },
       { id: "openModalAdd", val: false },
       { id: "openModalLogin", val: false },
       { id: "openModalChart", val: false },
+      { id: "openModalCashier", val: false },
       { id: "openModalSoket", val: false },
+      { id: "openModalCrypto", val: false },
     ],
   });
+  const updateNot = (currentUser) => {
+    var myNot = [];
+     
   
+     
+     
+    currentUser?.usersReports?.sort((a, b) => (a.id > b.id) ? 1 : -1)
+    currentUser?.usersReports?.map((item, i) => {
+      if (item.coinValue && item.status ==='Pending' && myNot.length  < 30) {
+        myNot.push(item)
+     
+        
+        
+       
+      } 
+    })
+    myNot.sort((a, b) => (a.id < b.id) ? 1 : -1)
+  
+  
+    events?.map((item, i) => {
+      if (item?.status ==='Pending' || item?.status ==='Ready' || item?.status ==='InPlay') {
+      item?.players?.map((user, j) => {
+        if(user.username == currentUser?.username){
+          myNot.push(item)
+          
+        }
+      })
+     } 
+    })
+  
+    onUpdateItem("Notifications", myNot);
+  
+   
+  }
   const findStateId = (st, val) => {
     return st.list.filter(function (v) {
       return v.id === val;
@@ -136,6 +176,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
   useEffect(() => {
     if (userGet?.accessToken) {
       onUpdateItem("currentUser", userGet);
+      updateNot(userGet)
     }
   }, [userGet]);
   useEffect(() => {
@@ -165,6 +206,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
     eventBus.on("eventsDataUser", (userGet) => {
       onUpdateItem("openModalSoket", false)
       onUpdateItem("currentUser", userGet);
+      updateNot(userGet)
       localStorage.setItem("user", JSON.stringify(userGet));
       queryClient.resetQueries(["Events"]);
       queryClient.resetQueries(["Event"]);

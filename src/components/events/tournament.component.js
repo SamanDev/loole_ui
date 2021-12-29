@@ -237,8 +237,9 @@ class TournamentSection extends Component {
       successful: false,
       message: "",
       submit: false,
-      loading: false,
+      isloading: false,
     });
+    
     if (error?.response?.data?.status == 401) {
       this.props.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
@@ -528,7 +529,12 @@ class TournamentSection extends Component {
                 fluid
                 inverted
               />
-
+<Col
+          className="mx-auto text-center "
+          lg="8"
+          md="10"
+          style={{ padding: 0, marginTop: 20 }}
+        >
               <Segment inverted color="violet">
                 <Header as="h2">Watch Live</Header>
                 <p>
@@ -630,7 +636,7 @@ class TournamentSection extends Component {
                     {item.rules}
                   </span>
               </Segment>
-           
+              </Col>
             </>
           )}
         </Col>

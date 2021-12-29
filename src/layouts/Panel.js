@@ -16,8 +16,9 @@ import { DEFCOLORS } from "const";
 // core components
 import ModalExampleShorthand from "components/modal.component";
 import SidebarMy from "components/Sidebar/Sidebar.js";
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
 
+import AdminNavbar from "components/Navbars/AdminNavbar.js";
+import CrCode from "components/cr.component";
 import routes from "routes.js";
 
 import Admin from "views/Admin.js";
@@ -29,7 +30,8 @@ import Cashier from "views/Cashier.js";
 import Profile from "views/Profile.js";
 import CreateMatch from "views/Add.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
-
+import CrDeposit  from "components/deposit/crdeposit.component"; 
+import PMDeposit  from "components/deposit/pmdeposit.component";
 import AddMatch  from "components/add/addmatch.component"; 
 
 function scrollToTop() {
@@ -45,7 +47,7 @@ function scrollToTop() {
 
 };
 
-
+var OpenNotifications
 function  Panel(props) {
 
   
@@ -57,63 +59,33 @@ function  Panel(props) {
     setMyState(props.myState)
 }, [props.myState]);
 const currentUser = props.findStateId(myState,'currentUser');
-  const [myNotification,setMyNotification] = useState([]);
+  
   const events = props.findStateId(myState,'events');
   const open = props.findStateId(myState,'openModalAdd');
+  const openCashier = props.findStateId(myState,'openModalCashier');
+  const cashierMethod = props.findStateId(myState,'cashierMethod');
+  const coins = props.findStateId(myState,'coins');
+  const myNotification = props.findStateId(myState,'Notifications');
+  const myNotificationItem = props.findStateId(myState,'NotificationsItem');
   
+  try{
+    props.onUpdateItem('NotificationsItem',myNotification[0])
+  
+  }catch(e){
+    
+  }
+   
  
 
-  useEffect(() => {
-    
-    
-      updateNot()
-   
-  
-  
-}, []);
-
   
 
+  
 
   
   var currpage = "Dashboard";
   
  
-    const updateNot = () => {
-    var myNot = [];
-     
-  
-     
-     
-    currentUser?.usersReports?.sort((a, b) => (a.id < b.id) ? 1 : -1)
-    currentUser?.usersReports?.map((item, i) => {
-      if (item.coinValue && item.status ==='Pending' && myNot.length  < 3) {
-        myNot.push(item)
-     
-        
-        
-       
-      } 
-    })
-    myNot.sort((a, b) => (a.id < b.id) ? 1 : -1)
-  
-  
-    events?.map((item, i) => {
-      if (item?.status ==='Pending' || item?.status ==='Ready' || item?.status ==='InPlay') {
-      item?.players?.map((user, j) => {
-        if(user.username == currentUser?.username){
-          myNot.push(item)
-          
-        }
-      })
-     } 
-    })
-  
-  
-  
     
-    setMyNotification(myNot)
-  }
   
   const getRoutes = (routes) => {
     //scrollToTop();
@@ -213,7 +185,7 @@ const currentUser = props.findStateId(myState,'currentUser');
                 >
                   {myNotification && (<>
                  
-                    {myNotification.map((item, i) => <ModalExampleShorthand key={i} mykey={i} note={item}/>)}
+                    {myNotification.map((item, i) => <ModalExampleShorthand key={i.toString()} onUpdateItemMain={props.onUpdateItem} mykey={i} note={item}/>)}
                   </>)}
                   
                   
@@ -238,7 +210,7 @@ const currentUser = props.findStateId(myState,'currentUser');
             <Switch>{getRoutes(routes)}</Switch>
            
             <Modal
-          inverted
+          
           basic
           dimmer='blurring'
           
@@ -248,11 +220,46 @@ const currentUser = props.findStateId(myState,'currentUser');
         >
        
      
-        <Modal.Content image scrolling>
-          <Segment inverted padded="very">
+        <Modal.Content>
+          <Segment inverted>
           <AddMatch token={currentUser} {...props} />
           </Segment>
           </Modal.Content>
+    
+        </Modal>
+        <Modal
+          
+          basic
+         
+         size='tiny'
+          open={openCashier}
+          onClose={() => props.onUpdateItem('openModalCashier',false)}
+        >
+       
+     
+        
+            {cashierMethod=='CryptoCurrencies'?(
+              <>
+              {!myNotificationItem?(
+                <CrDeposit  coins={coins} {...props}/>
+              ):(
+                <CrCode note={myNotificationItem}  onUpdateItemMain={props.onUpdateItem}/>
+                
+   
+              )}
+</>
+              ):(
+              <>
+              {cashierMethod=='PerfectMoney'?(
+<>  <PMDeposit  coins={coins} {...props}/></>
+            ):(
+              <>
+              </>
+            )}
+              </>
+            )}
+          
+        
     
         </Modal>
           </div>

@@ -31,7 +31,7 @@ import {
   Grid,
   Segment,
   Card,
-  Image,
+  Image,Dimmer,
   List,Checkbox
 } from "semantic-ui-react";
 // react-bootstrap components
@@ -1690,6 +1690,7 @@ export const printBlockChallenge = (newItem, filtermode, prop) => {
   if (newItem.length == 0) {
     //history.push("/home");
     return (
+      <Dimmer active inverted>
       <div
         style={{
           textAlign: "center",
@@ -1706,6 +1707,7 @@ export const printBlockChallenge = (newItem, filtermode, prop) => {
         <h4>Empty List.</h4>
         <h5>You currently don't have any {filter} event.</h5>
       </div>
+      </Dimmer>
     );
   } else {
     return newItem.map((item, i) => {

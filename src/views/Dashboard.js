@@ -134,13 +134,14 @@ const getBlockChallenge = (filtermode,events) => {
     }
     
     )
+    console.log(events)
     if (!events ) {
       return (
-        <Segment>
+      
           <Dimmer active inverted>
             <Loader size="large">Loading</Loader>
           </Dimmer>
-        </Segment>
+    
       );
     }
     return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem,filtermode,{...prop})}</Card.Group>)

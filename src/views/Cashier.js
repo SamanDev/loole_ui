@@ -1,115 +1,26 @@
-import React, { Component,useState, useEffect} from "react";
+import React, { useState, useEffect} from "react";
 import { withRouter } from "react-router-dom";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import AuthService from "services/auth.service";
-
-
-import $ from "jquery";
+import { Tab,Menu, } from 'semantic-ui-react'
 
 import { useAllCoins } from "services/hooks"
 import Active from "components/active.component";
 import Report from "components/report.component";
-import PMDeposit  from "components/deposit/pmdeposit.component";
 import ShetabDeposit  from "components/deposit/shetabdeposit.component";
 import PaparaDeposit  from "components/deposit/paparadeposit.component";
 import ShetabCashout  from "components/deposit/shetabcashout.component"; 
 import PaparaCashout  from "components/deposit/paparacashout.component"; 
 import PMCashout  from "components/deposit/pmcashout.component"; 
 import CrDeposit  from "components/deposit/crdeposit.component"; 
-import CheckButton from "react-validation/build/button";
 // react-bootstrap components
 import {
-  Badge,
-  Alert,
   Button,
   Card,
-  InputGroup,
-  Navbar,
   Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
-  Container,
   Row,
   Col,
-  TabContent,
-  TabPane,
-  Tab,
+  
 } from "react-bootstrap";
-import { printRequired,haveGetway,haveGetwayMode,get_date_locale,getGroupBadge } from "components/include";
-import DataTable from 'react-data-table-component';
-const conditionalRowStyles = [
-  {
-    when: row => row.endBalance < row.startBalance,
-    style: {
-      backgroundColor: 'rgba(255,0,0,.1)',
-      
-    },
-  },
-  // You can also pass a callback to style for additional customization
-  {
-    when: row => row.endBalance > row.startBalance,
-    style: {
-      backgroundColor: 'rgba(0,255,0,.1)',
-      
-    },
-  },
-];
-const columns = [
-  {
-    name: 'ID',
-    selector: row => row.id,
-    sortable: true,
-    width:'60px',
-},
-    {
-        name: 'Date',
-        selector: row => row.createDate,
-        format: row => get_date_locale(row.createDate),
-        
-    },
-    {
-      name: 'Description',
-      selector: row => row.description + ' '+ row.mode,
-      sortable: true,
-  },
-  {
-    name: 'Mode',
-    selector: row => 'Dollar',
-    
-    sortable: true,
-},
-  {
-    name: 'Amount',
-    selector: row => row.amount,
-    format: row =>  getGroupBadge('Dollar', row.amount, "small left"),
-    sortable: true,
-},
-{
-  name: 'EndBank',
-  selector: row => row.endBalance,
-  format: row =>  getGroupBadge('Dollar', row.endBalance, "small left"),
-  sortable: true,
-},
-];
-const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
-const noDataComponent =  (
-    
-  <Col xl="12" style={{textAlign: "center",color:'rgba(0,0,0,.5)'}}>
-  <div >
-  <img
-                  alt="nodata"
-                  style={{ height: 80 }}
-                  src="/assets/images/nodata.svg"
-                ></img>
-<h4>Empty List.</h4>
-<h5>You currently don't have any record.</h5>
-</div>
-    
-
-  </Col>
-)
+import { haveGetway,haveGetwayMode,get_date_locale,getGroupBadge } from "components/include";
 var dataTransaction = [
   {
     "id": 10,
@@ -131,7 +42,6 @@ var dataTransaction = [
 
 var allValid = true;
 
-var reqnum = 0;
 function Cashier(prop) {
   const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
@@ -139,331 +49,120 @@ function Cashier(prop) {
 }, [prop.myState]);
 const currentUser = prop.findStateId(myState,'currentUser');
 const { data: eventCoins } = useAllCoins();
-const [coins,setCoins] = useState();
+
   
  
-
- 
+var userMethods =  currentUser.cashierGateways;
+userMethods.sort((a, b) => (a.mode > b.mode) ? 1 : -1)
     dataTransaction = currentUser.usersReports
     useEffect(() => {
-    
-      setCoins(() => eventCoins)
+      prop.onUpdateItem('coins',eventCoins)
+
      
     }, [eventCoins]);
-    
-     
-    
-    return (
-      <>
-        <Active {...prop} />
-        <Container>
-          <Tab.Container
-            id="page-subcategories-tabs-example"
-            defaultActiveKey="description-page-subcategories"
-          >
-            <div className="nav-container  nav-justified">
-              <Nav
-                role="tablist"
-                variant="tabs"
-                className="justify-content-center border-0 nav-icons"
-              >
-                <Nav.Item>
-                  <Nav.Link
-                    eventKey="description-page-subcategories"
-                    className="border-0 bg-transparent "
-                  >
-                    <i className="nc-icon nc-money-coins"></i>
-                    <br></br>
-                    Deposit
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link
-                    eventKey="location-page-subcategories"
-                    className="border-0 bg-transparent"
-                  >
-                    <i className="nc-icon nc-credit-card"></i>
-                    <br></br>
-                    Cashout
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link
-                    eventKey="legal-info-page-subcategories"
-                    className="border-0 bg-transparent"
-                  >
-                    <i className="nc-icon nc-bullet-list-67"></i>
-                    <br></br>
-                    Transactions
-                  </Nav.Link>
-                </Nav.Item>
-              </Nav>
-            </div>
-            <Tab.Content>
-              <Tab.Pane eventKey="description-page-subcategories">
-                <Card>
-                  <Card.Header>
-                    <Card.Title as="h4">Deposit</Card.Title>
-                    <div className="card-category">Select your method</div>
-                  </Card.Header>
-                  <Card.Body>
-                    <Tab.Container
-                      
-                      defaultActiveKey="shetab"
-                    >
-                      <Nav role="tablist" variant="tabs">
-                      {(haveGetwayMode(currentUser.cashierGateways,'IranShetab'))&&(
-                        <>
-                        <Nav.Item>
-                          <Nav.Link
-                            eventKey="shetab"
-                            onClick={() => {
-                              allValid = false;
-                            }}
-                          >
-                            <img
-                              alt="Shetab"
-                              style={{ height: 20 }}
-                              src="/assets/images/shetab.svg"
-                            ></img>{" "}
-                            Iran Shetab
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                          <Nav.Link
-                            eventKey="papara"
-                            onClick={() => {
-                              allValid = false;
-                            }}
-                          >
-                            <img
-                              alt="PAPARA"
-                              style={{ height: 20 }}
-                              src="/assets/images/turkey.svg"
-                            ></img>{" "}
-                            Turkey Papara
-                          </Nav.Link>
-                        </Nav.Item>
-                        </>
-                      )}
-                        {(haveGetway(currentUser.cashierGateways,'PerfectMoney'))&&(
-                        <Nav.Item>
-                          <Nav.Link
-                            eventKey="pm"
-                           
-                          >
-                            <img
-                              alt="pm"
-                              style={{ height: 25 }}
-                              src="/assets/images/pm.svg"
-                            ></img>{" "}
-                            PerfectMoney
-                          </Nav.Link>
-                        </Nav.Item>
-                        )}
-                        {(haveGetway(currentUser.cashierGateways,'CryptoCurrencies'))&&(
-                        <Nav.Item>
-                          <Nav.Link eventKey="cr">
-                            <img
-                              alt="btc"
-                              style={{ height: 25 }}
-                              src="/assets/images/btc.svg"
-                            ></img>{" "}
-                            Crypto Currencies
-                          </Nav.Link>
-                        </Nav.Item>
-                        )}
-                      </Nav>
-                      <Tab.Content>
-                      <Tab.Pane eventKey="shetab">
-                      <ShetabDeposit token={currentUser}/>
-                          
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="papara">
-                          <PaparaDeposit/>
-                          
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="pm">
-                        <PMDeposit/>
-                          
-                            
-                              
-                            
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="cr">
-                        <CrDeposit  token={currentUser} coins={coins}/>
-                        
-                        </Tab.Pane>
-                      </Tab.Content>
-                    </Tab.Container>
-                  </Card.Body>
-                </Card>
-              </Tab.Pane>
-              <Tab.Pane eventKey="location-page-subcategories">
-                <Card>
+    const key = prop.findStateId(myState,'keyCashier');
+    const handleMethod = (method) => {
+      prop.onUpdateItem('cashierMethod',method)
+      prop.onUpdateItem('openModalCashier',true)
+        
+      
+    };
+    const panes = [
+      {id:1, menuItem: (
+        <Menu.Item  key={"1"}>
+          Deposit
+        </Menu.Item>
+      ), render: () => <Tab.Pane attached={false}>
+        <Card className="card-plain card-social" style={{ margin: -10 }}>
+          <Card.Header>
+            <Card.Title>Select your method</Card.Title>
+          </Card.Header>
+          <Card.Body>
+            <Row className="card-tags">
+           
+              {userMethods.map(function (cashierGateway,u) {
+                var _img = 'btc.svg';
+                if(cashierGateway.mode=='PerfectMoney'){_img = 'pm.svg'}
+                if(cashierGateway.mode=='IranShetab'){_img = 'iran.png'}
+              return(
+      <Col
+      lg="4"
+      xl="3"
+      key={u.toString()}
+      onClick={() =>
+        handleMethod(cashierGateway.name)
+      }
+      
+    >
+      <div className="counter-box bg-color-1 card">
+        <div className="img">
+         
+        <img
+                              alt={cashierGateway.mode}
+                              style={{ maxHeight: 50 }}
+                              src={"/assets/images/"+_img}
+                            ></img>
+                             <p style={{ margin: 0, lineHeight: "20px" }}>
+        <small className="text-muted">
+          <b>{cashierGateway.name}</b>
+          <br />
+          {cashierGateway.name}
+        </small>
+      </p>
+          
+          
+        </div>
+      </div>
+    </Col>
+              )
+  })}
+         
+              
+            </Row>
+
+            </Card.Body>           
+        </Card>
+        
+      </Tab.Pane> },
+      {id:2, menuItem: (
+        <Menu.Item key={"2"}>
+          Cashout
+        </Menu.Item>
+      ), render: () => <Tab.Pane attached={false}>
+<Card>
                   <Card.Header>
                     <Card.Title as="h4">Cashout</Card.Title>
                     <div className="card-category">Select your method</div>
                   </Card.Header>
                   <Card.Body>
-                    <Tab.Container
-                      id="plain-tabs-cash"
-                      defaultActiveKey="shetabc"
-                    >
-                      <Nav role="tablist" variant="tabs">
-                      {(haveGetwayMode(currentUser.cashierGateways,'IranShetab'))&&(
-                        <>
-                        <Nav.Item>
-                          <Nav.Link
-                            eventKey="shetabc"
-                            onClick={() => {
-                              allValid = false;
-                            }}
-                          >
-                            <img
-                              alt="pm"
-                              style={{ height: 20 }}
-                              src="/assets/images/shetab.svg"
-                            ></img>{" "}
-                            Iran Shetab
-                          </Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                        <Nav.Link
-                          eventKey="paparac"
-                          onClick={() => {
-                            allValid = false;
-                          }}
-                        >
-                          <img
-                            alt="PAPARA"
-                            style={{ height: 20 }}
-                            src="/assets/images/turkey.svg"
-                          ></img>{" "}
-                          Turkey Papara
-                        </Nav.Link>
-                      </Nav.Item>
-                      </>
-                      )}
-                      {(haveGetway(currentUser.cashierGateways,'PerfectMoney'))&&(
-                        <Nav.Item>
-                          <Nav.Link
-                            eventKey="pmc"
-                            onClick={() => {
-                              allValid = false;
-                            }}
-                          >
-                            <img
-                              alt="pm"
-                              style={{ height: 25 }}
-                              src="/assets/images/pm.svg"
-                            ></img>{" "}
-                            PerfectMoney
-                          </Nav.Link>
-                          
-                        </Nav.Item>
-                        )}
-                        {(haveGetway(currentUser.cashierGateways,'Crypto'))&&(
-                        <Nav.Item>
-                          <Nav.Link eventKey="crc">
-                            <img
-                              alt="btc"
-                              style={{ height: 25 }}
-                              src="/assets/images/btc.svg"
-                            ></img>{" "}
-                            Crypto Currencies
-                          </Nav.Link>
-                        </Nav.Item>
-                        )}
-                       
-                      </Nav>
-                      <Tab.Content>
-                      <Tab.Pane eventKey="shetabc">
-                      <ShetabCashout token={currentUser}/>
-                        </Tab.Pane>
-                      <Tab.Pane eventKey="paparac">
-                      <PaparaCashout/>
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="pmc">
-                          <PMCashout/>
-                          
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="crc">
-                          <Row>
-                            <Col md="6">
-                              <Card className="stacked-form border-0">
-                                <Card.Header>
-                                  <Card.Title as="h4">
-                                    Crypto Currency Cashout
-                                  </Card.Title>
-                                </Card.Header>
-                                <Card.Body></Card.Body>
-                                <Card.Footer>
-                                  <Button
-                                    className="btn-fill"
-                                    type="submit"
-                                    variant="success"
-                                  >
-                                    Cashout
-                                  </Button>
-                                </Card.Footer>
-                              </Card>
-                            </Col>
-                            <Col md="6">
-                              <Card className="stacked-form border-0">
-                                <Card.Header>
-                                  <Card.Title as="h4">
-                                    How find Crypto Currencies?
-                                  </Card.Title>
-                                </Card.Header>
-                                <Card.Body>hi</Card.Body>
-                              </Card>
-                            </Col>
-                          </Row>
-                        </Tab.Pane>
-                      </Tab.Content>
-                    </Tab.Container>
-                  </Card.Body>
-                </Card>
-              </Tab.Pane>
-              <Tab.Pane eventKey="legal-info-page-subcategories">
-                <Card className="regular-table-with-color">
-                  <Card.Header>
-                    <Card.Title as="h4">Transactions</Card.Title>
-                    <div className="card-category">Your activity list</div>
-                  </Card.Header>
-                  <Card.Body className="table-responsive p-0">
-                    <Report usersReports={dataTransaction}/>
-                  
                     
                   </Card.Body>
                 </Card>
-              </Tab.Pane>
-              <Tab.Pane eventKey="help-center-page-subcategories">
-                <Card>
-                  <Card.Header>
-                    <Card.Title as="h4">Help center</Card.Title>
-                    <p className="category">More information here</p>
-                  </Card.Header>
-                  <Card.Body>
-                    <p>
-                      From the seamless transition of glass and metal to the
-                      streamlined profile, every detail was carefully considered
-                      to enhance your experience. So while its display is
-                      larger, the phone feels just right.
-                    </p>
-                    <p>
-                      Another Text. The first thing you notice when you hold the
-                      phone is how great it feels in your hand. The cover glass
-                      curves down around the sides to meet the anodized aluminum
-                      enclosure in a remarkable, simplified design.
-                    </p>
-                  </Card.Body>
-                </Card>
-              </Tab.Pane>
-            </Tab.Content>
-          </Tab.Container>
-        </Container>
+
+      </Tab.Pane> },
+      {id:3, menuItem: (
+        <Menu.Item key={"3"}>
+          Transactions
+        </Menu.Item>
+      ), render: () => <Tab.Pane  attached={false}><Card className="regular-table-with-color">
+      <Card.Header>
+        <Card.Title as="h4">Transactions</Card.Title>
+        <div className="card-category">Your activity list</div>
+      </Card.Header>
+      <Card.Body className="table-responsive p-0">
+        <Report usersReports={dataTransaction}/>
+      
+        
+      </Card.Body>
+    </Card></Tab.Pane> },
+      
+    ]
+    
+    return (
+      <>
+        <Active {...prop} />
+        <Tab   panes={panes} menu={{ pointing: true }} className="maxheight "  defaultActiveIndex={key}  onTabChange={(e, data) => {prop.onUpdateItem('keyCashier',data.activeIndex)}}  />
+
       </>
     );
   

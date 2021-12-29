@@ -1,58 +1,20 @@
 import React, { Component } from "react";
 
-import Moment from "moment";
-import CheckButton from "react-validation/build/button";
 
-import { IMaskInput } from "react-imask";
 import {  withRouter} from 'react-router-dom';
-import $ from "jquery";
-import AuthService from "services/auth.service";
 import userService from "services/user.service";
-import NumericInput from 'react-numeric-input';
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 import Games from "server/Games";
-import Avatar from "react-avatar";
 
-import { POSTURL,defUser } from 'const';
-import { Modal,Button,Input,Label,Dropdown,Form,Select,Card,Loader,Dimmer,Divider,Segment,Header } from "semantic-ui-react";
+import { defUser } from 'const';
+import { Button,Input,Dropdown,Form,Select,Card,Divider,Header } from "semantic-ui-react";
 import {
-  Badge,
-  Alert,
-
-  InputGroup,
-  Navbar,
-  Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
-  Container,
   Row,
-  ListGroup,
   Col,
-  TabContent,
-  TabPane,
-  Tab,
   
   } from "react-bootstrap";
-  import Countdown from "react-countdown";
-  import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-  import { faPlaystation, faXbox } from "@fortawesome/free-brands-svg-icons";
-  import { faMobileAlt } from "@fortawesome/free-solid-svg-icons";
 import {
-  setAvatar,
-  getColor,
-  getIcon,
-  renderer,
-  
-  isJson,
-  getModalTag,
-  getGameTag,
-  getMatchTitle,
-  haveGameTag,
-  printRequired,
   handleTagForm,
-  haveAdmin,
   date_edit,
   printJoinalerts
   

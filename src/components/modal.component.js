@@ -1,32 +1,9 @@
 import React,{useState, useEffect} from 'react'
-import { Button, Modal,Menu ,Icon,Container, Header,Popup,Label} from 'semantic-ui-react'
-import { Link, useLocation } from "react-router-dom";
-import CopyText  from "components/copy.component";
-
-import { BrowserRouter, Route, Switch, Redirect,useHistory } from "react-router-dom";
-import $ from "jquery";
+import { Modal,Menu ,Icon} from 'semantic-ui-react'
+import { Link } from "react-router-dom";
+import CrCode from "components/cr.component";
+import { useHistory } from "react-router-dom";
 import {
-    setAvatar,
-    getColor,
-    getIcon,
-    renderer,
-    getQueryVariable,
-    getCode,
-    getGroupBadge,
-    getGroupBadgeList,
-    getGroupBadgePrice,
-    getModalTag,
-    getGameTag,
-    getMatchTitle,
-    haveGameTag,
-    getPlayerTag,
-    vsComponentTitle,
-    isJson,
-    haveAdmin,
-    handleTagForm,
-    rendererBig,
-    printEventBTN,
-    vsComponentPlayer,
     getColorStatus
   } from "components/include";
 var _content = '';
@@ -35,7 +12,7 @@ function ModalExampleShorthand(prop) {
     const [key, setKey] = useState(prop.mykey);
     const [item, setItem] = useState(prop.note);
     const history = useHistory()
-    const [defaultOpen, setDefaultOpen] = useState(_open);
+    const [defaultOpen, setDefaultOpen] = useState(false);
     
    
     useEffect(() => {
@@ -45,60 +22,27 @@ function ModalExampleShorthand(prop) {
         
         
        },[prop.note]);
-   
-  useEffect(() => {
-    
-    
-        return history.listen((location) => {
-          if(location.pathname.toString().indexOf('cashier') > -1){
-            console.log(key + '' + item.coin)
-            if(key == 0){setDefaultOpen(true)}
-            console.log(`You changed the page to: ${location.pathname}`)
-          }
-         
-      })
+       if(location.pathname.toString().indexOf('cashier') == -1 && !defaultOpen){
       
-    }, [history]);
+       // if(key == 0 && !defaultOpen){setDefaultOpen(true)}
+        
+      }
     if (item.coinValue) {
-   
+      _content = <CrCode note={item} onUpdateItemMain={prop.onUpdateItemMain}/>
       
         var Coin = item.coin;
         var _titleLink = Coin + ' ' + item.mode;
-        var _title = (<Header as='h1' inverted><img src={"https://www.coinpayments.net/images/coins/"+Coin.split(".")[0]+".png"} class="ui avatar image"/>  {Coin + ' ' + item.mode} <span className="text-muted">({item.status})</span></Header>);
-        var paydetails = JSON.parse(item.description);
-         _content = (<>
-         <Container fluid style={{padding:'1.25rem 1.5rem'}}>
-      <Header as='h2' inverted>Send To Address</Header>
-      <p><CopyText size="small" text={paydetails.address}/></p>
-      <img src={paydetails.qrcode_url} style={{background:'gray',width:222,height:222,display:'block'}}/>
-      <Header as='h2' inverted>Total Amount To Send</Header>
-      <p><CopyText size="big" text={paydetails.amount} alter={Coin}/></p>
-      <Header as='h3' inverted>Send only <span className="text-danger">{Coin}</span> to this deposit address.</Header>
-                                          
-    </Container>
-         
-                                          
-                                          </>)
+       
        
       return (
-        <Modal
-        basic
-        {...prop}
-        id={'mod'+key}
-        defaultOpen={defaultOpen}
-          trigger={<Menu.Item as='a' {...prop} id={'linkmod'+key}>
+        <Menu.Item  onClick={() => {prop.onUpdateItemMain('NotificationsItem',item);prop.onUpdateItemMain('cashierMethod','CryptoCurrencies');prop.onUpdateItemMain('openModalCashier',true)}}>
                <Icon.Group style={{marginBottom:10}}>
           <Icon loading size='big' color='green' name='circle notch' style={{margin:0}} />
           <Icon name='dollar' />
-        </Icon.Group><br/>
+        </Icon.Group>
           
           {_titleLink}
-        </Menu.Item>}
-          header={_title}
-          content={_content}
-          size='tiny'
-          actions={[{ key: 'done', content: 'Done' }]}
-        />
+        </Menu.Item>
       )
     } else{
        

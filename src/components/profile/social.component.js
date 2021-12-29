@@ -1,9 +1,7 @@
-import React, { useEffect, useState, Component } from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
-import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 import Form from "react-validation/build/form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,34 +11,14 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import {
-  Badge,
-  Alert,
-  Button,
   Card,
-  InputGroup,
-  Navbar,
-  Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
-  Container,
   Row,
-  ListGroup,
   Col,
 } from "react-bootstrap";
 import {
-  setAvatar,
-  getColor,
-  getIcon,
-  renderer,
-  printMatchBlock,
   getModalTag,
-  getGameTag,
   getSocialTag,
   haveSocialTag,
-  haveGameTag,
-  date_locale,
-  userDetails,
   isJson,
 } from "components/include";
 
