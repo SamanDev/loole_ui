@@ -1,54 +1,19 @@
 import React, { useEffect, useState  } from "react";
-import Select from "react-select";
-import NotificationAlert from "react-notification-alert";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
 import Avatar from 'react-avatar';
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-import Countdown from "react-countdown";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInstagram,faTwitch, faYoutube,faTwitter } from '@fortawesome/free-brands-svg-icons'
 
-import userService from "services/user.service";
 import Active  from "components/active.component";
 
 
 import ProfileForm  from "components/profile/profile.component"; 
-import PasswordForm  from "components/profile/password.component"; 
 import TagsForm  from "components/profile/tags.component"; 
 import SocialForm  from "components/profile/social.component"; 
 // react-bootstrap components
 import {
-  Badge,
-  Alert,
-  Button,
- 
-  InputGroup,
-  Navbar,
-  Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
-  Container,
   Row,
-  ListGroup,
   Col,
 } from "react-bootstrap";
 import {
-  setAvatar,
-  getColor,
-  getIcon,
-  renderer,
-  printMatchBlock,
-  getModalTag,
-  getGameTag,
-  getSocialTag,
-  haveSocialTag,
-  haveGameTag,
-  date_locale,
-  userDetails,isJson
-} from "components/include";
+  userDetails} from "components/include";
 import { Tab, Card } from 'semantic-ui-react'
 
 function profile(prop) {
