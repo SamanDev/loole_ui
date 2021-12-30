@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
-import { Redirect, Route } from "react-router";
+import { Link } from "react-router-dom";
 import AuthService from "services/auth.service";
-import { withRouter } from "react-router-dom";
-import { Input, Menu } from "semantic-ui-react";
+import { Menu } from "semantic-ui-react";
 
 import {
   
   Container,
 } from "react-bootstrap";
-import UserWebsocket from 'services/user.websocket'
-import { POSTURL,defUser } from 'const';
-import Swal from 'sweetalert2'
+import { defUser } from 'const';
 const LandNavbar = (prop) => {
    
   const [myState, setMyState] = useState(prop.myState);
@@ -19,6 +15,12 @@ const LandNavbar = (prop) => {
     setMyState(prop.myState);
   }, [prop.myState]);
   const currentUser = prop.findStateId(myState, "currentUser");
+  if(currentUser?.accessToken){
+  
+    prop.onUpdateItem("openModalLogin", false)
+   
+  
+  }
   const logOut=()=> {
       
     prop.onUpdateItem("currentUser", defUser)
@@ -50,7 +52,7 @@ const LandNavbar = (prop) => {
               </>
             ) : (
               <Menu.Item
-              as={Link}
+             
                 onClick={() => prop.onUpdateItem("openModalLogin", true)}
               >Login / Register</Menu.Item>
             )}

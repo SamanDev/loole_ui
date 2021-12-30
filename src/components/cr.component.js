@@ -31,12 +31,12 @@ function CrCode(prop) {
       <Button
           color='red'
           type="button"
-          onClick={() => prop.onUpdateItemMain("Notifications", false)}
+          onClick={() => prop.onUpdateItem("NotificationsItem", false)}
         >
           Cancel this transaction
         </Button>
-   
-    <Button  type="button"  color='red' basic fluid onClick={() => prop.onUpdateItemMain('openModalCashier',false)}>
+        <Button.Or />
+    <Button  type="button"  color='red' basic fluid onClick={() => prop.onUpdateItem('openModalCashier',false)}>
               Close
             </Button>
   </Button.Group>

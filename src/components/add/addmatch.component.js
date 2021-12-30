@@ -258,7 +258,8 @@ class AddMatch extends Component {
             error?.response?.data,
             GName,
             this.state.currentUser,
-            handleTagForm
+            handleTagForm,
+            this.props
           );
         }
       } else {
@@ -324,7 +325,8 @@ class AddMatch extends Component {
                         response.data,
                         this.state.GName,
                         this.state.currentUser,
-                        handleTagForm
+                        handleTagForm,
+                        this.props
                       );
                     }
                   }
@@ -360,7 +362,7 @@ class AddMatch extends Component {
       "inSign": this.state.inSign.value,
       "outSign": this.state.inSign.value,
       "rules": null,
-      "expire": date_edit(startdate),
+      "expire": (startdate),
       "startTime": "2021-11-01T20:34:39.000+00:00",
       "finished": "2021-11-01T20:34:39.000+00:00",
       "players": [
@@ -382,7 +384,7 @@ class AddMatch extends Component {
         "status": "Pending",
         "level": null,
         "matchCode": null,
-        "startTime": date_edit(Date.now()) + this.state.AvalableFor.value * 1000 * 60,
+        "startTime": (Date.now()) + this.state.AvalableFor.value * 1000 * 60,
         "matchPlayers": [{
             "id": 371,
             "username": currentUser.username,
@@ -468,10 +470,10 @@ class AddMatch extends Component {
                   </Row>
           
          
-          <Button.Group size='large' type="button" fluid widths='2'>
-          <Button positive fluid loading={this.state.loading} basic disabled={this.state.loading || !currentUser.userActivate}>Create Match</Button>
+          <Button.Group size='large' inverted fluid widths='2'>
+          <Button color="green" fluid loading={this.state.loading}  disabled={this.state.loading || !currentUser.userActivate}>Create Match</Button>
     <Button.Or />
-    <Button negative type="button"  disabled={this.state.loading} basic fluid onClick={() => this.props.onUpdateItem('openModalAdd',false)}>
+    <Button color="red" type="button"  disabled={this.state.loading}  fluid onClick={() => this.props.onUpdateItem('openModalAdd',false)}>
               Close
             </Button>
   </Button.Group>

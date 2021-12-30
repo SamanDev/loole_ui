@@ -28,14 +28,14 @@ function ModalExampleShorthand(prop) {
         
       }
     if (item.coinValue) {
-      _content = <CrCode note={item} onUpdateItemMain={prop.onUpdateItemMain}/>
+     
       
         var Coin = item.coin;
         var _titleLink = Coin + ' ' + item.mode;
        
        
       return (
-        <Menu.Item  onClick={() => {prop.onUpdateItemMain('NotificationsItem',item);prop.onUpdateItemMain('cashierMethod','CryptoCurrencies');prop.onUpdateItemMain('openModalCashier',true)}}>
+        <Menu.Item  onClick={() => {prop.onUpdateItem('NotificationsItem',item);prop.onUpdateItem('cashierMethod','CryptoCurrencies');prop.onUpdateItem('openModalCashier',true)}}>
                <Icon.Group style={{marginBottom:10}}>
           <Icon loading size='big' color='green' name='circle notch' style={{margin:0}} />
           <Icon name='dollar' />
@@ -49,7 +49,7 @@ function ModalExampleShorthand(prop) {
     var _title = item.gameName + ' (' + item.status+')';
     
   return (
-    <Link {...prop} className="item" to={"/panel/lobby?id=" + item.id}>
+    <Link  className="item" to={"/panel/lobby?id=" + item.id}>
     
            <Icon.Group style={{marginBottom:10}}>
       <Icon loading size='big' color={getColorStatus(item.status)} name='circle notch' style={{margin:0}} />

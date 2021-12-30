@@ -16,7 +16,7 @@ import { DEFCOLORS } from "const";
 // core components
 import ModalExampleShorthand from "components/modal.component";
 import SidebarMy from "components/Sidebar/Sidebar.js";
-
+import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import CrCode from "components/cr.component";
 import routes from "routes.js";
@@ -34,6 +34,8 @@ import CrDeposit  from "components/deposit/crdeposit.component";
 import PMDeposit  from "components/deposit/pmdeposit.component";
 import AddMatch  from "components/add/addmatch.component"; 
 
+
+
 function scrollToTop() {
 
   window.scrollTo({
@@ -46,8 +48,6 @@ function scrollToTop() {
 
 
 };
-
-var OpenNotifications
 function  Panel(props) {
 
   
@@ -60,7 +60,7 @@ function  Panel(props) {
 }, [props.myState]);
 const currentUser = props.findStateId(myState,'currentUser');
   
-  const events = props.findStateId(myState,'events');
+ 
   const open = props.findStateId(myState,'openModalAdd');
   const openCashier = props.findStateId(myState,'openModalCashier');
   const cashierMethod = props.findStateId(myState,'cashierMethod');
@@ -68,12 +68,7 @@ const currentUser = props.findStateId(myState,'currentUser');
   const myNotification = props.findStateId(myState,'Notifications');
   const myNotificationItem = props.findStateId(myState,'NotificationsItem');
   
-  try{
-    props.onUpdateItem('NotificationsItem',myNotification[0])
   
-  }catch(e){
-    
-  }
    
  
 
@@ -88,7 +83,7 @@ const currentUser = props.findStateId(myState,'currentUser');
     
   
   const getRoutes = (routes) => {
-    //scrollToTop();
+    scrollToTop();
     return routes.map((prop, key) => {
       
       if (prop.collapse) {
@@ -185,7 +180,7 @@ const currentUser = props.findStateId(myState,'currentUser');
                 >
                   {myNotification && (<>
                  
-                    {myNotification.map((item, i) => <ModalExampleShorthand key={i.toString()} onUpdateItemMain={props.onUpdateItem} mykey={i} note={item}/>)}
+                    {myNotification.map((item, i) => <ModalExampleShorthand key={i.toString()} {...props} mykey={i} note={item}/>)}
                   </>)}
                   
                   
@@ -221,9 +216,9 @@ const currentUser = props.findStateId(myState,'currentUser');
        
      
         <Modal.Content>
-          <Segment inverted>
+         
           <AddMatch token={currentUser} {...props} />
-          </Segment>
+          
           </Modal.Content>
     
         </Modal>
@@ -243,7 +238,7 @@ const currentUser = props.findStateId(myState,'currentUser');
               {!myNotificationItem?(
                 <CrDeposit  coins={coins} {...props}/>
               ):(
-                <CrCode note={myNotificationItem}  onUpdateItemMain={props.onUpdateItem}/>
+                <CrCode note={myNotificationItem} {...props}/>
                 
    
               )}

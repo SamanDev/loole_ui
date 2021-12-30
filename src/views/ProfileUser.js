@@ -1,66 +1,39 @@
-import React, { Component, useState, useMemo, useEffect } from "react";
-import Select from "react-select";
-import NotificationAlert from "react-notification-alert";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
+import React, { useState, useEffect } from "react";
 import Avatar from "react-avatar";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import Countdown from "react-countdown";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faInstagram,
-  faTwitch,
-  faYoutube,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
-import { faPlaystation, faXbox } from "@fortawesome/free-brands-svg-icons";
-import { faMobileAlt } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
-import AuthService from "services/auth.service";
-import {
-  VerticalTimeline,
-  VerticalTimelineElement,
-} from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import userService from "services/user.service";
 import TagsForm from "components/profile/tags.component";
-import MyMatches from "views/UserMatches.js";
-import Birthday from "components/Birthday";
+import UserEvents from "components/events/user.component"
 // react-bootstrap components
-import { Row, ListGroup, Col, TabContent, TabPane, Tab } from "react-bootstrap";
 import {
-  Checkbox,
-  Grid,
-  Header,
-  Button,
-  Icon,
-  Modal,
-  Divider,
-  Menu,
   Dimmer,
   Loader,
-  Image,
   Segment,
-  Sidebar,
   Card
 } from "semantic-ui-react";
 import {
-  setAvatar,
-  getColor,
-  getIcon,
-  renderer,
-  printMatchBlock,
   userDetails,
   printBlockChallenge,
-  date_locale,
-  date_edit,
+  getOffset
 } from "components/include";
-import { useAllEvents, useUserProfile } from "services/hooks";
+import { useUserProfile } from "services/hooks";
 import DashStat  from "components/userstat.component";
 var allValid = true;
 
+function scrollToTop(elem) {
 
+  var x = getOffset( document.getElementById(elem) ).top;
+
+  window.scrollTo({
+    top: x,
+    behavior: "smooth"
+    });
+    
+    
+  
+
+
+};
 function profile(prop) {
   
   const { data: userGet } = useUserProfile(prop.user);
@@ -70,7 +43,7 @@ function profile(prop) {
     setMyState(prop.myState)
 }, [prop.myState]);
   useEffect(() => {
-    console.log(userGet)
+  
     if (userGet) {
       
       prop.onUpdateItem("profileUser", userGet);
@@ -79,24 +52,6 @@ function profile(prop) {
   }, [userGet]);
   const currentUser = prop.findStateId(myState, "profileUser");
   
-  const getBlockChallenge = (filtermode, events) => {
-    var newItem = [];
-    if (events) {
-      events.map((item, i) => {
-        if (
-          item.gameConsole == filtermode ||
-          item.gameMode == filtermode ||
-          filtermode == "all" ||
-          (item.gameConsole != "Mobile" && filtermode == "NoMobile")
-        ) {
-          item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
-  
-          newItem.push(item);
-        }
-      });
-      return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem, filtermode,{...prop})}</Card.Group>)
-    }
-  };
   if (!userGet || !currentUser) {
     
     return (
@@ -150,7 +105,7 @@ function profile(prop) {
                   >
                     {userDetails(currentUser)}
                   </div>
-                  <DashStat {...prop} />
+                  <DashStat {...prop} scrollToTop={scrollToTop} />
                  
                 </div>
               </div>
@@ -166,8 +121,9 @@ function profile(prop) {
         </div>
         <div className="section section-gray section-clients section-no-padding">
           <div className="container-fluid">
-            <h4 className="header-text  text-center">Last Activity</h4>
-            {getBlockChallenge("all", currentUser.events)}
+            <h4 className="header-text  text-center" id="userlastactivity">Last Activity</h4>
+            <UserEvents {...prop}/>
+         
           </div>
         </div>
       </div>

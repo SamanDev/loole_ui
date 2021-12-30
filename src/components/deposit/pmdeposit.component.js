@@ -170,7 +170,7 @@ function CrDeposit(prop) {
         >
           Deposit
         </Button>
-   
+        <Button.Or />
     <Button  type="button"  color='red'   onClick={() => prop.onUpdateItem('openModalCashier',false)}>
               Close
             </Button>

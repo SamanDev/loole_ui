@@ -6,13 +6,25 @@ import { DEFCOLORS } from "const";
 
 import LandNavbar from "components/Navbars/LandNavbar.js";
 // dinamically create auth routes
-
+import "assets/css/landing-page.css";
 import Landing from "views/Pages/Landing.js";
 import User from "views/Pages/User.js";
 import routes from "routes.js";
+import Games from "views/Pages/Games.js";
+import Content from "views/Pages/Content.js";
+
+function scrollToTop() {
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+    });
+    
+    
+  
 
 
-
+};
 
 function  Auth(props) {
   
@@ -37,6 +49,8 @@ function  Auth(props) {
              
               {(prop.component=='Landing') && (<Landing {...props} />)}
               {(prop.component=='User') && (<User {...props} />)}
+              {(prop.component=='Games') && (<>{scrollToTop()}<Games {...props} /></>)}
+              {(prop.component=='Content') && (<Content {...props} />)}
             
               
               </>

@@ -742,10 +742,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80ffffff', e
   text-shadow: 0 1px 5px rgba(0,0,0,0.5);
   font-size: 18px;
 }
-.landing-page .parallax .description * {
-  line-height: 1.8;
-  
-}
+
 .landing-page .parallax .buttons{
   width: 100%;
   display: inline-block;

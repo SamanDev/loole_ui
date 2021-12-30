@@ -79,11 +79,12 @@ class AuthService {
     UserWebsocket.connect()
   }
 
-  register(username, email, password) {
+  register(username, email, password,reffer) {
     return axios.post(API_URL + "signup", {
       username,
       email,
-      password
+      password,
+      reffer
     })
     .then(response => {
      

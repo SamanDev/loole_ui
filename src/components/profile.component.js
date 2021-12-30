@@ -24,12 +24,19 @@ export default class Profile extends Component {
       currentUser: this.props.token
     };
   }
-  componentWillReceiveProps(newProps) {
-    
-    this.setState({ currentUser: newProps.token });
-    
-    
+  static getDerivedStateFromProps(props, state) {
+    // Any time the current user changes,
+    // Reset any parts of state that are tied to that user.
+    // In this simple example, that's just the email.
+    if (props.token !== state.currentUser) {
+      return {
+        currentUser: props.token,
+  
+      };
+    }
+    return null;
   }
+  
 
   render() {
     if (this.state.redirect) {

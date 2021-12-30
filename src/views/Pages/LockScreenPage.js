@@ -1,24 +1,13 @@
-import React, { Component, useState,useEffect,useLayoutEffect} from "react";
+import React, { useState,useEffect} from "react";
 
-import $ from "jquery";
-import { NavLink, Link } from "react-router-dom";
 import { useHistory } from "react-router";
 // react-bootstrap components
 import {
-  Badge,
- 
   Container,
   Col,
-  Spinner,
-  Accordion,
 } from "react-bootstrap";
 import {
-  Checkbox,
-  Grid,
-  Header,
   Icon,
-  Image,
-  Menu,
   Segment,
   Sidebar,
   Dimmer,
@@ -26,16 +15,9 @@ import {
   Button
 } from 'semantic-ui-react'
 import Active  from "components/active.component";
-import TransitionExampleTransitionExplorer  from "components/anim.component";
-import { useAllEvents,useUser,useAllEventsByStatus,useEventByID } from "services/hooks"
-import AdminNavbar from "components/Navbars/ChatNavbar.js";
 
 import Chatbar from "components/Sidebar/Chat.js";
 import userService from "services/user.service";
-import AuthService from "services/auth.service";
-import League from "server/league";
-import eventBus from "views/eventBus";
-import {useQuery,useMutation,useQueryClient,QueryClient,QueryClientProvider, } from 'react-query'
 
 //import LeagueSection  from "components/events/league.component"; 
 import LeagueSection  from "components/events/league.component"; 
@@ -46,11 +28,7 @@ import {
   
   getQueryVariable,
  
-  haveAdmin,
-  editEvent,
-  editDateTime
-} from "components/include";
-import { UPLOADURL, POSTURLTest } from "const";
+  haveAdmin} from "components/include";
 import Swal from "sweetalert2";
 
 const Toast = Swal.mixin({

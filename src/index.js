@@ -11,11 +11,10 @@ import Swal from "sweetalert2";
 import { defUser,TrackingID } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
-import "assets/css/landing-page.css";
 
-import "semantic-ui-css/semantic.min.css";
-import "assets/css/style.css";
+
+
+
 // sections for this page
 export * from "const";
 import LandLayout from "layouts/Land.js";
@@ -52,7 +51,8 @@ import {
   useEventByID,
 } from "services/hooks";
 import ReactGA from 'react-ga';
-
+import "semantic-ui-css/semantic.min.css";
+import "assets/css/style.css";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -63,7 +63,7 @@ const queryClient = new QueryClient({
 ReactGA.initialize(TrackingID);
 function Main() {
   
-ReactGA.pageview(window.location.pathname + window.location.search);
+
   const queryClient = useQueryClient();
   const history = useHistory();
   var unUser = defUser;
@@ -128,7 +128,7 @@ ReactGA.pageview(window.location.pathname + window.location.search);
     })
   
     onUpdateItem("Notifications", myNot);
-  
+    onUpdateItem('NotificationsItem',myNot[0])
    
   }
   const findStateId = (st, val) => {
@@ -172,6 +172,11 @@ ReactGA.pageview(window.location.pathname + window.location.search);
 
   //const { data: eventsGet } = useAllEventsByStatus('All');
   const { data: eventsGet } = useAllEvents();
+  if(window.location.pathname.toString().indexOf('/i/') > -1){
+    var _i = window.location.pathname.toString().split('/i/')[1];
+    localStorage.setItem("reffer", _i);
+  
+  }
 
   useEffect(() => {
     if (userGet?.accessToken) {
@@ -235,7 +240,12 @@ ReactGA.pageview(window.location.pathname + window.location.search);
       onUpdateItem("currentUser", curU);
       Swal.fire("", event, "success");
     });
+    
   }, []);
+  useEffect(() => {
+    
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  });
 
   if (!currentUser ) {
     return (

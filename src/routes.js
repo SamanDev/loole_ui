@@ -1,7 +1,6 @@
 
-import Games from "views/Pages/Games.js";
-import Content from "views/Pages/Content.js";
-import User from "views/Pages/User.js";
+
+
 
 var routes = [
   
@@ -140,7 +139,7 @@ var routes = [
     layout: "/game",
     name: "User",
     icon: "nc-icon nc-circle-09",
-    component: Games,
+    component: 'Games',
     show:false
   }  ,
   {
@@ -148,7 +147,7 @@ var routes = [
     layout: "/content",
     name: "User",
     icon: "nc-icon nc-circle-09",
-    component: Content,
+    component: 'Content',
     show:false
   },
 ];

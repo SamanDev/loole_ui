@@ -132,15 +132,26 @@ class TournamentSection extends Component {
       message: "",
     };
   }
-  componentWillReceiveProps(newProps) {
-    this.setState({ eventid: newProps.item.id });
-    this.setState({ currentUser: newProps.token });
-    this.setState({ matchidFind: newProps.matchidFind });
-    this.setState({ item: newProps.item });
-    this.setState({ isloading: false });
-    icEnd = 0;
+  static getDerivedStateFromProps(props, state) {
+    // Any time the current user changes,
+    // Reset any parts of state that are tied to that user.
+    // In this simple example, that's just the email.
+    if (props.item !== state.item) {
+      icEnd = 0;
     icStart = 0;
+      return {
+        eventid: props.item.id,
+    
+      item: props.item,
+      currentUser: props.token,
+    
+      matchidFind: props.matchidFind,
+      isloading: props.isLoading,
+      };
+    }
+    return null;
   }
+
   handleClick = (e, titleProps) => {
     const { index } = titleProps;
     const { activeIndex } = this.state;
@@ -319,7 +330,7 @@ class TournamentSection extends Component {
     }
 
     if (matchLevelFind && activeIndex == -1) {
-      this.setState({ activeIndex: matchLevelFind.level - 1 });
+      //this.setState({ activeIndex: matchLevelFind.level - 1 });
     }
 
     var activePlayer = 0;
@@ -344,13 +355,13 @@ class TournamentSection extends Component {
                 " - " +
                 hatchbackCar.length +
                 " match",
-          icon: "none",
+       
         },
 
         content: hatchbackCar.map((mtch, z) => {
          
           return (
-            <>
+            <span key={z.toString()}>
             
           
               {z == 0 && (
@@ -363,14 +374,14 @@ class TournamentSection extends Component {
                 />
               )}
               <Link
-                key={z}
+                
                 onClick={() => this.props.onUpdateItem("matchIDQ", mtch.id)}
                 to={"/panel/matchlobby?id=" + item.id + "&matchid=" + mtch.id}
               >
                 <Segment inverted style={{ background: "none !important" }}>
                   <Grid columns={2}>
                     <Grid.Column
-                      className={mtch.winner == mtch?.matchPlayers[0]?.username && "coverwinner"}
+                      className={mtch.winner == mtch?.matchPlayers[0]?.username ? "coverwinner":null}
                     >
                       {vsComponentPlayer(
                         item,
@@ -383,7 +394,7 @@ class TournamentSection extends Component {
                       )}
                     </Grid.Column>
                     <Grid.Column
-                      className={mtch.winner == mtch?.matchPlayers[1]?.username && "coverwinner"}
+                      className={mtch.winner == mtch?.matchPlayers[1]?.username ? "coverwinner":null}
                     >
                       {vsComponentPlayer(
                         item,
@@ -403,7 +414,7 @@ class TournamentSection extends Component {
                 </Segment>
               </Link>
               <Divider inverted fitted></Divider>
-            </>
+            </span>
           );
         }),
       };
@@ -519,7 +530,7 @@ class TournamentSection extends Component {
               ) : null}
             </span>
           ))}
-          {item.status != "Cancel2" && item.status != "Expired" && (
+          {item.status != "Canceled" && item.status != "Expired" && (
             <>
               <Divider style={{ opacity: 0 }} />
               <Accordion
@@ -592,7 +603,7 @@ class TournamentSection extends Component {
                       }
                       if (icStart <= 2005) {
                         return (
-                          <List.Item>
+                          <List.Item key={i.toString()}>
 
         <List.Content>
           

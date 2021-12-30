@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Form, Segment } from "semantic-ui-react";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-import Select from "react-select";
-import { IMaskInput } from "react-imask";
+import { Form } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
-import $ from "jquery";
-import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 import CountryList from "components/CountryList";
 import Birthday from "components/Birthday";
 
-import { Row, Col, Card } from "react-bootstrap";
-import { POSTURLTest, defUser } from "const";
+import { Card } from "react-bootstrap";
+import { defUser } from "const";
 
 function editCounry(item) {
   var _val = item.value.toLowerCase();

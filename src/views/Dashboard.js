@@ -134,7 +134,7 @@ const getBlockChallenge = (filtermode,events) => {
     }
     
     )
-    console.log(events)
+  
     if (!events ) {
       return (
       

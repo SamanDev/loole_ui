@@ -4,14 +4,9 @@ import {
   Statistic,
   Icon,
   Grid,
-  Popup,
-  Modal,
-  Button,
-  Segment,Divider
+  Divider
 } from "semantic-ui-react";
 import CurrencyFormat from "react-currency-format";
-import { Link, useLocation } from "react-router-dom";
-import AddMatch from "components/add/addmatch.component";
 
 const UserStat = (prop) => {
   const [myState, setMyState] = useState(prop.myState);
@@ -38,7 +33,7 @@ const UserStat = (prop) => {
         <Grid.Column mobile={8} tablet={8} computer={8}>
        <Card
              
-       
+             onClick={() => prop.scrollToTop('userlastactivity')}
               fluid color="orange"
             >
               <div className="content extra">
@@ -80,11 +75,7 @@ const UserStat = (prop) => {
          
         </Grid.Column>
         <Grid.Column mobile={8} tablet={8} computer={8}>
-        <Popup
-          content="Go to Rewards"
-          inverted
-          trigger={
-            <Card   fluid color="black"  onClick={() => prop.onUpdateItem("openModalChart", true)}>
+        <Card   fluid color="black"  onClick={() => prop.onUpdateItem("openModalChart", true)}>
               <div className="content extra">
                 <Grid columns={2} divided>
                   <Grid.Column  style={{ textAlign: "right",width:'auto' }}>
@@ -114,8 +105,7 @@ const UserStat = (prop) => {
                 </Grid>
               </div>
             </Card>
-          }
-        />
+         
         </Grid.Column>
       </Grid>
       <Divider  hidden/>

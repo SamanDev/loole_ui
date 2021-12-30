@@ -2,69 +2,27 @@ import React, { Component } from "react";
 
 
 
-import Moment from "moment";
-import CurrencyFormat from "react-currency-format";
-import { IMaskInput } from "react-imask";
-import { withRouter } from "react-router-dom";
 import $ from "jquery";
-import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import eventBus from "views/eventBus";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Countdown from "react-countdown";
 import uploadHeader from "services/upload-header";
-import PropTypes from "prop-types";
 import axios from "axios";
-import { POSTURL,defUser } from 'const';
+import { defUser } from 'const';
 import MatchCard from "components/matchcard.component";
 import {
-  Badge,
-  
-  Navbar,
-  Nav,
-  Container,
-  Pagination,
   Col,
-  Table,
-  Row,
-  ProgressBar,
-  ListGroup,
-  Spinner,
-  Accordion,
 } from "react-bootstrap";
 import {
-  setAvatar,
-  getColor,
-  getIcon,
-  renderer,
-  rendererBig,
   getQueryVariable,
-  getCode,
-  getGroupBadge,
-  getGroupBadgeList,
-  getGroupBadgePrice,
-  getModalTag,
-  getGameTag,
-  getMatchTitle,
-  haveGameTag,
-  getPlayerTag,
-  isJson,
-  haveAdmin,
   handleTagForm,
   vsComponent,
-  getColorStatus,
-  getGroupBadgeBlock,
   printJoinalerts,
 } from "components/include";
 import {
-  Card,
-  
-  Button,
-  Segment,Divider
+  Divider
 } from "semantic-ui-react";
-import { UPLOADURL, POSTURLTest } from "const";
+import { POSTURLTest } from "const";
 
 
 const API_URL_TEST = POSTURLTest;
@@ -77,25 +35,6 @@ const Toast = Swal.mixin({
 
 });
 
-var isInPlayers = false;
-var matchidFind = [];
-var lists = [];
-var item = false;
-var expiryDate = new Date();
-var dateStart = null;
-var icEnd = 0;
-var icStart = 0;
-var icStartL = 0;
-var nullplayer = {
-  id: 100000,
-  username: false,
-  rank: null,
-  winAmount: null,
-  ready: false,
-};
-var mymatchFind = null;
-var matchLevelFind = null;
-var isJoin = false;
 
 class MatchSection extends Component {
   constructor(props) {
@@ -130,15 +69,24 @@ class MatchSection extends Component {
   componentWillUnmount() {
     document.title = this.props.item.gameMode + ' '+ this.props.item.gameName + ' for ' + this.props.item.outSign.replace('Dollar','$') + this.props.item.amount +  ' Prize';
   }
-  componentWillReceiveProps(newProps) {
-    this.setState({ eventid: newProps.item.id });
-    this.setState({ currentUser: newProps.token });
-    this.setState({ matchidFind: newProps.matchidFind });
-    this.setState({ item: newProps.item });
-
-    this.setState({ isloading: newProps.isLoading });
+  static getDerivedStateFromProps(props, state) {
+    // Any time the current user changes,
+    // Reset any parts of state that are tied to that user.
+    // In this simple example, that's just the email.
+    if (props.item !== state.item) {
+      return {
+        eventid: props.item.id,
     
+      item: props.item,
+      currentUser: props.token,
+    
+      matchidFind: props.matchidFind,
+      isloading: props.isLoading,
+      };
+    }
+    return null;
   }
+  
   handleClashFinished(e) {
     this.setState({
       isloading: true,
@@ -146,7 +94,7 @@ class MatchSection extends Component {
     userService
       .saveTags("ClashRoyale", "finish", this.state.tag, this.state.eventid)
       .then(
-        (response) => {
+        () => {
           this.setState({
             isloading: false,
           });
@@ -180,7 +128,7 @@ class MatchSection extends Component {
           this.setProgress(Math.round((100 * data.loaded) / data.total));
         },
       })
-      .then((response) => {
+      .then(() => {
         this.setState({
           progress: 0,
           progressLable: "I win",
@@ -188,7 +136,7 @@ class MatchSection extends Component {
         });
         document.documentElement.classList.toggle("nav-open");
       })
-      .catch((error) => {
+      .catch(() => {
         this.setState({
           progressLable: "I win",
           isUpLoading: false,
@@ -205,10 +153,10 @@ class MatchSection extends Component {
     e.preventDefault();
 
     userService.deleteEvent(this.state.eventid).then(
-      (response) => {
+      () => {
         this.props.history.push("/panel/dashboard");
       },
-      (error) => {}
+      () => {}
     );
   }
 
@@ -284,7 +232,7 @@ class MatchSection extends Component {
   showFileUpload() {
     this.fileUpload.current.click();
   }
-  onChangeHandler = (event) => {
+  onChangeHandler = () => {
     this.setState({
       selectedFile: this.fileUpload.current.files[0],
     });
@@ -327,7 +275,8 @@ class MatchSection extends Component {
               response.data,
               GName,
               this.state.currentUser,
-              handleTagForm
+              handleTagForm,
+              this.props
             );
           }
         }
@@ -364,7 +313,8 @@ class MatchSection extends Component {
               response.data,
               GName,
               this.state.currentUser,
-              handleTagForm
+              handleTagForm,
+              this.props
             );
           }
         }
@@ -376,13 +326,13 @@ class MatchSection extends Component {
       this.printErr(error);
     });
   }
-  handleLoseMatch(e) {
+  handleLoseMatch() {
     this.setState({
       loading: true,
     });
     if (this.state.matchid) {
       userService.loseEvent(this.state.eventid, this.state.matchid).then(
-        (response) => {
+        () => {
           //this.reGetevents();
           //this.props.history.push("/panel/dashboard");
         },
@@ -392,7 +342,7 @@ class MatchSection extends Component {
       );
     } else {
       userService.loseEvent(this.state.eventid).then(
-        (response) => {
+        () => {
           //this.reGetevents();
           //this.props.history.push("/panel/dashboard");
         },
@@ -427,7 +377,8 @@ class MatchSection extends Component {
             resMessage,
             GName,
             this.state.currentUser,
-            handleTagForm
+            handleTagForm,
+            this.props
           );
         }
       } else {
@@ -456,12 +407,10 @@ class MatchSection extends Component {
       matchidFind,
     } = this.state;
 
-    var _mode = " 1 vs 1 ";
-    var _color = "#404040";
 
     var activePlayer = 0;
     item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
-    {matchidFind.matchPlayers.map((player, j) => {
+    {matchidFind.matchPlayers.map((player) => {
       if (player.username != "") {
         activePlayer++;
       }

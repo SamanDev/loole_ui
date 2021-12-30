@@ -3,53 +3,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Avatar from "react-avatar";
 import Countdown from "react-countdown";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import { Link, useLocation } from "react-router-dom";
 
+import {setAvatar,getColorStatus,getIcon,getGroupBadgeBlock,rendererBig,printStatus}  from "components/include.js";
 import {
-  faInstagram,
-  faTwitch,
-  faYoutube,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
-import Moment from "moment";
-import {date_edit,setAvatar,getColorStatus,getIcon,getGroupBadgeBlock,rendererBig,printStatus}  from "components/include.js";
-import {
-  Statistic,
-  Button,
   Icon,
   Label,
-  Divider,
-  Grid,
-  Segment,
   Card,
-  Image,
-  List
-} from "semantic-ui-react";
+  Image} from "semantic-ui-react";
 // react-bootstrap components
-import {
-  Badge,
-  
-  Alert,
-  Form,
-  InputGroup,
-  Navbar,
-  Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
-  Container,
-  Row,
-  Col,
-  Carousel,
-  TabContent,
-  TabPane,
-  Tab,
-  ProgressBar,
-  ListGroup,
-} from "react-bootstrap";
-import { useHistory } from "react-router";
 
 var moment = require("moment");
  function MatchCard(prop) {

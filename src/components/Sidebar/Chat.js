@@ -1,47 +1,22 @@
-import React, { Component ,useState } from "react";
-import { Link, useLocation, Redirect } from "react-router-dom";
-import Avatar, { ConfigProvider } from "react-avatar";
-import axios from "axios";
-import Moment from 'moment';
+import React, { Component } from "react";
+import Avatar from "react-avatar";
 
-import uploadHeader from "services/upload-header";
-import PropTypes from "prop-types";
-import AuthService from "services/auth.service";
-import { UPLOADURL,POSTURLTest } from "const";
 
-import eventBus from "views/eventBus";
 
-import BackButton from 'components/Back'
 import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
 import userService from "services/user.service";
 import {
   setAvatar,
-  printTime,
-  getIcon,
-  renderer,
-  getQueryVariable,
 } from "components/include";
 // react-bootstrap components
 import {
-  Badge,
   Button,
-  ButtonGroup,
   Card,
-  Collapse,
   Form,
-  Alert,
-  InputGroup,
-  Navbar,
-  Nav,
-  Pagination,
-  Container,
-  
   Row,
   Col,
 } from "react-bootstrap";
 import { Input,Comment } from 'semantic-ui-react'
-import { faHourglassEnd } from "@fortawesome/free-solid-svg-icons";
 
 function getchatTime(date) {
   var today = new Date(date);
@@ -309,17 +284,25 @@ class Chatbar extends Component {
       currentUser: this.props.username
     };
   }
-  
-  componentWillReceiveProps(newProps) {
-    
-    this.setState({ eventchats: newProps.eventchats });
-    this.setState({ chats: newProps.chats });
-    this.setState({ eventstatus: newProps.eventstatus });
-    this.setState({ masterplayer: newProps.masterplayer });
-    this.setState({ secondplayer: newProps.secondplayer });
-    this.setState({ currentUser: newProps.username });
-    
+  static getDerivedStateFromProps(props, state) {
+    // Any time the current user changes,
+    // Reset any parts of state that are tied to that user.
+    // In this simple example, that's just the email.
+    if (props.eventchats !== state.eventchats) {
+      return {
+        eventID: props.eventID,
+        matchid: props.matchID,
+        eventstatus: props.eventstatus,
+        chats: props.chats,
+        eventchats: props.eventchats,
+        masterplayer: props.masterplayer,
+        secondplayer: props.secondplayer,
+        currentUser: props.username
+      };
+    }
+    return null;
   }
+  
   changeMessageBox(e) {
     
     this.setState({
@@ -424,11 +407,7 @@ class Chatbar extends Component {
     // that it gets through routes prop
     
     
-    if(currentUser.accessToken == '' && !this.state.isLoading){
-      this.setState({
-        isLoading: true,
-      });
-    }
+    
     
     
                           

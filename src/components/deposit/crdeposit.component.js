@@ -52,7 +52,7 @@ function CrDeposit(prop) {
   };
   const onUpdateItem = (key, val) => {
     setMyState(() => {
-      const list = myState.list.map((item) => {
+      var list = myState.list.map((item) => {
         if (item.id === key) {
           item.val = val;
         }
@@ -182,7 +182,7 @@ function CrDeposit(prop) {
         >
           Deposit
         </Button>
-   
+        <Button.Or />
     <Button  type="button"  color='red'   onClick={() => prop.onUpdateItem('openModalCashier',false)}>
               Close
             </Button>

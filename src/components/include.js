@@ -91,17 +91,9 @@ export const get_date_locale = (thisDate) => {
   return b;
 };
 export const date_edit = (thisDate) => {
-  var newThisDate = thisDate.toString();
-
-  if (newThisDate.indexOf(" ") == -1 && newThisDate.indexOf("-") == -1) {
-    thisDate = date_locale(thisDate);
-  }
-  if (newThisDate.indexOf(" ") > -1 && newThisDate.indexOf("-") > -1) {
-    thisDate = thisDate.replace(" ", "T") + "00-08:00";
-    //thisDate  = date_locale(thisDate)
-  }
+  
   //console.log('thisDate: '+thisDate)
-  var mom = moment(thisDate).format();
+  var mom = moment(thisDate).format("YYYY-MM-DDThh:mm:ss.000-08:00");
   //thisDate = thisDate.replace('+00:00','-08:00');
   //console.log('momennt: '+mom)
   return mom;
@@ -180,7 +172,8 @@ export const printJoinalerts = (
   response,
   GName,
   currentUser,
-  setSelectedTag
+  setSelectedTag,
+propsSend
 ) => {
   if (response == "balanceError") {
     var resMessage = "To enter this event you need to have more balance!";
@@ -190,11 +183,12 @@ export const printJoinalerts = (
       icon: "error",
       showCancelButton: true,
       confirmButtonText: `Go to Cashier`,
-      canceleButtonText: `Back`,
+    
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        this.props.history.push("/panel/cashier");
+        propsSend.onUpdateItem("openModalAdd", false);
+        propsSend.history.push("/panel/cashier")
       }
     });
   } else if (response == "pointBalanceError") {
@@ -205,11 +199,12 @@ export const printJoinalerts = (
       icon: "error",
       showCancelButton: true,
       confirmButtonText: `Go to Cashier`,
-      canceleButtonText: `Back`,
+   
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        this.state.history.push("/panel/cashier");
+        propsSend.onUpdateItem("openModalAdd", false);
+        propsSend.history.push("/panel/cashier")
       }
     });
   } else if (response == "tagError") {
@@ -415,7 +410,8 @@ export const vsComponentPlayer = (
   }
   var user = (
     <div style={{ overflow:'hidden',padding: "0px 0 " + padd + "px 0" }}>
-      <Statistic inverted size="mini" as={Link} to={'/user/'+player?.username} target="_blank">
+      {handlechangeReadyEvent ? (
+        <Statistic inverted size="mini" as={Link} to={'/user/'+player?.username} target="_blank">
         <Statistic.Value>
           {player?.username == matchidFind.winner && matchidFind.winner && (
             <Icon
@@ -459,6 +455,53 @@ export const vsComponentPlayer = (
           </small>
         </Statistic.Label>
       </Statistic>
+      ):(
+<Statistic inverted size="mini">
+        <Statistic.Value>
+          {player?.username == matchidFind.winner && matchidFind.winner && (
+            <Icon
+              circular
+              color="yellow"
+              size="mini"
+              name="winner"
+              style={{ position: "absolute", fontSize: 12, marginLeft: -8 }}
+            />
+          )}
+          {player?.username ? (
+           
+              <Avatar
+                size="50"
+                round={true}
+                title={player.username}
+                name={setAvatar(player.username)}
+              />
+      
+          ) : (
+            <Avatar
+              size="50"
+              round={true}
+              src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
+              color="lightgray"
+              className="avatar"
+            />
+          )}
+        </Statistic.Value>
+        <Statistic.Label>
+          <small>
+            {player?.username ? (
+              <>
+               
+                  {player.username}
+              
+              </>
+            ) : (
+              <>...</>
+            )}
+          </small>
+        </Statistic.Label>
+      </Statistic>
+      )}
+      
     </div>
   );
   var ready = (
@@ -1335,20 +1378,26 @@ export const renderer = ({
     );
   }
 };
-
+export const  getOffset=( el ) =>{
+  var _x = 0;
+  var _y = 0;
+  while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+      _x += el.offsetLeft - el.scrollLeft;
+      _y += el.offsetTop - el.scrollTop;
+      el = el.offsetParent;
+  }
+  return { top: _y, left: _x };
+}
 export const printStatus = (item, _mode, _color,finish,status) => {
   //console.log(item, _mode, _color,finish,status)
   return (
     <>
       <Divider fitted style={{ opacity: 0 }} />
       {item.winner ? (
-        <Statistic inverted color={getColorStatus(status)} size="mini"  as={Link} to={'/user/'+item.winner} target="_blank">
+        <Statistic inverted color={getColorStatus(status)} size="mini" >
           <Statistic.Label>{_mode}</Statistic.Label>
           <Statistic.Label>
-            <TransitionExampleTransitionExplorer
-              objanim={
-                <>
-                  <div style={{ position: "relative", transform: "scale(.8)" }}>
+            <div style={{ position: "relative", transform: "scale(.8)" }}>
                     <div
                       className="winner avatar"
                       style={{ width: 92, height: 92, borderRadius: 100 }}
@@ -1376,11 +1425,8 @@ export const printStatus = (item, _mode, _color,finish,status) => {
                     <Statistic.Label>is winner</Statistic.Label>
                   </Statistic>
                   </div>
-                </>
-              }
-              animation="jiggle"
-              duration={1000}
-            />
+                
+              
           </Statistic.Label>
         </Statistic>
       ) : (
@@ -1568,8 +1614,10 @@ export const getSocialTag = (game, userTags) => {
 };
 export const userDetails = (currentUser) => {
   var flag = "ir";
+  var flagLabel = "Iran, Islamic Republic of";
   if (currentUser.country.value && currentUser.country.value != flag) {
     flag = currentUser.country.value;
+    flagLabel = currentUser.country.label;
   }
   var lastLogin = moment(currentUser.lastLogin).startOf('day').fromNow();
   return (
@@ -1584,9 +1632,9 @@ export const userDetails = (currentUser) => {
               <Statistic.Value>{currentUser.username}
           </Statistic.Value>
           <Statistic.Label>
-          <span className="text-muted">From </span> <img
-            src={"/assets/images/famfamfam_flag_icons/png/" + flag + ".png"}
-          /><br/><br/><small className="text-muted">Last Login</small><br/> {lastLogin}
+          <small className="text-muted">From </small><br/><img
+            src={"/assets/images/famfamfam_flag_icons/png/" + flag + ".png"} style={{position: "relative",top:-1}}
+          /> {flagLabel}<br/><br/><small className="text-muted">Last Login</small><br/> {lastLogin}
               </Statistic.Label>
             </Statistic>
         <Card.Header as="h5" style={{ marginBottom: 0, marginTop: 15 }}>

@@ -1,20 +1,13 @@
-import React, { Component } from "react";
-import $ from "jquery";
-import Countdown from "react-countdown";
-import userService from "services/user.service";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import eventBus from "views/eventBus";
-import { printGameBlock } from "components/include";
+import React, { useEffect, useState } from "react";
+import { printBlockChallenge,date_locale,date_edit } from "components/include";
+import { Tab,Card,Menu,Label,Dimmer,
+  Loader,
+  Segment, } from 'semantic-ui-react'
 
 // react-bootstrap components
 import {
   Badge,
-  Button,
-  Card,
-  Media,
-  Navbar,
-  Nav,
-  Container,
+  
   Row,
   Col,
   Spinner,
@@ -23,86 +16,67 @@ import {
 import GameSlide from "components/GameSlide";
 
 import { useAllEvents } from "services/hooks"
-const Landing = () => {
-  const { data: eventsGet , isLoading } = useAllEvents()
-
+import Moment from "moment";
+var moment = require("moment");
+const Landing = (prop) => {
   
-
+  
+  const [myState, setMyState] = useState(prop.myState)
+  useEffect(() => {
+    setMyState(prop.myState)
+}, [prop.myState]);
  
-  var events=JSON.parse(eventsGet);
+const events = prop.findStateId(myState,'events');
   var _game = window.location.href.split('game/')[1].replace('%20',' ')
 
-    const getBlockGames = () => {
-      
-      if (Games != []) {
-        return Games.games.map((item, i) => {
+    
+  const getBlockChallenge = (filtermode,events) => {
+    var newItem = []
+  
+     
+       events?.map((_item) => {
+        var item = JSON.parse(JSON.stringify(_item));
+        if ((item.gameName == _game)) {
          
-            
           
-            
-            return (
-             
-              <Carousel.Item key={i}>
-              {printGameBlock(item)}
-  
-              </Carousel.Item>
-            )
-            
-        }
-        )
-      }
-  
-    }
-    const getBlockChallenge = (filtermode,f,t) => {
-      
-      if (events != []) {
-        return events.map((item, i) => {
-          if (item.gameName == filtermode) {
-            item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
-            {item.players.map((player, j) => {
-             //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
-            })}
-            var timestamp = item.expire
-            var date = new Date(timestamp);
-            //date.setMinutes(date.getMinutes() + item.timeMinute);
-            var now = new Date();
-            var dateExpired = date.toISOString();
-            
-             
-            var dateNow = now.toISOString();
-            
-            if(i>=f  &&  i<t){
-            
-            return (
-  
-              <Col md="3" xl="4" key={i}>
-                {printMatchBlock(item)}
-  
-              </Col>
-            )
+          var timestring1 = item.expire;
+          var timestring2 = new Date();
+          var startdate = moment(timestring1).format();
+          var expected_enddate = moment(timestring2).format();
+         startdate = moment(startdate).add(1, 'days').format()
+         
+          
+          if(item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){
+            //item.gameConsole = startdate + ' '+ expected_enddate;
+            if(startdate>expected_enddate){
+              newItem.push(item)
             }
-          } else {
-            return null;
+          }else{
+            newItem.push(item);
           }
-        }
-        )
+          //newItem.push(item);
+          
+          
+          
+         
+        } 
       }
+      
+      )
+     
+      if (!events ) {
+        return (
+        
+            <Dimmer active inverted>
+              <Loader size="large">Loading</Loader>
+            </Dimmer>
+      
+        );
+      }
+      return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem,filtermode,{...prop})}</Card.Group>)
+    
   
-    }
-	const renderer = ({ days,hours, minutes, seconds, completed }) => {
-		if (completed) {
-		  // Render a complete state
-		  return <Completionist />;
-		} else {
-		  // Render a countdown
-		  return (
-			<span>
-			  {days} <small>days</small> {hours}:{minutes}:{seconds}
-			</span>
-		  );
-		}
-	  };
-    const elements = ['1', '2-4_01', '2-4_02','2-4_03'];
+  }
     
     return (
       
@@ -110,45 +84,21 @@ const Landing = () => {
     
     <div className="wrapper">
             <div className="parallax filter-gradient orange section-gray" data-color="red">
-                <div className="parallax-background">
-                    <img className="parallax-background-image" src={require("assets/images/games/"+_game+".jpg").default}/>
+                <div className="parallax-background" style={{ height:200}}>
+                    <img className="parallax-background-image" src={"/assets/images/games/"+_game+".jpg"}/>
                 </div>
                 <div className= "container">
-                    <div className="row">
-                        <div className="col-md-7">
-                            <div className="description">
-                                <h2>{_game}</h2>
-                               
-              
-                                <br/>
-                                <p>Play {_game} for Real Money.</p>
-                                <p>Play {_game} for Real Money.</p>
-                            </div>
-                            <div className="buttons">
-                                <button className="btn btn-fill btn-danger" style={{marginRight:10}}>
-                                Play {_game} for Cash
-                                </button> 
-                                <button className="btn btn-fill btn-info">
-                                 {_game} Tournament 
-                                </button>
-                              
-                            </div>
-                        </div>
-                        <div className="col-md-5  hidden-xs">
-                            <div className="parallax-image">
-                                <img className="phone" src="/assets/img/showcases/showcase-1/iphone.png"/>
-                            </div>
-                        </div>
-                    </div>
+                <h2 className="header-text text-center" style={{padding:'40px 20px 10px 20px',fontSize:'40px',fontWeight:'bold'}}>{_game}</h2>
+                <h1 className="header-text text-center" style={{padding:'0px 20px'}}>Play {_game} for Real Money.</h1>
+                  
                 </div>
             </div>
             <div className="section section-gray"  style={{margin:0}}>
             <div className="container">
                     <h4 className="header-text text-center">Is it Real Cash?</h4>
                     <p className="header-text text-center">Absolutly YES! Cash on the table.</p>
-                    <Row >
-                    {getBlockChallenge(_game,0,3)}
-                      </Row>
+                    <div style={{minHeight:300}}>{getBlockChallenge('All',events)}</div>
+                    
                     
                  
                     </div>
