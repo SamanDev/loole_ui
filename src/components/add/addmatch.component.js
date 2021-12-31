@@ -66,7 +66,7 @@ const getBlockGames = (filtermode) => {
 };
 const options = [
   { key: "dollar", text: "Dollar", value: "Dollar" },
-  { key: "point", text: "Diamonds", value: "Diamonds" },
+  { key: "point", text: "Diamonds", value: "Point" },
 ];
 
 const getBlockGameModes = (filtermode) => {
