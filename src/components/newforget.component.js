@@ -14,8 +14,7 @@ function FormExampleFieldErrorLabel(prop) {
   const history = useHistory();
   const [myState, setMyState] = useState({
     list: [
-      { id: "username", val: '' },
-      { id: "password", val: '' },
+   
       { id: "email", val: '' },
       { id: "reffer", val: '' },
       { id: "accept", val: false },
@@ -79,20 +78,20 @@ function FormExampleFieldErrorLabel(prop) {
     return _error;
   };
   const handleSubmit=()=> {
-    var username = findStateId(myState, "username");
+ 
     var email = findStateId(myState, "email");
-    var password = findStateId(myState, "password");
+   
     var reffer = null;
     if(localStorage.getItem('reffer')){reffer=localStorage.getItem('reffer')}
-
+  
     onUpdateItem('loading', true);
   
     if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
         
-        AuthService.register(username, email,password,reffer).then(
+        AuthService.register(email).then(
             (response) => {
                 onUpdateItem('loading', false);
-                console.log(response.data)
+               
               if (response.data.accessToken) {
                 prop.onUpdateItem("currentUser", response.data);
                 localStorage.setItem("user", JSON.stringify(response.data));
@@ -131,33 +130,14 @@ function FormExampleFieldErrorLabel(prop) {
         onUpdateItem('loading', false);
     }
   }
-  var username = findStateId(myState, "username");
-  var password = findStateId(myState, "password");
+
   var email = findStateId(myState, "email");
-  var accept = findStateId(myState, "accept");
+
   var loading = findStateId(myState, "loading");
   return (
     
       <Form onSubmit={handleSubmit} inverted size='small'>
-        <Form.Input
-          error={getError(username, "", "")}
-          fluid
-          
-          name="username"
-          label="Username"
-          placeholder="Username"
-          onChange={updateHandler}
-        />
-        <Form.Input
-          error={getError(password, "", "")}
-          fluid
-          
-          name="password"
-          type="password"
-          label="Password"
-          placeholder="Password"
-          onChange={updateHandler}
-        />
+      
         <Form.Input
           error={getError(email, "", "")}
           fluid
@@ -170,23 +150,11 @@ function FormExampleFieldErrorLabel(prop) {
         />
     
         
-        <Form.Checkbox
-        size="small"
-        checked={accept}
-        error={getError(accept, "", "")}
-        name="accept"
-        onClick={updateHandler}
         
-     label='By clicking Create Account, you are indicating that you have read and acknowledge the Terms Conditions and Privacy policy.'
-    >
-    </Form.Checkbox>
-    <p style={{marginBottom:20}}><a href="/content/terms-and-conditions" target="_blank">Terms Conditions</a> and <a href="/content/privacy-policy" target="_blank">Privacy policy</a>
-    </p>
         <Form.Button loading={loading}
         onClick={() => onUpdateItem("submit", true)}
-        disabled={loading} inverted color='orange' fluid size='small' content="Create Account" />
-       
-      </Form>
+        disabled={loading} inverted color='red' fluid size='small' content="Submit" />
+     </Form>
    
   );
 }

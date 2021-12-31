@@ -1,48 +1,21 @@
-import React ,{useState,useEffect} from "react";
+import React ,{} from "react";
 import Avatar from 'react-avatar';
-import PropTypes from "prop-types";
 import AuthService from "services/auth.service";
 import {
-  setAvatar,
-  getColor,
-  getIcon,
-  renderer,
-  printMatchBlock,
-  isJson,
-  getModalTag,
-  getGameTag,
-  getMatchTitle,
-  haveGameTag,
-  printRequired,
   haveAdmin
   
 } from "components/include";
 // react-bootstrap components
 import {
-  Badge,
-  Button,
-  ButtonGroup,
-  Card,
-  Collapse,
-  Form,
-  InputGroup,
-  Navbar,
   Nav,
-  Pagination,
-  Container,
-  Row,
-  Col,
 } from "react-bootstrap";
 
 import {
-  BrowserRouter,
-
-  Switch,
   useLocation,
   useHistory,
   Link
 } from "react-router-dom";
-import { POSTURL,defUser } from 'const';
+import { defUser } from 'const';
 function Sidebar({ routes, image, background,token,onUpdateItem}) {
   const history = useHistory();
   // to check for active links and opened collapses
@@ -222,8 +195,8 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
   return (
     <>
       <div className="sidebar"  data-color={background} data-image={image} >
-        <div className="sidebar-wrapper" key={'list'}>
-          <div className="logo" key={'logo'}>
+        <div className="sidebar-wrapper">
+          <div className="logo">
            
           <Link to={'/home'} key={"home"} className="simple-text logo-mini" style={{    height: 45, width: 45}}>
               <div className="logo-img">

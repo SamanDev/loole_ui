@@ -34,63 +34,33 @@ const DashStat = (prop) => {
    
   return (
     <>
-      <Grid className="dash-stat">
+      <Grid className="dash-stat home-stat">
         <Grid.Column mobile={8} tablet={8} computer={4}>
-          <Popup
-            content="Go to Cashier"
-            inverted
-            trigger={
-              <Card as={Link}  to={"/panel/cashier"} fluid color="red">
+       <Card fluid color="red">
                 <div className="content extra">
-                  <Grid columns={2} divided>
-                    <Grid.Column  style={{ textAlign: "right" ,width:'auto'}}>
-                      <Icon
-                        name="dollar"
-                        size="large"
-                        circular
-                        inverted
-                        color="red"
-                      />
-                    </Grid.Column>
-                    <Grid.Column >
+                  
                       <Statistic size="mini">
                         <Statistic.Value>
                           <CurrencyFormat
-                            value={nBalance}
+                            value={1233}
                             displayType={"text"}
                             thousandSeparator={true}
                             prefix={""}
                             renderText={(value) => value}
                           />
                         </Statistic.Value>
-                        <Statistic.Label>Balance</Statistic.Label>
+                        <Statistic.Label>Happy Users</Statistic.Label>
                       </Statistic>
-                    </Grid.Column>
-                  </Grid>
+                 
                 </div>
               </Card>
-            }
-          />
+            
         </Grid.Column>
 
         <Grid.Column mobile={8} tablet={8} computer={4}>
-          <Popup
-            content="Go to Rewards"
-            inverted
-            trigger={
-              <Card as={Link} to={"/panel/rewards"} fluid color="teal">
+         <Card fluid color="teal">
                 <div className="content extra">
-                  <Grid columns={2} divided>
-                    <Grid.Column  style={{ textAlign: "right",width:'auto' }}>
-                      <Icon
-                        name="diamond"
-                        size="large"
-                        circular
-                        inverted
-                        color="teal"
-                      />
-                    </Grid.Column>
-                    <Grid.Column >
+                  
                       <Statistic size="mini">
                         <Statistic.Value>
                           <CurrencyFormat
@@ -101,85 +71,45 @@ const DashStat = (prop) => {
                             renderText={(value) => value}
                           />
                         </Statistic.Value>
-                        <Statistic.Label>Diamonds</Statistic.Label>
+                        <Statistic.Label>Total Matches</Statistic.Label>
                       </Statistic>
-                    </Grid.Column>
-                  </Grid>
+                   
                 </div>
               </Card>
-            }
-          />
+          
         </Grid.Column>
         <Grid.Column mobile={8} tablet={8} computer={4}>
-        <Popup
-          content="Create a Match"
-          inverted
-          trigger={
+       
             <Card
              
-              onClick={() => prop.onUpdateItem("openModalAdd", true)}
               fluid color="orange"
             >
               <div className="content extra">
-                <Grid columns={2} divided>
-                  <Grid.Column  style={{ textAlign: "right",width:'auto' }}>
-                    <Icon
-                      name="asl"
-                      size="large"
-                      circular
-                      inverted
-                      color="orange"
-                    />
-                  </Grid.Column>
-                  <Grid.Column  >
+                
                     <Statistic size="mini">
-                      <Statistic.Value>
+                      <Statistic.Value>$
                         <CurrencyFormat
-                          value={nWin}
-                          displayType={"text"}
-                          thousandSeparator={true}
-                          prefix={""}
-                          renderText={(value) => value}
-                        />{" "}
-                        /{" "}
-                        <CurrencyFormat
-                          value={nMatch}
+                          value={1001669}
                           displayType={"text"}
                           thousandSeparator={true}
                           prefix={""}
                           renderText={(value) => value}
                         />
                       </Statistic.Value>
-                      <Statistic.Label>Win/Match</Statistic.Label>
+                      <Statistic.Label>Loole Bank</Statistic.Label>
                     </Statistic>
-                  </Grid.Column>
-                </Grid>
+            
               </div>
             </Card>
-          }
-        />
+          
         </Grid.Column>
         <Grid.Column mobile={8} tablet={8} computer={4}>
-        <Popup
-          content="Open Profit Chart"
-          inverted
-          trigger={
-            <Card   fluid color="black" onClick={() => prop.onUpdateItem("openModalChart", true)}>
+       <Card   fluid color="black">
               <div className="content extra">
-                <Grid columns={2} divided>
-                  <Grid.Column  style={{ textAlign: "right",width:'auto' }}>
-                    <Icon
-                      name="chart line"
-                      size="large"
-                      circular
-                      inverted
-                      color="black"
-                    />
-                  </Grid.Column>
-                  <Grid.Column>
+               
                     <Statistic size="mini">
-                      <Statistic.Value>
-                        
+                      <Statistic.Value className="text-center">
+                        $
                         <CurrencyFormat
                           value={nProfit}
                           displayType={"text"}
@@ -188,14 +118,12 @@ const DashStat = (prop) => {
                           renderText={(value) => value}
                         />
                       </Statistic.Value>
-                      <Statistic.Label>Profit</Statistic.Label>
+                      <Statistic.Label className="text-center">Commissions Paid</Statistic.Label>
                     </Statistic>
-                  </Grid.Column>
-                </Grid>
+               
               </div>
             </Card>
-          }
-        />
+          
         </Grid.Column>
       </Grid>
       <Divider  hidden/>

@@ -12,7 +12,7 @@ import {
   
 } from 'semantic-ui-react'
 
-import { DEFCOLORS } from "const";
+import { DEFCOLORS,themeDashColors } from "const";
 // core components
 import ModalExampleShorthand from "components/modal.component";
 import SidebarMy from "components/Sidebar/Sidebar.js";
@@ -48,8 +48,10 @@ function scrollToTop() {
 
 
 };
+const d = new Date();
+  let da = d.getSeconds();
+  let day = da%7;
 function  Panel(props) {
-
   
   const [sidebarImage, setSidebarImage] = React.useState();
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
@@ -154,7 +156,7 @@ const currentUser = props.findStateId(myState,'currentUser');
 <SidebarMy
           routes={routes}
           image="/assets/img/bg.jpg"
-          background={sidebarBackground}
+          background={themeDashColors[day]}
           token={currentUser}
           page={currpage}
           {...props}

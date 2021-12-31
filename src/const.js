@@ -5,6 +5,10 @@ export const POSTURLTest = "https://loole.gg:8443/api/req/"
 export const POSTURLAdmin = "https://loole.gg:8443/api/admin/"
 export const USERSOCKETURL = getPort();
 export const USERSOCKETPUBLICURL = getPortPablic();
+export const themeColors = ['red','orange','blue','green','black','orange','blue','red','orange','blue','green','black']
+export const themeDashColors = ['red','orange','azure','green','purple','black','red','orange','azure','green','purple','black']
+export const Colors = ['Red','Orange','Yellow','Olive','Green','Teal','Blue','Violet','Purple','Pink','Brown','Grey','Black']
+
 export const DEFCOLORS = ['#db2828', '#f2711c', '#ffe21f', '#b5cc18', "#2ecc40","#00b5ad","#2185d0","#6435c9","#a333c8","#e03997","#a5673f","#767676","#1b1c1d"];
 export const TrackingID = "UA-83705038-3"
 function getPort() {

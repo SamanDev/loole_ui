@@ -8,6 +8,10 @@ import {
 import HomeEvents from "components/events/home.component"
 import GameSlide from "components/GameSlide";
 import LandStat  from "components/landstat.component";
+import {Colors,themeColors} from "const.js"
+const d = new Date();
+  let da = d.getSeconds();
+  let day = da%7;
 function  Landing(prop) {
     const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
@@ -21,7 +25,7 @@ return (
 <>
 
 <div className="wrapper">
-        <div className="parallax filter-gradient gray section-gray" data-color="red">
+        <div className={"parallax filter-gradient "+themeColors[day]+" section-gray"} data-color="red">
             <div className="parallax-background">
                 <img className="parallax-background-image" src="/assets/img/showcases/showcase-1/bg.jpg"/>
             </div>
@@ -52,55 +56,17 @@ return (
                 How're you? The Loole introduces the players to each other and puts my pair of money in a safe place. After the game, the winner sends a video according to the Loole guide to prove his victory and takes his money.<br/>Also, there is no operator for deposit and withdrawal and everything is instant and automatic.
                 </p>
                 <LandStat {...prop}/>
-<div className="row card-stats">
-<div className="col-lg-3 col-md-6 col-xs-12 ">
-<div className="counter-box bg-color-1 card">
-<div className="fact-count">
-<h3>5,285</h3>
-<p>Happy Users</p>
-</div>
-<div className="icon-o"><i className="lni-users"></i></div>
-</div>
-</div>
-<div className="col-lg-3 col-md-6 col-xs-12">
-<div className="counter-box bg-color-2 card">
-<div className="fact-count">
-<h3>1,352</h3>
-<p>Total Matches</p>
-</div>
-<div className="icon-o"><i className="lni-thumbs-up"></i></div>
-</div>
-</div>
-<div className="col-lg-3 col-md-6 col-xs-12">
-<div className="counter-box bg-color-3 card">
-<div className="fact-count">
-<h3>$10,016.69</h3>
-<p>Loole Bank</p>
-</div>
-<div className="icon-o"><i className="lni-eye"></i></div>
-</div>
-</div>
-<div className="col-lg-3 col-md-6 col-xs-12">
-<div className="counter-box bg-color-4 card">
-<div className="fact-count">
-<h3>$83.08</h3>
-<p>Total Commissions</p>
-</div>
-<div className="icon-o"><i className="lni-emoji-smile"></i></div>
-</div>
-</div>
 
-                </div>
               
             </div>
         </div>
         <div className="section " style={{padding: 0}}>
-            <div className="parallax filter-gradient orange" data-color="orange" >
+            <div className={"parallax filter-gradient "+themeColors[day+1]+" section-gray"} data-color="orange">
                 <div className="parallax-background">
                     <img className="parallax-background-image" src="assets/img/bg.jpg"/>
                 </div>
-                
-                <GameSlide/>
+                 <GameSlide/>
+               
                 
             </div>
         </div>
@@ -138,7 +104,7 @@ return (
             </div>
         </div>
         <div className="section section-no-padding" style={{padding: 0}}>
-            <div className="parallax filter-gradient blue" data-color="orange" style={{height:'800px'}}>
+            <div className={"parallax filter-gradient "+themeColors[day+2]+" section-gray"} data-color="orange" style={{height:'800px'}}>
                 <div className="parallax-background">
                     <img className="parallax-background-image" src="assets/img/bg.jpg"/>
                 </div>

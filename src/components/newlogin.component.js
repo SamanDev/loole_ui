@@ -80,7 +80,7 @@ function FormExampleFieldErrorLabel(prop) {
     
     var username = findStateId(myState, "username");
     var password = findStateId(myState, "password");
-    onUpdateItem("submit", true);
+ 
     onUpdateItem("loading", true);
 
     if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {

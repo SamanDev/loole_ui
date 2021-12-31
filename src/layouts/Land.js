@@ -49,7 +49,7 @@ function  Auth(props) {
              
               {(prop.component=='Landing') && (<Landing {...props} />)}
               {(prop.component=='User') && (<User {...props} />)}
-              {(prop.component=='Games') && (<>{scrollToTop()}<Games {...props} /></>)}
+              {(prop.component=='Games') && (<Games {...props} />)}
               {(prop.component=='Content') && (<Content {...props} />)}
             
               

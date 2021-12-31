@@ -22,6 +22,7 @@ import AdminLayout from "layouts/Admin.js";
 import PanelLayout from "layouts/Panel.js";
 import Login from "components/newlogin.component";
 import Register  from "components/newregister.component";
+import Forget  from "components/newforget.component";
 import Chart  from "components/chart.component"; 
 import DC  from "components/dc.component"; 
 import eventBus from "views/eventBus";
@@ -293,35 +294,49 @@ function Main() {
         basic
         size="small"
         dimmer='blurring'
-        closeIcon
-        closeOnDimmerClick={false}
+    
         open={openModalLogin}
         
         onClose={() => onUpdateItem("openModalLogin", false)}
       >
-        <div style={{ padding: "45px 45px", margin: "auto" }}>
+       
         <Modal.Content image scrolling>
-          <Segment inverted padded="very">
+          <Segment inverted  padded="very">
             <Grid  relaxed="very">
-              <Grid.Column mobile={16} tablet={8} computer={8}>
-              <Header as='h2' inverted>Login</Header>
+            <Grid.Column mobile={16} tablet={8} computer={8}>
+              <Header as='h3' inverted>Login</Header>
               
                 <Login onUpdateItem={onUpdateItem}/>
-                <Divider horizontal inverted className="mobile only" style={{marginTop: 40}}>Or</Divider>
+                
+                <span className="mobile only">
+                <Divider horizontal inverted style={{marginTop:40}}>Or</Divider>
+                <Header as='h3' inverted>Create Account</Header>
+              
+                <Register onUpdateItem={onUpdateItem} />
+                </span>
+                <span>
+                <Divider horizontal inverted style={{marginTop:40}}>Or</Divider>
+                <Header as='h4' inverted>Password Recovery</Header>
+              
+              <Forget onUpdateItem={onUpdateItem}/>
+                </span>
               </Grid.Column>
               
+              
               <Grid.Column mobile={16} tablet={8} computer={8}>
+              <span className="mobile hidden">
+              <Header as='h3' inverted>Create Account</Header>
               
-              <Header as='h2' inverted>Create Account</Header>
-              
-                <Register onUpdateItem={onUpdateItem} /></Grid.Column>
+                <Register onUpdateItem={onUpdateItem} />
+                </span>
+                </Grid.Column>
               
             </Grid>
-            
-            <Divider vertical inverted  className="mobile hidden">OR</Divider>
+            <span className="mobile hidden">
+            <Divider vertical inverted>OR</Divider></span>
           </Segment>
           </Modal.Content>
-        </div>
+    
       </Modal>
       <Switch>
         
