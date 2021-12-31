@@ -327,27 +327,7 @@ class MatchSection extends Component {
     });
   }
   handleLoseMatch() {
-    this.setState({
-      loading: true,
-    });
-    //this.setState({ curPlayerReady: checked });
-    userService.changeReadyEvent(this.state.eventid).then(
-      (response) => {
-        if (response.data == "changeReadyEvent successful") {
-          this.setState({
-            loading: false,
-          });
-
-          //this.reGetevents();
-        }
-        //this.props.history.push("/panel/dashboard");
-      },
-      (error) => {
-        this.printErr(error);
-      }
-    ).catch((error) => {
-      this.printErr(error);
-    });
+   
     this.setState({
       loading: true,
     });
