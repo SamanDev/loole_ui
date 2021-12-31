@@ -84,6 +84,7 @@ userMethods.sort((a, b) => (a.mode > b.mode) ? 1 : -1)
                 var _img = 'btc.svg';
                 if(cashierGateway.mode=='PerfectMoney'){_img = 'pm.svg'}
                 if(cashierGateway.mode=='IranShetab'){_img = 'iran.png'}
+                if(cashierGateway.mode=='VisaGiftCode'){_img = 'iran.png'}
               return(
       <Col
       lg="4"
