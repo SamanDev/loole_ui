@@ -33,7 +33,7 @@ const UserStat = (prop) => {
         <Grid.Column mobile={8} tablet={8} computer={8}>
        <Card
              
-             onClick={() => prop.scrollToTop('userlastactivity')}
+             onClick={() => prop.scrollTo('userlastactivity')}
               fluid color="orange"
             >
               <div className="content extra">

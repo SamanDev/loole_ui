@@ -26,7 +26,7 @@ const HomeEvents = (prop) => {
   useEffect(() => {
     setMyState(prop.myState)
 }, [prop.myState]);
-const { data: userEvent } = useUserProfile(prop.user);
+
 const events = prop.findStateId(myState,'events');
 const getBlockChallenge = (filtermode,events) => {
   var newItem = []

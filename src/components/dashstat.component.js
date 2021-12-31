@@ -198,7 +198,7 @@ const DashStat = (prop) => {
         />
         </Grid.Column>
       </Grid>
-      <Divider  hidden/>
+      <Divider fitted hidden style={{margin:5}}/>
       
     </>
   );

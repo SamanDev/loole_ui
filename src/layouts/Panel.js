@@ -198,6 +198,7 @@ const currentUser = props.findStateId(myState,'currentUser');
         <div className="content">
         <AdminNavbar page={getPage(routes)} token={currentUser} {...props} />
         <Checkbox
+        className="hide"
           checked={visible}
           label={{ children: <code>visible</code> }}
           onChange={(e, data) => setVisible(data.checked)}

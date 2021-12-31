@@ -1269,7 +1269,7 @@ width: 100%;
     max-height: calc(-120px + 100vh); overflow: auto;
 }
 .maxheight.dash .ui.segment.tab{
-    height: calc(-320px + 100vh); overflow: auto;
+    height: calc(-220px + 100vh); overflow: auto;
 }
 .chall.card-user .card-body{
 min-height: 140px;

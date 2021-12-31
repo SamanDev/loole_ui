@@ -59,7 +59,7 @@ function FormExampleFieldErrorLabel(prop) {
   const getError = (data, _content, _pointing) => {
     var _error = null;
     if (findStateId(myState, "submit")) {
-      if (data == "") {
+      if (data == "" || !data) {
         _error = { content: _content, pointing: _pointing };
         if (_pointing == "") {
           _error = true;
@@ -68,6 +68,11 @@ function FormExampleFieldErrorLabel(prop) {
     }
     if (_error && !findStateId(myState, "hasError")) {
       onUpdateItem("hasError", true);
+
+    }
+    if (_error && findStateId(myState, "loading")) {
+  
+      onUpdateItem("loading", false);
     }
     return _error;
   };
@@ -128,6 +133,7 @@ function FormExampleFieldErrorLabel(prop) {
       <Form.Input
         error={getError(username, "Please enter your username", "")}
         fluid
+        inverted
         name="username"
         label="Username"
         placeholder="Username"

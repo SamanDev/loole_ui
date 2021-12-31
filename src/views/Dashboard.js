@@ -69,7 +69,7 @@ const updateCount = (events) => {
           var timestring2 = new Date();
           var startdate = moment(timestring1).format();
           var expected_enddate = moment(timestring2).format();
-         startdate = moment(startdate).add(1, 'days').format()
+         startdate = moment(startdate).add(10, 'days').format()
          
           
           if(item.status !='Pending'){
@@ -114,7 +114,7 @@ const getBlockChallenge = (filtermode,events) => {
         var timestring2 = new Date();
         var startdate = moment(timestring1).format();
         var expected_enddate = moment(timestring2).format();
-       startdate = moment(startdate).add(1, 'days').format()
+       startdate = moment(startdate).add(10, 'days').format()
        
         
         if(item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){

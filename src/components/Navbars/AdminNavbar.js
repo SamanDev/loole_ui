@@ -44,7 +44,12 @@ const LandNavbar = (prop) => {
   </Menu.Item>
         
           <Menu.Menu position="right">
-          <Menu.Item  onClick={(e) =>
+          <Menu.Item className="mobile hidden" onClick={(e) =>
+                document.body.classList.toggle("sidebar-mini")
+              }>
+    <Icon name='bars' size="large"/>
+  </Menu.Item>
+          <Menu.Item  className="mobile only" onClick={(e) =>
                 document.documentElement.classList.toggle("nav-open")
               }>
     <Icon name='bars' size="large"/>

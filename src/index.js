@@ -105,7 +105,7 @@ function Main() {
      
     currentUser?.usersReports?.sort((a, b) => (a.id > b.id) ? 1 : -1)
     currentUser?.usersReports?.map((item, i) => {
-      if (item.coinValue && item.status ==='Pending' && myNot.length  < 30) {
+      if (item.coinValue && item.status ==='Pending' && myNot.length  < 3) {
         myNot.push(item)
      
         
@@ -114,7 +114,7 @@ function Main() {
       } 
     })
     myNot.sort((a, b) => (a.id < b.id) ? 1 : -1)
-  
+  /*
   
     events?.map((item, i) => {
       if (item?.status ==='Pending' || item?.status ==='Ready' || item?.status ==='InPlay') {
@@ -126,7 +126,7 @@ function Main() {
       })
      } 
     })
-  
+  */
     onUpdateItem("Notifications", myNot);
     onUpdateItem('NotificationsItem',myNot[0])
    

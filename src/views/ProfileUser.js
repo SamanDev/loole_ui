@@ -20,7 +20,7 @@ import { useUserProfile } from "services/hooks";
 import DashStat  from "components/userstat.component";
 var allValid = true;
 
-function scrollToTop(elem) {
+function scrollTo(elem) {
 
   var x = getOffset( document.getElementById(elem) ).top;
 
@@ -105,7 +105,7 @@ function profile(prop) {
                   >
                     {userDetails(currentUser)}
                   </div>
-                  <DashStat {...prop} scrollToTop={scrollToTop} />
+                  <DashStat {...prop} scrollTo={scrollTo} />
                  
                 </div>
               </div>
