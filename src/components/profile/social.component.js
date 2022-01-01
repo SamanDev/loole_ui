@@ -21,7 +21,7 @@ import {
   haveSocialTag,
   isJson,
 } from "components/include";
-
+import { Header } from "semantic-ui-react";
 var arrLogos = [
   "psn.svg",
   "xbox.svg",
@@ -112,13 +112,13 @@ function TagsForm(prop) {
   };
   return (
     <>
-      <Form>
-        <Card className="card-plain card-social" style={{ margin: -10 }}>
-          <Card.Header>
-            <Card.Title>Social Accounts</Card.Title>
-          </Card.Header>
-          <Card.Body>
-            <Row className="card-tags">
+     <Header as="h3">
+     Social Accounts
+      </Header>
+      <div className="card-social">
+       
+        
+            <Row className="card-tags" style={{marginRight:0}}>
               <Col
                 lg="4"
                 xl="3"
@@ -180,9 +180,9 @@ function TagsForm(prop) {
               </Col>
             </Row>
 
-            </Card.Body>           
-        </Card>
-      </Form>
+               
+        
+      </div>
     </>
   );
 }

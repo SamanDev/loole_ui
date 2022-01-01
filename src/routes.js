@@ -66,7 +66,7 @@ var routes = [
     name: "My Matches",
     icon: "nc-icon nc-controller-modern",
     component: 'MyMatches',
-    show:true
+    show:false
   },
   {
     path: "/market",
@@ -74,7 +74,7 @@ var routes = [
     name: "MarketPlace",
     icon: "nc-icon nc-refresh-02",
     component: 'Market',
-    show:false
+    show:true
   },
   {
     path: "/cashier",

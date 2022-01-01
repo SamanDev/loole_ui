@@ -300,7 +300,7 @@ function Main() {
         onClose={() => onUpdateItem("openModalLogin", false)}
       >
        
-        <Modal.Content image scrolling>
+        <Modal.Content  scrolling>
           <Segment inverted  padded="very">
             <Grid  relaxed="very">
             <Grid.Column mobile={16} tablet={8} computer={8}>

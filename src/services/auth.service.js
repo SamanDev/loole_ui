@@ -27,7 +27,7 @@ class AuthService {
   });
   }
   
-  login(username, password) {
+  login3(username, password) {
     
     return axios
       .post(API_URL + "signin", {
@@ -38,7 +38,7 @@ class AuthService {
         return response;
       });
   }
-  login2(username, password) {
+  login(username, password) {
     return axios
       .put(API_URL + "setUserPass", {
         username,

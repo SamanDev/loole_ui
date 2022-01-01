@@ -7,6 +7,18 @@ import {
   Col,
   
 } from "react-bootstrap";
+
+import {
+  Button,
+  Select,
+  Divider,
+  Header,
+  Form,
+  Input,
+  Label,
+  Modal,
+  Segment,Dimmer
+} from "semantic-ui-react";
 import { get_date_locale,getGroupBadge } from "components/include";
 import DataTable from 'react-data-table-component';
 const conditionalRowStyles = [
@@ -46,12 +58,7 @@ const columns = [
       grow: 4,
       maxWidth: '200px'
   },
-  {
-    name: 'Mode',
-    selector: row => 'Dollar',
-    
-    sortable: true,
-},
+  
   {
     name: 'Amount',
     selector: row => row.amount,
@@ -68,19 +75,26 @@ const columns = [
 const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;
 const noDataComponent =  (
     
-  <Col xl="12" style={{textAlign: "center",color:'rgba(0,0,0,.5)'}}>
-  <div >
-  <img
-                  alt="nodata"
-                  style={{ height: 80 }}
-                  src="/assets/images/nodata.svg"
-                ></img>
-<h4>Empty List.</h4>
-<h5>You currently don't have any record.</h5>
-</div>
-    
+<div style={{minHeight:300,position: 'relative',marginTop:20,width:'100%'}}>
+  <Dimmer active inverted >
+  <div
+        style={{
+          textAlign: "center",
+          color: "rgba(0,0,0,.5)",
+          paddingTop: 30,
+          width: "100%",
+        }}
+      >
+        <img
+          alt="nodata"
+          style={{ height: 80 }}
+          src="/assets/images/nodata.svg"
+        ></img>
+        <h4>Empty List.</h4>
+        <h5>You currently don't have any report.</h5>
+    </div>
+      </Dimmer></div>
 
-  </Col>
 )
 var dataTransaction = []
 
@@ -96,16 +110,20 @@ function Report(prop) {
     
     return (
       <>
-       
+       <Header as="h3">
+       Transactions
+      </Header>
+      
                   <DataTable
                   
             columns={columns}
             data={dataTransaction}
             defaultSortFieldId={1}
             defaultSortAsc={false}
+            expandOnRowClicked={true}
             pagination
             conditionalRowStyles={conditionalRowStyles}
-            expandableRows expandableRowsComponent={ExpandedComponent}
+            expandableRows expandableRowsHideExpander={true} expandableRowsComponent={ExpandedComponent}
             noDataComponent={noDataComponent}
         />
                     

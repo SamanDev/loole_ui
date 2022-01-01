@@ -49,12 +49,7 @@
                 "flag": "ai",
                 "text": "Anguilla"
             },
-            {
-                "key": "aq",
-                "value": "aq",
-                "flag": "aq",
-                "text": "Antarctica"
-            },
+         
             {
                 "key": "ag",
                 "value": "ag",
@@ -163,12 +158,7 @@
                 "flag": "bo",
                 "text": "Bolivia, Plurinational State of"
             },
-            {
-                "key": "bq",
-                "value": "bq",
-                "flag": "bq",
-                "text": "Bonaire, Sint Eustatius and Saba"
-            },
+         
             {
                 "key": "ba",
                 "value": "ba",
@@ -337,12 +327,7 @@
                 "flag": "cu",
                 "text": "Cuba"
             },
-            {
-                "key": "cw",
-                "value": "cw",
-                "flag": "cw",
-                "text": "Curaçao"
-            },
+          
             {
                 "key": "cy",
                 "value": "cy",
@@ -553,12 +538,7 @@
                 "flag": "gt",
                 "text": "Guatemala"
             },
-            {
-                "key": "gg",
-                "value": "gg",
-                "flag": "gg",
-                "text": "Guernsey"
-            },
+          
             {
                 "key": "gn",
                 "value": "gn",
@@ -649,12 +629,7 @@
                 "flag": "ie",
                 "text": "Ireland"
             },
-            {
-                "key": "im",
-                "value": "im",
-                "flag": "im",
-                "text": "Isle of Man"
-            },
+          
             {
                 "key": "il",
                 "value": "il",
@@ -679,12 +654,7 @@
                 "flag": "jp",
                 "text": "Japan"
             },
-            {
-                "key": "je",
-                "value": "je",
-                "flag": "je",
-                "text": "Jersey"
-            },
+        
             {
                 "key": "jo",
                 "value": "jo",
@@ -1111,12 +1081,7 @@
                 "flag": "re",
                 "text": "Réunion"
             },
-            {
-                "key": "bl",
-                "value": "bl",
-                "flag": "bl",
-                "text": "Saint Barthélemy"
-            },
+         
             {
                 "key": "sh",
                 "value": "sh",
@@ -1135,12 +1100,7 @@
                 "flag": "lc",
                 "text": "Saint Lucia"
             },
-            {
-                "key": "mf",
-                "value": "mf",
-                "flag": "mf",
-                "text": "Saint Martin (French part)"
-            },
+           
             {
                 "key": "pm",
                 "value": "pm",
@@ -1207,12 +1167,7 @@
                 "flag": "sg",
                 "text": "Singapore"
             },
-            {
-                "key": "sx",
-                "value": "sx",
-                "flag": "sx",
-                "text": "Sint Maarten (Dutch part)"
-            },
+     
             {
                 "key": "sk",
                 "value": "sk",
@@ -1249,12 +1204,7 @@
                 "flag": "gs",
                 "text": "South Georgia and the South Sandwich Islands"
             },
-            {
-                "key": "ss",
-                "value": "ss",
-                "flag": "ss",
-                "text": "South Sudan"
-            },
+            
             {
                 "key": "es",
                 "value": "es",

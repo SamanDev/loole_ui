@@ -20,6 +20,7 @@ import {
 } from "react-bootstrap";
 import GameSlide from "components/GameSlide";
 import Moment from "moment";
+import { Header } from "semantic-ui-react";
 var moment = require("moment");
 const HomeEvents = (prop) => {
   const [myState, setMyState] = useState(prop.myState)
@@ -65,47 +66,20 @@ const getBlockChallenge = (filtermode,events) => {
 
 }
 
-   
-const elements = ['1', '2-4_01', '2-4_02','2-4_03'];
-var responsive = $(window).width();
-if (!events) {return (
-  
-      <div className="content">
-      <h4 style={{textAlign: "center",height: 370,lineHeight:'330px',color:'gray'}}>Loading Data
-<Spinner animation="grow" size="sm" />
-<Spinner animation="grow" size="sm" />
-<Spinner animation="grow" size="sm" /></h4>
-         
-        </div>
-        
-);
-}
-if (responsive >= 768) {
+
 return (
   
 <>
-
+{!prop.myStateLoc && (
+      <Header as="h3">
+     My Events
+      </Header>
+      )}
 {getBlockChallenge('all',events)}    
               
   </>
 );
-}else{
-  return (
-  
-    <>
-    
-                    <Carousel style={{ textAlign:'left',maxWidth:300,margin:'auto'}} controls={false}>
-                    
-                    {getBlockChallenge('all',events)} 
-                    
-                     
-  </Carousel>
-                    
-                 
-               
-      </>
-    );
-}
+
 }
 
 export default HomeEvents

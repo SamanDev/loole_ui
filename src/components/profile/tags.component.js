@@ -4,7 +4,7 @@ import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
+import { Header } from "semantic-ui-react";
 import {
     
     getGameTag,
@@ -37,14 +37,15 @@ import {
 
   
       <>
-      <Card className="card-plain" style={{margin: -10}}>
-        {!prop.myStateLoc && (<Card.Header>
-       <Card.Title>Game Tags</Card.Title></Card.Header>)}
-    
-      <Card.Body>
+      {!prop.myStateLoc && (
+      <Header as="h3">
+      Game Tags
+      </Header>
+      )}
+
     
                          
-                        <Row className="card-tags">
+                        <Row className="card-tags" style={{marginRight:0}}>
                         {arrLogos.map((number,i) =>
                        
                          <Col lg="4" xl="3" key={i.toString()} onClick={() => handleTagForm(arrTagMode[i],arrPlatform[i],currentUser)}>
@@ -68,9 +69,7 @@ import {
 
                     </Row>
 
-                    </Card.Body>
-      
-      </Card>
+                
                           
                        
         </>

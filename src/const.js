@@ -5,7 +5,7 @@ export const POSTURLTest = "https://loole.gg:8443/api/req/"
 export const POSTURLAdmin = "https://loole.gg:8443/api/admin/"
 export const USERSOCKETURL = getPort();
 export const USERSOCKETPUBLICURL = getPortPablic();
-export const themeColors = ['red','orange','blue','green','black','orange','blue','red','orange','blue','green','black']
+export const themeColors = ['red','orange','blue','green','gray','orange','blue','red','orange','blue','green','gray']
 export const themeDashColors = ['red','orange','azure','green','purple','black','red','orange','azure','green','purple','black']
 export const Colors = ['Red','Orange','Yellow','Olive','Green','Teal','Blue','Violet','Purple','Pink','Brown','Grey','Black']
 

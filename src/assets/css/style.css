@@ -1270,7 +1270,7 @@ right: 0;
 width: 100%;
 }
 .maxheight .ui.segment.tab{
-    max-height: calc(-120px + 100vh); overflow: auto;
+    height: calc(-140px + 100vh); overflow: auto;
 }
 .maxheight.dash .ui.segment.tab{
     height: calc(-220px + 100vh); overflow: auto;

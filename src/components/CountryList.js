@@ -39,7 +39,7 @@ function CountrySelector(prop) {
   onChange={changeHandler}
   search
   selection
-  autocomplete='false'
+  autoComplete="false"
   options={options}
 />
 }

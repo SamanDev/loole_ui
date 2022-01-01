@@ -1775,44 +1775,6 @@ export const printBlockChallenge = (newItem, filtermode, prop) => {
     });
   }
 };
-export const printBlockChallenge = (newItem, filtermode, prop) => {
-  // const history = useHistory();
-  var filter = filtermode;
-  if (filter == "all") {
-    filter = "";
-  }
-  if (filter == "NoMobile") {
-    filter = "Console";
-  }
-  
-  if (newItem.length == 0) {
-    //history.push("/home");
-    return (
-      <Dimmer active inverted>
-      <div
-        style={{
-          textAlign: "center",
-          color: "rgba(0,0,0,.5)",
-          paddingTop: 30,
-          width: "100%",
-        }}
-      >
-        <img
-          alt="nodata"
-          style={{ height: 80 }}
-          src="/assets/images/nodata.svg"
-        ></img>
-        <h4>Empty List.</h4>
-        <h5>You currently don't have any {filter} event.</h5>
-      </div>
-      </Dimmer>
-    );
-  } else {
-    return newItem.map((item, i) => {
-      return <MatchCard key={i.toString()} item={item} {...prop} />;
-    });
-  }
-};
 export const haveGetway = (userTags, game) => {
   var res = "Not Connected";
 

@@ -61,10 +61,8 @@ return (
             </div>
         </div>
         <div className="section " style={{padding: 0}}>
-            <div className={"parallax filter-gradient "+themeColors[day+1]+" section-gray"} data-color="orange">
-                <div className="parallax-background">
-                    <img className="parallax-background-image" src="assets/img/bg.jpg"/>
-                </div>
+            <div className={" filter-gradient "+themeColors[day+1]+" section-gray"} data-color="orange">
+                
                  <GameSlide/>
                
                 

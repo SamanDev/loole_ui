@@ -23,7 +23,7 @@ function CrDeposit(prop) {
   const [myState, setMyState] = useState({
     list: [
       { id: "amount", val: "10" },
-   
+      { id: "coin", val: "BTC" },
       { id: "hasError", val: null },
       { id: "loading", val: false },
       { id: "submit", val: false },
@@ -81,7 +81,7 @@ function CrDeposit(prop) {
   };
   const handleSubmit = () => {
     console.log(myState)
-    
+    var Coin = findStateId(myState, "coin");
     var Amount = findStateId(myState, "amount");
     onUpdateItem("submit", true);
     onUpdateItem("loading", true);
@@ -122,14 +122,14 @@ function CrDeposit(prop) {
       onUpdateItem("loading", false);
     }
   };
-  
+  var Coin = findStateId(myState, "coin");
   var Amount = findStateId(myState, "amount");
   var loading = findStateId(myState, "loading");
 
   return (
     <>
       <Header as="h2" inverted>
-      eVoucher PerfectMoney Cashout
+        CryptoCurrency Cashout
       </Header>
       <Form
         onSubmit={handleSubmit}
@@ -138,7 +138,15 @@ function CrDeposit(prop) {
         style={{ padding: 15 }}
       >
         <Modal.Content style={{ paddingBottom: 90 }}>
-     
+        <Form.Field>
+          
+      <label>Select Crypto</label>
+      <CryptoList
+              onUpdateItem={onUpdateItem}
+              coins={prop.coins}
+              value={Coin}
+            />
+    </Form.Field>
     <Form.Field>
           <label>Amount</label>
           <Input

@@ -116,7 +116,7 @@ function profile(prop) {
         <div className="section  section-clients section-no-padding">
           <div className="container">
             <h4 className="header-text  text-center">Game Tags</h4>
-            <TagsForm {...prop}/>
+            <TagsForm {...prop} myStateLoc='hi'/>
           </div>
         </div>
         <div className="section section-gray section-clients section-no-padding">

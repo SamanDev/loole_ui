@@ -180,7 +180,7 @@ function FormExampleFieldErrorLabel(prop) {
      label='By clicking Create Account, you are indicating that you have read and acknowledge the Terms Conditions and Privacy policy.'
     >
     </Form.Checkbox>
-    <p style={{marginBottom:20}}><a href="/content/terms-and-conditions" target="_blank">Terms Conditions</a> and <a href="/content/privacy-policy" target="_blank">Privacy policy</a>
+    <p style={{marginBottom:28}}><a href="/content/terms-and-conditions" target="_blank">Terms Conditions</a> and <a href="/content/privacy-policy" target="_blank">Privacy policy</a>
     </p>
         <Form.Button loading={loading}
         onClick={() => onUpdateItem("submit", true)}

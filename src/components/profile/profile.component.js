@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Form } from "semantic-ui-react";
+import { Form,Header,Segment } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
 import CountryList from "components/CountryList";
 import Birthday from "components/Birthday";
-
-import { Card } from "react-bootstrap";
+import Avatar from 'react-avatar';
+import { Row, Col,Card} from "react-bootstrap";
 import { defUser } from "const";
 
+import {
+  userDetails} from "components/include";
 function editCounry(item) {
   var _val = item.value.toLowerCase();
   var _txt = item.label;
@@ -20,7 +22,7 @@ function ProfileForm(prop) {
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
     setMyState(prop.myState);
-    setCurrentUser(prop.findStateId(prop.myState, "currentUser"))
+  
     setMyStateLoc({
       list: [
         { id: "name", val: currentUser.fullName },
@@ -57,7 +59,7 @@ function ProfileForm(prop) {
     if (val && val != "") {
       onUpdateItem("hasError", false);
     }
-    console.log(myStateLoc)
+
   };
   const findStateId = (st, val) => {
     return st.list.filter(function (v) {
@@ -172,73 +174,94 @@ function ProfileForm(prop) {
   var countryLoc = findStateId(myStateLoc, "country")
   var birthdayLoc = findStateId(myStateLoc, "birthday")
   var loading = findStateId(myStateLoc, "loading");
+  var str = currentUser.username;
+  var res = str.substring(0, 1);
+  res  = res + ' '+ str.substring(1, 2);
   return (
     <>
-    
-         <Form onSubmit={handleSubmitInfo}  size="small">
+    <Header as="h3">
+    Profile
+      </Header>
+    <Row style={{marginRight:0}}>
+              <Col md="8" sm="6">
+              <Form onSubmit={handleSubmitInfo}  size="small">
          
-        <Card className="card-plain" style={{ margin: -10 }}>
-          <Card.Header>
-            <Card.Title>Proffile</Card.Title>
-          </Card.Header>
-          <Card.Body>
-          <Form.Input
         
-        fluid
-        name="username"
-        label="Username"
-        placeholder="Username"
-        value={currentUser.username}
-        readonly
-      />
-          <Form.Input
-        
-        fluid
-        name="email"
-        label="Email"
-        placeholder="Email"
-        value={currentUser.email}
-        readonly
-      />
-          
-          <Form.Input
-         error={getError(nameLoc, "Please enter your name", "")}
-        fluid
-        name="name"
-        label="Full Name"
-        placeholder="Full Name"
-        value={nameLoc}
-        onChange={updateHandler}
-      />
-            <Form.Field>
-      <label>Country</label>
-      <CountryList value={countryLoc} onUpdateItem={onUpdateItem} />
-    </Form.Field>
-            <Form.Field>
-      <label>Birthday</label>
-      <Birthday
-                
-                onUpdateItem={onUpdateItem}
-                value={birthdayLoc ? birthdayLoc : "01/01/1990"}
-              />
-    </Form.Field>
+           <Form.Input
+         
+         fluid
+         name="username"
+         label="Username"
+         placeholder="Username"
+         value={currentUser.username}
+         readOnly
+       />
+           <Form.Input
+         
+         fluid
+         name="email"
+         label="Email"
+         placeholder="Email"
+         value={currentUser.email}
+         readOnly
+       />
+           
+           <Form.Input
+          error={getError(nameLoc, "Please enter your name", "")}
+         fluid
+         name="name"
+         label="Full Name"
+         placeholder="Full Name"
+         value={nameLoc ? nameLoc :''}
+         onChange={updateHandler}
+       />
+             <Form.Field>
+       <label>Country</label>
+       <CountryList value={countryLoc} onUpdateItem={onUpdateItem} />
+     </Form.Field>
+             <Form.Field>
+       <label>Birthday</label>
+       <Birthday
+                 
+                 onUpdateItem={onUpdateItem}
+                 value={birthdayLoc ? birthdayLoc : "01/01/1990"}
+               />
+     </Form.Field>
+             
+ 
             
+      
+           <Form.Button
+         loading={loading}
+         disabled={loading} color="green"
+         onClick={() => onUpdateItem("submit", true)}
+         inverted
+         size="large"
+         content="Update Profile"
+       />
+            
+    
+       </Form>
 
-           
-          </Card.Body>
-          <Card.Footer>
-          <Form.Button
-        loading={loading}
-        disabled={loading} color="green"
-        onClick={() => onUpdateItem("submit", true)}
-        fluid
-        size="small"
-        content="Update"
-      />
-           
-          </Card.Footer>
-        </Card>
-      </Form>
+            </Col>
+              <Col md="4" className="text-center">
+                <Segment placeholder>
+              <a href={"/user/"+currentUser.username}  target="_blank">
+            
+                <Avatar size="100" style={{margin: '20px auto' }} title={currentUser.username} name={res} round={true} />
+              
+   
+   
+      
+      
+ 
+  
+  </a>
+  {userDetails(currentUser )}
+  </Segment>
+              </Col>
+            </Row>
+        
     </>
   );
 }
