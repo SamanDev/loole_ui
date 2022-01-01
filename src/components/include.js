@@ -1612,6 +1612,18 @@ export const getSocialTag = (game, userTags) => {
     );
   }
 };
+export const showSocialTag = (game, userTags) => {
+ 
+var res  =  null;
+  if (userTags) {
+    userTags.map(function (tag) {
+      if (tag.accountName == game) {
+        res = tag.accountId;
+      }
+    });
+  }
+  return res;
+};
 export const userDetails = (currentUser) => {
   var flag = "ir";
   var flagLabel = "Iran, Islamic Republic of";
@@ -1645,7 +1657,7 @@ export const userDetails = (currentUser) => {
       
         <ListGroup horizontal style={{ display: "inline-flex", marginTop: 10 }}>
           {haveSocialTag("Instagram", currentUser.userSocialAccounts) && (
-            <ListGroup.Item action>
+            <ListGroup.Item action as='a' href={'https://instagram.com/'+showSocialTag("Instagram", currentUser.userSocialAccounts)} target='_blank'>
               <FontAwesomeIcon
                 icon={faInstagram}
                 style={{ color: "#e95950" }}
@@ -1653,17 +1665,17 @@ export const userDetails = (currentUser) => {
             </ListGroup.Item>
           )}
           {haveSocialTag("Twitch", currentUser.userSocialAccounts) && (
-            <ListGroup.Item action>
+            <ListGroup.Item action  as='a' href={'https://twitch.com/'+showSocialTag("Twitch", currentUser.userSocialAccounts)} target='_blank'>
               <FontAwesomeIcon icon={faTwitch} style={{ color: "#6441a5" }} />
             </ListGroup.Item>
           )}
           {haveSocialTag("Youtube", currentUser.userSocialAccounts) && (
-            <ListGroup.Item action>
+            <ListGroup.Item action  as='a' href={'https://youtube.com/'+showSocialTag("Youtube", currentUser.userSocialAccounts)} target='_blank'>
               <FontAwesomeIcon icon={faYoutube} style={{ color: "#FF0000" }} />
             </ListGroup.Item>
           )}
           {haveSocialTag("Twitter", currentUser.userSocialAccounts) && (
-            <ListGroup.Item action>
+            <ListGroup.Item action as='a' href={'https://twitter.com/'+showSocialTag("Twitter", currentUser.userSocialAccounts)} target='_blank'>
               <FontAwesomeIcon icon={faTwitter} style={{ color: "#00acee" }} />
             </ListGroup.Item>
           )}
@@ -1723,6 +1735,44 @@ export const haveGameTag = (game, userTags) => {
     return false;
   } else {
     return true;
+  }
+};
+export const printBlockChallenge = (newItem, filtermode, prop) => {
+  // const history = useHistory();
+  var filter = filtermode;
+  if (filter == "all") {
+    filter = "";
+  }
+  if (filter == "NoMobile") {
+    filter = "Console";
+  }
+  
+  if (newItem.length == 0) {
+    //history.push("/home");
+    return (
+      <Dimmer active inverted>
+      <div
+        style={{
+          textAlign: "center",
+          color: "rgba(0,0,0,.5)",
+          paddingTop: 30,
+          width: "100%",
+        }}
+      >
+        <img
+          alt="nodata"
+          style={{ height: 80 }}
+          src="/assets/images/nodata.svg"
+        ></img>
+        <h4>Empty List.</h4>
+        <h5>You currently don't have any {filter} event.</h5>
+      </div>
+      </Dimmer>
+    );
+  } else {
+    return newItem.map((item, i) => {
+      return <MatchCard key={i.toString()} item={item} {...prop} />;
+    });
   }
 };
 export const printBlockChallenge = (newItem, filtermode, prop) => {

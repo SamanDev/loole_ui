@@ -19,7 +19,7 @@ export default function GameSlide() {
   }
   return (
     <>
-    <div  style={{overflow: "auto",height: "100%",width: "100%",position: "absolute",top: "0"}}>
+    <div  style={{overflow: "auto",height: "100%",width: "100%",position: "relative",top: "0",zIndex:3}}>
      <div className="container" style={{marginTop:60}}>
     <h4 className="header-text text-center" style={{color: '#fff'}}>GAMES YOU CAN PLAY</h4>
     <Image.Group size='large'>
