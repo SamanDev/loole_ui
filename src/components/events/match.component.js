@@ -66,14 +66,14 @@ class MatchSection extends Component {
       message: "",
     };
   }
-  componentWillUnmount() {
-    document.title = this.props.item.gameMode + ' '+ this.props.item.gameName + ' for ' + this.props.item.outSign.replace('Dollar','$') + this.props.item.amount +  ' Prize';
-  }
+  
   static getDerivedStateFromProps(props, state) {
     // Any time the current user changes,
     // Reset any parts of state that are tied to that user.
     // In this simple example, that's just the email.
+    document.title = props.item.gameMode + ' '+ props.item.gameName + ' for ' + props.item.outSign.replace('Dollar','$').replace('Point','Diamonds ') + props.item.prize +  ' Prize';
     if (props.item !== state.item) {
+      //props.onUpdateItem('eventIDQ', getQueryVariable("id"))
       return {
         eventid: props.item.id,
     
