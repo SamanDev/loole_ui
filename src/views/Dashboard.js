@@ -11,7 +11,10 @@ function Dashboard(prop) {
   const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
     setMyState(prop.myState)
+   
 }, [prop.myState]);
+  
+
 const [myStateThis, setMyStateThis] = useState({
   list: [
     { id: "All", val: 0 },
@@ -106,9 +109,7 @@ const getBlockChallenge = (filtermode,events) => {
       if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'All') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
         //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
         
-        {item.players.map((player, j) => {
-         //if(player.username == currentUser.username && (item.status=='Pending' || item.status=='Ready' || item.status=='InPlay' )){this.props.history.push("/panel/lobby?id="+item.id);}
-        })}
+        
         
         var timestring1 = item.expire;
         var timestring2 = new Date();
@@ -172,6 +173,7 @@ const getBlockChallenge = (filtermode,events) => {
     ), render: () => <Tab.Pane>{getBlockChallenge('Tournament',events)}</Tab.Pane> },
   ]
   updateCount(events)
+  
   return (
       
         

@@ -48,6 +48,16 @@ const getEventByID= async(ids) => {
   return data
   
 }
+const getInfo= async() => {
+  
+  
+
+  const { data } = await client.get(`/getLooleInfo`)
+  //console.log(data)
+ 
+  return data
+  
+}
   const getUser=async () => {
    // alert(JSON.stringify(authHeader()))
     if(JSON.stringify(authHeader()) != '{}'){
@@ -106,5 +116,6 @@ export {
   getUser,
   getEventByID,
   getAllCoins,
-  getAdminUsers
+  getAdminUsers,
+  getInfo
 }

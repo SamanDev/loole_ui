@@ -3,52 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Avatar from "react-avatar";
 import Countdown from "react-countdown";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
+import {setAvatar,getColorStatus,getIcon,getGroupBadgeBlock,rendererBig,printStatus}  from "components/include.js";
 import {
-  faInstagram,
-  faTwitch,
-  faYoutube,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
-import Moment from "moment";
-import {date_edit,setAvatar,getColorStatus,getIcon,getGroupBadgeBlock,rendererBig,printStatus}  from "components/include.js";
-import {
-  Statistic,
-  Button,
   Icon,
   Label,
-  Divider,
-  Grid,
-  Segment,
   Card,
-  Image,
-  List
-} from "semantic-ui-react";
+  Image} from "semantic-ui-react";
 // react-bootstrap components
-import {
-  Badge,
-  
-  Alert,
-  Form,
-  InputGroup,
-  Navbar,
-  Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
-  Container,
-  Row,
-  Col,
-  Carousel,
-  TabContent,
-  TabPane,
-  Tab,
-  ProgressBar,
-  ListGroup,
-} from "react-bootstrap";
 import { useHistory } from "react-router";
 
 var moment = require("moment");
@@ -64,12 +27,12 @@ var moment = require("moment");
     var _finishTxt = 'Not Joinable';
  
   if (item?.status=='Canceled' || item?.status=='Expired' || item?.status=='Finished') { _finishTxt = 'Not Avalable'}
-
+  item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
     return (
     
         
      
-        <Card  onClick={()=>prop.onUpdateItem('eventIDQ', item.id)} color={getColorStatus(item.status)}  as={Link} to={"/panel/lobby?id=" + item.id} >
+        <Card  color={getColorStatus(item.status)}  as={Link} to={"/panel/lobby?id=" + item.id} >
          <Label  size="mini" color={getColorStatus(item.status)} ribbon style={{zIndex:2,maxWidth:170,position:'absolute',top:15,left:-10}}>
          {item.status == 'Pending' &&  ( <Icon loading name='spinner' />)}
          {item.status == 'Finished' &&  ( <Icon  name='check' color="green" />)}

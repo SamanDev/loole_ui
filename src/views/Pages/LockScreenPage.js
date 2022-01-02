@@ -1,6 +1,6 @@
 import React, { useState,useEffect} from "react";
 
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 // react-bootstrap components
 import {
   Container,
@@ -43,9 +43,10 @@ const Toast = Swal.mixin({
 
 
     
-    function LockScreenPage(prop) {
-     
+    function LockScreenPage(prop,{ location }) {
       const history = useHistory();
+    // alert(location)
+      
       const eventIDQ = getQueryVariable("id");
       const matchIDQ = getQueryVariable("matchid");
       const [myState, setMyState] = useState(prop.myState)

@@ -136,6 +136,8 @@ class TournamentSection extends Component {
     // Any time the current user changes,
     // Reset any parts of state that are tied to that user.
     // In this simple example, that's just the email.
+    document.title = props.item.gameName + ' '+ props.item.gameMode + ' - ' + props.item.outSign.replace('Dollar','$').replace('Point','Diamonds ') + props.item.prize +  ' Prize';
+    
     if (props.item !== state.item) {
       icEnd = 0;
     icStart = 0;

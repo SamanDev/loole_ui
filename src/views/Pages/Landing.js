@@ -5,6 +5,7 @@ import $ from "jquery";
 import {
   Carousel
 } from "react-bootstrap";
+import { useInfo } from "services/hooks";
 import HomeEvents from "components/events/home.component"
 import GameSlide from "components/GameSlide";
 import LandStat  from "components/landstat.component";
@@ -17,9 +18,14 @@ function  Landing(prop) {
   useEffect(() => {
     setMyState(prop.myState)
 }, [prop.myState]);
-  
+const { data: looleInfo } = useInfo();
 const elements = ['1', '2-4_01', '2-4_02','2-4_03'];
-
+useEffect(() => {
+    if(looleInfo){
+        prop.onUpdateItem("looleInfo", looleInfo);
+    }
+   
+  }, [looleInfo]);
 return (
   
 <>

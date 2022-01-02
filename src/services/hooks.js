@@ -36,6 +36,12 @@ const useUser = () => {
   
   return result
 }
+const useInfo = () => {
+  
+  const result = useQuery(["Info"],api.getInfo)
+  
+  return result
+}
 const useAdminUsers = () => {
   
   const result = useQuery(["AdminUsers"],api.getAdminUsers)
@@ -70,5 +76,6 @@ export {
   useEvent,
   useEventByID,
   useAllCoins,
-  useAdminUsers
+  useAdminUsers,
+  useInfo
 }

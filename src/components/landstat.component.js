@@ -18,19 +18,14 @@ const DashStat = (prop) => {
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
-  const currentUser = prop.findStateId(myState, "currentUser");
+  const looleInfo = prop.findStateId(myState, "looleInfo");
+ 
+  var _user = Number.parseFloat(looleInfo.totalUser).toFixed(0);
+  var _match = Number.parseFloat(looleInfo.totalMatch).toFixed(0);
+  var _bank = Number.parseFloat(looleInfo.totalBank).toFixed(2);
+  var _com = Number.parseFloat(looleInfo.totalCommission).toFixed(2);
+ 
   
-  var nAmount = Number.parseFloat(currentUser.point).toFixed(0);
-  var nMatch = Number.parseFloat(currentUser.totalMatch).toFixed(0);
-  var nWin = Number.parseFloat(currentUser.totalWin).toFixed(0);
-  var nBalance = Number.parseFloat(currentUser.balance).toFixed(2);
-  currentUser.userAnalyses?.sort((a, b) => (a.id < b.id) ? 1 : -1)
-  var nProfit = 0
-  try{
-    nProfit = Number.parseFloat(currentUser.userAnalyses[0].profit).toFixed(2);
-  }catch(e){
-    nProfit = 0
-  }
    
   return (
     <>
@@ -42,7 +37,7 @@ const DashStat = (prop) => {
                       <Statistic size="mini">
                         <Statistic.Value>
                           <CurrencyFormat
-                            value={1233}
+                            value={_user}
                             displayType={"text"}
                             thousandSeparator={true}
                             prefix={""}
@@ -64,7 +59,7 @@ const DashStat = (prop) => {
                       <Statistic size="mini">
                         <Statistic.Value>
                           <CurrencyFormat
-                            value={nAmount}
+                            value={_match}
                             displayType={"text"}
                             thousandSeparator={true}
                             prefix={""}
@@ -89,7 +84,7 @@ const DashStat = (prop) => {
                     <Statistic size="mini">
                       <Statistic.Value>$
                         <CurrencyFormat
-                          value={1001669}
+                          value={_bank}
                           displayType={"text"}
                           thousandSeparator={true}
                           prefix={""}
@@ -111,7 +106,7 @@ const DashStat = (prop) => {
                       <Statistic.Value className="text-center">
                         $
                         <CurrencyFormat
-                          value={nProfit}
+                          value={_com}
                           displayType={"text"}
                           thousandSeparator={true}
                           prefix={""}

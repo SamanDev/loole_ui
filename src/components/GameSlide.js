@@ -32,7 +32,7 @@ export default function GameSlide() {
       src={"/assets/images/games/" + item.name + ".jpg"}
       alt={item.name}
       as={Link}
-      label={{ content: getLabel(item),inverted:true, ribbon: true,color:''+Colors[i].toLowerCase()+'' }}
+      label={{ content: getLabel(item), ribbon: true,color:''+Colors[i].toLowerCase()+'' }}
       style={{minHeight:200}}
       size='medium'
       to={"/game/" + item.name}

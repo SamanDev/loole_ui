@@ -12,7 +12,19 @@ import Report from "components/report.component";
 // react-bootstrap components
 
 import { Tab } from 'semantic-ui-react'
-
+function editCounry(options){
+  var  newArray = []
+  options.map((item, w) => {
+    if(item.coin != 'Point'){
+      newArray.push(item)
+    }
+   
+   
+    
+  })
+ 
+  return newArray
+}
 function profile(prop) {
   const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
@@ -21,7 +33,7 @@ function profile(prop) {
 const key = prop.findStateId(myState,'keyProfile');
 var currentUser = prop.findStateId(myState,'currentUser');
 
-  var dataTransaction = currentUser.usersReports;
+  var dataTransaction = editCounry(currentUser.usersReports);
   const panes = [
     {id:1, menuItem: 'Profile', render: () => <Tab.Pane><ProfileForm {...prop}/></Tab.Pane> },
     {id:2, menuItem: 'Tags', render: () => <Tab.Pane><TagsForm {...prop}/><SocialForm {...prop}/></Tab.Pane>},

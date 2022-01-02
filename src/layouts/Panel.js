@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { ConfigProvider } from "react-avatar";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch ,useHistory} from "react-router-dom";
 
 import { Checkbox, Modal, Menu, Segment, Sidebar } from "semantic-ui-react";
 
@@ -39,6 +39,7 @@ const d = new Date();
 let da = d.getSeconds();
 let day = da % 7;
 function Panel(props) {
+  const history = useHistory();
   const [sidebarImage, setSidebarImage] = React.useState();
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
   const [visible, setVisible] = React.useState(false);
@@ -46,6 +47,7 @@ function Panel(props) {
   useEffect(() => {
     setMyState(props.myState);
   }, [props.myState]);
+  
   const currentUser = props.findStateId(myState, "currentUser");
 
   const open = props.findStateId(myState, "openModalAdd");
@@ -67,6 +69,7 @@ function Panel(props) {
         //sconsole.log(prop.component)
 
         props.onUpdateItem("profileUser", false);
+        
         return (
           <Route
             path={prop.layout + prop.path}

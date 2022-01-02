@@ -96,7 +96,11 @@ function FormExampleFieldErrorLabel(prop) {
               response.data.accessToken + "&user=" + response.data.username,
               response.data
             );
-            if(location.pathname.indexOf("home")>-1){history.push("/panel/dashboard");}
+            if(location.pathname.indexOf("home")>-1){
+              history.push("/panel/dashboard");
+          }else{
+            prop.onUpdateItem("openModalLogin", false)
+            }
             
           } else {
             Swal.fire({

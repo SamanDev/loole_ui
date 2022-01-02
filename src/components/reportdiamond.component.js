@@ -21,13 +21,6 @@ import {
 } from "semantic-ui-react";
 import { get_date_locale,getGroupBadgeBlock } from "components/include";
 import DataTable from 'react-data-table-component';
-function editCounry(item){
-  var _des = item.description
-  if(item.coin){_des = item.coin}
-  
- 
-  return _des
-}
 const conditionalRowStyles = [
   {
     when: row => row.endBalance < row.startBalance,
@@ -60,26 +53,23 @@ const columns = [
     },
     {
       name: 'Description',
-      selector: row => editCounry(row) + ' '+ row.mode,
+      selector: row => row.description + ' '+ row.mode,
       sortable: true,
       grow: 4,
-      minWidth: '200px',
-     
+      minWidth: '200px'
   },
   
   {
     name: 'Amount',
     selector: row => row.amount,
-    format: row =>  getGroupBadgeBlock('Dollar', row.amount, "small left"),
+    format: row =>  getGroupBadgeBlock('Point', row.amount, "small left"),
     sortable: true,
-    width:'150px',
 },
 {
   name: 'EndBank',
   selector: row => row.endBalance,
-  format: row =>  getGroupBadgeBlock('Dollar', row.endBalance, "small left"),
+  format: row =>  getGroupBadgeBlock('Point', row.endBalance, "small left"),
   sortable: true,
-  width:'150px',
 },
 ];
 const ExpandedComponent = ({ data }) => <pre>{JSON.stringify(data, null, 2)}</pre>;

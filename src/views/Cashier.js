@@ -39,7 +39,19 @@ var dataTransaction = [
 ];
 
 var allValid = true;
-
+function editCounry(options){
+  var  newArray = []
+  options.map((item, w) => {
+    if(item.coin != 'Point'){
+      newArray.push(item)
+    }
+   
+   
+    
+  })
+ 
+  return newArray
+}
 function Cashier(prop) {
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
@@ -50,7 +62,7 @@ function Cashier(prop) {
 
   var userMethods = currentUser.cashierGateways;
   userMethods.sort((a, b) => (a.mode > b.mode ? 1 : -1));
-  dataTransaction = currentUser.usersReports;
+  dataTransaction = editCounry(currentUser.usersReports);
   useEffect(() => {
     prop.onUpdateItem("coins", eventCoins);
   }, [eventCoins]);
@@ -176,15 +188,7 @@ function Cashier(prop) {
       menuItem: <Menu.Item key={"3"}>Transactions</Menu.Item>,
       render: () => (
         <Tab.Pane attached={false}>
-          <Card className="regular-table-with-color">
-            <Card.Header>
-              <Card.Title as="h4">Transactions</Card.Title>
-              <div className="card-category">Your activity list</div>
-            </Card.Header>
-            <Card.Body className="table-responsive p-0">
-              <Report usersReports={dataTransaction} />
-            </Card.Body>
-          </Card>
+         <Report usersReports={dataTransaction} />
         </Tab.Pane>
       ),
     },
