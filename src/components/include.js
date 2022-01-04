@@ -400,13 +400,14 @@ export const vsComponentPlayer = (
 ) => {
   
   try{
-    var player = matchidFind.matchPlayers[num]
+    var player = matchidFind.matchPlayers[num];
+    player =JSON.parse(JSON.stringify(player)
+      .replace(/"Tournament Player1"/g, false)
+      .replace(/"Tournament Player"/g, false))
   }catch(e){
     var player = nullplayer;
   }
-  player =JSON.parse(JSON.stringify(player)
-      .replace(/"Tournament Player1"/g, false)
-      .replace(/"Tournament Player"/g, false))
+  
   var padd = 10;
   if (matchidFind.status == "Ready" && currentUser.accessToken) {
     padd = 60;
