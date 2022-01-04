@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 
-
+import Countdown from "react-countdown";
 import $ from "jquery";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
@@ -11,16 +11,17 @@ import axios from "axios";
 import { defUser } from 'const';
 import MatchCard from "components/matchcard.component";
 import {
-  Col,
+  Col,ProgressBar
 } from "react-bootstrap";
 import {
-  getQueryVariable,
+  printMatchBTN,
   handleTagForm,
-  vsComponent,
+  vsComponentPlayer,
   printJoinalerts,
+  vsComponentTitle,printStatus,isPlayerInMatch,getCode,getColor,rendererBig
 } from "components/include";
 import {
-  Divider
+  Divider,Segment,Grid,Statistic,Button,
 } from "semantic-ui-react";
 import { POSTURLTest } from "const";
 
@@ -50,15 +51,13 @@ class MatchSection extends Component {
     this.printErr = this.printErr.bind(this);
     this.fileUpload = React.createRef();
     this.state = {
-      eventid: this.props.item.id,
-      matchid: getQueryVariable("matchid"),
-      item: this.props.item,
-      currentUser: this.props.token,
-      curPlayerReady: false,
+      myState: this.props.myState,
+      item: this.props.findStateId(this.props.myState, "eventDef"),
+      currentUser: this.props.findStateId(this.props.myState, "currentUser"),
+     eventid:this.props.findStateId(this.props.myState, "eventIDQ"),
       progress: 0,
       selectedFile: null,
-      matchidFind: this.props.matchidFind,
-      isloading: this.props.isLoading,
+      matchidFind: this.props.findStateId(this.props.myState, "match"),
       isUpLoading: false,
       progressLable: "I Win",
       successful: false,
@@ -71,17 +70,17 @@ class MatchSection extends Component {
     // Any time the current user changes,
     // Reset any parts of state that are tied to that user.
     // In this simple example, that's just the email.
-    document.title = props.item.gameMode + ' '+ props.item.gameName + ' for ' + props.item.outSign.replace('Dollar','$').replace('Point','Diamonds ') + props.item.prize +  ' Prize';
-    if (props.item !== state.item) {
+    document.title = state.item.gameMode + ' '+ state.item.gameName + ' for ' + state.item.outSign.replace('Dollar','$').replace('Point','Diamonds ') + state.item.prize +  ' Prize';
+   
+    if (props.myState !== state.myState) {
       //props.onUpdateItem('eventIDQ', getQueryVariable("id"))
+      
       return {
-        eventid: props.item.id,
-    
-      item: props.item,
-      currentUser: props.token,
-    
-      matchidFind: props.matchidFind,
-      isloading: props.isLoading,
+        myState: props.myState,
+        item: props.findStateId(props.myState, "eventDef"),
+        currentUser: props.findStateId(props.myState, "currentUser"),
+       eventid:props.findStateId(props.myState, "eventIDQ"),
+       matchidFind: props.findStateId(props.myState, "match"),
       };
     }
     return null;
@@ -89,14 +88,14 @@ class MatchSection extends Component {
   
   handleClashFinished(e) {
     this.setState({
-      isloading: true,
+      loading: true,
     });
     userService
       .saveTags("ClashRoyale", "finish", this.state.tag, this.state.eventid)
       .then(
         () => {
           this.setState({
-            isloading: false,
+            loading: false,
           });
           //this.props.history.push("/panel/dashboard");
         },
@@ -416,32 +415,30 @@ class MatchSection extends Component {
     }
   }
   render() {
+    const item = this.props.findStateId(this.state.myState, "eventDef")
+    const currentUser = this.props.findStateId(this.state.myState, "currentUser")
+    const match = this.props.findStateId(this.state.myState, "match")
+    const eventIDQ = this.props.findStateId(this.state.myState, "eventIDQ")
     let {
-      currentUser,
-      item,
+    
       progress,
       isUpLoading,
       progressLable,
-      matchidFind,
+      loading,
     } = this.state;
 
-
-    var activePlayer = 0;
-    item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
-    {matchidFind.matchPlayers.map((player) => {
-      if (player.username != "") {
-        activePlayer++;
+    var _finishTxt = 'Not Joinable';
+    //if (match.status) { _finishTxt = match.status}
+    //if (match.winner) { _finishTxt = match.winner}
+    var _mode = " 1 vs 1 ";
+      var _color = "#404040";
+     
+   
+     
+    
+      if (item.gameMode == "Tournament" || item.gameMode == "League") {
+        _mode = item.gameMode;
       }
-
-      if (
-        player.username == currentUser.username &&
-        player.ready &&
-        !this.state.curPlayerReady
-      ) {
-        //this.setState({ curPlayerReady: true });
-      }
-
-    })}
     return (
       <>
         
@@ -452,27 +449,126 @@ class MatchSection extends Component {
           md="10"
           style={{ padding: 0, marginTop: 20 }}
         >
-          {vsComponent(
-            item,
-            matchidFind,
-            this.state.matchid,
-            this.state.currentUser,
-            this.state.loading,
-            activePlayer,
-            this.handlechangeReadyEvent,
-            this.handleJoinMatch,
-            this.handleLeaveMatch,
-            this.handlecAlertLost,
-            this.fileUpload,
-            this.onChangeHandler,
-            this.handlecAlertWin,
-            isUpLoading,
-            progress,
-            progressLable
+          <>
+      {vsComponentTitle(item)}
+      <Divider fitted style={{ opacity: 0 }} />
+      {printStatus(item,_mode,_color ,item.status+'@@@'+_finishTxt,item.status)}
+      <Countdown
+        renderer={rendererBig}
+        finish={item.status + "@@@"+_finishTxt}
+        txt="@@@Avalable until"
+        match={match}
+        colorfinish={getColor(item.prize)}
+        date={item.expire}
+      />
+
+      <Segment  basic >
+        <Grid columns={2}>
+          <Grid.Column
+            style={{ background: "none !important" }}
+            
+            
+            className={match.winner != null && match.winner == match.matchPlayers[0]?.username ? "coverwinner" : null}>
+            {vsComponentPlayer(
+              item,
+              match,
+              0,
+              eventIDQ,
+              currentUser,
+              loading,
+              this.handlechangeReadyEvent,
+            )}
+          </Grid.Column>
+          <Grid.Column
+            style={{ background: "none !important" }}
+            className={match.winner != null && match.winner == match.matchPlayers[1]?.username ? "coverwinner":null}>
+          
+            {vsComponentPlayer(
+              item,
+              match,
+              1,
+              eventIDQ,
+              currentUser,
+              loading,
+              this.handlechangeReadyEvent,
+            )}
+          </Grid.Column>
+        </Grid>
+
+        <Divider vertical inverted>
+        {printMatchBTN(
+           item,
+           match,
+           eventIDQ,
+           currentUser,
+          loading,
+          0,
+          this.handlechangeReadyEvent,
+          this.handleJoinMatch,
+          this.handleLeaveMatch,
+        )}
+        </Divider>
+      </Segment>
+      {match.status == "InPlay" && (
+        <>
+
+          {isPlayerInMatch(match,currentUser.username) && (
+            <>
+              <Statistic inverted size="small">
+                <Statistic.Label>Match Code</Statistic.Label>
+                <Statistic.Value className="matchcode">
+                  {getCode(match.matchCode)}
+                </Statistic.Value>
+              </Statistic>
+
+              <Button.Group size="big" widths="3">
+                <Button
+                  color="red"
+                  onClick={this.handlecAlertLost}
+                  disabled={loading}
+                  loading={loading}
+                >
+                  I Lost
+                </Button>
+                <Button.Or color="red" style={{ minWidth: 5 }} />
+                <Button
+                  animated
+                  onClick={this.handlecAlertWin}
+                  color="green"
+                  inverted
+                  disabled={isUpLoading}
+                >
+                  <Button.Content visible>{progressLable}</Button.Content>
+                  <Button.Content hidden>Upload video</Button.Content>
+                  {progress > 0 && (
+                    <div className="prosbar">
+                      <ProgressBar
+                        variant="success"
+                        now={progress}
+                        label={""}
+                      />
+                    </div>
+                  )}
+                </Button>
+              </Button.Group>
+              <input
+                type="file"
+                id="uploadfile"
+                accept="video/*"
+                name="file"
+                className="hide"
+                ref={this.fileUpload}
+                onChange={this.onChangeHandler}
+              />
+            </>
           )}
+        </>
+      )}
+    </>
+         
            <Divider  hidden/>
           <div  className="ui cards fours centered">
-          <MatchCard  item={item} matchidFind={matchidFind} />
+          <MatchCard  item={item} matchidFind={match} />
           </div>
         </Col>
       </>

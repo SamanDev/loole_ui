@@ -84,7 +84,7 @@ import {
   handleTagForm,
   vsComponentPlayer,
   getGroupBadgeBlock,
-  printJoinalerts,
+  printJoinalerts,genMatch
 } from "components/include";
 import { UPLOADURL, POSTURLTest } from "const";
 
@@ -115,16 +115,18 @@ class TournamentSection extends Component {
     this.handleClick = this.handleClick.bind(this);
 
     this.state = {
+      myState: this.props.myState,
+      item: this.props.findStateId(this.props.myState, "eventDef"),
+      currentUser: this.props.findStateId(this.props.myState, "currentUser"),
+     eventid:this.props.findStateId(this.props.myState, "eventIDQ"),
+     matchid: this.props.findStateId(this.props.myState, "matchIDQ"),
+     
+      matchidFind: this.props.findStateId(this.props.myState, "match"),
       activeIndex: -1,
-      eventid: this.props.item.id,
-      matchid: getQueryVariable("matchid"),
-      item: this.props.item,
-      currentUser: this.props.token,
-      curPlayerReady: false,
+      
       progress: 0,
       selectedFile: null,
-      matchidFind: this.props.matchidFind,
-      isloading: this.props.isLoading,
+     
       isUpLoading: false,
       progressLable: "I Win",
       successful: false,
@@ -136,19 +138,17 @@ class TournamentSection extends Component {
     // Any time the current user changes,
     // Reset any parts of state that are tied to that user.
     // In this simple example, that's just the email.
-    document.title = props.item.gameName + ' '+ props.item.gameMode + ' - ' + props.item.outSign.replace('Dollar','$').replace('Point','Diamonds ') + props.item.prize +  ' Prize';
+    document.title = state.item.gameName + ' '+ state.item.gameMode + ' - ' + state.item.outSign.replace('Dollar','$').replace('Point','Diamonds ') + state.item.prize +  ' Prize';
     
-    if (props.item !== state.item) {
-      icEnd = 0;
-    icStart = 0;
+    if (props.myState !== state.myState) {
+      //props.onUpdateItem('eventIDQ', getQueryVariable("id"))
+      
       return {
-        eventid: props.item.id,
-    
-      item: props.item,
-      currentUser: props.token,
-    
-      matchidFind: props.matchidFind,
-      isloading: props.isLoading,
+        myState: props.myState,
+        item: props.findStateId(props.myState, "eventDef"),
+        currentUser: props.findStateId(props.myState, "currentUser"),
+       eventid:props.findStateId(props.myState, "eventIDQ"),
+       matchidFind: props.findStateId(props.myState, "match"),
       };
     }
     return null;
@@ -199,7 +199,7 @@ class TournamentSection extends Component {
   handleJoinMatch(e) {
     e.preventDefault();
     this.setState({
-      isloading: true,
+      loading: true,
     });
     var GName = {
       value: this.state.item.gameName + " - " + this.state.item.gameConsole,
@@ -219,7 +219,7 @@ class TournamentSection extends Component {
             });
           } else {
             this.setState({
-              isloading: false,
+              loading: false,
             });
 
             {
@@ -250,7 +250,7 @@ class TournamentSection extends Component {
       successful: false,
       message: "",
       submit: false,
-      isloading: false,
+      loading: false,
     });
     
     if (error?.response?.data?.status == 401) {
@@ -287,17 +287,20 @@ class TournamentSection extends Component {
   };
 
   render() {
+    const item = this.props.findStateId(this.state.myState, "eventDef")
+    const currentUser = this.props.findStateId(this.state.myState, "currentUser")
+    const match = this.props.findStateId(this.state.myState, "match")
+    const eventIDQ = this.props.findStateId(this.state.myState, "eventIDQ")
+    const matchid = this.props.findStateId(this.state.myState, "matchIDQ")
     let {
-      currentUser,
-      item,
+    
       progress,
       isUpLoading,
       progressLable,
-      matchidFind,
-      matchid,
-      isloading,
-      activeIndex,
+      loading,
+      activeIndex
     } = this.state;
+    item.matchTables.sort((a, b) => (a.level > b.level) ? 1 : -1)
     var isJoin = false;
     var lists = item.matchTables;
     icEnd = 0;
@@ -341,6 +344,102 @@ class TournamentSection extends Component {
         <>{currentUser.username == user.username && (isJoin = true)}</>
       ));
     }
+    if (item.gameMode == "Tournament") {
+      if (!item.tournamentPayout) {
+        item.tournamentPayout = "1-8, 65.00, 35.00|9-64, 50.00, 30.00, 20.00";
+      }
+      if (!item.matchLevel) {
+        item.matchLevel = [];
+        if (item.totalPlayer == 4) {
+          item.matchLevel.push(genMatch(1, 2, "SemiFinal"));
+          item.matchLevel.push(genMatch(2, 1, "Final"));
+        }
+        if (item.totalPlayer == 8) {
+          item.matchLevel.push(genMatch(1, 4, "Round 1"));
+          item.matchLevel.push(genMatch(2, 2, "SemiFinal"));
+          item.matchLevel.push(genMatch(3, 1, "Final"));
+        }
+        if (item.totalPlayer == 16) {
+          item.matchLevel.push(genMatch(1, 8, "Round 1"));
+          item.matchLevel.push(genMatch(2, 4, "Round 2"));
+          item.matchLevel.push(genMatch(3, 2, "SemiFinal"));
+
+          item.matchLevel.push(genMatch(4, 1, "Final"));
+          //item.matchLevel.push(genMatch(4, 1, "3rd Place"));
+        }
+        if (item.totalPlayer == 32) {
+          item.matchLevel.push(genMatch(1, 16, "Round 1"));
+          item.matchLevel.push(genMatch(2, 8, "Round 2"));
+          item.matchLevel.push(genMatch(3, 4, "Round 3"));
+          item.matchLevel.push(genMatch(4, 2, "SemiFinal"));
+
+          item.matchLevel.push(genMatch(5, 1, "Final"));
+          //item.matchLevel.push(genMatch(5, 1, "3rd Place"));
+        }
+      }
+      var old = JSON.stringify(item)
+      .replace(/"Tournament Player1"/g, false)
+      .replace(/"Tournament Player"/g, false); //convert to JSON string
+    var newArray = JSON.parse(old);
+   var current_brackets = [];
+    
+
+    //var events = eventGet;
+
+    if (item.tournamentPayout) {
+      var payArr = item.tournamentPayout.split("|");
+      var totalPay = item.prize;
+      for (var i = 0; i < payArr.length; i++) {
+        var paylvl = payArr[i].split(", ");
+        var payplyer = paylvl[0].split("-");
+        var tItem = item.players.length;
+        if (item.status == "Pending" || item.gameMode == "League") {
+          tItem = item.totalPlayer;
+        }
+        // console.log(payplyer[0])
+        if (
+          parseInt(payplyer[0]) <= tItem &&
+          parseInt(payplyer[1]) >= tItem
+        ) {
+          for (var j = 1; j < paylvl.length; j++) {
+            if (paylvl[j].indexOf("x") == -1) {
+              paylvl[j] = paylvl[j] + "x1";
+            }
+            var intX = paylvl[j].split("x");
+            current_brackets.push({
+              prize: (intX[0] * totalPay) / 100,
+              percent: intX[0],
+              number: intX[1],
+            });
+          }
+        }
+      }
+      for (var i = payArr.length - 1; i < payArr.length; i++) {
+        var paylvl = payArr[i].split(", ");
+        var payplyer = paylvl[0].split("-");
+        var tItem = item.players.length;
+        if (item.status == "Pending" || item.gameMode == "League") {
+          tItem = item.totalPlayer;
+        }
+        if (
+          parseInt(payplyer[0]) <= tItem &&
+          parseInt(payplyer[1]) >= tItem
+        ) {
+          for (var j = 1; j < paylvl.length; j++) {
+            if (paylvl[j].indexOf("x") == -1) {
+              paylvl[j] = paylvl[j] + "x1";
+            }
+            var intX = paylvl[j].split("x");
+            item.potential_brackets.push({
+              prize: (intX[0] * totalPay) / 100,
+              percent: intX[0],
+              number: intX[1],
+            });
+          }
+        }
+      }
+    }
+    }
     const panels = item.matchLevel.map((match, i) => {
       var hatchbackCar = lists.filter(
         (list) => list.level === item.matchLevel[i].level
@@ -377,7 +476,7 @@ class TournamentSection extends Component {
               )}
               <Link
                 
-                onClick={() => this.props.onUpdateItem("matchIDQ", mtch.id)}
+               
                 to={"/panel/matchlobby?id=" + item.id + "&matchid=" + mtch.id}
               >
                 <Segment inverted style={{ background: "none !important" }}>
@@ -387,11 +486,11 @@ class TournamentSection extends Component {
                     >
                       {vsComponentPlayer(
                         item,
-                        mtch,
+                        match,
                         0,
                         matchid,
                         currentUser,
-                        isloading,
+                        loading,
                         false
                       )}
                     </Grid.Column>
@@ -400,11 +499,11 @@ class TournamentSection extends Component {
                     >
                       {vsComponentPlayer(
                         item,
-                        mtch,
+                        match,
                         1,
                         matchid,
                         currentUser,
-                        isloading,
+                        loading,
                         false
                       )}
                     </Grid.Column>
@@ -460,10 +559,18 @@ class TournamentSection extends Component {
            
             date={item.expire}
           />
+          <Divider fitted style={{ opacity: 0 }} />
+
+<Statistic inverted color="violet" size="mini">
+  <Statistic.Label>Match Level</Statistic.Label>
+  <Statistic.Value>
+    {getMatchTitle(match.level, item.totalPlayer)}
+  </Statistic.Value>
+</Statistic>
 {printEventBTN(
               item,
               currentUser,
-              isloading,
+              loading,
               activePlayer,
               isJoin,
               mymatchFind,
@@ -595,7 +702,7 @@ class TournamentSection extends Component {
                 </Header>
                 <Message>
                 <List divided inverted relaxed>
-                {item.current_brackets.map((win, i) => {
+                {current_brackets.map((win, i) => {
                       icStart = icStart + 1;
                       icEnd = icEnd + parseInt(win.number);
                       var icShow = "#" + icStart;

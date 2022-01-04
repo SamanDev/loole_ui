@@ -81,12 +81,7 @@ export const defUser = {
           "name": "ROLE_USER"
         }
       ],
-    "userTags": [
-      
-    ],
-    "userSocialAccounts": [
-      
-    ],
+  
     "cashierGateways":[
       {
         "id": 1,
@@ -101,8 +96,9 @@ export const defUser = {
         "active": true
       }
     ],
-    "usersReports":[
-      
-    ],
-    "events":[]
+    "userConnectionInfos":null,
+   "userAnalyses":null,
+   "usersReports":null,
+   "userTags":null,
+   "userSocialAccounts":null
   }

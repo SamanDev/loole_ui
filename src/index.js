@@ -23,7 +23,7 @@ import Forget from "components/newforget.component";
 import Chart from "components/chart.component";
 import DC from "components/dc.component";
 import eventBus from "views/eventBus";
-import { getQueryVariable, editEvent } from "components/include";
+import { getQueryVariable, editEvent,findActiveMatch } from "components/include";
 import { useQueryClient, QueryClient, QueryClientProvider } from "react-query";
 import {
   Grid,
@@ -150,6 +150,7 @@ function Main() {
 
   var currentUser = findStateId(myState, "currentUser");
   var events = findStateId(myState, "events");
+  var eventDef = findStateId(myState, "eventDef");
   var eventIDQ = findStateId(myState, "eventIDQ");
   var matchIDQ = findStateId(myState, "matchIDQ");
   var openModalLogin = findStateId(myState, "openModalLogin");
@@ -181,13 +182,20 @@ function Main() {
   useEffect(() => {
     if (eventGet?.id) {
       onUpdateItem("eventDef", eventGet);
+      onUpdateItem("eventIDQ", eventGet.id);
+      onUpdateItem("matchIDQ", getQueryVariable("matchid"));
       queryClient.setQueryData(["Event", eventGet.id], eventGet);
-      var NewEv = editEvent(eventGet, eventGet.id, matchIDQ, currentUser);
-      onUpdateItem("eventMatch", NewEv);
-      onUpdateItem("match", NewEv.matchidFind);
-      //onUpdateItem('eventIDQ', eventGet.id)
+      onUpdateItem("match", findActiveMatch(eventGet,matchIDQ));
+      
     }
   }, [eventGet]);
+  useEffect(() => {
+    if (eventDef?.matchTables) {
+      
+      onUpdateItem("match", findActiveMatch(eventDef,matchIDQ));
+      
+    }
+  }, [matchIDQ]);
   useEffect(() => {
     eventBus.on("eventsData", (eventsGet) => {
       onUpdateItem("events", eventsGet);
@@ -213,22 +221,20 @@ function Main() {
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {
         onUpdateItem("eventDef", eventGet);
+        onUpdateItem("eventIDQ", eventGet.id);
         queryClient.setQueryData(["Event", eventGet.id], eventGet);
-        var NewEv = editEvent(eventGet, eventIDQ, matchIDQ, currentUser);
-        if (parseInt(eventGet.id) == parseInt(eventIDQ)) {
-          onUpdateItem("eventMatch", NewEv);
-          onUpdateItem("match", NewEv?.matchidFind);
-          
-          }
-          if (parseInt(eventGet.id) != parseInt(eventIDQ)) {
-            //
+        onUpdateItem("match", findActiveMatch(eventGet,matchIDQ));
+         
+            
           {eventGet.players.map((player, j) => {
+            if(window.location.pathname + window.location.search != "/panel/lobby?id="+eventGet.id){
             if(player.username == currentUser.username && (eventGet.status=='Ready' || eventGet.status=='InPlay' )){
              // onUpdateItem('eventIDQ', eventGet.id)
               history.push("/panel/lobby?id="+eventGet.id);
             }
-           })}
           }
+           })}
+          
 
       
      
@@ -250,8 +256,12 @@ function Main() {
     ReactGA.pageview(location.pathname + location.search);
     if(getQueryVariable("id")){
       onUpdateItem('eventIDQ', getQueryVariable("id"));
-    console.log(getQueryVariable("id"))
+
   }else{onUpdateItem('eventIDQ', false)}
+  if(getQueryVariable("matchid")){
+    onUpdateItem('matchIDQ', getQueryVariable("matchid"));
+ 
+}else{onUpdateItem('matchIDQ', false)}
   }, [location]);
   
 

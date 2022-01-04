@@ -58,7 +58,12 @@ import {
 import { useHistory } from "react-router";
 
 var moment = require("moment");
+var nullplayer = {
+  id: 100000,
 
+  username: false,
+  ready: false,
+};
 export const getQueryVariable = (variable, q) => {
   if (q) {
     var query = q;
@@ -321,7 +326,7 @@ export const getGroupBadge = (sign, amount, classes) => {
   );
 };
 
-export const getGroupBadgeBlock = (sign, amount, label, pos, color) => {
+export const getGroupBadgeBlock = (sign, amount, label, pos) => {
   if (sign == "Dollar") {
     var nAmount = Number.parseFloat(amount).toFixed(2);
     var nIcon = "dollar";
@@ -393,7 +398,15 @@ export const vsComponentPlayer = (
   isloading,
   handlechangeReadyEvent
 ) => {
-  var player = matchidFind.matchPlayers[num];
+  
+  try{
+    var player = matchidFind.matchPlayers[num]
+  }catch(e){
+    var player = nullplayer;
+  }
+  player =JSON.parse(JSON.stringify(player)
+      .replace(/"Tournament Player1"/g, false)
+      .replace(/"Tournament Player"/g, false))
   var padd = 10;
   if (matchidFind.status == "Ready" && currentUser.accessToken) {
     padd = 60;
@@ -510,7 +523,7 @@ export const vsComponentPlayer = (
         <div
           style={
             matchidFind.status != "Ready" ||
-            player.username != currentUser.username ||
+           
             isloading
               ? {
                   
@@ -531,7 +544,7 @@ export const vsComponentPlayer = (
           }
         >
           <small>Ready</small><br/>
-          <Checkbox toggle defaultChecked={player.ready} disabled={player.username != currentUser.username}
+          <Checkbox toggle defaultChecked={player?.ready} disabled={player.username != currentUser.username}
             
             onChange={(checked) => {
               handlechangeReadyEvent(checked);
@@ -550,7 +563,7 @@ export const vsComponentPlayer = (
             opacity: 0.5,
           }}
         ><small>Ready</small><br/>
-          <Checkbox toggle defaultChecked={player?.ready} disabled
+          <Checkbox toggle checked={player?.ready} disabled
             
              />
           
@@ -592,7 +605,7 @@ export const vsComponentPlayer = (
   );
   return (
     <>
-      <div style={!player?.username ? { opacity: 0.3,overflow:'hidden' } : {overflow:'hidden'}}>
+      <div style={!_p ? { opacity: 0.3,overflow:'hidden' } : {overflow:'hidden'}}>
         <SidebarExampleSidebar
           user={user}
           item={item}
@@ -624,11 +637,10 @@ export const printMatchBTN = (
   var _res = 'VS';
   {(item.status == "Pending" || item.status == "Ready") && (
     <>
-      {match.matchPlayers[0].username == currentUser.username ||
-      match.matchPlayers[1].username == currentUser.username ? (
+      {isPlayerInMatch(match,currentUser.username) ? (
         <>
-          {match.matchPlayers[0].username != currentUser.username &&
-            !match.matchPlayers[1].ready && (
+          {match.matchPlayers[0]?.username != currentUser.username &&
+            !match.matchPlayers[1]?.ready && (
               <>
                 {_res = <>
               <Button
@@ -917,8 +929,8 @@ export const vsComponent = (
       </Segment>
       {match.status == "InPlay" && (
         <>
-          {(match.matchPlayers[0].username == currentUser.username ||
-            match.matchPlayers[1].username == currentUser.username) && (
+
+          {isPlayerInMatch(match,currentUser.username) && (
             <>
               <Statistic inverted size="small">
                 <Statistic.Label>Match Code</Statistic.Label>
@@ -973,7 +985,7 @@ export const vsComponent = (
     </>
   );
 };
-export const getGroupBadgePrice = (sign, amount, classes) => {
+export const getGroupBadgePrice = (sign, amount) => {
   if (sign == "Dollar") {
     var nAmount = Number.parseFloat(amount).toFixed(2);
   } else {
@@ -1003,7 +1015,7 @@ export const getGroupBadgePrice = (sign, amount, classes) => {
     </>
   );
 };
-export const getGroupBadgesmall = (sign, amount, classes) => {
+export const getGroupBadgesmall = (sign, amount) => {
   if (sign == "Dollar") {
     var nAmount = Number.parseFloat(amount).toFixed(2);
   } else {
@@ -1069,7 +1081,7 @@ export const getModalTag = (filtermode) => {
       confirmButtonText: "Connect",
 
       showLoaderOnConfirm: true,
-      preConfirm: (login) => {
+      preConfirm: () => {
         if (
           document.getElementById("tagid").value &&
           document.getElementById("tagname").value
@@ -1113,7 +1125,7 @@ export const getModalTag = (filtermode) => {
       confirmButtonText: "Connect",
 
       showLoaderOnConfirm: true,
-      preConfirm: (login) => {
+      preConfirm: () => {
         if (document.getElementById("tagid").value) {
           return {
             tagid: document.getElementById("tagid").value,
@@ -1165,7 +1177,7 @@ export const getModalTag = (filtermode) => {
       confirmButtonText: "Connect",
 
       showLoaderOnConfirm: true,
-      preConfirm: (login) => {
+      preConfirm: () => {
         if (document.getElementById("tagid").value) {
           return {
             tagid: document.getElementById("tagid").value,
@@ -1207,7 +1219,7 @@ export const getModalTag = (filtermode) => {
       confirmButtonText: "Connect",
 
       showLoaderOnConfirm: true,
-      preConfirm: (login) => {
+      preConfirm: () => {
         if (document.getElementById("tagid").value) {
           return {
             tagid: document.getElementById("tagid").value,
@@ -1232,7 +1244,7 @@ export const getModalTag = (filtermode) => {
       confirmButtonText: "Continue",
 
       showLoaderOnConfirm: true,
-      preConfirm: (login) => {
+      preConfirm: () => {
         return {
           tagid: filter + "2",
         };
@@ -1253,7 +1265,7 @@ export const getModalTag = (filtermode) => {
       confirmButtonText: "Continue",
 
       showLoaderOnConfirm: true,
-      preConfirm: (login) => {
+      preConfirm: () => {
         return {
           tagid: filter + "2",
         };
@@ -1293,7 +1305,7 @@ export const getModalTag = (filtermode) => {
       confirmButtonText: "Connect",
 
       showLoaderOnConfirm: true,
-      preConfirm: (login) => {
+      preConfirm: () => {
         if (document.getElementById("tagid").value) {
           return {
             tagid: document.getElementById("tagid").value,
@@ -1328,7 +1340,7 @@ export const getModalTag = (filtermode) => {
       confirmButtonText: "Connect",
 
       showLoaderOnConfirm: true,
-      preConfirm: (login) => {
+      preConfirm: () => {
         if (document.getElementById("tagid").value) {
           return {
             tagid: document.getElementById("tagid").value,
@@ -1356,7 +1368,6 @@ export const renderer = ({
   minutes,
   seconds,
   completed,
-  dateExpired,
 }) => {
   if (completed) {
     // Render a complete state
@@ -1485,7 +1496,6 @@ export const rendererBig = ({
   if (props.size) {
     _size = props.size;
   }
-  var _mode = props.mode;
   var _color = props.color;
   var _colorFinish = props.colorfinish;
   if (!_colorFinish) {
@@ -1576,6 +1586,32 @@ export const getGameTag = (game, userTags) => {
     );
   }
 };
+export const findActiveMatch = (event, matchID) => {
+  var _match;
+  event.matchTables.sort((a, b) => (a.level > b.level) ? 1 : -1)
+  if(matchID){
+   
+    event.matchTables.map(function (match) {
+      if (match.id == matchID) {
+        _match = match;
+      }
+    });
+  }else{
+    _match = event.matchTables[0]
+  }
+  _match.matchPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
+  return _match
+}
+export const isPlayerInMatch = (match, username) => {
+  var _is = false;
+  match.matchPlayers?.map(function (user) {
+      if (user.username == username) {
+        _is = true;
+      }
+    });
+  
+  return _is
+}
 export const getSocialTag = (game, userTags) => {
   var res = "Not Connected";
   var resName = "";
@@ -1686,7 +1722,6 @@ export const userDetails = (currentUser) => {
 };
 export const haveSocialTag = (platform, userTags) => {
   var res = "Not Connected";
-  var resName = "";
   if (userTags) {
     userTags.map(function (tag) {
       if (tag.accountName == platform) {
@@ -1702,7 +1737,7 @@ export const haveSocialTag = (platform, userTags) => {
 };
 export const getPlayerTag = (player, playerTags, mode, gameName) => {
   var val = "";
-  playerTags.map((tag, w) => {
+  playerTags.map((tag) => {
     if (tag.username == player) {
       if (mode == "nickname") {
         val = tag.nickName;
@@ -1722,7 +1757,6 @@ export const getPlayerTag = (player, playerTags, mode, gameName) => {
 
 export const haveGameTag = (game, userTags) => {
   var res = "Not Connected";
-  var resName = "";
   if (userTags) {
     userTags.map(function (tag) {
       if (tag.gameName == game) {
@@ -1936,7 +1970,8 @@ export const editDateTime = (datee) => {
   }
   return dateExpired;
 };
-function genMatch(lvl, matchCount, title) {
+
+  export const genMatch = (lvl, matchCount, title) => {
   var matchSample = {
     startTime: 1619728571000,
     winner: "Salar",
@@ -1948,24 +1983,6 @@ function genMatch(lvl, matchCount, title) {
       {
         ready: false,
         username: "Yaran12",
-      },
-    ],
-  };
-  var matchSampleull = {
-    startTime: 1619728571000,
-    winner: null,
-    matchPlayers: [
-      {
-        id: 257,
-        username: null,
-        tagName: null,
-        ready: false,
-      },
-      {
-        id: 257,
-        username: null,
-        tagName: null,
-        ready: false,
       },
     ],
   };
@@ -2034,88 +2051,36 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
         if (!item.tournamentPayout) {
           item.tournamentPayout = "1-8, 65.00, 35.00|9-64, 50.00, 30.00, 20.00";
         }
-      }
-      if (item.gameMode == "League") {
-        if (!item.scoreTemplate) {
-          item.scoreTemplate = {
-            kills: 20,
-            damageDone: 0.06,
-            timePlayed: 0.04,
-            teamPlacement: [
-              {
-                type: "eq",
-                trigger: "1",
-                multiplier: "0",
-                addition: "240",
-                altText: "1st Place",
-              },
-              {
-                type: "lte",
-                trigger: "3",
-                multiplier: "0",
-                addition: "60",
-                altText: "2nd or 3rd Place",
-              },
-              {
-                type: "lte",
-                trigger: "8",
-                multiplier: "0",
-                addition: "20",
-                altText: "4th to 8th Place",
-              },
-            ],
-          };
+        if (!item.matchLevel) {
+          item.matchLevel = [];
+          if (item.totalPlayer == 4) {
+            item.matchLevel.push(genMatch(1, 2, "SemiFinal"));
+            item.matchLevel.push(genMatch(2, 1, "Final"));
+          }
+          if (item.totalPlayer == 8) {
+            item.matchLevel.push(genMatch(1, 4, "Round 1"));
+            item.matchLevel.push(genMatch(2, 2, "SemiFinal"));
+            item.matchLevel.push(genMatch(3, 1, "Final"));
+          }
+          if (item.totalPlayer == 16) {
+            item.matchLevel.push(genMatch(1, 8, "Round 1"));
+            item.matchLevel.push(genMatch(2, 4, "Round 2"));
+            item.matchLevel.push(genMatch(3, 2, "SemiFinal"));
+  
+            item.matchLevel.push(genMatch(4, 1, "Final"));
+            //item.matchLevel.push(genMatch(4, 1, "3rd Place"));
+          }
+          if (item.totalPlayer == 32) {
+            item.matchLevel.push(genMatch(1, 16, "Round 1"));
+            item.matchLevel.push(genMatch(2, 8, "Round 2"));
+            item.matchLevel.push(genMatch(3, 4, "Round 3"));
+            item.matchLevel.push(genMatch(4, 2, "SemiFinal"));
+  
+            item.matchLevel.push(genMatch(5, 1, "Final"));
+            //item.matchLevel.push(genMatch(5, 1, "3rd Place"));
+          }
         }
-      }
-
-      if (item.gameMode == "League") {
-        item.tournamentPayout =
-          "1-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00|11-20, 45.00, 28.00, 17.00, 10.00|21-40, 36.00, 23.00, 15.00, 11.00, 8.00, 7.00|41-70, 30.00, 20.00, 14.00, 10.00, 8.00, 7.00, 6.00, 5.00|71-100, 29.00, 18.00, 12.50, 10.00, 8.00, 6.50, 5.50, 4.50, 3.50, 2.50|101-200, 28.00, 17.50, 11.50, 8.50, 7.00, 5.50, 4.50, 3.50, 2.50, 1.50, 1.00x10|201-400, 27.00, 16.50, 10.50, 8.00, 6.25, 4.75, 3.75, 2.75, 1.75, 1.25, 0.75x10, 0.50x20|401-700, 26.00, 15.50, 10.00, 7.50, 6.00, 4.50, 3.50, 2.50, 1.50, 1.00, 0.65x10, 0.40x20, 0.25x30|701-1000, 25.00, 15.00, 10.00, 7.25, 5.50, 4.25, 3.25, 2.25, 1.25, 0.75, 0.55x10, 0.40x20, 0.25x30, 0.15x30";
-      }
-
-     
-      if (!item.rules) {
-        item.info = {
-          conditions: [
-            "Thank you for participating in our COD: Warzone Beta tournament",
-            "During the Beta scores may be altered, removed or updated as we test the implementation of our scoring systems",
-            "Only games played after you join the tournament are counted",
-            "SMURF accounts are not allowed on Repeat.gg and will be banned",
-          ],
-        };
-        item.rules =
-          "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>";
-      }
-      if (!item.matchLevel) {
-        item.matchLevel = [];
-        if (item.totalPlayer == 4) {
-          item.matchLevel.push(genMatch(1, 2, "SemiFinal"));
-          item.matchLevel.push(genMatch(2, 1, "Final"));
-        }
-        if (item.totalPlayer == 8) {
-          item.matchLevel.push(genMatch(1, 4, "Round 1"));
-          item.matchLevel.push(genMatch(2, 2, "SemiFinal"));
-          item.matchLevel.push(genMatch(3, 1, "Final"));
-        }
-        if (item.totalPlayer == 16) {
-          item.matchLevel.push(genMatch(1, 8, "Round 1"));
-          item.matchLevel.push(genMatch(2, 4, "Round 2"));
-          item.matchLevel.push(genMatch(3, 2, "SemiFinal"));
-
-          item.matchLevel.push(genMatch(4, 1, "Final"));
-          //item.matchLevel.push(genMatch(4, 1, "3rd Place"));
-        }
-        if (item.totalPlayer == 32) {
-          item.matchLevel.push(genMatch(1, 16, "Round 1"));
-          item.matchLevel.push(genMatch(2, 8, "Round 2"));
-          item.matchLevel.push(genMatch(3, 4, "Round 3"));
-          item.matchLevel.push(genMatch(4, 2, "SemiFinal"));
-
-          item.matchLevel.push(genMatch(5, 1, "Final"));
-          //item.matchLevel.push(genMatch(5, 1, "3rd Place"));
-        }
-      }
-      var old = JSON.stringify(item)
+        var old = JSON.stringify(item)
         .replace(/"Tournament Player1"/g, false)
         .replace(/"Tournament Player"/g, false); //convert to JSON string
       var newArray = JSON.parse(old);
@@ -2178,20 +2143,64 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
           }
         }
       }
+      }
+      if (item.gameMode == "League") {
+        if (!item.scoreTemplate) {
+          item.scoreTemplate = {
+            kills: 20,
+            damageDone: 0.06,
+            timePlayed: 0.04,
+            teamPlacement: [
+              {
+                type: "eq",
+                trigger: "1",
+                multiplier: "0",
+                addition: "240",
+                altText: "1st Place",
+              },
+              {
+                type: "lte",
+                trigger: "3",
+                multiplier: "0",
+                addition: "60",
+                altText: "2nd or 3rd Place",
+              },
+              {
+                type: "lte",
+                trigger: "8",
+                multiplier: "0",
+                addition: "20",
+                altText: "4th to 8th Place",
+              },
+            ],
+          };
+        }
+      
+        item.tournamentPayout =
+          "1-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00|11-20, 45.00, 28.00, 17.00, 10.00|21-40, 36.00, 23.00, 15.00, 11.00, 8.00, 7.00|41-70, 30.00, 20.00, 14.00, 10.00, 8.00, 7.00, 6.00, 5.00|71-100, 29.00, 18.00, 12.50, 10.00, 8.00, 6.50, 5.50, 4.50, 3.50, 2.50|101-200, 28.00, 17.50, 11.50, 8.50, 7.00, 5.50, 4.50, 3.50, 2.50, 1.50, 1.00x10|201-400, 27.00, 16.50, 10.50, 8.00, 6.25, 4.75, 3.75, 2.75, 1.75, 1.25, 0.75x10, 0.50x20|401-700, 26.00, 15.50, 10.00, 7.50, 6.00, 4.50, 3.50, 2.50, 1.50, 1.00, 0.65x10, 0.40x20, 0.25x30|701-1000, 25.00, 15.00, 10.00, 7.25, 5.50, 4.25, 3.25, 2.25, 1.25, 0.75, 0.55x10, 0.40x20, 0.25x30, 0.15x30";
+      
+          if (!item.rules) {
+            item.info = {
+              conditions: [
+                "Thank you for participating in our COD: Warzone Beta tournament",
+                "During the Beta scores may be altered, removed or updated as we test the implementation of our scoring systems",
+                "Only games played after you join the tournament are counted",
+                "SMURF accounts are not allowed on Repeat.gg and will be banned",
+              ],
+            };
+            item.rules =
+              "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>";
+          }
+        }
+
+     
+      
+     
+      
 
       lists = item.matchTables;
       matchidFind = item.matchTables[0];
-//console.log(matchIDQ)
-      if (matchIDQ) {
-        lists.map((tblmatch, w) => {
-          //console.log(tblmatch.id == parseInt(eventIDQ))
-          if (parseInt(tblmatch.id) == parseInt(matchIDQ)) {
-            matchidFind = tblmatch;
-          }
-        });
 
-        //matchidFind = lists.filter( (list) => list.id === );
-      }
 
       if (
         (item.status == "InPlay" ||
@@ -2199,7 +2208,7 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
           item.status == "Ready") &&
         item.gameMode == "Tournament"
       ) {
-        lists.map((tblmatch, w) => {
+        lists.map((tblmatch) => {
           
           if (
             tblmatch.status == "InPlay" ||
@@ -2219,27 +2228,14 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
           }
         });
 
-        //matchidFind = lists.filter( (list) => list.id === );
+
       }
-      //matchidFind.status = 'InPlay'
+   
 
 
-      if (!matchidFind) {
-        matchidFind = {
-          id: item.id,
-          winner: null,
-          status: item.status,
-          level: 1,
-          matchCode: null,
-          startTime: "2021-11-29T12:18:01.000+00:00",
-          matchPlayers: [],
-          matchChats: [],
-        };
-      }
-      //console.log(matchidFind);
       if (item.chats != "null") {
         {
-          item.chats.map((itemnew, i) => {
+          item.chats.map((itemnew) => {
             finalChat.push(itemnew);
           });
         }
@@ -2254,7 +2250,7 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
       finalChat = [];
       if (matchidFind.matchChats != "null") {
         {
-          matchidFind.matchChats.map((itemnew, i) => {
+          matchidFind.matchChats.map((itemnew) => {
             finalChat.push(itemnew);
           });
         }
@@ -2317,8 +2313,6 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
 };
 
 export const printProductBlock = (item) => {
-  var _mode = " 1 v 1 ";
-  var _color = "#404040";
 
   return (
     <Link to={"/panel/lobby?id=" + item.id}>
