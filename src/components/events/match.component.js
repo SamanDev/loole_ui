@@ -73,7 +73,7 @@ class MatchSection extends Component {
     document.title = state.item.gameMode + ' '+ state.item.gameName + ' for ' + state.item.outSign.replace('Dollar','$').replace('Point','Diamonds ') + state.item.prize +  ' Prize';
    
     if (props.myState !== state.myState) {
-      //props.onUpdateItem('eventIDQ', getQueryVariable("id"))
+    
       
       return {
         myState: props.myState,
