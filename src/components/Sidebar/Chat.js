@@ -285,7 +285,7 @@ class Chatbar extends Component {
     // Any time the current user changes,
     // Reset any parts of state that are tied to that user.
     // In this simple example, that's just the email.
-    if (props.eventchats !== state.eventchats) {
+    if (props.eventchats !== state.eventchats || props.matchID !== state.matchID) {
       return {
         eventID: props.eventID,
         matchID: props.matchID,
@@ -351,22 +351,7 @@ class Chatbar extends Component {
                       messageBox: "",
                       isLoading:false
                     });
-                    const Toast = Swal.mixin({
-                      toast: true,
-                      position: 'top-end',
-                      showConfirmButton: false,
-                      timer: 3000,
-                      timerProgressBar: true,
-                      didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                      }
-                    })
                     
-                    Toast.fire({
-                      icon: 'success',
-                      title: 'Saved.'
-                    })
                   },
                   (error) => {
                     alert(error.message)
@@ -386,7 +371,7 @@ class Chatbar extends Component {
   
   render() {
     
-    let { chats, eventchats, masterplayer, eventstatus,secondplayer,isLoading,currentUser } = this.state;
+    let { chats, eventchats, masterplayer, eventstatus,secondplayer,isLoading,currentUser ,matchID,messageBox,eventID} = this.state;
     // this is for the rest of the collapses
     var finalChat = []
     if(chats!='null'){
@@ -425,7 +410,7 @@ class Chatbar extends Component {
                       }}
                       
                     >
-                      <Input loading={(currentUser.accessToken != '' && this.state.isLoading) && (true)} disabled={(currentUser.accessToken == '' || this.state.isLoading) && (true)} fluid value={(this.state.messageBox) && (this.state.messageBox)} placeholder='type something...' onChange={this.changeMessageBox} />
+                      <Input loading={(currentUser.accessToken != '' && isLoading) && (true)} disabled={(currentUser.accessToken == '' || isLoading) && (true)} fluid value={(messageBox) && (messageBox)} placeholder='type something...' onChange={this.changeMessageBox} />
                       
                       <Row>
                         <Col>
@@ -464,7 +449,7 @@ class Chatbar extends Component {
                   <Card.Body
                     style={{  overflow: "auto" }}
                   >
-                   {mycreateChats(finalChat,masterplayer,secondplayer,this.state.matchID,this.props.onUpdateItem)}
+                   {mycreateChats(finalChat,masterplayer,secondplayer,matchID,this.props.onUpdateItem)}
                     
                     
                   </Card.Body>

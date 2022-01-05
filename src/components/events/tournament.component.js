@@ -301,6 +301,7 @@ class TournamentSection extends Component {
       activeIndex
     } = this.state;
     item.matchTables.sort((a, b) => (a.level > b.level) ? 1 : -1)
+    item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
     var isJoin = false;
     var lists = item.matchTables;
     icEnd = 0;
@@ -460,7 +461,7 @@ class TournamentSection extends Component {
         },
 
         content: hatchbackCar.map((mtch, z) => {
-         
+          hatchbackCar[z].matchPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
           return (
             <span key={z.toString()}>
             
@@ -489,7 +490,7 @@ class TournamentSection extends Component {
                     >
                       {vsComponentPlayer(
                         item,
-                        match,
+                        mtch,
                         0,
                         matchid,
                         currentUser,
@@ -502,7 +503,7 @@ class TournamentSection extends Component {
                     >
                       {vsComponentPlayer(
                         item,
-                        match,
+                        mtch,
                         1,
                         matchid,
                         currentUser,

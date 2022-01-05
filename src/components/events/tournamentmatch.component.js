@@ -506,7 +506,7 @@ class MatchSection extends Component {
         </Grid>
 
         <Divider vertical inverted>
-        
+        VS
         </Divider>
       </Segment>
       {match.status == "InPlay" && (

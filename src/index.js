@@ -264,10 +264,11 @@ function Main() {
       onUpdateItem('eventIDQ', getQueryVariable("id"));
 
   }else{onUpdateItem('eventIDQ', false);onUpdateItem("eventDef", false);}
-  if(getQueryVariable("matchid")){
-    onUpdateItem('matchIDQ', getQueryVariable("matchid"));
+  if(getQueryVariable("matchid",location.pathname + location.search)){
+    onUpdateItem('matchIDQ', getQueryVariable("matchid",location.pathname + location.search));
  
 }else{onUpdateItem('matchIDQ', false)}
+
   }, [location]);
   
 
