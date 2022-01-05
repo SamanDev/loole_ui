@@ -42,7 +42,7 @@ var allValid = true;
 function editCounry(options){
   var  newArray = []
   options.map((item, w) => {
-    if(item.coin != 'Point'){
+    if(item.coin != 'Point' &&   item.mode != 'Point'){
       newArray.push(item)
     }
    

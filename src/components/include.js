@@ -520,7 +520,7 @@ export const vsComponentPlayer = (
   );
   var ready = (
     <>
-      {player?.username == currentUser.username ? (
+      {player?.username == currentUser.username &&  isPlayerInMatch(matchidFind,currentUser.username) ? (
         <div
           style={
             matchidFind.status != "Ready" ||
@@ -616,11 +616,12 @@ export const vsComponentPlayer = (
       <div style={!_p ? { opacity: 0.3,overflow:'hidden' } : {overflow:'hidden'}}>
         <SidebarExampleSidebar
           user={user}
+          player={player}
           item={item}
           objanim={ready}
           info={info}
-          status={matchidFind.status}
-          isUser={player?.username != currentUser.username && isPlayerInMatch(matchidFind,currentUser.username)}
+          matchidFind={matchidFind}
+          isUser={currentUser}
           visible={
             (matchidFind.status == "Ready" || matchidFind.status == "InPlay") && currentUser.accessToken
               ? true

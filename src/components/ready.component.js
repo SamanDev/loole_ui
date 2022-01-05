@@ -33,7 +33,7 @@ import {
   rendererBig,
   printEventBTN,
   vsComponentPlayer,
-  getColorStatus,
+  getColorStatus,isPlayerInMatch
 } from "components/include";
 import TransitionExampleTransitionExplorer from "components/anim.component";
 const SidebarExampleSidebar = (prop) => {
@@ -42,7 +42,12 @@ const SidebarExampleSidebar = (prop) => {
   const [isUser, setIsUser] = useState(prop.isUser);
   const [user, setUser] = useState(prop.user);
   const [objanimInfo, setObjanimInfo] = useState(prop.info);
+  const [player, setPlayer] = useState(prop.player);
+  const [matchidFind, setMatchidFind] = useState(prop.matchidFind);
 
+  useEffect(() => {
+    setPlayer(prop.player);
+  }, [prop.player]);
   useEffect(() => {
     setVisible(prop.visible);
   }, [prop.visible]);
@@ -74,7 +79,7 @@ const SidebarExampleSidebar = (prop) => {
   return (
     <Sidebar.Pushable as={Segment} basic style={{ overflow: "hidden" }}>
       <Sidebar
-        className={"si4de" + !isUser}
+     
         animation="scale down"
         inverted
         vertical
@@ -93,9 +98,9 @@ const SidebarExampleSidebar = (prop) => {
               zIndex: 10,
             }}
           >
-            {prop.status == "Ready" && (
+            {prop.matchidFind.status == "Ready" && (
               <>
-                {!isUser ? (
+                {isUser.username == player.username ? (
                   <TransitionExampleTransitionExplorer
                     objanim={objanim}
                     animation="flash"
@@ -106,13 +111,14 @@ const SidebarExampleSidebar = (prop) => {
                 )}
               </>
             )}
-            {(prop.status == "InPlay" ||
+            {(prop.matchidFind.status == "InPlay" ||
               (prop.item.gameMode == "Tournament" &&
-                prop.status == "Pending")) && (
+                prop.matchidFind.status == "Pending")) && (
               <>
-                {!isUser ? (
+                {isUser.username == player.username ||  !isPlayerInMatch(matchidFind,isUser.username) ? (
                   <div>{objanimInfo}</div>
                 ) : (
+                  
                   <TransitionExampleTransitionExplorer
                     objanim={objanimInfo}
                     animation="flash"
