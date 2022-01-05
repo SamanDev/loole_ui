@@ -125,9 +125,9 @@ function mycreateChats(finalChat,masterplayer,secondplayer,matchid,onUpdateItem)
                         {getchatTime(item.time)}
                         </div>
                         <div style={{padding: 4}}>
-                        <div className="text-warning text-left">{item.username}: </div>
+                        
                             <small>
-                             
+                            <div className="text-warning text-left" style={{textTransform: 'uppercase'}}>{item.username}: </div>
                               <div  className="text-justify" style={{color:'#fff',maxHeight:50,overflow:'auto'}}>{item.message}</div>
                               </small>
                               
@@ -285,7 +285,7 @@ class Chatbar extends Component {
     // Any time the current user changes,
     // Reset any parts of state that are tied to that user.
     // In this simple example, that's just the email.
-    if (props.eventchats !== state.eventchats || props.matchID !== state.matchID) {
+    if (props.eventchats !== state.eventchats || props.chats !== state.chats || props.matchID !== state.matchID) {
       return {
         eventID: props.eventID,
         matchID: props.matchID,

@@ -40,9 +40,9 @@ function LockScreenPage(prop) {
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
-  const eventIDQ = prop.findStateId(prop.myState, "eventIDQ");
-  const matchIDQ = prop.findStateId(prop.myState, "matchIDQ");
-  const currentUser = prop.findStateId(prop.myState, "currentUser");
+  const eventIDQ = prop.findStateId(myState, "eventIDQ");
+  const matchIDQ = prop.findStateId(myState, "matchIDQ");
+  const currentUser = prop.findStateId(myState, "currentUser");
   
   const eventDef = prop.findStateId(myState, "eventDef");
   const match = prop.findStateId(myState, "match");
@@ -201,7 +201,7 @@ function LockScreenPage(prop) {
                         eventstatus={eventDef.status}
                         masterplayer={match.matchPlayers[0]?.username}
                         secondplayer={match.matchPlayers[1]?.username}
-                        eventchats={eventDef.chats}
+                        eventchats="null"
                         chats={match.matchChats}
                         username={currentUser}
                         onUpdateItem={prop.onUpdateItem}
@@ -216,7 +216,7 @@ function LockScreenPage(prop) {
                         eventchats={eventDef.chats}
                         chats="null"
                         username={currentUser}
-                        onUpdateItem={prop.onUpdateItem}
+                        
                       />
                     )}
                   </>

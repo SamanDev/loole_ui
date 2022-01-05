@@ -16,7 +16,7 @@ function editCounry(options,options2){
      item.matchcount = w+1
       newArray.push(item)
     })
-    if(newArray.length == 1){
+    if(newArray.length == 0){
       options2?.sort((a, b) => (a.id > b.id) ? 1 : -1)
       var filteredArray = options2.filter(function(item,i){
         
