@@ -1,26 +1,13 @@
 import React, { Component } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-import Select from "react-select";
 import Avatar from "react-avatar";
-import BootstrapSwitchButton from "bootstrap-switch-button-react";
-import { NavLink, Link } from "react-router-dom";
-import {
-  VerticalTimeline,
-  VerticalTimelineElement,
-} from "react-vertical-timeline-component";
+import { Link } from "react-router-dom";
 import "react-vertical-timeline-component/style.min.css";
 import {
-  faInstagram,
   faTwitch,
-  faYoutube,
-  faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import {
   Statistic,
   Button,
-  Icon,
   Label,
   Divider,
   Grid,
@@ -29,64 +16,30 @@ import {
   Header,
   List, Message
 } from "semantic-ui-react";
-import Moment from "moment";
-import CurrencyFormat from "react-currency-format";
-import { IMaskInput } from "react-imask";
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
-import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import eventBus from "views/eventBus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "react-countdown";
-import uploadHeader from "services/upload-header";
-import PropTypes from "prop-types";
-import axios from "axios";
 import {
-  Badge,
-  Card,
-  Navbar,
-  Nav,
-  Container,
-  Pagination,
   Col,
-  Table,
-  Row,
   ProgressBar,
-  ListGroup,
-  Spinner,
 } from "react-bootstrap";
 import {
   setAvatar,
-  getColor,
-  getIcon,
-  renderer,
-  getQueryVariable,
-  getCode,
-  getGroupBadge,
-  getGroupBadgeList,
-  getGroupBadgePrice,
-  getGroupBadgesmall,
   rendererBig,
   printEventBTN,
   vsComponentTitle,
-  getModalTag,
-  getGameTag,
   getMatchTitle,
   getColorStatus,
   printStatus,
-  haveGameTag,
-  getPlayerTag,
-  isJson,
-  haveAdmin,
   handleTagForm,
   vsComponentPlayer,
   getGroupBadgeBlock,
   printJoinalerts,genMatch
 } from "components/include";
-import { UPLOADURL, POSTURLTest } from "const";
+import { POSTURLTest } from "const";
 
 var firstLoad = true;
 var isLoading = true;
@@ -141,7 +94,7 @@ class TournamentSection extends Component {
     document.title = state.item.gameName + ' '+ state.item.gameMode + ' - ' + state.item.outSign.replace('Dollar','$').replace('Point','Diamonds ') + state.item.prize +  ' Prize';
     
     if (props.myState !== state.myState) {
-      //props.onUpdateItem('eventIDQ', getQueryVariable("id"))
+   
       
       return {
         myState: props.myState,
