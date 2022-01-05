@@ -190,6 +190,7 @@ function LockScreenPage(prop) {
                     eventchats={eventDef.chats}
                     chats={match.matchChats}
                     username={currentUser}
+                    onUpdateItem={prop.onUpdateItem}
                   />
                 ) : (
                   <>
@@ -203,6 +204,7 @@ function LockScreenPage(prop) {
                         eventchats={eventDef.chats}
                         chats={match.matchChats}
                         username={currentUser}
+                        onUpdateItem={prop.onUpdateItem}
                       />
                     ) : (
                       <Chatbar
@@ -214,6 +216,7 @@ function LockScreenPage(prop) {
                         eventchats={eventDef.chats}
                         chats="null"
                         username={currentUser}
+                        onUpdateItem={prop.onUpdateItem}
                       />
                     )}
                   </>

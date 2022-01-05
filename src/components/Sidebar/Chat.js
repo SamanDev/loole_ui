@@ -16,7 +16,7 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
-import { Input,Comment } from 'semantic-ui-react'
+import { Input,Comment,Icon } from 'semantic-ui-react'
 
 function getchatTime(date) {
   var today = new Date(date);
@@ -49,7 +49,7 @@ function getchatClass(message,mode) {
                           
 
 }
-function mycreateChats(finalChat,masterplayer,secondplayer,matchid) {
+function mycreateChats(finalChat,masterplayer,secondplayer,matchid,onUpdateItem) {
   const listItems = finalChat.map((item, i) => (
  
     <Comment
@@ -202,16 +202,13 @@ function mycreateChats(finalChat,masterplayer,secondplayer,matchid) {
                             : "l-quote quote "
                         }
                       >
-                            
-                        <small className="text-warning">{item.username} uploaded.</small><br/>
-                        <video preload="none" controls>
+                          
+                        <small className="text-warning" style={{textTransform: 'uppercase'}}>{item.username} uploaded. </small><br/>
+                        <div onClick={()=>{onUpdateItem("openModalVideo", true);onUpdateItem("openModalVideoSRC", item.message)}} style={{padding:'20px 10px',textAlign: 'center',background:'rgba(0,0,0,0.4)'}} >
+                        <Icon name='play circle outline' size='huge' color='grey' />
                                  
-                                  <source
                                   
-                                    src={item.message}
-                                    type="video/mp4"
-                                  />
-                                </video>
+                                </div>
                             <Avatar
                               size="25"
                               className="chatavatar"
@@ -275,7 +272,7 @@ class Chatbar extends Component {
       
       isLoading: false,
       eventID: this.props.eventID,
-      matchid: this.props.matchID,
+      matchID: this.props.matchID,
       eventstatus: this.props.eventstatus,
       chats: this.props.chats,
       eventchats: this.props.eventchats,
@@ -291,7 +288,7 @@ class Chatbar extends Component {
     if (props.eventchats !== state.eventchats) {
       return {
         eventID: props.eventID,
-        matchid: props.matchID,
+        matchID: props.matchID,
         eventstatus: props.eventstatus,
         chats: props.chats,
         eventchats: props.eventchats,
@@ -318,8 +315,8 @@ class Chatbar extends Component {
                 
                 isLoading:true
               });
-              if(this.state.matchid){
-                userService.sendChatMatch(this.state.messageBox, this.state.eventID,this.state.matchid).then(
+              if(this.state.matchID){
+                userService.sendChatMatch(this.state.messageBox, this.state.eventID,this.state.matchID).then(
                   (response) => {
                     this.setState({
                       messageBox: "",
@@ -465,9 +462,9 @@ class Chatbar extends Component {
                   }}
                 >
                   <Card.Body
-                    style={{ padding: '10px 0px 10px 10px',  overflow: "auto" }}
+                    style={{  overflow: "auto" }}
                   >
-                   {mycreateChats(finalChat,masterplayer,secondplayer,this.state.matchid)}
+                   {mycreateChats(finalChat,masterplayer,secondplayer,this.state.matchID,this.props.onUpdateItem)}
                     
                     
                   </Card.Body>

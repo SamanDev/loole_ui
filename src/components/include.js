@@ -580,7 +580,7 @@ export const vsComponentPlayer = (
   });
   var info = (
     <>
-      {_p && _p.username != "Tournament Player" && (
+      {_p && _p.username != "Tournament Player"  && (
         <>
           {_p.tagId && (
             
@@ -588,7 +588,9 @@ export const vsComponentPlayer = (
               <Statistic.Label>
                 {getTagName(item.gameName, item.gameConsole)} iD
               </Statistic.Label>
-              <Statistic.Value><CopyText color="red" size="small" myid={_p.tagId}/></Statistic.Value>
+              <Statistic.Value>
+                {isPlayerInMatch(matchidFind,currentUser.username) ? <CopyText color="red" size="small" myid={_p.tagId}/> : '**********'}
+                </Statistic.Value>
             </Statistic>
           )}
           {_p.nickName && (
@@ -596,7 +598,12 @@ export const vsComponentPlayer = (
               <Divider fitted style={{ opacity: 0 }} />
               <Statistic inverted color="olive" size="mini">
                 <Statistic.Label>Nickname</Statistic.Label>
-                <Statistic.Value>{_p.nickName}</Statistic.Value>
+
+                <Statistic.Value>
+                  
+                  {isPlayerInMatch(matchidFind,currentUser.username) ? _p.nickName : '**********'}
+                
+                  </Statistic.Value>
               </Statistic>
             </>
           )}
@@ -613,7 +620,7 @@ export const vsComponentPlayer = (
           objanim={ready}
           info={info}
           status={matchidFind.status}
-          isUser={player?.username == currentUser.username}
+          isUser={player?.username != currentUser.username && isPlayerInMatch(matchidFind,currentUser.username)}
           visible={
             (matchidFind.status == "Ready" || matchidFind.status == "InPlay") && currentUser.accessToken
               ? true
@@ -697,7 +704,7 @@ export const printMatchBTN = (
            
                 <Button.Content visible  >Join Match</Button.Content>
                 <Button.Content hidden>
-                  for {item.inSign.replace("Dollar", "$")} {item.amount}
+                  Join Now
                 </Button.Content>
               </Button>
               <Button

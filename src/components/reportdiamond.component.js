@@ -42,6 +42,7 @@ const columns = [
   {
     name: 'ID',
     selector: row => row.id,
+    format: row => row.id,
     sortable: true,
     width:'100px',
 },
@@ -53,7 +54,7 @@ const columns = [
     },
     {
       name: 'Description',
-      selector: row => row.description + ' '+ row.mode,
+      selector: row => row.description.replace('Event Id','EID').replace(' - Point','') + ' '+ row.mode.replace('Point','').replace('Duel','').replace('Registered',' Join').replace('Unregistered',' Leave'),
       sortable: true,
       grow: 4,
       minWidth: '200px'

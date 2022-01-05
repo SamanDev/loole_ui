@@ -23,7 +23,7 @@ import Forget from "components/newforget.component";
 import Chart from "components/chart.component";
 import DC from "components/dc.component";
 import eventBus from "views/eventBus";
-import { getQueryVariable, editEvent,findActiveMatch } from "components/include";
+import { getQueryVariable, editEvent,findActiveMatch,isPlayerInMatch } from "components/include";
 import { useQueryClient, QueryClient, QueryClientProvider } from "react-query";
 import {
   Grid,
@@ -92,6 +92,8 @@ function Main() {
       { id: "openModalCashier", val: false },
       { id: "openModalSoket", val: false },
       { id: "openModalCrypto", val: false },
+      { id: "openModalVideo", val: false },
+      { id: "openModalVideoSRC", val: false },
     ],
   });
   const updateNot = (currentUser) => {
@@ -156,6 +158,8 @@ function Main() {
   var openModalLogin = findStateId(myState, "openModalLogin");
   var openModalChart = findStateId(myState, "openModalChart");
   var openModalSoket = findStateId(myState, "openModalSoket");
+  var openModalVideo = findStateId(myState, "openModalVideo");
+  var openModalVideoSRC = findStateId(myState, "openModalVideoSRC");
   const { data: userGet } = useUser();
 
   //const { data: eventsGet } = useAllEventsByStatus('All');
@@ -220,20 +224,22 @@ function Main() {
     });
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {
-        onUpdateItem("eventDef", eventGet);
-        onUpdateItem("eventIDQ", eventGet.id);
+        
         queryClient.setQueryData(["Event", eventGet.id], eventGet);
+        if(isPlayerInMatch(findActiveMatch(eventGet,matchIDQ),currentUser.username)){
+          onUpdateItem("eventDef", eventGet);
+        onUpdateItem("eventIDQ", eventGet.id);
         onUpdateItem("match", findActiveMatch(eventGet,matchIDQ));
+        if(window.location.pathname + window.location.search != "/panel/lobby?id="+eventGet.id){
+          if((eventGet.status=='Ready' || eventGet.status=='InPlay' )){
+       
+            history.push("/panel/lobby?id="+eventGet.id);
+          }
+        }
+        }
          
             
-          {eventGet.players.map((player, j) => {
-            if(window.location.pathname + window.location.search != "/panel/lobby?id="+eventGet.id){
-            if(player.username == currentUser.username && (eventGet.status=='Ready' || eventGet.status=='InPlay' )){
-             // onUpdateItem('eventIDQ', eventGet.id)
-              history.push("/panel/lobby?id="+eventGet.id);
-            }
-          }
-           })}
+         
           
 
       
@@ -257,7 +263,7 @@ function Main() {
     if(getQueryVariable("id")){
       onUpdateItem('eventIDQ', getQueryVariable("id"));
 
-  }else{onUpdateItem('eventIDQ', false)}
+  }else{onUpdateItem('eventIDQ', false);onUpdateItem("eventDef", false);}
   if(getQueryVariable("matchid")){
     onUpdateItem('matchIDQ', getQueryVariable("matchid"));
  
@@ -362,6 +368,26 @@ function Main() {
                 OR
               </Divider>
             </span>
+          </Segment>
+        </Modal.Content>
+      </Modal>
+      <Modal
+        basic
+        size="small"
+        dimmer="blurring"
+        open={openModalVideo}
+        onClose={() => onUpdateItem("openModalVideo", false)}
+      >
+        <Modal.Content >
+          <Segment inverted >
+          <video preload="auto" autoplay="true" width="100%" height="100%" key={openModalVideoSRC} controls>
+                                 
+                                 <source
+                                 
+                                   src={openModalVideoSRC}
+                                   type="video/mp4"
+                                 />
+                               </video>
           </Segment>
         </Modal.Content>
       </Modal>

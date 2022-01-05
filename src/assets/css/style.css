@@ -1269,6 +1269,11 @@ position: absolute;
 right: 0;
 width: 100%;
 }
+video{
+    background:rgba(0,0,0,0.2);
+    max-width:80vw;
+    max-height:80vh
+}
 .maxheight .ui.segment.tab{
     height: calc(-140px + 100vh); overflow: auto;
 }

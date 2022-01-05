@@ -502,7 +502,7 @@ class MatchSection extends Component {
            eventIDQ,
            currentUser,
           loading,
-          0,
+          item.players.length,
           this.handlechangeReadyEvent,
           this.handleJoinMatch,
           this.handleLeaveMatch,
