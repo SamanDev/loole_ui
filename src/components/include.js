@@ -759,7 +759,7 @@ export const printEventBTN = (
             >
               <Button.Content visible>Join Event</Button.Content>
               <Button.Content hidden>
-                for {item.inSign.replace("Dollar", "$")} {item.amount}
+                Join now
               </Button.Content>
             </Button>
           </>

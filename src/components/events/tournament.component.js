@@ -464,15 +464,18 @@ class TournamentSection extends Component {
           return (
             <span key={z.toString()}>
             
-          
+        
               {z == 0 && (
                 <Countdown
-                  renderer={rendererBig}
-                  size="mini"
-                  finish={"@@@" + item.status}
-                  txt={"@@@Start at"}
-                  date={hatchbackCar[0].startTime}
-                />
+                renderer={rendererBig}
+                match={hatchbackCar[0]}
+                size="mini"
+                txt="@@@Start at"
+                colorfinish={getColorStatus(item.status)}
+                finish={item.status + "@@@Not Avalable"}
+               
+                date={hatchbackCar[0].startTime}
+              />
               )}
               <Link
                 
@@ -560,13 +563,14 @@ class TournamentSection extends Component {
             date={item.expire}
           />
           <Divider fitted style={{ opacity: 0 }} />
-
+          {item.status == "InPlay" && (
 <Statistic inverted color="violet" size="mini">
   <Statistic.Label>Match Level</Statistic.Label>
   <Statistic.Value>
     {getMatchTitle(match.level, item.totalPlayer)}
   </Statistic.Value>
 </Statistic>
+          )}
 {printEventBTN(
               item,
               currentUser,
@@ -639,7 +643,7 @@ class TournamentSection extends Component {
               ) : null}
             </span>
           ))}
-          {item.status != "Canceled" && item.status != "Expired" && (
+          {item.status != "Canceledd" && item.status != "Expired" && (
             <>
               <Divider style={{ opacity: 0 }} />
               <Accordion

@@ -459,10 +459,10 @@ class MatchSection extends Component {
       <Countdown
         renderer={rendererBig}
         finish={item.status + "@@@"+_finishTxt}
-        txt="@@@Avalable until"
+        txt="@@@Start at"
         match={match}
         colorfinish={getColor(item.prize)}
-        date={item.expire}
+        date={match.startTime}
       />
 <Divider fitted style={{ opacity: 0 }} />
 
