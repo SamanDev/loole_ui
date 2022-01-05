@@ -428,7 +428,7 @@ class MatchSection extends Component {
     } = this.state;
 
     var _finishTxt = 'Not Joinable';
-    //if (match.status) { _finishTxt = match.status}
+    //if (match.status) { _finishTxt = match.status+'@@@Not Joinable'}
     //if (match.winner) { _finishTxt = match.winner}
     var _mode = " 1 vs 1 ";
       var _color = "#404040";

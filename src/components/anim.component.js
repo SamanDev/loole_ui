@@ -30,7 +30,7 @@ export default class TransitionExampleTransitionExplorer extends Component {
       clearTimeout(timer)
       this.toggleVisibility()
      
-    },2000)
+    },5000)
     
 }
 

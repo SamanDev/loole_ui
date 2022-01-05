@@ -226,11 +226,11 @@ function Main() {
       if (eventGet?.id) {
         
         queryClient.setQueryData(["Event", eventGet.id], eventGet);
-        if(isPlayerInMatch(findActiveMatch(eventGet,matchIDQ),currentUser.username)){
+        if(eventIDQ == eventGet.id || isPlayerInMatch(findActiveMatch(eventGet,matchIDQ),currentUser.username)){
           onUpdateItem("eventDef", eventGet);
         onUpdateItem("eventIDQ", eventGet.id);
         onUpdateItem("match", findActiveMatch(eventGet,matchIDQ));
-        if(window.location.pathname + window.location.search != "/panel/lobby?id="+eventGet.id){
+        if(isPlayerInMatch(findActiveMatch(eventGet,matchIDQ),currentUser.username) && window.location.pathname + window.location.search != "/panel/lobby?id="+eventGet.id){
           if((eventGet.status=='Ready' || eventGet.status=='InPlay' )){
        
             history.push("/panel/lobby?id="+eventGet.id);
