@@ -622,7 +622,7 @@ class TournamentSection extends Component {
           className="mx-auto text-center "
           lg="8"
           md="10"
-          style={{ padding: 0, marginTop: 20 }}
+          style={{ padding: 0, marginTop: 120 }}
         >
               <Segment inverted color="violet">
                 <Header as="h2">Watch Live</Header>
