@@ -422,8 +422,8 @@ class TournamentSection extends Component {
         title: {
           content:  (<><br/><br/>
             {hatchbackCar.length == 1
-              ? getMatchTitle(hatchbackCar[0].level, item.totalPlayer)
-              : (<>{getMatchTitle(hatchbackCar[0].level, item.totalPlayer)}<br/>{hatchbackCar.length} match</>)}
+              ? (<Label size='big'  inverted color='red'>{getMatchTitle(hatchbackCar[0].level, item.totalPlayer)}</Label>)
+              : (<>{getMatchTitle(hatchbackCar[0].level, item.totalPlayer)}<br/><Label as='small' color='orange'>{hatchbackCar.length} MATCHES</Label></>)}
                 <Countdown
                 renderer={rendererBig}
                 match={hatchbackCar[0]}
@@ -568,6 +568,7 @@ class TournamentSection extends Component {
             <>
               {matchLevelFind && item.status != "Finished" && (
                 <>
+
                   {item.status == "InPlay" && (
 <Statistic inverted color="violet" size="mini">
   <Statistic.Label>Match Level</Statistic.Label>
@@ -575,12 +576,13 @@ class TournamentSection extends Component {
     {getMatchTitle(matchLevelFind.level, item.totalPlayer)}
   </Statistic.Value>
 </Statistic>
-          )}
+
+          )}<Divider  style={{ opacity: 0 }} />
                 </>
               )}
             </>
           )}
-<Divider  style={{ opacity: 0 }} />
+
           {item.players.map((user, z) => (
             <span key={z}>
               {currentUser.username == user.username && (isJoin = true)}
