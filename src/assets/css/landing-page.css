@@ -790,9 +790,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80ffffff', e
 
    .landing-page .section-presentation img{
     position: absolute;
-    top: 0;
+    top: 30px;
     left: 0;
-    height: 600px;
+    height: 450px;
    }
 
    .landing-page .section-presentation .iphone-presentation {

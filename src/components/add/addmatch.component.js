@@ -447,20 +447,32 @@ class AddMatch extends Component {
             <Col sm="6">
               {this.state.GName.value.indexOf(" - ") > -1 && (
                 <>
-                  <Divider
-                    horizontal
-                    inverted
-                    className="mobile only"
-                    style={{ marginTop: 40 }}
+                  <div
+                   
+                   className="mobile only"
+                  
+                 >
+                                     
+                 <Card.Group
+                   className="fours one"
+                   style={{ margin:"20px auto" }}
+                 >
+                   <MatchCard item={item} />
+                 </Card.Group>
+                 </div>
+                 <div
+                   
+                    className="mobile hidden"
+                   
                   >
-                    Or
-                  </Divider>
+                                      
                   <Card.Group
                     className="fours "
                     style={{ marginBottom: 20, float: "right" }}
                   >
                     <MatchCard item={item} />
                   </Card.Group>
+                  </div>
                 </>
               )}
             </Col>

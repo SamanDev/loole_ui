@@ -60,11 +60,10 @@ const columns = [
     },
     {
       name: 'Description',
-      selector: row => editCounry(row) + ' '+ row.mode,
+      selector: row => row.description.replace('Event Id','EID').replace(' - Dollar','') + ' '+ row.mode.replace('Point','').replace('Duel','').replace('Registered',' Join').replace('Unregistered',' Leave'),
       sortable: true,
       grow: 4,
-      minWidth: '200px',
-     
+      minWidth: '200px'
   },
   
   {

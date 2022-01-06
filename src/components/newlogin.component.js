@@ -84,7 +84,7 @@ function FormExampleFieldErrorLabel(prop) {
     onUpdateItem("loading", true);
 
     if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
-      AuthService.login(username, password).then(
+      AuthService.login(username.trim(), password).then(
         (response) => {
           onUpdateItem("loading", false);
           console.log(response.data);

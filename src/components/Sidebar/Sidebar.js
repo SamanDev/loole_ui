@@ -198,7 +198,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
         <div className="sidebar-wrapper">
           <div className="logo">
            
-          <Link to={'/home'} key={"home"} className="simple-text logo-mini" style={{    height: 45, width: 45}}>
+          <Link to='/home'  className="simple-text logo-mini" style={{    height: 45, width: 45}}>
               <div className="logo-img">
                 <img
                   src="/assets/img/logoloole.svg"
@@ -208,7 +208,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
               </div>
               </Link>
           
-               <Link to={'/home'}  key={"homelogo"} className="simple-text logo-normal" style={{fontFamily: 'Work Sans',textTransform:'none'}}>
+               <Link to='/home' className="simple-text logo-normal" style={{fontFamily: 'Work Sans',textTransform:'none'}}>
               Loole.gg
               </Link>
           </div>

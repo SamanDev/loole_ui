@@ -768,7 +768,7 @@ export const printEventBTN = (
             {mymatchFind && (
               <>
                 <Link
-                onClick={()=>onUpdateItem('matchIDQ', mymatchFind.id)}
+               
                   to={
                     "/panel/matchlobby?id=" +
                     item.id +
@@ -781,7 +781,7 @@ export const printEventBTN = (
                     size="big"
                     inverted
                     color="orange"
-                    disabled={isloading}
+                
                   >
                     <Button.Content visible>Open My Match</Button.Content>
                 

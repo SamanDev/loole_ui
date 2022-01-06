@@ -5,7 +5,8 @@ import {
   Route,
   Switch,
   Redirect,
-  useHistory,useLocation
+  useHistory,
+  useLocation,
 } from "react-router-dom";
 import Swal from "sweetalert2";
 import { defUser, TrackingID } from "const";
@@ -23,7 +24,12 @@ import Forget from "components/newforget.component";
 import Chart from "components/chart.component";
 import DC from "components/dc.component";
 import eventBus from "views/eventBus";
-import { getQueryVariable, editEvent,findActiveMatch,isPlayerInMatch } from "components/include";
+import {
+  getQueryVariable,
+  editEvent,
+  findActiveMatch,
+  isPlayerInMatch,
+} from "components/include";
 import { useQueryClient, QueryClient, QueryClientProvider } from "react-query";
 import {
   Grid,
@@ -71,7 +77,7 @@ function Main() {
           totalBank: 4845.1,
           totalCommission: 4.1000000000000005,
           date: "2022-01-02T14:57:43.810+00:00",
-        }
+        },
       },
 
       { id: "keyDash", val: 0 },
@@ -189,15 +195,12 @@ function Main() {
       onUpdateItem("eventIDQ", eventGet.id);
       onUpdateItem("matchIDQ", getQueryVariable("matchid"));
       queryClient.setQueryData(["Event", eventGet.id], eventGet);
-      onUpdateItem("match", findActiveMatch(eventGet,matchIDQ));
-      
+      onUpdateItem("match", findActiveMatch(eventGet, matchIDQ));
     }
   }, [eventGet]);
   useEffect(() => {
     if (eventDef?.matchTables) {
-      
-      onUpdateItem("match", findActiveMatch(eventDef,matchIDQ));
-      
+      onUpdateItem("match", findActiveMatch(eventDef, matchIDQ));
     }
   }, [matchIDQ]);
   useEffect(() => {
@@ -224,27 +227,30 @@ function Main() {
     });
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {
-        
         queryClient.setQueryData(["Event", eventGet.id], eventGet);
-        if(eventIDQ == eventGet.id || isPlayerInMatch(findActiveMatch(eventGet,matchIDQ),currentUser.username)){
+        if (
+          eventIDQ == eventGet.id ||
+          isPlayerInMatch(
+            findActiveMatch(eventGet, matchIDQ),
+            currentUser.username
+          )
+        ) {
           onUpdateItem("eventDef", eventGet);
-        onUpdateItem("eventIDQ", eventGet.id);
-        onUpdateItem("match", findActiveMatch(eventGet,matchIDQ));
-        if(isPlayerInMatch(findActiveMatch(eventGet,matchIDQ),currentUser.username) && window.location.pathname + window.location.search != "/panel/lobby?id="+eventGet.id){
-          if((eventGet.status=='Ready' || eventGet.status=='InPlay' )){
-       
-            history.push("/panel/lobby?id="+eventGet.id);
+          onUpdateItem("eventIDQ", eventGet.id);
+          onUpdateItem("match", findActiveMatch(eventGet, matchIDQ));
+          if (
+            isPlayerInMatch(
+              findActiveMatch(eventGet, matchIDQ),
+              currentUser.username
+            ) &&
+            window.location.pathname + window.location.search !=
+              "/panel/lobby?id=" + eventGet.id  && !matchIDQ
+          ) {
+            if (eventGet.status == "Ready" || eventGet.status == "InPlay" ) {
+              history.push("/panel/lobby?id=" + eventGet.id);
+            }
           }
         }
-        }
-         
-            
-         
-          
-
-      
-     
-       
       }
     });
     eventBus.on("eventsDataActive", (event) => {
@@ -258,19 +264,22 @@ function Main() {
     });
   }, []);
   useEffect(() => {
-   
     ReactGA.pageview(location.pathname + location.search);
-    if(getQueryVariable("id")){
-      onUpdateItem('eventIDQ', getQueryVariable("id"));
-
-  }else{onUpdateItem('eventIDQ', false);onUpdateItem("eventDef", false);}
-  if(getQueryVariable("matchid",location.pathname + location.search)){
-    onUpdateItem('matchIDQ', getQueryVariable("matchid",location.pathname + location.search));
- 
-}else{onUpdateItem('matchIDQ', false)}
-
+    if (getQueryVariable("id")) {
+      onUpdateItem("eventIDQ", getQueryVariable("id"));
+    } else {
+      onUpdateItem("eventIDQ", false);
+      onUpdateItem("eventDef", false);
+    }
+    if (getQueryVariable("matchid", location.pathname + location.search)) {
+      onUpdateItem(
+        "matchIDQ",
+        getQueryVariable("matchid", location.pathname + location.search)
+      );
+    } else {
+      onUpdateItem("matchIDQ", false);
+    }
   }, [location]);
-  
 
   if (!currentUser) {
     return (
@@ -379,16 +388,18 @@ function Main() {
         open={openModalVideo}
         onClose={() => onUpdateItem("openModalVideo", false)}
       >
-        <Modal.Content >
-          <Segment inverted >
-          <video preload="auto" autoplay="true" width="100%" height="100%" key={openModalVideoSRC} controls>
-                                 
-                                 <source
-                                 
-                                   src={openModalVideoSRC}
-                                   type="video/mp4"
-                                 />
-                               </video>
+        <Modal.Content>
+          <Segment inverted>
+            <video
+              preload="auto"
+              autoplay="true"
+              width="100%"
+              height="100%"
+              key={openModalVideoSRC}
+              controls
+            >
+              <source src={openModalVideoSRC} type="video/mp4" />
+            </video>
           </Segment>
         </Modal.Content>
       </Modal>
