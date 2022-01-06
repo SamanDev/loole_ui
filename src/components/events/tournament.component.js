@@ -268,10 +268,19 @@ class TournamentSection extends Component {
     ) {
       lists.map((tblmatch, w) => {
         if (
-          tblmatch.status == "InPlay" 
-         
+       
+          tblmatch.status == "Pending"
         ) {
           if (!matchLevelFind) {
+            matchLevelFind = tblmatch;
+          }
+        }
+        if (
+          tblmatch.status == "InPlay" ||
+          tblmatch.status == "Pending" ||
+          tblmatch.status == "Ready"
+        ) {
+          if (matchLevelFind?.level > tblmatch.level) {
             matchLevelFind = tblmatch;
           }
         }
@@ -419,7 +428,6 @@ class TournamentSection extends Component {
             
         
               {z == 0 && (
-                
                 <Countdown
                 renderer={rendererBig}
                 match={hatchbackCar[0]}
@@ -436,7 +444,6 @@ class TournamentSection extends Component {
                
                 to={"/panel/matchlobby?id=" + item.id + "&matchid=" + mtch.id}
               >
-              
                 <Segment inverted style={{ background: "none !important" }}>
                   <Grid columns={2}>
                     <Grid.Column
@@ -597,7 +604,7 @@ class TournamentSection extends Component {
             <>
               <Divider style={{ opacity: 0 }} />
               <Accordion
-                defaultActiveIndex={[0, 1]}
+                activeIndex={(matchLevelFind) ? (''+matchLevelFind.level-1+'') : ('0')}
                 panels={panels}
                 exclusive={false}
                 fluid
