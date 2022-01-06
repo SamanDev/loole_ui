@@ -268,9 +268,8 @@ class TournamentSection extends Component {
     ) {
       lists.map((tblmatch, w) => {
         if (
-          tblmatch.status == "InPlay" ||
-          tblmatch.status == "Pending" ||
-          tblmatch.status == "Ready"
+          tblmatch.status == "InPlay" 
+         
         ) {
           if (!matchLevelFind) {
             matchLevelFind = tblmatch;
@@ -420,6 +419,7 @@ class TournamentSection extends Component {
             
         
               {z == 0 && (
+                
                 <Countdown
                 renderer={rendererBig}
                 match={hatchbackCar[0]}
@@ -436,6 +436,7 @@ class TournamentSection extends Component {
                
                 to={"/panel/matchlobby?id=" + item.id + "&matchid=" + mtch.id}
               >
+              
                 <Segment inverted style={{ background: "none !important" }}>
                   <Grid columns={2}>
                     <Grid.Column
@@ -490,7 +491,7 @@ class TournamentSection extends Component {
     if (item.status=='Canceled' || item.status=='Expired') {
       _color = "black"; 
     }
-    var _finishTxt = 'Not Avalable';
+    var _finishTxt = 'Not Joinable';
   if (item?.winner) { _finishTxt = item.winner}
     setTimeout(() => {
       $("#jsonhtml").html($("#jsonhtml2").text());
@@ -517,14 +518,7 @@ class TournamentSection extends Component {
             date={item.expire}
           />
           <Divider fitted style={{ opacity: 0 }} />
-          {item.status == "InPlay" && (
-<Statistic inverted color="violet" size="mini">
-  <Statistic.Label>Match Level</Statistic.Label>
-  <Statistic.Value>
-    {getMatchTitle(match.level, item.totalPlayer)}
-  </Statistic.Value>
-</Statistic>
-          )}
+          
 {printEventBTN(
               item,
               currentUser,
@@ -535,7 +529,7 @@ class TournamentSection extends Component {
               this.handleJoinMatch,
               this.props.onUpdateItem
             )}
-          {item.status == "Pending" ? (
+          {item.status == "Pending" && item.players.length!=item.totalPlayer ? (
             <>
               <small
                 style={{
@@ -562,17 +556,19 @@ class TournamentSection extends Component {
             <>
               {matchLevelFind && item.status != "Finished" && (
                 <>
-                  <Statistic inverted color="violet" size="mini">
-                    <Statistic.Label>Match Level</Statistic.Label>
-                    <Statistic.Value>
-                      {getMatchTitle(matchLevelFind.level, item.totalPlayer)}
-                    </Statistic.Value>
-                  </Statistic>
+                  {item.status == "InPlay" && (
+<Statistic inverted color="violet" size="mini">
+  <Statistic.Label>Match Level</Statistic.Label>
+  <Statistic.Value>
+    {getMatchTitle(matchLevelFind.level, item.totalPlayer)}
+  </Statistic.Value>
+</Statistic>
+          )}
                 </>
               )}
             </>
           )}
-<Divider fitted style={{ opacity: 0 }} />
+<Divider  style={{ opacity: 0 }} />
           {item.players.map((user, z) => (
             <span key={z}>
               {currentUser.username == user.username && (isJoin = true)}

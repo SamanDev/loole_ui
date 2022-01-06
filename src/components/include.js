@@ -744,7 +744,7 @@ export const printEventBTN = (
 ) => {
   return (
     <>
-    {(item.status == "Pending" || item.status == "Ready") && (
+    {(item.status == "Pending" || item.status == "Ready"|| item.status == "InPlay") && (
       <p style={{ margin: 0 }}>
         {!isJoin && item.totalPlayer > item.players.length ? (
           <>
@@ -777,13 +777,13 @@ export const printEventBTN = (
                   }
                 >
                   <Button
-                    animated
+                
                     size="big"
                     inverted
                     color="orange"
                 
                   >
-                    <Button.Content visible>Open My Match</Button.Content>
+                    <Button.Content >Open My Match</Button.Content>
                 
                   </Button>
                 </Link>
