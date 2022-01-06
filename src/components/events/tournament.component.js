@@ -57,7 +57,7 @@ var mymatchFind = null;
 var matchLevelFind = null;
 var icEnd = 0;
 var icStart = 0;
-
+var  defaultActiveIndex = 0;
 class TournamentSection extends Component {
   constructor(props) {
     super(props);
@@ -262,7 +262,7 @@ class TournamentSection extends Component {
     lists.sort((a, b) => (a.level < b.level ? 1 : -1));
     if (
       (item.status == "InPlay" ||
-        item.status == "Pending" ||
+      item.status == "Pending" ||item.status == "Finished" ||
         item.status == "Ready") &&
       item.gameMode == "Tournament"
     ) {
@@ -281,6 +281,13 @@ class TournamentSection extends Component {
           tblmatch.status == "Ready"
         ) {
           if (matchLevelFind?.level > tblmatch.level) {
+            matchLevelFind = tblmatch;
+          }
+        }
+        if (
+          tblmatch.status == "Finished"
+        ) {
+          if (matchLevelFind?.level <= tblmatch.level || !matchLevelFind) {
             matchLevelFind = tblmatch;
           }
         }
@@ -402,6 +409,8 @@ class TournamentSection extends Component {
       }
     }
     }
+    if(matchLevelFind?.level > 0){defaultActiveIndex=matchLevelFind.level-1}
+    
     const panels = item.matchLevel.map((match, i) => {
       var hatchbackCar = lists.filter(
         (list) => list.level === item.matchLevel[i].level
@@ -411,23 +420,10 @@ class TournamentSection extends Component {
       return {
         key: `panel-${i}`,
         title: {
-          content:
-            hatchbackCar.length == 1
+          content:  (<><br/><br/>
+            {hatchbackCar.length == 1
               ? getMatchTitle(hatchbackCar[0].level, item.totalPlayer)
-              : getMatchTitle(hatchbackCar[0].level, item.totalPlayer) +
-                " - " +
-                hatchbackCar.length +
-                " match",
-       
-        },
-
-        content: hatchbackCar.map((mtch, z) => {
-          hatchbackCar[z].matchPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
-          return (
-            <span key={z.toString()}>
-            
-        
-              {z == 0 && (
+              : (<>{getMatchTitle(hatchbackCar[0].level, item.totalPlayer)}<br/>{hatchbackCar.length} match</>)}
                 <Countdown
                 renderer={rendererBig}
                 match={hatchbackCar[0]}
@@ -438,7 +434,16 @@ class TournamentSection extends Component {
                
                 date={hatchbackCar[0].startTime}
               />
-              )}
+         </> )
+        },
+
+        content: hatchbackCar.map((mtch, z) => {
+          hatchbackCar[z].matchPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
+          return (
+            <span key={z.toString()}>
+            
+        
+              
               <Link
                 
                
@@ -602,9 +607,10 @@ class TournamentSection extends Component {
           ))}
           {item.status != "Canceledd" && item.status != "Expired" && (
             <>
+            
               <Divider style={{ opacity: 0 }} />
               <Accordion
-                activeIndex={(matchLevelFind) ? (''+matchLevelFind.level-1+'') : ('0')}
+                defaultActiveIndex={[defaultActiveIndex]}
                 panels={panels}
                 exclusive={false}
                 fluid
