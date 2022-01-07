@@ -740,7 +740,7 @@ handleTagForm(game,platform) {
                                 value={this.state.StartTime}
                                 onChange={this.setStartTime}
                                 options={[
-                                  { value: "2", label: "30 Minutes Later" },
+                                  { value: "1", label: "30 Minutes Later" },
                                   { value: "60", label: "1 Hour Later" },
                                   { value: "120", label: "2 Hours Later" },
                                   { value: "3600", label: "6 Hours Later" },

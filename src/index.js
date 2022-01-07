@@ -245,7 +245,7 @@ function Main() {
               currentUser.username
             ) &&
             window.location.pathname + window.location.search !=
-              "/panel/lobby?id=" + eventGet.id  && !matchIDQ
+              "/panel/lobby?id=" + eventGet.id && eventGet.id != eventIDQ && !matchIDQ
           ) {
             if (eventGet.status == "Ready" || eventGet.status == "InPlay" ) {
               history.push("/panel/lobby?id=" + eventGet.id);

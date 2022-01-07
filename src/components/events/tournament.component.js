@@ -609,7 +609,7 @@ class TournamentSection extends Component {
               ) : null}
             </span>
           ))}
-          {item.status != "Canceledd" && item.status != "Expired" && (
+          {item.status != "Canceled" && item.status != "Expired" && (
             <>
             
               <Divider style={{ opacity: 0 }} />
@@ -619,7 +619,8 @@ class TournamentSection extends Component {
                 exclusive={false}
                 fluid
                 inverted
-              />
+              /></>
+               )}
 <Col
           className="mx-auto text-center "
           lg="8"
@@ -728,8 +729,8 @@ class TournamentSection extends Component {
                   </span>
               </Segment>
               </Col>
-            </>
-          )}
+           
+         
         </Col>
       </>
     );
