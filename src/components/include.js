@@ -160,7 +160,7 @@ export const getTagName = (game, console) => {
   if (console == "PS4" || console == "PS5") {
     return "PSN";
   }
-  if (console == "XBox") {
+  if (console == "XBOX") {
     return console;
   }
   if (console == "PC") {
