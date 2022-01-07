@@ -22,7 +22,7 @@ function ProfileForm(prop) {
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
     setMyState(prop.myState);
-  
+    setCurrentUser(prop.findStateId(myState, "currentUser"))
     setMyStateLoc({
       list: [
         { id: "name", val: currentUser.fullName },
@@ -103,26 +103,24 @@ function ProfileForm(prop) {
   
  
 
-
-
   const printErr = (error) => {
-    if (error?.response?.data?.status == 401) {
+    if (error?.response?.data?.status == 401 || error?.data?.status == 401) {
       prop.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
       prop.onUpdateItem("currentUser", defUser);
     } else {
       const resMessage =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
 
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: resMessage,
-      });
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: resMessage,
+        });
     }
   };
 
@@ -132,7 +130,7 @@ function ProfileForm(prop) {
     var name = findStateId(myStateLoc, "name")
   var country = findStateId(myStateLoc, "country")
   var birthday = findStateId(myStateLoc, "birthday")
-   
+   if(!birthday){birthday = "01/01/1990"}
     onUpdateItem("loading", true);
     
     if (!findStateId(myStateLoc, "hasError") && findStateId(myStateLoc, "submit")) {

@@ -59,7 +59,8 @@ function Main() {
   const location = useLocation();
   var unUser = defUser;
   if (localStorage.getItem("user")) {
-    unUser = JSON.parse(localStorage.getItem("user"));
+    try{unUser = JSON.parse(localStorage.getItem("user"));}catch(e){}
+    
   }
   const [myState, setMyState] = useState({
     list: [
