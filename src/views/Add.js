@@ -517,7 +517,7 @@ handleTagForm(game,platform) {
         .then(
             
           (response) => {
-            if (response=='Tournament event created.'){
+            if (response.data=='Tournament event created.'){
               Swal.fire("", "Data saved successfully.", "success").then(
                 (result) => {
                   this.props.history.push("/panel/dashboard");
@@ -530,24 +530,7 @@ handleTagForm(game,platform) {
                 submit: false,
                 loading: false,
               });
-              if (response=='balanceError'){
-              var resMessage = "To enter this event you need to have more balance!"
-      Swal.fire({
-        title: 'Error!',
-        text:resMessage,
-        icon:"error",
-        showCancelButton: true,
-        confirmButtonText: `Go to Cashier`,
-        canceleButtonText: `Back`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          this.props.history.push("/panel/cashier");
-        }
-      })
-            }else if (response=='tagError'){
-              this.setSelectedTag(this.state.GName.value.split(" - ")[0],'Activition')
-            }
+              
           }
           },
           (error) => {
@@ -598,12 +581,13 @@ handleTagForm(game,platform) {
             '0-70, 30.00, 20.00, 14.00, 10.00, 8.00, 7.00, 6.00, 5.00|71-100, 29.00, 18.00, 12.50, 10.00, 8.00, 6.50, 5.50, 4.50, 3.50, 2.50|101-200, 28.00, 17.50, 11.50, 8.50, 7.00, 5.50, 4.50, 3.50, 2.50, 1.50, 1.00x10|201-400, 27.00, 16.50, 10.50, 8.00, 6.25, 4.75, 3.75, 2.75, 1.75, 1.25, 0.75x10, 0.50x20|401-700, 26.00, 15.50, 10.00, 7.50, 6.00, 4.50, 3.50, 2.50, 1.50, 1.00, 0.65x10, 0.40x20, 0.25x30|701-1000, 25.00, 15.00, 10.00, 7.25, 5.50, 4.25, 3.25, 2.25, 1.25, 0.75, 0.55x10, 0.40x20, 0.25x30, 0.15x30',
           this.state.inSign.value,
           this.state.outSign.value,
+          this.state.outSign.value,
           this.state.Rules
           )
           .then(
             
             (response) => {
-              if (response=='Create event successful'){
+              if (response.data=='League event created.'){
                 Swal.fire("", "Data saved successfully.", "success").then(
                   (result) => {
                     this.props.history.push("/panel/dashboard");
@@ -616,24 +600,7 @@ handleTagForm(game,platform) {
                   submit: false,
                   loading: false,
                 });
-                if (response=='balanceError'){
-                var resMessage = "To enter this event you need to have more balance!"
-        Swal.fire({
-          title: 'Error!',
-          text:resMessage,
-          icon:"error",
-          showCancelButton: true,
-          confirmButtonText: `Go to Cashier`,
-          canceleButtonText: `Back`,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            this.props.history.push("/panel/cashier");
-          }
-        })
-              }else if (response=='tagError'){
-                this.setSelectedTag(this.state.GName.value.split(" - ")[0],'Activition')
-              }
+                
             }
             },
             (error) => {

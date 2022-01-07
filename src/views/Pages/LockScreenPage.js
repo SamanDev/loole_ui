@@ -85,7 +85,7 @@ function LockScreenPage(prop) {
     );
   };
 
-  if (!eventDef || !currentUser || !match) {
+  if (!eventDef || !currentUser || (!match && eventDef?.gameMode != 'League')) {
     return (
       <>
         <div
@@ -262,9 +262,7 @@ function LockScreenPage(prop) {
                   <Container style={{ paddingBottom: 50 }}>
                     {eventDef.gameMode == "League" ? (
                       <LeagueSection
-                        item={eventDef}
-                        matchidFind={match}
-                        token={currentUser}
+                      {...prop}
                       />
                     ) : (
                       <>

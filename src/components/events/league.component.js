@@ -1,125 +1,91 @@
 import React, { Component } from "react";
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import CheckButton from "react-validation/build/button";
+import Select from "react-select";
+import Avatar from "react-avatar";
 
-
-
-import Moment from "moment";
+import { NavLink, Link } from "react-router-dom";
+import {
+  VerticalTimeline,
+  VerticalTimelineElement,
+} from "react-vertical-timeline-component";
+import "react-vertical-timeline-component/style.min.css";
+import {
+  faInstagram,
+  faTwitch,
+  faYoutube,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 import CurrencyFormat from "react-currency-format";
-import { IMaskInput } from "react-imask";
+
+import {
+  Statistic,
+  Button,
+  Label,
+  Divider,
+  Grid,
+  Segment,
+  Accordion,
+  Header,
+  List,
+  Message,
+} from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
-import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import eventBus from "views/eventBus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "react-countdown";
-import uploadHeader from "services/upload-header";
-import PropTypes from "prop-types";
-import axios from "axios";
-import { POSTURL,defUser } from 'const';
-import MatchCard from "components/matchcard.component";
-import {
-  Badge,
-  
-  Navbar,
-  Nav,
-  Container,
-  Pagination,
-  Col,
-  Table,
-  Row,
-  ProgressBar,
-  ListGroup,
-  Spinner,
-  Accordion,
-} from "react-bootstrap";
+import { Col, ProgressBar,Table } from "react-bootstrap";
 import {
   setAvatar,
-  getColor,
-  getIcon,
-  renderer,
   rendererBig,
-  getQueryVariable,
-  getCode,
-  getGroupBadge,
-  getGroupBadgeList,
-  getGroupBadgePrice,
-  getModalTag,
-  getGameTag,
+  printEventBTN,
+  vsComponentTitle,
   getMatchTitle,
-  haveGameTag,
-  getPlayerTag,
-  isJson,
-  haveAdmin,
-  handleTagForm,
-  vsComponent,
   getColorStatus,
+  printStatus,
+  handleTagForm,
+  vsComponentPlayer,
   getGroupBadgeBlock,
   printJoinalerts,
+  genMatch,
 } from "components/include";
-import {
-  Card,
-  
-  Button,
-  Segment,Divider
-} from "semantic-ui-react";
-import { UPLOADURL, POSTURLTest } from "const";
 
-
-const API_URL_TEST = POSTURLTest;
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
   showConfirmButton: false,
   timer: 3000,
   timerProgressBar: true,
-
 });
 
-var isInPlayers = false;
-var matchidFind = [];
-var lists = [];
-var item = false;
-var expiryDate = new Date();
+//console.log(item);
+var dateExpired = null;
 var dateStart = null;
 var icEnd = 0;
 var icStart = 0;
 var icStartL = 0;
-var nullplayer = {
-  id: 100000,
-  username: false,
-  rank: null,
-  winAmount: null,
-  ready: false,
-};
-var mymatchFind = null;
-var matchLevelFind = null;
 var isJoin = false;
-
+var activePlayer = 0;
 class LeagueSection extends Component {
   constructor(props) {
     super(props);
     this.showDetails = this.showDetails.bind(this);
     this.handleJoinMatch = this.handleJoinMatch.bind(this);
-    this.handleLeaveMatch = this.handleLeaveMatch.bind(this);
-    this.handlechangeReadyEvent = this.handlechangeReadyEvent.bind(this);
-    this.handlecAlertLost = this.handlecAlertLost.bind(this);
-    this.handlecAlertWin = this.handlecAlertWin.bind(this);
-    this.handleClashFinished = this.handleClashFinished.bind(this);
-    this.setProgress = this.setProgress.bind(this);
-    this.printErr = this.printErr.bind(this);
-    this.fileUpload = React.createRef();
     this.state = {
-      eventid: this.props.item.id,
-      matchid: getQueryVariable("matchid"),
-      item: this.props.item,
-      currentUser: this.props.token,
+      myState: this.props.myState,
+      item: this.props.findStateId(this.props.myState, "eventDef"),
+      currentUser: this.props.findStateId(this.props.myState, "currentUser"),
+      eventid: this.props.findStateId(this.props.myState, "eventIDQ"),
+
+      matchidFind: this.props.findStateId(this.props.myState, "match"),
       curPlayerReady: false,
       progress: 0,
       selectedFile: null,
-      matchidFind: this.props.matchidFind,
-      isloading: this.props.isLoading,
+
+      loading: false,
       isUpLoading: false,
       progressLable: "I Win",
       successful: false,
@@ -127,172 +93,6 @@ class LeagueSection extends Component {
       message: "",
     };
   }
-  componentWillUnmount() {
-    document.title = this.props.item.gameMode + ' '+ this.props.item.gameName + ' for ' + this.props.item.outSign.replace('Dollar','$') + this.props.item.amount +  ' Prize';
-  }
-  componentWillReceiveProps(newProps) {
-    this.setState({ eventid: newProps.item.id });
-    this.setState({ currentUser: newProps.token });
-    this.setState({ matchidFind: newProps.matchidFind });
-    this.setState({ item: newProps.item });
-
-    this.setState({ isloading: newProps.isLoading });
-    
-  }
-  handleClashFinished(e) {
-    this.setState({
-      isloading: true,
-    });
-    userService
-      .saveTags("ClashRoyale", "finish", this.state.tag, this.state.eventid)
-      .then(
-        (response) => {
-          this.setState({
-            isloading: false,
-          });
-          //this.props.history.push("/panel/dashboard");
-        },
-        (error) => {
-          this.printErr(error);
-        }
-      );
-  }
-  
-  handleChatUpload = () => {
-    this.setState({
-      progress: 1,
-      progressLable: "0%",
-      isUpLoading: true,
-    });
-    let uploadInfo = new FormData();
-    uploadInfo.append("id", this.state.eventid);
-    if (this.state.matchid) {
-      uploadInfo.append("idMatch", this.state.matchid);
-    }
-    uploadInfo.append("file", this.state.selectedFile);
-
-    //console.log(uploadInfo);
-    axios
-      .post(API_URL_TEST + "uploadFile", uploadInfo, {
-        headers: uploadHeader(),
-        onUploadProgress: (data) => {
-          //Set the progress value to show the progress bar
-          this.setProgress(Math.round((100 * data.loaded) / data.total));
-        },
-      })
-      .then((response) => {
-        this.setState({
-          progress: 0,
-          progressLable: "I win",
-          isUpLoading: false,
-        });
-        document.documentElement.classList.toggle("nav-open");
-      })
-      .catch((error) => {
-        this.setState({
-          progressLable: "I win",
-          isUpLoading: false,
-        });
-      });
-  };
-  setProgress(e) {
-    this.setState({
-      progress: e,
-      progressLable: e + "%",
-    });
-  }
-  handleDelete(e) {
-    e.preventDefault();
-
-    userService.deleteEvent(this.state.eventid).then(
-      (response) => {
-        this.props.history.push("/panel/dashboard");
-      },
-      (error) => {}
-    );
-  }
-
-  handlechangeReadyEvent(checked) {
-    //firstLoad = false;
-    this.setState({
-      loading: true,
-    });
-    //this.setState({ curPlayerReady: checked });
-    userService.changeReadyEvent(this.state.eventid).then(
-      (response) => {
-        if (response.data == "changeReadyEvent successful") {
-          this.setState({
-            loading: false,
-          });
-
-          //this.reGetevents();
-        }
-        //this.props.history.push("/panel/dashboard");
-      },
-      (error) => {
-        this.printErr(error);
-      }
-    ).catch((error) => {
-      this.printErr(error);
-    });
-  }
-  handlecAlertLost(checked) {
-    const MySwal = withReactContent(Swal);
-
-    MySwal.fire({
-      title: "Are you sure? ",
-      icon: "question",
-      iconColor: "#FB404B",
-      text: "Please confirm your lose.",
-      customClass: "dark",
-      showCancelButton: true,
-      focusConfirm: false,
-      confirmButtonText: "Yes, I lost.",
-
-      cancelButtonText: "Back",
-      confirmButtonColor: "#FB404B",
-      cancelButtonColor: "rgba(255, 255, 255,.2)",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.handleLoseMatch();
-      }
-    });
-  }
-
-  handlecAlertWin(checked) {
-    const MySwal = withReactContent(Swal);
-
-    MySwal.fire({
-      title: "Confirm needed",
-      text: "Upload a  video to approve  your win.",
-      icon: "info",
-      iconColor: "#87CB16",
-      customClass: "dark",
-      showCancelButton: true,
-      focusConfirm: false,
-      confirmButtonText: "Upload video",
-
-      cancelButtonText: "Back",
-      confirmButtonColor: "#87CB16",
-      cancelButtonColor: "rgba(255, 255, 255,.2)",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.fileUpload.current.click();
-      }
-    });
-  }
-  showFileUpload() {
-    this.fileUpload.current.click();
-  }
-  onChangeHandler = (event) => {
-    this.setState({
-      selectedFile: this.fileUpload.current.files[0],
-    });
-
-    setTimeout(() => {
-      this.handleChatUpload();
-    }, 500);
-  };
   showDetails(player) {
     $(".gdetails").addClass("hide");
     $(".gdetails.no" + player).removeClass("hide");
@@ -327,7 +127,8 @@ class LeagueSection extends Component {
               response.data,
               GName,
               this.state.currentUser,
-              handleTagForm
+              handleTagForm,
+              this.props
             );
           }
         }
@@ -338,69 +139,6 @@ class LeagueSection extends Component {
     ).catch((error) => {
       this.printErr(error);
     });
-  }
-  handleLeaveMatch(e) {
-    e.preventDefault();
-    this.setState({
-      loading: true,
-    });
-    userService.leaveEvent(this.state.eventid).then(
-      (response) => {
-        this.setState({
-          loading: false,
-        });
-        if (response.data.accessToken) {
-          this.props.onUpdateItem("currentUser", response.data);
-
-          Toast.fire({
-            icon: "success",
-            title: "Un Joined.",
-          });
-        } else {
-          
-
-          {
-            printJoinalerts(
-              response.data,
-              GName,
-              this.state.currentUser,
-              handleTagForm
-            );
-          }
-        }
-      },
-      (error) => {
-        this.printErr(error);
-      }
-    ).catch((error) => {
-      this.printErr(error);
-    });
-  }
-  handleLoseMatch(e) {
-    this.setState({
-      loading: true,
-    });
-    if (this.state.matchid) {
-      userService.loseEvent(this.state.eventid, this.state.matchid).then(
-        (response) => {
-          //this.reGetevents();
-          //this.props.history.push("/panel/dashboard");
-        },
-        (error) => {
-          this.printErr(error);
-        }
-      );
-    } else {
-      userService.loseEvent(this.state.eventid).then(
-        (response) => {
-          //this.reGetevents();
-          //this.props.history.push("/panel/dashboard");
-        },
-        (error) => {
-          this.printErr(error);
-        }
-      );
-    }
   }
   
   printErr = (error) => {
@@ -427,7 +165,8 @@ class LeagueSection extends Component {
             resMessage,
             GName,
             this.state.currentUser,
-            handleTagForm
+            handleTagForm,
+            this.props
           );
         }
       } else {
@@ -446,67 +185,402 @@ class LeagueSection extends Component {
       }
     }
   }
+
+  static getDerivedStateFromProps(props, state) {
+    // Any time the current user changes,
+    // Reset any parts of state that are tied to that user.
+    // In this simple example, that's just the email.
+    document.title =
+      state.item.gameName +
+      " " +
+      state.item.gameMode +
+      " - " +
+      state.item.outSign.replace("Dollar", "$").replace("Point", "Diamonds ") +
+      state.item.prize +
+      " Prize";
+
+    if (props.myState !== state.myState) {
+      return {
+        myState: props.myState,
+        item: props.findStateId(props.myState, "eventDef"),
+        currentUser: props.findStateId(props.myState, "currentUser"),
+        eventid: props.findStateId(props.myState, "eventIDQ"),
+        matchidFind: props.findStateId(props.myState, "match"),
+      };
+    }
+    return null;
+  }
   render() {
-    let {
-      currentUser,
-      item,
-      progress,
-      isUpLoading,
-      progressLable,
-      matchidFind,
-    } = this.state;
+    const item = this.props.findStateId(this.state.myState, "eventDef");
+    const currentUser = this.props.findStateId(
+      this.state.myState,
+      "currentUser"
+    );
+    let { progress, isUpLoading, progressLable, loading, activeIndex } =
+      this.state;
+    var current_brackets = [];
+    var potential_brackets = [];
+var pointTrack = [{
+  "text": "Kills",
+  "weight": "+ 20"
+}, {
+  "text": "Damage Done",
+  "weight": "+ 0.06"
+}, {
+  "text": "Time Played",
+  "weight": "+ 0.04"
+}, {
+  "text": "1st Place",
+  "weight": " + 240"
+}, {
+  "text": "2nd or 3rd Place",
+  "weight": " + 60"
+}, {
+  "text": "4th to 8th Place",
+  "weight": " + 20"
+}]
+    //var events = eventGet;
 
-    var _mode = " 1 vs 1 ";
+    if (item.tournamentPayout) {
+      var payArr = item.tournamentPayout.split("|");
+      var totalPay = item.prize;
+      for (var i = 0; i < payArr.length; i++) {
+        var paylvl = payArr[i].split(", ");
+        var payplyer = paylvl[0].split("-");
+        var tItem = item.players.length;
+        if (item.status == "Pending" || item.gameMode == "League") {
+          tItem = item.totalPlayer;
+        }
+        // console.log(payplyer[0])
+        if (parseInt(payplyer[0]) <= tItem && parseInt(payplyer[1]) >= tItem) {
+          for (var j = 1; j < paylvl.length; j++) {
+            if (paylvl[j].indexOf("x") == -1) {
+              paylvl[j] = paylvl[j] + "x1";
+            }
+            var intX = paylvl[j].split("x");
+            current_brackets.push({
+              prize: (intX[0] * totalPay) / 100,
+              percent: intX[0],
+              number: intX[1],
+            });
+          }
+        }
+      }
+      for (var i = payArr.length - 1; i < payArr.length; i++) {
+        var paylvl = payArr[i].split(", ");
+        var payplyer = paylvl[0].split("-");
+        var tItem = item.players.length;
+        if (item.status == "Pending" || item.gameMode == "League") {
+          tItem = item.totalPlayer;
+        }
+        if (parseInt(payplyer[0]) <= tItem && parseInt(payplyer[1]) >= tItem) {
+          for (var j = 1; j < paylvl.length; j++) {
+            if (paylvl[j].indexOf("x") == -1) {
+              paylvl[j] = paylvl[j] + "x1";
+            }
+            var intX = paylvl[j].split("x");
+            potential_brackets.push({
+              prize: (intX[0] * totalPay) / 100,
+              percent: intX[0],
+              number: intX[1],
+            });
+          }
+        }
+      }
+    }
+    var _mode = item.gameMode;
     var _color = "#404040";
-
-    var activePlayer = 0;
-    item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
-    {matchidFind.matchPlayers.map((player, j) => {
-      if (player.username != "") {
-        activePlayer++;
-      }
-
-      if (
-        player.username == currentUser.username &&
-        player.ready &&
-        !this.state.curPlayerReady
-      ) {
-        //this.setState({ curPlayerReady: true });
-      }
-
-    })}
+    var _finishTxt = 'Not Joinable';
+    if (item?.winner) {
+      _finishTxt = item.winner;
+    }
+    var isJoin = false;
+    var lists = item.matchTables;
+    {
+      item.players.map((user, z) => (
+        <>{currentUser.username == user.username && (isJoin = true)}</>
+      ));
+    }
+    if(item.status !='Pending' && item.players.length > 5){current_brackets = potential_brackets}
+    icEnd = 0;
+    icStart = 0;
+    setTimeout(() => {
+      $("#jsonhtml").html($("#jsonhtml2").text());
+    }, 1000);
     return (
       <>
-        
-
         <Col
           className="mx-auto text-center "
           lg="8"
           md="10"
           style={{ padding: 0, marginTop: 20 }}
         >
-          {vsComponent(
+          {vsComponentTitle(item)}
+          <Divider fitted style={{ opacity: 0 }} />
+          {printStatus(
             item,
-            matchidFind,
-            this.state.matchid,
-            this.state.currentUser,
-            this.state.loading,
-            activePlayer,
-            this.handlechangeReadyEvent,
-            this.handleJoinMatch,
-            this.handleLeaveMatch,
-            this.handlecAlertLost,
-            this.fileUpload,
-            this.onChangeHandler,
-            this.handlecAlertWin,
-            isUpLoading,
-            progress,
-            progressLable
+            _mode,
+            _color,
+            item.status + "@@@" + _finishTxt,
+            item.status
           )}
-           <Divider  hidden/>
-          <div  className="ui cards fours centered">
-          <MatchCard  item={item} matchidFind={matchidFind} />
-          </div>
+          <Divider fitted style={{ opacity: 0 }} />
+          <Countdown
+            renderer={rendererBig}
+            match={item}
+            txt="@@@Start at"
+            colorfinish={getColorStatus(item.status)}
+            finish={item.status + "@@@Not Avalable"}
+            date={item.startTime}
+          />
+          <Countdown
+            renderer={rendererBig}
+            match={item}
+            txt="@@@Avalable Until"
+            colorfinish={getColorStatus(item.status)}
+            finish={item.status + "@@@Not Avalable"}
+            date={item.expire}
+          />
+          <Divider fitted style={{ opacity: 0 }} />
+
+          {printEventBTN(
+            item,
+            currentUser,
+            loading,
+            activePlayer,
+            isJoin,
+            null,
+            this.handleJoinMatch,
+            this.props.onUpdateItem
+          )}
+          {item.status == "Pending" && item.players.length!=item.totalPlayer && (
+            <>
+              <small
+                style={{
+                  marginTop: 10,
+                  marginBottom: 10,
+                  display: "block",
+                  fontSize: 20,
+                }}
+              >
+                {item.players.length}/{item.totalPlayer}
+              </small>
+              <ProgressBar
+                animated
+                variant="danger"
+                now={(item.players.length / item.totalPlayer) * 100}
+                style={{
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  maxWidth: "50%",
+                }}
+              />
+            </>
+          ) }
+
+          {item.players.map((user, z) => (
+            <span key={z}>
+              {currentUser.username == user.username && (isJoin = true)}
+              {z < 5 ? (
+                <>
+                  {z < 4 ? (
+                    <Avatar
+                      size="25"
+                      title={user.username}
+                      round={true}
+                      name={setAvatar(user.username)}
+                    />
+                  ) : (
+                    <Avatar
+                      size="25"
+                      round={true}
+                      value={"+" + (item.players.length - 4)}
+                      color="gray"
+                    />
+                  )}
+                </>
+              ) : null}
+            </span>
+          ))}
+<Col
+          className="mx-auto text-center "
+          lg="8"
+          md="10"
+          style={{ padding: 0, marginTop: 120 }}
+        >
+          {item.players?.length > 0 && (
+              <Segment inverted color="red">
+                <Header as="h2">Players</Header>
+                <Message>
+                <List divided inverted relaxed>
+                {item.players.map((player, i) => {
+                      
+                        return (
+                          <List.Item key={i.toString()}>
+
+        <List.Content  style={{ textAlign:'left' }}>
+          
+          <span>
+          <Avatar as={Link} to={'/user/'+player.username} target="_blank"
+                      size="20"
+                      title={player.username}
+                      round={true}
+                      name={setAvatar(player.username)}
+                    />  <Label  style={{ marginLeft:5 }}>{player.nickName}</Label>
+                              
+                              </span>
+                            <span style={{ float:'right',marginLeft:5 }}>
+                            <Label color="black">{player.totalScore ? player.totalScore : 0}</Label>
+                            </span>
+        </List.Content>
+      </List.Item>
+      
+                        );
+                      
+                    })}
+      
+    </List>
+    </Message>
+               
+                
+            
+                
+              </Segment>
+              )}
+              <Segment inverted color="yellow">
+                <Header as="h2">Results Tracking</Header>
+                <Message>
+                <List divided inverted relaxed>
+                {pointTrack.map((win, i) => {
+                      
+                        return (
+                          <List.Item key={i.toString()}>
+
+        <List.Content  style={{ textAlign:'left' }}>
+          
+          <span style={{ fontSize: 17 }}>
+                              <Label>{win.text}</Label>
+                              
+                            </span>
+                            <span style={{ float:'right',marginLeft:5 }}>
+                            <Label color="green">{win.weight}</Label>
+                            </span>
+        </List.Content>
+      </List.Item>
+      
+                        );
+                      
+                    })}
+      
+    </List>
+    </Message>
+                
+            
+                
+              </Segment>
+              <Segment inverted color="violet">
+                <Header as="h2">Watch Live</Header>
+                <p>
+                  <FontAwesomeIcon
+                    icon={faTwitch}
+                    style={{
+                      color: "#fff",
+                      fontSize: 40,
+                    }}
+                  />
+                </p>
+                <h5>Nobody is currently live</h5>
+                <Message>
+    
+    <p>
+                  By connecting your Twitch account you will automatically be
+                  shown on the Watch Live pages of the tournaments you are
+                  playing in
+                </p>
+                <Button
+                   color="violet"
+                  onClick={this.handleHowStream}
+                  
+                  disabled={this.state.isloading}
+                >
+                  How to Stream
+                </Button>
+  </Message>
+                
+            
+                
+              </Segment>
+              <Segment inverted color="blue">
+                <Header as="h2">
+                  Prizes
+                  <div style={{ position: "relative", zIndex: 1,transform:'scale(1.3 )' }}>
+                    {getGroupBadgeBlock(
+                      item.outSign,
+                      item.prize,
+                      "Prize",
+                      "left",
+                      "green"
+                    )}
+                  </div>
+                </Header>
+                <Message>
+                <List divided inverted relaxed>
+                {current_brackets.map((win, i) => {
+                      icStart = icStart + 1;
+                      icEnd = icEnd + parseInt(win.number);
+                      var icShow = "#" + icStart;
+                      if (icStart != icEnd) {
+                        icShow = icShow + " - #" + icEnd;
+                        icStart = icEnd;
+                      }
+                      if (icStart <= 2005) {
+                        return (
+                          <List.Item key={i.toString()}>
+
+        <List.Content>
+          
+          <span style={{ fontSize: 17 }}>
+                              <Label color="green">%{win.percent}</Label>
+                              <Label
+                                pointing="left"
+                                size="mini"
+                                basic
+                                color="blue"
+                              >
+                                {icShow}
+                              </Label>
+                            </span>
+                            <span style={{ textAlign:'left',marginLeft:5 }}>
+                              {getGroupBadgeBlock(
+                                item.outSign,
+                                win.prize,
+                                "Prize",
+                                "right",
+                                "green"
+                              )}
+                            </span>
+        </List.Content>
+      </List.Item>
+      
+                        );
+                      }
+                    })}
+      
+    </List>
+    </Message>
+              </Segment>
+              <Segment inverted color="purple">
+                <Header as="h2">
+                Rules
+                </Header>
+                <Message id="jsonhtml" style={{ textAlign:'left'}}></Message>
+                  <span id="jsonhtml2" className="hide">
+                    {" "}
+                    {item.rules}
+                  </span>
+              </Segment>
+              </Col>
+         
         </Col>
       </>
     );

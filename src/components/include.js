@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlaystation, faXbox } from "@fortawesome/free-brands-svg-icons";
-import { faDesktop, faMobileAlt } from "@fortawesome/free-solid-svg-icons";
+import { faDesktop, faMobileAlt,faGlobe } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "react-avatar";
 import Countdown from "react-countdown";
 import Swal from "sweetalert2";
@@ -137,13 +137,16 @@ export const setAvatar = (name) => {
 };
 
 export const getIcon = (name) => {
+  if (name == "All") {
+    return faGlobe;
+  }
   if (name == "Mobile") {
     return faMobileAlt;
   }
   if (name == "PS4" || name == "PS5") {
     return faPlaystation;
   }
-  if (name == "XBox") {
+  if (name == "XBOX") {
     return faXbox;
   }
   if (name == "PC") {
@@ -797,6 +800,7 @@ export const printEventBTN = (
   );
 };
 export const vsComponentTitle = (item) => {
+  
   return (
     <>
       <Statistic inverted size="small" color={getColor(item.prize)}>
@@ -1451,9 +1455,9 @@ export const printStatus = (item, _mode, _color,finish,status) => {
         </Statistic>
       ) : (
         <>
-        {(item.status == "Pending" ) ? (
+        {(item.status == "Pending" || (item.status != "Finished") && item.gameMode =='League') ? (
           <>
-        {_mode=='Tournament' && item.status == 'Pending' && !getQueryVariable("matchid") ? (
+        {(_mode=='Tournament' || _mode=='League') && item.status == 'Pending' && !getQueryVariable("matchid") ? (
           <Statistic inverted color={getColorStatus(status)} size="tiny">
           <Statistic.Label>{_mode}</Statistic.Label>
           <Statistic.Value>{item?.players?.length}/{item.totalPlayer}</Statistic.Value>
@@ -1510,7 +1514,7 @@ export const rendererBig = ({
   if (!_colorFinish) {
     _colorFinish = _color;
   }
-  if (completed || props.match?.winner || (props.match?.status != 'Pending')) {
+  if (completed || props.match?.winner || (props.match?.status != 'Pending' && props.match?.gameMode != 'League')) {
     // Render a complete state
     //return <Completionist />;
     return <>
@@ -1597,7 +1601,7 @@ export const getGameTag = (game, userTags) => {
 };
 export const findActiveMatch = (event, matchID) => {
   var _match;
-  event.matchTables.sort((a, b) => (a.level > b.level) ? 1 : -1)
+  event?.matchTables.sort((a, b) => (a.level > b.level) ? 1 : -1)
   if(matchID){
    
     event.matchTables.map(function (match) {
@@ -1608,12 +1612,12 @@ export const findActiveMatch = (event, matchID) => {
   }else{
     _match = event.matchTables[0]
   }
-  _match.matchPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
+  _match?.matchPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
   return _match
 }
 export const isPlayerInMatch = (match, username) => {
   var _is = false;
-  match.matchPlayers?.map(function (user) {
+  match?.matchPlayers?.map(function (user) {
       if (user.username == username) {
         _is = true;
       }
@@ -1906,7 +1910,7 @@ export const handleSaveTags = (
     },
   });
 
-  userService.saveTags(gameName, gamePlatform, gameID, gameNickname).then(
+  userService.saveTags(gameName.replace('2',''), gamePlatform, gameID, gameNickname).then(
     (response) => {
       let jsonBool = isJson(response.data);
 

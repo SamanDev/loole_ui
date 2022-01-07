@@ -28,6 +28,7 @@ var moment = require("moment");
  
   if (item?.status=='Canceled' || item?.status=='Expired' || item?.status=='Finished') { _finishTxt = 'Not Avalable'}
   item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+  
     return (
     
         
@@ -50,9 +51,15 @@ var moment = require("moment");
                >
               <div style={{ transform: "scale(.8)",padding: '10px 0',height:185}}>
                 {printStatus(item,_mode,_color, item.status+'@@@'+_finishTxt,item.status)}
-             
-              
+                {item.gameMode == 'League' ?  ( 
+
+
+              <Countdown renderer={rendererBig} txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item}  date={item.expire} mode={_mode} color={_color} />
+                ):( 
+                
               <Countdown renderer={rendererBig} txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
+                )}
+              
         </div>
         {item.players[0] ? (
                   <>

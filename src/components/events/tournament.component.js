@@ -502,9 +502,11 @@ class TournamentSection extends Component {
    
     if (item.status=='Canceled' || item.status=='Expired') {
       _color = "black"; 
+      defaultActiveIndex=''
     }
     var _finishTxt = 'Not Joinable';
   if (item?.winner) { _finishTxt = item.winner}
+  
     setTimeout(() => {
       $("#jsonhtml").html($("#jsonhtml2").text());
     }, 100);

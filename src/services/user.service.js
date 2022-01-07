@@ -266,6 +266,17 @@ class UserService {
         
       });
   }
+  createLeague(gameName, gameConsole, gameMode, amount, startTime, finished,totalPlayer,tournamentPayout,inSign,outSign,currency,rules) {
+    return axios
+      .post(
+        API_URL_TEST + "createEvent",
+        { gameName, gameConsole, gameMode, amount, startTime, finished,totalPlayer,tournamentPayout,inSign,outSign,currency,rules },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
   createTournament(gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer,tournamentPayout,inSign,outSign,currency,prize,rules) {
     return axios
       .post(
@@ -274,9 +285,7 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        if (response.data.accessToken) {
-          return response.data;
-        }
+        return response;
       });
   }
   createEvent(gameName, gameConsole, gameMode, amount,inSign,outSign,currency, timeMinute) {
@@ -418,20 +427,7 @@ class UserService {
         return response.data;
       });
   }
-  createLeague(gameName, gameConsole, gameMode, amount, start, finished,totalPlayer,tournamentPayout,inSign,outSign,rules) {
-    return axios
-      .post(
-        API_URL_TEST + "createEvent",
-        { gameName, gameConsole, gameMode, amount, start, finished,totalPlayer,tournamentPayout,inSign,outSign,rules },
-        { headers: authHeader() }
-      )
-      .then((response) => {
-        console.log("ok");
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
-        return response.data;
-      });
-  }
+  
 }
 function isJson(str) {
   // alert("str = "+str)
