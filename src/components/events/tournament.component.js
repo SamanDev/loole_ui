@@ -259,6 +259,8 @@ class TournamentSection extends Component {
     var lists = item.matchTables;
     icEnd = 0;
     icStart = 0;
+    mymatchFind = null;
+matchLevelFind = null;
     lists.sort((a, b) => (a.level < b.level ? 1 : -1));
     if (
       (item.status == "InPlay" ||
@@ -280,7 +282,7 @@ class TournamentSection extends Component {
           tblmatch.status == "Pending" ||
           tblmatch.status == "Ready"
         ) {
-          if (matchLevelFind?.level > tblmatch.level) {
+          if (matchLevelFind?.level > tblmatch.level || !matchLevelFind) {
             matchLevelFind = tblmatch;
           }
         }
