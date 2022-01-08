@@ -16,7 +16,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // sections for this page
 export * from "const";
 import LandLayout from "layouts/Land.js";
-import AdminLayout from "layouts/Admin.js";
+
 import PanelLayout from "layouts/Panel.js";
 import Login from "components/newlogin.component";
 import Register from "components/newregister.component";
@@ -494,8 +494,7 @@ function Main() {
             />
           )}
         />
-        <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-
+        
         <Route
           path="/game/:id"
           render={(props) => (

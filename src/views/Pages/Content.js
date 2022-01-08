@@ -35,7 +35,7 @@ const Landing = () => {
     <div className="wrapper">
             <div className="parallax filter-gradient orange section-gray" data-color="red" style={{height:100}}>
                 <div className="parallax-background">
-                    <img className="parallax-background-image" src={require("assets/images/games/8Pool.jpg").default}/>
+                    <img className="parallax-background-image" src={"assets/images/games/8Pool.jpg"}/>
                 </div>
                 <div className= "container">
                     <div className="row">

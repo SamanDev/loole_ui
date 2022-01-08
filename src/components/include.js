@@ -137,6 +137,7 @@ export const setAvatar = (name) => {
 };
 
 export const getIcon = (name) => {
+  
   if (name == "All") {
     return faGlobe;
   }

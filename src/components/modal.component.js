@@ -51,12 +51,7 @@ function ModalExampleShorthand(prop) {
   return (
     <Link  className="item" to={"/panel/lobby?id=" + item.id}>
     
-           <Icon.Group style={{marginBottom:10}}>
-      <Icon loading size='big' color={getColorStatus(item.status)} name='circle notch' style={{margin:0}} />
-     
-    </Icon.Group><br/>
-      
-      {_title}
+           
       
   </Link>
   )
