@@ -45,7 +45,7 @@ var moment = require("moment");
               className={"text-center cover "+item.status}
                >
               <div style={{ transform: "scale(.8)",padding: '30px 0',height:185}}>
-              {printStatus(item,_mode,_color ,item.status+'@@@Not Avalable',item.status)}
+              {printStatus(item,_mode,_color ,item.status+'@@@Not Avalable',item.status,'no')}
               <Countdown renderer={rendererBig}  txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
         </div>
         {item.players[0] ? (

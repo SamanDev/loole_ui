@@ -50,7 +50,7 @@ var moment = require("moment");
               className={"text-center cover "+item.status}
                >
               <div style={{ transform: "scale(.8)",padding: '10px 0',height:185}}>
-                {printStatus(item,_mode,_color, item.status+'@@@'+_finishTxt,item.status)}
+                {printStatus(item,_mode,_color, item.status+'@@@'+_finishTxt,item.status,'no')}
                 {item.gameMode == 'League' ?  ( 
 
 

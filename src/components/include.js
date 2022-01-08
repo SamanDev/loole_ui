@@ -1412,14 +1412,50 @@ export const  getOffset=( el ) =>{
   }
   return { top: _y, left: _x };
 }
-export const printStatus = (item, _mode, _color,finish,status) => {
+export const printStatus = (item, _mode, _color,finish,status,_anim) => {
   //console.log(item, _mode, _color,finish,status)
   return (
     <>
       <Divider fitted style={{ opacity: 0 }} />
       {item.winner ? (
         <Statistic inverted color={getColorStatus(status)} size="mini" >
-          <Statistic.Label>{_mode}</Statistic.Label>
+        <Statistic.Label>{_mode}</Statistic.Label>
+        {_anim  =='no' ? (
+          <Statistic.Label>
+          <div style={{ position: "relative", transform: "scale(.8)" }}>
+                  <div
+                    className="winner avatar"
+                    style={{ width: 92, height: 92, borderRadius: 100 }}
+                  ></div>
+                  <div className=" ">
+                    <Icon
+                      circular
+                      inverted
+                      color="yellow"
+                      size="mini"
+                      name="winner"
+                      style={{ position: "absolute", fontSize: 15 }}
+                    />
+                    <Avatar
+                      size="92"
+                      round={true}
+                      title={item.winner}
+                      name={setAvatar(item.winner)}
+                    />
+                  </div>
+                
+                <Statistic inverted size="mini" color="yellow">
+                  
+                  <Statistic.Value>{item.winner}</Statistic.Value>
+                  <Statistic.Label>is winner</Statistic.Label>
+                </Statistic>
+                </div>
+              
+            
+        </Statistic.Label>
+        ):(
+          <TransitionExampleTransitionExplorer
+          objanim={
           <Statistic.Label>
             <div style={{ position: "relative", transform: "scale(.8)" }}>
                     <div
@@ -1452,7 +1488,13 @@ export const printStatus = (item, _mode, _color,finish,status) => {
                 
               
           </Statistic.Label>
+        }
+          animation="jiggle"
+          duration={1000}
+        />
+        )}
         </Statistic>
+        
       ) : (
         <>
         {(item.status == "Pending" || (item.status != "Finished") && item.gameMode =='League') ? (

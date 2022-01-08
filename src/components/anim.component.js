@@ -20,32 +20,44 @@ var timer;
 export default class TransitionExampleTransitionExplorer extends Component {
   constructor(props) {
     super(props);
-    //this.toggleVisibility = this.toggleVisibility.bind(this);
+   
    
     this.state = { animation: this.props.animation, duration: this.props.duration, objanim: this.props.objanim, visible: true }
   }
-  componentDidMount() {
-    this.setState({ objanim: this.props.objanim });
-     timer = setInterval(() => {
-      clearTimeout(timer)
-      this.toggleVisibility()
-     
-    },5000)
-    
-}
-
   toggleVisibility = () => {
-    
     this.setState((prevState) => ({ visible: !prevState.visible }))
-    //console.log('hi')
     
-    //timer2 = setTimeout(() =>{this.setNew();console.log('hi');},2000)
-   // setTimeout(() => {this.setNew()},2000)
+    
   }
+  
+  static getDerivedStateFromProps(props, state) {
+    // Any time the current user changes,
+    // Reset any parts of state that are tied to that user.
+    // In this simple example, that's just the email.
+   
+    if (props.objanim !== state.objanim) {
     
+      
+     
+    
+      return {
+        objanim: props.objanim,
+        animation: props.animation,
+        duration: props.duration,
+    
+     
+      };
+    }
+    return null
+  }
+ 
 
+ 
+ 
   render() {
-    const { animation, duration, visible,objanim } = this.state
+    const { animation, duration, visible,objanim } = this.state;
+    
+    
     
     return (
       <>
@@ -54,8 +66,9 @@ export default class TransitionExampleTransitionExplorer extends Component {
             animation={animation}
             duration={duration}
             visible={visible}
-           
-           
+            transitionOnMount={true}
+            unmountOnHide={true}
+            onComplete={this.toggleVisibility}
           >
            <div>{objanim}</div>
           </Transition>

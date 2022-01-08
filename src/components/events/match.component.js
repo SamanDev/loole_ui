@@ -453,7 +453,7 @@ class MatchSection extends Component {
           <>
       {vsComponentTitle(item)}
       <Divider fitted style={{ opacity: 0 }} />
-      {printStatus(item,_mode,_color ,item.status+'@@@'+_finishTxt,item.status)}
+      {printStatus(item,_mode,_color ,item.status+'@@@'+_finishTxt,item.status,'yes')}
       <Countdown
         renderer={rendererBig}
         finish={item.status + "@@@"+_finishTxt}
