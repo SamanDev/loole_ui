@@ -57,7 +57,7 @@ function Dashboard(prop) {
                 {getGroupBadgeBlock("Point", 20, "small left")} per game they
                 play for life.
           </div>
-          
+          <p></p>
           <Message attached='bottom' warning>
           <Message.Header>Share your unique invite link:</Message.Header>
       <div>

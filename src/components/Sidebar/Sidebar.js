@@ -29,11 +29,11 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
     if(token?.accessToken){
     var str = token.username;
     var res = str.substring(0, 1)
-    onUpdateItem("openModalLogin", false)
+   // onUpdateItem("openModalLogin", false)
     }else{
       var str = 'Guest User';
     var res = str.substring(0, 1)
-    onUpdateItem("openModalLogin", true)
+    //onUpdateItem("openModalLogin", true)
   }
     
     res  = res + ' '+ str.substring(1, 2);

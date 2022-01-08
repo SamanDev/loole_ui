@@ -39,7 +39,7 @@ import {
   Divider,
   Dimmer,
   Loader,
-  Segment,
+  Segment,Button
 } from "semantic-ui-react";
 import { useAllEvents, useUser, useEventByID } from "services/hooks";
 import ReactGA from "react-ga";
@@ -53,6 +53,14 @@ const queryClient = new QueryClient({
   },
 });
 ReactGA.initialize(TrackingID);
+function myFunction(classname) {
+  var x = document.getElementsByClassName(classname)
+  x[0]?.classList.toggle("hide");
+  x[1]?.classList.toggle("hide");
+  x[2]?.classList.toggle("hide");
+  x[3]?.classList.toggle("hide");
+  x[4]?.classList.toggle("hide");
+}
 function Main() {
   const queryClient = useQueryClient();
   const history = useHistory();
@@ -332,27 +340,73 @@ function Main() {
         open={openModalLogin}
         onClose={() => onUpdateItem("openModalLogin", false)}
       >
-        <Modal.Content scrolling>
+        <Modal.Content >
           <Segment inverted padded="very">
             <Grid relaxed="very">
               <Grid.Column mobile={16} tablet={8} computer={8}>
+              <div className="togllehide togllehideforget">
                 <Header as="h3" inverted>
                   Login
                 </Header>
 
                 <Login onUpdateItem={onUpdateItem} />
-
+</div>
                 <span className="mobile only">
-                  <Divider horizontal inverted style={{ marginTop: 40 }}>
+                <div className="togllehide togllehideforget" style={{marginTop:10}}>
+
+                <Button
+               
+               size="mini"
+             fluid
+               
+               
+               onClick={() =>
+                 myFunction("togllehideforget")
+               }
+               color="black"
+              content="Password Recovery"
+            />
+                  <Divider horizontal inverted style={{ marginTop: 10 }}>
                     Or
                   </Divider>
+                  <Button
+                
+                size="small"
+              fluid
+                inverted
+                onClick={() =>
+                  myFunction("togllehide")
+                }
+                color="orange"
+               content="Create Account"
+             />
+             
+                </div>
+                  <div className="togllehide hide">
                   <Header as="h3" inverted>
                     Create Account
                   </Header>
 
                   <Register onUpdateItem={onUpdateItem} />
+                  <Divider horizontal inverted style={{ marginTop: 20 }}>
+                    Or
+                  </Divider>
+                  <Button
+                
+                size="small"
+              fluid
+                inverted
+                onClick={() =>
+                  myFunction("togllehide")
+                }
+                color="blue"
+               content="Login to your account"
+             />
+                  </div>
+                  
                 </span>
                 <span>
+                <div className="togllehideforget mobile hidden">
                   <Divider horizontal inverted style={{ marginTop: 40 }}>
                     Or
                   </Divider>
@@ -361,6 +415,30 @@ function Main() {
                   </Header>
 
                   <Forget onUpdateItem={onUpdateItem} />
+                  </div>
+                  <div className="togllehideforget hide">
+                  <Header as="h4" inverted>
+                    Password Recovery
+                  </Header>
+
+                  <Forget onUpdateItem={onUpdateItem} />
+                 
+                  <Divider horizontal inverted style={{ marginTop: 20 }}>
+                    Or
+                  </Divider>
+                  <Button
+                
+                size="small"
+              fluid
+                inverted
+                onClick={() =>
+                  myFunction("togllehideforget")
+                }
+                color="blue"
+               content="Login to your account"
+             />
+            
+                  </div>
                 </span>
               </Grid.Column>
 

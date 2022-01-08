@@ -46,10 +46,21 @@ function Panel(props) {
   const [myState, setMyState] = useState(props.myState);
   useEffect(() => {
     setMyState(props.myState);
+    if(currentUser?.accessToken){
+      if(props.findStateId(myState, "openModalLogin")){
+        props.onUpdateItem("openModalLogin", false)
+      }
+      
+      }else{
+  if(!props.findStateId(myState, "openModalLogin")){
+    props.onUpdateItem("openModalLogin", true)
+  }
+        
+    }
   }, [props.myState]);
   
   const currentUser = props.findStateId(myState, "currentUser");
-
+  
   const open = props.findStateId(myState, "openModalAdd");
   const openCashier = props.findStateId(myState, "openModalCashier");
   const cashierMethod = props.findStateId(myState, "cashierMethod");

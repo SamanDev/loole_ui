@@ -14,14 +14,17 @@ import Report from "components/reportdiamond.component";
 import { Tab } from 'semantic-ui-react'
 function editCounry(options){
   var  newArray = []
-  options.map((item, w) => {
-    if(item.coin == 'Point' || item.mode == 'Point'){
-      newArray.push(item)
-    }
-   
-   
-    
-  })
+  try{
+    options.map((item, w) => {
+      if(item.coin == 'Point' || item.mode == 'Point'){
+        newArray.push(item)
+      }
+     
+     
+      
+    })
+  }catch(e){}
+  
  
   return newArray
 }
