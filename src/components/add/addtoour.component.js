@@ -1,57 +1,23 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
 import Select from "react-select";
-import { IMaskInput } from "react-imask";
 import {  withRouter} from 'react-router-dom';
-import $ from "jquery";
-import AuthService from "services/auth.service";
 import userService from "services/user.service";
 import NumericInput from 'react-numeric-input';
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Games from "server/Games";
-import Avatar from "react-avatar";
 import {
-  Badge,
-  Alert,
-  Button,
-  Card,
-  InputGroup,
-  Navbar,
-  Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
-  Container,
+ 
   Row,
-  ListGroup,
   Col,
-  TabContent,
-  TabPane,
-  Tab,
   
   } from "react-bootstrap";
-  import Countdown from "react-countdown";
-  import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-  import { faPlaystation, faXbox } from "@fortawesome/free-brands-svg-icons";
-  import { faMobileAlt } from "@fortawesome/free-solid-svg-icons";
+  import MatchCard from "components/matchcard.component";
+import { Header,Segment,Card } from "semantic-ui-react";
 import {
-  setAvatar,
-  getColor,
-  getIcon,
-  renderer,
-  printMatchBlock,
-  isJson,
-  getModalTag,
-  getGameTag,
-  getMatchTitle,
-  haveGameTag,
-  printRequired,
-  handleTagForm,
-  haveAdmin
-  
+  handleTagForm  
 } from "components/include";
   const required = (value,props) => {
       
@@ -134,14 +100,7 @@ const getBlockTournament = (betval) => {
 
   return tourmap;
 };
-const getBlockTournamentVal = (betval, tourmode) => {
-  var tourmap = {
-    value: tourmode,
-    label: tourmode + " Players - Prize: $" + (tourmode * betval * 90) / 100,
-  };
 
-  return tourmap;
-};
 const getBlockGamesVal = (filtermode) => {
   var gamemap = [];
   Games.games.slice(0, 5).map((item, i) => {
@@ -207,12 +166,11 @@ const getBlockGameModesVal = (filtermode) => {
 };
 
 const MySwal = withReactContent(Swal);
-var nowS  = new Date()
-var nowE  = new Date()
-class AddMatch extends Component {
+var moment = require("moment");
+class AddTour extends Component {
   constructor(props) {
     super(props);
-    this.handleCreateMatch = this.handleCreateMatch.bind(this);
+    this.handleCreateTournament = this.handleCreateTournament.bind(this);
     this.setGameName = this.setGameName.bind(this);
     this.setGameMode = this.setGameMode.bind(this);
    
@@ -220,16 +178,23 @@ class AddMatch extends Component {
     
     this.setAvalableFor = this.setAvalableFor.bind(this);
     this.setSelectedTag = this.setSelectedTag.bind(this);
-    
-    
     this.setInSign = this.setInSign.bind(this);
+    this.setOutSign = this.setOutSign.bind(this);
+    this.setTournamentPayout = this.setTournamentPayout.bind(this);
+    this.setRules = this.setRules.bind(this);
+    this.setTournamentMode = this.setTournamentMode.bind(this);
+    this.getBlockTournamentVal = this.getBlockTournamentVal.bind(this);
+    this.setStartTime = this.setStartTime.bind(this);
+    this.setPrize = this.setPrize.bind(this);
     
     
 
     this.state = {
-      GName: { value: "8Pool - Mobile", label: "8Pool - Mobile" },
+      GName: { value: "", label: "" },
       GameMode: { value: "Duel", label: "Duel" },
-     
+      TournamentMode: 
+        { value: "4", label: "4 Players"},
+       
       currentUser: this.props.token,
       gamemaplocal: [],
       BetAmount: 10,
@@ -240,12 +205,23 @@ class AddMatch extends Component {
       submit: false,
       GameTag: "",
       message: "",
+      Rules: "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>",
       inSign:{ value: "Dollar", label: "Dollar" },
+      outSign:{ value: "Dollar", label: "Dollar" },
+      tournamentPayout:"4,100.00@8,65.00,35.00@16,50.00,30.00,10.00,10.00@32,50.00,30.00,10.00,10.00@64,50.00,30.00,10.00,10.000",
+      
       gamePlatform:'',
       gameName:'',
     };
   }
+  getBlockTournamentVal = () => {
+    var tourmap = {
+      value: this.state.TournamentMode.value,
+      label: this.state.TournamentMode.value + " Players - Prize: " + (this.state.TournamentMode.value * this.state.BetAmount * 90) / 100,
+    };
   
+    return tourmap;
+  };
   setGameName(e) {
     this.setState({
       GName: e,
@@ -258,7 +234,34 @@ class AddMatch extends Component {
       inSign: e,
     });
   }
-  
+  setOutSign(e) {
+    this.setState({
+      outSign: e,
+    });
+  }
+  setRules(e) {
+    this.setState({
+      Rules: e
+    });
+    
+  }
+  setTournamentPayout(e) {
+    this.setState({
+      tournamentPayout: e.target.value
+    });
+    
+  }
+  setPrize(e) {
+    this.setState({
+      Prize: e
+    });
+    
+  }
+  setTournamentMode(e) {
+    this.setState({
+      TournamentMode: e,
+    });
+  }
   setGameMode(e) {
     this.setState({
       GameMode: e,
@@ -295,248 +298,177 @@ class AddMatch extends Component {
     });
     
   }
-  
-  handleCreateMatch(e) {
-    e.preventDefault();
-    
-
+  setStartTime(e) {
     this.setState({
-      message: "",
-      successful: false,
-      loading:true,
-        
-      
-     
+      StartTime: e,
     });
+  }
+  handleCreateTournament(e) {
+    e.preventDefault();
    
 
-    this.form.validateAll();
+      userService
+        .createTournament(
+          this.state.GName.value.split(" - ")[0],
+          this.state.GName.value.split(" - ")[1],
+          'Tournament',
+          
+          this.state.BetAmount,
+          this.state.StartTime.value,
+         // "1",
+          this.state.TournamentMode.value,
+          this.state.TournamentPayout,
+    
+          this.state.inSign.value,
+          this.state.outSign.value,
+          this.state.outSign.value,
+          this.state.Prize,
 
-    if (this.checkBtn.context._errors.length === 0) {
-     
-      
-        userService
-          .createEvent(
-            this.state.GName.value.split(" - ")[0],
-            this.state.GName.value.split(" - ")[1],
-            this.state.GameMode.value,
-            this.state.BetAmount,
-            this.state.inSign.value,
-            this.state.inSign.value,
-            this.state.inSign.value,
-            this.state.AvalableFor.value
-          )
-          .then(
+          this.state.Rules
+        )
+        .then(
             
-            (response) => {
-              if (response.indexOf("successful") > -1) {
-                Swal.fire("", "Data saved successfully.", "success").then(
-                  (result) => {
-                    this.props.history.push("/panel/dashboard");
-                  }
-                );
-              }else{
-                this.setState({
-                  successful: false,
-                  message: "",
-                  submit: false,
-                  loading: false,
-                });
-                if (response=='balanceError'){
-                var resMessage = "To enter this event you need to have more balance!"
-        Swal.fire({
-          title: 'Error!',
-          text:resMessage,
-          icon:"error",
-          showCancelButton: true,
-          confirmButtonText: `Go to Cashier`,
-          canceleButtonText: `Back`,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            this.props.history.push("/panel/cashier");
-          }
-        })
-              }else if (response=='tagError'){
-               
-                this.setSelectedTag(this.state.GName.value.split(" - ")[0],this.state.GName.value.split(" - ")[1],this.state.currentUser)
-              }
-            }
-            },
-            (error) => {
-              var response  = error.response.data
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-              if (response=='balanceError'){
-              var resMessage = "To enter this event you need to have more balance!"
-      Swal.fire({
-        title: 'Error!',
-        text:resMessage,
-        icon:"error",
-        showCancelButton: true,
-        confirmButtonText: `Go to Cashier`,
-        canceleButtonText: `Back`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          this.props.history.push("/panel/cashier");
-        }
-      })
-            }else if (response=='tagError'){
-              this.setSelectedTag(this.state.gameName,this.state.gameConsole)
-              this.setSelectedTag(this.state.GName.value.split(" - ")[0],this.state.GName.value.split(" - ")[1])
+          (response) => {
+            if (response.data=='Tournament event created.'){
+              Swal.fire("", "Data saved successfully.", "success").then(
+                (result) => {
+                  this.props.history.push("/panel/dashboard");
+                }
+              );
             }else{
-              const resMessage =
-                (error.response &&
-                  error.response.data &&
-                  error.response.data.message) ||
-                error.message ||
-                error.toString();
-            
-
               this.setState({
                 successful: false,
-                message: resMessage,
-                submit: false,
-                loading: false,
-              });
-            }
-            }
-          );
-      
-    } else {
-      this.setState({
-        successful: false,
                 message: "",
                 submit: false,
                 loading: false,
-      });
+              });
+              
+          }
+          },
+          (error) => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+          
 
-     
-    }
+            this.setState({
+              successful: false,
+              message: resMessage,
+              submit: false,
+              loading: false,
+            });
+          }
+        );
+    
   }
   
   render() {
     var { currentUser } = this.state;
-    var _mode = " 1 v 1 ";
-    var _color = "#404040";
+    var timestring1 = new Date();
+    var startdate = moment(timestring1).format();
+
+    startdate = moment(startdate)
+      .add(this.state.StartTime.value, "minutes")
+      .format();
     var item = {
-      "commission": 90,
-      "id": 33,
-      "gameName": this.state.GName.value.split(" - ")[0],
-      "gameConsole": this.state.GName.value.split(" - ")[1],
-      "gameMode": this.state.GameMode.value,
-      "status": "Pending",
-      "totalPlayer": 2,
-      "eventLevel": 1,
-      "nextLevel": 1,
-      "timeMinute": this.state.AvalableFor.value * 1000 * 60,
-      "prize": this.state.BetAmount * 2*90/100,
-      "tournamentPayout": null,
-      "amount": this.state.BetAmount,
-      "winner": null,
-      "inSign": this.state.inSign.value,
-      "outSign": this.state.inSign.value,
-      "rules": null,
-      "expire": Date.now() + this.state.AvalableFor.value * 1000 * 60,
-      "startTime": "2021-11-01T20:34:39.000+00:00",
-      "finished": "2021-11-01T20:34:39.000+00:00",
-      "players": [
+      commission: 90,
+      id: 33,
+      gameName: this.state.GName.value.split(" - ")[0],
+      gameConsole: this.state.GName.value.split(" - ")[1],
+      gameMode: 'Tournament',
+      status: "Pending",
+      totalPlayer: this.state.TournamentMode.value,
+      eventLevel: 1,
+      nextLevel: 1,
+      timeMinute: this.state.AvalableFor.value * 1000 * 60,
+      prize: (this.state.Prize?this.state.Prize:(this.state.BetAmount * this.state.TournamentMode.value * 90) / 100),
+      tournamentPayout: null,
+      amount: this.state.BetAmount,
+      winner: null,
+      inSign: this.state.inSign.value,
+      outSign: this.state.outSign.value,
+      rules: null,
+      expire: startdate,
+      startTime: "2021-11-01T20:34:39.000+00:00",
+      finished: "2021-11-01T20:34:39.000+00:00",
+      players: [
         {
-          "id": 86,
-          "username": currentUser.username,
-          "ranking": null,
-          "totalScore": null,
-          "winAmount": null,
-          "gamePlatform": "Mobile",
-          "nickName": "salar",
-          "tagId": "57656",
-          "callOfDuties": []
-        }
+          id: 86,
+          username: currentUser.username,
+          ranking: null,
+          totalScore: null,
+          winAmount: null,
+          gamePlatform: "Mobile",
+          nickName: "salar",
+          tagId: "57656",
+          callOfDuties: [],
+        },
       ],
-      
-    }
+      matchTables: [
+        {
+          id: 172,
+          winner: null,
+          status: "Pending",
+          level: null,
+          matchCode: null,
+          startTime: Date.now() + this.state.AvalableFor.value * 1000 * 60,
+          matchPlayers: [
+            {
+              id: 371,
+              username: currentUser.username,
+              ready: false,
+            },
+          ],
+          matchChats: [],
+        },
+      ],
+    };
+    
     return (
       <>
-      <Row>
-                    <Col sm="7" md="8">
-     <Form
-                        onSubmit={this.handleCreateMatch}
+      <Header as="h3">
+    Create a Tournament
+      </Header>
+    <Row style={{marginRight:0}}>
+              <Col md="8" sm="6">
+            
+                 
+                      <Form
+                        onSubmit={this.handleCreateTournament}
                         ref={(c) => {
                           this.form = c;
                         }}
                       >
-                        <Card className="card-plain" style={{ margin: -10 }}>
-                          <Card.Header>
-                            <Card.Title>Create 1v1 Match</Card.Title>
-                          </Card.Header>
-                          <Card.Body>
+                        
+                        
                             <div className="form-group">
                               <label>Game</label>
                               <Select
-                                className="react-select default GameName"
+                                className="react-select default"
                                 classNamePrefix="react-select"
-                                name="GameName"
+                                name="GName"
                                 value={this.state.GName}
                                 onChange={this.setGameName}
-                                options={getBlockGames("Match")}
+                                options={getBlockGames("Tournament")}
                                 placeholder=""
                               />
-                               <Input
-                                        type="hidden"
-                                        
-                                        value={this.state.GName.value}
-                                       
-                                        
-                                        validations={[required]}
-                                      />
                              
                             </div>
                             <div className="form-group">
-                              <label>Mode</label>
-                              <Select
-                                className="react-select default GameMode"
-                                classNamePrefix="react-select"
-                                name="GameMode"
-                                value={this.state.GameMode}
-                                onChange={this.setGameMode}
-                                options={getBlockGameModes(this.state.GName)}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                              <Input
-                                        type="hidden"
-                                        
-                                        value={this.state.GameMode.value}
-                                       
-                                        
-                                        validations={[required]}
-                                      />
-                            </div>
-                            <div className="form-group">
                               <label>Bet</label>
-                              <NumericInput min={1} step={1} max={1000}  maxLength="4" className="form-control BetAmount"
+                              <NumericInput min={1} step={1} max={1000} className="form-control"
                     name="BetAmount"
                                 value={this.state.BetAmount}
                                 onChange={this.setBetAmount}/>
                               
-                              
                             
-                              <Input
-                                        type="hidden"
-                                        
-                                        value={this.state.BetAmount}
-                                       
-                                        
-                                        validations={[required]}
-                                      />
+                          
                             </div>
                             <div className="form-group">
-                              <label>Currency</label>
+                              <label>InSign</label>
                               <Select
                                 className="react-select default"
                                 classNamePrefix="react-select"
@@ -553,25 +485,93 @@ class AddMatch extends Component {
                               
                             </div>
                             <div className="form-group">
-                              <label>Avalable for</label>
+                              <label>Mode</label>
                               <Select
-                                className="react-select default AvalableFor"
+                                className="react-select default"
                                 classNamePrefix="react-select"
-                                name="AvalableFor"
-                                value={this.state.AvalableFor}
-                                onChange={this.setAvalableFor}
+                                name="TournamentMode"
+                                value={this.state.TournamentMode}
+                                onChange={this.setTournamentMode}
                                 options={[
-                                  { value: "1", label: "30 Minutes" },
-                                  { value: "60", label: "1 Hour" },
-                                  { value: "360", label: "6 Hours" },
-                                  { value: "1440", label: "1 Day" },
+                                  { value: "4", label: "4 Players"},
+                                  { value: "8", label: "8 Players"},
+                                  { value: "16", label: "16 Players"},
+                                  { value: "32", label: "32 Players"},
                                 ]}
                                 placeholder=""
                                 isSearchable={false}
                               />
-                             
+                          
                             </div>
+                            <div className="form-group">
+                              <label>Start Time</label>
 
+                              <Select
+                                className="react-select default"
+                                classNamePrefix="react-select"
+                                name="StartTime"
+                                value={this.state.StartTime}
+                                onChange={this.setStartTime}
+                                options={[
+                                  { value: "1", label: "30 Minutes Later" },
+                                  { value: "60", label: "1 Hour Later" },
+                                  { value: "120", label: "2 Hours Later" },
+                                  { value: "3600", label: "6 Hours Later" },
+                                ]}
+                                placeholder=""
+                                isSearchable={false}
+                              />
+                            
+                            </div>
+                            <div className="form-group">
+                              <label>Prize</label>
+                              <NumericInput min={1} step={1} max={1000} className="form-control"
+                    name="BetAmount"
+                    value={this.state.Prize}
+                    onChange={this.setPrize}/>
+
+                              
+                            
+                            </div>
+                            <div className="form-group">
+                              <label>OutSign</label>
+                              <Select
+                                className="react-select default"
+                                classNamePrefix="react-select"
+                                name="OutSign"
+                                value={this.state.outSign}
+                                onChange={this.setOutSign}
+                                options={[
+                                  { value: "Dollar", label: "Dollar" },
+                                  { value: "Point", label: "Point" },
+                                ]}
+                                placeholder=""
+                                isSearchable={false}
+                              />
+                              
+                            </div>
+                            <div className="form-group">
+                              <label>PayOut</label>
+                              <Input
+                    type="textarea"
+                    className="form-control"
+                    name="name"
+                    value={this.state.tournamentPayout}
+                    onChange={this.setTournamentPayout}
+                  />
+                              
+                            </div>
+                            <div className="form-group">
+                              <label>Rules</label>
+                              <Input
+                    type="textarea"
+                    className="form-control"
+                    name="name"
+                    value={this.state.Rules}
+                    onChange={this.setRules}
+                  />
+                              
+                            </div>
                             {this.state.message && (
                               <div className="form-group">
                                 <div
@@ -582,8 +582,7 @@ class AddMatch extends Component {
                                 </div>
                               </div>
                             )}
-                          </Card.Body>
-                          <Card.Footer>
+                          
                             <div className="form-group">
                               <button
                                 className="btn btn-primary btn-wd "
@@ -592,33 +591,31 @@ class AddMatch extends Component {
                                 {this.state.loading && (
                                   <span className="spinner-border spinner-border-sm  fa-wd"></span>
                                 )}
-                                <span> Create Match</span>
+                                <span> Create Tournament</span>
                               </button>
                             </div>
-                          </Card.Footer>
-                        </Card>
-                        <CheckButton
-              style={{ display: "none" }}
-              ref={c => {
-                this.checkBtn = c;
-              }}
-            />
-                      </Form>
-                      </Col>
-                    <Col sm="5" md="4">
-                      {(this.state.GName.value.indexOf(' - ') > -1) && (
-                        <>
-                        {printMatchBlock(item)}
                         
-                       
-                      </>
-                      )}
-                      
-                    </Col>
+                      </Form>
+                   </Col>
+                   <Col  md="4" sm="6">
+              {this.state.GName?.value?.indexOf(" - ") > -1 && (
+                <>
+                 
+                                     
+                 <Card.Group
+                   className="fours one"
+                   style={{ margin:"20px auto" }}
+                 >
+                   <MatchCard item={item} />
+                 </Card.Group>
+                 
+                </>
+              )}
+            </Col>
                   </Row>
         </>
     );
   }
 }
 
-export default withRouter(AddMatch) ;
+export default withRouter(AddTour) ;

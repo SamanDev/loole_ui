@@ -354,16 +354,20 @@ matchLevelFind = null;
     var newArray = JSON.parse(old);
    var current_brackets = [];
     
-
+var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27.00,15.00,10.00"
+;
     //var events = eventGet;
 
     if (item.tournamentPayout) {
-      var payArr = item.tournamentPayout.split("|");
+      var tournamentPayout = item.tournamentPayout.replace('8,','1-8,').replace('16,','9-16,').replace('32,','17-32,').replace('64,','33-64,')
+      var payArr = tournamentPayout.split("@");
       var totalPay = item.prize;
       for (var i = 0; i < payArr.length; i++) {
-        var paylvl = payArr[i].split(", ");
+        var paylvl = payArr[i].split(",");
         var payplyer = paylvl[0].split("-");
         var tItem = item.players.length;
+        console.log(payplyer[0])
+        console.log(payplyer[1])
         if (item.status == "Pending" || item.gameMode == "League") {
           tItem = item.totalPlayer;
         }
@@ -386,7 +390,7 @@ matchLevelFind = null;
         }
       }
       for (var i = payArr.length - 1; i < payArr.length; i++) {
-        var paylvl = payArr[i].split(", ");
+        var paylvl = payArr[i].split(",");
         var payplyer = paylvl[0].split("-");
         var tItem = item.players.length;
         if (item.status == "Pending" || item.gameMode == "League") {
@@ -411,6 +415,7 @@ matchLevelFind = null;
       }
     }
     }
+    
     if(matchLevelFind?.level > 0){defaultActiveIndex=matchLevelFind.level-1}
     
     const panels = item.matchLevel.map((match, i) => {

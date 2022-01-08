@@ -10,6 +10,7 @@ import uploadHeader from "services/upload-header";
 import axios from "axios";
 import { defUser } from 'const';
 import MatchCard from "components/matchcard.component";
+import Admin from "components/events/admin.component";
 import {
   Col,ProgressBar
 } from "react-bootstrap";
@@ -461,7 +462,7 @@ class MatchSection extends Component {
         colorfinish={getColor(item.prize)}
         date={item.expire}
       />
-
+<Admin {...this.props}/>
       <Segment  basic >
         <Grid columns={2}>
           <Grid.Column

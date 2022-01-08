@@ -58,7 +58,7 @@ import {
 } from "components/include";
 import Games from "server/Games";
 
-import authService from "services/auth.service";
+import AddTour from "components/add/addtoour.component";
 var allValid = true;
 var reqnum = 0;
 const required = (value) => {
@@ -207,8 +207,7 @@ var nowE  = new Date()
 class CreateMatch extends Component {
   constructor(props) {
     super(props);
-    
-    this.handleCreateTournament = this.handleCreateTournament.bind(this);
+
     this.handleCreateLeague = this.handleCreateLeague.bind(this);
     this.setGameName = this.setGameName.bind(this);
     this.setGameMode = this.setGameMode.bind(this);
@@ -247,10 +246,11 @@ class CreateMatch extends Component {
       Rules: "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>",
       inSign:{ value: "Dollar", label: "Dollar" },
       outSign:{ value: "Dollar", label: "Dollar" },
+      TournamentPayout:"4,100.00@8,65.00,35.00@16,50.00,30.00,10.00,10.00@32,50.00,30.00,10.00,10.00@64,50.00,30.00,10.00,10.000",
+      
       StartTimeLeague:nowS,
       EndTimeLeague:nowE,
       TotalPlayer:200,
-      TournamentPayout:"2-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00",
       gameName: '',
         gamePlatform: '',
         gameID: '',
@@ -376,7 +376,13 @@ handleTagForm(game,platform) {
   }
   setRules(e) {
     this.setState({
-      Rules: e.target.value
+      Rules: e
+    });
+    
+  }
+  setTournamentPayout(e) {
+    this.setState({
+      tournamentPayout: e.target.value
     });
     
   }
@@ -486,78 +492,7 @@ handleTagForm(game,platform) {
         }
       );
   }
-  handleCreateTournament(e) {
-    e.preventDefault();
-    allValid = true;
-    
-    if (allValid) {
-      this.setState({
-        message: "",
-        loading: true,
-      });
-
-      userService
-        .createTournament(
-          this.state.GName.value.split(" - ")[0],
-          this.state.GName.value.split(" - ")[1],
-          'Tournament',
-          
-          this.state.BetAmount,
-          this.state.StartTime.value,
-         // "1",
-          this.state.TournamentMode.value,
-          '1-8, 65.00, 35.00|9-16, 50.00, 30.00, 20.00|17-64, 48.00, 27.00, 15.00, 10.00',
-          this.state.inSign.value,
-          this.state.outSign.value,
-          this.state.outSign.value,
-          this.state.Prize,
-
-          this.state.Rules
-        )
-        .then(
-            
-          (response) => {
-            if (response.data=='Tournament event created.'){
-              Swal.fire("", "Data saved successfully.", "success").then(
-                (result) => {
-                  this.props.history.push("/panel/dashboard");
-                }
-              );
-            }else{
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-              
-          }
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-          
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
-          }
-        );
-    } else {
-      this.setState({
-        submit: true,
-      });
-
-      this.form.validateAll();
-    }
-  }
+  
   handleCreateLeague(e) {
     e.preventDefault();
     
@@ -661,329 +596,7 @@ handleTagForm(game,platform) {
               <Tab.Content>
              
                 <Tab.Pane eventKey="tournsment">
-                  <Row>
-                    <Col md="9">
-                      <Form
-                        onSubmit={this.handleCreateTournament}
-                        ref={(c) => {
-                          this.form = c;
-                        }}
-                      >
-                        <Card className="card-plain" style={{ margin: -10 }}>
-                          <Card.Header>
-                            <Card.Title>Create Tournament</Card.Title>
-                          </Card.Header>
-                          <Card.Body>
-                            <div className="form-group">
-                              <label>Game</label>
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="GName"
-                                value={this.state.GName}
-                                onChange={this.setGameName}
-                                options={getBlockGames("Tournament")}
-                                placeholder=""
-                              />
-                             
-                            </div>
-                            <div className="form-group">
-                              <label>Bet</label>
-                              <NumericInput min={1} step={1} max={1000} className="form-control"
-                    name="BetAmount"
-                                value={this.state.BetAmount}
-                                onChange={this.setBetAmount}/>
-                              
-                            
-                          
-                            </div>
-                            <div className="form-group">
-                              <label>InSign</label>
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="InSign"
-                                value={this.state.inSign}
-                                onChange={this.setInSign}
-                                options={[
-                                  { value: "Dollar", label: "Dollar" },
-                                  { value: "Point", label: "Point" },
-                                ]}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                              
-                            </div>
-                            <div className="form-group">
-                              <label>Mode</label>
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="TournamentMode"
-                                value={this.state.TournamentMode}
-                                onChange={this.setTournamentMode}
-                                options={getBlockTournament(
-                                  this.state.BetAmount
-                                )}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                          
-                            </div>
-                            <div className="form-group">
-                              <label>Start Time</label>
-
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="StartTime"
-                                value={this.state.StartTime}
-                                onChange={this.setStartTime}
-                                options={[
-                                  { value: "1", label: "30 Minutes Later" },
-                                  { value: "60", label: "1 Hour Later" },
-                                  { value: "120", label: "2 Hours Later" },
-                                  { value: "3600", label: "6 Hours Later" },
-                                ]}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                            
-                            </div>
-                            <div className="form-group">
-                              <label>Prize</label>
-                              <NumericInput min={1} step={1} max={1000} className="form-control"
-                    name="BetAmount"
-                    value={this.state.Prize}
-                    onChange={this.setPrize}/>
-
-                              
-                            
-                            </div>
-                            <div className="form-group">
-                              <label>OutSign</label>
-                              <Select
-                                className="react-select default"
-                                classNamePrefix="react-select"
-                                name="OutSign"
-                                value={this.state.outSign}
-                                onChange={this.setOutSign}
-                                options={[
-                                  { value: "Dollar", label: "Dollar" },
-                                  { value: "Point", label: "Point" },
-                                ]}
-                                placeholder=""
-                                isSearchable={false}
-                              />
-                              
-                            </div>
-                            <div className="form-group">
-                              <label>Rules</label>
-                              <Input
-                    type="textarea"
-                    className="form-control"
-                    name="name"
-                    value={this.state.Rules}
-                    onChange={this.setRules}
-                  />
-                              
-                            </div>
-                            {this.state.message && (
-                              <div className="form-group">
-                                <div
-                                  className="alert alert-danger"
-                                  role="alert"
-                                >
-                                  {this.state.message}
-                                </div>
-                              </div>
-                            )}
-                          </Card.Body>
-                          <Card.Footer>
-                            <div className="form-group">
-                              <button
-                                className="btn btn-primary btn-wd "
-                                disabled={this.state.loading}
-                              >
-                                {this.state.loading && (
-                                  <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                                )}
-                                <span> Create Tournament</span>
-                              </button>
-                            </div>
-                          </Card.Footer>
-                        </Card>
-                      </Form>
-                    </Col>
-                    <Col md="3">
-                    {(this.state.GName.value.indexOf(' - ') > -1) && (
-                      <Card className="card-user chall">
-                        <Card.Header className="no-padding">
-                          <div className="card-image">
-                            <img
-                              src={
-                                require("assets/images/games/" +
-                                  this.state.GName.value.split(" - ")[0] +
-                                  ".jpg").default
-                              }
-                            ></img>
-                          </div>
-                        </Card.Header>
-                        <Card.Body>
-                          <Row>
-                            <Col style={{ lineHeight: "30px" }}>
-                              <Card.Title as="h4">
-                                {this.state.GName.value.split(" - ")[0]}
-                              </Card.Title>
-                              <small className="text-muted">Tournament</small>
-                              <br />
-
-                              <span>
-                                <Avatar
-                                  size="30"
-                                  title={currentUser.username}
-                                  round={true}
-                                  name={setAvatar(currentUser.username)}
-                                />
-                                {(() => {
-                                  const rows = [];
-                                  for (
-                                    let i = 0;
-                                    i < this.state.TournamentMode.value - 1;
-                                    i++
-                                  ) {
-                                    if (i < 3) {
-                                      rows.push(
-                                        <Avatar
-                                          size="20"
-                                          key={i}
-                                          round={true}
-                                          name="?"
-                                          src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
-                                          color="lightgray"
-                                        />
-                                      );
-                                    } else {
-                                      rows.push(
-                                        <Avatar
-                                          size="22"
-                                          key={i}
-                                          round={true}
-                                          name="+ 4"
-                                          color="gray"
-                                        />
-                                      );
-                                      break;
-                                    }
-                                  }
-                                  return rows;
-                                })()}
-                              </span>
-
-                              <br />
-                              <small className="text-muted">Start Time</small>
-                              {this.state.TournamentMode.value == "4" ? (
-                                <>
-                                  <br />
-                                  <small className="text-muted">
-                                    Final Match
-                                  </small>
-                                </>
-                              ) : (
-                                <>
-                                  <br />
-                                  <small className="text-muted">
-                                    SemiFinal Match
-                                  </small>
-                                  <br />
-                                  <small className="text-muted">
-                                    Final Match
-                                  </small>
-                                </>
-                              )}
-                            </Col>
-                            <Col
-                              style={{ lineHeight: "30px" }}
-                              className="text-muted text-right"
-                            >
-                              <small className="text-muted">
-                                <FontAwesomeIcon
-                                  fixedWidth
-                                  icon={getIcon(
-                                    this.state.GName.value.split(" - ")[1]
-                                  )}
-                                />{" "}
-                                {this.state.GName.value.split(" - ")[1]}
-                              </small>
-                              <br />
-                              <Badge
-                                variant={getColor(this.state.BetAmount)}
-                              >
-                                ${this.state.BetAmount}
-                              </Badge>
-                              <br />
-                              <small className="text-muted">
-                                1/{this.state.TournamentMode.value}{" "}
-                              </small>
-                              <br />
-
-                              <small className="text-muted">
-                                {" "}
-                                <Countdown
-                                  renderer={renderer}
-                                  date={
-                                    Date.now() +
-                                    this.state.StartTime.value * 1000 * 60
-                                  }
-                                />
-                              </small>
-                              {this.state.TournamentMode.value == "4" ? (
-                                <>
-                                  <br />
-                                  <small className="text-muted">
-                                    <Countdown
-                                      renderer={renderer}
-                                      date={
-                                        Date.now() +
-                                        this.state.StartTime.value * 1000 * 60 +
-                                        60 * 1000 * 60
-                                      }
-                                    />
-                                  </small>
-                                </>
-                              ) : (
-                                <>
-                                  <br />
-                                  <small className="text-muted">
-                                    <Countdown
-                                      renderer={renderer}
-                                      date={
-                                        Date.now() +
-                                        this.state.StartTime.value * 1000 * 60 +
-                                        60 * 1000 * 60
-                                      }
-                                    />
-                                  </small>
-                                  <br />
-                                  <small className="text-muted">
-                                    <Countdown
-                                      renderer={renderer}
-                                      date={
-                                        Date.now() +
-                                        this.state.StartTime.value * 1000 * 60 +
-                                        120 * 1000 * 60
-                                      }
-                                    />
-                                  </small>
-                                </>
-                              )}
-                            </Col>
-                          </Row>
-                        </Card.Body>
-                      </Card>
-                    )}
-                    </Col>
-                  </Row>
+                  <AddTour token={currentUser} {...this.props}/>
                 </Tab.Pane>
                 <Tab.Pane eventKey="league">
                   <Row>

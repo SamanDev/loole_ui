@@ -10,7 +10,27 @@ const API_URL_TEST = POSTURLAdmin;
 
 class AdminService {
   
-    updateUserByAdmin =  (id,key,value) => {
+  loseEvent =  (id,username) => {
+
+    return   axios
+      .put(API_URL_TEST + "loseEventByAdmin",{id,username}, { headers: authHeader() })
+      .then( (response) => {
+        
+        return response;
+      })
+       
+  }
+  loseEventMatch =  (id,matchId,username) => {
+
+    return   axios
+      .put(API_URL_TEST + "loseEventByAdmin",{id,matchId,username}, { headers: authHeader() })
+      .then( (response) => {
+        
+        return response;
+      })
+       
+  }
+  updateUserByAdmin =  (id,key,value) => {
 
     return   axios
       .put(API_URL_TEST + "updateUserByAdmin",{id,key,value}, { headers: authHeader() })

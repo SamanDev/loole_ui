@@ -10,6 +10,7 @@ import uploadHeader from "services/upload-header";
 import axios from "axios";
 import { defUser } from 'const';
 import MatchCard from "components/matchcard.component";
+import Admin from "components/events/admin.component";
 import {
   Col,ProgressBar
 } from "react-bootstrap";
@@ -472,6 +473,7 @@ class MatchSection extends Component {
     {getMatchTitle(match.level, item.totalPlayer)}
   </Statistic.Value>
 </Statistic>
+<Admin {...this.props}/>
       <Segment  basic >
         <Grid columns={2}>
           <Grid.Column
