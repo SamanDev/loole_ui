@@ -391,7 +391,7 @@ class Chatbar extends Component {
     
     
     
-    
+  
                           
     
     return (
@@ -401,7 +401,8 @@ class Chatbar extends Component {
               className="card-lock card-plain card-chat"
               style={{ color: "#fff", margin: 0, height: "100%",zIndex:10000,background: 'rgb(50,50,50)' }}
             >
-              <Card.Header>
+              {(eventstatus=='Pending' || eventstatus=='Ready' || eventstatus=='InPlay') &&(
+                <Card.Header>
               <Form
                       onSubmit={this.handleChat}
                       
@@ -429,6 +430,8 @@ class Chatbar extends Component {
              
                 
               </Card.Header>
+              )}
+              
               <Card.Body
                 style={{
                   display: "flex",
@@ -455,7 +458,7 @@ class Chatbar extends Component {
                   </Card.Body>
                 </Card>
               </Card.Body>
-              <Card.Footer style={{ padding: 10 }}>
+              <Card.Footer style={{ padding: 5 }}>
                 
               </Card.Footer>
             </Card>
