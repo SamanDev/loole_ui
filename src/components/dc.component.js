@@ -82,7 +82,7 @@ function FormExampleFieldErrorLabel(prop) {
   }else{
     UserWebsocket.connect()
   }
-    prop.onUpdateItem("openModalSoket", false)
+ 
   };
 
   var loading = findStateId(myState, "loading");

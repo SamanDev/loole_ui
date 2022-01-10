@@ -46,6 +46,7 @@ import { useAllEvents, useUser, useEventByID } from "services/hooks";
 import ReactGA from "react-ga";
 import "semantic-ui-css/semantic.min.css";
 import "assets/css/style.css";
+import UserWebsocket from 'services/user.websocket'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -189,6 +190,7 @@ function Main() {
     if (userGet?.accessToken) {
       onUpdateItem("currentUser", userGet);
       updateNot(userGet);
+      UserWebsocket.connect(userGet.accessToken+"&user="+userGet.username,userGet);
     }
   }, [userGet]);
   useEffect(() => {
@@ -220,12 +222,11 @@ function Main() {
       queryClient.setQueryData(["Events", "All"], eventsGet);
     });
     eventBus.on("eventsDataUser", (userGet) => {
-      onUpdateItem("openModalSoket", false);
+   
       onUpdateItem("currentUser", userGet);
       updateNot(userGet);
       localStorage.setItem("user", JSON.stringify(userGet));
-      queryClient.resetQueries(["Events"]);
-      queryClient.resetQueries(["Event"]);
+      
     });
     eventBus.on("eventsDC", () => {
       //  alert()
@@ -233,8 +234,16 @@ function Main() {
     });
     eventBus.on("eventsConnect", () => {
       //  alert()
-      onUpdateItem("openModalSoket", false);
+      if(findStateId(myState, "openModalSoket")){
+        queryClient.resetQueries(["Events"]);
+        queryClient.resetQueries(["Event"]);
+        queryClient.resetQueries(["User"]);
+        onUpdateItem("openModalSoket", false);
+      }
+      
+      
     });
+   
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {
         queryClient.setQueryData(["Event", eventGet.id], eventGet);
@@ -306,7 +315,7 @@ function Main() {
         size="mini"
         basic
         open={openModalSoket}
-        onClose={() => onUpdateItem("openModalSoket", false)}
+     
       >
         <Modal.Header className="text-center">
           <Icon.Group size="huge">

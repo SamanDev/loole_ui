@@ -71,24 +71,24 @@ const getInfo= async() => {
 
   //eventBus.dispatch("eventsDataUser", usr);
   if (loc.indexOf("/user")== -1){
-  UserWebsocket.connect(data.accessToken+"&user="+data.username);
+  //UserWebsocket.connect(data.accessToken+"&user="+data.username);
   
 }
     return data;
   }else{
     localStorage.setItem("user",  JSON.stringify(defUser));
-    UserWebsocket.connect();
+    //UserWebsocket.connect();
     return defUser;
   }
 }catch(e){
   localStorage.setItem("user",  JSON.stringify(defUser));
-  UserWebsocket.connect();
+  //UserWebsocket.connect();
   return defUser;
 }
     
   }else{
     localStorage.setItem("user",  JSON.stringify(defUser));
-    UserWebsocket.connect();
+   // UserWebsocket.connect();
     
     return defUser;
   }
