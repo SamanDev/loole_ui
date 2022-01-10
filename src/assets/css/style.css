@@ -777,6 +777,10 @@ font-size: 11px !important;
 .four a {
     overflow: hidden;
 }
+.sidebar-mini .sidebar .sidebar-wrapper > .nav li > a .sb-avatar span{
+    opacity: 1;
+    transform: none;
+}
 .lock-page .ui.message {
     
     background: rgba(255,255,255,.2);
