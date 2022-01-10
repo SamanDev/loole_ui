@@ -496,8 +496,19 @@ function Main() {
           )}
         />
     
-        <Route
+    <Route
           path="/lobby"
+          render={(props) => (
+            <LandLayout
+              {...props}
+              myState={myState}
+              onUpdateItem={onUpdateItem}
+              findStateId={findStateId}
+            />
+          )}
+        />
+        <Route
+          path="/matchlobby"
           render={(props) => (
             <LandLayout
               {...props}

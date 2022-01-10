@@ -413,13 +413,13 @@ export const vsComponentPlayer = (
   }
   
   var padd = 10;
-  if (matchidFind.status == "Ready" && currentUser.accessToken) {
+  if (matchidFind.status == "Ready" && isPlayerInMatch(matchidFind,currentUser.username)) {
     padd = 60;
   }
-  if (matchidFind.status == "InPlay" && currentUser.accessToken) {
+  if (matchidFind.status == "InPlay" && isPlayerInMatch(matchidFind,currentUser.username)) {
     padd = 60;
   }
-  if (matchidFind.status == "InPlay" && item.players[num].nickName && currentUser.accessToken) {
+  if (matchidFind.status == "InPlay" && item.players[num].nickName && isPlayerInMatch(matchidFind,currentUser.username)) {
     padd = 150;
   }
   //if(matchidFind.status == "Pending" && item.gameMode == 'Tournament') {padd = padd + 50}
@@ -584,7 +584,7 @@ export const vsComponentPlayer = (
   });
   var info = (
     <>
-      {_p && _p.username != "Tournament Player"  && (
+      {_p && _p.username != "Tournament Player"  && isPlayerInMatch(matchidFind,currentUser.username) &&(
         <>
           {_p.tagId && (
             
@@ -627,7 +627,7 @@ export const vsComponentPlayer = (
           matchidFind={matchidFind}
           isUser={currentUser}
           visible={
-            (matchidFind.status == "Ready" || matchidFind.status == "InPlay") && currentUser.accessToken
+            (matchidFind.status == "Ready" || matchidFind.status == "InPlay") && isPlayerInMatch(matchidFind,currentUser.username)
               ? true
               : false
           }
@@ -774,7 +774,7 @@ export const printEventBTN = (
                 <Link
                
                   to={
-                    "/panel/matchlobby?id=" +
+                    "/matchlobby?id=" +
                     item.id +
                     "&matchid=" +
                     mymatchFind.id

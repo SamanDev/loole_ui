@@ -454,7 +454,7 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
               <Link
                 
                
-                to={"/panel/matchlobby?id=" + item.id + "&matchid=" + mtch.id}
+                to={"/matchlobby?id=" + item.id + "&matchid=" + mtch.id}
               >
                 <Segment inverted style={{ background: "none !important" }}>
                   <Grid columns={2}>
