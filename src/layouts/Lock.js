@@ -1,80 +1,106 @@
-import React from "react";
-import { Switch, Route } from "react-router-dom";
-// react-bootstrap components
-import {
-  Badge,
-  Button,
-  Card,
-  Navbar,
-  Nav,
-  Container,
-  Col,
-} from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 
-import SiteNavbar from "components/Navbars/AuthNavbar.js";
-import AuthFooter from "components/Footers/AuthFooter.js";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
-import Sidebar from "components/Sidebar/Chat.js";
+import { ConfigProvider } from "react-avatar";
+import { Route, Switch ,useHistory} from "react-router-dom";
+
+import { Checkbox, Modal, Menu, Segment, Sidebar } from "semantic-ui-react";
+
+import { DEFCOLORS, themeDashColors } from "const";
+// core components
+import ModalExampleShorthand from "components/modal.component";
+import SidebarMy from "components/Sidebar/Sidebar.js";
+import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
-// dinamically create auth routes
+import CrCode from "components/cr.component";
 import routes from "routes.js";
+
+import Admin from "views/Admin.js";
+import AdminEvents from "views/AdminEvents.js";
+import Dashboard from "views/Dashboard.js";
+import Rewards from "views/Rewards.js";
+import Market from "views/Market.js";
+import Cashier from "views/Cashier.js";
+import Profile from "views/Profile.js";
+import CreateMatch from "views/Add.js";
+import LockScreenPage from "views/Pages/LockScreenPage.js";
+import CrDeposit from "components/deposit/crdeposit.component";
+import CrCashout from "components/deposit/crcashout.component";
+import PMDeposit from "components/deposit/pmdeposit.component";
+import PMCashout from "components/deposit/pmcashout.component";
+import AddMatch from "components/add/addmatch.component";
+
 function scrollToTop() {
-
   window.scrollTo({
-top: 0,
-behavior: "smooth"
-});
+    top: 0,
+    behavior: "smooth",
+  });
+}
+const d = new Date();
+let da = d.getSeconds();
+let day = da % 7;
+function Panel(props) {
+  const history = useHistory();
+  const [sidebarImage, setSidebarImage] = React.useState();
+  const [sidebarBackground, setSidebarBackground] = React.useState("orange");
+  const [visible, setVisible] = React.useState(false);
+  const [myState, setMyState] = useState(props.myState);
+  useEffect(() => {
+    setMyState(props.myState);
+    
+   
+  }, [props.myState]);
+  
+  const currentUser = props.findStateId(myState, "currentUser");
+  
+ 
 
 
-};
-function Auth() {
   const getRoutes = (routes) => {
+    //scrollToTop();
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
-      if (prop.layout === "/lock") {
+   
+       
+        
         return (
           <Route
             path={prop.layout + prop.path}
             key={key}
-            component={prop.component}
+            render={() => (
+              <>
+            
+                {prop.component == "LockScreenPage" && (
+                  <LockScreenPage {...props} />
+                )}
+            
+              </>
+            )}
           />
         );
-      } else {
-        return null;
-      }
+      
     });
   };
   const getPage = (routes) => {
     return routes.map((prop, key) => {
-      
-      if (window.location.href.indexOf(prop.path)>-1) {
-        scrollToTop();
-    return prop.name
-    
+      if (window.location.href.indexOf(prop.path) > -1 && prop.path != "/") {
+        if (prop.name) {
+          return prop.name;
+        }
       }
     });
   };
+
   return (
     <>
-    <Sidebar  
-         
-          
-        />
-         <div className="main-panel">
-          <AdminNavbar page={getPage(routes)}/>
-        
-          <div className="content">
-          <Switch>{getRoutes(routes)}</Switch>
-          </div>
+      <ConfigProvider colors={DEFCOLORS}>
      
-        
-      
-      </div>
-   
+          <Switch>{getRoutes(routes)}</Switch>
+       
+      </ConfigProvider>
     </>
   );
 }
 
-export default Auth;
+export default Panel;

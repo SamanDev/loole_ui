@@ -102,16 +102,18 @@ var routes = [
   },
   
   {
-    path: "/lobby",
-    layout: "/panel",
+
+    path: "/",
+    layout: "/lobby",
     name: "Match Lobby",
     icon: "nc-icon nc-simple-add",
     component: 'LockScreenPage',
     show:false
   },
   {
-    path: "/matchlobby",
-    layout: "/panel",
+ 
+    path: "/",
+    layout: "/matchlobby",
     name: "Match Lobby",
     icon: "nc-icon nc-simple-add",
     component: 'LockScreenPage',

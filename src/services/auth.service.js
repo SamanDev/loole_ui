@@ -62,7 +62,7 @@ class AuthService {
       
       localStorage.setItem("user", JSON.stringify(defUser));
     
-    if (loc.indexOf("/panel") > -1 && loc.indexOf("/panel/lo") == -1){
+    if (loc.indexOf("/panel") > -1 && loc.indexOf("/lobby") == -1){
       
       
       //window.location.replace("/");

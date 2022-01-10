@@ -17,6 +17,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export * from "const";
 import LandLayout from "layouts/Land.js";
 
+
 import PanelLayout from "layouts/Panel.js";
 import Login from "components/newlogin.component";
 import Register from "components/newregister.component";
@@ -253,10 +254,10 @@ function Main() {
               currentUser.username
             ) &&
             window.location.pathname + window.location.search !=
-              "/panel/lobby?id=" + eventGet.id && eventGet.id != eventIDQ && !matchIDQ
+              "/lobby?id=" + eventGet.id && eventGet.id != eventIDQ && !matchIDQ
           ) {
             if (eventGet.status == "Ready" || eventGet.status == "InPlay" ) {
-              history.push("/panel/lobby?id=" + eventGet.id);
+              history.push("/lobby?id=" + eventGet.id);
             }
           }
         }
@@ -483,10 +484,22 @@ function Main() {
         </Modal.Content>
       </Modal>
       <Switch>
-        <Route
+      <Route
           path="/panel"
           render={(props) => (
             <PanelLayout
+              {...props}
+              myState={myState}
+              onUpdateItem={onUpdateItem}
+              findStateId={findStateId}
+            />
+          )}
+        />
+    
+        <Route
+          path="/lobby"
+          render={(props) => (
+            <LandLayout
               {...props}
               myState={myState}
               onUpdateItem={onUpdateItem}

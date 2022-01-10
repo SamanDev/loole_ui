@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import { ConfigProvider } from "react-avatar";
 import { DEFCOLORS } from "const";
 // react-bootstrap components
-
+import LockScreenPage from "views/Pages/LockScreenPage.js";
 import LandNavbar from "components/Navbars/LandNavbar.js";
 // dinamically create auth routes
 import "assets/css/landing-page.css";
@@ -51,7 +51,9 @@ function  Auth(props) {
               {(prop.component=='User') && (<User {...props} />)}
               {(prop.component=='Games') && (<Games {...props} />)}
               {(prop.component=='Content') && (<Content {...props} />)}
-            
+              {(prop.component == "LockScreenPage") && (
+                  <LockScreenPage {...props} />
+                )}
               
               </>
             )}
@@ -70,7 +72,15 @@ function  Auth(props) {
   
   //console.log('Land.js token:'+ JSON.stringify(token))
   
-  
+  const getPage = (routes) => {
+    return routes.map((prop, key) => {
+      if (window.location.href.indexOf(prop.layout) > -1 && prop.path == "/") {
+        if (prop.name) {
+          return prop.name;
+        }
+      }
+    });
+  };
   
   
      
@@ -79,6 +89,9 @@ function  Auth(props) {
     <>
    
     <ConfigProvider colors={DEFCOLORS}>
+    {getPage(routes).indexOf("Match Lobby") > -1 ? (
+          <Switch>{getRoutes(routes)}</Switch>
+        ) : (
       <div className="landing-page landing-page1 landing-mobile">
         {/* Navbar */}
         <LandNavbar {...props}/>
@@ -87,6 +100,7 @@ function  Auth(props) {
         <Switch>{getRoutes(routes)}</Switch>
     
       </div>
+        )}
       </ConfigProvider>
     
     </>

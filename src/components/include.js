@@ -2371,7 +2371,7 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
 export const printProductBlock = (item) => {
 
   return (
-    <Link to={"/panel/lobby?id=" + item.id}>
+    <Link to={"/lobby?id=" + item.id}>
       <Card className="card-user chall">
         <Card.Header className="no-padding">
           <div className="card-image">

@@ -212,9 +212,9 @@ function Admin(prop) {
         format: (row) => (
         <>
         {row.gameMode =='Tournament' ? (
-        <a href={"/panel/lobby?id="+row.eventid+'&matchid='+row.match.id} target='_blank'>{row.match.id}: {row.gameName}</a>
+        <a href={"/lobby?id="+row.eventid+'&matchid='+row.match.id} target='_blank'>{row.match.id}: {row.gameName}</a>
         ):(
-            <a href={"/panel/lobby?id="+row.eventid} target='_blank'>{row.eventid}: {row.gameName}</a>
+            <a href={"/lobby?id="+row.eventid} target='_blank'>{row.eventid}: {row.gameName}</a>
         
         )}
         </>
