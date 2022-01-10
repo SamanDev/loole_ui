@@ -550,7 +550,7 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
               this.handleJoinMatch,
               this.props.onUpdateItem
             )}
-          {item.status == "Pending" && item.players.length!=item.totalPlayer ? (
+          {item.status == "Pending" && item.players.length<item.totalPlayer ? (
             <>
               <small
                 style={{
