@@ -37,7 +37,7 @@ import {
   handleTagForm,
   vsComponentPlayer,
   getGroupBadgeBlock,
-  printJoinalerts,genMatch
+  printJoinalerts,genMatch,findMatch
 } from "components/include";
 import { POSTURLTest } from "const";
 
@@ -257,42 +257,14 @@ class TournamentSection extends Component {
     item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
     var isJoin = false;
     var lists = item.matchTables;
-    icEnd = 0;
-    icStart = 0;
+   
     mymatchFind = null;
-matchLevelFind = null;
-    lists.sort((a, b) => (a.level < b.level ? 1 : -1));
-    if (
-      (item.status == "InPlay" ||
-      item.status == "Pending" ||item.status == "Finished" ||
-        item.status == "Ready") &&
-      item.gameMode == "Tournament"
-    ) {
+
+    lists.sort((a, b) => (a.level > b.level ? 1 : -1));
+  
+    matchLevelFind = findMatch(item);
       lists.map((tblmatch, w) => {
-        if (
-       
-          tblmatch.status == "Pending"
-        ) {
-          if (!matchLevelFind) {
-            matchLevelFind = tblmatch;
-          }
-        }
-        if (
-          tblmatch.status == "InPlay" ||
-          tblmatch.status == "Pending" ||
-          tblmatch.status == "Ready"
-        ) {
-          if (matchLevelFind?.level > tblmatch.level || !matchLevelFind) {
-            matchLevelFind = tblmatch;
-          }
-        }
-        if (
-          tblmatch.status == "Finished"
-        ) {
-          if (matchLevelFind?.level <= tblmatch.level || !matchLevelFind) {
-            matchLevelFind = tblmatch;
-          }
-        }
+        
         if (
           tblmatch.status != "Finished" &&
           (tblmatch.matchPlayers[0].username == currentUser.username ||
@@ -301,13 +273,8 @@ matchLevelFind = null;
           mymatchFind = tblmatch;
         }
       });
-
-      //matchidFind = lists.filter( (list) => list.id === );
-    }
-
-    if (matchLevelFind && activeIndex == -1) {
-      //this.setState({ activeIndex: matchLevelFind.level - 1 });
-    }
+      if(matchLevelFind.level > 0){defaultActiveIndex=matchLevelFind.level-1}
+     
 
     var activePlayer = 0;
     {
@@ -366,8 +333,7 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
         var paylvl = payArr[i].split(",");
         var payplyer = paylvl[0].split("-");
         var tItem = item.players.length;
-        console.log(payplyer[0])
-        console.log(payplyer[1])
+       
         if (item.status == "Pending" || item.gameMode == "League") {
           tItem = item.totalPlayer;
         }
@@ -416,7 +382,7 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
     }
     }
     
-    if(matchLevelFind?.level > 0){defaultActiveIndex=matchLevelFind.level-1}
+    
     
     const panels = item.matchLevel.map((match, i) => {
       var hatchbackCar = lists.filter(
@@ -429,7 +395,7 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
         title: {
           content:  (<><br/><br/>
             {hatchbackCar.length == 1
-              ? (<Label size='big'  inverted color='red'>{getMatchTitle(hatchbackCar[0].level, item.totalPlayer)}</Label>)
+              ? (<Label size='big'   color='red'>{getMatchTitle(hatchbackCar[0].level, item.totalPlayer)}</Label>)
               : (<>{getMatchTitle(hatchbackCar[0].level, item.totalPlayer)}<br/><Label as='small' color='orange'>{hatchbackCar.length} MATCHES</Label></>)}
                 <Countdown
                 renderer={rendererBig}
@@ -512,6 +478,7 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
       defaultActiveIndex=''
     }
     var _finishTxt = 'Not Joinable';
+    
   if (item?.winner) { _finishTxt = item.winner}
   
     setTimeout(() => {
@@ -527,7 +494,7 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
         >
           {vsComponentTitle(item)}
           <Divider fitted style={{ opacity: 0 }} />
-          {printStatus(item,_mode,_color ,item.status+'@@@'+_finishTxt,item.status)}
+          {printStatus(item,_mode,_color ,item.status+'@@@'+_finishTxt,item.status,'no')}
           <Divider fitted style={{ opacity: 0 }} />
           <Countdown
             renderer={rendererBig}
@@ -621,7 +588,7 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
             
               <Divider style={{ opacity: 0 }} />
               <Accordion
-                defaultActiveIndex={[defaultActiveIndex]}
+                defaultActiveIndex={[matchLevelFind.level-1]}
                 panels={panels}
                 exclusive={false}
                 fluid

@@ -10,7 +10,6 @@ import uploadHeader from "services/upload-header";
 import axios from "axios";
 import { defUser } from 'const';
 import MatchCard from "components/matchcard.component";
-import Admin from "components/events/admin.component";
 import {
   Col,ProgressBar
 } from "react-bootstrap";
@@ -456,7 +455,7 @@ class MatchSection extends Component {
           <>
       {vsComponentTitle(item)}
       <Divider fitted style={{ opacity: 0 }} />
-      {printStatus(item,_mode,_color ,item.status+'@@@'+_finishTxt,item.status)}
+      {printStatus(match,_mode,_color ,item.status+'@@@'+_finishTxt,item.status)}
       <Countdown
         renderer={rendererBig}
         finish={item.status + "@@@"+_finishTxt}
@@ -473,7 +472,6 @@ class MatchSection extends Component {
     {getMatchTitle(match.level, item.totalPlayer)}
   </Statistic.Value>
 </Statistic>
-<Admin {...this.props}/>
       <Segment  basic >
         <Grid columns={2}>
           <Grid.Column

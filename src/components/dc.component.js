@@ -72,6 +72,7 @@ function FormExampleFieldErrorLabel(prop) {
     return _error;
   };
   const handleSubmit = () => {
+    onUpdateItem("loading", true);
     if(localStorage.getItem('user')){
     const usr = JSON.parse(localStorage.getItem('user'));
     if (usr.accessToken) {
@@ -92,7 +93,8 @@ function FormExampleFieldErrorLabel(prop) {
 
       <Form.Button
           color="red"
-        
+        loading={loading}
+        disabled={loading}
         fluid
         size="small"
         content="Reconnect to server"

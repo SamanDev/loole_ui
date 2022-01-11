@@ -3,25 +3,59 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Avatar from "react-avatar";
 import Countdown from "react-countdown";
+import { Link } from "react-router-dom";
 
-import {setAvatar,getColorStatus,getIcon,getGroupBadgeBlock,rendererBig,printStatus}  from "components/include.js";
+import {setAvatar,getColorStatus,getIcon,getGroupBadgeBlock,rendererBig,printStatus,getMatchTitle}  from "components/include.js";
 import {
   Icon,
   Label,
-  Card,
+  Card,Statistic,Divider,
   Image} from "semantic-ui-react";
+// react-bootstrap components
+import { useHistory } from "react-router";
 // react-bootstrap components
 
 var moment = require("moment");
  function MatchCard(prop) {
-    var _mode = " 1 vs 1 ";
+  var _mode = " 1 vs 1 ";
     var _color = "#404040";
     var item = prop.item;
+    var lists = item.matchTables;
    
+
+    lists.sort((a, b) => (a.level > b.level ? 1 : -1));
+  
+   var matchLevelFind = lists[0];
+      lists.map((tblmatch, w) => {
+        if (
+       
+          tblmatch.status == "InPlay" 
+        ) {
+         
+            matchLevelFind = tblmatch;
+          
+        }
+       
+        if (
+          item.status == "Finished"
+        ) {
+        
+            matchLevelFind = lists[lists.length-1];
+          
+        }
+       
+      });
     if (item.gameMode == "Tournament" || item.gameMode == "League") {
       _mode = item.gameMode;
     }
-  
+    var _finishTxt = 'Not Joinable';
+ 
+  if (item?.status=='Canceled' || item?.status=='Expired' || item?.status=='Finished') { _finishTxt = 'Not Avalable'}
+  item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+  var timestring1 = item.expire;
+  var timestring2 = new Date();
+  var startdate = moment(timestring1).format();
+  var expected_enddate = moment(timestring2).format();
     return (
     
         
@@ -46,7 +80,22 @@ var moment = require("moment");
                >
               <div style={{ transform: "scale(.8)",padding: '30px 0',height:185}}>
               {printStatus(item,_mode,_color ,item.status+'@@@Not Avalable',item.status,'no')}
-              <Countdown renderer={rendererBig}  txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
+              {startdate < expected_enddate && item.status=='InPlay'&&   
+       (
+      <><Divider inverted fitted></Divider>     <Statistic inverted color="violet" size="mini">
+  <Statistic.Label>Match Level</Statistic.Label>
+  <Statistic.Value>
+    {getMatchTitle(matchLevelFind.level, item.totalPlayer)}
+  </Statistic.Value>
+</Statistic></>)}
+                {item.gameMode == 'League' ?  ( 
+
+
+              <Countdown renderer={rendererBig} txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item}  date={item.expire} mode={_mode} color={_color} />
+                ):( 
+                
+              <Countdown renderer={rendererBig} txt="@@@Avalable until" colorfinish={getColorStatus(item.status)} finish={item.status+'@@@Not Avalable'} match={item.matchTables[0]}  date={item.expire} mode={_mode} color={_color} />
+                )}
         </div>
         {item.players[0] ? (
                   <>

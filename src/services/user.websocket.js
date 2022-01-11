@@ -20,10 +20,7 @@ class UserWebsocket {
       //userService.getEvents();
 
       console.log("Websocket is connect");
-      if (user) {
-        eventBus.dispatch("eventsDataUser", user);
-        eventBus.remove("eventsDataUser");
-      }
+     
 
       ws.onopen = function live() {
         var timeout = 20000;

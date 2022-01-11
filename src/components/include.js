@@ -1,7 +1,11 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlaystation, faXbox } from "@fortawesome/free-brands-svg-icons";
-import { faDesktop, faMobileAlt,faGlobe } from "@fortawesome/free-solid-svg-icons";
+import {
+  faDesktop,
+  faMobileAlt,
+  faGlobe,
+} from "@fortawesome/free-solid-svg-icons";
 import Avatar from "react-avatar";
 import Countdown from "react-countdown";
 import Swal from "sweetalert2";
@@ -13,7 +17,7 @@ import MatchCard from "components/matchblock.component";
 import TransitionExampleTransitionExplorer from "components/anim.component";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import eventBus from "views/eventBus";
-import CopyText  from "components/copy.component";
+import CopyText from "components/copy.component";
 import {
   faInstagram,
   faTwitch,
@@ -31,8 +35,10 @@ import {
   Grid,
   Segment,
   Card,
-  Image,Dimmer,
-  List,Checkbox
+  Image,
+  Dimmer,
+  List,
+  Checkbox,
 } from "semantic-ui-react";
 // react-bootstrap components
 import {
@@ -96,7 +102,6 @@ export const get_date_locale = (thisDate) => {
   return b;
 };
 export const date_edit = (thisDate) => {
-  
   //console.log('thisDate: '+thisDate)
   var mom = moment(thisDate).format("YYYY-MM-DDThh:mm:ss.000-08:00");
   //thisDate = thisDate.replace('+00:00','-08:00');
@@ -137,7 +142,6 @@ export const setAvatar = (name) => {
 };
 
 export const getIcon = (name) => {
-  
   if (name == "All") {
     return faGlobe;
   }
@@ -182,7 +186,7 @@ export const printJoinalerts = (
   GName,
   currentUser,
   setSelectedTag,
-propsSend
+  propsSend
 ) => {
   if (response == "balanceError") {
     var resMessage = "To enter this event you need to have more balance!";
@@ -192,12 +196,11 @@ propsSend
       icon: "error",
       showCancelButton: true,
       confirmButtonText: `Go to Cashier`,
-    
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         propsSend.onUpdateItem("openModalAdd", false);
-        propsSend.history.push("/panel/cashier")
+        propsSend.history.push("/panel/cashier");
       }
     });
   } else if (response == "pointBalanceError") {
@@ -208,12 +211,11 @@ propsSend
       icon: "error",
       showCancelButton: true,
       confirmButtonText: `Go to Cashier`,
-   
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         propsSend.onUpdateItem("openModalAdd", false);
-        propsSend.history.push("/panel/cashier")
+        propsSend.history.push("/panel/cashier");
       }
     });
   } else if (response == "tagError") {
@@ -402,24 +404,35 @@ export const vsComponentPlayer = (
   isloading,
   handlechangeReadyEvent
 ) => {
-  
-  try{
+  try {
     var player = matchidFind.matchPlayers[num];
-    player =JSON.parse(JSON.stringify(player)
-      .replace(/"Tournament Player1"/g, false)
-      .replace(/"Tournament Player"/g, false))
-  }catch(e){
+    player = JSON.parse(
+      JSON.stringify(player)
+        .replace(/"Tournament Player1"/g, false)
+        .replace(/"Tournament Player"/g, false)
+    );
+  } catch (e) {
     var player = nullplayer;
   }
-  
+
   var padd = 10;
-  if (matchidFind.status == "Ready" && isPlayerInMatch(matchidFind,currentUser.username)) {
+  if (
+    matchidFind.status == "Ready" &&
+    isPlayerInMatch(matchidFind, currentUser.username)
+  ) {
     padd = 60;
   }
-  if (matchidFind.status == "InPlay" && isPlayerInMatch(matchidFind,currentUser.username)) {
+  if (
+    matchidFind.status == "InPlay" &&
+    isPlayerInMatch(matchidFind, currentUser.username)
+  ) {
     padd = 60;
   }
-  if (matchidFind.status == "InPlay" && item.players[num].nickName && isPlayerInMatch(matchidFind,currentUser.username)) {
+  if (
+    matchidFind.status == "InPlay" &&
+    item.players[num].nickName &&
+    isPlayerInMatch(matchidFind, currentUser.username)
+  ) {
     padd = 150;
   }
   //if(matchidFind.status == "Pending" && item.gameMode == 'Tournament') {padd = padd + 50}
@@ -427,112 +440,95 @@ export const vsComponentPlayer = (
     padd = 0;
   }
   var user = (
-    <div style={{ overflow:'hidden',padding: "0px 0 " + padd + "px 0" }}>
+    <div style={{ overflow: "hidden", padding: "0px 0 " + padd + "px 0" }}>
       {handlechangeReadyEvent ? (
-        <Statistic inverted size="mini" as={Link} to={'/user/'+player?.username} target="_blank">
-        <Statistic.Value>
-          {player?.username == matchidFind.winner && matchidFind.winner && (
-            <Icon
-              circular
-              color="yellow"
-              size="mini"
-              name="winner"
-              style={{ position: "absolute", fontSize: 12, marginLeft: -8 }}
-            />
-          )}
-          {player?.username ? (
-           
+        <Statistic
+          inverted
+          size="mini"
+          as={Link}
+          to={"/user/" + player?.username}
+          target="_blank"
+        >
+          <Statistic.Value>
+            {player?.username == matchidFind.winner && matchidFind.winner && (
+              <Icon
+                circular
+                color="yellow"
+                size="mini"
+                name="winner"
+                style={{ position: "absolute", fontSize: 12, marginLeft: -8 }}
+              />
+            )}
+            {player?.username ? (
               <Avatar
                 size="50"
                 round={true}
                 title={player.username}
                 name={setAvatar(player.username)}
               />
-      
-          ) : (
-            <Avatar
-              size="50"
-              round={true}
-              src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
-              color="lightgray"
-              className="avatar"
-            />
-          )}
-        </Statistic.Value>
-        <Statistic.Label>
-          <small>
-            {player?.username ? (
-              <>
-               
-                  {player.username}
-              
-              </>
             ) : (
-              <>...</>
+              <Avatar
+                size="50"
+                round={true}
+                src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
+                color="lightgray"
+                className="avatar"
+              />
             )}
-          </small>
-        </Statistic.Label>
-      </Statistic>
-      ):(
-<Statistic inverted size="mini">
-        <Statistic.Value>
-          {player?.username == matchidFind.winner && matchidFind.winner && (
-            <Icon
-              circular
-              color="yellow"
-              size="mini"
-              name="winner"
-              style={{ position: "absolute", fontSize: 12, marginLeft: -8 }}
-            />
-          )}
-          {player?.username ? (
-           
+          </Statistic.Value>
+          <Statistic.Label>
+            <small>
+              {player?.username ? <>{player.username}</> : <>...</>}
+            </small>
+          </Statistic.Label>
+        </Statistic>
+      ) : (
+        <Statistic inverted size="mini">
+          <Statistic.Value>
+            {player?.username == matchidFind.winner && matchidFind.winner && (
+              <Icon
+                circular
+                color="yellow"
+                size="mini"
+                name="winner"
+                style={{ position: "absolute", fontSize: 12, marginLeft: -8 }}
+              />
+            )}
+            {player?.username ? (
               <Avatar
                 size="50"
                 round={true}
                 title={player.username}
                 name={setAvatar(player.username)}
               />
-      
-          ) : (
-            <Avatar
-              size="50"
-              round={true}
-              src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
-              color="lightgray"
-              className="avatar"
-            />
-          )}
-        </Statistic.Value>
-        <Statistic.Label>
-          <small>
-            {player?.username ? (
-              <>
-               
-                  {player.username}
-              
-              </>
             ) : (
-              <>...</>
+              <Avatar
+                size="50"
+                round={true}
+                src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
+                color="lightgray"
+                className="avatar"
+              />
             )}
-          </small>
-        </Statistic.Label>
-      </Statistic>
+          </Statistic.Value>
+          <Statistic.Label>
+            <small>
+              {player?.username ? <>{player.username}</> : <>...</>}
+            </small>
+          </Statistic.Label>
+        </Statistic>
       )}
-      
     </div>
   );
   var ready = (
     <>
-      {player?.username == currentUser.username &&  isPlayerInMatch(matchidFind,currentUser.username) ? (
+      {player?.username == currentUser.username &&
+      isPlayerInMatch(matchidFind, currentUser.username) ? (
         <div
           style={
-            matchidFind.status != "Ready" ||
-           
-            isloading
+            matchidFind.status != "Ready" || isloading
               ? {
-                  
-                  width: '90%',
+                  width: "90%",
                   maxWidth: 150,
                   margin: "auto",
                   position: "relative",
@@ -540,38 +536,39 @@ export const vsComponentPlayer = (
                   opacity: 0.5,
                 }
               : {
-                width: '90%',
-                maxWidth: 150,
+                  width: "90%",
+                  maxWidth: 150,
                   margin: "auto",
                   position: "relative",
                   zIndex: 10,
                 }
           }
         >
-          <small>Ready</small><br/>
-          <Checkbox toggle defaultChecked={player?.ready} disabled={player.username != currentUser.username}
-            
+          <small>Ready</small>
+          <br />
+          <Checkbox
+            toggle
+            defaultChecked={player?.ready}
+            disabled={player.username != currentUser.username}
             onChange={(checked) => {
               handlechangeReadyEvent(checked);
-            }} />
-          
+            }}
+          />
         </div>
       ) : (
         <div
           style={{
-            
-            width: '90%',
-                  maxWidth: 150,
+            width: "90%",
+            maxWidth: 150,
             margin: "auto",
             position: "relative",
             zIndex: 10,
             opacity: 0.5,
           }}
-        ><small>Ready</small><br/>
-          <Checkbox toggle checked={player?.ready} disabled
-            
-             />
-          
+        >
+          <small>Ready</small>
+          <br />
+          <Checkbox toggle checked={player?.ready} disabled />
         </div>
       )}
     </>
@@ -584,40 +581,49 @@ export const vsComponentPlayer = (
   });
   var info = (
     <>
-      {_p && _p.username != "Tournament Player"  && isPlayerInMatch(matchidFind,currentUser.username) &&(
-        <>
-          {_p.tagId && (
-            
-            <Statistic inverted color="red" size="mini">
-              <Statistic.Label>
-                {getTagName(item.gameName, item.gameConsole)} iD
-              </Statistic.Label>
-              <Statistic.Value>
-                {isPlayerInMatch(matchidFind,currentUser.username) ? <CopyText color="red" size="small" myid={_p.tagId}/> : '**********'}
-                </Statistic.Value>
-            </Statistic>
-          )}
-          {_p.nickName && (
-            <>
-              <Divider fitted style={{ opacity: 0 }} />
-              <Statistic inverted color="olive" size="mini">
-                <Statistic.Label>Nickname</Statistic.Label>
-
+      {_p &&
+        _p.username != "Tournament Player" &&
+        isPlayerInMatch(matchidFind, currentUser.username) && (
+          <>
+            {_p.tagId && (
+              <Statistic inverted color="red" size="mini">
+                <Statistic.Label>
+                  {getTagName(item.gameName, item.gameConsole)} iD
+                </Statistic.Label>
                 <Statistic.Value>
-                  
-                  {isPlayerInMatch(matchidFind,currentUser.username) ? _p.nickName : '**********'}
-                
-                  </Statistic.Value>
+                  {isPlayerInMatch(matchidFind, currentUser.username) ? (
+                    <CopyText color="red" size="small" myid={_p.tagId} />
+                  ) : (
+                    "**********"
+                  )}
+                </Statistic.Value>
               </Statistic>
-            </>
-          )}
-        </>
-      )}
+            )}
+            {_p.nickName && (
+              <>
+                <Divider fitted style={{ opacity: 0 }} />
+                <Statistic inverted color="olive" size="mini">
+                  <Statistic.Label>Nickname</Statistic.Label>
+
+                  <Statistic.Value>
+                    {isPlayerInMatch(matchidFind, currentUser.username)
+                      ? _p.nickName
+                      : "**********"}
+                  </Statistic.Value>
+                </Statistic>
+              </>
+            )}
+          </>
+        )}
     </>
   );
   return (
     <>
-      <div style={!_p ? { opacity: 0.3,overflow:'hidden' } : {overflow:'hidden'}}>
+      <div
+        style={
+          !_p ? { opacity: 0.3, overflow: "hidden" } : { overflow: "hidden" }
+        }
+      >
         <SidebarExampleSidebar
           user={user}
           player={player}
@@ -627,7 +633,8 @@ export const vsComponentPlayer = (
           matchidFind={matchidFind}
           isUser={currentUser}
           visible={
-            (matchidFind.status == "Ready" || matchidFind.status == "InPlay") && isPlayerInMatch(matchidFind,currentUser.username)
+            (matchidFind.status == "Ready" || matchidFind.status == "InPlay") &&
+            isPlayerInMatch(matchidFind, currentUser.username)
               ? true
               : false
           }
@@ -647,94 +654,96 @@ export const printMatchBTN = (
   handleJoinMatch,
   handleLeaveMatch
 ) => {
-  var _res = 'VS';
-  {(item.status == "Pending" || item.status == "Ready") && (
-    <>
-      {isPlayerInMatch(match,currentUser.username) ? (
-        <>
-          {match.matchPlayers[0]?.username != currentUser.username &&
-            !match.matchPlayers[1]?.ready && (
+  var _res = "VS";
+  {
+    (item.status == "Pending" || item.status == "Ready") && (
+      <>
+        {isPlayerInMatch(match, currentUser.username) ? (
+          <>
+            {match.matchPlayers[0]?.username != currentUser.username &&
+              !match.matchPlayers[1]?.ready && (
+                <>
+                  {
+                    (_res = (
+                      <>
+                        <Button
+                          animated
+                          size="small"
+                          className="mobile hidden"
+                          inverted
+                          onClick={handleLeaveMatch}
+                          color="red"
+                          disabled={isloading}
+                          loading={isloading}
+                          style={{ position: "relative", top: -10 }}
+                        >
+                          <Button.Content visible>Leave Match</Button.Content>
+                          <Button.Content hidden>
+                            <Icon name="arrow left" />
+                          </Button.Content>
+                        </Button>
+                        <Button
+                          size="small"
+                          className="mobile only"
+                          inverted
+                          onClick={handleLeaveMatch}
+                          color="red"
+                          disabled={isloading}
+                          loading={isloading}
+                          style={{ position: "relative", top: -10 }}
+                        >
+                          <Button.Content visible>Leave</Button.Content>
+                        </Button>
+                      </>
+                    ))
+                  }
+                </>
+              )}
+          </>
+        ) : (
+          <>
+            {item.totalPlayer > activePlayer && (
               <>
-                {_res = <>
-              <Button
-                  animated
-                  size="small"
-                  className="mobile hidden"
-                  inverted
-                  onClick={handleLeaveMatch}
-                  color="red"
-                  disabled={isloading}
-                  loading={isloading}
-                  style={{position: "relative",top:-10}}
-                >
-                  <Button.Content visible>Leave Match</Button.Content>
-                  <Button.Content hidden>
-                    <Icon name="arrow left" />
-                  </Button.Content>
-                </Button>
-              <Button
-                
-                size="small"
-                className="mobile only"
-                inverted
-                onClick={handleLeaveMatch}
-                color="red"
-                disabled={isloading}
-                loading={isloading}
-                style={{position: "relative",top:-10}}
-              >
-                <Button.Content visible>Leave</Button.Content>
-                
-              </Button>
-              </>
-  }
+                {
+                  (_res = (
+                    <>
+                      <Button
+                        animated
+                        className="mobile hidden"
+                        size="small"
+                        inverted
+                        onClick={handleJoinMatch}
+                        color="green"
+                        disabled={isloading || !currentUser.userActivate}
+                        loading={isloading}
+                        style={{ position: "relative", top: -10 }}
+                      >
+                        <Button.Content visible>Join Match</Button.Content>
+                        <Button.Content hidden>Join Now</Button.Content>
+                      </Button>
+                      <Button
+                        size="small"
+                        className="mobile only"
+                        inverted
+                        onClick={handleJoinMatch}
+                        color="green"
+                        disabled={isloading || !currentUser.userActivate}
+                        loading={isloading}
+                        style={{ position: "relative", top: -10 }}
+                      >
+                        <Button.Content visible>Join</Button.Content>
+                      </Button>
+                    </>
+                  ))
+                }
               </>
             )}
-        </>
-      ) : (
-        <>
-          {item.totalPlayer > activePlayer && (
-            <>
-              {_res = <><Button
-                animated
-                className="mobile hidden"
-                size="small"
-                inverted
-                onClick={handleJoinMatch}
-                color="green"
-                disabled={isloading|| !currentUser.userActivate}
-                loading={isloading}
-                style={{position: "relative",top:-10}}
-              >
-           
-                <Button.Content visible  >Join Match</Button.Content>
-                <Button.Content hidden>
-                  Join Now
-                </Button.Content>
-              </Button>
-              <Button
-                
-                size="small"
-                className="mobile only"
-                inverted
-                onClick={handleJoinMatch}
-                color="green"
-                disabled={isloading|| !currentUser.userActivate}
-                loading={isloading}
-                style={{position: "relative",top:-10}}
-              >
-                <Button.Content visible>Join</Button.Content>
-                
-              </Button>
-              </>
+          </>
+        )}
+      </>
+    );
   }
-            </>
-          )}
-        </>
-      )}
-    </>
-  )}
-  return _res 
+  return _res;
 };
 export const printEventBTN = (
   item,
@@ -748,66 +757,53 @@ export const printEventBTN = (
 ) => {
   return (
     <>
-    {(item.status == "Pending" || item.status == "Ready"|| item.status == "InPlay") && (
-      <p style={{ margin: 0 }}>
-        {!isJoin && item.totalPlayer > item.players.length ? (
-          <>
-            <Button
-              animated
-              size="big"
-              inverted
-              onClick={handleJoinMatch}
-              loading={isloading}
-              color="green"
-              disabled={isloading|| !currentUser.userActivate}
-            >
-              <Button.Content visible>Join Event</Button.Content>
-              <Button.Content hidden>
-                Join now
-              </Button.Content>
-            </Button>
-          </>
-        ) : (
-          <>
-            {mymatchFind && (
-              <>
-                <Link
-               
-                  to={
-                    "/matchlobby?id=" +
-                    item.id +
-                    "&matchid=" +
-                    mymatchFind.id
-                  }
-                >
-                  <Button
-                
-                    size="big"
-                    inverted
-                    color="orange"
-                
+      {(item.status == "Pending" ||
+        item.status == "Ready" ||
+        item.status == "InPlay") && (
+        <p style={{ margin: 0 }}>
+          {!isJoin && item.totalPlayer > item.players.length ? (
+            <>
+              <Button
+                animated
+                size="big"
+                inverted
+                onClick={handleJoinMatch}
+                loading={isloading}
+                color="green"
+                disabled={isloading || !currentUser.userActivate}
+              >
+                <Button.Content visible>Join Event</Button.Content>
+                <Button.Content hidden>Join now</Button.Content>
+              </Button>
+            </>
+          ) : (
+            <>
+              {mymatchFind && (
+                <>
+                  <Link
+                    to={
+                      "/matchlobby?id=" + item.id + "&matchid=" + mymatchFind.id
+                    }
                   >
-                    <Button.Content >Open My Match</Button.Content>
-                
-                  </Button>
-                </Link>
-              </>
-            )}
-          </>
-        )}
-      </p>
+                    <Button size="big" inverted color="orange">
+                      <Button.Content>Open My Match</Button.Content>
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </>
+          )}
+        </p>
       )}
     </>
   );
 };
 export const vsComponentTitle = (item) => {
-  
   return (
     <>
       <Statistic inverted size="small" color={getColor(item.prize)}>
         <Statistic.Value>{item.gameName} </Statistic.Value>
         <Statistic.Label>
-        
           <span className="text-muted">
             <FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)} />{" "}
             {item.gameConsole}
@@ -863,44 +859,51 @@ export const vsComponent = (
   progress,
   progressLable
 ) => {
-  var _finishTxt = 'Not Joinable';
+  var _finishTxt = "Not Joinable";
   //if (match.status) { _finishTxt = match.status}
   //if (match.winner) { _finishTxt = match.winner}
   var _mode = " 1 vs 1 ";
-    var _color = "#404040";
-   
- 
-   
-  
-    if (item.gameMode == "Tournament" || item.gameMode == "League") {
-      _mode = item.gameMode;
-    }
-    
-   
-    if (item.status=='Canceled' || item.status=='Expired') {
-      //_color = "black"; 
-    }
+  var _color = "#404040";
+
+  if (item.gameMode == "Tournament" || item.gameMode == "League") {
+    _mode = item.gameMode;
+  }
+
+  if (item.status == "Canceled" || item.status == "Expired") {
+    //_color = "black";
+  }
   return (
     <>
       {vsComponentTitle(item)}
       <Divider fitted style={{ opacity: 0 }} />
-      {printStatus(item,_mode,_color ,item.status+'@@@'+_finishTxt,item.status)}
+      {printStatus(
+        item,
+        _mode,
+        _color,
+        item.status + "@@@" + _finishTxt,
+        item.status,
+        "no"
+      )}
       <Countdown
         renderer={rendererBig}
-        finish={item.status + "@@@"+_finishTxt}
+        finish={item.status + "@@@" + _finishTxt}
         txt="@@@Avalable until"
         match={match}
         colorfinish={getColor(item.prize)}
         date={item.expire}
       />
 
-      <Segment  basic >
+      <Segment basic>
         <Grid columns={2}>
           <Grid.Column
             style={{ background: "none !important" }}
-            
-            
-            className={match.winner != null && match.winner == match.matchPlayers[0]?.username ? "coverwinner" : null}>
+            className={
+              match.winner != null &&
+              match.winner == match.matchPlayers[0]?.username
+                ? "coverwinner"
+                : null
+            }
+          >
             {vsComponentPlayer(
               item,
               match,
@@ -913,8 +916,13 @@ export const vsComponent = (
           </Grid.Column>
           <Grid.Column
             style={{ background: "none !important" }}
-            className={match.winner != null && match.winner == match.matchPlayers[1]?.username ? "coverwinner":null}>
-          
+            className={
+              match.winner != null &&
+              match.winner == match.matchPlayers[1]?.username
+                ? "coverwinner"
+                : null
+            }
+          >
             {vsComponentPlayer(
               item,
               match,
@@ -928,23 +936,22 @@ export const vsComponent = (
         </Grid>
 
         <Divider vertical inverted>
-        {printMatchBTN(
-          item,
-          match,
-          matchid,
-          currentUser,
-          isloading,
-          activePlayer,
-          handlechangeReadyEvent,
-          handleJoinMatch,
-          handleLeaveMatch
-        )}
+          {printMatchBTN(
+            item,
+            match,
+            matchid,
+            currentUser,
+            isloading,
+            activePlayer,
+            handlechangeReadyEvent,
+            handleJoinMatch,
+            handleLeaveMatch
+          )}
         </Divider>
       </Segment>
       {match.status == "InPlay" && (
         <>
-
-          {isPlayerInMatch(match,currentUser.username) && (
+          {isPlayerInMatch(match, currentUser.username) && (
             <>
               <Statistic inverted size="small">
                 <Statistic.Label>Match Code</Statistic.Label>
@@ -1376,13 +1383,7 @@ export const addTime = (datetime, hours) => {
 
   return result;
 };
-export const renderer = ({
-  days,
-  hours,
-  minutes,
-  seconds,
-  completed,
-}) => {
+export const renderer = ({ days, hours, minutes, seconds, completed }) => {
   if (completed) {
     // Render a complete state
     //return <Completionist />;
@@ -1403,62 +1404,61 @@ export const renderer = ({
     );
   }
 };
-export const  getOffset=( el ) =>{
+export const getOffset = (el) => {
   var _x = 0;
   var _y = 0;
-  while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
-      _x += el.offsetLeft - el.scrollLeft;
-      _y += el.offsetTop - el.scrollTop;
-      el = el.offsetParent;
+  while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+    _x += el.offsetLeft - el.scrollLeft;
+    _y += el.offsetTop - el.scrollTop;
+    el = el.offsetParent;
   }
   return { top: _y, left: _x };
-}
-export const printStatus = (item, _mode, _color,finish,status,_anim) => {
+};
+export const printStatus = (item, _mode, _color, finish, status, _anim) => {
   //console.log(item, _mode, _color,finish,status)
+  var startdate = moment(item.startTime).format();
+  var newD = moment(startdate).add(item.timeMinute, "minutes").format();
   return (
     <>
       <Divider fitted style={{ opacity: 0 }} />
       {item.winner ? (
-        <Statistic inverted color={getColorStatus(status)} size="mini" >
-        <Statistic.Label>{_mode}</Statistic.Label>
-        {_anim  =='no' ? (
-          <Statistic.Label>
-          <div style={{ position: "relative", transform: "scale(.8)" }}>
-                  <div
-                    className="winner avatar"
-                    style={{ width: 92, height: 92, borderRadius: 100 }}
-                  ></div>
-                  <div className=" ">
-                    <Icon
-                      circular
-                      inverted
-                      color="yellow"
-                      size="mini"
-                      name="winner"
-                      style={{ position: "absolute", fontSize: 15 }}
-                    />
-                    <Avatar
-                      size="92"
-                      round={true}
-                      title={item.winner}
-                      name={setAvatar(item.winner)}
-                    />
-                  </div>
-                
+        <Statistic inverted color={getColorStatus(status)} size="mini">
+          <Statistic.Label>{_mode}</Statistic.Label>
+          {_anim == "no" ? (
+            <Statistic.Label>
+              <div style={{ position: "relative", transform: "scale(.8)" }}>
+                <div
+                  className="winner avatar"
+                  style={{ width: 92, height: 92, borderRadius: 100 }}
+                ></div>
+                <div className=" ">
+                  <Icon
+                    circular
+                    inverted
+                    color="yellow"
+                    size="mini"
+                    name="winner"
+                    style={{ position: "absolute", fontSize: 15 }}
+                  />
+                  <Avatar
+                    size="92"
+                    round={true}
+                    title={item.winner}
+                    name={setAvatar(item.winner)}
+                  />
+                </div>
+
                 <Statistic inverted size="mini" color="yellow">
-                  
                   <Statistic.Value>{item.winner}</Statistic.Value>
                   <Statistic.Label>is winner</Statistic.Label>
                 </Statistic>
-                </div>
-              
-            
-        </Statistic.Label>
-        ):(
-          <TransitionExampleTransitionExplorer
-          objanim={
-          <Statistic.Label>
-            <div style={{ position: "relative", transform: "scale(.8)" }}>
+              </div>
+            </Statistic.Label>
+          ) : (
+            <TransitionExampleTransitionExplorer
+              objanim={
+                <Statistic.Label>
+                  <div style={{ position: "relative", transform: "scale(.8)" }}>
                     <div
                       className="winner avatar"
                       style={{ width: 92, height: 92, borderRadius: 100 }}
@@ -1479,64 +1479,66 @@ export const printStatus = (item, _mode, _color,finish,status,_anim) => {
                         name={setAvatar(item.winner)}
                       />
                     </div>
-                  
-                  <Statistic inverted size="mini" color="yellow">
-                    
-                    <Statistic.Value>{item.winner}</Statistic.Value>
-                    <Statistic.Label>is winner</Statistic.Label>
-                  </Statistic>
+
+                    <Statistic inverted size="mini" color="yellow">
+                      <Statistic.Value>{item.winner}</Statistic.Value>
+                      <Statistic.Label>is winner</Statistic.Label>
+                    </Statistic>
                   </div>
-                
-              
-          </Statistic.Label>
-        }
-          animation="jiggle"
-          duration={1000}
-        />
-        )}
+                </Statistic.Label>
+              }
+              animation="jiggle"
+              duration={1000}
+            />
+          )}
         </Statistic>
-        
       ) : (
         <>
-        {(item.status == "Pending" || (item.status != "Finished") && item.gameMode =='League') ? (
-          <>
-        {(_mode=='Tournament' || _mode=='League') && item.status == 'Pending' && !getQueryVariable("matchid") ? (
-          <Statistic inverted color={getColorStatus(status)} size="tiny">
-          <Statistic.Label>{_mode}</Statistic.Label>
-          <Statistic.Value>{item?.players?.length}/{item.totalPlayer}</Statistic.Value>
-        </Statistic>
-        ):(
-<Statistic inverted color={getColorStatus(status)} size="tiny">
-<Statistic.Label>{_mode}</Statistic.Label>
-<Statistic.Value>{status}</Statistic.Value>
-</Statistic>
-        )}
+          
+              {(_mode == "Tournament" || _mode == "League") &&
+              status == "Pending" &&
+              !getQueryVariable("matchid") ? (
+                <Statistic inverted color={getColorStatus(status)} size="tiny">
+                  <Statistic.Label>{_mode}</Statistic.Label>
+                  <Statistic.Value>
+                    {item?.players?.length}/{item.totalPlayer}
+                  </Statistic.Value>
+                </Statistic>
+              ) : (
+                <>
+                <Statistic inverted color={getColorStatus(status)} size="tiny">
+                  <Statistic.Label>{_mode}</Statistic.Label>
+                  <Statistic.Value>{status}</Statistic.Value>
+                </Statistic>
+                
+               
+                {finish.split("@@@")[1] && _anim=='no' && _mode != "Tournament" && (
+                  <>
+                  <Divider fitted style={{ opacity: 0 }} />
+              <Statistic inverted size="mini" color="yellow">
+                    {finish.split("@@@")[1].indexOf("Not") > -1 ? (
+                      <Statistic.Value>
+                        
+                        {finish.split("@@@")[1]}
+                      </Statistic.Value>
+                    ) : (
+                      <>
+                        <Statistic.Value>
+                          {finish.split("@@@")[1]}
+                        </Statistic.Value>
+                        <Statistic.Label>is winner</Statistic.Label>
+                      </>
+                    )}
+                    </Statistic>
+                  </>
+                )}
+              
+                </>
+              )}
+           
+         
         </>
-        ): (
-          <>
-        <Divider fitted style={{ opacity: 0 }} />
-      <Statistic inverted size='mini' color='red'>
-      <Statistic.Label>{_mode}</Statistic.Label>
-    <Statistic.Label>{finish.split("@@@")[0]}</Statistic.Label>
-        {finish.split("@@@")[1] && (
-          <>
-          {finish.split("@@@")[1].indexOf('Not') > -1 ? (
-          <Statistic.Value><br/><br/>{finish.split("@@@")[1]}</Statistic.Value>
-        ):(
-          <>
-          <Statistic.Value>{finish.split("@@@")[1]}</Statistic.Value>
-          <Statistic.Label>is winner</Statistic.Label>
-          </>
-        )}
-          </>
-        )}
-        
-      </Statistic>
-      </>
       )}
-      </>
-      )}
-      
     </>
   );
 };
@@ -1557,33 +1559,37 @@ export const rendererBig = ({
   if (!_colorFinish) {
     _colorFinish = _color;
   }
-  if (completed || props.match?.winner || (props.match?.status != 'Pending' && props.match?.gameMode != 'League')) {
+  if (
+    completed ||
+    props.match?.winner ||
+    (props.match?.status != "Pending" &&props.match?.status != "Ready" &&props.match?.status != "InPlay" && props.match?.gameMode != "League")
+  ) {
     // Render a complete state
     //return <Completionist />;
-    return <>
-    
-    </>;
+    return <></>;
   } else {
     // Render a countdown
     return (
       <>
-       <Divider fitted style={{ opacity: 0 }} />
-      <Statistic inverted size={_size} color="yellow">
-        <Statistic.Label>{props.txt.split("@@@")[0]}</Statistic.Label>
-        {props.txt.split("@@@")[1] && (
-          <Statistic.Label>{props.txt.split("@@@")[1]}</Statistic.Label>
-        )}
-        <Statistic.Value>
-          {days > 0 ? (
-            <>
-              {days} <small style={{ color: "inherit" }}>days </small>
-            </>
-          ) : null}
-          {hours > 0 ? <>{hours > 9 ? <>{hours}:</> : <>0{hours}:</>}</> : null}
-          {minutes > 9 ? <>{minutes}:</> : <>0{minutes}:</>}
-          {seconds > 9 ? <>{seconds}</> : <>0{seconds}</>}
-        </Statistic.Value>
-      </Statistic>
+        <Divider fitted style={{ opacity: 0 }} />
+        <Statistic inverted size={_size} color="yellow">
+          <Statistic.Label>{props.txt.split("@@@")[0]}</Statistic.Label>
+          {props.txt.split("@@@")[1] && (
+            <Statistic.Label>{props.txt.split("@@@")[1]}</Statistic.Label>
+          )}
+          <Statistic.Value>
+            {days > 0 ? (
+              <>
+                {days} <small style={{ color: "inherit" }}>days </small>
+              </>
+            ) : null}
+            {hours > 0 ? (
+              <>{hours > 9 ? <>{hours}:</> : <>0{hours}:</>}</>
+            ) : null}
+            {minutes > 9 ? <>{minutes}:</> : <>0{minutes}:</>}
+            {seconds > 9 ? <>{seconds}</> : <>0{seconds}</>}
+          </Statistic.Value>
+        </Statistic>
       </>
     );
   }
@@ -1642,32 +1648,56 @@ export const getGameTag = (game, userTags) => {
     );
   }
 };
-export const findActiveMatch = (event, matchID) => {
+export const findActiveMatch = (event, matchID, username) => {
   var _match;
-  event?.matchTables.sort((a, b) => (a.level > b.level) ? 1 : -1)
-  if(matchID){
-   
+  console.log(matchID);
+  event?.matchTables.sort((a, b) => (a.level > b.level ? 1 : -1));
+  if (matchID) {
     event.matchTables.map(function (match) {
       if (match.id == matchID) {
         _match = match;
       }
     });
-  }else{
-    _match = event.matchTables[0]
+  } else {
+    _match = event.matchTables[0];
+    event.matchTables.map(function (match) {
+      if (match.status == "InPlay" && isPlayerInMatch(match, username)) {
+        _match = match;
+      }
+    });
   }
-  _match?.matchPlayers.sort((a, b) => (a.id > b.id) ? 1 : -1)
-  return _match
-}
+  _match?.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
+  return _match;
+};
+export const findMatch = (item) => {
+  var lists = item.matchTables;
+
+  lists.sort((a, b) => (a.level > b.level ? 1 : -1));
+
+  var matchLevelFind = lists[0];
+  lists.map((tblmatch, w) => {
+    if (tblmatch.status == "InPlay") {
+      matchLevelFind = tblmatch;
+    }
+
+    if (item.status == "Finished") {
+      matchLevelFind = lists[lists.length - 1];
+    }
+  });
+
+  matchLevelFind?.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
+  return matchLevelFind;
+};
 export const isPlayerInMatch = (match, username) => {
   var _is = false;
   match?.matchPlayers?.map(function (user) {
-      if (user.username == username) {
-        _is = true;
-      }
-    });
-  
-  return _is
-}
+    if (user.username == username) {
+      _is = true;
+    }
+  });
+
+  return _is;
+};
 export const getSocialTag = (game, userTags) => {
   var res = "Not Connected";
   var resName = "";
@@ -1705,8 +1735,7 @@ export const getSocialTag = (game, userTags) => {
   }
 };
 export const showSocialTag = (game, userTags) => {
- 
-var res  =  null;
+  var res = null;
   if (userTags) {
     userTags.map(function (tag) {
       if (tag.accountName == game) {
@@ -1723,33 +1752,42 @@ export const userDetails = (currentUser) => {
     flag = currentUser.country.value;
     flagLabel = currentUser.country.label;
   }
-  var lastLogin = moment(currentUser.lastLogin).startOf('day').fromNow();
+  var lastLogin = moment(currentUser.lastLogin).startOf("day").fromNow();
   return (
     <>
-    
-      <div
-        className="text-center"
-       
-      >
-          <Statistic size="mini">
-              
-              <Statistic.Value>{currentUser.username}
-          </Statistic.Value>
+      <div className="text-center">
+        <Statistic size="mini">
+          <Statistic.Value>{currentUser.username}</Statistic.Value>
           <Statistic.Label>
-          <small className="text-muted">From </small><br/><img
-            src={"/assets/images/famfamfam_flag_icons/png/" + flag + ".png"} style={{position: "relative",top:-1}}
-          /> {flagLabel}<br/><br/><small className="text-muted">Last Login</small><br/> {lastLogin}
-              </Statistic.Label>
-            </Statistic>
-        <Card.Header as="h5" style={{ marginBottom: 0, marginTop: 15 }}>
-      
-          
-        </Card.Header>
-        
-      
+            <small className="text-muted">From </small>
+            <br />
+            <img
+              src={"/assets/images/famfamfam_flag_icons/png/" + flag + ".png"}
+              style={{ position: "relative", top: -1 }}
+            />{" "}
+            {flagLabel}
+            <br />
+            <br />
+            <small className="text-muted">Last Login</small>
+            <br /> {lastLogin}
+          </Statistic.Label>
+        </Statistic>
+        <Card.Header
+          as="h5"
+          style={{ marginBottom: 0, marginTop: 15 }}
+        ></Card.Header>
+
         <ListGroup horizontal style={{ display: "inline-flex", marginTop: 10 }}>
           {haveSocialTag("Instagram", currentUser.userSocialAccounts) && (
-            <ListGroup.Item action as='a' href={'https://instagram.com/'+showSocialTag("Instagram", currentUser.userSocialAccounts)} target='_blank'>
+            <ListGroup.Item
+              action
+              as="a"
+              href={
+                "https://instagram.com/" +
+                showSocialTag("Instagram", currentUser.userSocialAccounts)
+              }
+              target="_blank"
+            >
               <FontAwesomeIcon
                 icon={faInstagram}
                 style={{ color: "#e95950" }}
@@ -1757,17 +1795,41 @@ export const userDetails = (currentUser) => {
             </ListGroup.Item>
           )}
           {haveSocialTag("Twitch", currentUser.userSocialAccounts) && (
-            <ListGroup.Item action  as='a' href={'https://twitch.com/'+showSocialTag("Twitch", currentUser.userSocialAccounts)} target='_blank'>
+            <ListGroup.Item
+              action
+              as="a"
+              href={
+                "https://twitch.com/" +
+                showSocialTag("Twitch", currentUser.userSocialAccounts)
+              }
+              target="_blank"
+            >
               <FontAwesomeIcon icon={faTwitch} style={{ color: "#6441a5" }} />
             </ListGroup.Item>
           )}
           {haveSocialTag("Youtube", currentUser.userSocialAccounts) && (
-            <ListGroup.Item action  as='a' href={'https://youtube.com/'+showSocialTag("Youtube", currentUser.userSocialAccounts)} target='_blank'>
+            <ListGroup.Item
+              action
+              as="a"
+              href={
+                "https://youtube.com/" +
+                showSocialTag("Youtube", currentUser.userSocialAccounts)
+              }
+              target="_blank"
+            >
               <FontAwesomeIcon icon={faYoutube} style={{ color: "#FF0000" }} />
             </ListGroup.Item>
           )}
           {haveSocialTag("Twitter", currentUser.userSocialAccounts) && (
-            <ListGroup.Item action as='a' href={'https://twitter.com/'+showSocialTag("Twitter", currentUser.userSocialAccounts)} target='_blank'>
+            <ListGroup.Item
+              action
+              as="a"
+              href={
+                "https://twitter.com/" +
+                showSocialTag("Twitter", currentUser.userSocialAccounts)
+              }
+              target="_blank"
+            >
               <FontAwesomeIcon icon={faTwitter} style={{ color: "#00acee" }} />
             </ListGroup.Item>
           )}
@@ -1836,27 +1898,27 @@ export const printBlockChallenge = (newItem, filtermode, prop) => {
   if (filter == "NoMobile") {
     filter = "Console";
   }
-  
+
   if (newItem.length == 0) {
     //history.push("/home");
     return (
       <Dimmer active inverted>
-      <div
-        style={{
-          textAlign: "center",
-          color: "rgba(0,0,0,.5)",
-          paddingTop: 30,
-          width: "100%",
-        }}
-      >
-        <img
-          alt="nodata"
-          style={{ height: 80 }}
-          src="/assets/images/nodata.svg"
-        ></img>
-        <h4>Empty List.</h4>
-        <h5>You currently don't have any {filter} event.</h5>
-      </div>
+        <div
+          style={{
+            textAlign: "center",
+            color: "rgba(0,0,0,.5)",
+            paddingTop: 30,
+            width: "100%",
+          }}
+        >
+          <img
+            alt="nodata"
+            style={{ height: 80 }}
+            src="/assets/images/nodata.svg"
+          ></img>
+          <h4>Empty List.</h4>
+          <h5>You currently don't have any {filter} event.</h5>
+        </div>
       </Dimmer>
     );
   } else {
@@ -1953,33 +2015,34 @@ export const handleSaveTags = (
     },
   });
 
-  userService.saveTags(gameName.replace('2',''), gamePlatform, gameID, gameNickname).then(
-    (response) => {
-      let jsonBool = isJson(response.data);
+  userService
+    .saveTags(gameName.replace("2", ""), gamePlatform, gameID, gameNickname)
+    .then(
+      (response) => {
+        let jsonBool = isJson(response.data);
 
-      if (jsonBool) {
-        if (response.data.accessToken) {
-         
+        if (jsonBool) {
+          if (response.data.accessToken) {
             localStorage.setItem("user", JSON.stringify(response.data));
             eventBus.dispatch("eventsDataUser", response.data);
-          eventBus.remove("eventsDataUser");
-        Swal.fire("", "Data saved successfully.", "success");
+            eventBus.remove("eventsDataUser");
+            Swal.fire("", "Data saved successfully.", "success");
+          }
+          //window.location.reload(false);
+        } else {
+          Swal.fire("", response.data, "error");
         }
-        //window.location.reload(false);
-      } else {
-        Swal.fire("", response.data, "error");
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        Swal.fire("Error!", resMessage, "error");
       }
-    },
-    (error) => {
-      const resMessage =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      Swal.fire("Error!", resMessage, "error");
-    }
-  );
+    );
 };
 export const haveAdmin = (userTags) => {
   var isAdmin = false;
@@ -2027,7 +2090,7 @@ export const editDateTime = (datee) => {
   return dateExpired;
 };
 
-  export const genMatch = (lvl, matchCount, title) => {
+export const genMatch = (lvl, matchCount, title) => {
   var matchSample = {
     startTime: 1619728571000,
     winner: "Salar",
@@ -2063,9 +2126,9 @@ export const editDateTime = (datee) => {
   }
 
   return nullmatch;
-}
+};
 export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
-  var item = JSON.parse(JSON.stringify(_item))
+  var item = JSON.parse(JSON.stringify(_item));
   //console.log('item:'+JSON.stringify(item))
   var nullplayer = {
     id: 100000,
@@ -2101,8 +2164,6 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
 
       activePlayer = 0;
 
-     
-
       if (item.gameMode == "Tournament") {
         if (!item.tournamentPayout) {
           item.tournamentPayout = "1-8, 65.00, 35.00|9-64, 50.00, 30.00, 20.00";
@@ -2122,7 +2183,7 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
             item.matchLevel.push(genMatch(1, 8, "Round 1"));
             item.matchLevel.push(genMatch(2, 4, "Round 2"));
             item.matchLevel.push(genMatch(3, 2, "SemiFinal"));
-  
+
             item.matchLevel.push(genMatch(4, 1, "Final"));
             //item.matchLevel.push(genMatch(4, 1, "3rd Place"));
           }
@@ -2131,74 +2192,74 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
             item.matchLevel.push(genMatch(2, 8, "Round 2"));
             item.matchLevel.push(genMatch(3, 4, "Round 3"));
             item.matchLevel.push(genMatch(4, 2, "SemiFinal"));
-  
+
             item.matchLevel.push(genMatch(5, 1, "Final"));
             //item.matchLevel.push(genMatch(5, 1, "3rd Place"));
           }
         }
         var old = JSON.stringify(item)
-        .replace(/"Tournament Player1"/g, false)
-        .replace(/"Tournament Player"/g, false); //convert to JSON string
-      var newArray = JSON.parse(old);
-      newArray.current_brackets = [];
-      newArray.potential_brackets = [];
-      item = newArray;
+          .replace(/"Tournament Player1"/g, false)
+          .replace(/"Tournament Player"/g, false); //convert to JSON string
+        var newArray = JSON.parse(old);
+        newArray.current_brackets = [];
+        newArray.potential_brackets = [];
+        item = newArray;
 
-      //var events = eventGet;
+        //var events = eventGet;
 
-      if (item.tournamentPayout) {
-        var payArr = item.tournamentPayout.split("|");
-        var totalPay = item.prize;
-        for (var i = 0; i < payArr.length; i++) {
-          var paylvl = payArr[i].split(", ");
-          var payplyer = paylvl[0].split("-");
-          var tItem = item.players.length;
-          if (item.status == "Pending" || item.gameMode == "League") {
-            tItem = item.totalPlayer;
-          }
-          // console.log(payplyer[0])
-          if (
-            parseInt(payplyer[0]) <= tItem &&
-            parseInt(payplyer[1]) >= tItem
-          ) {
-            for (var j = 1; j < paylvl.length; j++) {
-              if (paylvl[j].indexOf("x") == -1) {
-                paylvl[j] = paylvl[j] + "x1";
+        if (item.tournamentPayout) {
+          var payArr = item.tournamentPayout.split("|");
+          var totalPay = item.prize;
+          for (var i = 0; i < payArr.length; i++) {
+            var paylvl = payArr[i].split(", ");
+            var payplyer = paylvl[0].split("-");
+            var tItem = item.players.length;
+            if (item.status == "Pending" || item.gameMode == "League") {
+              tItem = item.totalPlayer;
+            }
+            // console.log(payplyer[0])
+            if (
+              parseInt(payplyer[0]) <= tItem &&
+              parseInt(payplyer[1]) >= tItem
+            ) {
+              for (var j = 1; j < paylvl.length; j++) {
+                if (paylvl[j].indexOf("x") == -1) {
+                  paylvl[j] = paylvl[j] + "x1";
+                }
+                var intX = paylvl[j].split("x");
+                item.current_brackets.push({
+                  prize: (intX[0] * totalPay) / 100,
+                  percent: intX[0],
+                  number: intX[1],
+                });
               }
-              var intX = paylvl[j].split("x");
-              item.current_brackets.push({
-                prize: (intX[0] * totalPay) / 100,
-                percent: intX[0],
-                number: intX[1],
-              });
+            }
+          }
+          for (var i = payArr.length - 1; i < payArr.length; i++) {
+            var paylvl = payArr[i].split(", ");
+            var payplyer = paylvl[0].split("-");
+            var tItem = item.players.length;
+            if (item.status == "Pending" || item.gameMode == "League") {
+              tItem = item.totalPlayer;
+            }
+            if (
+              parseInt(payplyer[0]) <= tItem &&
+              parseInt(payplyer[1]) >= tItem
+            ) {
+              for (var j = 1; j < paylvl.length; j++) {
+                if (paylvl[j].indexOf("x") == -1) {
+                  paylvl[j] = paylvl[j] + "x1";
+                }
+                var intX = paylvl[j].split("x");
+                item.potential_brackets.push({
+                  prize: (intX[0] * totalPay) / 100,
+                  percent: intX[0],
+                  number: intX[1],
+                });
+              }
             }
           }
         }
-        for (var i = payArr.length - 1; i < payArr.length; i++) {
-          var paylvl = payArr[i].split(", ");
-          var payplyer = paylvl[0].split("-");
-          var tItem = item.players.length;
-          if (item.status == "Pending" || item.gameMode == "League") {
-            tItem = item.totalPlayer;
-          }
-          if (
-            parseInt(payplyer[0]) <= tItem &&
-            parseInt(payplyer[1]) >= tItem
-          ) {
-            for (var j = 1; j < paylvl.length; j++) {
-              if (paylvl[j].indexOf("x") == -1) {
-                paylvl[j] = paylvl[j] + "x1";
-              }
-              var intX = paylvl[j].split("x");
-              item.potential_brackets.push({
-                prize: (intX[0] * totalPay) / 100,
-                percent: intX[0],
-                number: intX[1],
-              });
-            }
-          }
-        }
-      }
       }
       if (item.gameMode == "League") {
         if (!item.scoreTemplate) {
@@ -2231,32 +2292,26 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
             ],
           };
         }
-      
+
         item.tournamentPayout =
           "1-4, 100.00|5-7, 65.00, 35.00|8-10, 50.00, 30.00, 20.00|11-20, 45.00, 28.00, 17.00, 10.00|21-40, 36.00, 23.00, 15.00, 11.00, 8.00, 7.00|41-70, 30.00, 20.00, 14.00, 10.00, 8.00, 7.00, 6.00, 5.00|71-100, 29.00, 18.00, 12.50, 10.00, 8.00, 6.50, 5.50, 4.50, 3.50, 2.50|101-200, 28.00, 17.50, 11.50, 8.50, 7.00, 5.50, 4.50, 3.50, 2.50, 1.50, 1.00x10|201-400, 27.00, 16.50, 10.50, 8.00, 6.25, 4.75, 3.75, 2.75, 1.75, 1.25, 0.75x10, 0.50x20|401-700, 26.00, 15.50, 10.00, 7.50, 6.00, 4.50, 3.50, 2.50, 1.50, 1.00, 0.65x10, 0.40x20, 0.25x30|701-1000, 25.00, 15.00, 10.00, 7.25, 5.50, 4.25, 3.25, 2.25, 1.25, 0.75, 0.55x10, 0.40x20, 0.25x30, 0.15x30";
-      
-          if (!item.rules) {
-            item.info = {
-              conditions: [
-                "Thank you for participating in our COD: Warzone Beta tournament",
-                "During the Beta scores may be altered, removed or updated as we test the implementation of our scoring systems",
-                "Only games played after you join the tournament are counted",
-                "SMURF accounts are not allowed on Repeat.gg and will be banned",
-              ],
-            };
-            item.rules =
-              "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>";
-          }
-        }
 
-     
-      
-     
-      
+        if (!item.rules) {
+          item.info = {
+            conditions: [
+              "Thank you for participating in our COD: Warzone Beta tournament",
+              "During the Beta scores may be altered, removed or updated as we test the implementation of our scoring systems",
+              "Only games played after you join the tournament are counted",
+              "SMURF accounts are not allowed on Repeat.gg and will be banned",
+            ],
+          };
+          item.rules =
+            "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>";
+        }
+      }
 
       lists = item.matchTables;
       matchidFind = item.matchTables[0];
-
 
       if (
         (item.status == "InPlay" ||
@@ -2265,7 +2320,6 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
         item.gameMode == "Tournament"
       ) {
         lists.map((tblmatch) => {
-          
           if (
             tblmatch.status == "InPlay" ||
             tblmatch.status == "Pending" ||
@@ -2283,11 +2337,7 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
             mymatchFind = tblmatch;
           }
         });
-
-
       }
-   
-
 
       if (item.chats != "null") {
         {
@@ -2295,7 +2345,6 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
             finalChat.push(itemnew);
           });
         }
-      
 
         item.chats = finalChat;
       }
@@ -2310,12 +2359,10 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
             finalChat.push(itemnew);
           });
         }
-      
 
         matchidFind.matchChats = finalChat;
       }
 
-  
       var dateExpired = item.expire;
 
       if (
@@ -2369,7 +2416,6 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
 };
 
 export const printProductBlock = (item) => {
-
   return (
     <Link to={"/lobby?id=" + item.id}>
       <Card className="card-user chall">

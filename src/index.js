@@ -101,8 +101,8 @@ function Main() {
       { id: "cashierMethod", val: null },
       { id: "coins", val: null },
       { id: "match", val: null },
-      { id: "eventIDQ", val: getQueryVariable("id") },
-      { id: "matchIDQ", val: getQueryVariable("matchid") },
+      { id: "eventIDQ", val: false },
+      { id: "matchIDQ", val: false},
       { id: "openModalAdd", val: false },
       { id: "openModalLogin", val: false },
       { id: "openModalChart", val: false },
@@ -205,14 +205,15 @@ function Main() {
     if (eventGet?.id) {
       onUpdateItem("eventDef", eventGet);
       onUpdateItem("eventIDQ", eventGet.id);
-      onUpdateItem("matchIDQ", getQueryVariable("matchid"));
+      onUpdateItem("matchIDQ", getQueryVariable("matchid", window.location.search.substring(1)));
       queryClient.setQueryData(["Event", eventGet.id], eventGet);
-      onUpdateItem("match", findActiveMatch(eventGet, matchIDQ));
+      onUpdateItem("match", findActiveMatch(eventGet, matchIDQ,currentUser.username));
+  
     }
   }, [eventGet]);
   useEffect(() => {
     if (eventDef?.matchTables) {
-      onUpdateItem("match", findActiveMatch(eventDef, matchIDQ));
+      onUpdateItem("match", findActiveMatch(eventDef, matchIDQ,currentUser.username));
     }
   }, [matchIDQ]);
   useEffect(() => {
@@ -247,28 +248,29 @@ function Main() {
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {
         queryClient.setQueryData(["Event", eventGet.id], eventGet);
-        if (
-          eventIDQ == eventGet.id ||
-          isPlayerInMatch(
-            findActiveMatch(eventGet, matchIDQ),
-            currentUser.username
-          )
-        ) {
-          onUpdateItem("eventDef", eventGet);
-          onUpdateItem("eventIDQ", eventGet.id);
-          onUpdateItem("match", findActiveMatch(eventGet, matchIDQ));
+        var _find =findActiveMatch(eventGet, matchIDQ,currentUser.username)
+       
+          
           if (
             isPlayerInMatch(
-              findActiveMatch(eventGet, matchIDQ),
+              _find,
               currentUser.username
-            ) &&
-            window.location.pathname + window.location.search !=
-              "/lobby?id=" + eventGet.id && eventGet.id != eventIDQ && !matchIDQ
+            ) 
+            || (eventIDQ == eventGet.id && _find.id != matchIDQ )
           ) {
-            if (eventGet.status == "Ready" || eventGet.status == "InPlay" ) {
-              history.push("/lobby?id=" + eventGet.id);
+            onUpdateItem("eventDef", eventGet);
+          onUpdateItem("eventIDQ", eventGet.id);
+          onUpdateItem("match", findActiveMatch(eventGet, _find.id,currentUser.username));
+            if (eventGet.status == "Ready" || eventGet.status == "InPlay"  ) {
+              if(eventGet.id != eventIDQ && !matchIDQ){
+                history.push("/lobby?id=" + eventGet.id);
+              }
+              if(_find.id != matchIDQ && eventGet.matchTables.length>1){
+                history.push("/matchlobby?id=" + eventGet.id+"&matchid=" + _find.id);
+              }
+              
             }
-          }
+         
         }
       }
     });
@@ -284,22 +286,25 @@ function Main() {
   }, []);
   useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);
-    if (getQueryVariable("id")) {
-      onUpdateItem("eventIDQ", getQueryVariable("id"));
+  
+    if (getQueryVariable("id", location.search.substring(1))) {
+      onUpdateItem("eventIDQ", getQueryVariable("id", location.search.substring(1)));
     } else {
       onUpdateItem("eventIDQ", false);
+      onUpdateItem("matchIDQ", false);
       onUpdateItem("eventDef", false);
     }
-    if (getQueryVariable("matchid", location.pathname + location.search)) {
+    if (getQueryVariable("matchid", location.search.substring(1))) {
       onUpdateItem(
         "matchIDQ",
-        getQueryVariable("matchid", location.pathname + location.search)
+        getQueryVariable("matchid", location.search.substring(1))
       );
     } else {
       onUpdateItem("matchIDQ", false);
     }
+    
   }, [location]);
-
+  
   if (!currentUser) {
     return (
       <Segment style={{ height: "100%", width: "100%", position: "absolute" }}>
