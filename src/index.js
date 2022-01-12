@@ -9,7 +9,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import Avatar, { Cache, ConfigProvider } from 'react-avatar';
-
+import SockJsClient from 'react-stomp';
 
 import Swal from "sweetalert2";
 import { defUser, TrackingID } from "const";
@@ -605,7 +605,7 @@ function Main() {
 }
 function App() {
   return (
-    <QueryClientProvider client={queryClient} contextSharing={true}>
+    <QueryClientProvider  cache={cache} client={queryClient} contextSharing={true}>
    
       
       <Main />
