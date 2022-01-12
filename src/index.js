@@ -9,18 +9,10 @@ import {
   useLocation,
 } from "react-router-dom";
 import Avatar, { Cache, ConfigProvider } from 'react-avatar';
-import SockJsClient from 'react-stomp';
-import { USERSOCKETURL, USERSOCKETPUBLICURL } from "const";
-const cache = new Cache({
 
-    // Keep cached source failures for up to 7 days
-    sourceTTL: 7 * 24 * 3600 * 1000,
 
-    // Keep a maximum of 20 entries in the source cache
-    sourceSize: 20
-});
 import Swal from "sweetalert2";
-
+import { defUser, TrackingID } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -64,6 +56,14 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
     },
   },
+});
+const cache = new Cache({
+
+  // Keep cached source failures for up to 7 days
+  sourceTTL: 7 * 24 * 3600 * 1000,
+
+  // Keep a maximum of 20 entries in the source cache
+  sourceSize: 20
 });
 ReactGA.initialize(TrackingID);
 function myFunction(classname) {
