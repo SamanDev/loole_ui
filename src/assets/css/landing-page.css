@@ -1075,7 +1075,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80ffffff', e
 
 .fixed-plugin .adjustments-line p{
     float: left;
-    display: inline-block;
+  
     margin-bottom: 0;
     font-size: 1em;
 }
@@ -1388,9 +1388,7 @@ border-width:2px !important;
         margin-top: 60px;
   padding-bottom: 70px;
       }
-      .landing-mobile  .wrapper{
-        
-      }
+    
       .landing-mobile .section-game .parallax {
         height: 540px;
         }
@@ -1473,9 +1471,7 @@ border-width:2px !important;
               margin-top: 60px;
         padding-bottom: 70px;
             }
-            .landing-mobile  .wrapper{
-              
-            }
+         
             .landing-mobile .section-game .parallax {
               height: 480px;
               }

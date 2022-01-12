@@ -134,7 +134,7 @@ class MatchSection extends Component {
     this.setState({
       loading: true,
     });
-    if (this.state.matchid) {
+    if (this.state.item.matchTables.length>1) {
         adminService.loseEventMatch(this.state.eventid, this.state.matchid,e).then(
         (response) => {
           

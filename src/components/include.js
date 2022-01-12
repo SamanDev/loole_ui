@@ -395,7 +395,7 @@ export const getGroupBadgeList = (sign, amount, classes) => {
     </Badge>
   );
 };
-var ischeckClick = false;
+
 export const vsComponentPlayer = (
   item,
   matchidFind,
@@ -418,7 +418,7 @@ export const vsComponentPlayer = (
   
   var ischeck = false;
   if(player?.ready) {ischeck = player?.ready}
-  if(ischeckClick) {ischeck = !player?.ready}
+  if(isloading) {ischeck = !player?.ready}
   
   var padd = 10;
   if (
@@ -557,7 +557,7 @@ export const vsComponentPlayer = (
             defaultChecked={ischeck}
             disabled={player.username != currentUser.username}
             onChange={(checked) => {
-              ischeckClick = !ischeckClick;
+          
               handlechangeReadyEvent(checked);
             }}
           />

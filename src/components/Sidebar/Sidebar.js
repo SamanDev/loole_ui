@@ -112,6 +112,7 @@ function Sidebar({ routes, image, background,token,onUpdateItem}) {
                     round={true}
                     title={token.username}
                     style={{float:'left',marginRight:15}}
+                    
                     />
                     <p>{token.username}</p>
                   </>

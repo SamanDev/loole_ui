@@ -8,8 +8,19 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
+import Avatar, { Cache, ConfigProvider } from 'react-avatar';
+import SockJsClient from 'react-stomp';
+import { USERSOCKETURL, USERSOCKETPUBLICURL } from "const";
+const cache = new Cache({
+
+    // Keep cached source failures for up to 7 days
+    sourceTTL: 7 * 24 * 3600 * 1000,
+
+    // Keep a maximum of 20 entries in the source cache
+    sourceSize: 20
+});
 import Swal from "sweetalert2";
-import { defUser, TrackingID } from "const";
+
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -205,24 +216,21 @@ function Main() {
     if (eventGet?.id) {
       onUpdateItem("eventDef", eventGet);
       onUpdateItem("eventIDQ", eventGet.id);
-      var _find =findActiveMatch(eventGet, matchIDQ,currentUser.username)
+      var _find =findActiveMatch(eventGet, getQueryVariable("matchid", window.location.search.substring(1)),currentUser.username)
       onUpdateItem("matchIDQ", _find.id);
       queryClient.setQueryData(["Event", eventGet.id], eventGet);
-      onUpdateItem("match", findActiveMatch(eventGet, matchIDQ,currentUser.username));
+      onUpdateItem("match", _find);
   
     }
   }, [eventGet]);
   useEffect(() => {
     if (eventDef?.matchTables) {
-      onUpdateItem("match", findActiveMatch(eventDef, matchIDQ,currentUser.username));
+      //var _find =findActiveMatch(eventDef, matchIDQ,currentUser.username)
+      //onUpdateItem("match", _find);
     }
-    console.log("eventIDQ: " +eventIDQ)
-    console.log("matchIDQ: " +matchIDQ)
+
   }, [matchIDQ]);
-  useEffect(() => {
-    console.log("eventIDQ: " +eventIDQ)
-    console.log("matchIDQ: " +matchIDQ)
-  }, [eventIDQ]);
+ 
   useEffect(() => {
     eventBus.on("eventsData", (eventsGet) => {
       onUpdateItem("events", eventsGet);
@@ -267,7 +275,7 @@ function Main() {
           ) {
             
             if (eventGet.status == "Ready" || eventGet.status == "InPlay"  ) {
-              if(eventGet.id != eventIDQ && !matchIDQ && window.location.search.toString().indexOf("id=" + eventGet.id)==-1){
+              if(window.location.search.toString().indexOf("id=" + eventGet.id)==-1){
                 console.log("history.push")
                 history.push("/lobby?id=" + eventGet.id);
               }
@@ -598,6 +606,8 @@ function Main() {
 function App() {
   return (
     <QueryClientProvider client={queryClient} contextSharing={true}>
+   
+      
       <Main />
     </QueryClientProvider>
   );
@@ -605,7 +615,8 @@ function App() {
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+  <ConfigProvider cache={cache}>
+    <App /></ConfigProvider>
   </BrowserRouter>,
 
   document.getElementById("root")
