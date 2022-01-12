@@ -51,6 +51,7 @@ var moment = require("moment");
     var _finishTxt = 'Not Joinable';
  
   if (item?.status=='Canceled' || item?.status=='Expired' || item?.status=='Finished') { _finishTxt = 'Not Avalable'}
+  _finishTxt =''
   item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
   var timestring1 = item.expire;
   var timestring2 = new Date();
@@ -79,7 +80,7 @@ var moment = require("moment");
               className={"text-center cover "+item.status}
                >
               <div style={{ transform: "scale(.8)",padding: '30px 0',height:185}}>
-              {printStatus(item,_mode,_color ,item.status+'@@@Not Avalable',item.status,'no')}
+              {printStatus(item,_mode,_color ,item.status+'@@@'+_finishTxt,item.status,'no')}
               {startdate < expected_enddate && item.status=='InPlay'&&   
        (
       <><Divider inverted fitted></Divider>     <Statistic inverted color="violet" size="mini">

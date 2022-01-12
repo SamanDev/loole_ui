@@ -33,6 +33,7 @@ var moment = require("moment");
     var _finishTxt = 'Not Joinable';
  
   if (item?.status=='Canceled' || item?.status=='Expired' || item?.status=='Finished') { _finishTxt = 'Not Avalable'}
+  _finishTxt =''
   item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
   var timestring1 = item.expire;
   var timestring2 = new Date();

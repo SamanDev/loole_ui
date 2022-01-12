@@ -44,10 +44,16 @@ const SidebarExampleSidebar = (prop) => {
   const [objanimInfo, setObjanimInfo] = useState(prop.info);
   const [player, setPlayer] = useState(prop.player);
   const [matchidFind, setMatchidFind] = useState(prop.matchidFind);
+  const [isChecked, setIsChecked] = useState(prop.ischeck);
 
   useEffect(() => {
     setPlayer(prop.player);
+  
   }, [prop.player]);
+  useEffect(() => {
+
+    setIsChecked(prop.ischeck)
+  }, [prop.ischeck]);
   useEffect(() => {
     setVisible(prop.visible);
   }, [prop.visible]);
@@ -76,6 +82,7 @@ const SidebarExampleSidebar = (prop) => {
   if (prop.item.gameMode == "Tournament" && !getQueryVariable("matchid")) {
     padd = "100px";
   }
+  
   return (
     <Sidebar.Pushable as={Segment} basic style={{ overflow: "hidden" }}>
       <Sidebar
@@ -97,14 +104,16 @@ const SidebarExampleSidebar = (prop) => {
               position: "relative",
               zIndex: 10,
             }}
+            
           >
             {prop.matchidFind.status == "Ready" && (
               <>
-                {isUser.username == player.username ? (
+                {isUser.username == player.username && !isChecked? (
                   <TransitionExampleTransitionExplorer
                     objanim={objanim}
                     animation="flash"
                     duration={1000}
+                    
                   />
                 ) : (
                   <div>{objanim}</div>
@@ -115,7 +124,7 @@ const SidebarExampleSidebar = (prop) => {
               (prop.item.gameMode == "Tournament" &&
                 prop.matchidFind.status == "Pending")) && (
               <>
-                {isUser.username == player.username ||  !isPlayerInMatch(matchidFind,isUser.username) ? (
+                {(isUser.username == player.username ||  !isPlayerInMatch(matchidFind,isUser.username))  ? (
                   <div>{objanimInfo}</div>
                 ) : (
                   

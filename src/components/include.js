@@ -395,6 +395,7 @@ export const getGroupBadgeList = (sign, amount, classes) => {
     </Badge>
   );
 };
+var ischeckClick = false;
 export const vsComponentPlayer = (
   item,
   matchidFind,
@@ -414,7 +415,11 @@ export const vsComponentPlayer = (
   } catch (e) {
     var player = nullplayer;
   }
-
+  
+  var ischeck = false;
+  if(player?.ready) {ischeck = player?.ready}
+  if(ischeckClick) {ischeck = !player?.ready}
+  
   var padd = 10;
   if (
     matchidFind.status == "Ready" &&
@@ -520,6 +525,7 @@ export const vsComponentPlayer = (
       )}
     </div>
   );
+  
   var ready = (
     <>
       {player?.username == currentUser.username &&
@@ -548,9 +554,10 @@ export const vsComponentPlayer = (
           <br />
           <Checkbox
             toggle
-            defaultChecked={player?.ready}
+            defaultChecked={ischeck}
             disabled={player.username != currentUser.username}
             onChange={(checked) => {
+              ischeckClick = !ischeckClick;
               handlechangeReadyEvent(checked);
             }}
           />
@@ -632,6 +639,7 @@ export const vsComponentPlayer = (
           info={info}
           matchidFind={matchidFind}
           isUser={currentUser}
+          ischeck={ischeck}
           visible={
             (matchidFind.status == "Ready" || matchidFind.status == "InPlay") &&
             isPlayerInMatch(matchidFind, currentUser.username)
@@ -1650,7 +1658,7 @@ export const getGameTag = (game, userTags) => {
 };
 export const findActiveMatch = (event, matchID, username) => {
   var _match;
-  console.log(matchID);
+  
   event?.matchTables.sort((a, b) => (a.level > b.level ? 1 : -1));
   if (matchID) {
     event.matchTables.map(function (match) {

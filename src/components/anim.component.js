@@ -66,9 +66,12 @@ export default class TransitionExampleTransitionExplorer extends Component {
             animation={animation}
             duration={duration}
             visible={visible}
+            directional={true}
+            unmountOnShow={true}
             transitionOnMount={true}
             unmountOnHide={true}
-            onComplete={this.toggleVisibility}
+            onShow={this.toggleVisibility}
+            onHide={this.toggleVisibility}
           >
            <div>{objanim}</div>
           </Transition>

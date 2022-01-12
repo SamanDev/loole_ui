@@ -101,8 +101,8 @@ function Main() {
       { id: "cashierMethod", val: null },
       { id: "coins", val: null },
       { id: "match", val: null },
-      { id: "eventIDQ", val: false },
-      { id: "matchIDQ", val: false},
+      { id: "eventIDQ", val: getQueryVariable("id", window.location.search.substring(1)) },
+      { id: "matchIDQ", val: getQueryVariable("matchid", window.location.search.substring(1))},
       { id: "openModalAdd", val: false },
       { id: "openModalLogin", val: false },
       { id: "openModalChart", val: false },
@@ -205,7 +205,8 @@ function Main() {
     if (eventGet?.id) {
       onUpdateItem("eventDef", eventGet);
       onUpdateItem("eventIDQ", eventGet.id);
-      onUpdateItem("matchIDQ", getQueryVariable("matchid", window.location.search.substring(1)));
+      var _find =findActiveMatch(eventGet, matchIDQ,currentUser.username)
+      onUpdateItem("matchIDQ", _find.id);
       queryClient.setQueryData(["Event", eventGet.id], eventGet);
       onUpdateItem("match", findActiveMatch(eventGet, matchIDQ,currentUser.username));
   
@@ -215,7 +216,13 @@ function Main() {
     if (eventDef?.matchTables) {
       onUpdateItem("match", findActiveMatch(eventDef, matchIDQ,currentUser.username));
     }
+    console.log("eventIDQ: " +eventIDQ)
+    console.log("matchIDQ: " +matchIDQ)
   }, [matchIDQ]);
+  useEffect(() => {
+    console.log("eventIDQ: " +eventIDQ)
+    console.log("matchIDQ: " +matchIDQ)
+  }, [eventIDQ]);
   useEffect(() => {
     eventBus.on("eventsData", (eventsGet) => {
       onUpdateItem("events", eventsGet);
@@ -258,18 +265,20 @@ function Main() {
             ) 
             || (eventIDQ == eventGet.id && _find.id != matchIDQ )
           ) {
-            onUpdateItem("eventDef", eventGet);
-          onUpdateItem("eventIDQ", eventGet.id);
-          onUpdateItem("match", findActiveMatch(eventGet, _find.id,currentUser.username));
+            
             if (eventGet.status == "Ready" || eventGet.status == "InPlay"  ) {
-              if(eventGet.id != eventIDQ && !matchIDQ){
+              if(eventGet.id != eventIDQ && !matchIDQ && window.location.search.toString().indexOf("id=" + eventGet.id)==-1){
+                console.log("history.push")
                 history.push("/lobby?id=" + eventGet.id);
               }
-              if(_find.id != matchIDQ && eventGet.matchTables.length>1){
+              if(_find.id != matchIDQ && eventGet.matchTables.length>1 && window.location.search.toString().indexOf("id=" + eventGet.id+"&matchid=" + _find.id)==-1){
                 history.push("/matchlobby?id=" + eventGet.id+"&matchid=" + _find.id);
               }
               
             }
+            onUpdateItem("eventDef", eventGet);
+          onUpdateItem("eventIDQ", eventGet.id);
+          onUpdateItem("match", findActiveMatch(eventGet, _find.id,currentUser.username));
          
         }
       }
@@ -294,14 +303,7 @@ function Main() {
       onUpdateItem("matchIDQ", false);
       onUpdateItem("eventDef", false);
     }
-    if (getQueryVariable("matchid", location.search.substring(1))) {
-      onUpdateItem(
-        "matchIDQ",
-        getQueryVariable("matchid", location.search.substring(1))
-      );
-    } else {
-      onUpdateItem("matchIDQ", false);
-    }
+   
     
   }, [location]);
   

@@ -143,11 +143,9 @@ return (
        
         <footer className="footer">
             <div className="container">
-               
-               
-                <div className="copyright">
+           
                     &copy; 2021 <a href="https://loole.gg">Loole.gg</a>, made with love
-                </div>
+      
             </div>
         </footer>
     </div>
