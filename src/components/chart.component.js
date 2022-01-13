@@ -6,8 +6,8 @@ import { Link, useLocation } from "react-router-dom";
 function editCounry(options,options2){
     options?.sort((a, b) => (a.date > b.date) ? 1 : -1)
     var moment = require("moment");
-    var  newArray = []
-    if(options?.length < 200){newArray.push(data)}
+    var  newArray = [data]
+   
     options?.map((item, w) => {
       
    var finalmydate = moment(item.date).format('MM-DD-YYYY')
@@ -15,7 +15,7 @@ function editCounry(options,options2){
         item.newdate  = finaldate
         item.mydate  = finalmydate
      item.matchcount =  options.length + (newArray.length - options.length)
-      if(newArray.length < 200){newArray.push(item);}
+      newArray.push(item);
     })
     if(newArray.length == 0){
       options2?.sort((a, b) => (a.id > b.id) ? 1 : -1)
@@ -59,8 +59,9 @@ function editCounry(options,options2){
       newArray.push(item)
     })
     }
-    console.log(newArray)
-    return newArray
+    var _new = newArray.slice(-20)
+    console.log(_new)
+    return _new
   }
 const data = {
   "id": 0,
@@ -84,19 +85,19 @@ const ChartStat = (prop) => {
   if (!_key) { _key = prop.findStateId(myState, "currentUser");}
   const currentUser = _key
   const CustomizedDot = (props) => {
-    const { cx, cy, stroke, payload, value } = props;
-  
-    if (value > 0) {
+    const { cx, cy, value } = props;
+
+    if (Number.parseFloat(value) > 0) {
       return (
-        <svg x={cx - 5} y={cy - 5} height="10" width="10">
+        <svg x={cx - 5} y={cy - 5} height={10} width={10}  fill="green" viewBox="0 0 10 10">
   <circle cx="5" cy="5" r="4"  fill="green" />
 </svg> 
         
       );
     }
-    if (value == 0) {
+    if (Number.parseFloat(value) == 0) {
       return (
-        <svg x={cx - 5} y={cy - 5} height="10" width="10">
+        <svg x={cx - 5} y={cy - 5} height={10} width={10}  fill="gray" viewBox="0 0 10 10">
   <circle cx="5" cy="5" r="4"  fill="gray" />
 </svg> 
         
@@ -104,9 +105,9 @@ const ChartStat = (prop) => {
     }
   
     return (
-      <svg x={cx - 5} y={cy - 5} height="10" width="10">
-      <circle cx="5" cy="5" r="4"  fill="red" />
-    </svg> 
+      <svg x={cx - 5} y={cy - 5} height={10} width={10}  fill="red" viewBox="0 0 10 10">
+  <circle cx="5" cy="5" r="4"  fill="red" />
+</svg> 
     );
   };
     const CustomTooltip = ({ active, payload, label }) => {
@@ -144,13 +145,13 @@ const ChartStat = (prop) => {
       >
         
          
-          <XAxis dataKey="matchcount" stroke="#777" interval={0} tickMargin={40} width={1500} />
+          <XAxis dataKey="matchcount" stroke="#777" interval={0} tickMargin={40} />
           <YAxis stroke="#777" label="$"  domain={[-200, 200]} />
           <Tooltip  content={<CustomTooltip />}/>
         
-          <Line type='linear' dataKey="profit" stroke="#8884d8"  dot={<CustomizedDot />} activeDot={<CustomizedDot />} />
+          <Line type='linear' dataKey="profit" stroke="#8884d8"  dot={<CustomizedDot />}  activeDot={<CustomizedDot />}  />
      
-          <ReferenceLine y="0" stroke="red" viewBox={{ x: 0, height: 2500 }}/>
+          <ReferenceLine y="0" stroke="#5d0000" viewBox={{ x: 0, height: 2500 }}/>
         </LineChart>
         
       </ResponsiveContainer></div>
