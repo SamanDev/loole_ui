@@ -14,9 +14,11 @@ import Report from "components/report.component";
 import { Tab } from 'semantic-ui-react'
 function editCounry(options){
   var  newArray = []
+  var  newArrayDelete = []
   try{
     options?.map((item, w) => {
       if(item.coin != 'Point' &&   item.mode != 'Point'){
+        
         newArray.push(item)
       }
      
@@ -25,8 +27,39 @@ function editCounry(options){
     })
   }catch(e){}
   
- 
-  return newArray
+  const filteredArr = newArray.reduce((itm, current) => {
+    
+    const x = itm.find(item => item.startBalance === current.endBalance && item.description.split(' - ')[0]==current.description.split(' - ')[0]);
+    const y = itm.find(item => item.description.split(' - ')[0]==current.description.split(' - ')[0]);
+    if (!x) {
+      if (!y) {
+        return itm.concat([current]);
+      } else {
+        return itm.filter(function(item) {
+        
+        return item.id !== current.id && item.id !== y.id
+    });
+      }
+    } else {
+      
+      return itm.filter(function(item) {
+        
+        return item.id !== current.id && item.id !== x.id
+    });
+    }
+  }, []);
+  newArray?.map((itemdelete, w) => {
+    const z = filteredArr.find(item => item.id == itemdelete.id);
+    if (!z) {
+      newArrayDelete.push(itemdelete.id)
+    }
+    
+   
+   
+    
+  })
+  console.log(newArrayDelete)
+  return filteredArr
 }
 function profile(prop) {
   const [myState, setMyState] = useState(prop.myState)

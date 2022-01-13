@@ -1572,9 +1572,17 @@ export const rendererBig = ({
     props.match?.winner ||
     (props.match?.status != "Pending" &&props.match?.status != "Ready" &&props.match?.status != "InPlay" && props.match?.gameMode != "League")
   ) {
+    var lastDate = moment(props.date).startOf("second").fromNow();
+    if( props.match?.winner){lastDate=null}
     // Render a complete state
     //return <Completionist />;
-    return <></>;
+    return <>
+    <Divider fitted style={{ opacity: 0 }} />
+        <Statistic inverted size={_size} color="yellow">
+          <Statistic.Label>{lastDate}</Statistic.Label>
+          
+        </Statistic>
+    </>;
   } else {
     // Render a countdown
     return (
