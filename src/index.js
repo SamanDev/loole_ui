@@ -246,14 +246,18 @@ function Main() {
     });
     eventBus.on("eventsDC", () => {
       //  alert()
+      if (currentUser?.accessToken) {
       onUpdateItem("openModalSoket", true);
+      }
     });
     eventBus.on("eventsConnect", () => {
       //  alert()
       if(findStateId(myState, "openModalSoket")){
         queryClient.resetQueries(["Events"]);
         queryClient.resetQueries(["Event"]);
+        if (currentUser?.accessToken !='') {
         queryClient.resetQueries(["User"]);
+        }
         onUpdateItem("openModalSoket", false);
       }
       

@@ -154,7 +154,7 @@ class UserWebsocket {
       ws.onclose = function (e) {
         ws = null;
         setTimeout(function () {
-          if (ws != null && ws.readyState == websocket.OPEN) {
+          if (ws != null && ws.readyState == websocket?.OPEN) {
             eventBus.dispatch("eventsConnect", "");
           } else {
             if (ws == null && token) { eventBus.dispatch("eventsDC", "");}

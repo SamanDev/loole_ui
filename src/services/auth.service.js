@@ -76,7 +76,7 @@ class AuthService {
       
     }
     UserWebsocket.disconnect();
-    UserWebsocket.connect()
+    //UserWebsocket.connect()
   }
 
   register(username, email, password,reffer) {
