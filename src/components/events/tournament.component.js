@@ -321,12 +321,13 @@ class TournamentSection extends Component {
     var newArray = JSON.parse(old);
    var current_brackets = [];
     
-var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27.00,15.00,10.00"
+//var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27.00,15.00,10.00"
+var tournamentPayout = "4,100.00@8,65.00,35.00@16,50.00,30.00,10.00,10.00@32,50.00,30.00,10.00,10.00@64,50.00,30.00,10.00,10.000"
 ;
     //var events = eventGet;
 
-    if (item.tournamentPayout) {
-      var tournamentPayout = item.tournamentPayout.replace('8,','1-8,').replace('16,','9-16,').replace('32,','17-32,').replace('64,','33-64,')
+    if (tournamentPayout) {
+      var tournamentPayout = tournamentPayout.replace('4,','1-4,').replace('8,','5-8,').replace('16,','9-16,').replace('32,','17-32,').replace('64,','33-64,')
       var payArr = tournamentPayout.split("@");
       var totalPay = item.prize;
       for (var i = 0; i < payArr.length; i++) {
@@ -338,6 +339,7 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
           tItem = item.totalPlayer;
         }
         // console.log(payplyer[0])
+        if (item.players.length > item.totalPlayer || item.players.length==0){tItem = item.totalPlayer;}
         if (
           parseInt(payplyer[0]) <= tItem &&
           parseInt(payplyer[1]) >= tItem
@@ -362,6 +364,7 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
         if (item.status == "Pending" || item.gameMode == "League") {
           tItem = item.totalPlayer;
         }
+        if (item.players.length > item.totalPlayer || item.players.length==0){tItem = item.totalPlayer;}
         if (
           parseInt(payplyer[0]) <= tItem &&
           parseInt(payplyer[1]) >= tItem
@@ -480,7 +483,8 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
     var _finishTxt = 'Not Joinable';
     
   if (item?.winner) { _finishTxt = item.winner}
-  
+  icEnd = 0;
+    icStart = 0;
     setTimeout(() => {
       $("#jsonhtml").html($("#jsonhtml2").text());
     }, 100);
@@ -656,7 +660,7 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
                         icShow = icShow + " - #" + icEnd;
                         icStart = icEnd;
                       }
-                      if (icStart <= 2005) {
+                     
                         return (
                           <List.Item key={i.toString()}>
 
@@ -686,7 +690,7 @@ var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27
       </List.Item>
       
                         );
-                      }
+                      
                     })}
       
     </List>

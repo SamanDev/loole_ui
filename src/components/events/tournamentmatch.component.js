@@ -24,7 +24,7 @@ import {
   Divider,Segment,Grid,Statistic,Button,
 } from "semantic-ui-react";
 import { POSTURLTest } from "const";
-
+import Admin from "components/events/admin.component";
 
 const API_URL_TEST = POSTURLTest;
 const Toast = Swal.mixin({
@@ -464,6 +464,7 @@ class MatchSection extends Component {
         colorfinish={getColor(item.prize)}
         date={match.startTime}
       />
+      <Admin {...this.props}/>
 <Divider fitted style={{ opacity: 0 }} />
 
 <Statistic inverted color="violet" size="mini">

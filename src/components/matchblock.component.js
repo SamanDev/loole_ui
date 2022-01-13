@@ -58,6 +58,7 @@ var moment = require("moment");
           style={{background:'gray !important'}}
                 wrapped ui={false}/>
                 <div
+                
               className={"text-center cover "+item.status}
                >
               <div style={{ transform: "scale(.8)",padding: '10px 0',height:185}}>

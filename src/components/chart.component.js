@@ -1,20 +1,21 @@
 import React, { PureComponent, useState, useEffect} from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,ReferenceLine } from 'recharts';
 import Moment from "moment";
 import { Link, useLocation } from "react-router-dom";
 
 function editCounry(options,options2){
-    options?.sort((a, b) => (a.eventId > b.eventId) ? 1 : -1)
+    options?.sort((a, b) => (a.date > b.date) ? 1 : -1)
     var moment = require("moment");
-    var  newArray = [data]
+    var  newArray = []
+    if(options?.length < 200){newArray.push(data)}
     options?.map((item, w) => {
       
    var finalmydate = moment(item.date).format('MM-DD-YYYY')
    var finaldate = moment(item.date).format('MM-DD')
         item.newdate  = finaldate
         item.mydate  = finalmydate
-     item.matchcount = w+1
-      newArray.push(item)
+     item.matchcount =  options.length + (newArray.length - options.length)
+      if(newArray.length < 200){newArray.push(item);}
     })
     if(newArray.length == 0){
       options2?.sort((a, b) => (a.id > b.id) ? 1 : -1)
@@ -82,7 +83,32 @@ const ChartStat = (prop) => {
   var _key = prop.findStateId(myState, "profileUser")
   if (!_key) { _key = prop.findStateId(myState, "currentUser");}
   const currentUser = _key
-   
+  const CustomizedDot = (props) => {
+    const { cx, cy, stroke, payload, value } = props;
+  
+    if (value > 0) {
+      return (
+        <svg x={cx - 5} y={cy - 5} height="10" width="10">
+  <circle cx="5" cy="5" r="4"  fill="green" />
+</svg> 
+        
+      );
+    }
+    if (value == 0) {
+      return (
+        <svg x={cx - 5} y={cy - 5} height="10" width="10">
+  <circle cx="5" cy="5" r="4"  fill="gray" />
+</svg> 
+        
+      );
+    }
+  
+    return (
+      <svg x={cx - 5} y={cy - 5} height="10" width="10">
+      <circle cx="5" cy="5" r="4"  fill="red" />
+    </svg> 
+    );
+  };
     const CustomTooltip = ({ active, payload, label }) => {
         
         if (active && payload && payload.length) {
@@ -105,7 +131,7 @@ const ChartStat = (prop) => {
         <div style={{ width: '100%', height: 400 ,background: 'rgba(0,0,0,1)', borderRadius: 20, padding: '40px 20px 10px 0px'}}>
       <ResponsiveContainer width="100%" height="100%">
       <LineChart
-        
+        isAnimationActive={false}
         width={500}
         height={300}
         data={editCounry(currentUser.userAnalyses,currentUser.usersReports)}
@@ -118,13 +144,13 @@ const ChartStat = (prop) => {
       >
         
          
-          <XAxis dataKey="matchcount" stroke="#777" />
-          <YAxis stroke="#777" label="$" />
+          <XAxis dataKey="matchcount" stroke="#777" interval={0} tickMargin={40} width={1500} />
+          <YAxis stroke="#777" label="$"  domain={[-200, 200]} />
           <Tooltip  content={<CustomTooltip />}/>
         
-          <Line type='linear' dataKey="profit" stroke="#8884d8"   />
-          <Line type='linear' dataKey="profitP" stroke="#8884d8"   />
-        
+          <Line type='linear' dataKey="profit" stroke="#8884d8"  dot={<CustomizedDot />} activeDot={<CustomizedDot />} />
+     
+          <ReferenceLine y="0" stroke="red" viewBox={{ x: 0, height: 2500 }}/>
         </LineChart>
         
       </ResponsiveContainer></div>

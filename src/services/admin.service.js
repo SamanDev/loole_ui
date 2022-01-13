@@ -20,6 +20,16 @@ class AdminService {
       })
        
   }
+  loseEventMatch =  (id,matchid,username) => {
+
+    return   axios
+      .put(API_URL_TEST + "loseEventByAdmin",{id,matchid,username}, { headers: authHeader() })
+      .then( (response) => {
+        
+        return response;
+      })
+       
+  }
   
   updateUserByAdmin =  (id,key,value) => {
 

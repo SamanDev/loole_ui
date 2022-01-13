@@ -1573,7 +1573,7 @@ export const rendererBig = ({
     (props.match?.status != "Pending" &&props.match?.status != "Ready" &&props.match?.status != "InPlay" && props.match?.gameMode != "League")
   ) {
     var lastDate = moment(props.date).startOf("second").fromNow();
-    if( props.match?.winner){lastDate=null}
+    if( props.match?.winner || props.match?.status == "InPlay"){lastDate=null}
     // Render a complete state
     //return <Completionist />;
     return <>

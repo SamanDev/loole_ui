@@ -77,6 +77,7 @@ class MatchSection extends Component {
         item: props.findStateId(props.myState, "eventDef"),
         currentUser: props.findStateId(props.myState, "currentUser"),
        eventid:props.findStateId(props.myState, "eventIDQ"),
+       matchid:props.findStateId(props.myState, "matchIDQ"),
        matchidFind: props.findStateId(props.myState, "match"),
       };
     }
@@ -208,38 +209,25 @@ class MatchSection extends Component {
     const item = this.props.findStateId(this.state.myState, "eventDef")
     const currentUser = this.props.findStateId(this.state.myState, "currentUser")
     const match = this.props.findStateId(this.state.myState, "match")
-    const eventIDQ = this.props.findStateId(this.state.myState, "eventIDQ")
+
     let {
     
-      progress,
-      isUpLoading,
-      progressLable,
+   
       loading,
     } = this.state;
 
-    var _finishTxt = 'Not Joinable';
-    //if (match.status) { _finishTxt = match.status+'@@@Not Joinable'}
-    //if (match.winner) { _finishTxt = match.winner}
-    var _mode = " 1 vs 1 ";
-      var _color = "#404040";
-     
-   
-     
     
-      if (item.gameMode == "Tournament" || item.gameMode == "League") {
-        _mode = item.gameMode;
-      }
     return (
       <>
         
-        {haveAdmin(currentUser.roles) && item.status == "InPlay"&& (
+        {haveAdmin(currentUser.roles) && match.status == "InPlay"&& (
         <>
 
          
 
               <Button.Group size="big" widths="3">
                 <Button
-                  color={this.state.matchid?"green":"red"}
+                  color={item.matchTables.length>1?"green":"red"}
                   inverted
                   onClick={this.handlecAlertLost}
                   disabled={loading}
@@ -252,7 +240,7 @@ class MatchSection extends Component {
                 <Button
               
                   onClick={this.handlecAlertLost2}
-                  color={this.state.matchid?"green":"red"}
+                  color={item.matchTables.length>1?"green":"red"}
                   inverted
                   disabled={loading}
                   loading={loading}

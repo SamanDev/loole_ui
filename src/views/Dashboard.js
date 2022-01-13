@@ -103,7 +103,8 @@ const updateCount = (events) => {
 const getBlockChallenge = (filtermode,events) => {
   var newItem = []
 
-   
+ 
+  events?.sort((a, b) => (a.id < b.id) ? 1 : -1)
      events?.map((_item, i) => {
       var item = JSON.parse(JSON.stringify(_item));
       if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'All') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {

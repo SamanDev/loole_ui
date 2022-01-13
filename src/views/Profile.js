@@ -12,55 +12,7 @@ import Report from "components/report.component";
 // react-bootstrap components
 
 import { Tab } from 'semantic-ui-react'
-function editCounry(options){
-  var  newArray = []
-  var  newArrayDelete = []
-  try{
-    options?.map((item, w) => {
-      if(item.coin != 'Point' &&   item.mode != 'Point'){
-        
-        newArray.push(item)
-      }
-     
-     
-      
-    })
-  }catch(e){}
-  
-  const filteredArr = newArray.reduce((itm, current) => {
-    
-    const x = itm.find(item => item.startBalance === current.endBalance && item.description.split(' - ')[0]==current.description.split(' - ')[0]);
-    const y = itm.find(item => item.description.split(' - ')[0]==current.description.split(' - ')[0]);
-    if (!x) {
-      if (!y) {
-        return itm.concat([current]);
-      } else {
-        return itm.filter(function(item) {
-        
-        return item.id !== current.id && item.id !== y.id
-    });
-      }
-    } else {
-      
-      return itm.filter(function(item) {
-        
-        return item.id !== current.id && item.id !== x.id
-    });
-    }
-  }, []);
-  newArray?.map((itemdelete, w) => {
-    const z = filteredArr.find(item => item.id == itemdelete.id);
-    if (!z) {
-      newArrayDelete.push(itemdelete.id)
-    }
-    
-   
-   
-    
-  })
-  console.log(newArrayDelete)
-  return filteredArr
-}
+
 function profile(prop) {
   const [myState, setMyState] = useState(prop.myState)
   useEffect(() => {
@@ -69,7 +21,7 @@ function profile(prop) {
 const key = prop.findStateId(myState,'keyProfile');
 var currentUser = prop.findStateId(myState,'currentUser');
 
-  var dataTransaction = editCounry(currentUser.usersReports);
+  var dataTransaction = (currentUser.usersReports);
   const panes = [
     {id:1, menuItem: 'Profile', render: () => <Tab.Pane><ProfileForm {...prop}/></Tab.Pane> },
     {id:2, menuItem: 'Tags', render: () => <Tab.Pane><TagsForm {...prop}/><SocialForm {...prop}/></Tab.Pane>},

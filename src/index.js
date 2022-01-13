@@ -225,8 +225,8 @@ function Main() {
   }, [eventGet]);
   useEffect(() => {
     if (eventDef?.matchTables) {
-      //var _find =findActiveMatch(eventDef, matchIDQ,currentUser.username)
-      //onUpdateItem("match", _find);
+      var _find =findActiveMatch(eventDef, matchIDQ,currentUser.username)
+      onUpdateItem("match", _find);
     }
 
   }, [matchIDQ]);
@@ -311,6 +311,9 @@ function Main() {
       onUpdateItem("matchIDQ", false);
       onUpdateItem("eventDef", false);
     }
+    if (getQueryVariable("matchid", location.search.substring(1))) {
+      onUpdateItem("matchIDQ", getQueryVariable("matchid", location.search.substring(1)));
+    }
    
     
   }, [location]);
@@ -323,6 +326,13 @@ function Main() {
         </Dimmer>
       </Segment>
     );
+  }
+  currentUser.userAnalyses?.sort((a, b) => (a.id < b.id) ? 1 : -1)
+  var nProfit = 0
+  try{
+    nProfit = Number.parseFloat(currentUser.userAnalyses[0].profit).toFixed(2);
+  }catch(e){
+    nProfit = 0
   }
   return (
     <>
@@ -349,7 +359,9 @@ function Main() {
         open={openModalChart}
         onClose={() => onUpdateItem("openModalChart", false)}
       >
-        <Modal.Header>Profit Chart</Modal.Header>
+        <Modal.Header>Profit Chart <div style={{float: "right"}}>{Number.parseFloat(nProfit) > 0 ?(<span className="text-success">+{nProfit}</span>):(<span className="text-danger">{nProfit}</span>)}</div>
+        </Modal.Header>
+        
         <Modal.Content>
           <Chart
             myState={myState}

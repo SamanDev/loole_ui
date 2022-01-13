@@ -21,12 +21,55 @@ import {
 } from "semantic-ui-react";
 import { get_date_locale,getGroupBadgeBlock } from "components/include";
 import DataTable from 'react-data-table-component';
-function editCounry(item){
-  var _des = item.description
-  if(item.coin){_des = item.coin}
+function editCounry(options){
+  var  newArray = []
+  var  newArrayDelete = []
+  options?.sort((a, b) => (a.id > b.id ? 1 : -1));
+  try{
+    options?.map((item, w) => {
+      if(item.coin != 'Point' &&   item.mode != 'Point'){
+        
+        newArray.push(item)
+      }
+     
+     
+      
+    })
+  }catch(e){}
   
- 
-  return _des
+  const filteredArr = newArray.reduce((itm, current) => {
+    
+    const x = itm.find(item => item.startBalance === current.endBalance && item.description.split(' - ')[0]==current.description.split(' - ')[0]);
+    const y = itm.find(item => item.description.split(' - ')[0]==current.description.split(' - ')[0] && (item.mode.indexOf('Expired')>-1 || current.mode.indexOf('Expired')>-1));
+    if (!x) {
+      if (!y ) {
+        return itm.concat([current]);
+      } else {
+        return itm.filter(function(item) {
+        
+        return item.id !== current.id && item.id !== y.id
+    });
+      }
+    } else {
+      
+      return itm.filter(function(item) {
+        
+        return item.id !== current.id && item.id !== x.id
+    });
+    }
+  }, []);
+  newArray?.map((itemdelete, w) => {
+    const z = filteredArr.find(item => item.id == itemdelete.id);
+    if (!z) {
+      newArrayDelete.push(itemdelete.id)
+    }
+    
+   
+   
+    
+  })
+  
+  return newArray
 }
 const conditionalRowStyles = [
   {
@@ -114,7 +157,7 @@ function Report(prop) {
  
 
  
-    dataTransaction = prop.usersReports
+    dataTransaction = editCounry(prop.usersReports)
     
     
     return (

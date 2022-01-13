@@ -21,7 +21,7 @@ import LeagueSection from "components/events/league.component";
 import TournamentSection from "components/events/tournament.component";
 import MatchSection from "components/events/match.component";
 import MatchTourSection from "components/events/tournamentmatch.component";
-import { findActiveMatch, haveAdmin } from "components/include";
+import { findActiveMatch, haveAdmin,getQueryVariable } from "components/include";
 import Swal from "sweetalert2";
 
 const Toast = Swal.mixin({
@@ -194,7 +194,7 @@ function LockScreenPage(prop) {
                   />
                 ) : (
                   <>
-                    {matchIDQ ? (
+                    {getQueryVariable("matchid", window.location.search.substring(1)) ? (
                       <Chatbar
                         eventID={eventIDQ}
                         matchID={matchIDQ}
@@ -266,7 +266,7 @@ function LockScreenPage(prop) {
                       />
                     ) : (
                       <>
-                        {eventDef.gameMode == "Tournament" && !matchIDQ ? (
+                        {eventDef.gameMode == "Tournament" && !getQueryVariable("matchid", window.location.search.substring(1)) ? (
                           <TournamentSection
                             
                             {...prop}

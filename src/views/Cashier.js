@@ -39,19 +39,7 @@ var dataTransaction = [
 ];
 
 var allValid = true;
-function editCounry(options){
-  var  newArray = []
-  options.map((item, w) => {
-    if(item.coin != 'Point' &&   item.mode != 'Point'){
-      newArray.push(item)
-    }
-   
-   
-    
-  })
- 
-  return newArray
-}
+
 function Cashier(prop) {
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
@@ -62,7 +50,7 @@ function Cashier(prop) {
 
   var userMethods = currentUser.cashierGateways;
   userMethods.sort((a, b) => (a.mode > b.mode ? 1 : -1));
-  dataTransaction = editCounry(currentUser.usersReports);
+  dataTransaction = (currentUser.usersReports);
   useEffect(() => {
     prop.onUpdateItem("coins", eventCoins);
   }, [eventCoins]);
