@@ -9,6 +9,7 @@ import { useInfo } from "services/hooks";
 import HomeEvents from "components/events/home.component"
 import GameSlide from "components/GameSlide";
 import LandStat  from "components/landstat.component";
+import AdminFooter  from "components/Footers/AdminFooter";
 import {Colors,themeColors} from "const.js"
 const d = new Date();
   let da = d.getSeconds();
@@ -19,6 +20,7 @@ function  Landing(prop) {
     setMyState(prop.myState)
 }, [prop.myState]);
 const { data: looleInfo } = useInfo();
+const currentUser = prop.findStateId(myState, "currentUser");
 const elements = ['1', '2-4_01', '2-4_02','2-4_03'];
 useEffect(() => {
     if(looleInfo){
@@ -148,6 +150,8 @@ return (
       
             </div>
         </footer>
+        <AdminFooter />
+       
     </div>
   </>
 );

@@ -9,7 +9,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import Avatar, { Cache, ConfigProvider } from 'react-avatar';
-import SockJsClient from 'react-stomp';
+
 
 import Swal from "sweetalert2";
 import { defUser, TrackingID } from "const";
@@ -201,7 +201,7 @@ function Main() {
     if (userGet?.accessToken) {
       onUpdateItem("currentUser", userGet);
       updateNot(userGet);
-      UserWebsocket.connect(userGet.accessToken+"&user="+userGet.username,userGet);
+      //UserWebsocket.connect(userGet.accessToken+"&user="+userGet.username,userGet);
     }
   }, [userGet]);
   useEffect(() => {
@@ -253,11 +253,7 @@ function Main() {
     eventBus.on("eventsConnect", () => {
       //  alert()
       if(findStateId(myState, "openModalSoket")){
-        queryClient.resetQueries(["Events"]);
-        queryClient.resetQueries(["Event"]);
-        if (currentUser?.accessToken !='') {
-        queryClient.resetQueries(["User"]);
-        }
+       
         onUpdateItem("openModalSoket", false);
       }
       
@@ -523,6 +519,7 @@ function Main() {
           </Segment>
         </Modal.Content>
       </Modal>
+      
       <Switch>
       <Route
           path="/panel"
