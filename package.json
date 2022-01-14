@@ -10,7 +10,6 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "axios": "^0.21.1",
     "bootstrap": "4.5.3",
-    "match-sorter": "6.1.0",
     "moment": "^2.29.1",
     "node-sass": "^4.0.0",
     "prop-types": "15.7.2",
