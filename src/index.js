@@ -8,18 +8,14 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
-import Avatar, { Cache, ConfigProvider } from 'react-avatar';
-
+import Avatar, { Cache, ConfigProvider } from "react-avatar";
 
 import Swal from "sweetalert2";
 import { defUser, TrackingID } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-// sections for this page
-export * from "const";
 import LandLayout from "layouts/Land.js";
-
 
 import PanelLayout from "layouts/Panel.js";
 import Login from "components/newlogin.component";
@@ -43,13 +39,14 @@ import {
   Divider,
   Dimmer,
   Loader,
-  Segment,Button
+  Segment,
+  Button,
 } from "semantic-ui-react";
 import { useAllEvents, useUser, useEventByID } from "services/hooks";
 import ReactGA from "react-ga";
 import "semantic-ui-css/semantic.min.css";
 import "assets/css/style.css";
-import UserWebsocket from 'services/user.websocket'
+import UserWebsocket from "services/user.websocket";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -58,16 +55,15 @@ const queryClient = new QueryClient({
   },
 });
 const cache = new Cache({
-
   // Keep cached source failures for up to 7 days
   sourceTTL: 7 * 24 * 3600 * 1000,
 
   // Keep a maximum of 20 entries in the source cache
-  sourceSize: 20
+  sourceSize: 20,
 });
 ReactGA.initialize(TrackingID);
 function myFunction(classname) {
-  var x = document.getElementsByClassName(classname)
+  var x = document.getElementsByClassName(classname);
   x[0]?.classList.toggle("hide");
   x[1]?.classList.toggle("hide");
   x[2]?.classList.toggle("hide");
@@ -80,8 +76,9 @@ function Main() {
   const location = useLocation();
   var unUser = defUser;
   if (localStorage.getItem("user")) {
-    try{unUser = JSON.parse(localStorage.getItem("user"));}catch(e){}
-    
+    try {
+      unUser = JSON.parse(localStorage.getItem("user"));
+    } catch (e) {}
   }
   const [myState, setMyState] = useState({
     list: [
@@ -112,8 +109,14 @@ function Main() {
       { id: "cashierMethod", val: null },
       { id: "coins", val: null },
       { id: "match", val: null },
-      { id: "eventIDQ", val: getQueryVariable("id", window.location.search.substring(1)) },
-      { id: "matchIDQ", val: getQueryVariable("matchid", window.location.search.substring(1))},
+      {
+        id: "eventIDQ",
+        val: getQueryVariable("id", window.location.search.substring(1)),
+      },
+      {
+        id: "matchIDQ",
+        val: getQueryVariable("matchid", window.location.search.substring(1)),
+      },
       { id: "openModalAdd", val: false },
       { id: "openModalLogin", val: false },
       { id: "openModalChart", val: false },
@@ -201,7 +204,10 @@ function Main() {
     if (userGet?.accessToken) {
       onUpdateItem("currentUser", userGet);
       updateNot(userGet);
-      //UserWebsocket.connect(userGet.accessToken+"&user="+userGet.username,userGet);
+      UserWebsocket.connect(
+        userGet.accessToken + "&user=" + userGet.username,
+        userGet
+      );
     }
   }, [userGet]);
   useEffect(() => {
@@ -216,21 +222,23 @@ function Main() {
     if (eventGet?.id) {
       onUpdateItem("eventDef", eventGet);
       onUpdateItem("eventIDQ", eventGet.id);
-      var _find =findActiveMatch(eventGet, getQueryVariable("matchid", window.location.search.substring(1)),currentUser.username)
+      var _find = findActiveMatch(
+        eventGet,
+        getQueryVariable("matchid", window.location.search.substring(1)),
+        currentUser.username
+      );
       onUpdateItem("matchIDQ", _find.id);
       queryClient.setQueryData(["Event", eventGet.id], eventGet);
       onUpdateItem("match", _find);
-  
     }
   }, [eventGet]);
   useEffect(() => {
     if (eventDef?.matchTables) {
-      var _find =findActiveMatch(eventDef, matchIDQ,currentUser.username)
+      var _find = findActiveMatch(eventDef, matchIDQ, currentUser.username);
       onUpdateItem("match", _find);
     }
-
   }, [matchIDQ]);
- 
+
   useEffect(() => {
     eventBus.on("eventsData", (eventsGet) => {
       onUpdateItem("events", eventsGet);
@@ -238,56 +246,58 @@ function Main() {
       queryClient.setQueryData(["Events", "All"], eventsGet);
     });
     eventBus.on("eventsDataUser", (userGet) => {
-   
       onUpdateItem("currentUser", userGet);
       updateNot(userGet);
       localStorage.setItem("user", JSON.stringify(userGet));
-      
     });
     eventBus.on("eventsDC", () => {
       //  alert()
       if (currentUser?.accessToken) {
-      onUpdateItem("openModalSoket", true);
+        onUpdateItem("openModalSoket", true);
       }
     });
     eventBus.on("eventsConnect", () => {
       //  alert()
-      if(findStateId(myState, "openModalSoket")){
-       
+      if (findStateId(myState, "openModalSoket")) {
         onUpdateItem("openModalSoket", false);
       }
-      
-      
     });
-   
+
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {
         queryClient.setQueryData(["Event", eventGet.id], eventGet);
-        var _find =findActiveMatch(eventGet, matchIDQ,currentUser.username)
-       
-          
-          if (
-            isPlayerInMatch(
-              _find,
-              currentUser.username
-            ) 
-            || (eventIDQ == eventGet.id && _find.id != matchIDQ )
-          ) {
-            
-            if (eventGet.status == "Ready" || eventGet.status == "InPlay"  ) {
-              if(window.location.search.toString().indexOf("id=" + eventGet.id)==-1){
-                console.log("history.push")
-                history.push("/lobby?id=" + eventGet.id);
-              }
-              if(_find.id != matchIDQ && eventGet.matchTables.length>1 && window.location.search.toString().indexOf("id=" + eventGet.id+"&matchid=" + _find.id)==-1){
-                history.push("/matchlobby?id=" + eventGet.id+"&matchid=" + _find.id);
-              }
-              
+        var _find = findActiveMatch(eventGet, matchIDQ, currentUser.username);
+
+        if (
+          isPlayerInMatch(_find, currentUser.username) ||
+          (eventIDQ == eventGet.id && _find.id != matchIDQ)
+        ) {
+          if (eventGet.status == "Ready" || eventGet.status == "InPlay") {
+            if (
+              window.location.search.toString().indexOf("id=" + eventGet.id) ==
+              -1
+            ) {
+              console.log("history.push");
+              history.push("/lobby?id=" + eventGet.id);
             }
-            onUpdateItem("eventDef", eventGet);
+            if (
+              _find.id != matchIDQ &&
+              eventGet.matchTables.length > 1 &&
+              window.location.search
+                .toString()
+                .indexOf("id=" + eventGet.id + "&matchid=" + _find.id) == -1
+            ) {
+              history.push(
+                "/matchlobby?id=" + eventGet.id + "&matchid=" + _find.id
+              );
+            }
+          }
+          onUpdateItem("eventDef", eventGet);
           onUpdateItem("eventIDQ", eventGet.id);
-          onUpdateItem("match", findActiveMatch(eventGet, _find.id,currentUser.username));
-         
+          onUpdateItem(
+            "match",
+            findActiveMatch(eventGet, _find.id, currentUser.username)
+          );
         }
       }
     });
@@ -303,21 +313,25 @@ function Main() {
   }, []);
   useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);
-  
+
     if (getQueryVariable("id", location.search.substring(1))) {
-      onUpdateItem("eventIDQ", getQueryVariable("id", location.search.substring(1)));
+      onUpdateItem(
+        "eventIDQ",
+        getQueryVariable("id", location.search.substring(1))
+      );
     } else {
       onUpdateItem("eventIDQ", false);
       onUpdateItem("matchIDQ", false);
       onUpdateItem("eventDef", false);
     }
     if (getQueryVariable("matchid", location.search.substring(1))) {
-      onUpdateItem("matchIDQ", getQueryVariable("matchid", location.search.substring(1)));
+      onUpdateItem(
+        "matchIDQ",
+        getQueryVariable("matchid", location.search.substring(1))
+      );
     }
-   
-    
   }, [location]);
-  
+
   if (!currentUser) {
     return (
       <Segment style={{ height: "100%", width: "100%", position: "absolute" }}>
@@ -327,21 +341,16 @@ function Main() {
       </Segment>
     );
   }
-  currentUser.userAnalyses?.sort((a, b) => (a.id < b.id) ? 1 : -1)
-  var nProfit = 0
-  try{
+  currentUser.userAnalyses?.sort((a, b) => (a.id < b.id ? 1 : -1));
+  var nProfit = 0;
+  try {
     nProfit = Number.parseFloat(currentUser.userAnalyses[0].profit).toFixed(2);
-  }catch(e){
-    nProfit = 0
+  } catch (e) {
+    nProfit = 0;
   }
   return (
     <>
-      <Modal
-        size="mini"
-        basic
-        open={openModalSoket}
-     
-      >
+      <Modal size="mini" basic open={openModalSoket}>
         <Modal.Header className="text-center">
           <Icon.Group size="huge">
             <Icon size="big" color="red" name="dont" />
@@ -359,9 +368,17 @@ function Main() {
         open={openModalChart}
         onClose={() => onUpdateItem("openModalChart", false)}
       >
-        <Modal.Header>Profit Chart <div style={{float: "right"}}>{Number.parseFloat(nProfit) > 0 ?(<span className="text-success">+{nProfit}</span>):(<span className="text-danger">{nProfit}</span>)}</div>
+        <Modal.Header>
+          Profit Chart{" "}
+          <div style={{ float: "right" }}>
+            {Number.parseFloat(nProfit) > 0 ? (
+              <span className="text-success">+{nProfit}</span>
+            ) : (
+              <span className="text-danger">{nProfit}</span>
+            )}
+          </div>
         </Modal.Header>
-        
+
         <Modal.Content>
           <Chart
             myState={myState}
@@ -377,104 +394,89 @@ function Main() {
         open={openModalLogin}
         onClose={() => onUpdateItem("openModalLogin", false)}
       >
-        <Modal.Content >
+        <Modal.Content>
           <Segment inverted padded="very">
             <Grid relaxed="very">
               <Grid.Column mobile={16} tablet={8} computer={8}>
-              <div className="togllehide togllehideforget">
-                <Header as="h3" inverted>
-                  Login
-                </Header>
-
-                <Login onUpdateItem={onUpdateItem} />
-</div>
-                <span className="mobile only">
-                <div className="togllehide togllehideforget" style={{marginTop:10}}>
-
-                <Button
-               
-               size="mini"
-             fluid
-               
-               
-               onClick={() =>
-                 myFunction("togllehideforget")
-               }
-               color="black"
-              content="Password Recovery"
-            />
-                  <Divider horizontal inverted style={{ marginTop: 10 }}>
-                    Or
-                  </Divider>
-                  <Button
-                
-                size="small"
-              fluid
-                inverted
-                onClick={() =>
-                  myFunction("togllehide")
-                }
-                color="orange"
-               content="Create Account"
-             />
-             
-                </div>
-                  <div className="togllehide hide">
+                <div className="togllehide togllehideforget">
                   <Header as="h3" inverted>
-                    Create Account
+                    Login
                   </Header>
 
-                  <Register onUpdateItem={onUpdateItem} />
-                  <Divider horizontal inverted style={{ marginTop: 20 }}>
-                    Or
-                  </Divider>
-                  <Button
-                
-                size="small"
-              fluid
-                inverted
-                onClick={() =>
-                  myFunction("togllehide")
-                }
-                color="blue"
-               content="Login to your account"
-             />
+                  <Login onUpdateItem={onUpdateItem} />
+                </div>
+                <span className="mobile only">
+                  <div
+                    className="togllehide togllehideforget"
+                    style={{ marginTop: 10 }}
+                  >
+                    <Button
+                      size="mini"
+                      fluid
+                      onClick={() => myFunction("togllehideforget")}
+                      color="black"
+                      content="Password Recovery"
+                    />
+                    <Divider horizontal inverted style={{ marginTop: 10 }}>
+                      Or
+                    </Divider>
+                    <Button
+                      size="small"
+                      fluid
+                      inverted
+                      onClick={() => myFunction("togllehide")}
+                      color="orange"
+                      content="Create Account"
+                    />
                   </div>
-                  
+                  <div className="togllehide hide">
+                    <Header as="h3" inverted>
+                      Create Account
+                    </Header>
+
+                    <Register onUpdateItem={onUpdateItem} />
+                    <Divider horizontal inverted style={{ marginTop: 20 }}>
+                      Or
+                    </Divider>
+                    <Button
+                      size="small"
+                      fluid
+                      inverted
+                      onClick={() => myFunction("togllehide")}
+                      color="blue"
+                      content="Login to your account"
+                    />
+                  </div>
                 </span>
                 <span>
-                <div className="togllehideforget mobile hidden">
-                  <Divider horizontal inverted style={{ marginTop: 40 }}>
-                    Or
-                  </Divider>
-                  <Header as="h4" inverted>
-                    Password Recovery
-                  </Header>
+                  <div className="togllehideforget mobile hidden">
+                    <Divider horizontal inverted style={{ marginTop: 40 }}>
+                      Or
+                    </Divider>
+                    <Header as="h4" inverted>
+                      Password Recovery
+                    </Header>
 
-                  <Forget onUpdateItem={onUpdateItem} />
+                    <Forget onUpdateItem={onUpdateItem} />
                   </div>
                   <div className="togllehideforget hide">
-                  <Header as="h4" inverted>
-                    Password Recovery
-                  </Header>
+                    <Header as="h4" inverted>
+                      Password Recovery
+                    </Header>
 
-                  <Forget onUpdateItem={onUpdateItem} />
-                 
-                  <Divider horizontal inverted style={{ marginTop: 20 }}>
-                    Or
-                  </Divider>
-                  <Button
-                
-                size="small"
-              fluid
-                inverted
-                onClick={() =>
-                  myFunction("togllehideforget")
-                }
-                color="blue"
-               content="Login to your account"
-             />
-            
+                    <Forget onUpdateItem={onUpdateItem} />
+
+                    <Divider horizontal inverted style={{ marginTop: 20 }}>
+                      Or
+                    </Divider>
+                    <Button
+                      size="small"
+                      fluid
+                      inverted
+                      onClick={() => myFunction("togllehideforget")}
+                      color="blue"
+                      content="Login to your account"
+                    />
                   </div>
                 </span>
               </Grid.Column>
@@ -519,9 +521,9 @@ function Main() {
           </Segment>
         </Modal.Content>
       </Modal>
-      
+
       <Switch>
-      <Route
+        <Route
           path="/panel"
           render={(props) => (
             <PanelLayout
@@ -532,8 +534,8 @@ function Main() {
             />
           )}
         />
-    
-    <Route
+
+        <Route
           path="/lobby"
           render={(props) => (
             <LandLayout
@@ -555,7 +557,7 @@ function Main() {
             />
           )}
         />
-        
+
         <Route
           path="/game/:id"
           render={(props) => (
@@ -618,9 +620,11 @@ function Main() {
 }
 function App() {
   return (
-    <QueryClientProvider  cache={cache} client={queryClient} contextSharing={true}>
-   
-      
+    <QueryClientProvider
+      cache={cache}
+      client={queryClient}
+      contextSharing={true}
+    >
       <Main />
     </QueryClientProvider>
   );
@@ -628,8 +632,9 @@ function App() {
 
 ReactDOM.render(
   <BrowserRouter>
-  <ConfigProvider cache={cache}>
-    <App /></ConfigProvider>
+    <ConfigProvider cache={cache}>
+      <App />
+    </ConfigProvider>
   </BrowserRouter>,
 
   document.getElementById("root")
