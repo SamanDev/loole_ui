@@ -1,19 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import AuthService from "../services/auth.service";
-import {
-  Badge,
-  Button,
-  Card,
-  Form,
-  InputGroup,
-  Navbar,
-  Nav,
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
-import OldUser  from "components/olduser.component";
+import { Button, Card, Form, Container, Row, Col } from "react-bootstrap";
+import OldUser from "components/olduser.component";
 export default class Profile extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +9,7 @@ export default class Profile extends Component {
     this.state = {
       redirect: null,
       userReady: false,
-      currentUser: this.props.token
+      currentUser: this.props.token,
     };
   }
   static getDerivedStateFromProps(props, state) {
@@ -31,16 +19,14 @@ export default class Profile extends Component {
     if (props.token !== state.currentUser) {
       return {
         currentUser: props.token,
-  
       };
     }
     return null;
   }
-  
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />
+      return <Redirect to={this.state.redirect} />;
     }
 
     const { currentUser } = this.state;
@@ -52,43 +38,44 @@ export default class Profile extends Component {
           <Container>
             <Row>
               <Col md="8" sm="6">
-      <div className="container">
-        {(this.state.userReady) ?
-        <div>
-        <header className="jumbotron">
-          <h3>
-            <strong>{currentUser.username}</strong> Profile
-          </h3>
-        </header>
-        <p>
-          <strong>Token:</strong>{" "}
-          {currentUser.accessToken.substring(0, 20)} ...{" "}
-          {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-        </p>
-        <p>
-          <strong>Id:</strong>{" "}
-          {currentUser.id}
-        </p>
-        <p>
-          <strong>Email:</strong>{" "}
-          {currentUser.email}
-        </p>
-        <strong>Authorities:</strong>
-        <ul>
-          {currentUser.roles &&
-            currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
-        </ul>
-      </div>: null}
-      </div>
-      <Card className={"card-login " }>
-                 
+                <div className="container">
+                  {this.state.userReady ? (
+                    <div>
+                      <header className="jumbotron">
+                        <h3>
+                          <strong>{currentUser.username}</strong> Profile
+                        </h3>
+                      </header>
+                      <p>
+                        <strong>Token:</strong>{" "}
+                        {currentUser.accessToken.substring(0, 20)} ...{" "}
+                        {currentUser.accessToken.substr(
+                          currentUser.accessToken.length - 20
+                        )}
+                      </p>
+                      <p>
+                        <strong>Id:</strong> {currentUser.id}
+                      </p>
+                      <p>
+                        <strong>Email:</strong> {currentUser.email}
+                      </p>
+                      <strong>Authorities:</strong>
+                      <ul>
+                        {currentUser.roles &&
+                          currentUser.roles.map((role, index) => (
+                            <li key={index}>{role}</li>
+                          ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                </div>
+                <Card className={"card-login "}>
                   <Card.Body>
-                  <OldUser/>
+                    <OldUser />
                   </Card.Body>
-                  
                 </Card>
-      
-      <Form action="" className="form hide" method="">
+
+                <Form action="" className="form hide" method="">
                   <Card>
                     <Card.Header>
                       <Card.Header>
@@ -226,31 +213,34 @@ export default class Profile extends Component {
                     <div className="card-image">
                       <img
                         alt="..."
-                        src={
-                          require("assets/img/bg.jpg").default
-                        }
+                        src={require("assets/img/bg.jpg").default}
                       ></img>
                     </div>
                   </Card.Header>
                   <Card.Body>
                     <div className="author">
-                    <Avatar  color={Avatar.getRandomColor('sitebase', ['red', 'green', 'blue'])} name={currentUser.username} />
-            
-                        <img
-                          alt="..."
-                          className="avatar border-gray "
-                          style={{opacity:1}}
-                          src={require("assets/img/avatar.png").default}
-                        ></img>
-                        
+                      <Avatar
+                        color={Avatar.getRandomColor("sitebase", [
+                          "red",
+                          "green",
+                          "blue",
+                        ])}
+                        name={currentUser.username}
+                      />
+
+                      <img
+                        alt="..."
+                        className="avatar border-gray "
+                        style={{ opacity: 1 }}
+                        src={require("assets/img/avatar.png").default}
+                      ></img>
                     </div>
                     <p className="card-description text-center">
-                    <Card.Title as="h5">{currentUser.username}</Card.Title>
-                      
+                      <Card.Title as="h5">{currentUser.username}</Card.Title>
+
                       <p className="card-description">{currentUser.email}</p>
                     </p>
                   </Card.Body>
-                  
                 </Card>
               </Col>
             </Row>

@@ -8,7 +8,7 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
-import Avatar, { Cache, ConfigProvider } from "react-avatar";
+import { Cache, ConfigProvider } from "react-avatar";
 
 import Swal from "sweetalert2";
 import { defUser, TrackingID } from "const";
@@ -26,7 +26,6 @@ import DC from "components/dc.component";
 import eventBus from "views/eventBus";
 import {
   getQueryVariable,
-  editEvent,
   findActiveMatch,
   isPlayerInMatch,
 } from "components/include";

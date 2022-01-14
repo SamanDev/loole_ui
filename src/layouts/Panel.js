@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { ConfigProvider } from "react-avatar";
-import { Route, Switch ,useHistory} from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 
-import { Checkbox, Modal, Menu, Segment, Sidebar } from "semantic-ui-react";
+import { Checkbox, Modal, Menu, Sidebar } from "semantic-ui-react";
 
 import { DEFCOLORS, themeDashColors } from "const";
 // core components
@@ -46,21 +46,19 @@ function Panel(props) {
   const [myState, setMyState] = useState(props.myState);
   useEffect(() => {
     setMyState(props.myState);
-    if(currentUser?.accessToken){
-      if(props.findStateId(myState, "openModalLogin")){
-        props.onUpdateItem("openModalLogin", false)
+    if (currentUser?.accessToken) {
+      if (props.findStateId(myState, "openModalLogin")) {
+        props.onUpdateItem("openModalLogin", false);
       }
-      
-      }else{
-  if(!props.findStateId(myState, "openModalLogin")){
-    props.onUpdateItem("openModalLogin", true)
-  }
-        
+    } else {
+      if (!props.findStateId(myState, "openModalLogin")) {
+        props.onUpdateItem("openModalLogin", true);
+      }
     }
   }, [props.myState]);
-  
+
   const currentUser = props.findStateId(myState, "currentUser");
-  
+
   const open = props.findStateId(myState, "openModalAdd");
   const openCashier = props.findStateId(myState, "openModalCashier");
   const cashierMethod = props.findStateId(myState, "cashierMethod");
@@ -80,7 +78,7 @@ function Panel(props) {
         //sconsole.log(prop.component)
 
         props.onUpdateItem("profileUser", false);
-        
+
         return (
           <Route
             path={prop.layout + prop.path}
@@ -234,7 +232,6 @@ function Panel(props) {
                         {cashierMethod == "CryptoCurrenciesCashout" ? (
                           <>
                             <CrCashout coins={coins} {...props} />
-                            
                           </>
                         ) : (
                           <>

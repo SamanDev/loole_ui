@@ -1,22 +1,15 @@
 import React, { useState } from "react";
-import {
-  BrowserRouter,
-  Route,
-  Switch,
-  Redirect,
-  useHistory,
-} from "react-router-dom";
-import { Form, Label, Segment } from "semantic-ui-react";
+import { useHistory } from "react-router-dom";
+import { Form } from "semantic-ui-react";
 import AuthService from "../services/auth.service";
-import UserWebsocket from 'services/user.websocket'
-import Swal from 'sweetalert2'
+import UserWebsocket from "services/user.websocket";
+import Swal from "sweetalert2";
 function FormExampleFieldErrorLabel(prop) {
   const history = useHistory();
   const [myState, setMyState] = useState({
     list: [
-   
-      { id: "email", val: '' },
-      { id: "reffer", val: '' },
+      { id: "email", val: "" },
+      { id: "reffer", val: "" },
       { id: "accept", val: false },
       { id: "hasError", val: false },
       { id: "loading", val: false },
@@ -25,16 +18,16 @@ function FormExampleFieldErrorLabel(prop) {
   });
 
   const updateHandler = (e, data) => {
-    
     var val = data.value;
-    if(!data.value){
-        val = data.checked
-        if(data.checked == false){val = ''}
+    if (!data.value) {
+      val = data.checked;
+      if (data.checked == false) {
+        val = "";
+      }
     }
     onUpdateItem(data.name, val);
-    if(val!=''){
-        onUpdateItem('hasError', false);
-   
+    if (val != "") {
+      onUpdateItem("hasError", false);
     }
   };
   const findStateId = (st, val) => {
@@ -43,7 +36,6 @@ function FormExampleFieldErrorLabel(prop) {
     })[0].val;
   };
   const onUpdateItem = (key, val) => {
-      
     setMyState(() => {
       const list = myState.list.map((item) => {
         if (item.id === key) {
@@ -69,93 +61,91 @@ function FormExampleFieldErrorLabel(prop) {
     }
     if (_error && !findStateId(myState, "hasError")) {
       onUpdateItem("hasError", true);
-
     }
     if (_error && findStateId(myState, "loading")) {
-  
       onUpdateItem("loading", false);
     }
     return _error;
   };
-  const handleSubmit=()=> {
- 
+  const handleSubmit = () => {
     var email = findStateId(myState, "email");
-   
+
     var reffer = null;
-    if(localStorage.getItem('reffer')){reffer=localStorage.getItem('reffer')}
-  
-    onUpdateItem('loading', true);
-  
-    if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
-        
-        AuthService.register(email).then(
-            (response) => {
-                onUpdateItem('loading', false);
-               
-              if (response.data.accessToken) {
-                prop.onUpdateItem("currentUser", response.data);
-                localStorage.setItem("user", JSON.stringify(response.data));
-                UserWebsocket.disconnect()
-                UserWebsocket.connect(response.data.accessToken+"&user="+response.data.username,response.data);
-                history.push("/panel/dashboard");
-              }else{
-                onUpdateItem('loading', false);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: response,
-                    
-                  })
-              }
-              
-            },
-            error => {
-              const resMessage =
-                (error.response &&
-                  error.response.data &&
-                  error.response.data.message) ||
-                error.message ||
-                error.toString();
-                onUpdateItem('loading', false);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: resMessage,
-                    
-                  })
-             
-            }
-          );
-    } else {
-        onUpdateItem('loading', false);
+    if (localStorage.getItem("reffer")) {
+      reffer = localStorage.getItem("reffer");
     }
-  }
+
+    onUpdateItem("loading", true);
+
+    if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
+      AuthService.register(email).then(
+        (response) => {
+          onUpdateItem("loading", false);
+
+          if (response.data.accessToken) {
+            prop.onUpdateItem("currentUser", response.data);
+            localStorage.setItem("user", JSON.stringify(response.data));
+            UserWebsocket.disconnect();
+            UserWebsocket.connect(
+              response.data.accessToken + "&user=" + response.data.username,
+              response.data
+            );
+            history.push("/panel/dashboard");
+          } else {
+            onUpdateItem("loading", false);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: response,
+            });
+          }
+        },
+        (error) => {
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+          onUpdateItem("loading", false);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: resMessage,
+          });
+        }
+      );
+    } else {
+      onUpdateItem("loading", false);
+    }
+  };
 
   var email = findStateId(myState, "email");
 
   var loading = findStateId(myState, "loading");
   return (
-    
-      <Form onSubmit={handleSubmit} inverted size='small'>
-      
-        <Form.Input
-          error={getError(email, "", "")}
-          fluid
-          
-          name="email"
-          type="email"
-          label="Email"
-          placeholder="Email"
-          onChange={updateHandler}
-        />
-    
-        
-        
-        <Form.Button loading={loading}
+    <Form onSubmit={handleSubmit} inverted size="small">
+      <Form.Input
+        error={getError(email, "", "")}
+        fluid
+        name="email"
+        type="email"
+        label="Email"
+        placeholder="Email"
+        onChange={updateHandler}
+      />
+
+      <Form.Button
+        loading={loading}
         onClick={() => onUpdateItem("submit", true)}
-        disabled={loading} inverted color='red' fluid size='small' content="Submit" />
-     </Form>
-   
+        disabled={loading}
+        inverted
+        color="red"
+        fluid
+        size="small"
+        content="Submit"
+      />
+    </Form>
   );
 }
 

@@ -1,60 +1,32 @@
 import React, { Component } from "react";
 import Select from "react-select";
-import NotificationAlert from "react-notification-alert";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import Avatar from "react-avatar";
 
-import CheckButton from "react-validation/build/button";
 import $ from "jquery";
 import Countdown from "react-countdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlaystation, faXbox } from "@fortawesome/free-brands-svg-icons";
-import { faMobileAlt } from "@fortawesome/free-solid-svg-icons";
 import { withRouter } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import AuthService from "services/auth.service";
-import NumericInput from 'react-numeric-input';
-import Active  from "components/active.component";
+import NumericInput from "react-numeric-input";
+import Active from "components/active.component";
 import userService from "services/user.service";
-import AddMatch  from "components/add/addmatch.component"; 
 
 // react-bootstrap components
-import {
-  Badge,
-  Alert,
-  Button,
-  Card,
-  InputGroup,
-  Navbar,
-  Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
-  Container,
-  Row,
-  ListGroup,
-  Col,
-  TabContent,
-  TabPane,
-  Tab,
-} from "react-bootstrap";
+import { Badge, Card, Nav, Row, Col, Tab } from "react-bootstrap";
 
 import {
   setAvatar,
   getColor,
   getIcon,
   renderer,
-  printMatchBlock,
   isJson,
   getModalTag,
-  getGameTag,
-  getMatchTitle,
-  haveGameTag,
   printRequired,
-  haveAdmin
-  
+  haveAdmin,
 } from "components/include";
 import Games from "server/Games";
 
@@ -74,33 +46,29 @@ const required = (value) => {
 const getBlockGames = (filtermode) => {
   var gamemap = [];
   Games.games.map((item, i) => {
-    
     item.gameconsole.map((consoles, j) => {
-      if(filtermode == 'Match'){
-        if (item.haveMatch == true
-          ) {
-            gamemap.push({
-              value: item.name + " - " + consoles.consolename,
-              label: item.name + " - " + consoles.consolename,
-            });
-          }
-      }else if(filtermode == 'Tournament'){
-        if (item.haveTournament == true
-          ) {
-            gamemap.push({
-              value: item.name + " - " + consoles.consolename,
-              label: item.name + " - " + consoles.consolename,
-            });
-          }
-      }else if(filtermode == 'League'){
-        if (item.haveLeague == true
-          ) {
-            gamemap.push({
-              value: item.name + " - " + consoles.consolename,
-              label: item.name + " - " + consoles.consolename,
-            });
-          }
-      }else{
+      if (filtermode == "Match") {
+        if (item.haveMatch == true) {
+          gamemap.push({
+            value: item.name + " - " + consoles.consolename,
+            label: item.name + " - " + consoles.consolename,
+          });
+        }
+      } else if (filtermode == "Tournament") {
+        if (item.haveTournament == true) {
+          gamemap.push({
+            value: item.name + " - " + consoles.consolename,
+            label: item.name + " - " + consoles.consolename,
+          });
+        }
+      } else if (filtermode == "League") {
+        if (item.haveLeague == true) {
+          gamemap.push({
+            value: item.name + " - " + consoles.consolename,
+            label: item.name + " - " + consoles.consolename,
+          });
+        }
+      } else {
         if (
           "All" == filtermode ||
           consoles.consolename == filtermode ||
@@ -112,7 +80,6 @@ const getBlockGames = (filtermode) => {
           });
         }
       }
-      
     });
   });
 
@@ -201,8 +168,8 @@ const getBlockGameModesVal = (filtermode) => {
 };
 
 const MySwal = withReactContent(Swal);
-var nowS  = new Date()
-var nowE  = new Date()
+var nowS = new Date();
+var nowE = new Date();
 
 class CreateMatch extends Component {
   constructor(props) {
@@ -217,7 +184,7 @@ class CreateMatch extends Component {
     this.setAvalableFor = this.setAvalableFor.bind(this);
     this.setStartTime = this.setStartTime.bind(this);
     this.selectrequired = this.selectrequired.bind(this);
-    
+
     this.setInSign = this.setInSign.bind(this);
     this.setOutSign = this.setOutSign.bind(this);
     this.setRules = this.setRules.bind(this);
@@ -236,133 +203,127 @@ class CreateMatch extends Component {
       currentUser: AuthService.getCurrentUser(),
       gamemaplocal: [],
       BetAmount: 10,
-      Prize: '',
+      Prize: "",
       AvalableFor: { value: "60", label: "1 Hour" },
       StartTime: { value: "60", label: "1 Hour Later" },
       loading: false,
       submit: false,
       GameTag: "",
       message: "",
-      Rules: "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>",
-      inSign:{ value: "Dollar", label: "Dollar" },
-      outSign:{ value: "Dollar", label: "Dollar" },
-      TournamentPayout:"4,100.00@8,65.00,35.00@16,50.00,30.00,10.00,10.00@32,50.00,30.00,10.00,10.00@64,50.00,30.00,10.00,10.000",
-      
-      StartTimeLeague:nowS,
-      EndTimeLeague:nowE,
-      TotalPlayer:200,
-      gameName: '',
-        gamePlatform: '',
-        gameID: '',
-        gameNickname: '',
+      Rules:
+        "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>",
+      inSign: { value: "Dollar", label: "Dollar" },
+      outSign: { value: "Dollar", label: "Dollar" },
+      TournamentPayout:
+        "4,100.00@8,65.00,35.00@16,50.00,30.00,10.00,10.00@32,50.00,30.00,10.00,10.00@64,50.00,30.00,10.00,10.000",
+
+      StartTimeLeague: nowS,
+      EndTimeLeague: nowE,
+      TotalPlayer: 200,
+      gameName: "",
+      gamePlatform: "",
+      gameID: "",
+      gameNickname: "",
     };
   }
-  
+
   setSelectedGameName(e) {
-    
     //this.handleTagForm(e,getBlockGameModesVal(e))
   }
-  setSelectedTag(e,p) {
-    if(p=='PS4'||e=='PS4'){e='PSN';p='PSN';}
-  if(p=='PS5'||e=='PS5'){e='PSN';p='PSN';}
-  if(p=='XBOX'||e=='XBOX'){e='XBOX';p='XBOX';}
+  setSelectedTag(e, p) {
+    if (p == "PS4" || e == "PS4") {
+      e = "PSN";
+      p = "PSN";
+    }
+    if (p == "PS5" || e == "PS5") {
+      e = "PSN";
+      p = "PSN";
+    }
+    if (p == "XBOX" || e == "XBOX") {
+      e = "XBOX";
+      p = "XBOX";
+    }
     this.setState({
-      gameName: e.replace(' Warzone',''),
-      gamePlatform: p
+      gameName: e.replace(" Warzone", ""),
+      gamePlatform: p,
     });
-    
-    this.handleTagForm(e.replace(' Warzone',''),p)
+
+    this.handleTagForm(e.replace(" Warzone", ""), p);
   }
   setUserTag(e) {
     this.setState({
-      currentUserTag: e
+      currentUserTag: e,
     });
-    
   }
-  
-handleTagForm(game,platform) {
-  
-  
- // console.log(game);
-                const resetPw = async () => {
-                  const swalval = await Swal.fire(getModalTag(game));
-        
-                  let v = (swalval && swalval.value) || swalval.dismiss;
-                  console.log(swalval);
-                  if (v) {
-                    if (v.tagid) {
-                      
-                        if (v.tagid == game+"2") {
-                          this.handleTagForm(game+'2')
-                        }else if (v.tagid == game+"3") {
-                          this.handleTagForm(game+'3')
-                        }else{
-                          this.setState({
-                            gameID: '',
-                            gameNickname: '',
-                          });
-                          if (v.tagid != "") {
-                            this.setState({
-                              gameID: v.tagid.replace('#',''),
-                              
-                            });
-                          }
-                          if (v.tagname && v.tagname != "") {
-                            this.setState({
-                              gameNickname: v.tagname,
-                              
-                            });
-                          }
-                          if (v.tagplatform && v.tagplatform != "") {
-                            this.setState({
-                              gamePlatform: v.tagplatform,
-                              
-                            });
-                          }
-                          
-                            console.log(this.state);
-                            this.handleSaveTags();
-                          
-                        }
-                        
-                      }
-                      
-                      //setformdata(swalval);
-                      
-                    
-                  }
-                };
-                resetPw();
-              }
-              selectrequired(field,value) {
-                //console.log(field+': '+value+' -' + allValid+': '+reqnum+' -' + this.state.submit);
-                if (!value ) {
-                    allValid = false;
-                    if (this.state.submit && reqnum==0) {
-                      //console.log(field)
-                      reqnum = reqnum+1;
-                     
-                      $('input.'+field+'').focus()
 
-                      return (
-                        printRequired()
-                      )
-                
+  handleTagForm(game, platform) {
+    // console.log(game);
+    const resetPw = async () => {
+      const swalval = await Swal.fire(getModalTag(game));
+
+      let v = (swalval && swalval.value) || swalval.dismiss;
+      console.log(swalval);
+      if (v) {
+        if (v.tagid) {
+          if (v.tagid == game + "2") {
+            this.handleTagForm(game + "2");
+          } else if (v.tagid == game + "3") {
+            this.handleTagForm(game + "3");
+          } else {
+            this.setState({
+              gameID: "",
+              gameNickname: "",
+            });
+            if (v.tagid != "") {
+              this.setState({
+                gameID: v.tagid.replace("#", ""),
+              });
             }
-            } else {
-              if (reqnum==1 ) {
-                reqnum=0;
-              allValid = true;
-              }
+            if (v.tagname && v.tagname != "") {
+              this.setState({
+                gameNickname: v.tagname,
+              });
             }
-                
-              }
+            if (v.tagplatform && v.tagplatform != "") {
+              this.setState({
+                gamePlatform: v.tagplatform,
+              });
+            }
+
+            console.log(this.state);
+            this.handleSaveTags();
+          }
+        }
+
+        //setformdata(swalval);
+      }
+    };
+    resetPw();
+  }
+  selectrequired(field, value) {
+    //console.log(field+': '+value+' -' + allValid+': '+reqnum+' -' + this.state.submit);
+    if (!value) {
+      allValid = false;
+      if (this.state.submit && reqnum == 0) {
+        //console.log(field)
+        reqnum = reqnum + 1;
+
+        $("input." + field + "").focus();
+
+        return printRequired();
+      }
+    } else {
+      if (reqnum == 1) {
+        reqnum = 0;
+        allValid = true;
+      }
+    }
+  }
   setGameName(e) {
     this.setState({
       GName: e,
       GameMode: getBlockGameModesVal(e),
     });
-    
   }
   setInSign(e) {
     this.setState({
@@ -376,33 +337,28 @@ handleTagForm(game,platform) {
   }
   setRules(e) {
     this.setState({
-      Rules: e
+      Rules: e,
     });
-    
   }
   setTournamentPayout(e) {
     this.setState({
-      tournamentPayout: e.target.value
+      tournamentPayout: e.target.value,
     });
-    
   }
   setStartTimeLeague(e) {
     this.setState({
-      StartTimeLeague: e.target.value
+      StartTimeLeague: e.target.value,
     });
-    
   }
   setEndTimeLeague(e) {
     this.setState({
-      EndTimeLeague: e.target.value
+      EndTimeLeague: e.target.value,
     });
-    
   }
   setPrize(e) {
     this.setState({
-      Prize: e
+      Prize: e,
     });
-    
   }
   setTournamentMode(e) {
     this.setState({
@@ -416,7 +372,6 @@ handleTagForm(game,platform) {
     });
   }
   setBetAmount(e) {
-    
     this.setState({
       BetAmount: e,
     });
@@ -433,53 +388,45 @@ handleTagForm(game,platform) {
       StartTime: e,
     });
   }
-  
+
   setTotalPlayer(e) {
-    console.log(this.state)
+    console.log(this.state);
     this.setState({
       TotalPlayer: e,
     });
   }
-  
+
   handleSaveTags() {
     Swal.fire({
-      title: '<br/>Please Wait...',
-      text: 'Is working..',
-      customClass:'tag',
+      title: "<br/>Please Wait...",
+      text: "Is working..",
+      customClass: "tag",
       allowOutsideClick: false,
       allowEscapeKey: false,
       allowEnterKey: false,
       didOpen: () => {
-          Swal.showLoading()
-      }
-  })
-  
+        Swal.showLoading();
+      },
+    });
+
     userService
       .saveTags(
-       
         this.state.gameName,
         this.state.gamePlatform,
         this.state.gameID,
-        this.state.gameNickname,
-
+        this.state.gameNickname
       )
       .then(
         (response) => {
-         
           let jsonBool = isJson(response);
-   
+
           if (jsonBool) {
-            
-              this.setUserTag(response)
-              localStorage.setItem("user", JSON.stringify(response));
-              Swal.fire("", "Data saved successfully.", "success");
-          
+            this.setUserTag(response);
+            localStorage.setItem("user", JSON.stringify(response));
+            Swal.fire("", "Data saved successfully.", "success");
           } else {
-           
-              Swal.fire("", response, "error");
-           
+            Swal.fire("", response, "error");
           }
-        
         },
         (error) => {
           const resMessage =
@@ -492,70 +439,66 @@ handleTagForm(game,platform) {
         }
       );
   }
-  
+
   handleCreateLeague(e) {
     e.preventDefault();
-    
+
     if (allValid) {
-     var sdate = new Date(this.state.StartTimeLeague).valueOf();
-     var edate = new Date(this.state.EndTimeLeague).valueOf();
-        this.setState({
-          message: "",
-          loading: true,
-        });
-        userService
-          .createLeague(
-            this.state.GName.value.split(" - ")[0],
-            this.state.GName.value.split(" - ")[1],
-            'League',
-            this.state.BetAmount,
-            sdate,
-            edate,
-            this.state.TotalPlayer,
-            
-            '0-70, 30.00, 20.00, 14.00, 10.00, 8.00, 7.00, 6.00, 5.00|71-100, 29.00, 18.00, 12.50, 10.00, 8.00, 6.50, 5.50, 4.50, 3.50, 2.50|101-200, 28.00, 17.50, 11.50, 8.50, 7.00, 5.50, 4.50, 3.50, 2.50, 1.50, 1.00x10|201-400, 27.00, 16.50, 10.50, 8.00, 6.25, 4.75, 3.75, 2.75, 1.75, 1.25, 0.75x10, 0.50x20|401-700, 26.00, 15.50, 10.00, 7.50, 6.00, 4.50, 3.50, 2.50, 1.50, 1.00, 0.65x10, 0.40x20, 0.25x30|701-1000, 25.00, 15.00, 10.00, 7.25, 5.50, 4.25, 3.25, 2.25, 1.25, 0.75, 0.55x10, 0.40x20, 0.25x30, 0.15x30',
+      var sdate = new Date(this.state.StartTimeLeague).valueOf();
+      var edate = new Date(this.state.EndTimeLeague).valueOf();
+      this.setState({
+        message: "",
+        loading: true,
+      });
+      userService
+        .createLeague(
+          this.state.GName.value.split(" - ")[0],
+          this.state.GName.value.split(" - ")[1],
+          "League",
+          this.state.BetAmount,
+          sdate,
+          edate,
+          this.state.TotalPlayer,
+
+          "0-70, 30.00, 20.00, 14.00, 10.00, 8.00, 7.00, 6.00, 5.00|71-100, 29.00, 18.00, 12.50, 10.00, 8.00, 6.50, 5.50, 4.50, 3.50, 2.50|101-200, 28.00, 17.50, 11.50, 8.50, 7.00, 5.50, 4.50, 3.50, 2.50, 1.50, 1.00x10|201-400, 27.00, 16.50, 10.50, 8.00, 6.25, 4.75, 3.75, 2.75, 1.75, 1.25, 0.75x10, 0.50x20|401-700, 26.00, 15.50, 10.00, 7.50, 6.00, 4.50, 3.50, 2.50, 1.50, 1.00, 0.65x10, 0.40x20, 0.25x30|701-1000, 25.00, 15.00, 10.00, 7.25, 5.50, 4.25, 3.25, 2.25, 1.25, 0.75, 0.55x10, 0.40x20, 0.25x30, 0.15x30",
           this.state.inSign.value,
           this.state.outSign.value,
           this.state.outSign.value,
           this.state.Rules
-          )
-          .then(
-            
-            (response) => {
-              if (response.data=='League event created.'){
-                Swal.fire("", "Data saved successfully.", "success").then(
-                  (result) => {
-                    this.props.history.push("/panel/dashboard");
-                  }
-                );
-              }else{
-                this.setState({
-                  successful: false,
-                  message: "",
-                  submit: false,
-                  loading: false,
-                });
-                
-            }
-            },
-            (error) => {
-              const resMessage =
-                (error.response &&
-                  error.response.data &&
-                  error.response.data.message) ||
-                error.message ||
-                error.toString();
-            
-
+        )
+        .then(
+          (response) => {
+            if (response.data == "League event created.") {
+              Swal.fire("", "Data saved successfully.", "success").then(
+                (result) => {
+                  this.props.history.push("/panel/dashboard");
+                }
+              );
+            } else {
               this.setState({
                 successful: false,
-                message: resMessage,
+                message: "",
                 submit: false,
                 loading: false,
               });
             }
-          );
-      
+          },
+          (error) => {
+            const resMessage =
+              (error.response &&
+                error.response.data &&
+                error.response.data.message) ||
+              error.message ||
+              error.toString();
+
+            this.setState({
+              successful: false,
+              message: resMessage,
+              submit: false,
+              loading: false,
+            });
+          }
+        );
     } else {
       this.setState({
         submit: true,
@@ -564,39 +507,34 @@ handleTagForm(game,platform) {
       this.form.validateAll();
     }
   }
-  
+
   render() {
     var { currentUser } = this.state;
-    
-    
+
     var _mode = " 1 v 1 ";
     var _color = "#404040";
-    
-        
+
     return (
       <>
-      <Active {...this.props} token={currentUser}/>
+        <Active {...this.props} token={currentUser} />
         <Tab.Container id="plain-tabs-example" defaultActiveKey="tournsment">
           <Nav role="tablist" variant="tabs">
-           
-            {(haveAdmin(currentUser.roles))&&(
+            {haveAdmin(currentUser.roles) && (
               <>
-               <Nav.Item>
-              <Nav.Link eventKey="tournsment">Tournament</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link eventKey="league">League</Nav.Link>
-            </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="tournsment">Tournament</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="league">League</Nav.Link>
+                </Nav.Item>
               </>
             )}
-           
           </Nav>
           <Card>
             <Card.Body>
               <Tab.Content>
-             
                 <Tab.Pane eventKey="tournsment">
-                  <AddTour token={currentUser} {...this.props}/>
+                  <AddTour token={currentUser} {...this.props} />
                 </Tab.Pane>
                 <Tab.Pane eventKey="league">
                   <Row>
@@ -623,18 +561,19 @@ handleTagForm(game,platform) {
                                 options={getBlockGames("League")}
                                 placeholder=""
                               />
-                            
                             </div>
 
                             <div className="form-group">
                               <label>Bet</label>
-                              <NumericInput min={1} step={1} max={1000} className="form-control"
-                    name="BetAmount"
+                              <NumericInput
+                                min={1}
+                                step={1}
+                                max={1000}
+                                className="form-control"
+                                name="BetAmount"
                                 value={this.state.BetAmount}
-                                onChange={this.setBetAmount}/>
-                              
-                            
-                           
+                                onChange={this.setBetAmount}
+                              />
                             </div>
                             <div className="form-group">
                               <label>InSign</label>
@@ -651,49 +590,51 @@ handleTagForm(game,platform) {
                                 placeholder=""
                                 isSearchable={false}
                               />
-                              
                             </div>
                             <div className="form-group">
                               <label>Total Players</label>
-                              <NumericInput min={1} step={1} max={1000} className="form-control"
-                    name="TotalPlayer"
+                              <NumericInput
+                                min={1}
+                                step={1}
+                                max={1000}
+                                className="form-control"
+                                name="TotalPlayer"
                                 value={this.state.TotalPlayer}
-                                onChange={this.setTotalPlayer}/>
-                              
-                            
+                                onChange={this.setTotalPlayer}
+                              />
                             </div>
                             <div className="form-group">
                               <label>Start Time</label>
                               <Input
-                    type="datetime-local"
-                    className="form-control"
-                    name="StartTime"
-                    value={this.state.StartTimeLeague}
-                    onChange={this.setStartTimeLeague}
-                  />
-                              
+                                type="datetime-local"
+                                className="form-control"
+                                name="StartTime"
+                                value={this.state.StartTimeLeague}
+                                onChange={this.setStartTimeLeague}
+                              />
                             </div>
                             <div className="form-group">
                               <label>End Time</label>
                               <Input
-                    type="datetime-local"
-                    className="form-control"
-                    name="EndTime"
-                    value={this.state.EndTimeLeague}
-                    onChange={this.setEndTimeLeague}
-                  />
-                              
+                                type="datetime-local"
+                                className="form-control"
+                                name="EndTime"
+                                value={this.state.EndTimeLeague}
+                                onChange={this.setEndTimeLeague}
+                              />
                             </div>
-                            
+
                             <div className="form-group">
                               <label>Prize</label>
-                              <NumericInput min={1} step={1} max={1000} className="form-control"
-                    name="BetAmount"
-                    value={this.state.Prize}
-                    onChange={this.setPrize}/>
-
-                              
-                            
+                              <NumericInput
+                                min={1}
+                                step={1}
+                                max={1000}
+                                className="form-control"
+                                name="BetAmount"
+                                value={this.state.Prize}
+                                onChange={this.setPrize}
+                              />
                             </div>
                             <div className="form-group">
                               <label>OutSign</label>
@@ -710,20 +651,18 @@ handleTagForm(game,platform) {
                                 placeholder=""
                                 isSearchable={false}
                               />
-                              
                             </div>
                             <div className="form-group">
                               <label>Rules</label>
                               <Input
-                    type="text"
-                    className="form-control"
-                    name="name"
-                    value={this.state.Rules}
-                    onChange={this.setRules}
-                  />
-                              
+                                type="text"
+                                className="form-control"
+                                name="name"
+                                value={this.state.Rules}
+                                onChange={this.setRules}
+                              />
                             </div>
-                            
+
                             {this.state.message && (
                               <div className="form-group">
                                 <div
@@ -752,173 +691,176 @@ handleTagForm(game,platform) {
                       </Form>
                     </Col>
                     <Col md="3">
-                    {(this.state.GName.value.indexOf(' - ') > -1) && (
-                      <Card className="card-user chall">
-                        <Card.Header className="no-padding">
-                          <div className="card-image">
-                            <img
-                              src={
-                                require("assets/images/games/" +
-                                  this.state.GName.value.split(" - ")[0] +
-                                  ".jpg").default
-                              }
-                            ></img>
-                          </div>
-                        </Card.Header>
-                        <Card.Body>
-                          <Row>
-                            <Col style={{ lineHeight: "30px" }}>
-                              <Card.Title as="h4">
-                                {this.state.GName.value.split(" - ")[0]}
-                              </Card.Title>
-                              <small className="text-muted">Tournament</small>
-                              <br />
+                      {this.state.GName.value.indexOf(" - ") > -1 && (
+                        <Card className="card-user chall">
+                          <Card.Header className="no-padding">
+                            <div className="card-image">
+                              <img
+                                src={
+                                  require("assets/images/games/" +
+                                    this.state.GName.value.split(" - ")[0] +
+                                    ".jpg").default
+                                }
+                              ></img>
+                            </div>
+                          </Card.Header>
+                          <Card.Body>
+                            <Row>
+                              <Col style={{ lineHeight: "30px" }}>
+                                <Card.Title as="h4">
+                                  {this.state.GName.value.split(" - ")[0]}
+                                </Card.Title>
+                                <small className="text-muted">Tournament</small>
+                                <br />
 
-                              <span>
-                                <Avatar
-                                  size="30"
-                                  title={currentUser.username}
-                                  round={true}
-                                  name={setAvatar(currentUser.username)}
-                                />
-                                {(() => {
-                                  const rows = [];
-                                  for (
-                                    let i = 0;
-                                    i < this.state.TournamentMode.value - 1;
-                                    i++
-                                  ) {
-                                    if (i < 3) {
-                                      rows.push(
-                                        <Avatar
-                                          size="20"
-                                          key={i}
-                                          round={true}
-                                          name="?"
-                                          src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
-                                          color="lightgray"
-                                        />
-                                      );
-                                    } else {
-                                      rows.push(
-                                        <Avatar
-                                          size="22"
-                                          key={i}
-                                          round={true}
-                                          name="+ 4"
-                                          color="gray"
-                                        />
-                                      );
-                                      break;
+                                <span>
+                                  <Avatar
+                                    size="30"
+                                    title={currentUser.username}
+                                    round={true}
+                                    name={setAvatar(currentUser.username)}
+                                  />
+                                  {(() => {
+                                    const rows = [];
+                                    for (
+                                      let i = 0;
+                                      i < this.state.TournamentMode.value - 1;
+                                      i++
+                                    ) {
+                                      if (i < 3) {
+                                        rows.push(
+                                          <Avatar
+                                            size="20"
+                                            key={i}
+                                            round={true}
+                                            name="?"
+                                            src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
+                                            color="lightgray"
+                                          />
+                                        );
+                                      } else {
+                                        rows.push(
+                                          <Avatar
+                                            size="22"
+                                            key={i}
+                                            round={true}
+                                            name="+ 4"
+                                            color="gray"
+                                          />
+                                        );
+                                        break;
+                                      }
                                     }
-                                  }
-                                  return rows;
-                                })()}
-                              </span>
+                                    return rows;
+                                  })()}
+                                </span>
 
-                              <br />
-                              <small className="text-muted">Start Time</small>
-                              {this.state.TournamentMode.value == "4" ? (
-                                <>
-                                  <br />
-                                  <small className="text-muted">
-                                    Final Match
-                                  </small>
-                                </>
-                              ) : (
-                                <>
-                                  <br />
-                                  <small className="text-muted">
-                                    SemiFinal Match
-                                  </small>
-                                  <br />
-                                  <small className="text-muted">
-                                    Final Match
-                                  </small>
-                                </>
-                              )}
-                            </Col>
-                            <Col
-                              style={{ lineHeight: "30px" }}
-                              className="text-muted text-right"
-                            >
-                              <small className="text-muted">
-                                <FontAwesomeIcon
-                                  fixedWidth
-                                  icon={getIcon(
-                                    this.state.GName.value.split(" - ")[1]
-                                  )}
-                                />{" "}
-                                {this.state.GName.value.split(" - ")[1]}
-                              </small>
-                              <br />
-                              <Badge
-                                variant={getColor(this.state.BetAmount)}
+                                <br />
+                                <small className="text-muted">Start Time</small>
+                                {this.state.TournamentMode.value == "4" ? (
+                                  <>
+                                    <br />
+                                    <small className="text-muted">
+                                      Final Match
+                                    </small>
+                                  </>
+                                ) : (
+                                  <>
+                                    <br />
+                                    <small className="text-muted">
+                                      SemiFinal Match
+                                    </small>
+                                    <br />
+                                    <small className="text-muted">
+                                      Final Match
+                                    </small>
+                                  </>
+                                )}
+                              </Col>
+                              <Col
+                                style={{ lineHeight: "30px" }}
+                                className="text-muted text-right"
                               >
-                                ${this.state.BetAmount}
-                              </Badge>
-                              <br />
-                              <small className="text-muted">
-                                1/{this.state.TournamentMode.value}{" "}
-                              </small>
-                              <br />
+                                <small className="text-muted">
+                                  <FontAwesomeIcon
+                                    fixedWidth
+                                    icon={getIcon(
+                                      this.state.GName.value.split(" - ")[1]
+                                    )}
+                                  />{" "}
+                                  {this.state.GName.value.split(" - ")[1]}
+                                </small>
+                                <br />
+                                <Badge variant={getColor(this.state.BetAmount)}>
+                                  ${this.state.BetAmount}
+                                </Badge>
+                                <br />
+                                <small className="text-muted">
+                                  1/{this.state.TournamentMode.value}{" "}
+                                </small>
+                                <br />
 
-                              <small className="text-muted">
-                                {" "}
-                                <Countdown
-                                  renderer={renderer}
-                                  date={
-                                    Date.now() +
-                                    this.state.StartTime.value * 1000 * 60
-                                  }
-                                />
-                              </small>
-                              {this.state.TournamentMode.value == "4" ? (
-                                <>
-                                  <br />
-                                  <small className="text-muted">
-                                    <Countdown
-                                      renderer={renderer}
-                                      date={
-                                        Date.now() +
-                                        this.state.StartTime.value * 1000 * 60 +
-                                        60 * 1000 * 60
-                                      }
-                                    />
-                                  </small>
-                                </>
-                              ) : (
-                                <>
-                                  <br />
-                                  <small className="text-muted">
-                                    <Countdown
-                                      renderer={renderer}
-                                      date={
-                                        Date.now() +
-                                        this.state.StartTime.value * 1000 * 60 +
-                                        60 * 1000 * 60
-                                      }
-                                    />
-                                  </small>
-                                  <br />
-                                  <small className="text-muted">
-                                    <Countdown
-                                      renderer={renderer}
-                                      date={
-                                        Date.now() +
-                                        this.state.StartTime.value * 1000 * 60 +
-                                        120 * 1000 * 60
-                                      }
-                                    />
-                                  </small>
-                                </>
-                              )}
-                            </Col>
-                          </Row>
-                        </Card.Body>
-                      </Card>
-                    )
+                                <small className="text-muted">
+                                  {" "}
+                                  <Countdown
+                                    renderer={renderer}
+                                    date={
+                                      Date.now() +
+                                      this.state.StartTime.value * 1000 * 60
                                     }
+                                  />
+                                </small>
+                                {this.state.TournamentMode.value == "4" ? (
+                                  <>
+                                    <br />
+                                    <small className="text-muted">
+                                      <Countdown
+                                        renderer={renderer}
+                                        date={
+                                          Date.now() +
+                                          this.state.StartTime.value *
+                                            1000 *
+                                            60 +
+                                          60 * 1000 * 60
+                                        }
+                                      />
+                                    </small>
+                                  </>
+                                ) : (
+                                  <>
+                                    <br />
+                                    <small className="text-muted">
+                                      <Countdown
+                                        renderer={renderer}
+                                        date={
+                                          Date.now() +
+                                          this.state.StartTime.value *
+                                            1000 *
+                                            60 +
+                                          60 * 1000 * 60
+                                        }
+                                      />
+                                    </small>
+                                    <br />
+                                    <small className="text-muted">
+                                      <Countdown
+                                        renderer={renderer}
+                                        date={
+                                          Date.now() +
+                                          this.state.StartTime.value *
+                                            1000 *
+                                            60 +
+                                          120 * 1000 * 60
+                                        }
+                                      />
+                                    </small>
+                                  </>
+                                )}
+                              </Col>
+                            </Row>
+                          </Card.Body>
+                        </Card>
+                      )}
                     </Col>
                   </Row>
                 </Tab.Pane>

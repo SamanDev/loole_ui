@@ -1,6 +1,8 @@
-import React from 'react'
-import { Checkbox } from 'semantic-ui-react'
+import React from "react";
+import { Checkbox } from "semantic-ui-react";
 
-const CheckboxToggle = (prop) => <Checkbox toggle defaultChecked={prop.check} {...prop} />
+const CheckboxToggle = (prop) => (
+  <Checkbox toggle defaultChecked={prop.check} {...prop} />
+);
 
-export default CheckboxToggle
+export default CheckboxToggle;

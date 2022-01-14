@@ -5,20 +5,8 @@ import { Tab, Menu } from "semantic-ui-react";
 import { useAllCoins } from "services/hooks";
 import Active from "components/active.component";
 import Report from "components/report.component";
-import ShetabDeposit from "components/deposit/shetabdeposit.component";
-import PaparaDeposit from "components/deposit/paparadeposit.component";
-import ShetabCashout from "components/deposit/shetabcashout.component";
-import PaparaCashout from "components/deposit/paparacashout.component";
-import PMCashout from "components/deposit/pmcashout.component";
-import CrDeposit from "components/deposit/crdeposit.component";
 // react-bootstrap components
-import { Button, Card, Nav, Row, Col } from "react-bootstrap";
-import {
-  haveGetway,
-  haveGetwayMode,
-  get_date_locale,
-  getGroupBadge,
-} from "components/include";
+import { Card, Row, Col } from "react-bootstrap";
 var dataTransaction = [
   {
     id: 10,
@@ -50,7 +38,7 @@ function Cashier(prop) {
 
   var userMethods = currentUser.cashierGateways;
   userMethods.sort((a, b) => (a.mode > b.mode ? 1 : -1));
-  dataTransaction = (currentUser.usersReports);
+  dataTransaction = currentUser.usersReports;
   useEffect(() => {
     prop.onUpdateItem("coins", eventCoins);
   }, [eventCoins]);
@@ -90,7 +78,9 @@ function Cashier(prop) {
                       lg="4"
                       xl="3"
                       key={u.toString()}
-                      onClick={() => handleMethod(cashierGateway.name+'Deposit')}
+                      onClick={() =>
+                        handleMethod(cashierGateway.name + "Deposit")
+                      }
                     >
                       <div className="counter-box bg-color-1 card">
                         <div className="img">
@@ -138,13 +128,15 @@ function Cashier(prop) {
                     _img = "iran.png";
                     _limit = "Max: $100";
                   }
-                 
+
                   return (
                     <Col
                       lg="4"
                       xl="3"
                       key={u.toString()}
-                      onClick={() => handleMethod(cashierGateway.name+'Cashout')}
+                      onClick={() =>
+                        handleMethod(cashierGateway.name + "Cashout")
+                      }
                     >
                       <div className="counter-box bg-color-1 card">
                         <div className="img">
@@ -176,7 +168,7 @@ function Cashier(prop) {
       menuItem: <Menu.Item key={"3"}>Transactions</Menu.Item>,
       render: () => (
         <Tab.Pane attached={false}>
-         <Report usersReports={dataTransaction} />
+          <Report usersReports={dataTransaction} />
         </Tab.Pane>
       ),
     },

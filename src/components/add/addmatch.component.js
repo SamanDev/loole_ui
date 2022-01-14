@@ -13,14 +13,12 @@ import {
   Form,
   Select,
   Card,
-  Divider,
   Header,
 } from "semantic-ui-react";
 import { Row, Col } from "react-bootstrap";
-import { handleTagForm, date_edit, printJoinalerts } from "components/include";
+import { handleTagForm, printJoinalerts } from "components/include";
 import MatchCard from "components/matchcard.component";
 var moment = require("moment");
-
 
 const getBlockGames = (filtermode) => {
   var gamemap = [];
@@ -268,11 +266,9 @@ class AddMatch extends Component {
           if (response.data.accessToken) {
             this.props.onUpdateItem("currentUser", response.data);
             this.props.onUpdateItem("openModalAdd", false);
-            Swal.fire("", "Data saved successfully.", "success").then(
-              () => {
-                this.props.history.push("/panel/dashboard");
-              }
-            );
+            Swal.fire("", "Data saved successfully.", "success").then(() => {
+              this.props.history.push("/panel/dashboard");
+            });
           } else {
             this.setState({
               loading: false,
@@ -447,31 +443,21 @@ class AddMatch extends Component {
             <Col sm="6">
               {this.state.GName.value.indexOf(" - ") > -1 && (
                 <>
-                  <div
-                   
-                   className="mobile only"
-                  
-                 >
-                                     
-                 <Card.Group
-                   className="fours one"
-                   style={{ margin:"20px auto" }}
-                 >
-                   <MatchCard item={item} />
-                 </Card.Group>
-                 </div>
-                 <div
-                   
-                    className="mobile hidden"
-                   
-                  >
-                                      
-                  <Card.Group
-                    className="fours "
-                    style={{ marginBottom: 20, float: "right" }}
-                  >
-                    <MatchCard item={item} />
-                  </Card.Group>
+                  <div className="mobile only">
+                    <Card.Group
+                      className="fours one"
+                      style={{ margin: "20px auto" }}
+                    >
+                      <MatchCard item={item} />
+                    </Card.Group>
+                  </div>
+                  <div className="mobile hidden">
+                    <Card.Group
+                      className="fours "
+                      style={{ marginBottom: 20, float: "right" }}
+                    >
+                      <MatchCard item={item} />
+                    </Card.Group>
                   </div>
                 </>
               )}

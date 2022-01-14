@@ -3,7 +3,7 @@ import Form from "react-validation/build/form";
 
 import { withRouter } from "react-router-dom";
 import userService from "services/user.service";
-import { Message,Button,Divider } from "semantic-ui-react";
+import { Message, Button, Divider } from "semantic-ui-react";
 import Swal from "sweetalert2";
 
 function Active(prop) {
@@ -83,22 +83,22 @@ function Active(prop) {
             <Message.Header>Email Verification Required</Message.Header>
             <Message.Content>
               <p>
-              We have sent an email to your email address (
-              <b>{currentUser.email}</b>) with a link for activating your
-              account and proving you are human.
-            </p>
-            <Button
-              inverted color='red' 
-              loading={loading}
-              onClick={handleResend}
-            >
-              Resend
-            </Button>
-            
+                We have sent an email to your email address (
+                <b>{currentUser.email}</b>) with a link for activating your
+                account and proving you are human.
+              </p>
+              <Button
+                inverted
+                color="red"
+                loading={loading}
+                onClick={handleResend}
+              >
+                Resend
+              </Button>
             </Message.Content>
           </Message>
         </Form>
-        <Divider  hidden/>
+        <Divider hidden />
       </>
     );
   } else {

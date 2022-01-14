@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import {
-  BrowserRouter,
-  Route,
-  Switch,
-  Redirect,
-  useHistory,
-  useLocation
-} from "react-router-dom";
-import { Form, Segment } from "semantic-ui-react";
+import { useHistory, useLocation } from "react-router-dom";
+import { Form } from "semantic-ui-react";
 import AuthService from "../services/auth.service";
 import UserWebsocket from "services/user.websocket";
 import Swal from "sweetalert2";
@@ -68,19 +61,16 @@ function FormExampleFieldErrorLabel(prop) {
     }
     if (_error && !findStateId(myState, "hasError")) {
       onUpdateItem("hasError", true);
-
     }
     if (_error && findStateId(myState, "loading")) {
-  
       onUpdateItem("loading", false);
     }
     return _error;
   };
   const handleSubmit = () => {
-    
     var username = findStateId(myState, "username");
     var password = findStateId(myState, "password");
- 
+
     onUpdateItem("loading", true);
 
     if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
@@ -96,12 +86,11 @@ function FormExampleFieldErrorLabel(prop) {
               response.data.accessToken + "&user=" + response.data.username,
               response.data
             );
-            if(location.pathname.indexOf("home")>-1){
+            if (location.pathname.indexOf("home") > -1) {
               history.push("/panel/dashboard");
-          }else{
-            prop.onUpdateItem("openModalLogin", false)
+            } else {
+              prop.onUpdateItem("openModalLogin", false);
             }
-            
           } else {
             Swal.fire({
               icon: "error",
@@ -155,7 +144,9 @@ function FormExampleFieldErrorLabel(prop) {
 
       <Form.Button
         loading={loading}
-        disabled={loading} inverted color="green"
+        disabled={loading}
+        inverted
+        color="green"
         onClick={() => onUpdateItem("submit", true)}
         fluid
         size="small"

@@ -1,40 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  Checkbox,
-  Grid,
-  Header,
-  Icon,
-  Image,
-  Menu,
-  Segment,
-  Sidebar,
-  Dimmer,
-  Label,
-} from "semantic-ui-react";
-import {
-  setAvatar,
-  getColor,
-  getIcon,
-  renderer,
-  getQueryVariable,
-  getCode,
-  getGroupBadge,
-  getGroupBadgeList,
-  getGroupBadgePrice,
-  getModalTag,
-  getGameTag,
-  getMatchTitle,
-  haveGameTag,
-  getPlayerTag,
-  vsComponentTitle,
-  isJson,
-  haveAdmin,
-  handleTagForm,
-  rendererBig,
-  printEventBTN,
-  vsComponentPlayer,
-  getColorStatus,isPlayerInMatch
-} from "components/include";
+import { Segment, Sidebar, Dimmer } from "semantic-ui-react";
+import { getQueryVariable, isPlayerInMatch } from "components/include";
 import TransitionExampleTransitionExplorer from "components/anim.component";
 const SidebarExampleSidebar = (prop) => {
   const [objanim, setObjanim] = useState(prop.objanim);
@@ -48,11 +14,9 @@ const SidebarExampleSidebar = (prop) => {
 
   useEffect(() => {
     setPlayer(prop.player);
-  
   }, [prop.player]);
   useEffect(() => {
-
-    setIsChecked(prop.ischeck)
+    setIsChecked(prop.ischeck);
   }, [prop.ischeck]);
   useEffect(() => {
     setVisible(prop.visible);
@@ -82,11 +46,10 @@ const SidebarExampleSidebar = (prop) => {
   if (prop.item.gameMode == "Tournament" && !getQueryVariable("matchid")) {
     padd = "100px";
   }
-  
+
   return (
     <Sidebar.Pushable as={Segment} basic style={{ overflow: "hidden" }}>
       <Sidebar
-     
         animation="scale down"
         inverted
         vertical
@@ -104,16 +67,14 @@ const SidebarExampleSidebar = (prop) => {
               position: "relative",
               zIndex: 10,
             }}
-            
           >
             {prop.matchidFind.status == "Ready" && (
               <>
-                {isUser.username == player.username && !isChecked? (
+                {isUser.username == player.username && !isChecked ? (
                   <TransitionExampleTransitionExplorer
                     objanim={objanim}
                     animation="flash"
                     duration={1000}
-                    
                   />
                 ) : (
                   <div>{objanim}</div>
@@ -124,10 +85,10 @@ const SidebarExampleSidebar = (prop) => {
               (prop.item.gameMode == "Tournament" &&
                 prop.matchidFind.status == "Pending")) && (
               <>
-                {(isUser.username == player.username ||  !isPlayerInMatch(matchidFind,isUser.username))  ? (
+                {isUser.username == player.username ||
+                !isPlayerInMatch(matchidFind, isUser.username) ? (
                   <div>{objanimInfo}</div>
                 ) : (
-                  
                   <TransitionExampleTransitionExplorer
                     objanim={objanimInfo}
                     animation="flash"

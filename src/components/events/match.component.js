@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-
 import Countdown from "react-countdown";
 import $ from "jquery";
 import userService from "services/user.service";
@@ -8,24 +7,24 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import uploadHeader from "services/upload-header";
 import axios from "axios";
-import { defUser } from 'const';
+import { defUser } from "const";
 import MatchCard from "components/matchcard.component";
 import Admin from "components/events/admin.component";
-import {
-  Col,ProgressBar
-} from "react-bootstrap";
+import { Col, ProgressBar } from "react-bootstrap";
 import {
   printMatchBTN,
   handleTagForm,
   vsComponentPlayer,
   printJoinalerts,
-  vsComponentTitle,printStatus,isPlayerInMatch,getCode,getColor,rendererBig
+  vsComponentTitle,
+  printStatus,
+  isPlayerInMatch,
+  getCode,
+  getColor,
+  rendererBig,
 } from "components/include";
-import {
-  Divider,Segment,Grid,Statistic,Button,
-} from "semantic-ui-react";
+import { Divider, Segment, Grid, Statistic, Button } from "semantic-ui-react";
 import { POSTURLTest } from "const";
-
 
 const API_URL_TEST = POSTURLTest;
 const Toast = Swal.mixin({
@@ -34,9 +33,7 @@ const Toast = Swal.mixin({
   showConfirmButton: false,
   timer: 3000,
   timerProgressBar: true,
-
 });
-
 
 class MatchSection extends Component {
   constructor(props) {
@@ -55,7 +52,7 @@ class MatchSection extends Component {
       myState: this.props.myState,
       item: this.props.findStateId(this.props.myState, "eventDef"),
       currentUser: this.props.findStateId(this.props.myState, "currentUser"),
-     eventid:this.props.findStateId(this.props.myState, "eventIDQ"),
+      eventid: this.props.findStateId(this.props.myState, "eventIDQ"),
       progress: 0,
       selectedFile: null,
       matchidFind: this.props.findStateId(this.props.myState, "match"),
@@ -66,27 +63,32 @@ class MatchSection extends Component {
       message: "",
     };
   }
-  
+
   static getDerivedStateFromProps(props, state) {
     // Any time the current user changes,
     // Reset any parts of state that are tied to that user.
     // In this simple example, that's just the email.
-    document.title = state.item.gameMode + ' '+ state.item.gameName + ' for ' + state.item.outSign.replace('Dollar','$').replace('Point','Diamonds ') + state.item.prize +  ' Prize';
-   
+    document.title =
+      state.item.gameMode +
+      " " +
+      state.item.gameName +
+      " for " +
+      state.item.outSign.replace("Dollar", "$").replace("Point", "Diamonds ") +
+      state.item.prize +
+      " Prize";
+
     if (props.myState !== state.myState) {
-    
-      
       return {
         myState: props.myState,
         item: props.findStateId(props.myState, "eventDef"),
         currentUser: props.findStateId(props.myState, "currentUser"),
-       eventid:props.findStateId(props.myState, "eventIDQ"),
-       matchidFind: props.findStateId(props.myState, "match"),
+        eventid: props.findStateId(props.myState, "eventIDQ"),
+        matchidFind: props.findStateId(props.myState, "match"),
       };
     }
     return null;
   }
-  
+
   handleClashFinished(e) {
     this.setState({
       loading: true,
@@ -105,7 +107,7 @@ class MatchSection extends Component {
         }
       );
   }
-  
+
   handleChatUpload = () => {
     this.setState({
       progress: 1,
@@ -166,23 +168,26 @@ class MatchSection extends Component {
       loading: true,
     });
     //this.setState({ curPlayerReady: checked });
-    userService.changeReadyEvent(this.state.eventid).then(
-      (response) => {
-        if (response.data == "changeReadyEvent successful") {
-          this.setState({
-            loading: false,
-          });
+    userService
+      .changeReadyEvent(this.state.eventid)
+      .then(
+        (response) => {
+          if (response.data == "changeReadyEvent successful") {
+            this.setState({
+              loading: false,
+            });
 
-          //this.reGetevents();
+            //this.reGetevents();
+          }
+          //this.props.history.push("/panel/dashboard");
+        },
+        (error) => {
+          this.printErr(error);
         }
-        //this.props.history.push("/panel/dashboard");
-      },
-      (error) => {
+      )
+      .catch((error) => {
         this.printErr(error);
-      }
-    ).catch((error) => {
-      this.printErr(error);
-    });
+      });
   }
   handlecAlertLost(checked) {
     const MySwal = withReactContent(Swal);
@@ -254,123 +259,129 @@ class MatchSection extends Component {
       value: this.state.item.gameName + " - " + this.state.item.gameConsole,
       label: this.state.item.gameName + " - " + this.state.item.gameConsole,
     };
-    userService.joinEvent(this.state.item.id).then(
-      (response) => {
-        this.setState({
-          loading: false,
-        });
-        //alert(response)
-        if (response.data.accessToken) {
-          this.props.onUpdateItem("currentUser", response.data);
-
-          Toast.fire({
-            icon: "success",
-            title: "Joined.",
+    userService
+      .joinEvent(this.state.item.id)
+      .then(
+        (response) => {
+          this.setState({
+            loading: false,
           });
-        } else {
-          
+          //alert(response)
+          if (response.data.accessToken) {
+            this.props.onUpdateItem("currentUser", response.data);
 
-          {
-            printJoinalerts(
-              response.data,
-              GName,
-              this.state.currentUser,
-              handleTagForm,
-              this.props
-            );
+            Toast.fire({
+              icon: "success",
+              title: "Joined.",
+            });
+          } else {
+            {
+              printJoinalerts(
+                response.data,
+                GName,
+                this.state.currentUser,
+                handleTagForm,
+                this.props
+              );
+            }
           }
+        },
+        (error) => {
+          this.printErr(error);
         }
-      },
-      (error) => {
+      )
+      .catch((error) => {
         this.printErr(error);
-      }
-    ).catch((error) => {
-      this.printErr(error);
-    });
+      });
   }
   handleLeaveMatch(e) {
     e.preventDefault();
     this.setState({
       loading: true,
     });
-    userService.leaveEvent(this.state.eventid).then(
-      (response) => {
-        this.setState({
-          loading: false,
-        });
-        if (response.data.accessToken) {
-          this.props.onUpdateItem("currentUser", response.data);
-
-          Toast.fire({
-            icon: "success",
-            title: "Un Joined.",
+    userService
+      .leaveEvent(this.state.eventid)
+      .then(
+        (response) => {
+          this.setState({
+            loading: false,
           });
-        } else {
-          
+          if (response.data.accessToken) {
+            this.props.onUpdateItem("currentUser", response.data);
 
-          {
-            printJoinalerts(
-              response.data,
-              GName,
-              this.state.currentUser,
-              handleTagForm,
-              this.props
-            );
+            Toast.fire({
+              icon: "success",
+              title: "Un Joined.",
+            });
+          } else {
+            {
+              printJoinalerts(
+                response.data,
+                GName,
+                this.state.currentUser,
+                handleTagForm,
+                this.props
+              );
+            }
           }
+        },
+        (error) => {
+          this.printErr(error);
         }
-      },
-      (error) => {
+      )
+      .catch((error) => {
         this.printErr(error);
-      }
-    ).catch((error) => {
-      this.printErr(error);
-    });
+      });
   }
   handleLoseMatch() {
-   
     this.setState({
       loading: true,
     });
     if (this.state.matchid) {
-      userService.loseEvent(this.state.eventid, this.state.matchid).then(
-        (response) => {
-          if (response.data == "changeReadyEvent successful") {
-            this.setState({
-              loading: false,
-            });
-  
-            //this.reGetevents();
+      userService
+        .loseEvent(this.state.eventid, this.state.matchid)
+        .then(
+          (response) => {
+            if (response.data == "changeReadyEvent successful") {
+              this.setState({
+                loading: false,
+              });
+
+              //this.reGetevents();
+            }
+            //this.props.history.push("/panel/dashboard");
+          },
+          (error) => {
+            this.printErr(error);
           }
-          //this.props.history.push("/panel/dashboard");
-        },
-        (error) => {
+        )
+        .catch((error) => {
           this.printErr(error);
-        }
-      ).catch((error) => {
-        this.printErr(error);
-      });
-      
+        });
     } else {
-      userService.loseEvent(this.state.eventid).then(
-        (response) => {
-          if (response.data == "changeReadyEvent successful") {
-            this.setState({
-              loading: false,
-            });
-  
-            //this.reGetevents();
+      userService
+        .loseEvent(this.state.eventid)
+        .then(
+          (response) => {
+            if (response.data == "changeReadyEvent successful") {
+              this.setState({
+                loading: false,
+              });
+
+              //this.reGetevents();
+            }
+            //this.props.history.push("/panel/dashboard");
+          },
+          (error) => {
+            this.printErr(error);
           }
-          //this.props.history.push("/panel/dashboard");
-        },
-        (error) => {
+        )
+        .catch((error) => {
           this.printErr(error);
-        }
-      ).catch((error) => {
-        this.printErr(error);
-      });
+        });
     }
   }
-  
+
   printErr = (error) => {
     var GName = {
       value: this.state.item.gameName + " - " + this.state.item.gameConsole,
@@ -414,36 +425,28 @@ class MatchSection extends Component {
         });
       }
     }
-  }
+  };
   render() {
-    const item = this.props.findStateId(this.state.myState, "eventDef")
-    const currentUser = this.props.findStateId(this.state.myState, "currentUser")
-    const match = this.props.findStateId(this.state.myState, "match")
-    const eventIDQ = this.props.findStateId(this.state.myState, "eventIDQ")
-    let {
-    
-      progress,
-      isUpLoading,
-      progressLable,
-      loading,
-    } = this.state;
+    const item = this.props.findStateId(this.state.myState, "eventDef");
+    const currentUser = this.props.findStateId(
+      this.state.myState,
+      "currentUser"
+    );
+    const match = this.props.findStateId(this.state.myState, "match");
+    const eventIDQ = this.props.findStateId(this.state.myState, "eventIDQ");
+    let { progress, isUpLoading, progressLable, loading } = this.state;
 
-    var _finishTxt = 'Not Joinable';
+    var _finishTxt = "Not Joinable";
     //if (match.status) { _finishTxt = match.status+'@@@Not Joinable'}
     //if (match.winner) { _finishTxt = match.winner}
     var _mode = " 1 vs 1 ";
-      var _color = "#404040";
-     
-   
-     
-    
-      if (item.gameMode == "Tournament" || item.gameMode == "League") {
-        _mode = item.gameMode;
-      }
+    var _color = "#404040";
+
+    if (item.gameMode == "Tournament" || item.gameMode == "League") {
+      _mode = item.gameMode;
+    }
     return (
       <>
-        
-
         <Col
           className="mx-auto text-center "
           lg="8"
@@ -451,125 +454,140 @@ class MatchSection extends Component {
           style={{ padding: 0, marginTop: 20 }}
         >
           <>
-      {vsComponentTitle(item)}
-      <Divider fitted style={{ opacity: 0 }} />
-      {printStatus(item,_mode,_color ,item.status+'@@@'+_finishTxt,item.status,'yes')}
-      <Countdown
-        renderer={rendererBig}
-        finish={item.status + "@@@"+_finishTxt}
-        txt="@@@Avalable until"
-        match={match}
-        colorfinish={getColor(item.prize)}
-        date={item.expire}
-      />
-<Admin {...this.props}/>
-      <Segment  basic >
-        <Grid columns={2}>
-          <Grid.Column
-            style={{ background: "none !important" }}
-            
-            
-            className={match.winner != null && match.winner == match.matchPlayers[0]?.username ? "coverwinner" : null}>
-            {vsComponentPlayer(
+            {vsComponentTitle(item)}
+            <Divider fitted style={{ opacity: 0 }} />
+            {printStatus(
               item,
-              match,
-              0,
-              eventIDQ,
-              currentUser,
-              loading,
-              this.handlechangeReadyEvent,
+              _mode,
+              _color,
+              item.status + "@@@" + _finishTxt,
+              item.status,
+              "yes"
             )}
-          </Grid.Column>
-          <Grid.Column
-            style={{ background: "none !important" }}
-            className={match.winner != null && match.winner == match.matchPlayers[1]?.username ? "coverwinner":null}>
-          
-            {vsComponentPlayer(
-              item,
-              match,
-              1,
-              eventIDQ,
-              currentUser,
-              loading,
-              this.handlechangeReadyEvent,
-            )}
-          </Grid.Column>
-        </Grid>
-
-        <Divider vertical inverted>
-        {printMatchBTN(
-           item,
-           match,
-           eventIDQ,
-           currentUser,
-          loading,
-          item.players.length,
-          this.handlechangeReadyEvent,
-          this.handleJoinMatch,
-          this.handleLeaveMatch,
-        )}
-        </Divider>
-      </Segment>
-      {match.status == "InPlay" && (
-        <>
-
-          {isPlayerInMatch(match,currentUser.username) && (
-            <>
-              <Statistic inverted size="small">
-                <Statistic.Label>Match Code</Statistic.Label>
-                <Statistic.Value className="matchcode">
-                  {getCode(match.matchCode)}
-                </Statistic.Value>
-              </Statistic>
-
-              <Button.Group size="big" widths="3">
-                <Button
-                  color="red"
-                  onClick={this.handlecAlertLost}
-                  disabled={loading}
-                  loading={loading}
+            <Countdown
+              renderer={rendererBig}
+              finish={item.status + "@@@" + _finishTxt}
+              txt="@@@Avalable until"
+              match={match}
+              colorfinish={getColor(item.prize)}
+              date={item.expire}
+            />
+            <Admin {...this.props} />
+            <Segment basic>
+              <Grid columns={2}>
+                <Grid.Column
+                  style={{ background: "none !important" }}
+                  className={
+                    match.winner != null &&
+                    match.winner == match.matchPlayers[0]?.username
+                      ? "coverwinner"
+                      : null
+                  }
                 >
-                  I Lost
-                </Button>
-                <Button.Or color="red" style={{ minWidth: 5 }} />
-                <Button
-                  animated
-                  onClick={this.handlecAlertWin}
-                  color="green"
-                  inverted
-                  disabled={isUpLoading}
-                >
-                  <Button.Content visible>{progressLable}</Button.Content>
-                  <Button.Content hidden>Upload video</Button.Content>
-                  {progress > 0 && (
-                    <div className="prosbar">
-                      <ProgressBar
-                        variant="success"
-                        now={progress}
-                        label={""}
-                      />
-                    </div>
+                  {vsComponentPlayer(
+                    item,
+                    match,
+                    0,
+                    eventIDQ,
+                    currentUser,
+                    loading,
+                    this.handlechangeReadyEvent
                   )}
-                </Button>
-              </Button.Group>
-              <input
-                type="file"
-                id="uploadfile"
-                accept="video/*"
-                name="file"
-                className="hide"
-                ref={this.fileUpload}
-                onChange={this.onChangeHandler}
-              />
-            </>
-          )}
-        </>
-      )}
-    </>
-         
-           <Divider  hidden/>
-          <div  className="ui cards fours centered">
-          <MatchCard  item={item} matchidFind={match} />
+                </Grid.Column>
+                <Grid.Column
+                  style={{ background: "none !important" }}
+                  className={
+                    match.winner != null &&
+                    match.winner == match.matchPlayers[1]?.username
+                      ? "coverwinner"
+                      : null
+                  }
+                >
+                  {vsComponentPlayer(
+                    item,
+                    match,
+                    1,
+                    eventIDQ,
+                    currentUser,
+                    loading,
+                    this.handlechangeReadyEvent
+                  )}
+                </Grid.Column>
+              </Grid>
+
+              <Divider vertical inverted>
+                {printMatchBTN(
+                  item,
+                  match,
+                  eventIDQ,
+                  currentUser,
+                  loading,
+                  item.players.length,
+                  this.handlechangeReadyEvent,
+                  this.handleJoinMatch,
+                  this.handleLeaveMatch
+                )}
+              </Divider>
+            </Segment>
+            {match.status == "InPlay" && (
+              <>
+                {isPlayerInMatch(match, currentUser.username) && (
+                  <>
+                    <Statistic inverted size="small">
+                      <Statistic.Label>Match Code</Statistic.Label>
+                      <Statistic.Value className="matchcode">
+                        {getCode(match.matchCode)}
+                      </Statistic.Value>
+                    </Statistic>
+
+                    <Button.Group size="big" widths="3">
+                      <Button
+                        color="red"
+                        onClick={this.handlecAlertLost}
+                        disabled={loading}
+                        loading={loading}
+                      >
+                        I Lost
+                      </Button>
+                      <Button.Or color="red" style={{ minWidth: 5 }} />
+                      <Button
+                        animated
+                        onClick={this.handlecAlertWin}
+                        color="green"
+                        inverted
+                        disabled={isUpLoading}
+                      >
+                        <Button.Content visible>{progressLable}</Button.Content>
+                        <Button.Content hidden>Upload video</Button.Content>
+                        {progress > 0 && (
+                          <div className="prosbar">
+                            <ProgressBar
+                              variant="success"
+                              now={progress}
+                              label={""}
+                            />
+                          </div>
+                        )}
+                      </Button>
+                    </Button.Group>
+                    <input
+                      type="file"
+                      id="uploadfile"
+                      accept="video/*"
+                      name="file"
+                      className="hide"
+                      ref={this.fileUpload}
+                      onChange={this.onChangeHandler}
+                    />
+                  </>
+                )}
+              </>
+            )}
+          </>
+
+          <Divider hidden />
+          <div className="ui cards fours centered">
+            <MatchCard item={item} matchidFind={match} />
           </div>
         </Col>
       </>

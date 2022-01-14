@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 // react component used to create charts
 // react components used to create a SVG / Vector map
-import { getGroupBadgeBlock, getGroupBadgeList } from "components/include";
-import { Icon, Header, Message,Button } from "semantic-ui-react";
+import { getGroupBadgeBlock } from "components/include";
+import { Icon, Message, Button } from "semantic-ui-react";
 // react-bootstrap components
-import { Card, Row, Col, ListGroup } from "react-bootstrap";
-import CopyText  from "components/copy.component";
+import CopyText from "components/copy.component";
 function Dashboard(prop) {
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
@@ -29,18 +28,24 @@ function Dashboard(prop) {
             simple!
           </p>
           <Message icon>
-        <Message.Content>
-          <Message.Header>Daily Rewards</Message.Header>
-          <p>Maximize your profits and earn big daily at loole.gg. By simply
-                logging in, you can earn big!</p>
-          <Message.List>
-      <Message.Item>Compete in a Diamonds tournament{" "}
-                {getGroupBadgeBlock("Point", 20, "small left")}</Message.Item>
-      <Message.Item>Compete in a real money tournament{" "}
-                {getGroupBadgeBlock("Point", 100, "small left")}</Message.Item>
-    </Message.List>
-        </Message.Content>
-      </Message>
+            <Message.Content>
+              <Message.Header>Daily Rewards</Message.Header>
+              <p>
+                Maximize your profits and earn big daily at loole.gg. By simply
+                logging in, you can earn big!
+              </p>
+              <Message.List>
+                <Message.Item>
+                  Compete in a Diamonds tournament{" "}
+                  {getGroupBadgeBlock("Point", 20, "small left")}
+                </Message.Item>
+                <Message.Item>
+                  Compete in a real money tournament{" "}
+                  {getGroupBadgeBlock("Point", 100, "small left")}
+                </Message.Item>
+              </Message.List>
+            </Message.Content>
+          </Message>
         </Message.Content>
       </Message>
       <Message icon>
@@ -48,39 +53,34 @@ function Dashboard(prop) {
         <Message.Content>
           <Message.Header>Invite A Friend</Message.Header>
           <div>
-          When a friend you have invited plays their first challenge you
-                will receive{" "}
-                {getGroupBadgeBlock("Point", 1000, '')}
-                and they will receive{" "}
-                {getGroupBadgeBlock("Point", 500, "small left")}. Then for every
-                challenge they play on the site you get an extra{" "}
-                {getGroupBadgeBlock("Point", 20, "small left")} per game they
-                play for life.
+            When a friend you have invited plays their first challenge you will
+            receive {getGroupBadgeBlock("Point", 1000, "")}
+            and they will receive{" "}
+            {getGroupBadgeBlock("Point", 500, "small left")}. Then for every
+            challenge they play on the site you get an extra{" "}
+            {getGroupBadgeBlock("Point", 20, "small left")} per game they play
+            for life.
           </div>
           <p></p>
-          <Message attached='bottom' warning>
-          <Message.Header>Share your unique invite link:</Message.Header>
-      <div>
-                
-                <CopyText color="red" size="small" myid={'https://loole.gg/i/'+currentUser.username}/></div>
-                
-    </Message>
-    
-    <Button
-                
-                size="small"
-              
-                inverted
-             
+          <Message attached="bottom" warning>
+            <Message.Header>Share your unique invite link:</Message.Header>
+            <div>
+              <CopyText
                 color="red"
-               content="VIEW DETAILED EARNINGS"
-             />
-                
+                size="small"
+                myid={"https://loole.gg/i/" + currentUser.username}
+              />
+            </div>
+          </Message>
+
+          <Button
+            size="small"
+            inverted
+            color="red"
+            content="VIEW DETAILED EARNINGS"
+          />
         </Message.Content>
-        
       </Message>
-      
-      
     </>
   );
 }

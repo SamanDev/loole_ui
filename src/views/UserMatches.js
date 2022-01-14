@@ -1,124 +1,86 @@
 import React, { Component } from "react";
 // react component used to create charts
-import ChartistGraph from "react-chartist";
-import { Link, useLocation } from "react-router-dom";
 // react components used to create a SVG / Vector map
-import { VectorMap } from "react-jvectormap";
 import AuthService from "services/auth.service";
-import userService from "services/user.service";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import eventBus from "views/eventBus";
-import printMatchBlock  from "components/matchblock.component";
+import printMatchBlock from "components/matchblock.component";
 
 // react-bootstrap components
-import {
-  Badge,
-  Button,
-  Card,
-  Form,
-  InputGroup,
-  Navbar,
-  Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
-  Container,
-  Row,
-  Col,
-  TabContent,
-  TabPane,
-  Tab,
-  Spinner
-
-} from "react-bootstrap";
-
-
+import { Row, Col } from "react-bootstrap";
 
 //const EventList = JSON.parse(userService.getEvents());
 
-
 class Dashboard extends Component {
-  
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      events: this.props.token
+      events: this.props.token,
     };
-
   }
 
   componentDidMount() {
-  
-      
     eventBus.on("eventsData", (event) => {
       // console.log("socket events: "+events);
-    
+
       this.setState({ events: event, isLoading: false });
       console.log("change state: " + this.state.isLoading);
-      
     });
-
   }
-  
 
   render() {
-    
-   
     let { events, isLoading } = this.state;
-    events=JSON.parse(events);
-   
+    events = JSON.parse(events);
+
     const currentUser = AuthService.getCurrentUser();
     var Balance = currentUser.balance;
-    if (!Balance) { Balance = 0 }
+    if (!Balance) {
+      Balance = 0;
+    }
     //console.log("dash = "+EventList)
-    
-    console.log('e-l : ' + events);
+
+    console.log("e-l : " + events);
     const getBlockChallenge = (filtermode) => {
-      
       if (events != []) {
         return events.map((item, i) => {
-          if ((filtermode == 'Wins' && item.status == 'Finished') || item.status == filtermode || ('All' == filtermode && item.status != 'Expire')) {
-            item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
+          if (
+            (filtermode == "Wins" && item.status == "Finished") ||
+            item.status == filtermode ||
+            ("All" == filtermode && item.status != "Expire")
+          ) {
+            item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
             var blnShow = false;
-            {item.players.map((player, j) => {
-             if(player.username == currentUser.username ){blnShow=true}
-            })}
-            var timestamp = item.expire
+            {
+              item.players.map((player, j) => {
+                if (player.username == currentUser.username) {
+                  blnShow = true;
+                }
+              });
+            }
+            var timestamp = item.expire;
             var date = new Date(timestamp);
             //date.setMinutes(date.getMinutes() + item.timeMinute);
             var now = new Date();
             var dateExpired = date.toISOString();
-            
-             
-            var dateNow = now.toISOString();
-            
-            if(!blnShow)return null
-            return (
 
+            var dateNow = now.toISOString();
+
+            if (!blnShow) return null;
+            return (
               <Col lg="4" xl="4" key={i}>
                 {printMatchBlock(item)}
-
               </Col>
-            )
+            );
           } else {
             return null;
           }
-        }
-        )
+        });
       }
-
-    }
+    };
 
     return (
       <>
-
-                      <Row >
-                        {getBlockChallenge('All')}
-                      </Row>
-                   
-
-
+        <Row>{getBlockChallenge("All")}</Row>
       </>
     );
   }

@@ -3,30 +3,22 @@ import { Link } from "react-router-dom";
 import AuthService from "services/auth.service";
 import { Menu } from "semantic-ui-react";
 
-import {
-  
-  Container,
-} from "react-bootstrap";
-import { defUser } from 'const';
+import { Container } from "react-bootstrap";
+import { defUser } from "const";
 const LandNavbar = (prop) => {
-   
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
   const currentUser = prop.findStateId(myState, "currentUser");
-  if(currentUser?.accessToken){
-  
-    prop.onUpdateItem("openModalLogin", false)
-   
-  
+  if (currentUser?.accessToken) {
+    prop.onUpdateItem("openModalLogin", false);
   }
-  const logOut=()=> {
-      
-    prop.onUpdateItem("currentUser", defUser)
-    
+  const logOut = () => {
+    prop.onUpdateItem("currentUser", defUser);
+
     AuthService.logout();
-}
+  };
   return (
     <>
       <Container>
@@ -48,13 +40,14 @@ const LandNavbar = (prop) => {
             {currentUser?.accessToken ? (
               <>
                 <Menu.Item name="Dashboard" to={"/panel/dashboard"} as={Link} />
-                <Menu.Item name="logout" onClick={() =>logOut()} />
+                <Menu.Item name="logout" onClick={() => logOut()} />
               </>
             ) : (
               <Menu.Item
-             
                 onClick={() => prop.onUpdateItem("openModalLogin", true)}
-              >Login / Register</Menu.Item>
+              >
+                Login / Register
+              </Menu.Item>
             )}
           </Menu.Menu>
         </Menu>

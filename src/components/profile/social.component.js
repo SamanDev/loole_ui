@@ -10,11 +10,7 @@ import {
   faYoutube,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import {
-  Card,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Card, Row, Col } from "react-bootstrap";
 import {
   getModalTag,
   getSocialTag,
@@ -46,14 +42,14 @@ function TagsForm(prop) {
     setMyState(prop.myState);
     setCurrentUser(prop.findStateId(prop.myState, "currentUser"));
   }, [prop.myState]);
-  var [currentUser, setCurrentUser] = useState(prop.findStateId(myState, "currentUser"));
+  var [currentUser, setCurrentUser] = useState(
+    prop.findStateId(myState, "currentUser")
+  );
   useEffect(() => {
-    if(prop.myStateLoc){
+    if (prop.myStateLoc) {
       setMyState(prop.myStateLoc);
-      setCurrentUser(prop.findStateId(prop.myStateLoc, "currentUser"))
+      setCurrentUser(prop.findStateId(prop.myStateLoc, "currentUser"));
     }
-   
-
   }, [prop.myStateLoc]);
   const handlecSetInstagram = (game, platform) => {
     const resetPw2 = async () => {
@@ -112,76 +108,69 @@ function TagsForm(prop) {
   };
   return (
     <>
-     <Header as="h3">
-     Social Accounts
-      </Header>
+      <Header as="h3">Social Accounts</Header>
       <div className="card-social">
-       
-        
-            <Row className="card-tags" style={{marginRight:0}}>
-              <Col
-                lg="4"
-                xl="3"
-                onClick={() =>
-                  handlecSetInstagram("Social - Instagram", "Instagram")
-                }
-              >
-                <div className="counter-box bg-color-1 card">
-                  <div className="img">
-                    <FontAwesomeIcon
-                      icon={faInstagram}
-                      style={{ color: "#e95950" }}
-                    />
-                    {getSocialTag("Instagram", currentUser.userSocialAccounts)}
-                  </div>
-                </div>
-              </Col>
-              <Col
-                lg="4"
-                xl="3"
-                onClick={() => handlecSetInstagram("Social - Twitch", "Twitch")}
-              >
-                <div className="counter-box bg-color-1 card">
-                  <div className="img">
-                  <FontAwesomeIcon icon={faTwitch} style={{ color: "#6441a5" }} />
+        <Row className="card-tags" style={{ marginRight: 0 }}>
+          <Col
+            lg="4"
+            xl="3"
+            onClick={() =>
+              handlecSetInstagram("Social - Instagram", "Instagram")
+            }
+          >
+            <div className="counter-box bg-color-1 card">
+              <div className="img">
+                <FontAwesomeIcon
+                  icon={faInstagram}
+                  style={{ color: "#e95950" }}
+                />
+                {getSocialTag("Instagram", currentUser.userSocialAccounts)}
+              </div>
+            </div>
+          </Col>
+          <Col
+            lg="4"
+            xl="3"
+            onClick={() => handlecSetInstagram("Social - Twitch", "Twitch")}
+          >
+            <div className="counter-box bg-color-1 card">
+              <div className="img">
+                <FontAwesomeIcon icon={faTwitch} style={{ color: "#6441a5" }} />
                 {getSocialTag("Twitch", currentUser.userSocialAccounts)}
-                  </div>
-                </div>
-              </Col>
-              <Col
-                lg="4"
-                xl="3"
-                onClick={() => handlecSetInstagram("Social - Youtube", "Youtube")}
-              >
-                <div className="counter-box bg-color-1 card">
-                  <div className="img">
-                  <FontAwesomeIcon
+              </div>
+            </div>
+          </Col>
+          <Col
+            lg="4"
+            xl="3"
+            onClick={() => handlecSetInstagram("Social - Youtube", "Youtube")}
+          >
+            <div className="counter-box bg-color-1 card">
+              <div className="img">
+                <FontAwesomeIcon
                   icon={faYoutube}
                   style={{ color: "#FF0000" }}
                 />
                 {getSocialTag("Youtube", currentUser.userSocialAccounts)}
-                  </div>
-                </div>
-              </Col>
-              <Col
-                lg="4"
-                xl="3"
-                onClick={() => handlecSetInstagram("Social - Twitter", "Twitter")}
-              >
-                <div className="counter-box bg-color-1 card">
-                  <div className="img">
-                  <FontAwesomeIcon
+              </div>
+            </div>
+          </Col>
+          <Col
+            lg="4"
+            xl="3"
+            onClick={() => handlecSetInstagram("Social - Twitter", "Twitter")}
+          >
+            <div className="counter-box bg-color-1 card">
+              <div className="img">
+                <FontAwesomeIcon
                   icon={faTwitter}
                   style={{ color: "#00acee" }}
                 />
                 {getSocialTag("Twitter", currentUser.userSocialAccounts)}
-                  </div>
-                </div>
-              </Col>
-            </Row>
-
-               
-        
+              </div>
+            </div>
+          </Col>
+        </Row>
       </div>
     </>
   );

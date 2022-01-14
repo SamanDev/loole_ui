@@ -21,16 +21,7 @@ import LeagueSection from "components/events/league.component";
 import TournamentSection from "components/events/tournament.component";
 import MatchSection from "components/events/match.component";
 import MatchTourSection from "components/events/tournamentmatch.component";
-import { findActiveMatch, haveAdmin,getQueryVariable } from "components/include";
-import Swal from "sweetalert2";
-
-const Toast = Swal.mixin({
-  toast: true,
-  position: "top-end",
-  showConfirmButton: false,
-  timer: 3000,
-  timerProgressBar: true,
-});
+import { haveAdmin, getQueryVariable } from "components/include";
 
 function LockScreenPage(prop) {
   const history = useHistory();
@@ -43,7 +34,7 @@ function LockScreenPage(prop) {
   const eventIDQ = prop.findStateId(myState, "eventIDQ");
   const matchIDQ = prop.findStateId(myState, "matchIDQ");
   const currentUser = prop.findStateId(myState, "currentUser");
-  
+
   const eventDef = prop.findStateId(myState, "eventDef");
   const match = prop.findStateId(myState, "match");
   const [visible, setVisible] = React.useState(false);
@@ -63,29 +54,29 @@ function LockScreenPage(prop) {
     e.preventDefault();
 
     userService.deleteEvent(eventIDQ).then(
-      (response) => {
+      () => {
         history.push("/panel/dashboard");
         //window.location.replace("/panel/dashboard");
         //return <Redirect to="/panel/dashboard" />;
       },
-      (error) => {}
+      () => {}
     );
   };
   const handleAllDelete = (id) => {
     //e.preventDefault();
 
     userService.deleteEvent(id).then(
-      (response) => {
+      () => {
         //history.push("/panel/dashboard");
         handleAllDelete(id - 1);
         //window.location.replace("/panel/dashboard");
         //return <Redirect to="/panel/dashboard" />;
       },
-      (error) => {}
+      () => {}
     );
   };
 
-  if (!eventDef || !currentUser || (!match && eventDef?.gameMode != 'League')) {
+  if (!eventDef || !currentUser || (!match && eventDef?.gameMode != "League")) {
     return (
       <>
         <div
@@ -133,7 +124,6 @@ function LockScreenPage(prop) {
       </>
     );
   }
-  
 
   return (
     <>
@@ -194,7 +184,10 @@ function LockScreenPage(prop) {
                   />
                 ) : (
                   <>
-                    {getQueryVariable("matchid", window.location.search.substring(1)) ? (
+                    {getQueryVariable(
+                      "matchid",
+                      window.location.search.substring(1)
+                    ) ? (
                       <Chatbar
                         eventID={eventIDQ}
                         matchID={matchIDQ}
@@ -216,7 +209,6 @@ function LockScreenPage(prop) {
                         eventchats={eventDef.chats}
                         chats="null"
                         username={currentUser}
-                        
                       />
                     )}
                   </>
@@ -261,30 +253,21 @@ function LockScreenPage(prop) {
                 <div style={{ height: "calc(100vh - 50px)", overflow: "auto" }}>
                   <Container style={{ paddingBottom: 50 }}>
                     {eventDef.gameMode == "League" ? (
-                      <LeagueSection
-                      {...prop}
-                      />
+                      <LeagueSection {...prop} />
                     ) : (
                       <>
-                        {eventDef.gameMode == "Tournament" && !getQueryVariable("matchid", window.location.search.substring(1)) ? (
-                          <TournamentSection
-                            
-                            {...prop}
-                          />
+                        {eventDef.gameMode == "Tournament" &&
+                        !getQueryVariable(
+                          "matchid",
+                          window.location.search.substring(1)
+                        ) ? (
+                          <TournamentSection {...prop} />
                         ) : (
                           <>
                             {eventDef.gameMode == "Tournament" ? (
-                              <MatchTourSection
-                               
-                                {...prop}
-                              />
+                              <MatchTourSection {...prop} />
                             ) : (
-                              <MatchSection
-                             
-                               
-                               
-                                {...prop}
-                              />
+                              <MatchSection {...prop} />
                             )}
                           </>
                         )}

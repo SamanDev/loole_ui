@@ -1,4 +1,4 @@
-import React, {  } from "react";
+import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { ConfigProvider } from "react-avatar";
 import { DEFCOLORS } from "const";
@@ -13,67 +13,42 @@ import routes from "routes.js";
 import Games from "views/Pages/Games.js";
 import Content from "views/Pages/Content.js";
 
-function scrollToTop() {
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-    });
-    
-    
-  
-
-
-};
-
-function  Auth(props) {
-  
-  
+function Auth(props) {
   const getRoutes = (routes) => {
     //scrollToTop();
     return routes.map((prop, key) => {
-      
       if (prop.collapse) {
         return getRoutes(prop.views);
       }
-      if (prop.layout !== "/panel" ) {
+      if (prop.layout !== "/panel") {
         //sconsole.log(prop.component)
         return (
-          
-          
           <Route
             path={prop.layout + prop.path}
             key={key}
-            render={(props2) => (
+            render={() => (
               <>
-             
-              {(prop.component=='Landing') && (<Landing {...props} />)}
-              {(prop.component=='User') && (<User {...props} />)}
-              {(prop.component=='Games') && (<Games {...props} />)}
-              {(prop.component=='Content') && (<Content {...props} />)}
-              {(prop.component == "LockScreenPage") && (
+                {prop.component == "Landing" && <Landing {...props} />}
+                {prop.component == "User" && <User {...props} />}
+                {prop.component == "Games" && <Games {...props} />}
+                {prop.component == "Content" && <Content {...props} />}
+                {prop.component == "LockScreenPage" && (
                   <LockScreenPage {...props} />
                 )}
-              
               </>
             )}
-           
-            
-            
           />
-            
-          
         );
       } else {
         return null;
       }
     });
   };
-  
+
   //console.log('Land.js token:'+ JSON.stringify(token))
-  
+
   const getPage = (routes) => {
-    return routes.map((prop, key) => {
+    return routes.map((prop) => {
       if (window.location.href.indexOf(prop.layout) > -1 && prop.path == "/") {
         if (prop.name) {
           return prop.name;
@@ -81,31 +56,24 @@ function  Auth(props) {
       }
     });
   };
-  
-  
-     
-      
+
   return (
     <>
-   
-    <ConfigProvider colors={DEFCOLORS}>
-    {getPage(routes).indexOf("Match Lobby") > -1 ? (
+      <ConfigProvider colors={DEFCOLORS}>
+        {getPage(routes).indexOf("Match Lobby") > -1 ? (
           <Switch>{getRoutes(routes)}</Switch>
         ) : (
-      <div className="landing-page landing-page1 landing-mobile">
-        {/* Navbar */}
-        <LandNavbar {...props}/>
-        {/* End Navbar */}
-       
-        <Switch>{getRoutes(routes)}</Switch>
-    
-      </div>
+          <div className="landing-page landing-page1 landing-mobile">
+            {/* Navbar */}
+            <LandNavbar {...props} />
+            {/* End Navbar */}
+
+            <Switch>{getRoutes(routes)}</Switch>
+          </div>
         )}
       </ConfigProvider>
-    
     </>
   );
-    
 }
 
-export default (Auth);
+export default Auth;

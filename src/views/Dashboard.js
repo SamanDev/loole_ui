@@ -1,194 +1,208 @@
 import React, { useEffect, useState } from "react";
-import { printBlockChallenge,date_locale,date_edit } from "components/include";
-import { Tab,Card,Menu,Label,Dimmer,
-  Loader,
-  Segment, } from 'semantic-ui-react'
-import Active  from "components/active.component";
-import DashStat  from "components/dashstat.component";
-import Moment from "moment";
+import { printBlockChallenge } from "components/include";
+import { Tab, Card, Menu, Label, Dimmer, Loader } from "semantic-ui-react";
+import Active from "components/active.component";
+import DashStat from "components/dashstat.component";
 var moment = require("moment");
 function Dashboard(prop) {
-  const [myState, setMyState] = useState(prop.myState)
+  const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
-    setMyState(prop.myState)
-   
-}, [prop.myState]);
-  
+    setMyState(prop.myState);
+  }, [prop.myState]);
 
-const [myStateThis, setMyStateThis] = useState({
-  list: [
-    { id: "All", val: 0 },
-    { id: "Mobile", val: 0 },
+  const [myStateThis, setMyStateThis] = useState({
+    list: [
+      { id: "All", val: 0 },
+      { id: "Mobile", val: 0 },
 
-    { id: "NoMobile", val: 0 },
-    { id: "Tournament", val: 0 },
-   
-  ],
-});
-const findStateId = (st, val) => {
-  return st.list.filter(function (v) {
-    return v.id === val;
-  })[0].val;
-};
-const onUpdateItem = (key, val) => {
-  //console.log(val)
-  if (findStateId(myStateThis, key) != val){
-    //console.log(key)
-    setMyStateThis(() => {
-      const list = myStateThis.list.map((item) => {
-        if (item.id === key) {
-          item.val = val;
-        }
-        return item;
-      });
-
-      return {
-        list: list,
-      };
-    });
-  }
-  
-};
-
-
-const key = prop.findStateId(myState,'keyDash');
-const events = prop.findStateId(myState,'events');
-
-  
-  
-const updateCount = (events) => {
-  
-  var arrFilters = ['All','Mobile','NoMobile','Tournament']
-  if (events) {
-    for (var ifil = 0; ifil < arrFilters.length; ifil++) {
-      var filtermode = arrFilters[ifil]
-      var newItem = [];
-      events.map((_item, i) => {
-        var item = JSON.parse(JSON.stringify(_item));
-        
-        if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'All') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
-        
-          var timestring1 = item.expire;
-          var timestring2 = new Date();
-          var startdate = moment(timestring1).format();
-          var expected_enddate = moment(timestring2).format();
-         startdate = moment(startdate).add(3, 'hours').format()
-         
-          
-          if(item.status !='Pending'){
-       
-            if(startdate>expected_enddate){
-              //newItem.push(item)
-            }
-          }else{
-            newItem.push(item);
+      { id: "NoMobile", val: 0 },
+      { id: "Tournament", val: 0 },
+    ],
+  });
+  const findStateId = (st, val) => {
+    return st.list.filter(function (v) {
+      return v.id === val;
+    })[0].val;
+  };
+  const onUpdateItem = (key, val) => {
+    //console.log(val)
+    if (findStateId(myStateThis, key) != val) {
+      //console.log(key)
+      setMyStateThis(() => {
+        const list = myStateThis.list.map((item) => {
+          if (item.id === key) {
+            item.val = val;
           }
+          return item;
+        });
 
-          
-          
-          
-         
-        } 
-      }
-      
-      )
-   
-      if(findStateId(myStateThis,filtermode) != newItem.length){
-        onUpdateItem(filtermode,newItem.length)
+        return {
+          list: list,
+        };
+      });
+    }
+  };
+
+  const key = prop.findStateId(myState, "keyDash");
+  const events = prop.findStateId(myState, "events");
+
+  const updateCount = (events) => {
+    var arrFilters = ["All", "Mobile", "NoMobile", "Tournament"];
+    if (events) {
+      for (var ifil = 0; ifil < arrFilters.length; ifil++) {
+        var filtermode = arrFilters[ifil];
+        var newItem = [];
+        events.map((_item, i) => {
+          var item = JSON.parse(JSON.stringify(_item));
+
+          if (
+            item.gameConsole == filtermode ||
+            item.gameMode == filtermode ||
+            filtermode == "All" ||
+            (item.gameConsole != "Mobile" && filtermode == "NoMobile")
+          ) {
+            var timestring1 = item.expire;
+            var timestring2 = new Date();
+            var startdate = moment(timestring1).format();
+            var expected_enddate = moment(timestring2).format();
+            startdate = moment(startdate).add(3, "hours").format();
+
+            if (item.status != "Pending") {
+              if (startdate > expected_enddate) {
+                //newItem.push(item)
+              }
+            } else {
+              newItem.push(item);
+            }
+          }
+        });
+
+        if (findStateId(myStateThis, filtermode) != newItem.length) {
+          onUpdateItem(filtermode, newItem.length);
+        }
       }
     }
-    }
+  };
+  const getBlockChallenge = (filtermode, events) => {
+    var newItem = [];
 
-}
-const getBlockChallenge = (filtermode,events) => {
-  var newItem = []
-
- 
-  events?.sort((a, b) => (a.id < b.id) ? 1 : -1)
-     events?.map((_item, i) => {
+    events?.sort((a, b) => (a.id < b.id ? 1 : -1));
+    events?.map((_item, i) => {
       var item = JSON.parse(JSON.stringify(_item));
-      if ((item.gameConsole == filtermode || item.gameMode == filtermode || filtermode == 'All') || (item.gameConsole != 'Mobile' && filtermode == 'NoMobile')) {
+      if (
+        item.gameConsole == filtermode ||
+        item.gameMode == filtermode ||
+        filtermode == "All" ||
+        (item.gameConsole != "Mobile" && filtermode == "NoMobile")
+      ) {
         //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
-        
-        
-        
+
         var timestring1 = item.expire;
         var timestring2 = new Date();
         var startdate = moment(timestring1).format();
         var expected_enddate = moment(timestring2).format();
-       startdate = moment(startdate).add(1, 'hours').format()
-       
-        
-        if(item.status !='Pending' && item.status !='InPlay' && item.status !='Ready'){
+        startdate = moment(startdate).add(1, "hours").format();
+
+        if (
+          item.status != "Pending" &&
+          item.status != "InPlay" &&
+          item.status != "Ready"
+        ) {
           //item.gameConsole = startdate + ' '+ expected_enddate;
-          if(startdate>expected_enddate){
-            newItem.push(item)
+          if (startdate > expected_enddate) {
+            newItem.push(item);
           }
-        }else{
+        } else {
           newItem.push(item);
         }
         //newItem.push(item);
-        
-        
-        
-       
-      } 
-    }
-    
-    )
-  
-    if (!events ) {
+      }
+    });
+
+    if (!events) {
       return (
-      
-          <Dimmer active inverted>
-            <Loader size="large">Loading</Loader>
-          </Dimmer>
-    
+        <Dimmer active inverted>
+          <Loader size="large">Loading</Loader>
+        </Dimmer>
       );
     }
-    return (<Card.Group className="fours" style={{ marginBottom: 20 }}>{printBlockChallenge(newItem,filtermode,{...prop})}</Card.Group>)
-  
+    return (
+      <Card.Group className="fours" style={{ marginBottom: 20 }}>
+        {printBlockChallenge(newItem, filtermode, { ...prop })}
+      </Card.Group>
+    );
+  };
 
-}
-  
   const panes = [
-    {id:1, menuItem: (
-      <Menu.Item  key={"1"}>
-        All <Label color='red' size='mini'>{findStateId(myStateThis, "All")}</Label>
-      </Menu.Item>
-    ), render: () => <Tab.Pane >{getBlockChallenge('All',events)}</Tab.Pane> },
-    {id:2, menuItem: (
-      <Menu.Item key={"2"}>
-        Mobile <Label color='teal' size='mini' >{findStateId(myStateThis, "Mobile")}</Label>
-      </Menu.Item>
-    ), render: () => <Tab.Pane>{getBlockChallenge('Mobile',events)}</Tab.Pane> },
-    {id:3, menuItem: (
-      <Menu.Item key={"3"}>
-        Console <Label color='orange'  size='mini'>{findStateId(myStateThis, "NoMobile")}</Label>
-      </Menu.Item>
-    ), render: () => <Tab.Pane>{getBlockChallenge('NoMobile',events)}</Tab.Pane> },
-    {id:4, menuItem: (
-      <Menu.Item key={"4"}>
-        Tournament <Label  size='mini' color='black'>{findStateId(myStateThis, "Tournament")}</Label>
-      </Menu.Item>
-    ), render: () => <Tab.Pane>{getBlockChallenge('Tournament',events)}</Tab.Pane> },
-  ]
-  updateCount(events)
-  
+    {
+      id: 1,
+      menuItem: (
+        <Menu.Item key={"1"}>
+          All{" "}
+          <Label color="red" size="mini">
+            {findStateId(myStateThis, "All")}
+          </Label>
+        </Menu.Item>
+      ),
+      render: () => <Tab.Pane>{getBlockChallenge("All", events)}</Tab.Pane>,
+    },
+    {
+      id: 2,
+      menuItem: (
+        <Menu.Item key={"2"}>
+          Mobile{" "}
+          <Label color="teal" size="mini">
+            {findStateId(myStateThis, "Mobile")}
+          </Label>
+        </Menu.Item>
+      ),
+      render: () => <Tab.Pane>{getBlockChallenge("Mobile", events)}</Tab.Pane>,
+    },
+    {
+      id: 3,
+      menuItem: (
+        <Menu.Item key={"3"}>
+          Console{" "}
+          <Label color="orange" size="mini">
+            {findStateId(myStateThis, "NoMobile")}
+          </Label>
+        </Menu.Item>
+      ),
+      render: () => (
+        <Tab.Pane>{getBlockChallenge("NoMobile", events)}</Tab.Pane>
+      ),
+    },
+    {
+      id: 4,
+      menuItem: (
+        <Menu.Item key={"4"}>
+          Tournament{" "}
+          <Label size="mini" color="black">
+            {findStateId(myStateThis, "Tournament")}
+          </Label>
+        </Menu.Item>
+      ),
+      render: () => (
+        <Tab.Pane>{getBlockChallenge("Tournament", events)}</Tab.Pane>
+      ),
+    },
+  ];
+  updateCount(events);
+
   return (
-      
-        
     <>
-   
-    <Active {...prop}/>
-    <DashStat {...prop}/>
-    <Tab   panes={panes}  className="maxheight dash"  defaultActiveIndex={key}  onTabChange={(e, data) => {prop.onUpdateItem('keyDash',data.activeIndex)}}  />
-
-     
-
-
+      <Active {...prop} />
+      <DashStat {...prop} />
+      <Tab
+        panes={panes}
+        className="maxheight dash"
+        defaultActiveIndex={key}
+        onTabChange={(e, data) => {
+          prop.onUpdateItem("keyDash", data.activeIndex);
+        }}
+      />
     </>
   );
 }
 
-export default (Dashboard);
+export default Dashboard;

@@ -1,17 +1,14 @@
-import React, { PureComponent, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
-  ReferenceLine,Brush
+  ReferenceLine,
+  Brush,
 } from "recharts";
-import Moment from "moment";
-import { Link, useLocation } from "react-router-dom";
 
 function editCounry(options, options2) {
   options?.sort((a, b) => (a.date > b.date ? 1 : -1));
@@ -193,17 +190,22 @@ const ChartStat = (prop) => {
 
     return null;
   };
-  
-      const CustomizedLabel = ({ x, y, stroke, value }) => {
-     
-  
-      return (
-        <text x={x} y={y} dy={-10} fill='#ffffff' fontSize={10} textAnchor="middle">
-          {value}$
-        </text>
-      );
-    }
-  
+
+  const CustomizedLabel = ({ x, y, stroke, value }) => {
+    return (
+      <text
+        x={x}
+        y={y}
+        dy={-10}
+        fill="#ffffff"
+        fontSize={10}
+        textAnchor="middle"
+      >
+        {value}$
+      </text>
+    );
+  };
+
   return (
     <div
       style={{
@@ -251,7 +253,12 @@ const ChartStat = (prop) => {
             stroke="#5d0000"
             viewBox={{ x: 0, height: 2500 }}
           />
-          <Brush fill="#000" stroke="#777" startIndex={_data.length  - 20} height={20} />
+          <Brush
+            fill="#000"
+            stroke="#777"
+            startIndex={_data.length - 20}
+            height={20}
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>

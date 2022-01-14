@@ -9,13 +9,11 @@ import {
 import Avatar from "react-avatar";
 import Countdown from "react-countdown";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CurrencyFormat from "react-currency-format";
 import userService from "services/user.service";
 import MatchCard from "components/matchblock.component";
 import TransitionExampleTransitionExplorer from "components/anim.component";
-import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import eventBus from "views/eventBus";
 import CopyText from "components/copy.component";
 import {
@@ -35,33 +33,18 @@ import {
   Grid,
   Segment,
   Card,
-  Image,
   Dimmer,
-  List,
   Checkbox,
 } from "semantic-ui-react";
 // react-bootstrap components
 import {
   Badge,
-  Alert,
-  Form,
-  InputGroup,
-  Navbar,
-  Nav,
-  OverlayTrigger,
-  Table,
-  Tooltip,
-  Container,
   Row,
   Col,
   Carousel,
-  TabContent,
-  TabPane,
-  Tab,
   ProgressBar,
   ListGroup,
 } from "react-bootstrap";
-import { useHistory } from "react-router";
 
 var moment = require("moment");
 var nullplayer = {
@@ -415,11 +398,15 @@ export const vsComponentPlayer = (
   } catch (e) {
     var player = nullplayer;
   }
-  
+
   var ischeck = false;
-  if(player?.ready) {ischeck = player?.ready}
-  if(isloading) {ischeck = !player?.ready}
-  
+  if (player?.ready) {
+    ischeck = player?.ready;
+  }
+  if (isloading) {
+    ischeck = !player?.ready;
+  }
+
   var padd = 10;
   if (
     matchidFind.status == "Ready" &&
@@ -525,7 +512,7 @@ export const vsComponentPlayer = (
       )}
     </div>
   );
-  
+
   var ready = (
     <>
       {player?.username == currentUser.username &&
@@ -557,7 +544,6 @@ export const vsComponentPlayer = (
             defaultChecked={ischeck}
             disabled={player.username != currentUser.username}
             onChange={(checked) => {
-          
               handlechangeReadyEvent(checked);
             }}
           />
@@ -1502,49 +1488,45 @@ export const printStatus = (item, _mode, _color, finish, status, _anim) => {
         </Statistic>
       ) : (
         <>
-          
-              {(_mode == "Tournament" || _mode == "League") &&
-              status == "Pending" &&
-              !getQueryVariable("matchid") ? (
-                <Statistic inverted color={getColorStatus(status)} size="tiny">
-                  <Statistic.Label>{_mode}</Statistic.Label>
-                  <Statistic.Value>
-                    {item?.players?.length}/{item.totalPlayer}
-                  </Statistic.Value>
-                </Statistic>
-              ) : (
-                <>
-                <Statistic inverted color={getColorStatus(status)} size="tiny">
-                  <Statistic.Label>{_mode}</Statistic.Label>
-                  <Statistic.Value>{status}</Statistic.Value>
-                </Statistic>
-                
-               
-                {finish.split("@@@")[1] && _anim=='no' && _mode != "Tournament" && (
+          {(_mode == "Tournament" || _mode == "League") &&
+          status == "Pending" &&
+          !getQueryVariable("matchid") ? (
+            <Statistic inverted color={getColorStatus(status)} size="tiny">
+              <Statistic.Label>{_mode}</Statistic.Label>
+              <Statistic.Value>
+                {item?.players?.length}/{item.totalPlayer}
+              </Statistic.Value>
+            </Statistic>
+          ) : (
+            <>
+              <Statistic inverted color={getColorStatus(status)} size="tiny">
+                <Statistic.Label>{_mode}</Statistic.Label>
+                <Statistic.Value>{status}</Statistic.Value>
+              </Statistic>
+
+              {finish.split("@@@")[1] &&
+                _anim == "no" &&
+                _mode != "Tournament" && (
                   <>
-                  <Divider fitted style={{ opacity: 0 }} />
-              <Statistic inverted size="mini" color="yellow">
-                    {finish.split("@@@")[1].indexOf("Not") > -1 ? (
-                      <Statistic.Value>
-                        
-                        {finish.split("@@@")[1]}
-                      </Statistic.Value>
-                    ) : (
-                      <>
+                    <Divider fitted style={{ opacity: 0 }} />
+                    <Statistic inverted size="mini" color="yellow">
+                      {finish.split("@@@")[1].indexOf("Not") > -1 ? (
                         <Statistic.Value>
                           {finish.split("@@@")[1]}
                         </Statistic.Value>
-                        <Statistic.Label>is winner</Statistic.Label>
-                      </>
-                    )}
+                      ) : (
+                        <>
+                          <Statistic.Value>
+                            {finish.split("@@@")[1]}
+                          </Statistic.Value>
+                          <Statistic.Label>is winner</Statistic.Label>
+                        </>
+                      )}
                     </Statistic>
                   </>
                 )}
-              
-                </>
-              )}
-           
-         
+            </>
+          )}
         </>
       )}
     </>
@@ -1570,19 +1552,25 @@ export const rendererBig = ({
   if (
     completed ||
     props.match?.winner ||
-    (props.match?.status != "Pending" &&props.match?.status != "Ready" &&props.match?.status != "InPlay" && props.match?.gameMode != "League")
+    (props.match?.status != "Pending" &&
+      props.match?.status != "Ready" &&
+      props.match?.status != "InPlay" &&
+      props.match?.gameMode != "League")
   ) {
     var lastDate = moment(props.date).startOf("second").fromNow();
-    if( props.match?.winner || props.match?.status == "InPlay"){lastDate=null}
+    if (props.match?.winner || props.match?.status == "InPlay") {
+      lastDate = null;
+    }
     // Render a complete state
     //return <Completionist />;
-    return <>
-    <Divider fitted style={{ opacity: 0 }} />
+    return (
+      <>
+        <Divider fitted style={{ opacity: 0 }} />
         <Statistic inverted size={_size} color="yellow">
           <Statistic.Label>{lastDate}</Statistic.Label>
-          
         </Statistic>
-    </>;
+      </>
+    );
   } else {
     // Render a countdown
     return (
@@ -1666,7 +1654,7 @@ export const getGameTag = (game, userTags) => {
 };
 export const findActiveMatch = (event, matchID, username) => {
   var _match;
-  
+
   event?.matchTables.sort((a, b) => (a.level > b.level ? 1 : -1));
   if (matchID) {
     event.matchTables.map(function (match) {

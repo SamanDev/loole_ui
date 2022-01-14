@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { IMaskInput } from "react-imask";
 import { withRouter } from "react-router-dom";
 import userService from "services/user.service";
-import CryptoList from "components/CryptoList";
-import { Card } from "react-bootstrap";
 
 import {
   Button,
-  Select,
   Divider,
   Header,
   Form,
   Input,
   Label,
   Modal,
-  Segment,
 } from "semantic-ui-react";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router";
@@ -23,7 +19,7 @@ function CrDeposit(prop) {
   const [myState, setMyState] = useState({
     list: [
       { id: "amount", val: "10" },
-   
+
       { id: "hasError", val: null },
       { id: "loading", val: false },
       { id: "submit", val: false },
@@ -80,8 +76,8 @@ function CrDeposit(prop) {
     return _error;
   };
   const handleSubmit = () => {
-    console.log(myState)
-    
+    console.log(myState);
+
     var Amount = findStateId(myState, "amount");
     onUpdateItem("submit", true);
     onUpdateItem("loading", true);
@@ -93,8 +89,7 @@ function CrDeposit(prop) {
 
           if (response.address) {
             //prop.onUpdateItem("openModalCashier", false)
-                //history.push("/panel/dashboard");
-            
+            //history.push("/panel/dashboard");
           } else {
             Swal.fire({
               icon: "error",
@@ -122,64 +117,60 @@ function CrDeposit(prop) {
       onUpdateItem("loading", false);
     }
   };
-  
+
   var Amount = findStateId(myState, "amount");
   var loading = findStateId(myState, "loading");
 
   return (
     <>
       <Header as="h2" inverted>
-      eVoucher PerfectMoney Cashout
+        eVoucher PerfectMoney Cashout
       </Header>
-      <Form
-        onSubmit={handleSubmit}
-        size="big"
-       inverted
-        style={{ padding: 15 }}
-      >
+      <Form onSubmit={handleSubmit} size="big" inverted style={{ padding: 15 }}>
         <Modal.Content style={{ paddingBottom: 90 }}>
-     
-    <Form.Field>
-          <label>Amount</label>
-          <Input
-            labelPosition="right"
-            fluid
-            type="text"
-            placeholder="Amount"
-            error={getError(Amount, "Please enter amount", "")}
-          >
-            <Label>$</Label>
-            <IMaskInput
-              type="tel"
-              pattern="[1-9]{1}[0-9]"
-              mask={"0000"}
-              value={Amount}
-              onAccept={setAmount}
-            />
-            <Label basic size="small">
-              .00
-            </Label>
-          </Input>
+          <Form.Field>
+            <label>Amount</label>
+            <Input
+              labelPosition="right"
+              fluid
+              type="text"
+              placeholder="Amount"
+              error={getError(Amount, "Please enter amount", "")}
+            >
+              <Label>$</Label>
+              <IMaskInput
+                type="tel"
+                pattern="[1-9]{1}[0-9]"
+                mask={"0000"}
+                value={Amount}
+                onAccept={setAmount}
+              />
+              <Label basic size="small">
+                .00
+              </Label>
+            </Input>
           </Form.Field>
         </Modal.Content>
 
         <Divider />
-        <Button.Group size='large'  fluid widths='2'>
-      <Button
-          loading={loading}
-          disabled={loading}
-          color="green"
-          onClick={() => onUpdateItem("submit", true)}
-    
-        >
-          Cashout
-        </Button>
-        <Button.Or />
-    <Button  type="button"  color='red'   onClick={() => prop.onUpdateItem('openModalCashier',false)}>
-              Close
-            </Button>
-  </Button.Group>
-        
+        <Button.Group size="large" fluid widths="2">
+          <Button
+            loading={loading}
+            disabled={loading}
+            color="green"
+            onClick={() => onUpdateItem("submit", true)}
+          >
+            Cashout
+          </Button>
+          <Button.Or />
+          <Button
+            type="button"
+            color="red"
+            onClick={() => prop.onUpdateItem("openModalCashier", false)}
+          >
+            Close
+          </Button>
+        </Button.Group>
       </Form>
     </>
   );

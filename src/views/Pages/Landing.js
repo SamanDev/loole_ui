@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import $ from "jquery";
 
-import { Carousel } from "react-bootstrap";
 import { useInfo } from "services/hooks";
 import HomeEvents from "components/events/home.component";
 import GameSlide from "components/GameSlide";
 import LandStat from "components/landstat.component";
 
-import { Colors, themeColors } from "const.js";
+import { themeColors } from "const.js";
 const d = new Date();
 let da = d.getSeconds();
 let day = da % 7;

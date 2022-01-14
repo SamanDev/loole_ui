@@ -1,32 +1,15 @@
 import React, { Component } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-import Select from "react-select";
 import Avatar from "react-avatar";
 
-import { NavLink, Link } from "react-router-dom";
-import {
-  VerticalTimeline,
-  VerticalTimelineElement,
-} from "react-vertical-timeline-component";
+import { Link } from "react-router-dom";
 import "react-vertical-timeline-component/style.min.css";
-import {
-  faInstagram,
-  faTwitch,
-  faYoutube,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
-import CurrencyFormat from "react-currency-format";
+import { faTwitch } from "@fortawesome/free-brands-svg-icons";
 
 import {
-  Statistic,
   Button,
   Label,
   Divider,
-  Grid,
   Segment,
-  Accordion,
   Header,
   List,
   Message,
@@ -37,20 +20,17 @@ import userService from "services/user.service";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Countdown from "react-countdown";
-import { Col, ProgressBar,Table } from "react-bootstrap";
+import { Col, ProgressBar } from "react-bootstrap";
 import {
   setAvatar,
   rendererBig,
   printEventBTN,
   vsComponentTitle,
-  getMatchTitle,
   getColorStatus,
   printStatus,
   handleTagForm,
-  vsComponentPlayer,
   getGroupBadgeBlock,
   printJoinalerts,
-  genMatch,
 } from "components/include";
 
 const Toast = Swal.mixin({
@@ -106,41 +86,42 @@ class LeagueSection extends Component {
       value: this.state.item.gameName + " - " + this.state.item.gameConsole,
       label: this.state.item.gameName + " - " + this.state.item.gameConsole,
     };
-    userService.joinEvent(this.state.item.id).then(
-      (response) => {
-        this.setState({
-          loading: false,
-        });
-        //alert(response)
-        if (response.data.accessToken) {
-          this.props.onUpdateItem("currentUser", response.data);
-
-          Toast.fire({
-            icon: "success",
-            title: "Joined.",
+    userService
+      .joinEvent(this.state.item.id)
+      .then(
+        (response) => {
+          this.setState({
+            loading: false,
           });
-        } else {
-          
+          //alert(response)
+          if (response.data.accessToken) {
+            this.props.onUpdateItem("currentUser", response.data);
 
-          {
-            printJoinalerts(
-              response.data,
-              GName,
-              this.state.currentUser,
-              handleTagForm,
-              this.props
-            );
+            Toast.fire({
+              icon: "success",
+              title: "Joined.",
+            });
+          } else {
+            {
+              printJoinalerts(
+                response.data,
+                GName,
+                this.state.currentUser,
+                handleTagForm,
+                this.props
+              );
+            }
           }
+        },
+        (error) => {
+          this.printErr(error);
         }
-      },
-      (error) => {
+      )
+      .catch((error) => {
         this.printErr(error);
-      }
-    ).catch((error) => {
-      this.printErr(error);
-    });
+      });
   }
-  
+
   printErr = (error) => {
     var GName = {
       value: this.state.item.gameName + " - " + this.state.item.gameConsole,
@@ -184,7 +165,7 @@ class LeagueSection extends Component {
         });
       }
     }
-  }
+  };
 
   static getDerivedStateFromProps(props, state) {
     // Any time the current user changes,
@@ -220,25 +201,32 @@ class LeagueSection extends Component {
       this.state;
     var current_brackets = [];
     var potential_brackets = [];
-var pointTrack = [{
-  "text": "Kills",
-  "weight": "+ 20"
-}, {
-  "text": "Damage Done",
-  "weight": "+ 0.06"
-}, {
-  "text": "Time Played",
-  "weight": "+ 0.04"
-}, {
-  "text": "1st Place",
-  "weight": " + 240"
-}, {
-  "text": "2nd or 3rd Place",
-  "weight": " + 60"
-}, {
-  "text": "4th to 8th Place",
-  "weight": " + 20"
-}]
+    var pointTrack = [
+      {
+        text: "Kills",
+        weight: "+ 20",
+      },
+      {
+        text: "Damage Done",
+        weight: "+ 0.06",
+      },
+      {
+        text: "Time Played",
+        weight: "+ 0.04",
+      },
+      {
+        text: "1st Place",
+        weight: " + 240",
+      },
+      {
+        text: "2nd or 3rd Place",
+        weight: " + 60",
+      },
+      {
+        text: "4th to 8th Place",
+        weight: " + 20",
+      },
+    ];
     //var events = eventGet;
 
     if (item.tournamentPayout) {
@@ -290,7 +278,7 @@ var pointTrack = [{
     }
     var _mode = item.gameMode;
     var _color = "#404040";
-    var _finishTxt = 'Not Joinable';
+    var _finishTxt = "Not Joinable";
     if (item?.winner) {
       _finishTxt = item.winner;
     }
@@ -301,7 +289,9 @@ var pointTrack = [{
         <>{currentUser.username == user.username && (isJoin = true)}</>
       ));
     }
-    if(item.status !='Pending' && item.players.length > 5){current_brackets = potential_brackets}
+    if (item.status != "Pending" && item.players.length > 5) {
+      current_brackets = potential_brackets;
+    }
     icEnd = 0;
     icStart = 0;
     setTimeout(() => {
@@ -353,7 +343,7 @@ var pointTrack = [{
             this.handleJoinMatch,
             this.props.onUpdateItem
           )}
-          {item.status == "Pending" && item.players.length!=item.totalPlayer && (
+          {item.status == "Pending" && item.players.length != item.totalPlayer && (
             <>
               <small
                 style={{
@@ -376,7 +366,7 @@ var pointTrack = [{
                 }}
               />
             </>
-          ) }
+          )}
 
           {item.players.map((user, z) => (
             <span key={z}>
@@ -402,144 +392,130 @@ var pointTrack = [{
               ) : null}
             </span>
           ))}
-<Col
-          className="mx-auto text-center "
-          lg="8"
-          md="10"
-          style={{ padding: 0, marginTop: 120 }}
-        >
-          {item.players?.length > 0 && (
+          <Col
+            className="mx-auto text-center "
+            lg="8"
+            md="10"
+            style={{ padding: 0, marginTop: 120 }}
+          >
+            {item.players?.length > 0 && (
               <Segment inverted color="red">
                 <Header as="h2">Players</Header>
                 <Message>
-                <List divided inverted relaxed>
-                {item.players.map((player, i) => {
-                      
-                        return (
-                          <List.Item key={i.toString()}>
-
-        <List.Content  style={{ textAlign:'left' }}>
-          
-          <span>
-          <Avatar as={Link} to={'/user/'+player.username} target="_blank"
-                      size="20"
-                      title={player.username}
-                      round={true}
-                      name={setAvatar(player.username)}
-                    />  <Label  style={{ marginLeft:5 }}>{player.nickName}</Label>
-                              
-                              </span>
-                            <span style={{ float:'right',marginLeft:5 }}>
-                            <Label color="black">{player.totalScore ? player.totalScore : 0}</Label>
+                  <List divided inverted relaxed>
+                    {item.players.map((player, i) => {
+                      return (
+                        <List.Item key={i.toString()}>
+                          <List.Content style={{ textAlign: "left" }}>
+                            <span>
+                              <Avatar
+                                as={Link}
+                                to={"/user/" + player.username}
+                                target="_blank"
+                                size="20"
+                                title={player.username}
+                                round={true}
+                                name={setAvatar(player.username)}
+                              />{" "}
+                              <Label style={{ marginLeft: 5 }}>
+                                {player.nickName}
+                              </Label>
                             </span>
-        </List.Content>
-      </List.Item>
-      
-                        );
-                      
+                            <span style={{ float: "right", marginLeft: 5 }}>
+                              <Label color="black">
+                                {player.totalScore ? player.totalScore : 0}
+                              </Label>
+                            </span>
+                          </List.Content>
+                        </List.Item>
+                      );
                     })}
-      
-    </List>
-    </Message>
-               
-                
-            
-                
+                  </List>
+                </Message>
               </Segment>
-              )}
-              <Segment inverted color="yellow">
-                <Header as="h2">Results Tracking</Header>
-                <Message>
+            )}
+            <Segment inverted color="yellow">
+              <Header as="h2">Results Tracking</Header>
+              <Message>
                 <List divided inverted relaxed>
-                {pointTrack.map((win, i) => {
-                      
-                        return (
-                          <List.Item key={i.toString()}>
-
-        <List.Content  style={{ textAlign:'left' }}>
-          
-          <span style={{ fontSize: 17 }}>
-                              <Label>{win.text}</Label>
-                              
-                            </span>
-                            <span style={{ float:'right',marginLeft:5 }}>
+                  {pointTrack.map((win, i) => {
+                    return (
+                      <List.Item key={i.toString()}>
+                        <List.Content style={{ textAlign: "left" }}>
+                          <span style={{ fontSize: 17 }}>
+                            <Label>{win.text}</Label>
+                          </span>
+                          <span style={{ float: "right", marginLeft: 5 }}>
                             <Label color="green">{win.weight}</Label>
-                            </span>
-        </List.Content>
-      </List.Item>
-      
-                        );
-                      
-                    })}
-      
-    </List>
-    </Message>
-                
-            
-                
-              </Segment>
-              <Segment inverted color="violet">
-                <Header as="h2">Watch Live</Header>
+                          </span>
+                        </List.Content>
+                      </List.Item>
+                    );
+                  })}
+                </List>
+              </Message>
+            </Segment>
+            <Segment inverted color="violet">
+              <Header as="h2">Watch Live</Header>
+              <p>
+                <FontAwesomeIcon
+                  icon={faTwitch}
+                  style={{
+                    color: "#fff",
+                    fontSize: 40,
+                  }}
+                />
+              </p>
+              <h5>Nobody is currently live</h5>
+              <Message>
                 <p>
-                  <FontAwesomeIcon
-                    icon={faTwitch}
-                    style={{
-                      color: "#fff",
-                      fontSize: 40,
-                    }}
-                  />
-                </p>
-                <h5>Nobody is currently live</h5>
-                <Message>
-    
-    <p>
                   By connecting your Twitch account you will automatically be
                   shown on the Watch Live pages of the tournaments you are
                   playing in
                 </p>
                 <Button
-                   color="violet"
+                  color="violet"
                   onClick={this.handleHowStream}
-                  
                   disabled={this.state.isloading}
                 >
                   How to Stream
                 </Button>
-  </Message>
-                
-            
-                
-              </Segment>
-              <Segment inverted color="blue">
-                <Header as="h2">
-                  Prizes
-                  <div style={{ position: "relative", zIndex: 1,transform:'scale(1.3 )' }}>
-                    {getGroupBadgeBlock(
-                      item.outSign,
-                      item.prize,
-                      "Prize",
-                      "left",
-                      "green"
-                    )}
-                  </div>
-                </Header>
-                <Message>
+              </Message>
+            </Segment>
+            <Segment inverted color="blue">
+              <Header as="h2">
+                Prizes
+                <div
+                  style={{
+                    position: "relative",
+                    zIndex: 1,
+                    transform: "scale(1.3 )",
+                  }}
+                >
+                  {getGroupBadgeBlock(
+                    item.outSign,
+                    item.prize,
+                    "Prize",
+                    "left",
+                    "green"
+                  )}
+                </div>
+              </Header>
+              <Message>
                 <List divided inverted relaxed>
-                {current_brackets.map((win, i) => {
-                      icStart = icStart + 1;
-                      icEnd = icEnd + parseInt(win.number);
-                      var icShow = "#" + icStart;
-                      if (icStart != icEnd) {
-                        icShow = icShow + " - #" + icEnd;
-                        icStart = icEnd;
-                      }
-                      if (icStart <= 2005) {
-                        return (
-                          <List.Item key={i.toString()}>
-
-        <List.Content>
-          
-          <span style={{ fontSize: 17 }}>
+                  {current_brackets.map((win, i) => {
+                    icStart = icStart + 1;
+                    icEnd = icEnd + parseInt(win.number);
+                    var icShow = "#" + icStart;
+                    if (icStart != icEnd) {
+                      icShow = icShow + " - #" + icEnd;
+                      icStart = icEnd;
+                    }
+                    if (icStart <= 2005) {
+                      return (
+                        <List.Item key={i.toString()}>
+                          <List.Content>
+                            <span style={{ fontSize: 17 }}>
                               <Label color="green">%{win.percent}</Label>
                               <Label
                                 pointing="left"
@@ -550,7 +526,7 @@ var pointTrack = [{
                                 {icShow}
                               </Label>
                             </span>
-                            <span style={{ textAlign:'left',marginLeft:5 }}>
+                            <span style={{ textAlign: "left", marginLeft: 5 }}>
                               {getGroupBadgeBlock(
                                 item.outSign,
                                 win.prize,
@@ -559,28 +535,23 @@ var pointTrack = [{
                                 "green"
                               )}
                             </span>
-        </List.Content>
-      </List.Item>
-      
-                        );
-                      }
-                    })}
-      
-    </List>
-    </Message>
-              </Segment>
-              <Segment inverted color="purple">
-                <Header as="h2">
-                Rules
-                </Header>
-                <Message id="jsonhtml" style={{ textAlign:'left'}}></Message>
-                  <span id="jsonhtml2" className="hide">
-                    {" "}
-                    {item.rules}
-                  </span>
-              </Segment>
-              </Col>
-         
+                          </List.Content>
+                        </List.Item>
+                      );
+                    }
+                  })}
+                </List>
+              </Message>
+            </Segment>
+            <Segment inverted color="purple">
+              <Header as="h2">Rules</Header>
+              <Message id="jsonhtml" style={{ textAlign: "left" }}></Message>
+              <span id="jsonhtml2" className="hide">
+                {" "}
+                {item.rules}
+              </span>
+            </Segment>
+          </Col>
         </Col>
       </>
     );
