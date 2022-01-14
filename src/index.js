@@ -226,7 +226,10 @@ function Main() {
         getQueryVariable("matchid", window.location.search.substring(1)),
         currentUser.username
       );
-      onUpdateItem("matchIDQ", _find.id);
+      if (_find?.id) {
+        onUpdateItem("matchIDQ", _find.id);
+      }
+
       queryClient.setQueryData(["Event", eventGet.id], eventGet);
       onUpdateItem("match", _find);
     }
