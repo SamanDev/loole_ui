@@ -29,7 +29,7 @@ const LandNavbar = (prop) => {
             style={{ fontFamily: "Work Sans", paddingLeft: 0, fontSize: 16 }}
           >
             <img
-              src={"assets/img/logoloole.svg"}
+              src={"/assets/img/logoloole.svg"}
               alt="loole.gg logo"
               style={{ height: 50, width: 50, marginRight: 10 }}
             />

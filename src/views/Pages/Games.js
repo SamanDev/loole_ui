@@ -15,7 +15,11 @@ const Landing = (prop) => {
     return (
       <>
         {item.name}
-        <Header as="h5" inverted style={{ marginTop: 5, color: "#ccc" }}>
+        <Header
+          as="div"
+          inverted
+          style={{ marginTop: 5, color: "#ccc", fontSize: 20 }}
+        >
           {item.haveMatch && "1 vs 1"}
           {item.haveMatch && item.haveTournament && ", "}
           {item.haveTournament && "Tournaments"}

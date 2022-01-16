@@ -256,7 +256,7 @@ const ChartStat = (prop) => {
           <Brush
             fill="#000"
             stroke="#777"
-            startIndex={_data.length - 20}
+            startIndex={_data.length - 10}
             height={20}
           />
         </LineChart>
