@@ -12,7 +12,15 @@ import User from "views/Pages/User.js";
 import routes from "routes.js";
 import Games from "views/Pages/Games.js";
 import Content from "views/Pages/Content.js";
+import { getOffset } from "components/include";
+function scrollTo(elem) {
+  var x = getOffset(document.getElementById(elem)).top;
 
+  window.scrollTo({
+    top: x,
+    behavior: "smooth",
+  });
+}
 function Auth(props) {
   const getRoutes = (routes) => {
     //scrollToTop();
@@ -65,7 +73,7 @@ function Auth(props) {
         ) : (
           <div className="landing-page landing-page1 landing-mobile">
             {/* Navbar */}
-            <LandNavbar {...props} />
+            <LandNavbar {...props} scrollTo={scrollTo} />
             {/* End Navbar */}
 
             <Switch>{getRoutes(routes)}</Switch>

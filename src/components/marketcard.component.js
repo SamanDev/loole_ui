@@ -1,7 +1,7 @@
 import React from "react";
 
 import { getGroupBadgeBlock } from "components/include.js";
-import { Label, Card, Image } from "semantic-ui-react";
+import { Button, Card, Image } from "semantic-ui-react";
 // react-bootstrap components
 
 function MatchCard(prop) {
@@ -9,12 +9,15 @@ function MatchCard(prop) {
 
   return (
     <Card>
-      <Image alt={item.title} src={item.images[0].src} />
+      <Image
+        alt={item.title}
+        src={item.images[0].src}
+        style={{ background: "gray !important", height: 167 }}
+      />
 
       <div className="content extra">
-        <Card.Header style={{ textAlign: "left" }}>
+        <Card.Header as="h5" style={{ textAlign: "left" }}>
           {item.title}
-          <Label style={{ float: "right" }} size="small" basic></Label>
         </Card.Header>
 
         <Card.Description>
@@ -23,6 +26,11 @@ function MatchCard(prop) {
             style={{ minHeight: 10, padding: 2 }}
           >
             {getGroupBadgeBlock("Point", item.price, "Fee", "left", "green")}
+          </div>
+          <div className="content right floated ">
+            <Button color="red" size="mini">
+              Buy
+            </Button>
           </div>
         </Card.Description>
       </div>

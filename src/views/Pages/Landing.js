@@ -4,7 +4,7 @@ import { useInfo } from "services/hooks";
 import HomeEvents from "components/events/home.component";
 import GameSlide from "components/GameSlide";
 import LandStat from "components/landstat.component";
-
+import Market from "components/market.component";
 import { themeColors } from "const.js";
 const d = new Date();
 let da = d.getSeconds();
@@ -97,6 +97,14 @@ function Landing(prop) {
             <div className="container">
               <GameSlide />
             </div>
+          </div>
+        </div>
+        <div className="section   section-no-padding">
+          <div className="container" style={{ minHeight: 500 }}>
+            <h4 className="header-text  text-center" id="market">
+              Don't ever be out!
+            </h4>
+            <Market />
           </div>
         </div>
         <div

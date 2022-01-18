@@ -11,7 +11,8 @@ const LandNavbar = (prop) => {
     setMyState(prop.myState);
   }, [prop.myState]);
   const currentUser = prop.findStateId(myState, "currentUser");
-  if (currentUser?.accessToken) {
+  const openModalLogin = prop.findStateId(myState, "openModalLogin");
+  if (currentUser?.accessToken && !openModalLogin) {
     prop.onUpdateItem("openModalLogin", false);
   }
   const logOut = () => {
@@ -37,6 +38,9 @@ const LandNavbar = (prop) => {
           </Menu.Item>
 
           <Menu.Menu position="right">
+            <Menu.Item onClick={() => prop.scrollTo("market")}>
+              Market
+            </Menu.Item>
             {currentUser?.accessToken ? (
               <>
                 <Menu.Item name="Dashboard" to={"/panel/dashboard"} as={Link} />

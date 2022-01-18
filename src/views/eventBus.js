@@ -3,7 +3,6 @@ const eventBus = {
     document.addEventListener(event, (e) => callback(e.detail));
   },
   dispatch(event, data) {
-    //console.log(event,data)
     document.dispatchEvent(new CustomEvent(event, { detail: data }));
   },
   remove(event, callback) {
