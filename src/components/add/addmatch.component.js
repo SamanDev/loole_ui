@@ -109,6 +109,7 @@ const getBlockGameModesVal = (filtermode) => {
 
   return gamemaplocal[0];
 };
+var moment = require("moment");
 
 class AddMatch extends Component {
   constructor(props) {
@@ -242,7 +243,9 @@ class AddMatch extends Component {
 
   handleCreateMatch(e) {
     e.preventDefault();
-
+    var nowS = new Date();
+    var nowE = moment(nowS).utcOffset("+00:00");
+    var _StartTime = moment(nowE).format("YYYY-MM-DDTHH:mm");
     this.setState({
       message: "",
       successful: false,
@@ -258,7 +261,8 @@ class AddMatch extends Component {
         this.state.inSign.value,
         this.state.inSign.value,
         this.state.inSign.value,
-        this.state.AvalableFor.value
+        parseInt(this.state.AvalableFor.value),
+        _StartTime
       )
       .then(
         (response) => {

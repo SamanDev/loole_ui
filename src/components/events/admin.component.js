@@ -126,7 +126,11 @@ class MatchSection extends Component {
     });
     if (this.state.item.matchTables.length > 1) {
       adminService
-        .loseEventMatch(this.state.eventid, this.state.matchid, e)
+        .loseEventMatch(
+          parseInt(this.state.eventid),
+          parseInt(this.state.matchid),
+          e
+        )
         .then(
           () => {},
           (error) => {
@@ -138,7 +142,7 @@ class MatchSection extends Component {
         });
     } else {
       adminService
-        .loseEvent(this.state.eventid, e)
+        .loseEvent(parseInt(this.state.eventid), e)
         .then(
           () => {},
           (error) => {

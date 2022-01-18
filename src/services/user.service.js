@@ -324,7 +324,8 @@ class UserService {
     inSign,
     outSign,
     currency,
-    timeMinute
+    timeMinute,
+    startTime
   ) {
     return axios
       .post(
@@ -338,6 +339,7 @@ class UserService {
           outSign,
           currency,
           timeMinute,
+          startTime,
         },
         { headers: authHeader() }
       )
