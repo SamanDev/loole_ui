@@ -78,8 +78,11 @@ const getBlockGameModesVal = (filtermode) => {
 
   return gamemaplocal[0];
 };
-
 var moment = require("moment");
+var nowS = new Date();
+var nowE = moment(nowS).add(7, "days");
+var _StartTime = moment(nowE).format("YYYY-MM-DDTHH:mm");
+
 class AddTour extends Component {
   constructor(props) {
     super(props);
@@ -97,6 +100,7 @@ class AddTour extends Component {
     this.setRules = this.setRules.bind(this);
     this.setTournamentMode = this.setTournamentMode.bind(this);
     this.getBlockTournamentVal = this.getBlockTournamentVal.bind(this);
+    this.setStartTimePeriod = this.setStartTimePeriod.bind(this);
     this.setStartTime = this.setStartTime.bind(this);
     this.setPrize = this.setPrize.bind(this);
 
@@ -110,7 +114,8 @@ class AddTour extends Component {
       BetAmount: 10,
       Prize: "",
       AvalableFor: { value: "60", label: "1 Hour" },
-      StartTime: { value: "60", label: "1 Hour Later" },
+      StartTimePeriod: { value: "60", label: "1 Hour" },
+      StartTime: _StartTime,
       loading: false,
       submit: false,
       GameTag: "",
@@ -215,14 +220,24 @@ class AddTour extends Component {
       currentUserTag: e,
     });
   }
+  setStartTimePeriod(e) {
+    this.setState({
+      StartTimePeriod: e,
+    });
+  }
   setStartTime(e) {
     this.setState({
-      StartTime: e,
+      StartTime: e.target.value,
     });
   }
   handleCreateTournament(e) {
     e.preventDefault();
 
+    this.setState({
+      message: "",
+      successful: false,
+      loading: true,
+    });
     userService
       .createTournament(
         this.state.GName.value.split(" - ")[0],
@@ -230,10 +245,11 @@ class AddTour extends Component {
         "Tournament",
 
         this.state.BetAmount,
-        this.state.StartTime.value,
+        this.state.StartTimePeriod.value,
+        this.state.StartTime,
         // "1",
         this.state.TournamentMode.value,
-        this.state.TournamentPayout,
+        this.state.tournamentPayout,
 
         this.state.inSign.value,
         this.state.outSign.value,
@@ -409,19 +425,29 @@ class AddTour extends Component {
                 />
               </div>
               <div className="form-group">
-                <label>Start Time</label>
+                <label>Start Time {this.state.StartTime}</label>
+                <Input
+                  type="datetime-local"
+                  className="form-control"
+                  name="StartTime"
+                  value={this.state.StartTime}
+                  onChange={this.setStartTime}
+                />
+              </div>
+              <div className="form-group">
+                <label> Time Period</label>
 
                 <Select
                   className="react-select default"
                   classNamePrefix="react-select"
                   name="StartTime"
-                  value={this.state.StartTime}
-                  onChange={this.setStartTime}
+                  value={this.state.StartTimePeriod}
+                  onChange={this.setStartTimePeriod}
                   options={[
-                    { value: "3", label: "30 Minutes Later" },
-                    { value: "60", label: "1 Hour Later" },
-                    { value: "120", label: "2 Hours Later" },
-                    { value: "3600", label: "6 Hours Later" },
+                    { value: "3", label: "15 Minutes" },
+                    { value: "30", label: "30 Minutes" },
+                    { value: "60", label: "21Hour" },
+                    { value: "120", label: "2 Hours" },
                   ]}
                   placeholder=""
                   isSearchable={false}

@@ -315,8 +315,8 @@ class TournamentSection extends Component {
         "4,100.00@8,65.00,35.00@16,50.00,30.00,10.00,10.00@32,50.00,30.00,10.00,10.00@64,50.00,30.00,10.00,10.000";
       //var events = eventGet;
 
-      if (tournamentPayout) {
-        var tournamentPayout = tournamentPayout
+      if (item.tournamentPayout) {
+        var tournamentPayout = item.tournamentPayout
           .replace("4,", "1-4,")
           .replace("8,", "5-8,")
           .replace("16,", "9-16,")
@@ -528,7 +528,7 @@ class TournamentSection extends Component {
             txt="@@@Start at"
             colorfinish={getColorStatus(item.status)}
             finish={item.status + "@@@Not Avalable"}
-            date={item.expire}
+            date={item.startTime}
           />
           <Divider fitted style={{ opacity: 0 }} />
 

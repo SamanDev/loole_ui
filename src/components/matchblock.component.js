@@ -117,17 +117,32 @@ function MatchBlock(prop) {
             />
           ) : (
             <>
-              {" "}
-              <Countdown
-                renderer={rendererBig}
-                txt="@@@Avalable until"
-                colorfinish={getColorStatus(item.status)}
-                finish={item.status + "@@@Not Avalable"}
-                match={item}
-                date={item.expire}
-                mode={_mode}
-                color={_color}
-              />
+              {item.gameMode == "Tournament" ? (
+                <Countdown
+                  renderer={rendererBig}
+                  txt="@@@Avalable until"
+                  colorfinish={getColorStatus(item.status)}
+                  finish={item.status + "@@@Not Avalable"}
+                  match={item}
+                  date={item.startTime}
+                  mode={_mode}
+                  color={_color}
+                />
+              ) : (
+                <>
+                  {" "}
+                  <Countdown
+                    renderer={rendererBig}
+                    txt="@@@Avalable until"
+                    colorfinish={getColorStatus(item.status)}
+                    finish={item.status + "@@@Not Avalable"}
+                    match={item}
+                    date={item.expire}
+                    mode={_mode}
+                    color={_color}
+                  />
+                </>
+              )}
             </>
           )}
         </div>

@@ -532,11 +532,14 @@ class CreateMatch extends Component {
           </Nav>
           <Card>
             <Card.Body>
-              <Tab.Content>
-                <Tab.Pane eventKey="tournsment">
+              <Tab.Content className="maxheight dash">
+                <Tab.Pane
+                  eventKey="tournsment"
+                  className="ui  segment  tab basic"
+                >
                   <AddTour token={currentUser} {...this.props} />
                 </Tab.Pane>
-                <Tab.Pane eventKey="league">
+                <Tab.Pane eventKey="league" className="ui  segment  tab basic">
                   <Row>
                     <Col md="9">
                       <Form

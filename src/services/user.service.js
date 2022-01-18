@@ -2,21 +2,20 @@ import axios from "axios";
 import authHeader from "./auth-header";
 import uploadHeader from "./upload-header";
 
-import UserWebsocket from 'services/user.websocket'
-import { POSTURLTest,defUser } from "const";
-import { useState } from "react"
+import UserWebsocket from "services/user.websocket";
+import { POSTURLTest, defUser } from "const";
+import { useState } from "react";
 import eventBus from "views/eventBus";
-import * as api from "services/api"
-import { useAllEvents,useUser,useEvent } from "services/hooks"
+import * as api from "services/api";
+import { useAllEvents, useUser, useEvent } from "services/hooks";
 import {
   useQuery,
   useMutation,
   useQueryClient,
   QueryClient,
   QueryClientProvider,
-} from 'react-query'
+} from "react-query";
 const API_URL_TEST = POSTURLTest;
-
 
 class UserService {
   getPublicContent() {
@@ -53,7 +52,6 @@ class UserService {
       });
   }
   sendChat(message, id) {
-
     return axios
       .put(
         API_URL_TEST + "sendChat",
@@ -61,45 +59,38 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-       // eventBus.dispatch("eventsData", "");
+        // eventBus.dispatch("eventsData", "");
       });
   }
-  sendChatMatch(message, id,idMatch) {
-
+  sendChatMatch(message, id, idMatch) {
     return axios
       .put(
         API_URL_TEST + "sendChatMatch",
-        { message, id ,idMatch},
+        { message, id, idMatch },
         { headers: authHeader() }
       )
       .then((response) => {
         if (response.data.accessToken) {
-
         }
       });
   }
   sendChatUpload(uploadInfo) {
-    const [selectedFiles, setSelectedFiles] = useState([])
-    const [progress, setProgress] = useState()
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [progress, setProgress] = useState();
     return axios
-      .post(
-        API_URL_TEST + "uploadFile",
-        uploadInfo,
-        {
-          headers: uploadHeader(),
-          onUploadProgress: data => {
-            //Set the progress value to show the progress bar
-            setProgress(Math.round((100 * data.loaded) / data.total))
-          }
-        }
-      )
+      .post(API_URL_TEST + "uploadFile", uploadInfo, {
+        headers: uploadHeader(),
+        onUploadProgress: (data) => {
+          //Set the progress value to show the progress bar
+          setProgress(Math.round((100 * data.loaded) / data.total));
+        },
+      })
       .then((response) => {
         console.log(response);
       });
   }
-  
-  saveTags(gameName, gamePlatform, tagId, nickName) {
 
+  saveTags(gameName, gamePlatform, tagId, nickName) {
     return axios
       .post(
         API_URL_TEST + "saveTags",
@@ -108,26 +99,20 @@ class UserService {
       )
       .then((response) => {
         return response;
-
-
       });
   }
-  saveSocial(accountName,accountId) {
-
+  saveSocial(accountName, accountId) {
     return axios
       .post(
         API_URL_TEST + "saveSocial",
-        { accountName,accountId },
+        { accountName, accountId },
         { headers: authHeader() }
       )
       .then((response) => {
         return response;
-
-
-      })
+      });
   }
   finishClashRoyale(eventID) {
-
     return axios
       .post(
         API_URL_TEST + "finishClashRoyale",
@@ -135,83 +120,73 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-
         console.log("ok");
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
 
         return response.data;
-
-
       });
   }
   joinEvent(id) {
-    
     return axios
       .put(API_URL_TEST + "joinEvent", { id }, { headers: authHeader() })
       .then((response) => {
-        
-          return response;
-        
-      })
+        return response;
+      });
   }
-  loseEvent(id,idMatch) {
-    if(idMatch){
+  loseEvent(id, idMatch) {
+    if (idMatch) {
       return axios
-      .put(API_URL_TEST + "loseEvent", { id,idMatch }, { headers: authHeader() })
-      .then((response) => {
-        console.log("ok");
+        .put(
+          API_URL_TEST + "loseEvent",
+          { id, idMatch },
+          { headers: authHeader() }
+        )
+        .then((response) => {
+          console.log("ok");
 
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
-        return response.data;
-      });
-    }else{
+          // localStorage.setItem("events", JSON.stringify(response.data));
+          //localStorage.setItem("user", JSON.stringify(response.data));
+          return response.data;
+        });
+    } else {
       return axios
-      .put(API_URL_TEST + "loseEvent", { id }, { headers: authHeader() })
-      .then((response) => {
-        console.log("ok");
-        //this.getEventById(id)
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
-        return response.data;
-      });
-    }    
+        .put(API_URL_TEST + "loseEvent", { id }, { headers: authHeader() })
+        .then((response) => {
+          console.log("ok");
+          //this.getEventById(id)
+          // localStorage.setItem("events", JSON.stringify(response.data));
+          //localStorage.setItem("user", JSON.stringify(response.data));
+          return response.data;
+        });
+    }
   }
   leaveEvent(id) {
- 
     return axios
       .put(API_URL_TEST + "leaveEvent", { id }, { headers: authHeader() })
       .then((response) => {
-        
-          return response;
-        
-        
+        return response;
       });
   }
-  
+
   deleteEvent(id) {
-    return axios
-   
-      .get(API_URL_TEST + "deleteAllEvent", { headers: authHeader() })
-      //.delete(API_URL_TEST + "deleteEvent?id=" + id, { headers: authHeader() })
-      .then((response) => {
-        console.log("ok");
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
-        return response.data;
-      });
+    return (
+      axios
+
+        .get(API_URL_TEST + "deleteAllEvent", { headers: authHeader() })
+        //.delete(API_URL_TEST + "deleteEvent?id=" + id, { headers: authHeader() })
+        .then((response) => {
+          console.log("ok");
+          // localStorage.setItem("events", JSON.stringify(response.data));
+          //localStorage.setItem("user", JSON.stringify(response.data));
+          return response.data;
+        })
+    );
   }
   changeReadyEvent(id) {
-   
-      return axios
-      .put(
-        API_URL_TEST + "changeReadyEvent",
-        { id },
-        { headers: authHeader() }
-      )
+    return axios
+      .put(API_URL_TEST + "changeReadyEvent", { id }, { headers: authHeader() })
       .then((response) => {
-       
         //eventBus.remove("eventsDataEventDo");
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
@@ -220,35 +195,34 @@ class UserService {
   }
   getEvents() {
     //return useQuery("Events", api.getAllEvents)
-
   }
-  getEventById =  ( id) => {
-    alert()
-    return   axios
-      .post(API_URL_TEST + "getEventById",{id})
-      .then( (response) => {
-        
+  getEventById = (id) => {
+    alert();
+    return axios
+      .post(API_URL_TEST + "getEventById", { id })
+      .then((response) => {
         //eventBus.dispatch("eventsDataEventDo", response.data);
         //eventBus.remove("eventsDataEventDo");
         return response.data;
-      }).catch(error => {
-        return axios.get(API_URL_TEST + "getEvents").then((response) => {
-        var _d = JSON.parse(response.data.data).filter( (list) => list.id === id);
-        
-          //eventBus.dispatch("eventsDataEventDo", _d);
-          
-        })
       })
-       
-  }
+      .catch((error) => {
+        return axios.get(API_URL_TEST + "getEvents").then((response) => {
+          var _d = JSON.parse(response.data.data).filter(
+            (list) => list.id === id
+          );
+
+          //eventBus.dispatch("eventsDataEventDo", _d);
+        });
+      });
+  };
   getCurrentEvent(token) {
     //return useQuery("Events", api.getAllEvents)
   }
-  editInfo(name,country,birthday) {
+  editInfo(name, country, birthday) {
     return axios
       .put(
         API_URL_TEST + "editInfo",
-        { name,country,birthday},
+        { name, country, birthday },
         { headers: authHeader() }
       )
       .then((response) => {
@@ -256,74 +230,140 @@ class UserService {
       });
   }
   changePassword(newPassword) {
-    
     return axios
       .put(
         API_URL_TEST + "changePassword",
-        { newPassword},
-        { headers: authHeader() }
-      )
-      .then((response) => {
-        return response;
-        
-      });
-  }
-  createLeague(gameName, gameConsole, gameMode, amount, startTime, finished,totalPlayer,tournamentPayout,inSign,outSign,currency,rules) {
-    return axios
-      .post(
-        API_URL_TEST + "createEvent",
-        { gameName, gameConsole, gameMode, amount, startTime, finished,totalPlayer,tournamentPayout,inSign,outSign,currency,rules },
+        { newPassword },
         { headers: authHeader() }
       )
       .then((response) => {
         return response;
       });
   }
-  createTournament(gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer,tournamentPayout,inSign,outSign,currency,prize,rules) {
+  createLeague(
+    gameName,
+    gameConsole,
+    gameMode,
+    amount,
+    startTime,
+    finished,
+    totalPlayer,
+    tournamentPayout,
+    inSign,
+    outSign,
+    currency,
+    rules
+  ) {
     return axios
       .post(
         API_URL_TEST + "createEvent",
-        { gameName, gameConsole, gameMode, amount, timeMinute, totalPlayer,tournamentPayout,inSign,outSign,currency,prize,rules },
+        {
+          gameName,
+          gameConsole,
+          gameMode,
+          amount,
+          startTime,
+          finished,
+          totalPlayer,
+          tournamentPayout,
+          inSign,
+          outSign,
+          currency,
+          rules,
+        },
         { headers: authHeader() }
       )
       .then((response) => {
         return response;
       });
   }
-  createEvent(gameName, gameConsole, gameMode, amount,inSign,outSign,currency, timeMinute) {
-    
+  createTournament(
+    gameName,
+    gameConsole,
+    gameMode,
+    amount,
+    timeMinute,
+    startTime,
+    totalPlayer,
+    tournamentPayout,
+    inSign,
+    outSign,
+    currency,
+    prize,
+    rules
+  ) {
     return axios
       .post(
         API_URL_TEST + "createEvent",
-        { gameName, gameConsole, gameMode, amount,inSign,outSign,currency,  timeMinute },
+        {
+          gameName,
+          gameConsole,
+          gameMode,
+          amount,
+          timeMinute,
+          startTime,
+          totalPlayer,
+          tournamentPayout,
+          inSign,
+          outSign,
+          currency,
+          prize,
+          rules,
+        },
         { headers: authHeader() }
       )
       .then((response) => {
-        
-          return response;
-   
-        
+        return response;
       });
   }
-  resendActive(){
+  createEvent(
+    gameName,
+    gameConsole,
+    gameMode,
+    amount,
+    inSign,
+    outSign,
+    currency,
+    timeMinute
+  ) {
+    return axios
+      .post(
+        API_URL_TEST + "createEvent",
+        {
+          gameName,
+          gameConsole,
+          gameMode,
+          amount,
+          inSign,
+          outSign,
+          currency,
+          timeMinute,
+        },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
+  resendActive() {
     return axios
       .post(
         API_URL_TEST + "resendActivationLink",
-       {},
+        {},
         { headers: authHeader() }
       )
       .then((response) => {
         return response.data;
-      }).catch(error => {
-        return error
-
+      })
+      .catch((error) => {
+        return error;
       });
   }
-  deleteEvents(){
+  deleteEvents() {
     return axios
       .delete(
         API_URL_TEST + "handleDelete",
-       
+
         { headers: authHeader() }
       )
       .then((response) => {
@@ -331,57 +371,61 @@ class UserService {
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
         return response.data;
-      }).catch(error => {
-        return 'Ok'
-
+      })
+      .catch((error) => {
+        return "Ok";
       });
   }
-  createDepositCyripto(action,amount,coin) {
-    
+  createDepositCyripto(action, amount, coin) {
     return axios
       .post(
         API_URL_TEST + "coinPayments",
-        { action,coin,amount },
+        { action, coin, amount },
         { headers: authHeader() }
       )
       .then((response) => {
         console.log("ok");
-        
+
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
         return response.data;
       });
   }
-  createDepositShetabDoTransaction(mobile,cardNumber,amount,cvv,expire,pin,txID) {
-    
+  createDepositShetabDoTransaction(
+    mobile,
+    cardNumber,
+    amount,
+    cvv,
+    expire,
+    pin,
+    txID
+  ) {
     return axios
       .post(
         API_URL_TEST + "createDepositShetabDoTransaction",
-        { mobile,cardNumber,amount,cvv,expire,pin,txID },
+        { mobile, cardNumber, amount, cvv, expire, pin, txID },
         { headers: authHeader() }
       )
       .then((response) => {
-        
         return response.data;
       });
   }
-  createDepositShetabGetPassCode(mobile,cardNumber,amount,cvv,expire) {
-    
+  createDepositShetabGetPassCode(mobile, cardNumber, amount, cvv, expire) {
     return axios
       .post(
         API_URL_TEST + "createDepositShetabGetPassCode",
-        { mobile,cardNumber,amount,cvv,expire },
+        { mobile, cardNumber, amount, cvv, expire },
         { headers: authHeader() }
       )
       .then((response) => {
-        return response.data
+        return response.data;
       });
   }
   createDepositShetabVerify(mobile) {
-    
     return axios
       .post(
-        API_URL_TEST + "createDepositShetabVerify",{mobile},
+        API_URL_TEST + "createDepositShetabVerify",
+        { mobile },
         { headers: authHeader() }
       )
       .then((response) => {
@@ -389,18 +433,17 @@ class UserService {
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
         //return response.data;
-        return response
-      }).catch(error => {
-        return 'Ok'
-
+        return response;
+      })
+      .catch((error) => {
+        return "Ok";
       });
   }
-  createDepositShetabVerifyConfirm(mobile,code) {
-    
+  createDepositShetabVerifyConfirm(mobile, code) {
     return axios
       .post(
         API_URL_TEST + "createDepositShetabVerifyConfirm",
-        { mobile,code},
+        { mobile, code },
         { headers: authHeader() }
       )
       .then((response) => {
@@ -408,18 +451,17 @@ class UserService {
         // localStorage.setItem("events", JSON.stringify(response.data));
         //localStorage.setItem("user", JSON.stringify(response.data));
         //return response.data;
-        return response
-      }).catch(error => {
-        return 'Ok'
-
+        return response;
+      })
+      .catch((error) => {
+        return "Ok";
       });
   }
-  createDepositPM(voucherNumber,voucherCode) {
-    
+  createDepositPM(voucherNumber, voucherCode) {
     return axios
       .post(
         API_URL_TEST + "createDepositPM",
-        { voucherNumber,voucherCode },
+        { voucherNumber, voucherCode },
         { headers: authHeader() }
       )
       .then((response) => {
@@ -429,7 +471,6 @@ class UserService {
         return response.data;
       });
   }
-  
 }
 function isJson(str) {
   // alert("str = "+str)
