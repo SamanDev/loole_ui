@@ -272,7 +272,7 @@ function Main() {
 
         if (
           isPlayerInMatch(_find, currentUser.username) ||
-          (eventIDQ == eventGet.id && _find.id != matchIDQ)
+          eventIDQ == eventGet.id
         ) {
           queryClient.setQueryData(["Event", eventGet.id], eventGet);
           onUpdateItem("match", _find);
