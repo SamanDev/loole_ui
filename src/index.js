@@ -309,18 +309,24 @@ function Main() {
   useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);
 
-    if (getQueryVariable("id")) {
-      onUpdateItem("eventIDQ", getQueryVariable("id"));
+    if (getQueryVariable("id", location.search.substring(1))) {
+      onUpdateItem(
+        "eventIDQ",
+        getQueryVariable("id", location.search.substring(1))
+      );
     } else {
       onUpdateItem("eventIDQ", false);
       onUpdateItem("matchIDQ", false);
       onUpdateItem("eventDef", false);
     }
-    if (getQueryVariable("matchid")) {
-      onUpdateItem("matchIDQ", getQueryVariable("matchid"));
+    if (getQueryVariable("matchid", location.search.substring(1))) {
+      onUpdateItem(
+        "matchIDQ",
+        getQueryVariable("matchid", location.search.substring(1))
+      );
     }
-    console.log(getQueryVariable("id"));
-    console.log(getQueryVariable("matchid"));
+    console.log(getQueryVariable("id", location.search.substring(1)));
+    console.log(getQueryVariable("matchid", location.search.substring(1)));
   }, [location]);
 
   if (!currentUser) {
