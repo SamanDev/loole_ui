@@ -302,7 +302,7 @@ class MatchSection extends Component {
       loading: true,
     });
     userService
-      .leaveEvent(this.state.eventid)
+      .leaveEvent(this.state.item.id)
       .then(
         (response) => {
           this.setState({

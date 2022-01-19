@@ -57,9 +57,9 @@ export const getQueryVariable = (variable, q) => {
   if (q) {
     var query = q;
   } else {
-    var query = document.location.search.substring(1);
+    var query = window.location.search.substring(1);
   }
-
+  //console.log(query);
   var vars = query.split("&");
   for (var i = 0; i < vars.length; i++) {
     var pair = vars[i].split("=");
@@ -1658,7 +1658,7 @@ export const findActiveMatch = (event, matchID, username) => {
   var _match;
 
   event?.matchTables.sort((a, b) => (a.level > b.level ? 1 : -1));
-  if (matchID && event?.matchTables.length > 0) {
+  if (matchID && event?.matchTables.length > 1) {
     event.matchTables.map(function (match) {
       if (match.id == matchID) {
         _match = match;
@@ -1666,11 +1666,13 @@ export const findActiveMatch = (event, matchID, username) => {
     });
   } else {
     _match = event.matchTables[0];
-    event.matchTables.map(function (match) {
-      if (match.status == "InPlay" && isPlayerInMatch(match, username)) {
-        _match = match;
-      }
-    });
+    if (event.matchTables?.length > 1) {
+      event.matchTables.map(function (match) {
+        if (match.status == "InPlay" && isPlayerInMatch(match, username)) {
+          _match = match;
+        }
+      });
+    }
   }
   _match?.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
   return _match;

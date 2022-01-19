@@ -87,6 +87,7 @@ class MatchSection extends Component {
         item: props.findStateId(props.myState, "eventDef"),
         currentUser: props.findStateId(props.myState, "currentUser"),
         eventid: props.findStateId(props.myState, "eventIDQ"),
+        matchid: props.findStateId(props.myState, "matchIDQ"),
         matchidFind: props.findStateId(props.myState, "match"),
       };
     }

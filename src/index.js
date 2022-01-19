@@ -177,7 +177,7 @@ function Main() {
   var currentUser = findStateId(myState, "currentUser");
   var events = findStateId(myState, "events");
   var eventDef = findStateId(myState, "eventDef");
-  var eventIDQ = findStateId(myState, "eventIDQ");
+  const eventIDQ = findStateId(myState, "eventIDQ");
   var matchIDQ = findStateId(myState, "matchIDQ");
   var openModalLogin = findStateId(myState, "openModalLogin");
   var openModalChart = findStateId(myState, "openModalChart");
@@ -220,7 +220,11 @@ function Main() {
         getQueryVariable("matchid"),
         currentUser.username
       );
-      if (_find?.id) {
+      if (
+        _find?.id &&
+        eventGet.matchTables?.length > 1 &&
+        getQueryVariable("matchid")
+      ) {
         onUpdateItem("matchIDQ", _find.id);
       }
 
@@ -230,7 +234,11 @@ function Main() {
   }, [eventGet]);
   useEffect(() => {
     if (eventDef?.matchTables) {
-      var _find = findActiveMatch(eventDef, matchIDQ, currentUser.username);
+      var _find = findActiveMatch(
+        eventDef,
+        getQueryVariable("matchid"),
+        currentUser.username
+      );
       onUpdateItem("match", _find);
     }
   }, [matchIDQ]);
@@ -261,22 +269,26 @@ function Main() {
 
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {
-        var _find = findActiveMatch(eventGet, matchIDQ, currentUser.username);
+        queryClient.setQueryData(["Event", eventGet.id], eventGet);
+        var _find = findActiveMatch(
+          eventGet,
+          getQueryVariable("matchid"),
+          currentUser.username
+        );
         console.log("matchIDQ: " + matchIDQ);
         console.log("eventIDQ: " + eventIDQ);
+        console.log(_find);
         if (
           isPlayerInMatch(_find, currentUser.username) ||
           eventIDQ == eventGet.id
         ) {
-          queryClient.setQueryData(["Event", eventGet.id], eventGet);
           onUpdateItem("match", _find);
           onUpdateItem("eventDef", eventGet);
           onUpdateItem("eventIDQ", eventGet.id);
-          if (eventGet.status == "Ready" || eventGet.status == "InPlay") {
+          if (_find.status == "Ready" || _find.status == "InPlay") {
             if (
-              document.location.search
-                .toString()
-                .indexOf("id=" + eventGet.id) == -1
+              window.location.search.toString().indexOf("id=" + eventGet.id) ==
+              -1
             ) {
               console.log("history.push");
               history.push("/lobby?id=" + eventGet.id);
@@ -284,7 +296,7 @@ function Main() {
             if (
               _find.id != matchIDQ &&
               eventGet.matchTables.length > 1 &&
-              document.location.search
+              window.location.search
                 .toString()
                 .indexOf("id=" + eventGet.id + "&matchid=" + _find.id) == -1
             ) {
@@ -308,25 +320,12 @@ function Main() {
   }, []);
   useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);
-
-    if (getQueryVariable("id", location.search.substring(1))) {
-      onUpdateItem(
-        "eventIDQ",
-        getQueryVariable("id", location.search.substring(1))
-      );
-    } else {
-      onUpdateItem("eventIDQ", false);
-      onUpdateItem("matchIDQ", false);
-      onUpdateItem("eventDef", false);
+    console.log(location.pathname + location.search);
+    onUpdateItem("eventIDQ", getQueryVariable("id"));
+    onUpdateItem("matchIDQ", getQueryVariable("matchid"));
+    if (getQueryVariable("id") == false) {
+      onUpdateItem("eventDef", null);
     }
-    if (getQueryVariable("matchid", location.search.substring(1))) {
-      onUpdateItem(
-        "matchIDQ",
-        getQueryVariable("matchid", location.search.substring(1))
-      );
-    }
-    console.log(getQueryVariable("id", location.search.substring(1)));
-    console.log(getQueryVariable("matchid", location.search.substring(1)));
   }, [location]);
 
   if (!currentUser) {
