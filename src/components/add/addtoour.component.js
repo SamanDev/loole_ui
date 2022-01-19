@@ -80,9 +80,10 @@ const getBlockGameModesVal = (filtermode) => {
 };
 var moment = require("moment");
 var nowS = new Date();
-var nowE = moment(nowS).add(7, "days").utcOffset("+00:00");
-var _StartTime = moment(nowE).format("YYYY-MM-DDTHH:mm");
+var nowE = moment(nowS).add(7, "days");
 
+var stdate = moment(nowE).format("YYYY-MM-DDTHH:mm");
+var _StartTime = new Date(stdate).valueOf();
 class AddTour extends Component {
   constructor(props) {
     super(props);
@@ -115,7 +116,7 @@ class AddTour extends Component {
       Prize: "",
       AvalableFor: { value: "60", label: "1 Hour" },
       StartTimePeriod: { value: "60", label: "1 Hour" },
-      StartTime: _StartTime,
+      StartTime: stdate,
       loading: false,
       submit: false,
       GameTag: "",
@@ -238,6 +239,7 @@ class AddTour extends Component {
       successful: false,
       loading: true,
     });
+    var _Start = new Date(this.state.StartTime).valueOf();
     userService
       .createTournament(
         this.state.GName.value.split(" - ")[0],
@@ -246,7 +248,7 @@ class AddTour extends Component {
 
         this.state.BetAmount,
         this.state.StartTimePeriod.value,
-        this.state.StartTime,
+        _Start,
         // "1",
         this.state.TournamentMode.value,
         this.state.tournamentPayout,
@@ -297,8 +299,9 @@ class AddTour extends Component {
     var startdate = moment(timestring1).format();
 
     startdate = moment(startdate)
-      .add(this.state.StartTime.value, "minutes")
+      .add(this.state.StartTimePeriod.value, "minutes")
       .format();
+    var _Start = new Date(this.state.StartTime).valueOf();
     var item = {
       commission: 90,
       id: 33,
@@ -320,7 +323,7 @@ class AddTour extends Component {
       outSign: this.state.outSign.value,
       rules: null,
       expire: startdate,
-      startTime: "2021-11-01T20:34:39.000+00:00",
+      startTime: _Start,
       finished: "2021-11-01T20:34:39.000+00:00",
       players: [
         {

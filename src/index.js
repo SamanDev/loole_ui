@@ -268,13 +268,16 @@ function Main() {
 
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {
-        queryClient.setQueryData(["Event", eventGet.id], eventGet);
         var _find = findActiveMatch(eventGet, matchIDQ, currentUser.username);
 
         if (
           isPlayerInMatch(_find, currentUser.username) ||
           (eventIDQ == eventGet.id && _find.id != matchIDQ)
         ) {
+          queryClient.setQueryData(["Event", eventGet.id], eventGet);
+          onUpdateItem("match", _find);
+          onUpdateItem("eventDef", eventGet);
+          onUpdateItem("eventIDQ", eventGet.id);
           if (eventGet.status == "Ready" || eventGet.status == "InPlay") {
             if (
               window.location.search.toString().indexOf("id=" + eventGet.id) ==
@@ -295,12 +298,6 @@ function Main() {
               );
             }
           }
-          onUpdateItem("eventDef", eventGet);
-          onUpdateItem("eventIDQ", eventGet.id);
-          onUpdateItem(
-            "match",
-            findActiveMatch(eventGet, _find.id, currentUser.username)
-          );
         }
       }
     });

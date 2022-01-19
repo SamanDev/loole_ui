@@ -57,7 +57,7 @@ function MatchCard(prop) {
   }
   _finishTxt = "";
   item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
-  var timestring1 = item.expire;
+  var timestring1 = item.startTime;
   var timestring2 = new Date();
   var startdate = moment(timestring1).format();
   var expected_enddate = moment(timestring2).format();
@@ -123,16 +123,33 @@ function MatchCard(prop) {
               color={_color}
             />
           ) : (
-            <Countdown
-              renderer={rendererBig}
-              txt="@@@Avalable until"
-              colorfinish={getColorStatus(item.status)}
-              finish={item.status + "@@@Not Avalable"}
-              match={item.matchTables[0]}
-              date={item.expire}
-              mode={_mode}
-              color={_color}
-            />
+            <>
+              {item.gameMode == "Tournament" ? (
+                <Countdown
+                  renderer={rendererBig}
+                  txt="@@@Avalable until"
+                  colorfinish={getColorStatus(item.status)}
+                  finish={item.status + "@@@Not Avalable"}
+                  match={item}
+                  date={item.startTime}
+                  mode={_mode}
+                  color={_color}
+                />
+              ) : (
+                <>
+                  <Countdown
+                    renderer={rendererBig}
+                    txt="@@@Avalable until"
+                    colorfinish={getColorStatus(item.status)}
+                    finish={item.status + "@@@Not Avalable"}
+                    match={item.matchTables[0]}
+                    date={item.expire}
+                    mode={_mode}
+                    color={_color}
+                  />
+                </>
+              )}
+            </>
           )}
         </div>
         {item.players[0] ? (

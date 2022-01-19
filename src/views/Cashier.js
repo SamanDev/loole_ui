@@ -75,8 +75,10 @@ function Cashier(prop) {
                   }
                   return (
                     <Col
-                      lg="4"
+                      lg="3"
                       xl="3"
+                      md="3"
+                      sm="3"
                       key={u.toString()}
                       onClick={() =>
                         handleMethod(cashierGateway.name + "Deposit")
@@ -131,8 +133,10 @@ function Cashier(prop) {
 
                   return (
                     <Col
-                      lg="4"
+                      lg="3"
                       xl="3"
+                      md="3"
+                      sm="3"
                       key={u.toString()}
                       onClick={() =>
                         handleMethod(cashierGateway.name + "Cashout")
