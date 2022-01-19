@@ -60,6 +60,7 @@ class MatchSection extends Component {
       progressLable: "I Win",
       successful: false,
       loading: false,
+      isloading: false,
       message: "",
     };
   }
@@ -297,6 +298,7 @@ class MatchSection extends Component {
   handleLeaveMatch(e) {
     e.preventDefault();
     this.setState({
+      isloading: true,
       loading: true,
     });
     userService
@@ -304,6 +306,7 @@ class MatchSection extends Component {
       .then(
         (response) => {
           this.setState({
+            isloading: false,
             loading: false,
           });
           if (response.data.accessToken) {
@@ -434,7 +437,8 @@ class MatchSection extends Component {
     );
     const match = this.props.findStateId(this.state.myState, "match");
     const eventIDQ = this.props.findStateId(this.state.myState, "eventIDQ");
-    let { progress, isUpLoading, progressLable, loading } = this.state;
+    let { progress, isUpLoading, progressLable, loading, isloading } =
+      this.state;
 
     var _finishTxt = "Not Joinable";
     //if (match.status) { _finishTxt = match.status+'@@@Not Joinable'}
@@ -491,7 +495,8 @@ class MatchSection extends Component {
                     eventIDQ,
                     currentUser,
                     loading,
-                    this.handlechangeReadyEvent
+                    this.handlechangeReadyEvent,
+                    isloading
                   )}
                 </Grid.Column>
                 <Grid.Column
@@ -510,7 +515,8 @@ class MatchSection extends Component {
                     eventIDQ,
                     currentUser,
                     loading,
-                    this.handlechangeReadyEvent
+                    this.handlechangeReadyEvent,
+                    isloading
                   )}
                 </Grid.Column>
               </Grid>
@@ -525,7 +531,8 @@ class MatchSection extends Component {
                   item.players.length,
                   this.handlechangeReadyEvent,
                   this.handleJoinMatch,
-                  this.handleLeaveMatch
+                  this.handleLeaveMatch,
+                  isloading
                 )}
               </Divider>
             </Segment>

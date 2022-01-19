@@ -46,14 +46,7 @@ import ReactGA from "react-ga";
 import "semantic-ui-css/semantic.min.css";
 import "assets/css/style.css";
 import UserWebsocket from "services/user.websocket";
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      queryFn: null,
-    },
-  },
-});
+
 const cache = new Cache({
   // Keep cached source failures for up to 7 days
   sourceTTL: 7 * 24 * 3600 * 1000,
@@ -111,11 +104,11 @@ function Main() {
       { id: "match", val: null },
       {
         id: "eventIDQ",
-        val: getQueryVariable("id", window.location.search.substring(1)),
+        val: getQueryVariable("id"),
       },
       {
         id: "matchIDQ",
-        val: getQueryVariable("matchid", window.location.search.substring(1)),
+        val: getQueryVariable("matchid"),
       },
       { id: "openModalAdd", val: false },
       { id: "openModalLogin", val: false },
@@ -224,7 +217,7 @@ function Main() {
       onUpdateItem("eventIDQ", eventGet.id);
       var _find = findActiveMatch(
         eventGet,
-        getQueryVariable("matchid", window.location.search.substring(1)),
+        getQueryVariable("matchid"),
         currentUser.username
       );
       if (_find?.id) {
@@ -269,7 +262,8 @@ function Main() {
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {
         var _find = findActiveMatch(eventGet, matchIDQ, currentUser.username);
-
+        console.log("matchIDQ: " + matchIDQ);
+        console.log("eventIDQ: " + eventIDQ);
         if (
           isPlayerInMatch(_find, currentUser.username) ||
           eventIDQ == eventGet.id
@@ -280,8 +274,9 @@ function Main() {
           onUpdateItem("eventIDQ", eventGet.id);
           if (eventGet.status == "Ready" || eventGet.status == "InPlay") {
             if (
-              window.location.search.toString().indexOf("id=" + eventGet.id) ==
-              -1
+              document.location.search
+                .toString()
+                .indexOf("id=" + eventGet.id) == -1
             ) {
               console.log("history.push");
               history.push("/lobby?id=" + eventGet.id);
@@ -289,7 +284,7 @@ function Main() {
             if (
               _find.id != matchIDQ &&
               eventGet.matchTables.length > 1 &&
-              window.location.search
+              document.location.search
                 .toString()
                 .indexOf("id=" + eventGet.id + "&matchid=" + _find.id) == -1
             ) {
@@ -314,22 +309,18 @@ function Main() {
   useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);
 
-    if (getQueryVariable("id", location.search.substring(1))) {
-      onUpdateItem(
-        "eventIDQ",
-        getQueryVariable("id", location.search.substring(1))
-      );
+    if (getQueryVariable("id")) {
+      onUpdateItem("eventIDQ", getQueryVariable("id"));
     } else {
       onUpdateItem("eventIDQ", false);
       onUpdateItem("matchIDQ", false);
       onUpdateItem("eventDef", false);
     }
-    if (getQueryVariable("matchid", location.search.substring(1))) {
-      onUpdateItem(
-        "matchIDQ",
-        getQueryVariable("matchid", location.search.substring(1))
-      );
+    if (getQueryVariable("matchid")) {
+      onUpdateItem("matchIDQ", getQueryVariable("matchid"));
     }
+    console.log(getQueryVariable("id"));
+    console.log(getQueryVariable("matchid"));
   }, [location]);
 
   if (!currentUser) {
@@ -619,12 +610,16 @@ function Main() {
   );
 }
 function App() {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        queryFn: myFunction,
+      },
+    },
+  });
   return (
-    <QueryClientProvider
-      cache={cache}
-      client={queryClient}
-      contextSharing={true}
-    >
+    <QueryClientProvider client={queryClient} contextSharing={true}>
       <Main />
     </QueryClientProvider>
   );

@@ -57,7 +57,7 @@ export const getQueryVariable = (variable, q) => {
   if (q) {
     var query = q;
   } else {
-    var query = window.location.search.substring(1);
+    var query = document.location.search.substring(1);
   }
 
   var vars = query.split("&");
@@ -386,7 +386,8 @@ export const vsComponentPlayer = (
   matchid,
   currentUser,
   isloading,
-  handlechangeReadyEvent
+  handlechangeReadyEvent,
+  loading
 ) => {
   try {
     var player = matchidFind.matchPlayers[num];
@@ -403,7 +404,7 @@ export const vsComponentPlayer = (
   if (player?.ready) {
     ischeck = player?.ready;
   }
-  if (isloading) {
+  if (isloading && !loading) {
     ischeck = !player?.ready;
   }
 
@@ -646,7 +647,8 @@ export const printMatchBTN = (
   activePlayer,
   handlechangeReadyEvent,
   handleJoinMatch,
-  handleLeaveMatch
+  handleLeaveMatch,
+  loading
 ) => {
   var _res = "VS";
   {
@@ -668,7 +670,7 @@ export const printMatchBTN = (
                           onClick={handleLeaveMatch}
                           color="red"
                           disabled={isloading}
-                          loading={isloading}
+                          loading={loading}
                           style={{ position: "relative", top: -10 }}
                         >
                           <Button.Content visible>Leave Match</Button.Content>
@@ -683,7 +685,7 @@ export const printMatchBTN = (
                           onClick={handleLeaveMatch}
                           color="red"
                           disabled={isloading}
-                          loading={isloading}
+                          loading={loading}
                           style={{ position: "relative", top: -10 }}
                         >
                           <Button.Content visible>Leave</Button.Content>
@@ -1656,7 +1658,7 @@ export const findActiveMatch = (event, matchID, username) => {
   var _match;
 
   event?.matchTables.sort((a, b) => (a.level > b.level ? 1 : -1));
-  if (matchID) {
+  if (matchID && event?.matchTables.length > 0) {
     event.matchTables.map(function (match) {
       if (match.id == matchID) {
         _match = match;
