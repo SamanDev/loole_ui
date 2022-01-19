@@ -113,7 +113,7 @@ class AddTour extends Component {
       currentUser: this.props.token,
       gamemaplocal: [],
       BetAmount: 10,
-      Prize: 10 * 4,
+      Prize: null,
       AvalableFor: { value: "60", label: "1 Hour" },
       StartTimePeriod: { value: "60", label: "1 Hour" },
       StartTime: stdate,
@@ -178,7 +178,6 @@ class AddTour extends Component {
     this.setState({
       TournamentMode: e,
     });
-    this.setPrize(parseInt(e.value) * this.state.BetAmount);
   }
   setGameMode(e) {
     this.setState({
@@ -189,7 +188,7 @@ class AddTour extends Component {
     this.setState({
       BetAmount: e,
     });
-    this.setPrize(e * parseInt(this.state.TournamentMode.value));
+
     //this.setTournamentMode(getBlockTournamentVal(e, this.state.TournamentMode));
   }
   setAvalableFor(e) {
