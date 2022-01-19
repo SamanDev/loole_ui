@@ -82,12 +82,12 @@ var moment = require("moment");
 var nowS = new Date();
 var nowE = moment(nowS).add(1, "days");
 
-var stdate = moment(nowE).format("YYYY-MM-DDTHH:mm");
+var stdate = moment(nowE).format("YYYY-MM-DDTHH:00");
 
 var nowS2 = new Date();
-var nowE2 = moment(nowS2).add(7, "days");
+var nowE2 = moment(nowS2).add(3, "days");
 
-var endate = moment(nowE2).format("YYYY-MM-DDTHH:mm");
+var endate = moment(nowE2).format("YYYY-MM-DDTHH:00");
 var _StartTime = new Date(stdate).valueOf();
 class AddTour extends Component {
   constructor(props) {

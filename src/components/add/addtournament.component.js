@@ -80,9 +80,9 @@ const getBlockGameModesVal = (filtermode) => {
 };
 var moment = require("moment");
 var nowS = new Date();
-var nowE = moment(nowS).add(7, "days");
+var nowE = moment(nowS).add(1, "hours");
 
-var stdate = moment(nowE).format("YYYY-MM-DDTHH:mm");
+var stdate = moment(nowE).format("YYYY-MM-DDTHH:00");
 var _StartTime = new Date(stdate).valueOf();
 class AddTour extends Component {
   constructor(props) {
