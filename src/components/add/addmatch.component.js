@@ -243,15 +243,13 @@ class AddMatch extends Component {
 
   handleCreateMatch(e) {
     e.preventDefault();
-    var nowS = new Date();
-    var nowE = moment(nowS).utcOffset("+00:00");
-    var _StartTime = moment(nowE).format("YYYY-MM-DDTHH:mm");
+
     this.setState({
       message: "",
       successful: false,
       loading: true,
     });
-
+    var _Start = new Date(nowS).valueOf();
     userService
       .createEvent(
         this.state.GName.value.split(" - ")[0],
@@ -262,7 +260,7 @@ class AddMatch extends Component {
         this.state.inSign.value,
         this.state.inSign.value,
         parseInt(this.state.AvalableFor.value),
-        _StartTime
+        _Start
       )
       .then(
         (response) => {
