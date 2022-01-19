@@ -249,7 +249,7 @@ class AddMatch extends Component {
       successful: false,
       loading: true,
     });
-    var _Start = new Date(nowS).valueOf();
+    var _Start = new Date().valueOf();
     userService
       .createEvent(
         this.state.GName.value.split(" - ")[0],
