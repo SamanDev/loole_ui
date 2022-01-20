@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 
 import UserWebsocket from "services/user.websocket";
 import { POSTURLTest, defUser, POSTURLAdmin } from "const";
-
+import eventBus from "views/eventBus";
 const API_URL_TEST = POSTURLTest;
 
 const client = axios.create({
@@ -79,7 +79,8 @@ const getUser = async () => {
       }
     } catch (e) {
       localStorage.setItem("user", JSON.stringify(defUser));
-      UserWebsocket.connect();
+
+      //UserWebsocket.connect();
       return defUser;
     }
   } else {

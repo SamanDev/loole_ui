@@ -12,6 +12,7 @@ import {
   rendererBig,
   printStatus,
   getMatchTitle,
+  findMatch,
 } from "components/include.js";
 import {
   Icon,
@@ -33,16 +34,7 @@ function MatchCard(prop) {
 
   lists.sort((a, b) => (a.level > b.level ? 1 : -1));
 
-  var matchLevelFind = lists[0];
-  lists.map((tblmatch, w) => {
-    if (tblmatch.status == "InPlay") {
-      matchLevelFind = tblmatch;
-    }
-
-    if (item.status == "Finished") {
-      matchLevelFind = lists[lists.length - 1];
-    }
-  });
+  var matchLevelFind = findMatch(item);
   if (item.gameMode == "Tournament" || item.gameMode == "League") {
     _mode = item.gameMode;
   }

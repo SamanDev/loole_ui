@@ -108,6 +108,7 @@ class UserWebsocket {
 
         if (e.type === "error") {
           ws = null;
+          eventBus.dispatch("eventsDC", "");
           // localStorage.clear();
           //window.location.reload();
           //window.location.replace("/auth/login-page");

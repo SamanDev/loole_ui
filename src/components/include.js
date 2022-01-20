@@ -1684,15 +1684,20 @@ export const findMatch = (item) => {
 
   var matchLevelFind = lists[0];
   lists.map((tblmatch, w) => {
-    if (tblmatch.status == "InPlay") {
+    if (tblmatch.status == "InPlay" || tblmatch.status == "Finished") {
       matchLevelFind = tblmatch;
     }
-
-    if (item.status == "Finished") {
-      matchLevelFind = lists[lists.length - 1];
-    }
   });
-
+  if (matchLevelFind?.status == "Finished") {
+    var _new = lists.filter((list) => list.level === matchLevelFind.level + 1);
+  }
+  if (_new) {
+    matchLevelFind = _new[0];
+  }
+  if (item.status == "Finished") {
+    matchLevelFind = lists[lists.length - 1];
+  }
+  console.log(matchLevelFind);
   matchLevelFind?.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
   return matchLevelFind;
 };
