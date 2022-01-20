@@ -263,6 +263,8 @@ function Main() {
     eventBus.on("eventsConnect", () => {
       //  alert()
       if (findStateId(myState, "openModalSoket")) {
+        queryClient.resetQueries(["Events"]);
+        queryClient.resetQueries(["Event"]);
         onUpdateItem("openModalSoket", false);
       }
     });
