@@ -106,11 +106,8 @@ const ChartStat = (prop) => {
   const currentUser = _key;
   var _data = editCounry(currentUser.userAnalyses, currentUser.usersReports);
 
-  const CustomizedDot = (props) => {
-    const { cx, cy, value } = props;
-    const z = _data.find((item) => item.profit == value);
-
-    const _val = z.net;
+  const CustomizedDot = ({ cx, cy, payload, value }) => {
+    const _val = payload.net;
     if (Number.parseFloat(_val) > 0) {
       return (
         <svg

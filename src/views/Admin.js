@@ -343,7 +343,7 @@ function Admin(prop) {
       selector: (row) => row.roles,
       format: (row) => (
         <CheckboxToggle
-          check={row.roles[0].name.match("ROLE_ADMIN")}
+          check={row.roles[0]?.name.match("ROLE_ADMIN")}
           user={row}
           userkey="Roles"
           onChange={updateUserObj}
@@ -356,7 +356,7 @@ function Admin(prop) {
       selector: (row) => row.roles,
       format: (row) => (
         <CheckboxToggle
-          check={row.roles[0].name.match("ROLE_MODERATOR")}
+          check={row.roles[0]?.name.match("ROLE_MODERATOR")}
           user={row}
           userkey="Roles"
           onChange={updateUserObj}

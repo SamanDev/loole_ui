@@ -7,8 +7,8 @@ var timerId = 0;
 var res = false;
 class UserWebsocket {
   connect(token, user) {
-    console.log(ws)
-    if (ws == null || ws.url.indexOf('public') > -1) {
+    console.log(ws);
+    if (ws == null || ws.url.indexOf("public") > -1) {
       if (token) {
         ws = new WebSocket(USERSOCKETURL + token);
       } else {
@@ -20,13 +20,15 @@ class UserWebsocket {
       //userService.getEvents();
 
       console.log("Websocket is connect");
-     
 
       ws.onopen = function live() {
         var timeout = 20000;
         if (ws?.readyState == ws?.OPEN) {
           ws?.send("Ping");
-          eventBus.dispatch("eventsConnect", "");
+          if (ws != null) {
+            eventBus.dispatch("eventsConnect", "");
+          }
+
           setTimeout(function () {
             if (res) {
               timerId = setTimeout(live, timeout);
@@ -43,44 +45,6 @@ class UserWebsocket {
             }
             res = false;
           }, 2000);
-        } else {
-          try {
-            if (timerId) {
-              clearTimeout(timerId);
-            }
-            if (token) {
-              ws = new WebSocket(USERSOCKETURL + token);
-            } else {
-              ws = new WebSocket(USERSOCKETPUBLICURL);
-            }
-            //userService.getEvents();
-            //localStorage.removeItem("events");
-            //userService.getEvents();
-            console.log("Websocket is connect");
-            //eventBus.dispatch("eventsDataUser", user);
-            ws.onopen = function live() {
-              var timeout = 20000;
-              if (ws?.readyState == ws?.OPEN) {
-                ws?.send("Ping");
-                setTimeout(function () {
-                  if (res) {
-                    timerId = setTimeout(live, timeout);
-                  } else {
-                    try {
-                      if (timerId) {
-                        clearTimeout(timerId);
-                      }
-                      res = false;
-                      try {
-                        ws.close();
-                      } catch (e) {}
-                    } catch (e) {}
-                  }
-                  res = false;
-                }, 2000);
-              }
-            };
-          } catch (e) {}
         }
       };
       ws.onmessage = function (data) {
@@ -107,9 +71,7 @@ class UserWebsocket {
 
             //alert(JSON.stringify(msg.data))
           } else if (msg.Command === "updateUser") {
-          
             eventBus.dispatch("eventsDataUser", msg.data);
-            
           } else if (msg.Command === "eventId") {
             eventBus.dispatch("eventsDataEventDo", msg.data);
             //eventBus.remove("eventsDataEventDo");
@@ -153,11 +115,14 @@ class UserWebsocket {
       };
       ws.onclose = function (e) {
         ws = null;
+        eventBus.dispatch("eventsDC", "");
         setTimeout(function () {
           if (ws != null && ws.readyState == websocket?.OPEN) {
-            eventBus.dispatch("eventsConnect", "");
+            //eventBus.dispatch("eventsConnect", "");
           } else {
-            if (ws == null && token) { eventBus.dispatch("eventsDC", "");}
+            if (ws == null && token) {
+              eventBus.dispatch("eventsDC", "");
+            }
           }
         }, 200);
       };
@@ -165,11 +130,10 @@ class UserWebsocket {
   }
 
   disconnect() {
-
     if (ws != null) {
       ws.close();
       ws = null;
-     
+
       console.log("Websocket is in disconnected state");
     }
   }
