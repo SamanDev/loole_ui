@@ -277,9 +277,7 @@ function Main() {
           getQueryVariable("matchid"),
           currentUser.username
         );
-        console.log("matchIDQ: " + matchIDQ);
-        console.log("eventIDQ: " + eventIDQ);
-        console.log(_find);
+
         if (
           isPlayerInMatch(_find, currentUser.username) ||
           eventIDQ == eventGet.id
@@ -292,7 +290,7 @@ function Main() {
               window.location.search.toString().indexOf("id=" + eventGet.id) ==
               -1
             ) {
-              console.log("history.push");
+              //console.log("history.push");
               history.push("/lobby?id=" + eventGet.id);
             }
             if (
@@ -322,7 +320,7 @@ function Main() {
   }, []);
   useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);
-    console.log(location.pathname + location.search);
+
     onUpdateItem("eventIDQ", getQueryVariable("id"));
     onUpdateItem("matchIDQ", getQueryVariable("matchid"));
     if (getQueryVariable("id") == false) {
