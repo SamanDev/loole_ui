@@ -22,10 +22,10 @@ class UserWebsocket {
       console.log("Websocket is connect");
 
       ws.onopen = function live() {
-        var timeout = 20000;
+        var timeout = 5000;
         if (ws?.readyState == ws?.OPEN) {
           ws?.send("Ping");
-          if (ws != null) {
+          if (ws) {
             eventBus.dispatch("eventsConnect", "");
           }
 
