@@ -94,6 +94,7 @@ function MatchCard(prop) {
           )}
           {startdate < expected_enddate &&
             item.status == "InPlay" &&
+            item.gameMode == "Tournament" &&
             !item.winner && (
               <>
                 <Divider inverted fitted></Divider>{" "}

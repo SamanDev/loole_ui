@@ -275,6 +275,26 @@ function Admin(prop) {
       sortable: true,
     },
     {
+      name: "Refer",
+      selector: (row) => row.refer,
+      format: (row) => (
+        <>
+          {row.refer ? (
+            <a href={"/user/" + row.refer} target="_blank">
+              <Avatar
+                size="20"
+                title={row.refer}
+                round={true}
+                name={setAvatar(row.refer)}
+              />{" "}
+              {row.refer.toUpperCase()}
+            </a>
+          ) : null}
+        </>
+      ),
+      sortable: true,
+    },
+    {
       name: "Active",
       selector: (row) => row.userActivate,
       format: (row) => (
