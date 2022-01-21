@@ -93,17 +93,19 @@ function MatchBlock(prop) {
             item.status,
             "no"
           )}
-          {item.status == "InPlay" && item.gameMode == "Tournament" && (
-            <>
-              <Divider inverted fitted></Divider>{" "}
-              <Statistic inverted color="violet" size="mini">
-                <Statistic.Label>Match Level</Statistic.Label>
-                <Statistic.Value>
-                  {getMatchTitle(matchLevelFind.level, item.totalPlayer)}
-                </Statistic.Value>
-              </Statistic>
-            </>
-          )}
+          {item.status == "InPlay" &&
+            item.gameMode == "Tournament" &&
+            !item.winner && (
+              <>
+                <Divider inverted fitted></Divider>{" "}
+                <Statistic inverted color="violet" size="mini">
+                  <Statistic.Label>Match Level</Statistic.Label>
+                  <Statistic.Value>
+                    {getMatchTitle(matchLevelFind.level, item.totalPlayer)}
+                  </Statistic.Value>
+                </Statistic>
+              </>
+            )}
           {item.gameMode == "League" ? (
             <Countdown
               renderer={rendererBig}

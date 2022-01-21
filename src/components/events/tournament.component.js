@@ -253,9 +253,12 @@ class TournamentSection extends Component {
 
     mymatchFind = null;
 
-    lists.sort((a, b) => (a.level > b.level ? 1 : -1));
-
     matchLevelFind = findMatch(item);
+    if (item.status == "Finished") {
+      lists.sort((a, b) => (a.level < b.level ? 1 : -1));
+    } else {
+      lists.sort((a, b) => (a.level > b.level ? 1 : -1));
+    }
     lists.map((tblmatch) => {
       if (
         tblmatch.status != "Finished" &&
@@ -265,7 +268,7 @@ class TournamentSection extends Component {
         mymatchFind = tblmatch;
       }
     });
-    if (matchLevelFind.level > 0) {
+    if (matchLevelFind?.level > 0) {
       defaultActiveIndex = matchLevelFind.level - 1;
     }
 

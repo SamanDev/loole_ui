@@ -92,17 +92,19 @@ function MatchCard(prop) {
             item.status,
             "no"
           )}
-          {startdate < expected_enddate && item.status == "InPlay" && (
-            <>
-              <Divider inverted fitted></Divider>{" "}
-              <Statistic inverted color="violet" size="mini">
-                <Statistic.Label>Match Level</Statistic.Label>
-                <Statistic.Value>
-                  {getMatchTitle(matchLevelFind.level, item.totalPlayer)}
-                </Statistic.Value>
-              </Statistic>
-            </>
-          )}
+          {startdate < expected_enddate &&
+            item.status == "InPlay" &&
+            !item.winner && (
+              <>
+                <Divider inverted fitted></Divider>{" "}
+                <Statistic inverted color="violet" size="mini">
+                  <Statistic.Label>Match Level</Statistic.Label>
+                  <Statistic.Value>
+                    {getMatchTitle(matchLevelFind.level, item.totalPlayer)}
+                  </Statistic.Value>
+                </Statistic>
+              </>
+            )}
           {item.gameMode == "League" ? (
             <Countdown
               renderer={rendererBig}
