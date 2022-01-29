@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
@@ -18,6 +18,7 @@ import {
   isJson,
 } from "components/include";
 import { Header } from "semantic-ui-react";
+import UserContext from "context/UserState";
 var arrLogos = [
   "psn.svg",
   "xbox.svg",
@@ -36,21 +37,8 @@ var arrTagMode = [
 ];
 var arrPlatform = ["PSN", "XBOX", "Mobile", "Mobile", "Activition", "All"];
 function TagsForm(prop) {
-  const [myStateLoc, setMyStateLoc] = useState(prop.myStateLoc);
-  const [myState, setMyState] = useState(prop.myState);
-  useEffect(() => {
-    setMyState(prop.myState);
-    setCurrentUser(prop.findStateId(prop.myState, "currentUser"));
-  }, [prop.myState]);
-  var [currentUser, setCurrentUser] = useState(
-    prop.findStateId(myState, "currentUser")
-  );
-  useEffect(() => {
-    if (prop.myStateLoc) {
-      setMyState(prop.myStateLoc);
-      setCurrentUser(prop.findStateId(prop.myStateLoc, "currentUser"));
-    }
-  }, [prop.myStateLoc]);
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
   const handlecSetInstagram = (game, platform) => {
     const resetPw2 = async () => {
       const swalval = await Swal.fire(getModalTag(game));

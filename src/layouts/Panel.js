@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { ConfigProvider } from "react-avatar";
 import { Route, Switch, useHistory } from "react-router-dom";
@@ -28,7 +28,7 @@ import CrCashout from "components/deposit/crcashout.component";
 import PMDeposit from "components/deposit/pmdeposit.component";
 import PMCashout from "components/deposit/pmcashout.component";
 import AddMatch from "components/add/addmatch.component";
-
+import UserContext from "context/UserState";
 function scrollToTop() {
   window.scrollTo({
     top: 0,
@@ -44,8 +44,17 @@ function Panel(props) {
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
   const [visible, setVisible] = React.useState(false);
   const [myState, setMyState] = useState(props.myState);
+
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
+
+  const open = props.findStateId(myState, "openModalAdd");
+  const openCashier = props.findStateId(myState, "openModalCashier");
+  const cashierMethod = props.findStateId(myState, "cashierMethod");
+  const coins = props.findStateId(myState, "coins");
+  const myNotification = props.findStateId(myState, "Notifications");
+  const myNotificationItem = props.findStateId(myState, "NotificationsItem");
   useEffect(() => {
-    setMyState(props.myState);
     if (currentUser?.accessToken) {
       if (props.findStateId(myState, "openModalLogin")) {
         props.onUpdateItem("openModalLogin", false);
@@ -55,17 +64,7 @@ function Panel(props) {
         props.onUpdateItem("openModalLogin", true);
       }
     }
-  }, [props.myState]);
-
-  const currentUser = props.findStateId(myState, "currentUser");
-
-  const open = props.findStateId(myState, "openModalAdd");
-  const openCashier = props.findStateId(myState, "openModalCashier");
-  const cashierMethod = props.findStateId(myState, "cashierMethod");
-  const coins = props.findStateId(myState, "coins");
-  const myNotification = props.findStateId(myState, "Notifications");
-  const myNotificationItem = props.findStateId(myState, "NotificationsItem");
-
+  }, [currentUser]);
   var currpage = "Dashboard";
 
   const getRoutes = (routes) => {

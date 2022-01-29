@@ -119,19 +119,9 @@ function Dashboard(prop) {
       }
     }
   };
-  var currentUser = prop.findStateId(myState, "currentUser");
+
   const products = Market.getMarketplace;
   const key = prop.findStateId(myState, "keyMarket");
-  if (!currentUser) {
-    return (
-      <h4 style={{ textAlign: "center" }}>
-        Loading
-        <Spinner animation="grow" size="sm" />
-        <Spinner animation="grow" size="sm" />
-        <Spinner animation="grow" size="sm" />
-      </h4>
-    );
-  }
 
   const panes = [
     {

@@ -6,8 +6,9 @@ import withReactContent from "sweetalert2-react-content";
 import { defUser } from "const";
 import { handleTagForm, printJoinalerts, haveAdmin } from "components/include";
 import { Button } from "semantic-ui-react";
-
+import UserContext from "context/UserState";
 class MatchSection extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
 
@@ -18,10 +19,9 @@ class MatchSection extends Component {
 
     this.state = {
       myState: this.props.myState,
-      item: this.props.findStateId(this.props.myState, "eventDef"),
-      currentUser: this.props.findStateId(this.props.myState, "currentUser"),
-      eventid: this.props.findStateId(this.props.myState, "eventIDQ"),
-      matchid: this.props.findStateId(this.props.myState, "matchIDQ"),
+      item: this.props.event,
+      eventid: this.props.event.id,
+      matchid: this.props.matchIDQ,
       progress: 0,
       selectedFile: null,
       matchidFind: this.props.findStateId(this.props.myState, "match"),
@@ -32,33 +32,19 @@ class MatchSection extends Component {
       message: "",
     };
   }
-
   static getDerivedStateFromProps(props, state) {
-    // Any time the current user changes,
-    // Reset any parts of state that are tied to that user.
-    // In this simple example, that's just the email.
-    document.title =
-      state.item.gameMode +
-      " " +
-      state.item.gameName +
-      " for " +
-      state.item.outSign.replace("Dollar", "$").replace("Point", "Diamonds ") +
-      state.item.prize +
-      " Prize";
-
-    if (props.myState !== state.myState) {
+    if (props.event !== state.item || props.myState !== state.myState) {
       return {
         myState: props.myState,
-        item: props.findStateId(props.myState, "eventDef"),
-        currentUser: props.findStateId(props.myState, "currentUser"),
-        eventid: props.findStateId(props.myState, "eventIDQ"),
-        matchid: props.findStateId(props.myState, "matchIDQ"),
+        item: props.event,
+        loading: false,
+        eventid: props.event.id,
+        matchid: props.matchIDQ,
         matchidFind: props.findStateId(props.myState, "match"),
       };
     }
     return null;
   }
-
   handlecAlertLost(checked) {
     const MySwal = withReactContent(Swal);
 
@@ -169,7 +155,6 @@ class MatchSection extends Component {
     if (error?.response?.data?.status == 401) {
       this.props.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
-      this.props.onUpdateItem("currentUser", defUser);
     } else {
       const resMessage = error?.response?.data || error.toString();
 
@@ -178,7 +163,7 @@ class MatchSection extends Component {
           printJoinalerts(
             resMessage,
             GName,
-            this.state.currentUser,
+            this.context.uList.currentUser,
             handleTagForm,
             this.props
           );
@@ -200,11 +185,8 @@ class MatchSection extends Component {
     }
   };
   render() {
-    const item = this.props.findStateId(this.state.myState, "eventDef");
-    const currentUser = this.props.findStateId(
-      this.state.myState,
-      "currentUser"
-    );
+    const item = this.state.item;
+    const currentUser = this.context.uList.currentUser;
     const match = this.props.findStateId(this.state.myState, "match");
 
     let { loading } = this.state;

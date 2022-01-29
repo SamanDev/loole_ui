@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import { Tab, Menu } from "semantic-ui-react";
 
@@ -6,6 +6,7 @@ import { useAllCoins } from "services/hooks";
 import Active from "components/active.component";
 import Report from "components/report.component";
 // react-bootstrap components
+import UserContext from "context/UserState";
 import { Card, Row, Col } from "react-bootstrap";
 var dataTransaction = [
   {
@@ -33,7 +34,8 @@ function Cashier(prop) {
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
-  const currentUser = prop.findStateId(myState, "currentUser");
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
   const { data: eventCoins } = useAllCoins();
 
   var userMethods = currentUser.cashierGateways;

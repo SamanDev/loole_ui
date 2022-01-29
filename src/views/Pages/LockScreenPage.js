@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { useHistory } from "react-router-dom";
+import { useParams } from "react-router";
 // react-bootstrap components
 import { Container, Col } from "react-bootstrap";
 import {
@@ -22,20 +23,37 @@ import TournamentSection from "components/events/tournament.component";
 import MatchSection from "components/events/match.component";
 import MatchTourSection from "components/events/tournamentmatch.component";
 import { haveAdmin, getQueryVariable } from "components/include";
-
+import UserContext from "context/UserState";
+import EventContext from "context/EventState";
 function LockScreenPage(prop) {
   const history = useHistory();
-  // alert(location)
-
+  const params = useParams();
   const [myState, setMyState] = useState(prop.myState);
-  useEffect(() => {
-    setMyState(prop.myState);
-  }, [prop.myState]);
-  const eventIDQ = prop.findStateId(myState, "eventIDQ");
-  const matchIDQ = prop.findStateId(myState, "matchIDQ");
-  const currentUser = prop.findStateId(myState, "currentUser");
+  const matchIDQ = params.matchid;
 
-  const eventDef = prop.findStateId(myState, "eventDef");
+  const context = useContext(UserContext);
+  const Econtext = useContext(EventContext);
+
+  const title = params.title;
+
+  const { currentUser } = context.uList;
+  const { event } = Econtext.eList;
+  const eventDef = event;
+  const { setEList } = Econtext;
+  const eventIDQ = event?.id;
+
+  useEffect(() => {
+    prop.onUpdateItem("eventIDQ", parseInt(event?.id));
+
+    //prop.onUpdateItem("matchIDQ", parseInt(matchIDQ));
+
+    document.title = title.replace(/-/g, " ");
+    return () => {};
+  }, []);
+  useEffect(() => {
+    prop.onUpdateItem("matchIDQ", parseInt(params.matchid));
+  }, [params.matchid]);
+
   const match = prop.findStateId(myState, "match");
   const [visible, setVisible] = React.useState(false);
   const devWid = document.documentElement.clientWidth;
@@ -184,10 +202,7 @@ function LockScreenPage(prop) {
                   />
                 ) : (
                   <>
-                    {getQueryVariable(
-                      "matchid",
-                      window.location.search.substring(1)
-                    ) ? (
+                    {matchIDQ ? (
                       <Chatbar
                         eventID={eventIDQ}
                         matchID={matchIDQ}
@@ -253,21 +268,21 @@ function LockScreenPage(prop) {
                 <div style={{ height: "calc(100vh - 50px)", overflow: "auto" }}>
                   <Container style={{ paddingBottom: 50 }}>
                     {eventDef.gameMode == "League" ? (
-                      <LeagueSection {...prop} />
+                      <LeagueSection {...prop} event={eventDef} />
                     ) : (
                       <>
-                        {eventDef.gameMode == "Tournament" &&
-                        !getQueryVariable(
-                          "matchid",
-                          window.location.search.substring(1)
-                        ) ? (
-                          <TournamentSection {...prop} />
+                        {eventDef.gameMode == "Tournament" && !matchIDQ ? (
+                          <TournamentSection {...prop} event={eventDef} />
                         ) : (
                           <>
                             {eventDef.gameMode == "Tournament" ? (
-                              <MatchTourSection {...prop} />
+                              <MatchTourSection
+                                {...prop}
+                                event={eventDef}
+                                matchIDQ={matchIDQ}
+                              />
                             ) : (
-                              <MatchSection {...prop} />
+                              <MatchSection {...prop} event={eventDef} />
                             )}
                           </>
                         )}

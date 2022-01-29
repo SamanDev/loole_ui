@@ -120,7 +120,7 @@ class AddTour extends Component {
       BetAmount: 10,
       Prize: "",
       AvalableFor: { value: "60", label: "1 Hour" },
-
+      TotalPlayer: 200,
       StartTimeLeague: stdate,
       EndTimeLeague: endate,
       loading: false,
@@ -272,7 +272,7 @@ class AddTour extends Component {
 
       .then(
         (response) => {
-          if (response.data == "Tournament event created.") {
+          if (response.data == "League event created.") {
             Swal.fire("", "Data saved successfully.", "success").then(() => {
               this.props.history.push("/panel/dashboard");
             });

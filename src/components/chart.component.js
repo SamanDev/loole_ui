@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   LineChart,
   Line,
@@ -9,7 +9,7 @@ import {
   ReferenceLine,
   Brush,
 } from "recharts";
-
+import UserContext from "context/UserState";
 function editCounry(options, options2) {
   options?.sort((a, b) => (a.date > b.date ? 1 : -1));
   var moment = require("moment");
@@ -101,7 +101,9 @@ const ChartStat = (prop) => {
   }, [prop.myState]);
   var _key = prop.findStateId(myState, "profileUser");
   if (!_key) {
-    _key = prop.findStateId(myState, "currentUser");
+    const context = useContext(UserContext);
+
+    _key = context.uList.currentUser;
   }
   const currentUser = _key;
   var _data = editCounry(currentUser.userAnalyses, currentUser.usersReports);
@@ -189,20 +191,25 @@ const ChartStat = (prop) => {
   };
 
   const CustomizedLabel = ({ x, y, stroke, value }) => {
-    return (
-      <text
-        x={x}
-        y={y}
-        dy={-10}
-        fill="#ffffff"
-        fontSize={10}
-        textAnchor="middle"
-      >
-        {value}$
-      </text>
-    );
+    if (x) {
+      return (
+        <text
+          x={x}
+          y={y}
+          dy={-10}
+          fill="#ffffff"
+          fontSize={10}
+          textAnchor="middle"
+        >
+          {value}$
+        </text>
+      );
+    }
   };
-
+  var _start = _data.length - 10;
+  if (_start < 0) {
+    _start = 0;
+  }
   return (
     <div
       style={{
@@ -250,12 +257,7 @@ const ChartStat = (prop) => {
             stroke="#5d0000"
             viewBox={{ x: 0, height: 2500 }}
           />
-          <Brush
-            fill="#000"
-            stroke="#777"
-            startIndex={_data.length - 10}
-            height={20}
-          />
+          <Brush fill="#000" stroke="#777" startIndex={_start} height={20} />
         </LineChart>
       </ResponsiveContainer>
     </div>

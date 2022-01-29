@@ -116,7 +116,7 @@ export const setAvatar = (name) => {
 
   if (!isJson(str)) {
     var res = str.substring(0, 1);
-    res = res + " " + str.substring(1, 2);
+    res = res + " " + str.substring(str.length - 1, str.length);
   } else {
     var res = "";
   }
@@ -387,7 +387,8 @@ export const vsComponentPlayer = (
   currentUser,
   isloading,
   handlechangeReadyEvent,
-  loading
+  loading,
+  matchidQ
 ) => {
   try {
     var player = matchidFind.matchPlayers[num];
@@ -429,7 +430,7 @@ export const vsComponentPlayer = (
     padd = 150;
   }
   //if(matchidFind.status == "Pending" && item.gameMode == 'Tournament') {padd = padd + 50}
-  if (item.gameMode == "Tournament" && !getQueryVariable("matchid")) {
+  if (item.gameMode == "Tournament" && !matchidQ) {
     padd = 0;
   }
   var user = (
@@ -751,6 +752,21 @@ export const printEventBTN = (
   handleJoinMatch,
   onUpdateItem
 ) => {
+  var _link =
+    "/lobby/" +
+    item?.id +
+    "/" +
+    item?.gameMode +
+    " " +
+    item?.gameName +
+    " for " +
+    item?.prize +
+    item?.outSign.replace("Dollar", " Bax").replace("Point", " Diamonds") +
+    " Prize/" +
+    mymatchFind?.id +
+    "/" +
+    getMatchTitle(mymatchFind?.level, item?.totalPlayer) +
+    "/";
   return (
     <>
       {(item.status == "Pending" ||
@@ -776,13 +792,15 @@ export const printEventBTN = (
             <>
               {mymatchFind && (
                 <>
-                  <Link
-                    to={
-                      "/matchlobby?id=" + item.id + "&matchid=" + mymatchFind.id
-                    }
-                  >
+                  <Link to={_link.replace(/ /g, "-")}>
                     <Button size="big" inverted color="orange">
-                      <Button.Content>Open My Match</Button.Content>
+                      <Button.Content>
+                        Open My Match
+                        <br />
+                        <h1>
+                          {getMatchTitle(mymatchFind.level, item.totalPlayer)}
+                        </h1>
+                      </Button.Content>
                     </Button>
                   </Link>
                 </>
@@ -1410,7 +1428,15 @@ export const getOffset = (el) => {
   }
   return { top: _y, left: _x };
 };
-export const printStatus = (item, _mode, _color, finish, status, _anim) => {
+export const printStatus = (
+  item,
+  _mode,
+  _color,
+  finish,
+  status,
+  _anim,
+  matchidQ
+) => {
   //console.log(item, _mode, _color,finish,status)
   var startdate = moment(item.startTime).format();
   var newD = moment(startdate).add(item.timeMinute, "minutes").format();
@@ -1492,7 +1518,7 @@ export const printStatus = (item, _mode, _color, finish, status, _anim) => {
         <>
           {(_mode == "Tournament" || _mode == "League") &&
           status == "Pending" &&
-          !getQueryVariable("matchid") ? (
+          !matchidQ ? (
             <Statistic inverted color={getColorStatus(status)} size="tiny">
               <Statistic.Label>{_mode}</Statistic.Label>
               <Statistic.Value>
@@ -1656,7 +1682,7 @@ export const getGameTag = (game, userTags) => {
 };
 export const findActiveMatch = (event, matchID, username) => {
   var _match;
-
+  console.log("matchID:" + matchID);
   event?.matchTables.sort((a, b) => (a.level > b.level ? 1 : -1));
   if (matchID && event?.matchTables.length > 1) {
     event.matchTables.map(function (match) {
@@ -1764,6 +1790,8 @@ export const showSocialTag = (game, userTags) => {
   return res;
 };
 export const userDetails = (currentUser) => {
+  console.log(currentUser);
+  var currentUser = JSON.parse(JSON.stringify(currentUser));
   var flag = "ir";
   var flagLabel = "Iran, Islamic Republic of";
   if (currentUser.country.value && currentUser.country.value != flag) {

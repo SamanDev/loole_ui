@@ -18,6 +18,7 @@ import {
 import { Row, Col } from "react-bootstrap";
 import { handleTagForm, printJoinalerts } from "components/include";
 import MatchCard from "components/matchcard.component";
+import UserContext from "context/UserState";
 var moment = require("moment");
 
 const getBlockGames = (filtermode) => {
@@ -112,6 +113,7 @@ const getBlockGameModesVal = (filtermode) => {
 var moment = require("moment");
 
 class AddMatch extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.handleCreateMatch = this.handleCreateMatch.bind(this);
@@ -130,7 +132,6 @@ class AddMatch extends Component {
       GName: { value: "8Pool - Mobile", text: "8Pool - Mobile" },
       GameMode: { value: "Duel", text: "Duel" },
 
-      currentUser: this.props.token,
       gamemaplocal: [],
       BetAmount: 10,
       Prize: "",
@@ -212,7 +213,10 @@ class AddMatch extends Component {
     if (error?.response?.data?.status == 401) {
       this.props.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
-      this.props.onUpdateItem("currentUser", defUser);
+
+      this.context.setUList({
+        currentUser: defUser,
+      });
     } else {
       const resMessage =
         (error.response &&
@@ -226,7 +230,7 @@ class AddMatch extends Component {
           printJoinalerts(
             error?.response?.data,
             GName,
-            this.state.currentUser,
+            this.context.uList.currentUser,
             handleTagForm,
             this.props
           );
@@ -266,8 +270,10 @@ class AddMatch extends Component {
         (response) => {
           //alert(response)
           if (response.data.accessToken) {
-            this.props.onUpdateItem("currentUser", response.data);
+            this.context.setUList({ currentUser: response.data });
+
             this.props.onUpdateItem("openModalAdd", false);
+
             Swal.fire("", "Data saved successfully.", "success").then(() => {
               this.props.history.push("/panel/dashboard");
             });
@@ -280,7 +286,7 @@ class AddMatch extends Component {
               printJoinalerts(
                 response.data,
                 this.state.GName,
-                this.state.currentUser,
+                this.context.uList.currentUser,
                 handleTagForm,
                 this.props
               );
@@ -296,7 +302,7 @@ class AddMatch extends Component {
       });
   }
   render() {
-    var { currentUser } = this.state;
+    const currentUser = this.context.uList.currentUser;
     var timestring1 = new Date();
     var startdate = moment(timestring1).format();
 

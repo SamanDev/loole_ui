@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { printBlockChallenge } from "components/include";
 import { Card, Dimmer, Loader, Header } from "semantic-ui-react";
-
+import { useParams } from "react-router";
 // react-bootstrap components
 import GameSlide from "components/GameSlide";
 import Games from "server/Games";
 import { themeColors } from "const.js";
+import GlobalContext from "context/GlobalState";
 var moment = require("moment");
 const d = new Date();
 let da = d.getSeconds();
@@ -29,19 +30,23 @@ const Landing = (prop) => {
       </>
     );
   };
+  const params = useParams();
 
+  console.log(params);
+  var _game = params.gamename;
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
 
-  const events = prop.findStateId(myState, "events");
-  var _game = window.location.href.split("game/")[1].replace("%20", " ");
+  const context = useContext(GlobalContext);
+  const { events } = context.myList;
+
   var _color = "red";
   var _label;
   {
     Games.games.map((item, i) => {
-      if (item.name.toLowerCase() == _game.toLowerCase()) {
+      if (item.name.toLowerCase() == _game?.toLowerCase()) {
         _color = themeColors[i].toLowerCase();
         _label = getLabel(item);
       }

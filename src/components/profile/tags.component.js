@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import { Header } from "semantic-ui-react";
 import { getGameTag, handleTagForm } from "components/include";
 import { Row, Col } from "react-bootstrap";
-
+import UserContext from "context/UserState";
 var arrLogos = [
   "psn.svg",
   "xbox.svg",
@@ -28,7 +28,9 @@ function TagsForm(prop) {
   }, [prop.myState]);
   var _key = prop.findStateId(myState, "profileUser");
   if (!_key) {
-    _key = prop.findStateId(myState, "currentUser");
+    const context = useContext(UserContext);
+
+    _key = context.uList.currentUser;
   }
   const currentUser = _key;
 

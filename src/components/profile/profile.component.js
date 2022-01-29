@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Form, Header, Segment } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import userService from "services/user.service";
@@ -8,7 +8,7 @@ import Birthday from "components/Birthday";
 import Avatar from "react-avatar";
 import { Row, Col, Card } from "react-bootstrap";
 import { defUser } from "const";
-
+import UserContext from "context/UserState";
 import { userDetails } from "components/include";
 function editCounry(item) {
   var _val = item.value.toLowerCase();
@@ -17,25 +17,10 @@ function editCounry(item) {
 
   return newItem;
 }
+
 function ProfileForm(prop) {
-  const [myState, setMyState] = useState(prop.myState);
-  useEffect(() => {
-    setMyState(prop.myState);
-    setCurrentUser(prop.findStateId(myState, "currentUser"));
-    setMyStateLoc({
-      list: [
-        { id: "name", val: currentUser.fullName },
-        { id: "country", val: currentUser.country },
-        { id: "birthday", val: currentUser.birthday },
-        { id: "loading", val: false },
-        { id: "submit", val: false },
-        { id: "hasError", val: false },
-      ],
-    });
-  }, [prop.myState]);
-  var [currentUser, setCurrentUser] = useState(
-    prop.findStateId(myState, "currentUser")
-  );
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
 
   var [myStateLoc, setMyStateLoc] = useState({
     list: [
@@ -140,9 +125,13 @@ function ProfileForm(prop) {
             onUpdateItem("loading", false);
 
             if (response.data.accessToken) {
-              prop.onUpdateItem("currentUser", response.data);
+              //prop.onUpdateItem("currentUser", response.data);
               localStorage.setItem("user", JSON.stringify(response.data));
-              setCurrentUser(response.data);
+              context.setMyList({
+                ...context.myList,
+                currentUser: response.data,
+              });
+              //setCurrentUser(response.data);
               setMyStateLoc({
                 list: [
                   { id: "name", val: response.data.fullName },
@@ -247,4 +236,4 @@ function ProfileForm(prop) {
   );
 }
 
-export default withRouter(ProfileForm);
+export default ProfileForm;

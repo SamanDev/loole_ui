@@ -38,7 +38,7 @@ import {
   findMatch,
 } from "components/include";
 import { POSTURLTest } from "const";
-
+import UserContext from "context/UserState";
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -53,6 +53,7 @@ var icEnd = 0;
 var icStart = 0;
 var defaultActiveIndex = 0;
 class TournamentSection extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.showDetails = this.showDetails.bind(this);
@@ -63,9 +64,9 @@ class TournamentSection extends Component {
 
     this.state = {
       myState: this.props.myState,
-      item: this.props.findStateId(this.props.myState, "eventDef"),
-      currentUser: this.props.findStateId(this.props.myState, "currentUser"),
-      eventid: this.props.findStateId(this.props.myState, "eventIDQ"),
+      item: this.props.event,
+
+      eventid: this.props.event.id,
       matchid: this.props.findStateId(this.props.myState, "matchIDQ"),
 
       matchidFind: this.props.findStateId(this.props.myState, "match"),
@@ -82,24 +83,12 @@ class TournamentSection extends Component {
     };
   }
   static getDerivedStateFromProps(props, state) {
-    // Any time the current user changes,
-    // Reset any parts of state that are tied to that user.
-    // In this simple example, that's just the email.
-    document.title =
-      state.item.gameName +
-      " " +
-      state.item.gameMode +
-      " - " +
-      state.item.outSign.replace("Dollar", "$").replace("Point", "Diamonds ") +
-      state.item.prize +
-      " Prize";
-
-    if (props.myState !== state.myState) {
+    if (props.event !== state.item) {
       return {
         myState: props.myState,
-        item: props.findStateId(props.myState, "eventDef"),
-        currentUser: props.findStateId(props.myState, "currentUser"),
-        eventid: props.findStateId(props.myState, "eventIDQ"),
+        item: props.event,
+        loading: false,
+        eventid: props.event.id,
         matchidFind: props.findStateId(props.myState, "match"),
       };
     }
@@ -163,7 +152,7 @@ class TournamentSection extends Component {
         (response) => {
           //alert(response)
           if (response.data.accessToken) {
-            this.props.onUpdateItem("currentUser", response.data);
+            this.context.setUList({ currentUser: response.data });
 
             Toast.fire({
               icon: "success",
@@ -178,7 +167,7 @@ class TournamentSection extends Component {
               printJoinalerts(
                 response.data,
                 GName,
-                this.state.currentUser,
+                this.context.uList.currentUser,
                 handleTagForm
               );
             }
@@ -217,7 +206,7 @@ class TournamentSection extends Component {
           printJoinalerts(
             resMessage,
             GName,
-            this.state.currentUser,
+            this.context.uList.currentUser,
             handleTagForm
           );
         }
@@ -239,11 +228,8 @@ class TournamentSection extends Component {
   };
 
   render() {
-    const item = this.props.findStateId(this.state.myState, "eventDef");
-    const currentUser = this.props.findStateId(
-      this.state.myState,
-      "currentUser"
-    );
+    const item = this.props.event;
+    const currentUser = this.context.uList.currentUser;
     const matchid = this.props.findStateId(this.state.myState, "matchIDQ");
     let { loading } = this.state;
     item.matchTables.sort((a, b) => (a.level > b.level ? 1 : -1));
@@ -433,9 +419,26 @@ class TournamentSection extends Component {
 
         content: hatchbackCar.map((mtch, z) => {
           hatchbackCar[z].matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
+          var _link =
+            "/lobby/" +
+            item.id +
+            "/" +
+            item.gameMode +
+            " " +
+            item.gameName +
+            " for " +
+            item.prize +
+            item.outSign
+              .replace("Dollar", " Bax")
+              .replace("Point", " Diamonds") +
+            " Prize/" +
+            mtch.id +
+            "/" +
+            getMatchTitle(hatchbackCar[z].level, item.totalPlayer) +
+            "/";
           return (
             <span key={z.toString()}>
-              <Link to={"/matchlobby?id=" + item.id + "&matchid=" + mtch.id}>
+              <Link to={_link.replace(/ /g, "-")}>
                 <Segment inverted style={{ background: "none !important" }}>
                   <Grid columns={2}>
                     <Grid.Column
@@ -527,11 +530,11 @@ class TournamentSection extends Component {
           <Divider fitted style={{ opacity: 0 }} />
           <Countdown
             renderer={rendererBig}
-            match={lists[0]}
+            match={matchLevelFind}
             txt="@@@Start at"
             colorfinish={getColorStatus(item.status)}
             finish={item.status + "@@@Not Avalable"}
-            date={item.startTime}
+            date={matchLevelFind.startTime}
           />
           <Divider fitted style={{ opacity: 0 }} />
 

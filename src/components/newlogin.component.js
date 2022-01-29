@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Form } from "semantic-ui-react";
 import AuthService from "../services/auth.service";
 import UserWebsocket from "services/user.websocket";
 import Swal from "sweetalert2";
+import GlobalContext from "context/GlobalState";
 function FormExampleFieldErrorLabel(prop) {
   const history = useHistory();
   let location = useLocation();
+  const context = useContext(GlobalContext);
+  const { myList, setMyList } = context;
   const [myState, setMyState] = useState({
     list: [
       { id: "username", val: "" },
@@ -79,8 +82,12 @@ function FormExampleFieldErrorLabel(prop) {
           onUpdateItem("loading", false);
           console.log(response.data);
           if (response.data.accessToken) {
-            prop.onUpdateItem("currentUser", response.data);
             localStorage.setItem("user", JSON.stringify(response.data));
+            setMyList({ ...myList, currentUser: response.data });
+            localStorage.setItem(
+              "myList",
+              JSON.stringify({ ...myList, currentUser: response.data })
+            );
             UserWebsocket.disconnect();
             UserWebsocket.connect(
               response.data.accessToken + "&user=" + response.data.username,

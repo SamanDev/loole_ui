@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthService from "services/auth.service";
 import { Menu } from "semantic-ui-react";
 
 import { Container } from "react-bootstrap";
 import { defUser } from "const";
+import UserContext from "context/UserState";
 const LandNavbar = (prop) => {
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
-  const currentUser = prop.findStateId(myState, "currentUser");
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
   const openModalLogin = prop.findStateId(myState, "openModalLogin");
   if (currentUser?.accessToken && !openModalLogin) {
     prop.onUpdateItem("openModalLogin", false);

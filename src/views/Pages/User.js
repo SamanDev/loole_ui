@@ -2,9 +2,11 @@ import React, { Component, useState, useEffect } from "react";
 
 import { useAllEvents, useUserProfile } from "services/hooks";
 import Profile from "views/ProfileUser";
-
+import { useParams } from "react-router";
 function profile(prop) {
-  var currentUser = window.location.href.split("user/")[1].replace("%20", " ");
+  const params = useParams();
+
+  const currentUser = params.username;
 
   return (
     <>

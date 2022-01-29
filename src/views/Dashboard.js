@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { printBlockChallenge } from "components/include";
 import { Tab, Card, Menu, Label, Dimmer, Loader } from "semantic-ui-react";
 import Active from "components/active.component";
 import DashStat from "components/dashstat.component";
+import GlobalContext from "context/GlobalState";
 var moment = require("moment");
+
 function Dashboard(prop) {
+  const context = useContext(GlobalContext);
+  const { events } = context.myList;
   const [myState, setMyState] = useState(prop.myState);
-  useEffect(() => {
-    setMyState(prop.myState);
-  }, [prop.myState]);
 
   const [myStateThis, setMyStateThis] = useState({
     list: [
@@ -17,6 +18,7 @@ function Dashboard(prop) {
 
       { id: "NoMobile", val: 0 },
       { id: "Tournament", val: 0 },
+      { id: "League", val: 0 },
     ],
   });
   const findStateId = (st, val) => {
@@ -44,10 +46,9 @@ function Dashboard(prop) {
   };
 
   const key = prop.findStateId(myState, "keyDash");
-  const events = prop.findStateId(myState, "events");
 
   const updateCount = (events) => {
-    var arrFilters = ["All", "Mobile", "NoMobile", "Tournament"];
+    var arrFilters = ["All", "Mobile", "NoMobile", "Tournament", "League"];
     if (events) {
       for (var ifil = 0; ifil < arrFilters.length; ifil++) {
         var filtermode = arrFilters[ifil];
@@ -185,6 +186,18 @@ function Dashboard(prop) {
       render: () => (
         <Tab.Pane>{getBlockChallenge("Tournament", events)}</Tab.Pane>
       ),
+    },
+    {
+      id: 5,
+      menuItem: (
+        <Menu.Item key={"5"}>
+          League{" "}
+          <Label size="mini" color="grey">
+            {findStateId(myStateThis, "League")}
+          </Label>
+        </Menu.Item>
+      ),
+      render: () => <Tab.Pane>{getBlockChallenge("League", events)}</Tab.Pane>,
     },
   ];
   updateCount(events);

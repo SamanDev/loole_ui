@@ -49,12 +49,22 @@ function MatchBlock(prop) {
   }
   _finishTxt = "";
   item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
-
+  var _link =
+    "/lobby/" +
+    item.id +
+    "/" +
+    item.gameMode +
+    " " +
+    item.gameName +
+    " for " +
+    item.prize +
+    item.outSign.replace("Dollar", " Bax").replace("Point", " Diamonds") +
+    " Prize/";
   return (
     <Card
       color={getColorStatus(item.status)}
       as={Link}
-      to={"/lobby?id=" + item.id}
+      to={_link.replace(/ /g, "-")}
     >
       <Label
         size="mini"

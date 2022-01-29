@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { Card, Statistic, Icon, Grid, Popup, Divider } from "semantic-ui-react";
 import CurrencyFormat from "react-currency-format";
 import { Link } from "react-router-dom";
-
+import UserContext from "context/UserState";
 const DashStat = (prop) => {
-  const [myState, setMyState] = useState(prop.myState);
-  useEffect(() => {
-    setMyState(prop.myState);
-  }, [prop.myState]);
-  const currentUser = prop.findStateId(myState, "currentUser");
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
 
   var nAmount = Number.parseFloat(currentUser.point).toFixed(0);
   var nMatch = Number.parseFloat(currentUser.totalMatch).toFixed(0);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import AuthService from "services/auth.service";
 
@@ -6,13 +6,12 @@ import { useHistory } from "react-router-dom";
 import { Menu, Icon } from "semantic-ui-react";
 
 import { defUser } from "const";
+import UserContext from "context/UserState";
 const LandNavbar = (prop) => {
   const history = useHistory();
-  const [myState, setMyState] = useState(prop.myState);
-  useEffect(() => {
-    setMyState(prop.myState);
-  }, [prop.myState]);
-  const currentUser = prop.findStateId(myState, "currentUser");
+
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
   const logOut = () => {
     prop.onUpdateItem("currentUser", defUser);
 

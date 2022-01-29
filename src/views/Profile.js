@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Active from "components/active.component";
 
@@ -10,14 +10,15 @@ import Report from "components/report.component";
 // react-bootstrap components
 
 import { Tab } from "semantic-ui-react";
-
+import UserContext from "context/UserState";
 function profile(prop) {
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
   const key = prop.findStateId(myState, "keyProfile");
-  var currentUser = prop.findStateId(myState, "currentUser");
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
 
   var dataTransaction = currentUser.usersReports;
   const panes = [

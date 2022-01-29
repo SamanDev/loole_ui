@@ -290,8 +290,8 @@ class Chatbar extends Component {
         userService
           .sendChatMatch(
             this.state.messageBox,
-            this.state.eventID,
-            this.state.matchID
+            parseInt(this.state.eventID),
+            parseInt(this.state.matchID)
           )
           .then(
             (response) => {
@@ -320,20 +320,22 @@ class Chatbar extends Component {
             }
           );
       } else {
-        userService.sendChat(this.state.messageBox, this.state.eventID).then(
-          (response) => {
-            this.setState({
-              messageBox: "",
-              isLoading: false,
-            });
-          },
-          (error) => {
-            alert(error.message);
-            this.setState({
-              isLoading: false,
-            });
-          }
-        );
+        userService
+          .sendChat(this.state.messageBox, parseInt(this.state.eventID))
+          .then(
+            (response) => {
+              this.setState({
+                messageBox: "",
+                isLoading: false,
+              });
+            },
+            (error) => {
+              alert(error.message);
+              this.setState({
+                isLoading: false,
+              });
+            }
+          );
       }
     }
   }
@@ -355,19 +357,19 @@ class Chatbar extends Component {
     var finalChat = [];
     if (chats != "null") {
       {
-        chats.map((item, i) => {
+        chats?.map((item, i) => {
           finalChat.push(item);
         });
       }
     }
     if (eventchats != "null") {
       {
-        eventchats.map((item, i) => {
+        eventchats?.map((item, i) => {
           finalChat.push(item);
         });
       }
     }
-    finalChat.sort((a, b) => (a.time < b.time ? 1 : -1));
+    finalChat?.sort((a, b) => (a.time < b.time ? 1 : -1));
     // this creates the intial state of this component based on the collapse routes
     // that it gets through routes prop
 

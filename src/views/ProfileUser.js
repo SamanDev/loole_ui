@@ -9,7 +9,7 @@ import { Dimmer, Loader, Segment } from "semantic-ui-react";
 import { userDetails, getOffset } from "components/include";
 import { useUserProfile } from "services/hooks";
 import DashStat from "components/userstat.component";
-
+import GlobalContext from "context/GlobalState";
 function scrollTo(elem) {
   var x = getOffset(document.getElementById(elem)).top;
 

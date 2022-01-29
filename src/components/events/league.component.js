@@ -32,7 +32,7 @@ import {
   getGroupBadgeBlock,
   printJoinalerts,
 } from "components/include";
-
+import UserContext from "context/UserState";
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -50,15 +50,16 @@ var icStartL = 0;
 var isJoin = false;
 var activePlayer = 0;
 class LeagueSection extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.showDetails = this.showDetails.bind(this);
     this.handleJoinMatch = this.handleJoinMatch.bind(this);
     this.state = {
       myState: this.props.myState,
-      item: this.props.findStateId(this.props.myState, "eventDef"),
-      currentUser: this.props.findStateId(this.props.myState, "currentUser"),
-      eventid: this.props.findStateId(this.props.myState, "eventIDQ"),
+      item: this.props.event,
+
+      eventid: this.props.event.id,
 
       matchidFind: this.props.findStateId(this.props.myState, "match"),
       curPlayerReady: false,
@@ -106,7 +107,7 @@ class LeagueSection extends Component {
               printJoinalerts(
                 response.data,
                 GName,
-                this.state.currentUser,
+                this.context.uList.currentUser,
                 handleTagForm,
                 this.props
               );
@@ -145,7 +146,7 @@ class LeagueSection extends Component {
           printJoinalerts(
             resMessage,
             GName,
-            this.state.currentUser,
+            this.context.uList.currentUser,
             handleTagForm,
             this.props
           );
@@ -192,11 +193,8 @@ class LeagueSection extends Component {
     return null;
   }
   render() {
-    const item = this.props.findStateId(this.state.myState, "eventDef");
-    const currentUser = this.props.findStateId(
-      this.state.myState,
-      "currentUser"
-    );
+    const item = this.props.event;
+    const currentUser = this.context.uList.currentUser;
     let { progress, isUpLoading, progressLable, loading, activeIndex } =
       this.state;
     var current_brackets = [];

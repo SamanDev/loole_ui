@@ -32,18 +32,15 @@ import Games from "server/Games";
 
 import AddTournament from "components/add/addtournament.component";
 import AddLeague from "components/add/addleague.component";
-
+import UserContext from "context/UserState";
 class CreateMatch extends Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
-
-    this.state = {
-      currentUser: this.props.findStateId(this.props.myState, "currentUser"),
-    };
   }
 
   render() {
-    var { currentUser } = this.state;
+    var currentUser = this.context.uList.currentUser;
 
     return (
       <>

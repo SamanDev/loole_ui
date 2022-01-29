@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Form from "react-validation/build/form";
 
 import { withRouter } from "react-router-dom";
 import userService from "services/user.service";
 import { Message, Button, Divider } from "semantic-ui-react";
 import Swal from "sweetalert2";
-
+import UserContext from "context/UserState";
 function Active(prop) {
   const [loading, setLoading] = useState(false);
 
@@ -13,7 +13,8 @@ function Active(prop) {
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
-  var currentUser = prop.findStateId(myState, "currentUser");
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
 
   const handleResend = (e) => {
     e.preventDefault();

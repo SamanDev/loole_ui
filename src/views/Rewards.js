@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import Active from "components/active.component";
 
 import Rewards from "components/Rewards.component";
 import Report from "components/reportdiamond.component";
 // react-bootstrap components
-
+import UserContext from "context/UserState";
 import { Tab } from "semantic-ui-react";
 
 function profile(prop) {
@@ -14,7 +14,8 @@ function profile(prop) {
     setMyState(prop.myState);
   }, [prop.myState]);
   const key = prop.findStateId(myState, "keyReward");
-  var currentUser = prop.findStateId(myState, "currentUser");
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
 
   var dataTransaction = currentUser.usersReports;
   const panes = [

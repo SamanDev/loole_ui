@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { printBlockChallenge } from "components/include";
 import { Card } from "semantic-ui-react";
 // react-bootstrap components
 import { Header } from "semantic-ui-react";
+import GlobalContext from "context/GlobalState";
 var moment = require("moment");
 const HomeEvents = (prop) => {
-  const [myState, setMyState] = useState(prop.myState);
-  useEffect(() => {
-    setMyState(prop.myState);
-  }, [prop.myState]);
-
-  const events = prop.findStateId(myState, "events");
+  const context = useContext(GlobalContext);
+  const { events } = context.myList;
   const getBlockChallenge = (filtermode, events) => {
     var newItem = [];
     if (events) {

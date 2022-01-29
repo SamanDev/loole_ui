@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import { useInfo } from "services/hooks";
 import HomeEvents from "components/events/home.component";
@@ -6,6 +6,7 @@ import GameSlide from "components/GameSlide";
 import LandStat from "components/landstat.component";
 import Market from "components/market.component";
 import { themeColors } from "const.js";
+import UserContext from "context/UserState";
 const d = new Date();
 let da = d.getSeconds();
 let day = da % 7;
@@ -15,7 +16,8 @@ function Landing(prop) {
     setMyState(prop.myState);
   }, [prop.myState]);
   const { data: looleInfo } = useInfo();
-  const currentUser = prop.findStateId(myState, "currentUser");
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
   const elements = ["1", "2-4_01", "2-4_02", "2-4_03"];
   useEffect(() => {
     if (looleInfo) {

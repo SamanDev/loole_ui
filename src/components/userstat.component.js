@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Card, Statistic, Icon, Grid, Divider } from "semantic-ui-react";
 import CurrencyFormat from "react-currency-format";
-
+import GlobalContext from "context/GlobalState";
 const UserStat = (prop) => {
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
@@ -9,7 +9,9 @@ const UserStat = (prop) => {
   }, [prop.myState]);
   var _key = prop.findStateId(myState, "profileUser");
   if (!_key) {
-    _key = prop.findStateId(myState, "currentUser");
+    const context = useContext(GlobalContext);
+
+    _key = context.myList.currentUser;
   }
   const currentUser = _key;
 

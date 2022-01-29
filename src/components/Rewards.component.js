@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 // react component used to create charts
 // react components used to create a SVG / Vector map
 import { getGroupBadgeBlock } from "components/include";
 import { Icon, Message, Button } from "semantic-ui-react";
 // react-bootstrap components
 import CopyText from "components/copy.component";
+import UserContext from "context/UserState";
 function Dashboard(prop) {
-  const [myState, setMyState] = useState(prop.myState);
-  useEffect(() => {
-    setMyState(prop.myState);
-  }, [prop.myState]);
-
-  const currentUser = prop.findStateId(myState, "currentUser");
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
 
   return (
     <>

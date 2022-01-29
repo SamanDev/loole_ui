@@ -67,14 +67,10 @@ class UserWebsocket {
           //alert((msg.Command))
           if (msg.Command === "event") {
             eventBus.dispatch("eventsData", msg.data);
-            // eventBus.remove("eventsData");
-
-            //alert(JSON.stringify(msg.data))
           } else if (msg.Command === "updateUser") {
             eventBus.dispatch("eventsDataUser", msg.data);
           } else if (msg.Command === "eventId") {
             eventBus.dispatch("eventsDataEventDo", msg.data);
-            //eventBus.remove("eventsDataEventDo");
           } else if (msg.Command === "startTick") {
             // setYvalStart(msg.tick);
           }
@@ -118,7 +114,7 @@ class UserWebsocket {
         ws = null;
         eventBus.dispatch("eventsDC", "");
         setTimeout(function () {
-          if (ws != null && ws.readyState == websocket?.OPEN) {
+          if (ws != null) {
             //eventBus.dispatch("eventsConnect", "");
           } else {
             if (ws == null && token) {

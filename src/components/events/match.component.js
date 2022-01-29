@@ -25,7 +25,7 @@ import {
 } from "components/include";
 import { Divider, Segment, Grid, Statistic, Button } from "semantic-ui-react";
 import { POSTURLTest } from "const";
-
+import UserContext from "context/UserState";
 const API_URL_TEST = POSTURLTest;
 const Toast = Swal.mixin({
   toast: true,
@@ -36,6 +36,8 @@ const Toast = Swal.mixin({
 });
 
 class MatchSection extends Component {
+  static contextType = UserContext;
+
   constructor(props) {
     super(props);
     this.showDetails = this.showDetails.bind(this);
@@ -50,9 +52,9 @@ class MatchSection extends Component {
     this.fileUpload = React.createRef();
     this.state = {
       myState: this.props.myState,
-      item: this.props.findStateId(this.props.myState, "eventDef"),
-      currentUser: this.props.findStateId(this.props.myState, "currentUser"),
-      eventid: this.props.findStateId(this.props.myState, "eventIDQ"),
+      item: this.props.event,
+
+      eventid: this.props.event.id,
       progress: 0,
       selectedFile: null,
       matchidFind: this.props.findStateId(this.props.myState, "match"),
@@ -64,32 +66,18 @@ class MatchSection extends Component {
       message: "",
     };
   }
-
   static getDerivedStateFromProps(props, state) {
-    // Any time the current user changes,
-    // Reset any parts of state that are tied to that user.
-    // In this simple example, that's just the email.
-    document.title =
-      state.item.gameMode +
-      " " +
-      state.item.gameName +
-      " for " +
-      state.item.outSign.replace("Dollar", "$").replace("Point", "Diamonds ") +
-      state.item.prize +
-      " Prize";
-
-    if (props.myState !== state.myState) {
+    if (props.event !== state.item) {
       return {
         myState: props.myState,
-        item: props.findStateId(props.myState, "eventDef"),
-        currentUser: props.findStateId(props.myState, "currentUser"),
-        eventid: props.findStateId(props.myState, "eventIDQ"),
+        item: props.event,
+        loading: false,
+        eventid: props.event.id,
         matchidFind: props.findStateId(props.myState, "match"),
       };
     }
     return null;
   }
-
   handleClashFinished(e) {
     this.setState({
       loading: true,
@@ -174,10 +162,6 @@ class MatchSection extends Component {
       .then(
         (response) => {
           if (response.data == "changeReadyEvent successful") {
-            this.setState({
-              loading: false,
-            });
-
             //this.reGetevents();
           }
           //this.props.history.push("/panel/dashboard");
@@ -264,12 +248,9 @@ class MatchSection extends Component {
       .joinEvent(this.state.item.id)
       .then(
         (response) => {
-          this.setState({
-            loading: false,
-          });
           //alert(response)
           if (response.data.accessToken) {
-            this.props.onUpdateItem("currentUser", response.data);
+            this.context.setUList({ currentUser: response.data });
 
             Toast.fire({
               icon: "success",
@@ -280,7 +261,7 @@ class MatchSection extends Component {
               printJoinalerts(
                 response.data,
                 GName,
-                this.state.currentUser,
+                this.context.uList.currentUser,
                 handleTagForm,
                 this.props
               );
@@ -307,11 +288,8 @@ class MatchSection extends Component {
         (response) => {
           this.setState({
             isloading: false,
-            loading: false,
           });
           if (response.data.accessToken) {
-            this.props.onUpdateItem("currentUser", response.data);
-
             Toast.fire({
               icon: "success",
               title: "Un Joined.",
@@ -321,7 +299,7 @@ class MatchSection extends Component {
               printJoinalerts(
                 response.data,
                 GName,
-                this.state.currentUser,
+                this.context.uList.currentUser,
                 handleTagForm,
                 this.props
               );
@@ -346,10 +324,6 @@ class MatchSection extends Component {
         .then(
           (response) => {
             if (response.data == "changeReadyEvent successful") {
-              this.setState({
-                loading: false,
-              });
-
               //this.reGetevents();
             }
             //this.props.history.push("/panel/dashboard");
@@ -399,7 +373,10 @@ class MatchSection extends Component {
     if (error?.response?.data?.status == 401) {
       this.props.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
-      this.props.onUpdateItem("currentUser", defUser);
+      this.context.setMyList({
+        ...this.context.myList,
+        currentUser: defUser,
+      });
     } else {
       const resMessage = error?.response?.data || error.toString();
 
@@ -408,7 +385,7 @@ class MatchSection extends Component {
           printJoinalerts(
             resMessage,
             GName,
-            this.state.currentUser,
+            this.context.uList.currentUser,
             handleTagForm,
             this.props
           );
@@ -430,11 +407,8 @@ class MatchSection extends Component {
     }
   };
   render() {
-    const item = this.props.findStateId(this.state.myState, "eventDef");
-    const currentUser = this.props.findStateId(
-      this.state.myState,
-      "currentUser"
-    );
+    const item = this.state.item;
+    const currentUser = this.context.uList.currentUser;
     const match = this.props.findStateId(this.state.myState, "match");
     const eventIDQ = this.props.findStateId(this.state.myState, "eventIDQ");
     let { progress, isUpLoading, progressLable, loading, isloading } =

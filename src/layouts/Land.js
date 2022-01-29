@@ -57,7 +57,10 @@ function Auth(props) {
 
   const getPage = (routes) => {
     return routes.map((prop) => {
-      if (window.location.href.indexOf(prop.layout) > -1 && prop.path == "/") {
+      if (
+        window.location.href.indexOf(prop.layout.split("/")[1]) > -1 &&
+        prop.path == "/"
+      ) {
         if (prop.name) {
           return prop.name;
         }
