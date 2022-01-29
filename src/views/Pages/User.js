@@ -7,7 +7,11 @@ function profile(prop) {
   const params = useParams();
 
   const currentUser = params.username;
-
+  useEffect(() => {
+    var _title = currentUser + " profile | Loole.gg";
+    document.title = _title.replace(/-/g, " ");
+    return () => {};
+  }, []);
   return (
     <>
       <div>

@@ -224,6 +224,10 @@ function Main() {
           userGet
         );
       }
+    } else {
+      setUList({ currentUser: defUser });
+
+      localStorage.setItem("user", JSON.stringify(defUser));
     }
   }, [userGet]);
   useEffect(() => {

@@ -87,7 +87,7 @@ const getUser = async () => {
     } catch (e) {
       localStorage.setItem("user", JSON.stringify(defUser));
 
-      //UserWebsocket.connect();
+      UserWebsocket.connect();
       return defUser;
     }
   } else {
