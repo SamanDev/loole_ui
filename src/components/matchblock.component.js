@@ -14,6 +14,7 @@ import {
   printStatus,
   getMatchTitle,
   findMatch,
+  genLink,
 } from "components/include.js";
 import {
   Icon,
@@ -49,23 +50,10 @@ function MatchBlock(prop) {
   }
   _finishTxt = "";
   item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
-  var _link =
-    "/lobby/" +
-    item.id +
-    "/" +
-    item.gameMode +
-    " " +
-    item.gameName +
-    " for " +
-    item.prize +
-    item.outSign.replace("Dollar", " Bax").replace("Point", " Diamonds") +
-    " Prize/";
+  var _link = genLink(item);
+
   return (
-    <Card
-      color={getColorStatus(item.status)}
-      as={Link}
-      to={_link.replace(/ /g, "-")}
-    >
+    <Card color={getColorStatus(item.status)} as={Link} to={_link}>
       <Label
         size="mini"
         color={getColorStatus(item.status)}

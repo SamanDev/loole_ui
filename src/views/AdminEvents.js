@@ -1,29 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import DataTable from "react-data-table-component";
 import { Input, Segment } from "semantic-ui-react";
 import CurrencyFormat from "react-currency-format";
 import { Col } from "react-bootstrap";
-
+import { Header, Dimmer } from "semantic-ui-react";
+import { genLink, getMatchTitle } from "components/include";
+import GlobalContext from "context/GlobalState";
+import { Link } from "react-router-dom";
 function editCounry(options) {
   //options.sort((a, b) => (a.id > b.id) ? 1 : -1)
   var newArray = [];
 
   options.map((item) => {
     //item.matchTables.sort((a, b) => (a.id < b.id) ? 1 : -1)
-    item.matchTables.map((match) => {
-      var newitem = {};
-      newitem.id = match.id;
-      newitem.eventid = item.id;
-      newitem.gameName = item.gameName;
-      newitem.gameMode = item.gameMode;
-      newitem.amount = item.amount;
-      newitem.match = match;
-      newitem.detail = JSON.stringify(newitem);
 
-      newArray.push(newitem);
+    item.matchTables.map((match) => {
+      if (
+        match.status == "InPlay" ||
+        match.status == "Ready3" ||
+        match.status == "Pending3"
+      ) {
+        var newitem = {};
+        newitem.id = match.id;
+        newitem.item = item;
+        newitem.eventid = item.id;
+        newitem.gameName = item.gameName;
+        newitem.gameMode = item.gameMode;
+        newitem.amount = item.amount;
+        newitem.match = match;
+        newitem.detail = JSON.stringify(newitem);
+
+        newArray.push(newitem);
+      }
     });
   });
-
+  console.log(newArray);
   return newArray;
 }
 const conditionalRowStyles = [
@@ -55,12 +66,33 @@ const conditionalRowStyles = [
 ];
 
 const noDataComponent = (
-  <Col xl="12" style={{ textAlign: "center", color: "rgba(0,0,0,.5)" }}>
-    <div>
-      <h4>Empty List.</h4>
-      <h5>You currently don't have any record.</h5>
-    </div>
-  </Col>
+  <div
+    style={{
+      minHeight: 300,
+      position: "relative",
+      marginTop: 20,
+      width: "100%",
+    }}
+  >
+    <Dimmer active inverted>
+      <div
+        style={{
+          textAlign: "center",
+          color: "rgba(0,0,0,.5)",
+          paddingTop: 30,
+          width: "100%",
+        }}
+      >
+        <img
+          alt="nodata"
+          style={{ height: 80 }}
+          src="/assets/images/nodata.svg"
+        ></img>
+        <h4>Empty List.</h4>
+        <h5>You currently don't have any report.</h5>
+      </div>
+    </Dimmer>
+  </div>
 );
 var moment = require("moment");
 
@@ -80,12 +112,14 @@ const FilterComponent = ({ filterText, onFilter }) => (
 );
 
 function Admin(prop) {
-  //const { data: usersList } = useAllEvents();
+  const context = useContext(GlobalContext);
+  //const { data: events } = useAllEvents();
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
-  const usersList = prop.findStateId(myState, "events");
+
+  const { events } = context.myList;
 
   const [filterText, setFilterText] = React.useState("");
   const [exMode, setExMode] = React.useState("Data");
@@ -110,16 +144,14 @@ function Admin(prop) {
       format: (row) => (
         <>
           {row.gameMode == "Tournament" ? (
-            <a
-              href={"/lobby?id=" + row.eventid + "&matchid=" + row.match.id}
-              target="_blank"
-            >
-              {row.match.id}: {row.gameName}
-            </a>
+            <Link to={genLink(row.item, row.match)}>
+              {row.match.id}: {row.gameName} -{" "}
+              {getMatchTitle(row.match.level, row.item.totalPlayer)}
+            </Link>
           ) : (
-            <a href={"/lobby?id=" + row.eventid} target="_blank">
+            <Link to={genLink(row.item)}>
               {row.eventid}: {row.gameName}
-            </a>
+            </Link>
           )}
         </>
       ),
@@ -197,11 +229,11 @@ function Admin(prop) {
     );
   }, [filterText, resetPaginationToggle, dataTransaction]);
   useEffect(() => {
-    if (usersList) {
-      const newdata = editCounry(usersList);
+    if (events) {
+      const newdata = editCounry(events);
       setDataTransaction(newdata);
     }
-  }, [usersList]);
+  }, [events]);
 
   return (
     <>

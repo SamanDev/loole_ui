@@ -36,6 +36,7 @@ import {
   printJoinalerts,
   genMatch,
   findMatch,
+  genLink,
 } from "components/include";
 import { POSTURLTest } from "const";
 import UserContext from "context/UserState";
@@ -419,26 +420,11 @@ class TournamentSection extends Component {
 
         content: hatchbackCar.map((mtch, z) => {
           hatchbackCar[z].matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
-          var _link =
-            "/lobby/" +
-            item.id +
-            "/" +
-            item.gameMode +
-            " " +
-            item.gameName +
-            " for " +
-            item.prize +
-            item.outSign
-              .replace("Dollar", " Bax")
-              .replace("Point", " Diamonds") +
-            " Prize/" +
-            mtch.id +
-            "/" +
-            getMatchTitle(hatchbackCar[z].level, item.totalPlayer) +
-            "/";
+          var _link = genLink(item, mtch);
+
           return (
             <span key={z.toString()}>
-              <Link to={_link.replace(/ /g, "-")}>
+              <Link to={_link}>
                 <Segment inverted style={{ background: "none !important" }}>
                   <Grid columns={2}>
                     <Grid.Column

@@ -752,21 +752,8 @@ export const printEventBTN = (
   handleJoinMatch,
   onUpdateItem
 ) => {
-  var _link =
-    "/lobby/" +
-    item?.id +
-    "/" +
-    item?.gameMode +
-    " " +
-    item?.gameName +
-    " for " +
-    item?.prize +
-    item?.outSign.replace("Dollar", " Bax").replace("Point", " Diamonds") +
-    " Prize/" +
-    mymatchFind?.id +
-    "/" +
-    getMatchTitle(mymatchFind?.level, item?.totalPlayer) +
-    "/";
+  var _link = genLink(item, mymatchFind);
+
   return (
     <>
       {(item.status == "Pending" ||
@@ -792,7 +779,7 @@ export const printEventBTN = (
             <>
               {mymatchFind && (
                 <>
-                  <Link to={_link.replace(/ /g, "-")}>
+                  <Link to={_link}>
                     <Button size="big" inverted color="orange">
                       <Button.Content>
                         Open My Match
@@ -1679,6 +1666,29 @@ export const getGameTag = (game, userTags) => {
       </p>
     );
   }
+};
+export const genLink = (item, match) => {
+  var _link =
+    "/lobby/" +
+    item.id +
+    "/" +
+    item.gameMode +
+    " " +
+    item.gameName +
+    " for " +
+    item.prize +
+    item.outSign.replace("Dollar", " Bax").replace("Point", " Diamonds") +
+    " Prize/";
+  if (match?.id && item.gameMode == "Tournament") {
+    _link =
+      _link +
+      match.id +
+      "/" +
+      getMatchTitle(match.level, item.totalPlayer) +
+      "/";
+  }
+
+  return _link.replace(/ /g, "-");
 };
 export const findActiveMatch = (event, matchID, username) => {
   var _match;

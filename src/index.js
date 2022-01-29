@@ -30,6 +30,7 @@ import {
   findActiveMatch,
   isPlayerInMatch,
   getMatchTitle,
+  genLink,
 } from "components/include";
 import { useQueryClient, QueryClient, QueryClientProvider } from "react-query";
 import {
@@ -308,37 +309,21 @@ function Main() {
           eventIDQ == eventGet.id
         ) {
           var newEID = window.location.pathname.split("/")[2];
-          var _link =
-            "/lobby/" +
-            eventGet.id +
-            "/" +
-            eventGet.gameMode +
-            " " +
-            eventGet.gameName +
-            " for " +
-            eventGet.prize +
-            eventGet.outSign
-              .replace("Dollar", " Bax")
-              .replace("Point", " Diamonds") +
-            " Prize/";
+          var _link = genLink(eventGet);
 
           if (_find.status == "Ready" || _find.status == "InPlay") {
             if (newEID != eventGet.id) {
               //console.log("history.push");
-              history.push(_link.replace(/ /g, "-"));
+              history.push(_link);
             }
             if (
               newEID != eventGet.id &&
               _find.id != matchIDQ &&
               eventGet.matchTables.length > 1
             ) {
-              _link =
-                _link +
-                _find.id +
-                "/" +
-                getMatchTitle(_find.level, eventGet.totalPlayer) +
-                "/";
-              history.push(_link.replace(/ /g, "-"));
+              _link = genLink(eventGet, _find);
+
+              history.push(_link);
             }
           } else {
             _defEvent = eventGet;
