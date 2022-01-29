@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { Form } from "semantic-ui-react";
 import AuthService from "../services/auth.service";
 import UserWebsocket from "services/user.websocket";
 import Swal from "sweetalert2";
+import UserContext from "context/UserState";
 function FormExampleFieldErrorLabel(prop) {
   const history = useHistory();
+  const context = useContext(UserContext);
+  const { uList, setUList } = context;
   const [myState, setMyState] = useState({
     list: [
       { id: "username", val: "" },
@@ -86,7 +89,7 @@ function FormExampleFieldErrorLabel(prop) {
           onUpdateItem("loading", false);
           console.log(response.data);
           if (response.data.accessToken) {
-            prop.onUpdateItem("currentUser", response.data);
+            setUList({ currentUser: response.data });
             localStorage.setItem("user", JSON.stringify(response.data));
             UserWebsocket.disconnect();
             UserWebsocket.connect(

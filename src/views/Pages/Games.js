@@ -7,6 +7,12 @@ import GameSlide from "components/GameSlide";
 import Games from "server/Games";
 import { themeColors } from "const.js";
 import GlobalContext from "context/GlobalState";
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}
 var moment = require("moment");
 const d = new Date();
 let da = d.getSeconds();
@@ -32,13 +38,15 @@ const Landing = (prop) => {
   };
   const params = useParams();
 
-  console.log(params);
   var _game = params.gamename;
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
-
+  useEffect(() => {
+    scrollToTop();
+    return () => {};
+  }, [_game]);
   const context = useContext(GlobalContext);
   const { events } = context.myList;
 

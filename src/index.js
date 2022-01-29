@@ -173,7 +173,7 @@ function Main() {
   const onUpdateItem = (key, val) => {
     //console.log(val)
     if (findStateId(myState, key) != val) {
-      //console.log(key)
+      console.log(key);
       setMyState(() => {
         const list = myState.list.map((item) => {
           if (item.id === key) {
@@ -204,6 +204,7 @@ function Main() {
   const { data: userGet } = useUser();
 
   //const { data: eventsGet } = useAllEventsByStatus('All');
+
   const { data: eventsGet } = useAllEvents();
   if (window.location.pathname.toString().indexOf("/i/") > -1) {
     var _i = window.location.pathname.toString().split("/i/")[1];
@@ -217,10 +218,12 @@ function Main() {
       localStorage.setItem("user", JSON.stringify(userGet));
 
       updateNot(userGet);
-      UserWebsocket.connect(
-        userGet.accessToken + "&user=" + userGet.username,
-        userGet
-      );
+      if (findStateId(myState, "profileUser") == false) {
+        UserWebsocket.connect(
+          userGet.accessToken + "&user=" + userGet.username,
+          userGet
+        );
+      }
     }
   }, [userGet]);
   useEffect(() => {
@@ -277,7 +280,7 @@ function Main() {
     });
     eventBus.on("eventsDC", () => {
       //  alert()
-      if (currentUser?.accessToken) {
+      if (currentUser?.accessToken && !findStateId(myState, "profileUser")) {
         onUpdateItem("openModalSoket", true);
       }
     });
@@ -291,12 +294,10 @@ function Main() {
     });
 
     eventBus.on("eventsDataActive", (mmyevent) => {
-      var curU = JSON.parse(
-        JSON.stringify(findStateId(myState, "currentUser"))
-      );
+      var curU = JSON.parse(JSON.stringify(currentUser));
       curU.userActivate = true;
       setUList({ currentUser: curU });
-
+      localStorage.setItem("user", JSON.stringify(curU));
       Swal.fire("", mmyevent, "success");
     });
     eventBus.on("eventsDataEventDo", (eventGet) => {
@@ -336,9 +337,18 @@ function Main() {
         }
       }
     });
+    setInterval(() => {
+      try {
+        var el = document.getElementsByTagName("iframe")[0];
+        el.remove();
+      } catch (e) {}
+    }, 1000);
   }, []);
   useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);
+    if (myList.events == null) {
+      queryClient.resetQueries(["Events"]);
+    }
     var newEID = location.pathname.split("/")[2];
     var newMID = location.pathname.split("/")[4];
     //alert(newEID);
@@ -367,11 +377,15 @@ function Main() {
       </Segment>
     );
   }
+  var _key = findStateId(myState, "profileUser");
+  if (!_key) {
+    _key = currentUser;
+  }
 
-  currentUser.userAnalyses?.sort((a, b) => (a.id < b.id ? 1 : -1));
+  _key.userAnalyses?.sort((a, b) => (a.id < b.id ? 1 : -1));
   var nProfit = 0;
   try {
-    nProfit = Number.parseFloat(currentUser.userAnalyses[0].profit).toFixed(2);
+    nProfit = Number.parseFloat(_key.userAnalyses[0].profit).toFixed(2);
   } catch (e) {
     nProfit = 0;
   }

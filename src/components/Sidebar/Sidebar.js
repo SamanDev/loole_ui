@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Avatar from "react-avatar";
 import AuthService from "services/auth.service";
 import { haveAdmin } from "components/include";
 // react-bootstrap components
 import { Nav } from "react-bootstrap";
-
+import { setAvatar } from "components/include";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import { defUser } from "const";
+import UserContext from "context/UserState";
 function Sidebar({ routes, image, background, token, onUpdateItem }) {
+  const context = useContext(UserContext);
+  const { setUList } = context;
   const history = useHistory();
   // to check for active links and opened collapses
   let location = useLocation();
@@ -26,10 +29,10 @@ function Sidebar({ routes, image, background, token, onUpdateItem }) {
     //onUpdateItem("openModalLogin", true)
   }
 
-  res = res + " " + str.substring(1, 2);
+  res = setAvatar(str);
   const logOut = () => {
-    onUpdateItem("currentUser", defUser);
-
+    setUList({ currentUser: defUser });
+    localStorage.setItem("user", JSON.stringify(defUser));
     AuthService.logout();
 
     history.push("/home");

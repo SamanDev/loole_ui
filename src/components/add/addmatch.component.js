@@ -271,7 +271,7 @@ class AddMatch extends Component {
           //alert(response)
           if (response.data.accessToken) {
             this.context.setUList({ currentUser: response.data });
-
+            localStorage.setItem("user", JSON.stringify(response.data));
             this.props.onUpdateItem("openModalAdd", false);
 
             Swal.fire("", "Data saved successfully.", "success").then(() => {

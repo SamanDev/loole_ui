@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Header } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { Colors } from "const.js";
 // react-bootstrap components
 import Games from "server/Games";
+
 export default function GameSlide() {
   const getLabel = (item) => {
     return (

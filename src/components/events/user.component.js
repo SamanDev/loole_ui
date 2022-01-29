@@ -1,14 +1,30 @@
 import React, { useState, useEffect, useContext } from "react";
 
 import { printBlockChallenge } from "components/include";
-import { Card } from "semantic-ui-react";
-// react-bootstrap components
-import { Header } from "semantic-ui-react";
-import GlobalContext from "context/GlobalState";
+import $ from "jquery";
+import { Spinner, Carousel } from "react-bootstrap";
+import { Header, Dimmer, Loader, Card } from "semantic-ui-react";
+import UserContext from "context/UserState";
+import { useUserEvents } from "services/hooks";
 var moment = require("moment");
 const HomeEvents = (prop) => {
-  const context = useContext(GlobalContext);
-  const { events } = context.myList;
+  const [myState, setMyState] = useState(prop.myState);
+  useEffect(() => {
+    setMyState(prop.myState);
+  }, [prop.myState]);
+  var _key = prop.findStateId(myState, "profileUser");
+  if (!_key) {
+    const context = useContext(UserContext);
+
+    _key = context.uList.currentUser;
+  }
+  if (prop.user) {
+    _key = prop.user;
+  }
+  const currentUser = _key;
+
+  const { data: events } = useUserEvents(currentUser.id);
+  var responsive = $(window).width();
   const getBlockChallenge = (filtermode, events) => {
     var newItem = [];
     if (events) {
@@ -30,11 +46,12 @@ const HomeEvents = (prop) => {
           var timestring2 = new Date();
           var startdate = moment(timestring1).format();
           var expected_enddate = moment(timestring2).format();
-          startdate = moment(startdate).add(20, "days").format();
+          startdate = moment(startdate).add(1, "days").format();
 
           if (
             item.status != "Pending" &&
             item.status != "InPlay" &&
+            item.status != "Finished" &&
             item.status != "Ready"
           ) {
             //item.gameConsole = startdate + ' '+ expected_enddate;
@@ -54,13 +71,33 @@ const HomeEvents = (prop) => {
       );
     }
   };
-
-  return (
-    <>
-      {!prop.myStateLoc && <Header as="h3">My Events</Header>}
-      {getBlockChallenge("all", events)}
-    </>
-  );
+  if (!events) {
+    return (
+      <Dimmer active inverted>
+        <Loader size="large">Loading</Loader>
+      </Dimmer>
+    );
+  }
+  if (responsive >= 768) {
+    return (
+      <>
+        {!prop.myStateLoc && <Header as="h3">My Events</Header>}
+        {getBlockChallenge("all", events)}
+      </>
+    );
+  } else {
+    return (
+      <>
+        {!prop.myStateLoc && <Header as="h3">My Events</Header>}
+        <Carousel
+          style={{ textAlign: "left", maxWidth: 300, margin: "auto" }}
+          controls={false}
+        >
+          {getBlockChallenge("all", events)}
+        </Carousel>
+      </>
+    );
+  }
 };
 
 export default HomeEvents;

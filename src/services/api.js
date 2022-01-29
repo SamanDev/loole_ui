@@ -16,8 +16,15 @@ const clientAdmin = axios.create({
 });
 
 const getAllEvents = async () => {
-  const { data } = await client.get("/getEvents");
-  return data;
+  var loc = window.location.href;
+
+  //eventBus.dispatch("eventsDataUser", usr);
+  if (loc.indexOf("/user") == -1) {
+    const { data } = await client.get("/getEvents");
+    return data;
+  } else {
+    return null;
+  }
 };
 const getAllCoins = async () => {
   if (JSON.stringify(authHeader()) != "{}") {
@@ -85,7 +92,7 @@ const getUser = async () => {
     }
   } else {
     localStorage.setItem("user", JSON.stringify(defUser));
-    //UserWebsocket.connect();
+    UserWebsocket.connect();
 
     return defUser;
   }
@@ -95,10 +102,9 @@ const getUserProfile = async (username) => {
   const { data } = await client.get(`/getUserPublic/?username=${user}`);
   return data;
 };
-const getUserEvents = async () => {
-  const { data } = await client.get("/getUserEvents", {
-    headers: authHeader(),
-  });
+const getUserEvents = async (ids) => {
+  const id = ids.queryKey[1];
+  const { data } = await client.get(`/getEventsByUserId/?id=${id}`);
   return data;
 };
 const getEvent = async (_, id) => {

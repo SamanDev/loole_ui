@@ -13,13 +13,13 @@ const LandNavbar = (prop) => {
   }, [prop.myState]);
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
+  const { setUList } = context;
   const openModalLogin = prop.findStateId(myState, "openModalLogin");
   if (currentUser?.accessToken && !openModalLogin) {
     prop.onUpdateItem("openModalLogin", false);
   }
   const logOut = () => {
-    prop.onUpdateItem("currentUser", defUser);
-
+    setUList({ currentUser: defUser });
     AuthService.logout();
   };
   return (

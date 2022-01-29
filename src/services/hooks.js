@@ -53,8 +53,8 @@ const useUserProfile = (username) => {
 
   return result;
 };
-const useUserEvents = () => {
-  const result = useQuery("UserEvent", api.getUserEvents);
+const useUserEvents = (id) => {
+  const result = useQuery(["UserEvent", parseInt(id)], api.getUserEvents);
 
   return result;
 };

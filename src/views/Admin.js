@@ -12,6 +12,7 @@ import ButtonGroupColored from "components/adminUseraction.component";
 import adminService from "services/admin.service";
 import Swal from "sweetalert2";
 import { setAvatar, printBlockChallenge, isJson } from "components/include";
+import UserEvents from "components/events/user.component";
 const conditionalRowStyles = [
   {
     when: (row) => row.endBalance < row.startBalance,
@@ -53,7 +54,7 @@ function isDate(name, myDate, user) {
       myDate?.toString().indexOf("T") > -1 &&
       myDate?.toString().indexOf(":00:00") == -1
     )
-      res = moment(myDate).fromNow();
+      res = moment(myDate).startOf("second").fromNow();
     if (
       myDate?.toString().indexOf(":") > -1 &&
       myDate?.toString().indexOf("T") > -1 &&
@@ -62,7 +63,7 @@ function isDate(name, myDate, user) {
       res =
         moment(myDate).format("MM-DD-YYYY") +
         " (" +
-        moment(myDate).fromNow() +
+        moment(myDate).startOf("second").fromNow() +
         ")";
   }
 
@@ -240,9 +241,7 @@ function Admin(prop) {
     if (exMode == "Events") {
       return (
         <Segment>
-          <Card.Group className="fours" style={{ marginBottom: 20 }}>
-            {printBlockChallenge(data.events, "all", { ...prop })}
-          </Card.Group>
+          <UserEvents {...prop} user={data} myStateLoc={true} />
         </Segment>
       );
     }

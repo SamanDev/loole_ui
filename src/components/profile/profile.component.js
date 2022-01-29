@@ -9,7 +9,7 @@ import Avatar from "react-avatar";
 import { Row, Col, Card } from "react-bootstrap";
 import { defUser } from "const";
 import UserContext from "context/UserState";
-import { userDetails } from "components/include";
+import { userDetails, setAvatar } from "components/include";
 function editCounry(item) {
   var _val = item.value.toLowerCase();
   var _txt = item.label;
@@ -161,7 +161,7 @@ function ProfileForm(prop) {
   var loading = findStateId(myStateLoc, "loading");
   var str = currentUser.username;
   var res = str.substring(0, 1);
-  res = res + " " + str.substring(1, 2);
+  res = setAvatar(str);
   return (
     <>
       <Header as="h3">Profile</Header>

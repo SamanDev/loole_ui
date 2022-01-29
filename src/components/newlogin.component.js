@@ -4,12 +4,12 @@ import { Form } from "semantic-ui-react";
 import AuthService from "../services/auth.service";
 import UserWebsocket from "services/user.websocket";
 import Swal from "sweetalert2";
-import GlobalContext from "context/GlobalState";
+import UserContext from "context/UserState";
 function FormExampleFieldErrorLabel(prop) {
   const history = useHistory();
   let location = useLocation();
-  const context = useContext(GlobalContext);
-  const { myList, setMyList } = context;
+  const context = useContext(UserContext);
+  const { uList, setUList } = context;
   const [myState, setMyState] = useState({
     list: [
       { id: "username", val: "" },
@@ -83,11 +83,8 @@ function FormExampleFieldErrorLabel(prop) {
           console.log(response.data);
           if (response.data.accessToken) {
             localStorage.setItem("user", JSON.stringify(response.data));
-            setMyList({ ...myList, currentUser: response.data });
-            localStorage.setItem(
-              "myList",
-              JSON.stringify({ ...myList, currentUser: response.data })
-            );
+            setUList({ currentUser: response.data });
+
             UserWebsocket.disconnect();
             UserWebsocket.connect(
               response.data.accessToken + "&user=" + response.data.username,

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import $ from "jquery";
 
 import { printBlockChallenge } from "components/include";
-import { Card } from "semantic-ui-react";
+import { Card, Dimmer, Loader } from "semantic-ui-react";
 // react-bootstrap components
 import { Spinner, Carousel } from "react-bootstrap";
 import GlobalContext from "context/GlobalState";
@@ -61,21 +61,9 @@ const HomeEvents = (prop) => {
   var responsive = $(window).width();
   if (!events) {
     return (
-      <div className="content">
-        <h4
-          style={{
-            textAlign: "center",
-            height: 370,
-            lineHeight: "330px",
-            color: "gray",
-          }}
-        >
-          Loading Data
-          <Spinner animation="grow" size="sm" />
-          <Spinner animation="grow" size="sm" />
-          <Spinner animation="grow" size="sm" />
-        </h4>
-      </div>
+      <Dimmer active inverted>
+        <Loader size="large">Loading</Loader>
+      </Dimmer>
     );
   }
   if (responsive >= 768) {

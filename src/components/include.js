@@ -116,7 +116,7 @@ export const setAvatar = (name) => {
 
   if (!isJson(str)) {
     var res = str.substring(0, 1);
-    res = res + " " + str.substring(str.length - 1, str.length);
+    res = res + " " + str.substring(str.length - 3, str.length - 2);
   } else {
     var res = "";
   }
@@ -1800,7 +1800,6 @@ export const showSocialTag = (game, userTags) => {
   return res;
 };
 export const userDetails = (currentUser) => {
-  console.log(currentUser);
   var currentUser = JSON.parse(JSON.stringify(currentUser));
   var flag = "ir";
   var flagLabel = "Iran, Islamic Republic of";
@@ -1808,7 +1807,8 @@ export const userDetails = (currentUser) => {
     flag = currentUser.country.value;
     flagLabel = currentUser.country.label;
   }
-  var lastLogin = moment(currentUser.lastLogin).startOf("day").fromNow();
+  var lastLogin = moment(currentUser.lastLogin).format();
+  lastLogin = moment(lastLogin).startOf("second").fromNow();
   return (
     <>
       <div className="text-center">
