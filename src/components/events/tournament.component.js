@@ -503,7 +503,7 @@ class TournamentSection extends Component {
           className="mx-auto text-center "
           lg="8"
           md="10"
-          style={{ padding: 0, marginTop: 20 }}
+          style={{ padding: 0, marginTop: 20, overflow: "hidden" }}
         >
           {vsComponentTitle(item)}
           <Divider fitted style={{ opacity: 0 }} />
