@@ -25,6 +25,7 @@ import Profile from "views/Profile.js";
 import CreateMatch from "views/Add.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 import ShetabDeposit from "components/deposit/shetabdeposit.component";
+import ShetabCashout from "components/deposit/shetabcashout.component";
 import CrDeposit from "components/deposit/crdeposit.component";
 import CrCashout from "components/deposit/crcashout.component";
 import PMDeposit from "components/deposit/pmdeposit.component";
@@ -214,7 +215,7 @@ function Panel(props) {
                           props.onUpdateItem("openModalCashier", false)
                         }
                       >
-                        {cashierMethod == "CryptoCurrenciesDeposit" ? (
+                        {cashierMethod == "CryptoCurrenciesDeposit" && (
                           <>
                             {!myNotificationItem ? (
                               <CrDeposit coins={coins} {...props} />
@@ -222,34 +223,34 @@ function Panel(props) {
                               <CrCode note={myNotificationItem} {...props} />
                             )}
                           </>
-                        ) : (
+                        )}
+
+                        {cashierMethod == "PerfectMoneyDeposit" && (
                           <>
-                            {cashierMethod == "PerfectMoneyDeposit" ? (
-                              <>
-                                {" "}
-                                <PMDeposit coins={coins} {...props} />
-                              </>
-                            ) : (
-                              <>
-                                <ShetabDeposit coins={coins} {...props} />
-                              </>
-                            )}
+                            {" "}
+                            <PMDeposit coins={coins} {...props} />
                           </>
                         )}
-                        {cashierMethod == "CryptoCurrenciesCashout" ? (
+                        {cashierMethod == "HamrahcartDeposit" && (
+                          <>
+                            <ShetabDeposit coins={coins} {...props} />
+                          </>
+                        )}
+
+                        {cashierMethod == "CryptoCurrenciesCashout" && (
                           <>
                             <CrCashout coins={coins} {...props} />
                           </>
-                        ) : (
+                        )}
+                        {cashierMethod == "PerfectMoneyCashout" && (
                           <>
-                            {cashierMethod == "PerfectMoneyCashout" ? (
-                              <>
-                                {" "}
-                                <PMCashout coins={coins} {...props} />
-                              </>
-                            ) : (
-                              <></>
-                            )}
+                            {" "}
+                            <PMCashout coins={coins} {...props} />
+                          </>
+                        )}
+                        {cashierMethod == "HamrahcartCashout" && (
+                          <>
+                            <ShetabCashout coins={coins} {...props} />
                           </>
                         )}
                       </Modal>
