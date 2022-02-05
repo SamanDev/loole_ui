@@ -433,9 +433,10 @@ export const vsComponentPlayer = (
   if (item.gameMode == "Tournament" && !matchidQ) {
     padd = 0;
   }
+
   var user = (
     <div style={{ overflow: "hidden", padding: "0px 0 " + padd + "px 0" }}>
-      {handlechangeReadyEvent ? (
+      {handlechangeReadyEvent || matchidQ > 0 ? (
         <Statistic
           inverted
           size="mini"
@@ -1464,41 +1465,45 @@ export const printStatus = (
               </div>
             </Statistic.Label>
           ) : (
-            <TransitionExampleTransitionExplorer
-              objanim={
-                <Statistic.Label>
-                  <div style={{ position: "relative", transform: "scale(.8)" }}>
+            <Link to={"/user/" + item.winner} target="_blank">
+              <TransitionExampleTransitionExplorer
+                objanim={
+                  <Statistic.Label>
                     <div
-                      className="winner avatar"
-                      style={{ width: 92, height: 92, borderRadius: 100 }}
-                    ></div>
-                    <div className=" ">
-                      <Icon
-                        circular
-                        inverted
-                        color="yellow"
-                        size="mini"
-                        name="winner"
-                        style={{ position: "absolute", fontSize: 15 }}
-                      />
-                      <Avatar
-                        size="92"
-                        round={true}
-                        title={item.winner}
-                        name={setAvatar(item.winner)}
-                      />
-                    </div>
+                      style={{ position: "relative", transform: "scale(.8)" }}
+                    >
+                      <div
+                        className="winner avatar"
+                        style={{ width: 92, height: 92, borderRadius: 100 }}
+                      ></div>
+                      <div className=" ">
+                        <Icon
+                          circular
+                          inverted
+                          color="yellow"
+                          size="mini"
+                          name="winner"
+                          style={{ position: "absolute", fontSize: 15 }}
+                        />
+                        <Avatar
+                          size="92"
+                          round={true}
+                          title={item.winner}
+                          name={setAvatar(item.winner)}
+                        />
+                      </div>
 
-                    <Statistic inverted size="mini" color="yellow">
-                      <Statistic.Value>{item.winner}</Statistic.Value>
-                      <Statistic.Label>is winner</Statistic.Label>
-                    </Statistic>
-                  </div>
-                </Statistic.Label>
-              }
-              animation="jiggle"
-              duration={1000}
-            />
+                      <Statistic inverted size="mini" color="yellow">
+                        <Statistic.Value>{item.winner}</Statistic.Value>
+                        <Statistic.Label>is winner</Statistic.Label>
+                      </Statistic>
+                    </div>
+                  </Statistic.Label>
+                }
+                animation="jiggle"
+                duration={1000}
+              />
+            </Link>
           )}
         </Statistic>
       ) : (
@@ -1692,7 +1697,7 @@ export const genLink = (item, match) => {
 };
 export const findActiveMatch = (event, matchID, username) => {
   var _match;
-  console.log("matchID:" + matchID);
+
   event?.matchTables.sort((a, b) => (a.level > b.level ? 1 : -1));
   if (matchID && event?.matchTables.length > 1) {
     event.matchTables.map(function (match) {

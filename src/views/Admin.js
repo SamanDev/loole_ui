@@ -1,12 +1,22 @@
 import React, { useEffect } from "react";
 import DataTable from "react-data-table-component";
-import { Input, Segment, Button, Card, Table } from "semantic-ui-react";
+import {
+  Input,
+  Segment,
+  Button,
+  Card,
+  Table,
+  Dimmer,
+  Loader,
+} from "semantic-ui-react";
 import Avatar from "react-avatar";
 import { useAdminUsers } from "services/hooks";
 import CurrencyFormat from "react-currency-format";
 import { Col } from "react-bootstrap";
 
 import Report from "components/report.component";
+import ReportDiamond from "components/reportdiamond.component";
+
 import CheckboxToggle from "components/toggle.component";
 import ButtonGroupColored from "components/adminUseraction.component";
 import adminService from "services/admin.service";
@@ -138,7 +148,7 @@ const FilterComponent = ({ filterText, onFilter, onClear, setExMode }) => (
 );
 
 function Admin(prop) {
-  const { data: usersList } = useAdminUsers();
+  const { data: usersList, isLoading } = useAdminUsers();
   const [filterText, setFilterText] = React.useState("");
   const [exMode, setExMode] = React.useState("Data");
   const [resetPaginationToggle, setResetPaginationToggle] =
@@ -147,6 +157,7 @@ function Admin(prop) {
   const filteredItems = dataTransaction.filter(
     (item) =>
       item.username &&
+      item.username.toLowerCase().indexOf("test") == -1 &&
       item.username.toLowerCase().includes(filterText.toLowerCase())
   );
 
@@ -234,14 +245,27 @@ function Admin(prop) {
     if (exMode == "Report") {
       return (
         <Segment>
-          <Report usersReports={data.usersReports} />
+          <div style={{ height: "calc(40vh - 150px)", overflow: "auto" }}>
+            <Report user={data} />
+          </div>
+        </Segment>
+      );
+    }
+    if (exMode == "Reward") {
+      return (
+        <Segment>
+          <div style={{ height: "calc(40vh - 150px)", overflow: "auto" }}>
+            <ReportDiamond user={data} />
+          </div>
         </Segment>
       );
     }
     if (exMode == "Events") {
       return (
         <Segment>
-          <UserEvents {...prop} user={data} myStateLoc={true} />
+          <div style={{ height: "calc(40vh - 150px)", overflow: "auto" }}>
+            <UserEvents {...prop} user={data} myStateLoc={true} />
+          </div>
         </Segment>
       );
     }
@@ -407,7 +431,17 @@ function Admin(prop) {
       setDataTransaction(usersList);
     }
   }, [usersList]);
-
+  if (isLoading) {
+    return (
+      <>
+        <Segment style={{ height: "calc(100vh - 150px)", overflow: "auto" }}>
+          <Dimmer active inverted>
+            <Loader size="large">Loading</Loader>
+          </Dimmer>
+        </Segment>
+      </>
+    );
+  }
   return (
     <>
       <Segment>

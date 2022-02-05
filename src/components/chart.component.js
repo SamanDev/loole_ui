@@ -9,7 +9,9 @@ import {
   ReferenceLine,
   Brush,
 } from "recharts";
+import { Header, Dimmer, Loader, Card } from "semantic-ui-react";
 import UserContext from "context/UserState";
+import { useUserAnalyses } from "services/hooks";
 function editCounry(options, options2) {
   options?.sort((a, b) => (a.date > b.date ? 1 : -1));
   var moment = require("moment");
@@ -106,7 +108,8 @@ const ChartStat = (prop) => {
     _key = context.uList.currentUser;
   }
   const currentUser = _key;
-  var _data = editCounry(currentUser.userAnalyses, currentUser.usersReports);
+  const { data: userAnalyses } = useUserAnalyses(currentUser.id);
+  var _data = editCounry(userAnalyses);
 
   const CustomizedDot = ({ cx, cy, payload, value }) => {
     const _val = payload.net;
@@ -209,6 +212,23 @@ const ChartStat = (prop) => {
   var _start = _data.length - 10;
   if (_start < 0) {
     _start = 0;
+  }
+  if (!userAnalyses) {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: 400,
+          background: "rgba(0,0,0,1)",
+          borderRadius: 20,
+          padding: "40px 20px 10px 0px",
+        }}
+      >
+        <Dimmer active>
+          <Loader size="large">Loading</Loader>
+        </Dimmer>
+      </div>
+    );
   }
   return (
     <div

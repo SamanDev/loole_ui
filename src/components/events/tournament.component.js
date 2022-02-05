@@ -441,6 +441,7 @@ class TournamentSection extends Component {
                         matchid,
                         currentUser,
                         loading,
+                        false,
                         false
                       )}
                     </Grid.Column>
@@ -458,6 +459,7 @@ class TournamentSection extends Component {
                         matchid,
                         currentUser,
                         loading,
+                        false,
                         false
                       )}
                     </Grid.Column>
@@ -511,7 +513,8 @@ class TournamentSection extends Component {
             _color,
             item.status + "@@@" + _finishTxt,
             item.status,
-            "no"
+            "",
+            "yes"
           )}
           <Divider fitted style={{ opacity: 0 }} />
           <Countdown

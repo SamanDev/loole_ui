@@ -24,6 +24,14 @@ var routes = [
     show: false,
   },
   {
+    path: "/admincosts",
+    layout: "/panel",
+    name: "AdminCosts",
+    icon: "nc-icon nc-circle-09",
+    component: "AdminCost",
+    show: false,
+  },
+  {
     path: "/create",
     layout: "/panel",
     name: "CreateEvent",

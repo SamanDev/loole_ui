@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
 // react-bootstrap components
 
-import { Header, Dimmer } from "semantic-ui-react";
+import { Header, Dimmer, Loader } from "semantic-ui-react";
 import { get_date_locale, getGroupBadgeBlock } from "components/include";
 import DataTable from "react-data-table-component";
+import { useUserReports } from "services/hooks";
 function editCounry(options) {
   var newArray = [];
   var newArrayDelete = [];
@@ -144,18 +145,33 @@ const noDataComponent = (
     </Dimmer>
   </div>
 );
-var dataTransaction = [];
 
 function Report(prop) {
-  dataTransaction = editCounry(prop.usersReports);
+  const [myData, setMydata] = useState();
+  const { data: userReports, isLoading } = useUserReports(prop.user.id);
 
+  useEffect(() => {
+    if (userReports) {
+      setMydata(editCounry(userReports));
+    }
+  }, [userReports]);
+  if (isLoading) {
+    return (
+      <>
+        <Header as="h3">Transactions</Header>
+        <Dimmer active inverted>
+          <Loader size="large">Loading</Loader>
+        </Dimmer>
+      </>
+    );
+  }
   return (
     <>
       <Header as="h3">Transactions</Header>
 
       <DataTable
         columns={columns}
-        data={dataTransaction}
+        data={myData}
         defaultSortFieldId={1}
         defaultSortAsc={false}
         expandOnRowClicked={true}

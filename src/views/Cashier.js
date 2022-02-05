@@ -8,26 +8,6 @@ import Report from "components/report.component";
 // react-bootstrap components
 import UserContext from "context/UserState";
 import { Card, Row, Col } from "react-bootstrap";
-var dataTransaction = [
-  {
-    id: 10,
-    amount: 18,
-    startBalance: 5,
-    endBalance: 23,
-    status: "Done",
-    mode: "DuelWin",
-    gateway: "",
-    voucherNumber: "",
-    voucherCode: "",
-    cardNumber: "",
-    description: "25 - Fifa2021",
-    transactionId: "",
-    createDate: "2021-10-30T14:07:40.000+00:00",
-    updateDate: "2021-10-30T14:07:40.000+00:00",
-  },
-];
-
-var allValid = true;
 
 function Cashier(prop) {
   const [myState, setMyState] = useState(prop.myState);
@@ -40,7 +20,7 @@ function Cashier(prop) {
 
   var userMethods = currentUser.cashierGateways;
   userMethods.sort((a, b) => (a.mode > b.mode ? 1 : -1));
-  dataTransaction = currentUser.usersReports;
+
   useEffect(() => {
     prop.onUpdateItem("coins", eventCoins);
   }, [eventCoins]);
@@ -174,7 +154,7 @@ function Cashier(prop) {
       menuItem: <Menu.Item key={"3"}>Transactions</Menu.Item>,
       render: () => (
         <Tab.Pane attached={false}>
-          <Report usersReports={dataTransaction} />
+          <Report user={currentUser} />
         </Tab.Pane>
       ),
     },

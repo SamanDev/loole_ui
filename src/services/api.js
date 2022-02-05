@@ -41,6 +41,10 @@ const getAdminUsers = async () => {
   );
   return data;
 };
+const getAdminCosts = async () => {
+  const { data } = await clientAdmin.get(`/getCost`, { headers: authHeader() });
+  return data;
+};
 const getAllEventsByStatus = async (status) => {
   const getstatus = status.queryKey[1];
   const { data } = await client.get(
@@ -107,6 +111,27 @@ const getUserEvents = async (ids) => {
   const { data } = await client.get(`/getEventsByUserId/?id=${id}`);
   return data;
 };
+const getUserAnalyses = async (ids) => {
+  const id = ids.queryKey[1];
+  const { data } = await client.get(`/getAnalysisByUser/?id=${id}`, {
+    headers: authHeader(),
+  });
+  return data;
+};
+const getUserReports = async (ids) => {
+  const id = ids.queryKey[1];
+  if (id > 0) {
+    const { data } = await client.get(
+      `/getReportsByUser/?id=${id}&page=1&number=100`,
+      {
+        headers: authHeader(),
+      }
+    );
+    return data;
+  } else {
+    return null;
+  }
+};
 const getEvent = async (_, id) => {
   const { data } = await client.get(`/getEventById/${id}`);
   return data;
@@ -122,4 +147,7 @@ export {
   getAllCoins,
   getAdminUsers,
   getInfo,
+  getUserAnalyses,
+  getUserReports,
+  getAdminCosts,
 };

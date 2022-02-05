@@ -67,7 +67,11 @@ class MatchSection extends Component {
     };
   }
   static getDerivedStateFromProps(props, state) {
-    if (props.event !== state.item || props.myState !== state.myState) {
+    if (
+      props.event !== state.item ||
+      props.myState !== state.myState ||
+      props.matchIDQ !== state.matchid
+    ) {
       return {
         myState: props.myState,
         item: props.event,
@@ -414,6 +418,7 @@ class MatchSection extends Component {
                     currentUser,
                     loading,
                     false,
+                    false,
                     matchid
                   )}
                 </Grid.Column>
@@ -433,6 +438,7 @@ class MatchSection extends Component {
                     eventIDQ,
                     currentUser,
                     loading,
+                    false,
                     false,
                     matchid
                   )}

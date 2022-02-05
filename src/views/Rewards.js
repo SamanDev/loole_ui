@@ -17,7 +17,6 @@ function profile(prop) {
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
 
-  var dataTransaction = currentUser.usersReports;
   const panes = [
     {
       id: 1,
@@ -34,7 +33,7 @@ function profile(prop) {
       menuItem: "My Earns",
       render: () => (
         <Tab.Pane>
-          <Report usersReports={dataTransaction} />
+          <Report user={currentUser} />
         </Tab.Pane>
       ),
     },

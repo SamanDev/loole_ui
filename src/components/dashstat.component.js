@@ -14,7 +14,7 @@ const DashStat = (prop) => {
   currentUser.userAnalyses?.sort((a, b) => (a.id < b.id ? 1 : -1));
   var nProfit = 0;
   try {
-    nProfit = Number.parseFloat(currentUser.userAnalyses[0].profit).toFixed(2);
+    nProfit = Number.parseFloat(currentUser.profit).toFixed(2);
   } catch (e) {
     nProfit = 0;
   }

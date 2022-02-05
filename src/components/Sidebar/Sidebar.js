@@ -74,6 +74,7 @@ function Sidebar({ routes, image, background, token, onUpdateItem }) {
             <>
               {(prop.name == "Admin" ||
                 prop.name == "AdminEvents" ||
+                prop.name == "AdminCosts" ||
                 prop.name == "CreateEvent") &&
                 haveAdmin(token.roles) && (
                   <Nav.Link to={prop.layout + prop.path} as={Link}>

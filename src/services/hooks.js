@@ -48,17 +48,32 @@ const useAdminUsers = () => {
 
   return result;
 };
+const useAdminCosts = () => {
+  const result = useQuery(["AdminCosts"], api.getAdminCosts);
+
+  return result;
+};
 const useUserProfile = (username) => {
   const result = useQuery(["User", username], api.getUserProfile);
 
   return result;
 };
+
 const useUserEvents = (id) => {
   const result = useQuery(["UserEvent", parseInt(id)], api.getUserEvents);
 
   return result;
 };
+const useUserAnalyses = (id) => {
+  const result = useQuery(["UserAnalyses", parseInt(id)], api.getUserAnalyses);
 
+  return result;
+};
+const useUserReports = (id) => {
+  const result = useQuery(["UserAnalyses", parseInt(id)], api.getUserReports);
+
+  return result;
+};
 const useEvent = (id) => {
   return useQuery(["Event", id], api.getEvent);
 };
@@ -74,4 +89,7 @@ export {
   useAllCoins,
   useAdminUsers,
   useInfo,
+  useUserAnalyses,
+  useUserReports,
+  useAdminCosts,
 };

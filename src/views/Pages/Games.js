@@ -79,12 +79,13 @@ const Landing = (prop) => {
         ) {
           //item.gameConsole = startdate + ' '+ expected_enddate;
           if (startdate > expected_enddate) {
-            newItem.push(item);
+            //newItem.push(item);
           }
         } else {
-          newItem.push(item);
+          //newItem.push(item);
         }
-        //newItem.push(item);
+
+        newItem.push(item);
       }
     });
 

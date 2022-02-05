@@ -7,7 +7,7 @@ var timerId = 0;
 var res = false;
 class UserWebsocket {
   connect(token, user) {
-    console.log(ws);
+    //console.log(ws);
     if (ws == null || ws.url.indexOf("public") > -1) {
       if (token) {
         ws = new WebSocket(USERSOCKETURL + token);

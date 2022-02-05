@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import ReactDOM from "react-dom";
 import { useParams } from "react-router";
 import {
@@ -9,6 +9,7 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
+import AuthService from "services/auth.service";
 import { Cache, ConfigProvider } from "react-avatar";
 
 import Swal from "sweetalert2";
@@ -77,7 +78,7 @@ if (localStorage.getItem("user")) {
 }
 var _defEvents = null;
 var _defEvent = {};
-function Main() {
+function Main(prop) {
   const queryClient = useQueryClient();
   const history = useHistory();
   const location = useLocation();
@@ -89,6 +90,7 @@ function Main() {
   const [eList, setEList] = useState({
     event: _defEvent,
   });
+
   const [uList, setUList] = useState({
     currentUser: unUser,
   });
@@ -165,6 +167,13 @@ function Main() {
     onUpdateItem("Notifications", myNot);
     onUpdateItem("NotificationsItem", myNot[0]);
   };
+  const logOut = () => {
+    setUList({ currentUser: defUser });
+    localStorage.setItem("user", JSON.stringify(defUser));
+    AuthService.logout();
+
+    history.push("/home");
+  };
   const findStateId = (st, val) => {
     return st.list.filter(function (v) {
       return v.id === val;
@@ -173,7 +182,6 @@ function Main() {
   const onUpdateItem = (key, val) => {
     //console.log(val)
     if (findStateId(myState, key) != val) {
-      console.log(key);
       setMyState(() => {
         const list = myState.list.map((item) => {
           if (item.id === key) {
@@ -201,7 +209,7 @@ function Main() {
   var openModalSoket = findStateId(myState, "openModalSoket");
   var openModalVideo = findStateId(myState, "openModalVideo");
   var openModalVideoSRC = findStateId(myState, "openModalVideoSRC");
-  const { data: userGet } = useUser();
+  const { data: userGet, isLoading } = useUser();
 
   //const { data: eventsGet } = useAllEventsByStatus('All');
 
@@ -225,11 +233,14 @@ function Main() {
         );
       }
     } else {
-      setUList({ currentUser: defUser });
-
-      localStorage.setItem("user", JSON.stringify(defUser));
     }
   }, [userGet]);
+  useEffect(() => {
+    if (prop.err401) {
+      localStorage.setItem("user", JSON.stringify(defUser));
+      setUList({ currentUser: defUser });
+    }
+  }, [prop.err401]);
   useEffect(() => {
     if (eventsGet?.length > 0) {
       _defEvents = eventsGet;
@@ -248,7 +259,7 @@ function Main() {
       setEList({ event: eventGet });
       localStorage.setItem("_defEvent", JSON.stringify(_defEvent));
       onUpdateItem("eventIDQ", eventGet.id);
-      console.log(matchIDQ);
+
       var _find = findActiveMatch(eventGet, matchIDQ, currentUser.username);
       if (_find?.id && eventGet.matchTables?.length > 1 && matchIDQ) {
         onUpdateItem("matchIDQ", _find.id);
@@ -259,12 +270,10 @@ function Main() {
     }
   }, [eventGet]);
   useEffect(() => {
-    console.log(eventDef?.matchTables);
     //onUpdateItem("matchIDQ", matchIDQ);
     if (eventDef?.matchTables) {
       var _find = findActiveMatch(eventDef, matchIDQ, currentUser.username);
       onUpdateItem("match", _find);
-      console.log(matchIDQ);
     }
   }, [matchIDQ]);
 
@@ -284,13 +293,17 @@ function Main() {
     });
     eventBus.on("eventsDC", () => {
       //  alert()
-      if (currentUser?.accessToken && !findStateId(myState, "profileUser")) {
+      if (
+        currentUser?.accessToken &&
+        !findStateId(myState, "profileUser") &&
+        !isLoading
+      ) {
         onUpdateItem("openModalSoket", true);
       }
     });
     eventBus.on("eventsConnect", () => {
       //  alert()
-      if (findStateId(myState, "openModalSoket")) {
+      if (findStateId(myState, "openModalSoket") && !isLoading) {
         queryClient.resetQueries(["Events"]);
         queryClient.resetQueries(["Event"]);
         onUpdateItem("openModalSoket", false);
@@ -389,7 +402,7 @@ function Main() {
   _key.userAnalyses?.sort((a, b) => (a.id < b.id ? 1 : -1));
   var nProfit = 0;
   try {
-    nProfit = Number.parseFloat(_key.userAnalyses[0].profit).toFixed(2);
+    nProfit = Number.parseFloat(_key.profit).toFixed(2);
   } catch (e) {
     nProfit = 0;
   }
@@ -442,7 +455,7 @@ function Main() {
               </div>
             </Modal.Header>
 
-            <Modal.Content>
+            <Modal.Content style={{ overflow: "hidden", position: "relative" }}>
               <Chart
                 myState={myState}
                 onUpdateItem={onUpdateItem}
@@ -455,7 +468,14 @@ function Main() {
             size="small"
             dimmer="blurring"
             open={openModalLogin}
-            onClose={() => onUpdateItem("openModalLogin", false)}
+            onClose={() => {
+              if (!isLoading) {
+                onUpdateItem("openModalLogin", false);
+                if (!currentUser?.accessToken) {
+                  logOut();
+                }
+              }
+            }}
           >
             <Modal.Content>
               <Segment inverted padded="very">
@@ -592,6 +612,7 @@ function Main() {
                 <PanelLayout
                   {...props}
                   myState={myState}
+                  isLoading={isLoading}
                   onUpdateItem={onUpdateItem}
                   findStateId={findStateId}
                 />
@@ -684,17 +705,22 @@ function Main() {
   );
 }
 function App() {
+  const [err401, setErr401] = useState(false);
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
         queryFn: myFunction,
+        retry: (failureCount, error) => {
+          setErr401(true);
+        },
       },
     },
   });
+
   return (
     <QueryClientProvider client={queryClient} contextSharing={true}>
-      <Main />
+      <Main err401={err401} />
     </QueryClientProvider>
   );
 }

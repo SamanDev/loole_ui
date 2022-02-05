@@ -16,6 +16,7 @@ import routes from "routes.js";
 
 import Admin from "views/Admin.js";
 import AdminEvents from "views/AdminEvents.js";
+import AdminCost from "views/AdminCost.js";
 import Dashboard from "views/Dashboard.js";
 import Rewards from "views/Rewards.js";
 import Market from "views/Market.js";
@@ -23,6 +24,7 @@ import Cashier from "views/Cashier.js";
 import Profile from "views/Profile.js";
 import CreateMatch from "views/Add.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
+import ShetabDeposit from "components/deposit/shetabdeposit.component";
 import CrDeposit from "components/deposit/crdeposit.component";
 import CrCashout from "components/deposit/crcashout.component";
 import PMDeposit from "components/deposit/pmdeposit.component";
@@ -54,7 +56,9 @@ function Panel(props) {
   const coins = props.findStateId(myState, "coins");
   const myNotification = props.findStateId(myState, "Notifications");
   const myNotificationItem = props.findStateId(myState, "NotificationsItem");
+  const profileUser = props.findStateId(myState, "profileUser");
   useEffect(() => {
+    //console.log(currentUser);
     if (currentUser?.accessToken) {
       if (props.findStateId(myState, "openModalLogin")) {
         props.onUpdateItem("openModalLogin", false);
@@ -75,8 +79,9 @@ function Panel(props) {
       }
       if (prop.layout === "/panel") {
         //sconsole.log(prop.component)
-
-        props.onUpdateItem("profileUser", false);
+        if (profileUser) {
+          props.onUpdateItem("profileUser", false);
+        }
 
         return (
           <Route
@@ -86,6 +91,7 @@ function Panel(props) {
               <>
                 {prop.component == "Admin" && <Admin {...props} />}
                 {prop.component == "AdminEvents" && <AdminEvents {...props} />}
+                {prop.component == "AdminCost" && <AdminCost {...props} />}
                 {prop.component == "Profile" && <Profile {...props} />}
                 {prop.component == "Dashboard" && <Dashboard {...props} />}
                 {prop.component == "LockScreenPage" && (
@@ -224,7 +230,9 @@ function Panel(props) {
                                 <PMDeposit coins={coins} {...props} />
                               </>
                             ) : (
-                              <></>
+                              <>
+                                <ShetabDeposit coins={coins} {...props} />
+                              </>
                             )}
                           </>
                         )}
