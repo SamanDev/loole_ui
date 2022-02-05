@@ -1175,7 +1175,7 @@ ul {
   background: #2704041a !important;
   color: #fff !important;
 }
-.mystep .step.disabled:after {
+.mystep .step:after {
   background: #2704041a !important;
 }
 .mystep .step.active:after {
@@ -1191,6 +1191,9 @@ ul {
 .mystep .step.completed {
   background: #db2828 !important;
   color: #fff !important;
+}
+.mystep .step > .icon {
+  font-size: 2em;
 }
 .login.page .form .usernameInput {
   background-color: transparent;

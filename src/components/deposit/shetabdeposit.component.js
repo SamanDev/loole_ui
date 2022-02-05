@@ -539,6 +539,7 @@ class ShetabDeposit extends Component {
           IranShetab Deposit
         </Header>
         <Step.Group
+          unstackable
           size="mini"
           widths={3}
           className="mystep"
@@ -553,7 +554,7 @@ class ShetabDeposit extends Component {
           >
             <Icon name="info" />
             <Step.Content>
-              <Step.Title>Information</Step.Title>
+              <Step.Title>Info</Step.Title>
             </Step.Content>
           </Step>
 
