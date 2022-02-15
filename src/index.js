@@ -45,7 +45,12 @@ import {
   Segment,
   Button,
 } from "semantic-ui-react";
-import { useAllEvents, useUser, useEventByID } from "services/hooks";
+import {
+  useAllEvents,
+  useUser,
+  useEventByID,
+  useUserReports,
+} from "services/hooks";
 import ReactGA from "react-ga";
 import "semantic-ui-css/semantic.min.css";
 import "assets/css/style.css";
@@ -141,29 +146,18 @@ function Main(prop) {
       { id: "openModalVideoSRC", val: false },
     ],
   });
-  const updateNot = (currentUser) => {
-    var myNot = [];
 
-    currentUser?.usersReports?.sort((a, b) => (a.id > b.id ? 1 : -1));
-    currentUser?.usersReports?.map((item, i) => {
+  const updateNot = (userReports) => {
+    var myNot = [];
+    console.log(userReports);
+    userReports?.sort((a, b) => (a.id > b.id ? 1 : -1));
+    userReports?.map((item, i) => {
       if (item.coinValue && item.status === "Pending" && myNot.length < 3) {
         myNot.push(item);
       }
     });
     myNot.sort((a, b) => (a.id < b.id ? 1 : -1));
-    /*
-  
-    events?.map((item, i) => {
-      if (item?.status ==='Pending' || item?.status ==='Ready' || item?.status ==='InPlay') {
-      item?.players?.map((user, j) => {
-        if(user.username == currentUser?.username){
-          myNot.push(item)
-          
-        }
-      })
-     } 
-    })
-  */
+    console.log(myNot);
     onUpdateItem("Notifications", myNot);
     onUpdateItem("NotificationsItem", myNot[0]);
   };
@@ -218,14 +212,18 @@ function Main(prop) {
     var _i = window.location.pathname.toString().split("/i/")[1];
     localStorage.setItem("reffer", _i);
   }
-
+  const { data: userReports } = useUserReports(userGet?.id);
+  useEffect(() => {
+    if (userReports) {
+      updateNot(userReports);
+    }
+  }, [userReports]);
   useEffect(() => {
     if (userGet?.accessToken) {
       setUList({ currentUser: userGet });
 
       localStorage.setItem("user", JSON.stringify(userGet));
 
-      updateNot(userGet);
       if (findStateId(myState, "profileUser") == false) {
         UserWebsocket.connect(
           userGet.accessToken + "&user=" + userGet.username,
@@ -289,7 +287,6 @@ function Main(prop) {
       setUList({ currentUser: userGet });
 
       localStorage.setItem("user", JSON.stringify(userGet));
-      updateNot(userGet);
     });
     eventBus.on("eventsDC", () => {
       //  alert()
