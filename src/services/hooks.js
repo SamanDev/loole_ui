@@ -70,7 +70,7 @@ const useUserAnalyses = (id) => {
   return result;
 };
 const useUserReports = (id) => {
-  const result = useQuery(["UserAnalyses", parseInt(id)], api.getUserReports);
+  const result = useQuery(["UserReports", parseInt(id)], api.getUserReports);
 
   return result;
 };

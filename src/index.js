@@ -191,6 +191,11 @@ function Main(prop) {
       //console.log(myState)
     }
   };
+  const onReset = (key) => {
+    if (key === "Reports") {
+      queryClient.resetQueries(["UserReports"]);
+    }
+  };
 
   // const query = mutationCache.findAll("User");
   //const query = mutationCache.getAll()
@@ -303,6 +308,7 @@ function Main(prop) {
       if (findStateId(myState, "openModalSoket") && !isLoading) {
         queryClient.resetQueries(["Events"]);
         queryClient.resetQueries(["Event"]);
+        queryClient.resetQueries(["Cois"]);
         onUpdateItem("openModalSoket", false);
       }
     });
@@ -612,6 +618,7 @@ function Main(prop) {
                   isLoading={isLoading}
                   onUpdateItem={onUpdateItem}
                   findStateId={findStateId}
+                  onReset={onReset}
                 />
               )}
             />
