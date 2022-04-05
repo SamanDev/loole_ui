@@ -72,7 +72,22 @@ function mycreateChats(
             </small>
             <br />
             <div className="text-justify" style={{ paddingBottom: 10 }}>
-              <small>{item.message}</small>
+              <small>
+                {item.message.indexOf("http:") > -1 ||
+                item.message.indexOf("https:") > -1 ? (
+                  <>
+                    <a
+                      href={item.message}
+                      target="_blank"
+                      style={{ color: "#97cbff" }}
+                    >
+                      {item.message}
+                    </a>
+                  </>
+                ) : (
+                  <>{item.message}</>
+                )}
+              </small>
             </div>
             <Avatar
               size="25"

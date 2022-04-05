@@ -112,19 +112,17 @@ class UserService {
         return response;
       });
   }
-  finishClashRoyale(eventID) {
+  finishClashRoyale(id) {
     return axios
       .post(
-        API_URL_TEST + "finishClashRoyale",
-        { eventID },
+        API_URL_TEST + "checkClashRoyaleResult",
+        { id },
         { headers: authHeader() }
       )
       .then((response) => {
-        console.log("ok");
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
+        console.log(response);
 
-        return response.data;
+        return response;
       });
   }
   joinEvent(id) {

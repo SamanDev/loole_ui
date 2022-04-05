@@ -83,18 +83,24 @@ class MatchSection extends Component {
       loading: true,
     });
     userService
-      .saveTags("ClashRoyale", "finish", this.state.tag, this.state.eventid)
+      .finishClashRoyale(this.state.eventid)
       .then(
-        () => {
+        (response) => {
           this.setState({
             loading: false,
           });
-          //this.props.history.push("/panel/dashboard");
+          Toast.fire({
+            icon: "success",
+            title: "Joined.",
+          });
         },
         (error) => {
           this.printErr(error);
         }
-      );
+      )
+      .catch((error) => {
+        this.printErr(error);
+      });
   }
 
   handleChatUpload = () => {
@@ -531,25 +537,45 @@ class MatchSection extends Component {
                         I Lost
                       </Button>
                       <Button.Or color="red" style={{ minWidth: 5 }} />
-                      <Button
-                        animated
-                        onClick={this.handlecAlertWin}
-                        color="green"
-                        inverted
-                        disabled={isUpLoading}
-                      >
-                        <Button.Content visible>{progressLable}</Button.Content>
-                        <Button.Content hidden>Upload video</Button.Content>
-                        {progress > 0 && (
-                          <div className="prosbar">
-                            <ProgressBar
-                              variant="success"
-                              now={progress}
-                              label={""}
-                            />
-                          </div>
-                        )}
-                      </Button>
+                      {item.gameName != "ClashRoyale" ? (
+                        <Button
+                          animated
+                          onClick={this.handlecAlertWin}
+                          color="green"
+                          inverted
+                          disabled={isUpLoading}
+                        >
+                          <Button.Content visible>
+                            {progressLable}
+                          </Button.Content>
+                          <Button.Content hidden>Upload video</Button.Content>
+                          {progress > 0 && (
+                            <div className="prosbar">
+                              <ProgressBar
+                                variant="success"
+                                now={progress}
+                                label={""}
+                              />
+                            </div>
+                          )}
+                        </Button>
+                      ) : (
+                        <Button
+                          animated
+                          onClick={this.handleClashFinished}
+                          color="green"
+                          inverted
+                          disabled={loading}
+                          loading={loading}
+                        >
+                          <Button.Content visible>
+                            {progressLable}
+                          </Button.Content>
+                          <Button.Content hidden>
+                            Automatically Check
+                          </Button.Content>
+                        </Button>
+                      )}
                     </Button.Group>
                     <input
                       type="file"

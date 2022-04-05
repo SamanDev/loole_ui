@@ -581,21 +581,38 @@ export const vsComponentPlayer = (
         _p.username != "Tournament Player" &&
         isPlayerInMatch(matchidFind, currentUser.username) && (
           <>
-            {_p.tagId && (
-              <Statistic inverted color="red" size="mini">
-                <Statistic.Label>
-                  {getTagName(item.gameName, item.gameConsole)} iD
-                </Statistic.Label>
-                <Statistic.Value>
-                  {isPlayerInMatch(matchidFind, currentUser.username) ? (
-                    <CopyText color="red" size="small" myid={_p.tagId} />
-                  ) : (
-                    "**********"
-                  )}
-                </Statistic.Value>
-              </Statistic>
-            )}
-            {_p.nickName && (
+            {item.gameName != "ClashRoyale" ? (
+              <>
+                {_p.tagId && (
+                  <Statistic inverted color="red" size="mini">
+                    <Statistic.Label>
+                      {getTagName(item.gameName, item.gameConsole)} iD
+                    </Statistic.Label>
+                    <Statistic.Value>
+                      {isPlayerInMatch(matchidFind, currentUser.username) ? (
+                        <CopyText color="red" size="small" myid={_p.tagId} />
+                      ) : (
+                        "**********"
+                      )}
+                    </Statistic.Value>
+                  </Statistic>
+                )}
+                {_p.nickName && (
+                  <>
+                    <Divider fitted style={{ opacity: 0 }} />
+                    <Statistic inverted color="olive" size="mini">
+                      <Statistic.Label>Nickname</Statistic.Label>
+
+                      <Statistic.Value>
+                        {isPlayerInMatch(matchidFind, currentUser.username)
+                          ? _p.nickName
+                          : "**********"}
+                      </Statistic.Value>
+                    </Statistic>
+                  </>
+                )}
+              </>
+            ) : (
               <>
                 <Divider fitted style={{ opacity: 0 }} />
                 <Statistic inverted color="olive" size="mini">
@@ -607,6 +624,16 @@ export const vsComponentPlayer = (
                       : "**********"}
                   </Statistic.Value>
                 </Statistic>
+
+                <TransitionExampleTransitionExplorer
+                  objanim={
+                    <div style={{ padding: 10 }}>
+                      Paste your ClashRoyale Invite link in chat bar.
+                    </div>
+                  }
+                  animation="flash"
+                  duration={1500}
+                />
               </>
             )}
           </>
