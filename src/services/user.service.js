@@ -120,9 +120,10 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        console.log(response);
-
         return response;
+      })
+      .catch((error) => {
+        return error;
       });
   }
   joinEvent(id) {

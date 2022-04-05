@@ -79,6 +79,7 @@ class MatchSection extends Component {
     return null;
   }
   handleClashFinished(e) {
+    e.preventDefault();
     this.setState({
       loading: true,
     });
@@ -89,10 +90,18 @@ class MatchSection extends Component {
           this.setState({
             loading: false,
           });
-          Toast.fire({
-            icon: "success",
-            title: "Joined.",
-          });
+          if (response.data == "Finished event successful") {
+            Toast.fire({
+              icon: "success",
+              title: response.data,
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: response,
+            });
+          }
         },
         (error) => {
           this.printErr(error);
@@ -376,6 +385,7 @@ class MatchSection extends Component {
       submit: false,
       loading: false,
     });
+    console.log(error);
     if (error?.response?.data?.status == 401) {
       this.props.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
