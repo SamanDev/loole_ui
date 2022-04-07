@@ -112,9 +112,10 @@ class ShetabDeposit extends Component {
   handleShetabMethod(value, data) {
     var _val = {
       key: value.target.innerText,
-      value: data.value.toUpperCase(),
+      value: value.target.innerText,
       text: value.target.innerText,
     };
+    console.log(JSON.stringify(_val));
     this.setMethodPay(_val);
   }
   setMethodPay(_val) {
@@ -518,15 +519,10 @@ class ShetabDeposit extends Component {
       Expiration: "",
       cvv: "",
     });
-    currentUser2.cardsdef.push({
-      key: "1",
-      value: "6104138910794789",
-      text: "6104 1389 1079 4789",
-      CardNo: "6104 1389 1079 4789",
-      Expiration: "1105",
-      cvv: "842",
-    });
-    this.setCardDef(currentUser2.cardsdef[1]);
+    if (currentUser2.cardsdef.length > 1) {
+      this.setCardDef(currentUser2.cardsdef[1]);
+    }
+
     this.setMethodPay(currentUser2.payMethod[0]);
   }
   render() {
@@ -627,7 +623,7 @@ class ShetabDeposit extends Component {
 
               <Input
                 type="hidden"
-                value={this.state.shetabMethod}
+                value={this.state.shetabMethod.value}
                 validations={[required]}
               />
               <div className="form-group form-group-lg2">
