@@ -47,10 +47,7 @@ function Cashier(prop) {
                   if (cashierGateway.mode == "PerfectMoney") {
                     _img = "pm.svg";
                   }
-                  if (
-                    cashierGateway.mode == "IranShetab" ||
-                    cashierGateway.mode == "VisaGiftCode"
-                  ) {
+                  if (cashierGateway.mode == "IranShetab") {
                     _img = "iran.png";
                     _limit = "Max: $100";
                   }
