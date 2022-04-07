@@ -71,8 +71,6 @@ class UserWebsocket {
             eventBus.dispatch("eventsDataUser", msg.data);
           } else if (msg.Command === "eventId") {
             eventBus.dispatch("eventsDataEventDo", msg.data);
-          } else if (msg.Command === "resetReport") {
-            eventBus.dispatch("reportsReset", "");
           } else if (msg.Command === "startTick") {
             // setYvalStart(msg.tick);
           }

@@ -19,8 +19,8 @@ function Cashier(prop) {
   const { data: eventCoins } = useAllCoins();
 
   var userMethods = currentUser.cashierGateways;
-  userMethods.sort((a, b) => (a.mode > b.mode ? 1 : -1));
 
+  userMethods.sort((a, b) => (a.mode > b.mode ? 1 : -1));
   useEffect(() => {
     prop.onUpdateItem("coins", eventCoins);
   }, [eventCoins]);
@@ -47,7 +47,10 @@ function Cashier(prop) {
                   if (cashierGateway.mode == "PerfectMoney") {
                     _img = "pm.svg";
                   }
-                  if (cashierGateway.mode == "IranShetab") {
+                  if (
+                    cashierGateway.mode == "IranShetab" ||
+                    cashierGateway.mode == "VisaGiftCode"
+                  ) {
                     _img = "iran.png";
                     _limit = "Max: $100";
                   }
@@ -55,35 +58,37 @@ function Cashier(prop) {
                     _img = "iran.png";
                     _limit = "Max: $300";
                   }
-                  return (
-                    <Col
-                      lg="3"
-                      xl="3"
-                      md="3"
-                      sm="3"
-                      key={u.toString()}
-                      onClick={() =>
-                        handleMethod(cashierGateway.name + "Deposit")
-                      }
-                    >
-                      <div className="counter-box bg-color-1 card">
-                        <div className="img">
-                          <img
-                            alt={cashierGateway.mode}
-                            style={{ maxHeight: 50 }}
-                            src={"/assets/images/" + _img}
-                          ></img>
-                          <p style={{ margin: 0, lineHeight: "20px" }}>
-                            <small className="text-muted">
-                              <b>{cashierGateway.name}</b>
-                              <br />
-                              {_limit}
-                            </small>
-                          </p>
+                  if (cashierGateway.name != "Digipay") {
+                    return (
+                      <Col
+                        lg="3"
+                        xl="3"
+                        md="3"
+                        sm="3"
+                        key={u.toString()}
+                        onClick={() =>
+                          handleMethod(cashierGateway.name + "Deposit")
+                        }
+                      >
+                        <div className="counter-box bg-color-1 card">
+                          <div className="img">
+                            <img
+                              alt={cashierGateway.mode}
+                              style={{ maxHeight: 50 }}
+                              src={"/assets/images/" + _img}
+                            ></img>
+                            <p style={{ margin: 0, lineHeight: "20px" }}>
+                              <small className="text-muted">
+                                <b>{cashierGateway.mode}</b>
+                                <br />
+                                {_limit}
+                              </small>
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </Col>
-                  );
+                      </Col>
+                    );
+                  }
                 })}
               </Row>
             </Card.Body>
@@ -112,36 +117,37 @@ function Cashier(prop) {
                     _img = "iran.png";
                     _limit = "Max: $100";
                   }
-
-                  return (
-                    <Col
-                      lg="3"
-                      xl="3"
-                      md="3"
-                      sm="3"
-                      key={u.toString()}
-                      onClick={() =>
-                        handleMethod(cashierGateway.name + "Cashout")
-                      }
-                    >
-                      <div className="counter-box bg-color-1 card">
-                        <div className="img">
-                          <img
-                            alt={cashierGateway.mode}
-                            style={{ maxHeight: 50 }}
-                            src={"/assets/images/" + _img}
-                          ></img>
-                          <p style={{ margin: 0, lineHeight: "20px" }}>
-                            <small className="text-muted">
-                              <b>{cashierGateway.name}</b>
-                              <br />
-                              {_limit}
-                            </small>
-                          </p>
+                  if (cashierGateway.name != "Digipay") {
+                    return (
+                      <Col
+                        lg="3"
+                        xl="3"
+                        md="3"
+                        sm="3"
+                        key={u.toString()}
+                        onClick={() =>
+                          handleMethod(cashierGateway.name + "Cashout")
+                        }
+                      >
+                        <div className="counter-box bg-color-1 card">
+                          <div className="img">
+                            <img
+                              alt={cashierGateway.mode}
+                              style={{ maxHeight: 50 }}
+                              src={"/assets/images/" + _img}
+                            ></img>
+                            <p style={{ margin: 0, lineHeight: "20px" }}>
+                              <small className="text-muted">
+                                <b>{cashierGateway.mode}</b>
+                                <br />
+                                {_limit}
+                              </small>
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    </Col>
-                  );
+                      </Col>
+                    );
+                  }
                 })}
               </Row>
             </Card.Body>
@@ -165,7 +171,7 @@ function Cashier(prop) {
       <Active {...prop} />
       <Tab
         panes={panes}
-        menu={{ pointing: true }}
+        menu={{ color: "blue", pointing: true }}
         className="maxheight "
         defaultActiveIndex={key}
         onTabChange={(e, data) => {

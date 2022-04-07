@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import DataTable from "react-data-table-component";
 import {
   Input,
@@ -23,6 +23,7 @@ import adminService from "services/admin.service";
 import Swal from "sweetalert2";
 import { setAvatar, printBlockChallenge, isJson } from "components/include";
 import UserEvents from "components/events/user.component";
+import UserContext from "context/UserState";
 const conditionalRowStyles = [
   {
     when: (row) => row.endBalance < row.startBalance,
@@ -100,7 +101,7 @@ function getPathOfKey(object, keys) {
               } else {
                 if (z == "active") {
                   finalObj.push({
-                    name: newO2["mode"],
+                    name: newO2["mode"] + " - " + newO2["name"],
                     value: newO2[z],
                     user: newO,
                   });
@@ -149,6 +150,8 @@ const FilterComponent = ({ filterText, onFilter, onClear, setExMode }) => (
 
 function Admin(prop) {
   const { data: usersList, isLoading } = useAdminUsers();
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
   const [filterText, setFilterText] = React.useState("");
   const [exMode, setExMode] = React.useState("Data");
   const [resetPaginationToggle, setResetPaginationToggle] =
@@ -158,6 +161,7 @@ function Admin(prop) {
     (item) =>
       item.username &&
       item.username.toLowerCase().indexOf("test") == -1 &&
+      item.username != currentUser.username &&
       item.username.toLowerCase().includes(filterText.toLowerCase())
   );
 
@@ -217,11 +221,13 @@ function Admin(prop) {
       ),
     ],
   });
-  const ExpandedComponent = ({ data }) => {
+  const ExpandedComponent = (props) => {
     if (exMode == "") {
       return <pre>hi</pre>;
     }
-
+    var data = props.data;
+    console.log(data);
+    console.log(props.data);
     if (exMode == "Data") {
       var newdata = [
         getPathOfKey(

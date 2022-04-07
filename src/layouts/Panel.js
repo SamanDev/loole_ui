@@ -28,6 +28,7 @@ import ShetabDeposit from "components/deposit/shetabdeposit.component";
 import ShetabCashout from "components/deposit/shetabcashout.component";
 import CrDeposit from "components/deposit/crdeposit.component";
 import CrCashout from "components/deposit/crcashout.component";
+import VisaDeposit from "components/deposit/visacodedeposit.component";
 import PMDeposit from "components/deposit/pmdeposit.component";
 import PMCashout from "components/deposit/pmcashout.component";
 import AddMatch from "components/add/addmatch.component";
@@ -215,7 +216,7 @@ function Panel(props) {
                           props.onUpdateItem("openModalCashier", false)
                         }
                       >
-                        {cashierMethod == "CryptoCurrenciesDeposit" && (
+                        {cashierMethod == "CoinPaymentsDeposit" && (
                           <>
                             {!myNotificationItem ? (
                               <CrDeposit coins={coins} {...props} />
@@ -231,13 +232,19 @@ function Panel(props) {
                             <PMDeposit coins={coins} {...props} />
                           </>
                         )}
+                        {cashierMethod == "VisaGiftCodeDeposit" && (
+                          <>
+                            {" "}
+                            <VisaDeposit {...props} />
+                          </>
+                        )}
                         {cashierMethod == "HamrahcartDeposit" && (
                           <>
                             <ShetabDeposit coins={coins} {...props} />
                           </>
                         )}
 
-                        {cashierMethod == "CryptoCurrenciesCashout" && (
+                        {cashierMethod == "CoinPaymentsCashout" && (
                           <>
                             <CrCashout coins={coins} {...props} />
                           </>
