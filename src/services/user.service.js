@@ -422,11 +422,11 @@ class UserService {
         return response.data;
       });
   }
-  createDepositShetabVerify(mobile) {
+  createDepositShetabVerify(mobile, name) {
     return axios
       .post(
         API_URL_TEST + "createDepositShetabVerify",
-        { mobile },
+        { mobile, name },
         { headers: authHeader() }
       )
       .then((response) => {

@@ -58,7 +58,7 @@ class ShetabDeposit extends Component {
     this.setExpiration = this.setExpiration.bind(this);
     this.setCvv = this.setCvv.bind(this);
     this.setPass = this.setPass.bind(this);
-
+    this.printErr = this.printErr.bind(this);
     this.setDepositPage = this.setDepositPage.bind(this);
 
     this.handleGoNext = this.handleGoNext.bind(this);
@@ -146,6 +146,31 @@ class ShetabDeposit extends Component {
       loading: false,
     });
   }
+  printErr = (error) => {
+    if (error?.response?.data?.status == 401 || error?.data?.status == 401) {
+      prop.onUpdateItem("openModalLogin", true);
+      localStorage.setItem("user", JSON.stringify(defUser));
+      prop.onUpdateItem("currentUser", defUser);
+    } else {
+      const resMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: resMessage,
+      });
+    }
+    this.setState({
+      message: "",
+      successful: false,
+      loading: false,
+    });
+  };
   setPass(e) {
     if (e) {
       this.setState({
@@ -307,58 +332,40 @@ class ShetabDeposit extends Component {
     });
 
     this.form.validateAll();
-
+    //console.log(this.state.Mobile, this.state.shetabMethod.value);
     if (this.checkBtn.context._errors.length === 0) {
-      userService.createDepositShetabVerify(this.state.Mobile).then(
-        (response) => {
-          if (response.data == "OK") {
-            Swal.fire(
-              "",
-              "Code sent to your mobile number successfully.",
-              "success"
-            ).then((result) => {
-              this.setState({
-                shetabGo: this.state.shetabGo + 1,
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
+      userService
+        .createDepositShetabVerify(
+          this.state.Mobile,
+          this.state.shetabMethod.value
+        )
+        .then(
+          (response) => {
+            if (response.data == "OK") {
+              Swal.fire(
+                "",
+                "Code sent to your mobile number successfully.",
+                "success"
+              ).then((result) => {
+                this.setState({
+                  shetabGo: this.state.shetabGo + 1,
+                  successful: false,
+                  message: "",
+                  submit: false,
+                  loading: false,
+                });
               });
-            });
-          } else {
-            const resMessage =
-              (response.response &&
-                response.response.data &&
-                response.response.data.message) ||
-              response.message ||
-              response.toString();
-
-            this.setState({
-              successful: false,
-              message: "",
-              submit: false,
-              loading: false,
-            });
-
-            Swal.fire("", resMessage, "error");
+            } else {
+              this.printErr(response.data);
+            }
+          },
+          (error) => {
+            this.printErr(error);
           }
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          this.setState({
-            successful: false,
-            message: resMessage,
-            submit: false,
-            loading: false,
-          });
-        }
-      );
+        )
+        .catch((error) => {
+          this.printErr(error);
+        });
     } else {
       this.setState({
         successful: false,
