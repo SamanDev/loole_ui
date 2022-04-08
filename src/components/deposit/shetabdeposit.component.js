@@ -157,6 +157,7 @@ class ShetabDeposit extends Component {
           error.response.data &&
           error.response.data.message) ||
         error.message ||
+        error.error ||
         error.toString();
 
       Swal.fire({
@@ -280,7 +281,8 @@ class ShetabDeposit extends Component {
           this.state.Expiration,
 
           this.state.pass,
-          this.state.txID
+          this.state.txID,
+          this.state.shetabMethod.value
         )
         .then(
           (response) => {
@@ -291,30 +293,16 @@ class ShetabDeposit extends Component {
                 }
               );
             } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
+              this.printErr(response);
             }
           },
           (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
+            this.printErr(error);
           }
-        );
+        )
+        .catch((error) => {
+          this.printErr(error);
+        });
     } else {
       this.setState({
         successful: false,
@@ -388,11 +376,12 @@ class ShetabDeposit extends Component {
       userService
         .createDepositShetabVerifyConfirm(
           this.state.Mobile,
-          this.state.MobileCode
+          this.state.MobileCode,
+          this.state.shetabMethod.value
         )
         .then(
           (response) => {
-            if (response == "OK") {
+            if (response.data == "OK") {
               Swal.fire("", "Data saved successfully.", "success").then(
                 (result) => {
                   this.setState({
@@ -405,30 +394,16 @@ class ShetabDeposit extends Component {
                 }
               );
             } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
+              this.printErr(response.data);
             }
           },
           (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
+            this.printErr(error);
           }
-        );
+        )
+        .catch((error) => {
+          this.printErr(error);
+        });
     } else {
       this.setState({
         successful: false,
@@ -442,6 +417,7 @@ class ShetabDeposit extends Component {
     this.setState({
       message: "",
       successful: false,
+      passReady: true,
     });
 
     this.form.validateAll();
@@ -454,7 +430,8 @@ class ShetabDeposit extends Component {
           this.state.Amount,
 
           this.state.cvv,
-          this.state.Expiration
+          this.state.Expiration,
+          this.state.shetabMethod.value
         )
         .then(
           (response) => {
@@ -473,30 +450,16 @@ class ShetabDeposit extends Component {
                 }
               );
             } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
+              this.printErr(response);
             }
           },
           (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
+            this.printErr(error);
           }
-        );
+        )
+        .catch((error) => {
+          this.printErr(error);
+        });
     } else {
       this.setState({
         successful: false,

@@ -399,23 +399,31 @@ class UserService {
     cvv,
     expire,
     pin,
-    txID
+    txID,
+    name
   ) {
     return axios
       .post(
         API_URL_TEST + "createDepositShetabDoTransaction",
-        { mobile, cardNumber, amount, cvv, expire, pin, txID },
+        { mobile, cardNumber, amount, cvv, expire, pin, txID, name },
         { headers: authHeader() }
       )
       .then((response) => {
         return response.data;
       });
   }
-  createDepositShetabGetPassCode(mobile, cardNumber, amount, cvv, expire) {
+  createDepositShetabGetPassCode(
+    mobile,
+    cardNumber,
+    amount,
+    cvv,
+    expire,
+    name
+  ) {
     return axios
       .post(
         API_URL_TEST + "createDepositShetabGetPassCode",
-        { mobile, cardNumber, amount, cvv, expire },
+        { mobile, cardNumber, amount, cvv, expire, name },
         { headers: authHeader() }
       )
       .then((response) => {
@@ -440,11 +448,11 @@ class UserService {
         return "Ok";
       });
   }
-  createDepositShetabVerifyConfirm(mobile, code) {
+  createDepositShetabVerifyConfirm(mobile, code, name) {
     return axios
       .post(
         API_URL_TEST + "createDepositShetabVerifyConfirm",
-        { mobile, code },
+        { mobile, code, name },
         { headers: authHeader() }
       )
       .then((response) => {
