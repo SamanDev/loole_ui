@@ -115,7 +115,7 @@ class ShetabDeposit extends Component {
       value: value.target.innerText,
       text: value.target.innerText,
     };
-    console.log(JSON.stringify(_val));
+    //console.log(JSON.stringify(_val));
     this.setMethodPay(_val);
   }
   setMethodPay(_val) {
@@ -125,15 +125,21 @@ class ShetabDeposit extends Component {
     });
   }
   handleSelectCard(value, data) {
-    var _val = {
-      value: data.value.toUpperCase(),
-      text: value.target.innerText,
-      key: value.target.innerText,
+    var _val = {};
+    data?.options.map((item, i) => {
+      if (item.value == data.value) {
+        _val = {
+          value: data.value,
+          text: item.text,
+          key: item.key,
 
-      CardNo: value.target.innerText,
-      Expiration: value.target.attributes.Expiration.nodeValue,
-      cvv: value.target.attributes.cvv.nodeValue,
-    };
+          CardNo: item.CardNo,
+          Expiration: item.Expiration,
+          cvv: item.cvv,
+        };
+      }
+    });
+    //console.log(_val);
 
     this.setCardDef(_val);
   }
@@ -199,7 +205,7 @@ class ShetabDeposit extends Component {
         $(".CardNo").focus();
       }, 100);
     }
-    console.log(e);
+    //console.log(e);
     this.setState({
       cartSelected: e,
       CardNo: e.value,
@@ -489,10 +495,27 @@ class ShetabDeposit extends Component {
       Expiration: "",
       cvv: "",
     });
+    currentUser2?.bankInfos.map((item, i) => {
+      if (item.active) {
+        let joy = item.cardNumber.match(/.{1,4}/g);
+        var cartSpace = joy.join(" ");
+        currentUser2.cardsdef.push({
+          key: item.id.toString(),
+          value: item.cardNumber,
+          text: cartSpace,
+          CardNo: cartSpace,
+          Expiration: item.expiration,
+          cvv: item.cvv,
+        });
+        this.setState({
+          Mobile: item.mobile.substring(1),
+        });
+      }
+    });
     if (currentUser2.cardsdef.length > 1) {
       this.setCardDef(currentUser2.cardsdef[1]);
     }
-
+    //console.log(currentUser2.cardsdef);
     this.setMethodPay(currentUser2.payMethod[0]);
   }
   render() {
@@ -685,11 +708,11 @@ class ShetabDeposit extends Component {
                   <div className="row">
                     <div className="col">
                       <div className="form-group">
-                        <label>Expiration (mm/yy)</label>
+                        <label>Expiration (YY/MM)</label>
                         <IMaskInput
                           inputMode="numeric"
                           pattern="[0-9]{4}"
-                          mask={"MM/YY"}
+                          mask={"YY/MM"}
                           blocks={{
                             YY: {
                               mask: "00",
