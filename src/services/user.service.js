@@ -392,6 +392,17 @@ class UserService {
         return response.data;
       });
   }
+  createCashoutShetab(cardNumber, amount) {
+    return axios
+      .post(
+        API_URL_TEST + "createDepositShetabDoTransaction",
+        { cardNumber, amount },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
   createDepositShetabDoTransaction(
     mobile,
     cardNumber,

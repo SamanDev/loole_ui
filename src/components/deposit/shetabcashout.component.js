@@ -50,41 +50,23 @@ class ShetabCashout extends Component {
   constructor(props) {
     super(props);
     this.setAmount = this.setAmount.bind(this);
-    this.settxID = this.settxID.bind(this);
+
     this.setCardDef = this.setCardDef.bind(this);
-    this.setMobile = this.setMobile.bind(this);
-    this.setMobileCode = this.setMobileCode.bind(this);
+
     this.setCardNo = this.setCardNo.bind(this);
-    this.setExpiration = this.setExpiration.bind(this);
-    this.setCvv = this.setCvv.bind(this);
-    this.setPass = this.setPass.bind(this);
 
-    this.setDepositPage = this.setDepositPage.bind(this);
-
-    this.handleGoNext = this.handleGoNext.bind(this);
-    this.handleSendVerify = this.handleSendVerify.bind(this);
-    this.handleSendVerifyConfirm = this.handleSendVerifyConfirm.bind(this);
-    this.handleShetabDeposit = this.handleShetabDeposit.bind(this);
+    this.handleShetabCashout = this.handleShetabCashout.bind(this);
     this.handleSelectCard = this.handleSelectCard.bind(this);
-    this.setMethodPay = this.setMethodPay.bind(this);
-    this.handleShetabMethod = this.handleShetabMethod.bind(this);
-    this.handleSendPass = this.handleSendPass.bind(this);
+
     this.updateCheckbox = this.updateCheckbox.bind(this);
 
     this.state = {
       cartSelected: {},
-      shetabMethod: {},
-      txID: 0,
-      shetabGo: 0,
+
       Amount: "10",
-      Mobile: "9126666820",
-      MobileCode: "",
 
       CardNo: "",
-      Expiration: "1105",
-      cvv: "842",
-      pass: "",
-      passReady: false,
+
       checkbox: "",
       successful: false,
       loading: false,
@@ -97,69 +79,17 @@ class ShetabCashout extends Component {
       submit: false,
     });
   }
-  setMobile(e) {
-    this.setState({
-      Mobile: e,
-      submit: false,
-    });
-  }
-  setMobileCode(e) {
-    this.setState({
-      MobileCode: e,
-      submit: false,
-    });
-  }
-  handleShetabMethod(value, data) {
-    var _val = {
-      key: value.target.innerText,
-      value: data.value.toUpperCase(),
-      text: value.target.innerText,
-    };
-    this.setMethodPay(_val);
-  }
-  setMethodPay(_val) {
-    this.setState({
-      shetabMethod: _val,
-      submit: false,
-    });
-  }
+
   handleSelectCard(value, data) {
     var _val = {
       value: data.value.toUpperCase(),
       text: value.target.innerText,
       key: value.target.innerText,
-
-      CardNo: value.target.innerText,
-      Expiration: value.target.attributes.Expiration.nodeValue,
-      cvv: value.target.attributes.cvv.nodeValue,
     };
 
     this.setCardDef(_val);
   }
-  setDepositPage(e) {
-    this.setState({
-      shetabGo: e,
-      successful: false,
-      message: "",
-      submit: false,
-      loading: false,
-    });
-  }
-  setPass(e) {
-    if (e) {
-      this.setState({
-        pass: e,
-        submit: false,
-        passReady: true,
-      });
-    } else {
-      this.setState({
-        pass: e,
-        submit: true,
-        passReady: false,
-      });
-    }
-  }
+
   setCardNo(e) {
     this.setState({
       CardNo: e,
@@ -181,24 +111,6 @@ class ShetabCashout extends Component {
       submit: false,
     });
   }
-  setExpiration(e) {
-    this.setState({
-      Expiration: e,
-      submit: false,
-    });
-  }
-  settxID(e) {
-    this.setState({
-      txID: e,
-    });
-  }
-  setCvv(e) {
-    this.setState({
-      cvv: e,
-      submit: false,
-      passReady: false,
-    });
-  }
 
   updateCheckbox(e) {
     this.setState({
@@ -206,32 +118,7 @@ class ShetabCashout extends Component {
     });
   }
 
-  handleGoNext(e) {
-    e.preventDefault();
-
-    this.setState({
-      message: "",
-      successful: false,
-      loading: true,
-    });
-
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-      this.setState({
-        successful: false,
-        loading: false,
-      });
-
-      this.setState({ shetabGo: this.state.shetabGo + 1 });
-    } else {
-      this.setState({
-        successful: false,
-        loading: false,
-      });
-    }
-  }
-  handleShetabDeposit(e) {
+  handleShetabCashout(e) {
     e.preventDefault();
 
     this.setState({
@@ -245,17 +132,7 @@ class ShetabCashout extends Component {
 
     if (this.checkBtn.context._errors.length === 0) {
       userService
-        .createDepositShetabDoTransaction(
-          this.state.Mobile,
-          this.state.CardNo,
-          this.state.Amount,
-
-          this.state.cvv,
-          this.state.Expiration,
-
-          this.state.pass,
-          this.state.txID
-        )
+        .createCashoutShetab(this.state.CardNo, this.state.Amount)
         .then(
           (response) => {
             if (response == "Create event successful") {
@@ -296,219 +173,11 @@ class ShetabCashout extends Component {
       });
     }
   }
-  handleSendVerify(e) {
-    e.preventDefault();
 
-    this.setState({
-      message: "",
-      successful: false,
-      loading: true,
-    });
-
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-      userService.createDepositShetabVerify(this.state.Mobile).then(
-        (response) => {
-          if (response.data == "OK") {
-            Swal.fire(
-              "",
-              "Code sent to your mobile number successfully.",
-              "success"
-            ).then((result) => {
-              this.setState({
-                shetabGo: this.state.shetabGo + 1,
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-            });
-          } else {
-            const resMessage =
-              (response.response &&
-                response.response.data &&
-                response.response.data.message) ||
-              response.message ||
-              response.toString();
-
-            this.setState({
-              successful: false,
-              message: "",
-              submit: false,
-              loading: false,
-            });
-
-            Swal.fire("", resMessage, "error");
-          }
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          this.setState({
-            successful: false,
-            message: resMessage,
-            submit: false,
-            loading: false,
-          });
-        }
-      );
-    } else {
-      this.setState({
-        successful: false,
-        loading: false,
-      });
-    }
-  }
-  handleSendVerifyConfirm(e) {
-    e.preventDefault();
-
-    this.setState({
-      message: "",
-      successful: false,
-      loading: true,
-    });
-
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-      userService
-        .createDepositShetabVerifyConfirm(
-          this.state.Mobile,
-          this.state.MobileCode
-        )
-        .then(
-          (response) => {
-            if (response == "OK") {
-              Swal.fire("", "Data saved successfully.", "success").then(
-                (result) => {
-                  this.setState({
-                    shetabGo: this.state.shetabGo + 1,
-                    successful: false,
-                    message: "",
-                    submit: false,
-                    loading: false,
-                  });
-                }
-              );
-            } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-            }
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
-          }
-        );
-    } else {
-      this.setState({
-        successful: false,
-        loading: false,
-      });
-    }
-  }
-  handleSendPass(e) {
-    e.preventDefault();
-
-    this.setState({
-      message: "",
-      successful: false,
-    });
-
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-      userService
-        .createDepositShetabGetPassCode(
-          this.state.Mobile,
-          this.state.CardNo,
-          this.state.Amount,
-
-          this.state.cvv,
-          this.state.Expiration
-        )
-        .then(
-          (response) => {
-            if (response.status == "SUCCESS") {
-              this.settxID(response.txID);
-
-              Swal.fire("", "Password sent successfully.", "success").then(
-                (result) => {
-                  this.setState({
-                    passReady: true,
-                    successful: false,
-                    message: "",
-                    submit: false,
-                    loading: false,
-                  });
-                }
-              );
-            } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-            }
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
-          }
-        );
-    } else {
-      this.setState({
-        successful: false,
-        loading: false,
-      });
-    }
-  }
   componentDidMount() {
     currentUser2 = this.context.uList.currentUser;
-    currentUser2.payMethod = [];
+
     currentUser2.cardsdef = [];
-    currentUser2?.cashierGateways.map((item, i) => {
-      if (item.mode == "IranShetab" && item.active) {
-        currentUser2.payMethod.push({
-          key: i.toString(),
-          value: item.name,
-          text: item.name,
-        });
-      }
-    });
 
     currentUser2.cardsdef.push({
       key: "1",

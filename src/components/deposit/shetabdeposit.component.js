@@ -435,7 +435,7 @@ class ShetabDeposit extends Component {
         )
         .then(
           (response) => {
-            if (response.status == "SUCCESS") {
+            if (response.txID) {
               this.settxID(response.txID);
 
               Swal.fire("", "Password sent successfully.", "success").then(
