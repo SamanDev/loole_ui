@@ -30,6 +30,17 @@ class AdminService {
         return response;
       });
   };
+  changeBalance = (id, dollarAmount, name) => {
+    return axios
+      .put(
+        API_URL_TEST + "chipService",
+        { id, dollarAmount, name },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
+      });
+  };
 
   updateUserByAdmin = (id, key, value) => {
     return axios

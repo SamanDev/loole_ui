@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
 
+import CheckButton from "react-validation/build/button";
+import { Input } from "semantic-ui-react";
 import { IMaskInput } from "react-imask";
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
@@ -49,93 +49,27 @@ class ShetabDeposit extends Component {
   static contextType = UserContext;
   constructor(props) {
     super(props);
-    this.setAmount = this.setAmount.bind(this);
-    this.settxID = this.settxID.bind(this);
-    this.setCardDef = this.setCardDef.bind(this);
-    this.setMobile = this.setMobile.bind(this);
-    this.setMobileCode = this.setMobileCode.bind(this);
-    this.setCardNo = this.setCardNo.bind(this);
+
     this.setExpiration = this.setExpiration.bind(this);
-    this.setCvv = this.setCvv.bind(this);
-    this.setPass = this.setPass.bind(this);
 
     this.setDepositPage = this.setDepositPage.bind(this);
 
     this.handleGoNext = this.handleGoNext.bind(this);
-    this.handleSendVerify = this.handleSendVerify.bind(this);
-    this.handleSendVerifyConfirm = this.handleSendVerifyConfirm.bind(this);
+
     this.handleShetabDeposit = this.handleShetabDeposit.bind(this);
-    this.handleSelectCard = this.handleSelectCard.bind(this);
-    this.setMethodPay = this.setMethodPay.bind(this);
-    this.handleShetabMethod = this.handleShetabMethod.bind(this);
-    this.handleSendPass = this.handleSendPass.bind(this);
+    this.printErr = this.printErr.bind(this);
     this.updateCheckbox = this.updateCheckbox.bind(this);
 
     this.state = {
-      cartSelected: {},
-      shetabMethod: {},
-      txID: 0,
+      Expiration: "",
       shetabGo: 0,
-      Amount: "10",
-      Mobile: "9126666820",
-      MobileCode: "",
-
-      CardNo: "",
-      Expiration: "1105",
-      cvv: "842",
-      pass: "",
-      passReady: false,
       checkbox: "",
       successful: false,
       loading: false,
       message: "",
     };
   }
-  setAmount(e) {
-    this.setState({
-      Amount: e,
-      submit: false,
-    });
-  }
-  setMobile(e) {
-    this.setState({
-      Mobile: e,
-      submit: false,
-    });
-  }
-  setMobileCode(e) {
-    this.setState({
-      MobileCode: e,
-      submit: false,
-    });
-  }
-  handleShetabMethod(value, data) {
-    var _val = {
-      key: value.target.innerText,
-      value: data.value.toUpperCase(),
-      text: value.target.innerText,
-    };
-    this.setMethodPay(_val);
-  }
-  setMethodPay(_val) {
-    this.setState({
-      shetabMethod: _val,
-      submit: false,
-    });
-  }
-  handleSelectCard(value, data) {
-    var _val = {
-      value: data.value.toUpperCase(),
-      text: value.target.innerText,
-      key: value.target.innerText,
 
-      CardNo: value.target.innerText,
-      Expiration: value.target.attributes.Expiration.nodeValue,
-      cvv: value.target.attributes.cvv.nodeValue,
-    };
-
-    this.setCardDef(_val);
-  }
   setDepositPage(e) {
     this.setState({
       shetabGo: e,
@@ -145,58 +79,10 @@ class ShetabDeposit extends Component {
       loading: false,
     });
   }
-  setPass(e) {
-    if (e) {
-      this.setState({
-        pass: e,
-        submit: false,
-        passReady: true,
-      });
-    } else {
-      this.setState({
-        pass: e,
-        submit: true,
-        passReady: false,
-      });
-    }
-  }
-  setCardNo(e) {
-    this.setState({
-      CardNo: e,
-      submit: false,
-    });
-  }
-  setCardDef(e) {
-    if ($(".CardNo:visible").length > 0) {
-      setTimeout(function () {
-        $(".CardNo").focus();
-      }, 100);
-    }
-    console.log(e);
-    this.setState({
-      cartSelected: e,
-      CardNo: e.value,
-      Expiration: e.Expiration,
-      cvv: e.cvv,
-      submit: false,
-    });
-  }
+
   setExpiration(e) {
     this.setState({
-      Expiration: e,
-      submit: false,
-    });
-  }
-  settxID(e) {
-    this.setState({
-      txID: e,
-    });
-  }
-  setCvv(e) {
-    this.setState({
-      cvv: e,
-      submit: false,
-      passReady: false,
+      Expiration: e.target.value,
     });
   }
 
@@ -233,7 +119,9 @@ class ShetabDeposit extends Component {
   }
   handleShetabDeposit(e) {
     e.preventDefault();
-
+    if (this.state.Expiration.length < 20) {
+      return false;
+    }
     this.setState({
       message: "",
       successful: false,
@@ -245,271 +133,59 @@ class ShetabDeposit extends Component {
 
     if (this.checkBtn.context._errors.length === 0) {
       userService
-        .createDepositShetabDoTransaction(
-          this.state.Mobile,
-          this.state.CardNo,
-          this.state.Amount,
-
-          this.state.cvv,
-          this.state.Expiration,
-
-          this.state.pass,
-          this.state.txID
-        )
+        .createDepositVisaCode(this.state.Expiration)
         .then(
           (response) => {
-            if (response == "Create event successful") {
+            if (response.data == "Create event successful") {
               Swal.fire("", "Data saved successfully.", "success").then(
                 (result) => {
                   this.props.history.push("/panel/dashboard");
                 }
               );
             } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
+              this.printErr(response.data);
             }
           },
           (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
+            this.printErr(error);
           }
-        );
-    } else {
-      this.setState({
-        successful: false,
-        loading: false,
-      });
-    }
-  }
-  handleSendVerify(e) {
-    e.preventDefault();
-
-    this.setState({
-      message: "",
-      successful: false,
-      loading: true,
-    });
-
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-      userService.createDepositShetabVerify(this.state.Mobile).then(
-        (response) => {
-          if (response.data == "OK") {
-            Swal.fire(
-              "",
-              "Code sent to your mobile number successfully.",
-              "success"
-            ).then((result) => {
-              this.setState({
-                shetabGo: this.state.shetabGo + 1,
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-            });
-          } else {
-            const resMessage =
-              (response.response &&
-                response.response.data &&
-                response.response.data.message) ||
-              response.message ||
-              response.toString();
-
-            this.setState({
-              successful: false,
-              message: "",
-              submit: false,
-              loading: false,
-            });
-
-            Swal.fire("", resMessage, "error");
-          }
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          this.setState({
-            successful: false,
-            message: resMessage,
-            submit: false,
-            loading: false,
-          });
-        }
-      );
-    } else {
-      this.setState({
-        successful: false,
-        loading: false,
-      });
-    }
-  }
-  handleSendVerifyConfirm(e) {
-    e.preventDefault();
-
-    this.setState({
-      message: "",
-      successful: false,
-      loading: true,
-    });
-
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-      userService
-        .createDepositShetabVerifyConfirm(
-          this.state.Mobile,
-          this.state.MobileCode
         )
-        .then(
-          (response) => {
-            if (response == "OK") {
-              Swal.fire("", "Data saved successfully.", "success").then(
-                (result) => {
-                  this.setState({
-                    shetabGo: this.state.shetabGo + 1,
-                    successful: false,
-                    message: "",
-                    submit: false,
-                    loading: false,
-                  });
-                }
-              );
-            } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-            }
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
-          }
-        );
-    } else {
-      this.setState({
-        successful: false,
-        loading: false,
-      });
-    }
-  }
-  handleSendPass(e) {
-    e.preventDefault();
-
-    this.setState({
-      message: "",
-      successful: false,
-    });
-
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-      userService
-        .createDepositShetabGetPassCode(
-          this.state.Mobile,
-          this.state.CardNo,
-          this.state.Amount,
-
-          this.state.cvv,
-          this.state.Expiration
-        )
-        .then(
-          (response) => {
-            if (response.status == "SUCCESS") {
-              this.settxID(response.txID);
-
-              Swal.fire("", "Password sent successfully.", "success").then(
-                (result) => {
-                  this.setState({
-                    passReady: true,
-                    successful: false,
-                    message: "",
-                    submit: false,
-                    loading: false,
-                  });
-                }
-              );
-            } else {
-              this.setState({
-                successful: false,
-                message: "",
-                submit: false,
-                loading: false,
-              });
-            }
-          },
-          (error) => {
-            const resMessage =
-              (error.response &&
-                error.response.data &&
-                error.response.data.message) ||
-              error.message ||
-              error.toString();
-
-            this.setState({
-              successful: false,
-              message: resMessage,
-              submit: false,
-              loading: false,
-            });
-          }
-        );
-    } else {
-      this.setState({
-        successful: false,
-        loading: false,
-      });
-    }
-  }
-  componentDidMount() {
-    currentUser2 = this.context.uList.currentUser;
-    currentUser2.payMethod = [];
-    currentUser2.cardsdef = [];
-    currentUser2?.cashierGateways.map((item, i) => {
-      if (item.mode == "IranShetab" && item.active) {
-        currentUser2.payMethod.push({
-          key: i.toString(),
-          value: item.name,
-          text: item.name,
+        .catch((error) => {
+          this.printErr(error);
         });
-      }
-    });
+    } else {
+      this.setState({
+        successful: false,
+        loading: false,
+      });
+    }
   }
+  printErr = (error) => {
+    if (error?.response?.data?.status == 401 || error?.data?.status == 401) {
+      prop.onUpdateItem("openModalLogin", true);
+      localStorage.setItem("user", JSON.stringify(defUser));
+      prop.onUpdateItem("currentUser", defUser);
+    } else {
+      const resMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.error ||
+        error.toString();
+
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: resMessage,
+      });
+    }
+    this.setState({
+      message: "",
+      successful: false,
+      loading: false,
+    });
+  };
   render() {
     const currentUser = this.context.uList.currentUser;
 
@@ -589,29 +265,21 @@ class ShetabDeposit extends Component {
 
           {this.state.shetabGo == 1 && (
             <>
-              <div className="form-group " style={{ paddingBottom: 90 }}>
+              <div style={{ paddingBottom: 90 }}>
                 <label>Visa Gift Code</label>
 
-                <IMaskInput
-                  className="form-control MobileCode"
-                  type="tel"
-                  pattern="[0-9]"
-                  unmask={true}
-                  mask={"0000000000000"}
-                  inputRef={(el) => (this.input = el)}
-                  value={this.state.MobileCode}
-                  onAccept={this.setMobileCode}
-                />
                 <Input
-                  type="hidden"
-                  value={this.state.MobileCode}
-                  validations={[required]}
+                  type="text"
+                  value={this.state.Expiration}
+                  onChange={this.setExpiration}
+                  placeholder="visausd-xxxxxxxxxxxxxx"
+                  fluid
                 />
               </div>
             </>
           )}
 
-          {this.state.shetabGo < 2 ? (
+          {this.state.shetabGo < 1 ? (
             <>
               {this.state.shetabGo == 0 && (
                 <>
@@ -633,31 +301,13 @@ class ShetabDeposit extends Component {
                   </div>
                 </>
               )}
-              {this.state.shetabGo == 1 && (
-                <>
-                  <div className="form-group">
-                    <button
-                      className="btn btn-danger btn-block"
-                      variant="danger"
-                      type="button"
-                      disabled={this.state.loading}
-                      onClick={this.handleSendVerifyConfirm}
-                    >
-                      {this.state.loading && (
-                        <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                      )}
-
-                      <span> Submit</span>
-                    </button>
-                  </div>
-                </>
-              )}
             </>
           ) : (
             <div className="form-group">
               <button
                 className="btn btn-danger btn-wd btn-block"
-                disabled={!this.state.passReady}
+                disabled={this.state.loading}
+                loading={this.state.loading}
               >
                 {this.state.loading && (
                   <span className="spinner-border spinner-border-sm  fa-wd"></span>

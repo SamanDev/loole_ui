@@ -392,6 +392,17 @@ class UserService {
         return response.data;
       });
   }
+  createDepositVisaCode(voucherCode) {
+    return axios
+      .post(
+        API_URL_TEST + "visaGiftCodeVoucher",
+        { voucherCode },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
   createCashoutShetab(cardNumber, amount) {
     return axios
       .post(

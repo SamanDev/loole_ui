@@ -8,6 +8,9 @@ import {
   Table,
   Dimmer,
   Loader,
+  Icon,
+  Modal,
+  Form,
 } from "semantic-ui-react";
 import Avatar from "react-avatar";
 import { useAdminUsers } from "services/hooks";
@@ -164,7 +167,20 @@ function Admin(prop) {
       item.username != currentUser.username &&
       item.username.toLowerCase().includes(filterText.toLowerCase())
   );
+  const [firstOpen, setFirstOpen] = React.useState(false);
+  const [cashId, setCashId] = React.useState();
+  const [cashUser, setCashUser] = React.useState(false);
+  const [cashAmuont, setCashAmount] = React.useState(10);
+  const [cashName, setCashName] = React.useState("add");
 
+  const OpenChashier = (open, user, id) => {
+    setFirstOpen(open);
+    setCashId(id);
+    setCashUser(user);
+  };
+  const setCashAmountVal = (e) => {
+    setCashAmount(e.target.value);
+  };
   const updateUserObj = (e, data) => {
     var _key = data.userkey;
     var curU = JSON.parse(JSON.stringify(data.user));
@@ -203,6 +219,25 @@ function Admin(prop) {
         });
       }
     });
+  };
+  const updateBalace = (e, data) => {
+    console.log(data);
+    if (!cashId || !cashUser) {
+      return false;
+    }
+    adminService
+      .changeBalance(cashId, cashAmuont, cashName)
+      .then((response) => {
+        if (response) {
+          Swal.fire({
+            title: "Success",
+            text: response.data,
+            icon: "success",
+            showCancelButton: false,
+            confirmButtonText: `Ok`,
+          });
+        }
+      });
   };
   const headerRow = ["Name", "Value"];
   const renderBodyRow = ({ name, value, user }, i) => ({
@@ -299,6 +334,9 @@ function Admin(prop) {
             />{" "}
             {row.username.toUpperCase()}
           </a>
+          <Button onClick={() => OpenChashier(true, row.username, row.id)}>
+            -/+
+          </Button>
         </>
       ),
       sortable: true,
@@ -451,6 +489,50 @@ function Admin(prop) {
   return (
     <>
       <Segment>
+        <Modal
+          onClose={() => setFirstOpen(false)}
+          onOpen={() => setFirstOpen(true)}
+          open={firstOpen}
+          size="mini"
+          style={{ height: "auto" }}
+        >
+          <Modal.Header>Cashier {cashUser}</Modal.Header>
+          <Modal.Content>
+            <Form>
+              <Form.Field>
+                <label>UserName</label>
+                <input value={cashUser} />
+              </Form.Field>
+              <Form.Field>
+                <label>ID</label>
+                <input value={cashId} />
+              </Form.Field>
+              <Form.Field>
+                <label>Amount</label>
+                <input value={cashAmuont} onChange={setCashAmountVal} />
+              </Form.Field>
+              <Button.Group widths="2">
+                <Button
+                  color={cashName == "add" && "green"}
+                  onClick={() => setCashName("add")}
+                >
+                  add
+                </Button>
+                <Button
+                  color={cashName == "remove" && "red"}
+                  onClick={() => setCashName("remove")}
+                >
+                  remove
+                </Button>
+              </Button.Group>
+              <br />
+              <br />
+              <Button type="submit" color="black" fluid onClick={updateBalace}>
+                Submit
+              </Button>
+            </Form>
+          </Modal.Content>
+        </Modal>
         <div style={{ height: "calc(100vh - 150px)", overflow: "auto" }}>
           <DataTable
             columns={columns}
