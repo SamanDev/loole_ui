@@ -429,9 +429,6 @@ function Admin(prop) {
       selector: (row) => row.userBlock,
       format: (row) => (
         <>
-          <Button onClick={updateUserDC} user={row} userkey="userBlock">
-            DC
-          </Button>
           <CheckboxToggle
             check={row.userBlock}
             user={row}
@@ -443,28 +440,12 @@ function Admin(prop) {
       sortable: true,
     },
     {
-      name: "Admin",
+      name: "DC",
       selector: (row) => row.roles,
       format: (row) => (
-        <CheckboxToggle
-          check={row.roles[0]?.name.match("ROLE_ADMIN")}
-          user={row}
-          userkey="Roles"
-          onChange={updateUserObj}
-        />
-      ),
-      sortable: true,
-    },
-    {
-      name: "Moderator",
-      selector: (row) => row.roles,
-      format: (row) => (
-        <CheckboxToggle
-          check={row.roles[0]?.name.match("ROLE_MODERATOR")}
-          user={row}
-          userkey="Roles"
-          onChange={updateUserObj}
-        />
+        <Button onClick={updateUserDC} user={row} userkey="userBlock">
+          DC
+        </Button>
       ),
       sortable: true,
     },
