@@ -195,6 +195,9 @@ function Main(prop) {
     if (key === "Reports") {
       queryClient.resetQueries(["UserReports"]);
     }
+    if (key === "AdminUsers") {
+      queryClient.resetQueries(["AdminUsers"]);
+    }
   };
 
   // const query = mutationCache.findAll("User");

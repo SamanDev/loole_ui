@@ -32,7 +32,7 @@ class AdminService {
   };
   changeBalance = (id, dollarAmount, name) => {
     return axios
-      .put(
+      .post(
         API_URL_TEST + "chipService",
         { id, dollarAmount, name },
         { headers: authHeader() }

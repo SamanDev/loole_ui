@@ -170,6 +170,7 @@ function Admin(prop) {
   const [firstOpen, setFirstOpen] = React.useState(false);
   const [cashId, setCashId] = React.useState();
   const [cashUser, setCashUser] = React.useState(false);
+  const [cashLoad, setCashLoad] = React.useState(false);
   const [cashAmuont, setCashAmount] = React.useState(10);
   const [cashName, setCashName] = React.useState("add");
 
@@ -213,7 +214,7 @@ function Admin(prop) {
         Swal.fire({
           title: "Success",
           text: response.data,
-          icon: "success",
+
           showCancelButton: false,
           confirmButtonText: `Ok`,
         });
@@ -221,20 +222,24 @@ function Admin(prop) {
     });
   };
   const updateBalace = (e, data) => {
-    console.log(data);
     if (!cashId || !cashUser) {
       return false;
     }
+    setCashLoad(true);
     adminService
       .changeBalance(cashId, cashAmuont, cashName)
       .then((response) => {
         if (response) {
           Swal.fire({
             title: "Success",
-            text: response.data,
+            text: "Saved",
             icon: "success",
             showCancelButton: false,
             confirmButtonText: `Ok`,
+          }).then(() => {
+            prop.onReset("AdminUsers");
+            setFirstOpen(false);
+            setCashLoad(false);
           });
         }
       });
@@ -334,12 +339,24 @@ function Admin(prop) {
             />{" "}
             {row.username.toUpperCase()}
           </a>
-          <Button onClick={() => OpenChashier(true, row.username, row.id)}>
+        </>
+      ),
+      sortable: true,
+    },
+    {
+      name: "Action",
+      selector: (row) => row.username,
+      format: (row) => (
+        <>
+          <Button
+            size="mini"
+            onClick={() => OpenChashier(true, row.username, row.id)}
+          >
             -/+
           </Button>
         </>
       ),
-      sortable: true,
+      sortable: false,
     },
     {
       name: "Refer",
@@ -500,12 +517,10 @@ function Admin(prop) {
           <Modal.Content>
             <Form>
               <Form.Field>
-                <label>UserName</label>
-                <input value={cashUser} />
+                <label>UserName: {cashUser}</label>
               </Form.Field>
               <Form.Field>
-                <label>ID</label>
-                <input value={cashId} />
+                <label>ID: {cashId}</label>
               </Form.Field>
               <Form.Field>
                 <label>Amount</label>
@@ -527,7 +542,14 @@ function Admin(prop) {
               </Button.Group>
               <br />
               <br />
-              <Button type="submit" color="black" fluid onClick={updateBalace}>
+              <Button
+                type="submit"
+                loading={cashLoad}
+                disabled={cashLoad}
+                color="black"
+                fluid
+                onClick={updateBalace}
+              >
                 Submit
               </Button>
             </Form>
