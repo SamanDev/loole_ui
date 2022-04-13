@@ -564,6 +564,11 @@ label {
 }
 
 @media only screen and (max-width: 600px) {
+  .ui.cards > .card {
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+  }
   .mynav {
     height: auto;
     min-height: 50px;
@@ -911,10 +916,16 @@ div.chatavatar {
     font-size: 90% !important;
   }
   .ui.tabular.menu .item {
-    font-size: 70% !important;
+    font-size: 90% !important;
   }
   .ui.tabular.menu .item .label {
     margin-left: 2px;
+  }
+  .ui.grid > .column.frsrow {
+    padding-bottom: 0.4rem;
+  }
+  .ui.grid > .column.secrow {
+    padding-top: 0.4rem;
   }
 }
 

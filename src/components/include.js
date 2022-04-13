@@ -440,8 +440,8 @@ export const vsComponentPlayer = (
         <Statistic
           inverted
           size="mini"
-          as={Link}
-          to={"/user/" + player?.username}
+          as={player?.username && Link}
+          to={player?.username && "/user/" + player?.username}
           target="_blank"
         >
           <Statistic.Value>
@@ -1856,8 +1856,12 @@ export const userDetails = (currentUser) => {
             {flagLabel}
             <br />
             <br />
-            <small className="text-muted">Last Login</small>
-            <br /> {lastLogin}
+            {currentUser.lastLogin && (
+              <>
+                <small className="text-muted">Last Login</small>
+                <br /> {lastLogin}
+              </>
+            )}
           </Statistic.Label>
         </Statistic>
         <Card.Header

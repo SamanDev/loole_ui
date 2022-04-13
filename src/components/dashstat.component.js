@@ -22,7 +22,7 @@ const DashStat = (prop) => {
   return (
     <>
       <Grid className="dash-stat">
-        <Grid.Column mobile={8} tablet={8} computer={4}>
+        <Grid.Column mobile={8} tablet={8} computer={4} className="frsrow">
           <Popup
             content="Go to Cashier"
             inverted
@@ -60,7 +60,7 @@ const DashStat = (prop) => {
           />
         </Grid.Column>
 
-        <Grid.Column mobile={8} tablet={8} computer={4}>
+        <Grid.Column mobile={8} tablet={8} computer={4} className="frsrow">
           <Popup
             content="Go to Rewards"
             inverted
@@ -97,7 +97,7 @@ const DashStat = (prop) => {
             }
           />
         </Grid.Column>
-        <Grid.Column mobile={8} tablet={8} computer={4}>
+        <Grid.Column mobile={8} tablet={8} computer={4} className="secrow">
           <Popup
             content="Create a Match"
             inverted
@@ -146,7 +146,7 @@ const DashStat = (prop) => {
             }
           />
         </Grid.Column>
-        <Grid.Column mobile={8} tablet={8} computer={4}>
+        <Grid.Column mobile={8} tablet={8} computer={4} className="secrow">
           <Popup
             content="Open Profit Chart"
             inverted

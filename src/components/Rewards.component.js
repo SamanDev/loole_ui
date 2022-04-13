@@ -13,7 +13,13 @@ function Dashboard(prop) {
   return (
     <>
       <Message icon>
-        <Icon name="diamond" circular inverted color="teal" />
+        <Icon
+          name="diamond"
+          circular
+          inverted
+          color="teal"
+          className="mobile hidden"
+        />
         <Message.Content>
           <Message.Header>Earn Free Diamonds!</Message.Header>
           <p>
@@ -46,7 +52,13 @@ function Dashboard(prop) {
         </Message.Content>
       </Message>
       <Message icon>
-        <Icon name="add user" circular inverted color="blue" />
+        <Icon
+          name="add user"
+          circular
+          inverted
+          color="blue"
+          className="mobile hidden"
+        />
         <Message.Content>
           <Message.Header>Invite A Friend</Message.Header>
           <div>
@@ -72,9 +84,10 @@ function Dashboard(prop) {
 
           <Button
             size="small"
-            inverted
+            fluid
             color="red"
             content="VIEW DETAILED EARNINGS"
+            onClick={() => prop.onUpdateItem("keyReward", 1)}
           />
         </Message.Content>
       </Message>

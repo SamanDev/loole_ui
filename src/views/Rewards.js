@@ -13,7 +13,7 @@ function profile(prop) {
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
-  const key = prop.findStateId(myState, "keyReward");
+  var key = prop.findStateId(myState, "keyReward");
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
 
@@ -46,7 +46,7 @@ function profile(prop) {
       <Tab
         panes={panes}
         className="maxheight"
-        defaultActiveIndex={key}
+        activeIndex={key}
         onTabChange={(e, data) => {
           prop.onUpdateItem("keyReward", data.activeIndex);
         }}

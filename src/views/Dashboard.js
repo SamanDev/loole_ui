@@ -150,7 +150,10 @@ function Dashboard(prop) {
     {
       id: 2,
       menuItem: (
-        <Menu.Item key={"2"}>
+        <Menu.Item
+          key={"2"}
+          className={findStateId(myStateThis, "Mobile") == 0 && "mobile hidden"}
+        >
           Mobile{" "}
           <Label color="teal" size="mini">
             {findStateId(myStateThis, "Mobile")}
@@ -162,7 +165,12 @@ function Dashboard(prop) {
     {
       id: 3,
       menuItem: (
-        <Menu.Item key={"3"}>
+        <Menu.Item
+          key={"3"}
+          className={
+            findStateId(myStateThis, "NoMobile") == 0 && "mobile hidden"
+          }
+        >
           Console{" "}
           <Label color="orange" size="mini">
             {findStateId(myStateThis, "NoMobile")}
@@ -176,7 +184,12 @@ function Dashboard(prop) {
     {
       id: 4,
       menuItem: (
-        <Menu.Item key={"4"}>
+        <Menu.Item
+          key={"4"}
+          className={
+            findStateId(myStateThis, "Tournament") == 0 && "mobile hidden"
+          }
+        >
           Tournament{" "}
           <Label size="mini" color="black">
             {findStateId(myStateThis, "Tournament")}
@@ -190,7 +203,10 @@ function Dashboard(prop) {
     {
       id: 5,
       menuItem: (
-        <Menu.Item key={"5"}>
+        <Menu.Item
+          key={"5"}
+          className={findStateId(myStateThis, "League") == 0 && "mobile hidden"}
+        >
           League{" "}
           <Label size="mini" color="grey">
             {findStateId(myStateThis, "League")}

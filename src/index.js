@@ -174,7 +174,7 @@ function Main(prop) {
     })[0].val;
   };
   const onUpdateItem = (key, val) => {
-    //console.log(val)
+    console.log(val);
     if (findStateId(myState, key) != val) {
       setMyState(() => {
         const list = myState.list.map((item) => {
@@ -188,7 +188,7 @@ function Main(prop) {
           list: list,
         };
       });
-      //console.log(myState)
+      console.log(myState);
     }
   };
   const onReset = (key) => {

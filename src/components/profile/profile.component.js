@@ -10,6 +10,8 @@ import { Row, Col, Card } from "react-bootstrap";
 import { defUser } from "const";
 import UserContext from "context/UserState";
 import { userDetails, setAvatar } from "components/include";
+import Moment from "moment";
+var moment = require("moment");
 function editCounry(item) {
   var _val = item.value.toLowerCase();
   var _txt = item.label;
@@ -111,6 +113,8 @@ function ProfileForm(prop) {
     var birthday = findStateId(myStateLoc, "birthday");
     if (!birthday) {
       birthday = "01/01/1990";
+    } else {
+      birthday = moment(birthday).format("MM/DD/YYYY");
     }
     onUpdateItem("loading", true);
 
@@ -127,8 +131,8 @@ function ProfileForm(prop) {
             if (response.data.accessToken) {
               //prop.onUpdateItem("currentUser", response.data);
               localStorage.setItem("user", JSON.stringify(response.data));
-              context.setMyList({
-                ...context.myList,
+
+              context.setUList({
                 currentUser: response.data,
               });
               //setCurrentUser(response.data);
@@ -209,9 +213,10 @@ function ProfileForm(prop) {
             <Form.Button
               loading={loading}
               disabled={loading}
+              style={{ marginBottom: 30 }}
               color="green"
               onClick={() => onUpdateItem("submit", true)}
-              inverted
+              fluid
               size="large"
               content="Update Profile"
             />

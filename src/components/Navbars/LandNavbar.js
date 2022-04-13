@@ -40,13 +40,20 @@ const LandNavbar = (prop) => {
           </Menu.Item>
 
           <Menu.Menu position="right">
-            <Menu.Item onClick={() => prop.scrollTo("market")}>
+            <Menu.Item
+              className="mobile hidden"
+              onClick={() => prop.scrollTo("market")}
+            >
               Market
             </Menu.Item>
             {currentUser?.accessToken ? (
               <>
                 <Menu.Item name="Dashboard" to={"/panel/dashboard"} as={Link} />
-                <Menu.Item name="logout" onClick={() => logOut()} />
+                <Menu.Item
+                  name="logout"
+                  className="mobile hidden"
+                  onClick={() => logOut()}
+                />
               </>
             ) : (
               <Menu.Item
