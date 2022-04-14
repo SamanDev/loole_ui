@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 
 // react-bootstrap components
-
+import { Link } from "react-router-dom";
 import { Header, Dimmer, Loader } from "semantic-ui-react";
-import { get_date_locale, getGroupBadgeBlock } from "components/include";
+import {
+  get_date_locale,
+  getGroupBadgeBlock,
+  haveAdmin,
+} from "components/include";
 import DataTable from "react-data-table-component";
 import { useUserReports } from "services/hooks";
+import UserContext from "context/UserState";
 function editCounry(options) {
   var newArray = [];
   var newArrayDelete = [];
@@ -86,14 +91,51 @@ const columns = [
   },
   {
     name: "Description",
-    selector: (row) =>
-      row.description.replace("Event Id", "EID").replace(" - Point", "") +
-      " " +
-      row.mode
-        .replace("Point", "")
-        .replace("Duel", "")
-        .replace("Registered", " Join")
-        .replace("Unregistered", " Leave"),
+
+    selector: (row) => (
+      <>
+        {row.eventId ? (
+          <>
+            <Link
+              to={
+                "/lobby/" +
+                row.eventId +
+                "/" +
+                row.description.split(" - ")[1]?.replace("Point", "") +
+                "/"
+              }
+              target="_blank"
+            >
+              {row.description
+                .split("&")[0]
+                .split(" - ")[0]
+                .replace("Event Id", "EID")}
+            </Link>
+            {" - "}
+            {row.description.split(" - ")[1]?.replace("Point", "") +
+              " - " +
+              row.mode
+
+                .replace("Point", "Commission")
+                .replace("Duel", "")
+                .replace("Registered", " Join")
+                .replace("Unregistered", " Leave")}
+          </>
+        ) : (
+          <>
+            {row.description
+              .replace("Event Id", "EID")
+              .replace("Point", "Diamonds") +
+              " " +
+              row.mode
+                .replace("Point", "")
+                .replace("Duel", "")
+                .replace("Registered", " Join")
+                .replace("Unregistered", " Leave")}
+          </>
+        )}
+      </>
+    ),
     sortable: true,
     grow: 4,
     minWidth: "200px",
@@ -149,6 +191,8 @@ var dataTransaction = [];
 function Report(prop) {
   const [myData, setMydata] = useState();
   const { data: userReports, isLoading } = useUserReports(prop.user.id);
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
   dataTransaction = userReports;
   useEffect(() => {
     if (userReports) {
@@ -174,7 +218,7 @@ function Report(prop) {
         data={myData}
         defaultSortFieldId={1}
         defaultSortAsc={false}
-        expandOnRowClicked={true}
+        expandOnRowClicked={haveAdmin(currentUser.roles) ? true : false}
         pagination
         conditionalRowStyles={conditionalRowStyles}
         expandableRows
