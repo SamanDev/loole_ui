@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router";
 // react-bootstrap components
+import { Link } from "react-router-dom";
 import { Container, Col } from "react-bootstrap";
 import {
   Icon,
@@ -60,12 +61,34 @@ function LockScreenPage(prop) {
 
   const BackBTC = () => {
     return (
-      <Button animated inverted color="pink" onClick={() => history.goBack()}>
-        <Button.Content visible>Go Back</Button.Content>
-        <Button.Content hidden>
-          <Icon name="arrow left" />
-        </Button.Content>
-      </Button>
+      <>
+        {history.length > 1 ? (
+          <Button
+            animated
+            inverted
+            color="pink"
+            onClick={() => history.goBack()}
+          >
+            <Button.Content visible>Go Back</Button.Content>
+            <Button.Content hidden>
+              <Icon name="arrow left" />
+            </Button.Content>
+          </Button>
+        ) : (
+          <Button
+            animated
+            inverted
+            color="pink"
+            to="/panel/dashboard"
+            as={Link}
+          >
+            <Button.Content visible>Go Home</Button.Content>
+            <Button.Content hidden>
+              <Icon name="arrow left" />
+            </Button.Content>
+          </Button>
+        )}
+      </>
     );
   };
   const handleDelete = (e) => {

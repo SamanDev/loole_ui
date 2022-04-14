@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
 // react-bootstrap components
-
+import { Link } from "react-router-dom";
 import { Header, Dimmer, Loader } from "semantic-ui-react";
 import { get_date_locale, getGroupBadgeBlock } from "components/include";
 import DataTable from "react-data-table-component";
@@ -85,14 +85,33 @@ const columns = [
   },
   {
     name: "Description",
-    selector: (row) =>
-      row.description.replace("Event Id", "EID").replace(" - Dollar", "") +
-      " " +
-      row.mode
-        .replace("Point", "")
-        .replace("Duel", "")
-        .replace("Registered", " Join")
-        .replace("Unregistered", " Leave"),
+    selector: (row) => (
+      <>
+        <Link
+          to={
+            "/lobby/" +
+            row.eventId +
+            "/" +
+            row.description.split(" - ")[1]?.replace(" Dollar", "") +
+            "/"
+          }
+          target="_blank"
+        >
+          {row.description
+            .split("&")[0]
+            .split(" - ")[0]
+            .replace("Event Id", "EID")}
+        </Link>
+        {" - "}
+        {row.description.split("-")[1]?.replace("Dollar", "") +
+          " - " +
+          row.mode
+            .replace("Point", "")
+            .replace("Duel", "")
+            .replace("Registered", " Join")
+            .replace("Unregistered", " Leave")}
+      </>
+    ),
     sortable: true,
     grow: 4,
     minWidth: "200px",
