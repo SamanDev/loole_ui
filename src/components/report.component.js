@@ -13,7 +13,11 @@ function editCounry(options) {
   options?.sort((a, b) => (a.id > b.id ? 1 : -1));
   try {
     options?.map((item, w) => {
-      if (item.coin != "Point" && item.mode != "Point") {
+      if (
+        item.coin != "Point" &&
+        item.mode != "Point" &&
+        item.status != "Canceled"
+      ) {
         newArray.push(item);
       }
     });
@@ -87,34 +91,53 @@ const columns = [
     name: "Description",
     selector: (row) => (
       <>
-        <Link
-          to={
-            "/lobby/" +
-            row.eventId +
-            "/" +
-            row.description.split(" - ")[1]?.replace(" Dollar", "") +
-            "/"
-          }
-          target="_blank"
-        >
-          {row.description
-            .split("&")[0]
-            .split(" - ")[0]
-            .replace("Event Id", "EID")}
-        </Link>
-        {" - "}
-        {row.description.split("-")[1]?.replace("Dollar", "") +
-          " - " +
-          row.mode
-            .replace("Point", "")
-            .replace("Duel", "")
-            .replace("Registered", " Join")
-            .replace("Unregistered", " Leave")}
+        {row.eventId ? (
+          <>
+            <Link
+              to={
+                "/lobby/" +
+                row.eventId +
+                "/" +
+                row.description.split(" - ")[1]?.replace("Dollar", "") +
+                "/"
+              }
+              target="_blank"
+            >
+              {row.description
+                .split("&")[0]
+                .split(" - ")[0]
+                .replace("Event Id", "EID")}
+            </Link>
+            {" - "}
+            {row.description.split(" - ")[1]?.replace("Dollar", "") +
+              " - " +
+              row.mode
+
+                .replace("Point", "")
+                .replace("Duel", "")
+                .replace("Registered", " Join")
+                .replace("Unregistered", " Leave")}
+          </>
+        ) : (
+          <>
+            {row.description
+              .replace("Event Id", "EID")
+              .replaceAll('","', " ")
+              .replace("Point", "Diamonds") +
+              " " +
+              row.mode
+                .replace("Point", "")
+                .replace("Duel", "")
+                .replace("Registered", " Join")
+                .replace("Unregistered", " Leave")}
+          </>
+        )}
       </>
     ),
     sortable: true,
     grow: 4,
     minWidth: "200px",
+    maxWidth: "400px",
   },
 
   {
