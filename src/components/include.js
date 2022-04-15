@@ -2394,11 +2394,11 @@ export const editEvent = (_item, eventIDQ, matchIDQ, currentUser) => {
               "Thank you for participating in our COD: Warzone Beta tournament",
               "During the Beta scores may be altered, removed or updated as we test the implementation of our scoring systems",
               "Only games played after you join the tournament are counted",
-              "SMURF accounts are not allowed on Repeat.gg and will be banned",
+              "SMURF accounts are not allowed on Loole.gg and will be banned",
             ],
           };
           item.rules =
-            "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Repeat.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>";
+            "<p>Refer to the tournament details to see what game modes are tracked</p><p>Smurfing (creating a new account to compete with) will result in an immediate and permanent ban from <span data-ignore='true'>Loole.gg</span> and all winnings will be forfeited.</p><p>You must play the minimum number of games in order to get paid out in a tournament. The minimum number of games to play is the same as the number of games we count for your score, which can be found in the Tournament Details.</p>";
         }
       }
 
