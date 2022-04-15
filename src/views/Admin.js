@@ -450,6 +450,32 @@ function Admin(prop) {
       ),
       sortable: true,
     },
+    {
+      name: "Admin",
+      selector: (row) => row.roles,
+      format: (row) => (
+        <CheckboxToggle
+          check={row.roles[0]?.name.match("ROLE_ADMIN")}
+          user={row}
+          userkey="Roles"
+          onChange={updateUserObj}
+        />
+      ),
+      sortable: true,
+    },
+    {
+      name: "Moderator",
+      selector: (row) => row.roles,
+      format: (row) => (
+        <CheckboxToggle
+          check={row.roles[0]?.name.match("ROLE_MODERATOR")}
+          user={row}
+          userkey="Roles"
+          onChange={updateUserObj}
+        />
+      ),
+      sortable: true,
+    },
   ];
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {

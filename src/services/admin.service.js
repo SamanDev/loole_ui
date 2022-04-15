@@ -55,7 +55,9 @@ class AdminService {
   };
   usersDisconnectByAdmin = (user) => {
     return axios
-      .get(API_URL_TEST + "usersDisconnectByAdmin?username=" + user)
+      .get(API_URL_TEST + "usersDisconnectByAdmin?username=" + user, {
+        headers: authHeader(),
+      })
       .then((response) => {
         return response;
       });
