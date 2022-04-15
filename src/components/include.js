@@ -440,8 +440,8 @@ export const vsComponentPlayer = (
         <Statistic
           inverted
           size="mini"
-          as={player?.username && Link}
-          to={player?.username && "/user/" + player?.username}
+          as={player?.username ? Link : Statistic}
+          to={player?.username ? "/user/" + player?.username : null}
           target="_blank"
         >
           <Statistic.Value>

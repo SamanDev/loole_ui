@@ -149,7 +149,7 @@ function Main(prop) {
 
   const updateNot = (userReports) => {
     var myNot = [];
-    console.log(userReports);
+    //console.log(userReports);
     userReports?.sort((a, b) => (a.id > b.id ? 1 : -1));
     userReports?.map((item, i) => {
       if (item.coinValue && item.status === "Pending" && myNot.length < 3) {
@@ -157,7 +157,7 @@ function Main(prop) {
       }
     });
     myNot.sort((a, b) => (a.id < b.id ? 1 : -1));
-    console.log(myNot);
+    //console.log(myNot);
     onUpdateItem("Notifications", myNot);
     onUpdateItem("NotificationsItem", myNot[0]);
   };
