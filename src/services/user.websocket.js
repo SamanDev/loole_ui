@@ -14,7 +14,7 @@ class UserWebsocket {
       } else {
         ws = new WebSocket(USERSOCKETPUBLICURL);
       }
-
+      //eventBus.dispatch("eventsConnect", "");
       //userService.getEvents();
       //localStorage.removeItem("events");
       //userService.getEvents();
@@ -39,6 +39,7 @@ class UserWebsocket {
                 }
                 res = false;
                 try {
+                  ws = null;
                   ws.close();
                 } catch (e) {}
               } catch (e) {}
@@ -79,7 +80,10 @@ class UserWebsocket {
             //localStorage.removeItem("events");
             // localStorage.clear();
             //window.location.reload();
+
             ws?.close();
+            ws = null;
+            eventBus.dispatch("eventsDC", "");
           } else if (message === "PasswordChanged") {
             eventBus.dispatch(
               "eventsDataPass",
@@ -103,7 +107,6 @@ class UserWebsocket {
         console.log(e.type);
 
         if (e.type === "error") {
-          ws = null;
           eventBus.dispatch("eventsDC", "");
           // localStorage.clear();
           //window.location.reload();
@@ -111,14 +114,15 @@ class UserWebsocket {
         }
       };
       ws.onclose = function (e) {
-        ws = null;
-        eventBus.dispatch("eventsDC", "");
+        //ws?.close();
+
+        // eventBus.dispatch("eventsDC", "");
         setTimeout(function () {
           if (ws != null) {
             eventBus.dispatch("eventsConnect", "");
           } else {
             if (ws == null && token) {
-              //eventBus.dispatch("eventsDC", "");
+              eventBus.dispatch("eventsDC", "");
             }
           }
         }, 200);
@@ -128,12 +132,14 @@ class UserWebsocket {
 
   disconnect() {
     if (ws != null) {
-      ws.close();
+      ws?.close();
       ws = null;
-      eventBus.dispatch("eventsDC", "");
+      //   ws = null;
+      //eventBus.dispatch("eventsDC", "");
       console.log("Websocket is in disconnected state");
     } else {
       ws?.close();
+      ws = null;
     }
   }
 
