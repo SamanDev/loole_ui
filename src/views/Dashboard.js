@@ -141,7 +141,7 @@ function Dashboard(prop) {
         <Menu.Item key={"1"}>
           All{" "}
           <Label color="red" size="mini">
-            {findStateId(myStateThis, "All")}
+            {findStateId(myStateThis, "all")}
           </Label>
         </Menu.Item>
       ),
