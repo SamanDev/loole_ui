@@ -24,6 +24,11 @@ const useAllCoins = (status) => {
   //sconsole.log(result)
   return result;
 };
+const useAllGetways = () => {
+  const result = useQuery(["Getways"], api.getAllGetways);
+  //sconsole.log(result)
+  return result;
+};
 const useEventByID = (id) => {
   if (id) {
     const result = useQuery(["Event", parseInt(id)], api.getEventByID);
@@ -92,4 +97,5 @@ export {
   useUserAnalyses,
   useUserReports,
   useAdminCosts,
+  useAllGetways,
 };

@@ -83,12 +83,13 @@ if (localStorage.getItem("user")) {
 }
 var _defEvents = null;
 var _defEvent = {};
+
 function Main(prop) {
   const queryClient = useQueryClient();
   const history = useHistory();
   const location = useLocation();
   const params = useParams();
-
+  var myPath = location.pathname.split("/")[1];
   const [myList, setMyList] = useState({
     events: _defEvents,
   });
@@ -251,8 +252,6 @@ function Main(prop) {
     if (eventsGet?.length > 0) {
       _defEvents = eventsGet;
       setMyList({ events: eventsGet });
-      localStorage.setItem("_defEvents", JSON.stringify(_defEvents));
-      queryClient.setQueryData(["Events", "All"], eventsGet);
     }
   }, [eventsGet]);
 
@@ -297,18 +296,16 @@ function Main(prop) {
       localStorage.setItem("user", JSON.stringify(userGet));
     });
     eventBus.on("eventsDC", () => {
-      //  alert()
       if (
         currentUser?.accessToken &&
         !findStateId(myState, "profileUser") &&
-        !isLoading
+        myPath == "panel"
       ) {
         onUpdateItem("openModalSoket", true);
       }
     });
     eventBus.on("eventsConnect", () => {
-      //  alert()
-      if (findStateId(myState, "openModalSoket") && !isLoading) {
+      if (findStateId(myState, "openModalSoket")) {
         queryClient.resetQueries(["Events"]);
         queryClient.resetQueries(["Event"]);
         queryClient.resetQueries(["Cois"]);
@@ -369,7 +366,9 @@ function Main(prop) {
   }, []);
   useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);
-    if (myList.events == null) {
+    var newPath = location.pathname.split("/")[2];
+
+    if (myList.events == null && newPath != "dashboard") {
       queryClient.resetQueries(["Events"]);
     }
     var newEID = location.pathname.split("/")[2];

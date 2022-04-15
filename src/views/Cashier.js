@@ -20,6 +20,9 @@ function Cashier(prop) {
 
   var userMethods = currentUser.cashierGateways;
 
+  userMethods = userMethods.filter(
+    (li, idx, self) => self.map((itm) => itm.mode).indexOf(li.mode) === idx
+  );
   userMethods.sort((a, b) => (a.mode > b.mode ? 1 : -1));
   useEffect(() => {
     prop.onUpdateItem("coins", eventCoins);
@@ -55,7 +58,7 @@ function Cashier(prop) {
                     _img = "iran.png";
                     _limit = "Max: $300";
                   }
-                  if (cashierGateway.name != "Digipay") {
+                  if (cashierGateway.name != "Digipay" || 1 == 1) {
                     return (
                       <Col
                         lg="3"
@@ -64,7 +67,7 @@ function Cashier(prop) {
                         sm="3"
                         key={u.toString()}
                         onClick={() =>
-                          handleMethod(cashierGateway.name + "Deposit")
+                          handleMethod(cashierGateway.mode + "Deposit")
                         }
                       >
                         <div className="counter-box bg-color-1 card">
@@ -114,7 +117,7 @@ function Cashier(prop) {
                     _img = "iran.png";
                     _limit = "Max: $100";
                   }
-                  if (cashierGateway.name != "Digipay") {
+                  if (cashierGateway.mode != "VisaGiftCode") {
                     return (
                       <Col
                         lg="3"
@@ -123,7 +126,7 @@ function Cashier(prop) {
                         sm="3"
                         key={u.toString()}
                         onClick={() =>
-                          handleMethod(cashierGateway.name + "Cashout")
+                          handleMethod(cashierGateway.mode + "Cashout")
                         }
                       >
                         <div className="counter-box bg-color-1 card">

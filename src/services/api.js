@@ -34,6 +34,14 @@ const getAllCoins = async () => {
     return data;
   }
 };
+const getAllGetways = async () => {
+  if (JSON.stringify(authHeader()) != "{}") {
+    const { data } = await clientAdmin.get(`/getGateways`, {
+      headers: authHeader(),
+    });
+    return data;
+  }
+};
 const getAdminUsers = async () => {
   const { data } = await clientAdmin.get(
     `/getUsersByAdmin?name=username&value=`,
@@ -150,4 +158,5 @@ export {
   getUserAnalyses,
   getUserReports,
   getAdminCosts,
+  getAllGetways,
 };

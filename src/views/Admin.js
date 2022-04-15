@@ -13,7 +13,7 @@ import {
   Form,
 } from "semantic-ui-react";
 import Avatar from "react-avatar";
-import { useAdminUsers } from "services/hooks";
+import { useAdminUsers, useAllGetways } from "services/hooks";
 import CurrencyFormat from "react-currency-format";
 import { Col } from "react-bootstrap";
 
@@ -83,7 +83,7 @@ function isDate(name, myDate, user) {
 
   return res;
 }
-function getPathOfKey(object, keys) {
+function getPathOfKey(object, keys, getwaysList) {
   var newO = JSON.parse(JSON.stringify(object));
   var newOb = {};
   newOb["user"] = newO;
@@ -99,13 +99,13 @@ function getPathOfKey(object, keys) {
           if (isJson(JSON.parse(JSON.stringify(newO1[y])))) {
             var newO2 = JSON.parse(JSON.stringify(newO1[y]));
             for (const z in newO2) {
-              //console.log(newO2[z]);
               if (isJson(JSON.parse(JSON.stringify(newO2[z])))) {
               } else {
                 if (z == "active") {
                   if (x == "cashierGateways") {
                     finalObj.push({
-                      name: newO2["mode"] + " - " + newO2["name"],
+                      name: newO2["name"],
+
                       value: newO2[z],
                       user: newO,
                     });
@@ -119,6 +119,7 @@ function getPathOfKey(object, keys) {
                         newO2["cardNumber"] +
                         " - " +
                         newO2["holderName"],
+
                       value: newO2[z],
                       user: newO,
                     });
@@ -144,6 +145,25 @@ function getPathOfKey(object, keys) {
       }
     }
   }
+  var finalObj2 = JSON.parse(JSON.stringify(finalObj));
+  var newOb2 = {};
+  newOb2["final"] = finalObj2;
+  getwaysList?.map(function (ways) {
+    var blnIs = false;
+    for (const y in finalObj2) {
+      if (finalObj2[y].name == ways.name) {
+        blnIs = true;
+      }
+    }
+    if (!blnIs) {
+      finalObj.push({
+        name: ways.name,
+
+        value: false,
+        user: newO,
+      });
+    }
+  });
 
   //finalObj.push({'data':newOb})
 
@@ -168,6 +188,7 @@ const FilterComponent = ({ filterText, onFilter, onClear, setExMode }) => (
 
 function Admin(prop) {
   const { data: usersList, isLoading } = useAdminUsers();
+  const { data: getwaysList } = useAllGetways();
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
   const [filterText, setFilterText] = React.useState("");
@@ -199,6 +220,7 @@ function Admin(prop) {
     setCashAmount(e.target.value);
   };
   const updateUserObj = (e, data) => {
+    console.log(data);
     var _key = data.userkey;
     var curU = JSON.parse(JSON.stringify(data.user));
     //curU[''+_key+'']=data.checked
@@ -288,7 +310,8 @@ function Admin(prop) {
       var newdata = [
         getPathOfKey(
           data,
-          ",email,country,fullName,reffer,birthday,bankInfos,firstLogin,lastLogin,cashierGateways,"
+          ",email,country,fullName,reffer,birthday,bankInfos,firstLogin,lastLogin,cashierGateways,",
+          getwaysList
         ),
       ];
       var jdata = JSON.parse(JSON.stringify(newdata));

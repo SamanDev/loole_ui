@@ -216,7 +216,7 @@ function Panel(props) {
                           props.onUpdateItem("openModalCashier", false)
                         }
                       >
-                        {cashierMethod == "CoinPaymentsDeposit" && (
+                        {cashierMethod == "CryptoCurrenciesDeposit" && (
                           <>
                             {!myNotificationItem ? (
                               <CrDeposit coins={coins} {...props} />
@@ -238,13 +238,13 @@ function Panel(props) {
                             <VisaDeposit {...props} />
                           </>
                         )}
-                        {cashierMethod == "HamrahcartDeposit" && (
+                        {cashierMethod == "IranShetabDeposit" && (
                           <>
                             <ShetabDeposit coins={coins} {...props} />
                           </>
                         )}
 
-                        {cashierMethod == "CoinPaymentsCashout" && (
+                        {cashierMethod == "CryptoCurrenciesCashout" && (
                           <>
                             <CrCashout coins={coins} {...props} />
                           </>
@@ -255,7 +255,7 @@ function Panel(props) {
                             <PMCashout coins={coins} {...props} />
                           </>
                         )}
-                        {cashierMethod == "HamrahcartCashout" && (
+                        {cashierMethod == "IranShetabCashout" && (
                           <>
                             <ShetabCashout coins={coins} {...props} />
                           </>

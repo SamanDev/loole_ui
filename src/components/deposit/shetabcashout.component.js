@@ -97,17 +97,11 @@ class ShetabCashout extends Component {
     });
   }
   setCardDef(e) {
-    if ($(".CardNo:visible").length > 0) {
-      setTimeout(function () {
-        $(".CardNo").focus();
-      }, 100);
-    }
     console.log(e);
     this.setState({
       cartSelected: e,
       CardNo: e.value,
-      Expiration: e.Expiration,
-      cvv: e.cvv,
+
       submit: false,
     });
   }
@@ -178,7 +172,6 @@ class ShetabCashout extends Component {
     currentUser2 = this.context.uList.currentUser;
 
     currentUser2.cardsdef = [];
-
     currentUser2.cardsdef.push({
       key: "1",
       value: "6104138910794789",
@@ -187,7 +180,23 @@ class ShetabCashout extends Component {
       Expiration: "1105",
       cvv: "842",
     });
-    this.setCardDef(currentUser2.cardsdef[0]);
+    currentUser2?.bankInfos.map((item, i) => {
+      if (item.active) {
+        let joy = item.cardNumber.match(/.{1,4}/g);
+        var cartSpace = joy.join(" ");
+        currentUser2.cardsdef.push({
+          key: item.id.toString(),
+          value: item.cardNumber,
+          text: cartSpace,
+          CardNo: cartSpace,
+          Expiration: item.expiration,
+          cvv: item.cvv,
+        });
+      }
+    });
+    if (currentUser2.cardsdef.length > 1) {
+      this.setCardDef(currentUser2.cardsdef[0]);
+    }
   }
   render() {
     const currentUser = this.context.uList.currentUser;
@@ -205,44 +214,41 @@ class ShetabCashout extends Component {
             this.form = c;
           }}
         >
-          {this.state.shetabGo == 0 && (
-            <>
-              <div className="form-group form-group-lg2">
-                <label>Amount</label>
-                <div className="input-group">
-                  <span className="input-group-text" id="inputGroup-sizing-lg">
-                    $
-                  </span>
-                  <IMaskInput
-                    className="form-control Amount form-control-lg2"
-                    type="tel"
-                    pattern="[1-9]{1}[0-9]"
-                    mask={"0000"}
-                    inputRef={(el) => (this.input = el)}
-                    value={this.state.Amount}
-                    onAccept={this.setAmount}
-                  />
-                </div>
-                <Input
-                  type="hidden"
-                  value={this.state.Amount}
-                  validations={[required]}
-                />
-              </div>
-              {currentUser2?.cardsdef.length > 0 && (
-                <div className="form-group form-group-lg2">
-                  <label>Cart Number</label>
-                  <Select
-                    placeholder="Select Cart"
-                    fluid
-                    value={this.state.cartSelected.value}
-                    onChange={this.handleSelectCard}
-                    options={currentUser2?.cardsdef}
-                  />
-                </div>
-              )}
-            </>
+          <div className="form-group form-group-lg2">
+            <label>Amount</label>
+            <div className="input-group">
+              <span className="input-group-text" id="inputGroup-sizing-lg">
+                $
+              </span>
+              <IMaskInput
+                className="form-control Amount form-control-lg2"
+                type="tel"
+                pattern="[1-9]{1}[0-9]"
+                mask={"0000"}
+                inputRef={(el) => (this.input = el)}
+                value={this.state.Amount}
+                onAccept={this.setAmount}
+              />
+            </div>
+            <Input
+              type="hidden"
+              value={this.state.Amount}
+              validations={[required]}
+            />
+          </div>
+          {currentUser2?.cardsdef.length > 0 && (
+            <div className="form-group form-group-lg2">
+              <label>Cart Number</label>
+              <Select
+                placeholder="Select Cart"
+                fluid
+                value={this.state.cartSelected.value}
+                onChange={this.handleSelectCard}
+                options={currentUser2?.cardsdef}
+              />
+            </div>
           )}
+
           <Divider />
           <Button.Group size="large" fluid widths="2">
             <Button
