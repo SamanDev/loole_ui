@@ -163,11 +163,10 @@ function Main(prop) {
     onUpdateItem("NotificationsItem", myNot[0]);
   };
   const logOut = () => {
+    //history.push("/home");
     setUList({ currentUser: defUser });
     localStorage.setItem("user", JSON.stringify(defUser));
     AuthService.logout();
-
-    history.push("/home");
   };
   const findStateId = (st, val) => {
     return st.list.filter(function (v) {
@@ -299,9 +298,11 @@ function Main(prop) {
       if (
         currentUser?.accessToken &&
         !findStateId(myState, "profileUser") &&
-        myPath == "panel"
+        !findStateId(myState, "openModalLogin")
       ) {
         onUpdateItem("openModalSoket", true);
+      } else {
+        onUpdateItem("openModalSoket", false);
       }
     });
     eventBus.on("eventsConnect", () => {
@@ -368,7 +369,7 @@ function Main(prop) {
     ReactGA.pageview(location.pathname + location.search);
     var newPath = location.pathname.split("/")[2];
 
-    if (myList.events == null && newPath != "dashboard") {
+    if (myList.events == null && !eventsGet) {
       queryClient.resetQueries(["Events"]);
     }
     var newEID = location.pathname.split("/")[2];

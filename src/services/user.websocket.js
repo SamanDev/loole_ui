@@ -118,7 +118,7 @@ class UserWebsocket {
             //eventBus.dispatch("eventsConnect", "");
           } else {
             if (ws == null && token) {
-              eventBus.dispatch("eventsDC", "");
+              //eventBus.dispatch("eventsDC", "");
             }
           }
         }, 200);
@@ -127,6 +127,7 @@ class UserWebsocket {
   }
 
   disconnect() {
+    eventBus.dispatch("eventsDC", "");
     if (ws != null) {
       ws.close();
       ws = null;
