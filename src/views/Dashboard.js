@@ -13,7 +13,7 @@ function Dashboard(prop) {
 
   const [myStateThis, setMyStateThis] = useState({
     list: [
-      { id: "All", val: 0 },
+      { id: "all", val: 0 },
       { id: "Mobile", val: 0 },
 
       { id: "NoMobile", val: 0 },
