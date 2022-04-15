@@ -103,12 +103,27 @@ function getPathOfKey(object, keys) {
               if (isJson(JSON.parse(JSON.stringify(newO2[z])))) {
               } else {
                 if (z == "active") {
-                  finalObj.push({
-                    name: newO2["mode"] + " - " + newO2["name"],
-                    value: newO2[z],
-                    user: newO,
-                  });
-                  newOb[newO2["name"]] = newO2[z];
+                  if (x == "cashierGateways") {
+                    finalObj.push({
+                      name: newO2["mode"] + " - " + newO2["name"],
+                      value: newO2[z],
+                      user: newO,
+                    });
+                    newOb[newO2["name"]] = newO2[z];
+                  }
+                  if (x == "bankInfos") {
+                    finalObj.push({
+                      name:
+                        newO2["gatewayName"] +
+                        " - " +
+                        newO2["cardNumber"] +
+                        " - " +
+                        newO2["holderName"],
+                      value: newO2[z],
+                      user: newO,
+                    });
+                    newOb[newO2["name"]] = newO2[z];
+                  }
                 }
               }
             }
