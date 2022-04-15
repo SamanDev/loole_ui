@@ -115,7 +115,7 @@ class UserWebsocket {
         eventBus.dispatch("eventsDC", "");
         setTimeout(function () {
           if (ws != null) {
-            //eventBus.dispatch("eventsConnect", "");
+            eventBus.dispatch("eventsConnect", "");
           } else {
             if (ws == null && token) {
               //eventBus.dispatch("eventsDC", "");
