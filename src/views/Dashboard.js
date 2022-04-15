@@ -13,7 +13,7 @@ function Dashboard(prop) {
 
   const [myStateThis, setMyStateThis] = useState({
     list: [
-      { id: "all", val: 0 },
+      { id: "All", val: 0 },
       { id: "Mobile", val: 0 },
 
       { id: "NoMobile", val: 0 },
@@ -93,7 +93,7 @@ function Dashboard(prop) {
       if (
         item.gameConsole == filtermode ||
         item.gameMode == filtermode ||
-        filtermode == "All" ||
+        filtermode == "all" ||
         (item.gameConsole != "Mobile" && filtermode == "NoMobile")
       ) {
         //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)
@@ -141,7 +141,7 @@ function Dashboard(prop) {
         <Menu.Item key={"1"}>
           All{" "}
           <Label color="red" size="mini">
-            {findStateId(myStateThis, "all")}
+            {findStateId(myStateThis, "All")}
           </Label>
         </Menu.Item>
       ),
