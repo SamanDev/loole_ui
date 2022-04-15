@@ -133,7 +133,7 @@ class UserWebsocket {
       eventBus.dispatch("eventsDC", "");
       console.log("Websocket is in disconnected state");
     } else {
-      ws.close();
+      ws?.close();
     }
   }
 
