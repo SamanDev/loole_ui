@@ -80,7 +80,7 @@ class Dashboard extends Component {
 
     return (
       <>
-        <Row>{getBlockChallenge("All")}</Row>
+        <Row>{getBlockChallenge("all")}</Row>
       </>
     );
   }

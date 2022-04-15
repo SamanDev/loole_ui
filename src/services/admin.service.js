@@ -30,11 +30,11 @@ class AdminService {
         return response;
       });
   };
-  changeBalance = (id, dollarAmount, name) => {
+  changeBalance = (id, dollarAmount, name, bankModel) => {
     return axios
       .post(
         API_URL_TEST + "chipService",
-        { id, dollarAmount, name },
+        { id, dollarAmount, name, bankModel },
         { headers: authHeader() }
       )
       .then((response) => {

@@ -145,7 +145,7 @@ function Dashboard(prop) {
           </Label>
         </Menu.Item>
       ),
-      render: () => <Tab.Pane>{getBlockChallenge("All", events)}</Tab.Pane>,
+      render: () => <Tab.Pane>{getBlockChallenge("all", events)}</Tab.Pane>,
     },
     {
       id: 2,

@@ -173,6 +173,7 @@ function Admin(prop) {
   const [cashLoad, setCashLoad] = React.useState(false);
   const [cashAmuont, setCashAmount] = React.useState(10);
   const [cashName, setCashName] = React.useState("add");
+  const [cashBankModel, setCashBankModel] = React.useState("Dollar");
 
   const OpenChashier = (open, user, id) => {
     setFirstOpen(open);
@@ -227,7 +228,7 @@ function Admin(prop) {
     }
     setCashLoad(true);
     adminService
-      .changeBalance(cashId, cashAmuont, cashName)
+      .changeBalance(cashId, cashAmuont, cashName, cashBankModel)
       .then((response) => {
         if (response) {
           Swal.fire({
@@ -507,6 +508,20 @@ function Admin(prop) {
                 <label>Amount</label>
                 <input value={cashAmuont} onChange={setCashAmountVal} />
               </Form.Field>
+              <Button.Group widths="2">
+                <Button
+                  color={cashBankModel == "Dollar" && "blue"}
+                  onClick={() => setCashBankModel("Dollar")}
+                >
+                  Dollar
+                </Button>
+                <Button
+                  color={cashBankModel == "Point" && "blue"}
+                  onClick={() => setCashBankModel("Point")}
+                >
+                  Point
+                </Button>
+              </Button.Group>
               <Button.Group widths="2">
                 <Button
                   color={cashName == "add" && "green"}

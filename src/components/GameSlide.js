@@ -13,11 +13,17 @@ export default function GameSlide() {
           {item.name}
         </Header>
         <Header as="h5" inverted style={{ marginTop: 0 }}>
-          {item.haveMatch && "1 vs 1"}
-          {item.haveMatch && item.haveTournament && ", "}
-          {item.haveTournament && "Tournaments"}
-          {item.haveMatch && item.haveLeague && ", "}
-          {item.haveLeague && "League"}
+          {item.active ? (
+            <>
+              {item.haveMatch && "1 vs 1"}
+              {item.haveMatch && item.haveTournament && ", "}
+              {item.haveTournament && "Tournaments"}
+              {item.haveMatch && item.haveLeague && ", "}
+              {item.haveLeague && "League"}
+            </>
+          ) : (
+            <>Comming Soon</>
+          )}
         </Header>
       </>
     );
@@ -51,9 +57,13 @@ export default function GameSlide() {
                   label={{
                     content: getLabel(item),
                     ribbon: true,
-                    color: "" + Colors[i].toLowerCase() + "",
+                    color: Colors[i].toLowerCase(),
                   }}
-                  style={{ minHeight: 200 }}
+                  style={
+                    item.active
+                      ? { minHeight: 200 }
+                      : { minHeight: 200, filter: "grayscale(90%)" }
+                  }
                   size="medium"
                   to={"/game/" + item.name}
                 />

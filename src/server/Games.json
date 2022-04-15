@@ -3,6 +3,7 @@
         {
             
             "name": "8Pool",
+            "active": true,
             "haveMatch": true,
             "haveTournament": true,
             "haveLeague": false,
@@ -22,6 +23,7 @@
         {
            
             "name": "ClashRoyale",
+            "active": true,
             "haveMatch": true,
             "haveTournament": true,
             "haveLeague": false,
@@ -42,6 +44,7 @@
         {
             
             "name": "Fifa2021",
+            "active": true,
             "haveMatch": true,
             "haveTournament": true,
             "haveLeague": false,
@@ -68,6 +71,7 @@
         {
             
             "name": "RainbowSix",
+            "active": false,
             "haveMatch": false,
             "haveTournament": false,
             "haveLeague": true,
@@ -95,6 +99,7 @@
         {
            
             "name": "CallOfDuty",
+            "active": true,
             "haveMatch": false,
             "haveTournament": false,
             "haveLeague": true,
@@ -115,6 +120,7 @@
         {
             "id": 8,
             "name": "Fortnite",
+            "active": false,
             "haveMatch": false,
             "haveTournament": false,
             "haveLeague": true,

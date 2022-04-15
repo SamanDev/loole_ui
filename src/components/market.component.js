@@ -59,7 +59,7 @@ export const printBlockProduct = (newItem) => {
 function Dashboard(prop) {
   const products = Market.getMarketplace;
 
-  return <>{getBlockChallenge("All", products)}</>;
+  return <>{getBlockChallenge("all", products)}</>;
 }
 
 export default Dashboard;

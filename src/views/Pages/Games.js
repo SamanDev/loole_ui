@@ -146,7 +146,7 @@ const Landing = (prop) => {
             <div
               style={{ minHeight: 300, position: "relative", marginTop: 20 }}
             >
-              {getBlockChallenge("All", events)}
+              {getBlockChallenge("all", events)}
             </div>
           </div>
         </div>

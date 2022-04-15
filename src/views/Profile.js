@@ -55,7 +55,7 @@ function profile(prop) {
       menuItem: "Transactions",
       render: () => (
         <Tab.Pane>
-          <Report usersReports={dataTransaction} />
+          <Report user={currentUser} />
         </Tab.Pane>
       ),
     },

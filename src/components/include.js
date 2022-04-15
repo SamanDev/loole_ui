@@ -2009,7 +2009,7 @@ export const printBlockChallenge = (newItem, filtermode, prop) => {
             src="/assets/images/nodata.svg"
           ></img>
           <h4>Empty List.</h4>
-          <h5>You currently don't have any {filter} event.</h5>
+          <h5>There are currently no events.</h5>
         </div>
       </Dimmer>
     );
