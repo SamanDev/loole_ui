@@ -164,7 +164,7 @@ function getPathOfKey(object, keys, getwaysList) {
       });
     }
   });
-
+  console.log(finalObj);
   //finalObj.push({'data':newOb})
 
   return finalObj;
@@ -225,7 +225,7 @@ function Admin(prop) {
     var curU = JSON.parse(JSON.stringify(data.user));
     //curU[''+_key+'']=data.checked
 
-    //console.log(curU);
+    console.log(data);
     adminService
       .updateUserByAdmin(curU.id, _key, data.checked)
       .then((response) => {
@@ -304,8 +304,7 @@ function Admin(prop) {
       return <pre>hi</pre>;
     }
     var data = props.data;
-    console.log(data);
-    console.log(props.data);
+
     if (exMode == "Data") {
       var newdata = [
         getPathOfKey(
