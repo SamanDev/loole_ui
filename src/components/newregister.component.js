@@ -112,6 +112,7 @@ function FormExampleFieldErrorLabel(prop) {
               error.response.data &&
               error.response.data.message) ||
             error.message ||
+            error.details ||
             error.toString();
           onUpdateItem("loading", false);
           Swal.fire({

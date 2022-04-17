@@ -62,10 +62,6 @@ class AuthService {
     if (loc.indexOf("/panel") > -1 && loc.indexOf("/lobby") == -1) {
       //window.location.replace("/");
     } else {
-      Swal.fire({
-        icon: "success",
-        title: "Done",
-      });
     }
     UserWebsocket.disconnect();
     UserWebsocket.connect();
