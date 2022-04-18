@@ -107,18 +107,34 @@ function FormExampleFieldErrorLabel(prop) {
           }
         },
         (error) => {
-          const resMessage =
+          var resMessage =
             (error.response &&
               error.response.data &&
               error.response.data.message) ||
             error.message ||
-            error.details ||
             error.toString();
+          if (resMessage == "Validation Failed") {
+            resMessage =
+              "<ul style='text-align: left;list-style: circle;font-size: 13px;'><li>" +
+              error.response.data.details[0]
+                .replace("\n", "</li><li>")
+                .replace("\n", "</li><li>")
+                .replace("\n", "</li><li>")
+                .replace("\n", "</li><li>") +
+              "</li><li>" +
+              error.response.data.details[1]
+                .replace("\n", "</li><li>")
+                .replace("\n", "</li><li>")
+                .replace("\n", "</li><li>")
+                .replace("\n", "</li><li>") +
+              "</li></ul>";
+          }
+          console.log(resMessage);
           onUpdateItem("loading", false);
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: resMessage,
+            html: resMessage,
           });
         }
       );
