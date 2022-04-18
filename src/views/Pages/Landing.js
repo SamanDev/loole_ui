@@ -18,7 +18,7 @@ function Landing(prop) {
   const { data: looleInfo } = useInfo();
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
-  const elements = ["1", "2-4_01", "2-4_02", "2-4_03"];
+  const elements = ["1", "2", "3", "4"];
   useEffect(() => {
     if (looleInfo) {
       prop.onUpdateItem("looleInfo", looleInfo);
@@ -206,13 +206,9 @@ function Landing(prop) {
                       return (
                         <div className="col-md-3" key={index}>
                           <img
-                            src={
-                              "https://www.gamingfrog.com/wp-content/uploads/2020/08/How-it-works-" +
-                              value +
-                              ".jpg"
-                            }
+                            src={"/assets/img/" + value + ".jpg"}
                             style={{
-                              maxWidth: "60%",
+                              maxWidth: "90%",
                               margin: "10px auto",
                               display: "block",
                             }}
