@@ -302,7 +302,7 @@ function Main(prop) {
       ) {
         onUpdateItem("openModalSoket", true);
       } else {
-        onUpdateItem("openModalSoket", false);
+        //onUpdateItem("openModalSoket", false);
       }
     });
     eventBus.on("eventsConnect", () => {
