@@ -163,10 +163,10 @@ function Main(prop) {
     onUpdateItem("NotificationsItem", myNot[0]);
   };
   const logOut = () => {
-    //history.push("/home");
     setUList({ currentUser: defUser });
     localStorage.setItem("user", JSON.stringify(defUser));
     AuthService.logout();
+    history.push("/home");
   };
   const findStateId = (st, val) => {
     return st.list.filter(function (v) {
@@ -302,7 +302,7 @@ function Main(prop) {
       ) {
         onUpdateItem("openModalSoket", true);
       } else {
-        //onUpdateItem("openModalSoket", false);
+        onUpdateItem("openModalSoket", false);
       }
     });
     eventBus.on("eventsConnect", () => {
