@@ -196,7 +196,7 @@ class ShetabDeposit extends Component {
     } else {
       this.setState({
         pass: e,
-        submit: true,
+        submit: false,
         passReady: false,
       });
     }
@@ -278,7 +278,7 @@ class ShetabDeposit extends Component {
 
     this.form.validateAll();
 
-    if (this.checkBtn.context._errors.length === 0 && !this.state.passready) {
+    if (this.checkBtn.context._errors.length === 0 && this.state.passReady) {
       this.setState({
         message: "",
         successful: false,
@@ -763,7 +763,7 @@ class ShetabDeposit extends Component {
                             // DO NOT USE onChange TO HANDLE CHANGES!
                             // USE onAccept INSTEAD
                             onAccept={this.setExpiration}
-                            placeholder="MM/YY"
+                            placeholder="YY/MM"
                           />
                           <Input
                             type="hidden"
@@ -898,8 +898,8 @@ class ShetabDeposit extends Component {
               <div className="form-group">
                 <button
                   className="btn btn-danger btn-wd btn-block"
-                  disabled={!this.state.passReady}
-                  type="button"
+                  disabled={!this.state.passReady || this.state.loading}
+                  type="submit"
                 >
                   {this.state.loading && this.state.passReady && (
                     <span className="spinner-border spinner-border-sm  fa-wd"></span>
