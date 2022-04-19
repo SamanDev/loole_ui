@@ -375,7 +375,7 @@ function Main(prop) {
         var el = document.getElementsByTagName("iframe")[0];
         el.remove();
       } catch (e) {}
-    }, 1000);
+    }, 100000);
   }, []);
   useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);
