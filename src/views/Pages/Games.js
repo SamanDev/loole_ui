@@ -9,6 +9,7 @@ import Games from "server/Games";
 import { themeColors } from "const.js";
 import Market from "components/market.component";
 import GlobalContext from "context/GlobalState";
+import HowIt from "components/howit";
 function scrollToTop() {
   window.scrollTo({
     top: 0,
@@ -129,6 +130,7 @@ const Landing = (prop) => {
             <img
               className="parallax-background-image"
               style={{ filter: "blur(3px)" }}
+              alt={_game + " for Real Money."}
               src={"/assets/images/games/" + _game + ".jpg"}
             />
           </div>
@@ -175,6 +177,7 @@ const Landing = (prop) => {
             <GameSlide />
           </div>
         </div>
+        <HowIt />
         <div className="section   section-no-padding">
           <div className="container" style={{ minHeight: 500 }}>
             <h4 className="header-text  text-center" id="market">

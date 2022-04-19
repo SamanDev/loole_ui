@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useInfo } from "services/hooks";
 import HomeEvents from "components/events/home.component";
 import GameSlide from "components/GameSlide";
+import HowIt from "components/howit";
 import LandStat from "components/landstat.component";
 import Market from "components/market.component";
 import { themeColors } from "const.js";
@@ -173,60 +174,7 @@ function Landing(prop) {
             </div>
           </div>
         </div>
-        <div className="section " style={{ padding: 0 }}>
-          <div
-            className={
-              " filter-gradient " + themeColors[day + 2] + " section-gray"
-            }
-            data-color="orange"
-          >
-            <div
-              style={{
-                overflow: "auto",
-                height: "100%",
-                width: "100%",
-                position: "relative",
-                top: "0",
-                zIndex: 3,
-              }}
-            >
-              <div className="container" style={{ marginTop: 60 }}>
-                <div className="info">
-                  <h4
-                    className="header-text text-center"
-                    style={{ color: "#fff" }}
-                  >
-                    How it works
-                  </h4>
-                  <p style={{ color: "#fff" }}>
-                    Loole.gg is a platform where you can challenge other gamers
-                    for real money on the line. Once you find a match you’ll
-                    play on your console (PS4/Xbox One), report results and
-                    we’ll deposit the money to the winner. There are other ways
-                    to win through multiplayer tourneys and monthly leader-board
-                    challenges.
-                  </p>
-                  <div className="row">
-                    {elements.map((value, index) => {
-                      return (
-                        <div className="col-md-3" key={index}>
-                          <img
-                            src={"/assets/img/" + value + ".jpg"}
-                            style={{
-                              maxWidth: "90%",
-                              margin: "10px auto",
-                              display: "block",
-                            }}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <HowIt />
 
         <div className="section section-gray section-no-padding">
           <div className="container" style={{ minHeight: 500 }}>
