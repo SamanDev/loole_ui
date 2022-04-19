@@ -36,6 +36,7 @@ import {
   Card,
   Dimmer,
   Checkbox,
+  Image,
 } from "semantic-ui-react";
 // react-bootstrap components
 import {
@@ -467,9 +468,9 @@ export const vsComponentPlayer = (
                 name={setAvatar(player.username)}
               />
             ) : (
-              <Avatar
-                size="50"
-                round={true}
+              <Image
+                size="mini"
+                circular
                 src="/assets/img/avat.jpg"
                 color="lightgray"
                 className="avatar"
@@ -502,9 +503,9 @@ export const vsComponentPlayer = (
                 name={setAvatar(player.username)}
               />
             ) : (
-              <Avatar
-                size="50"
-                round={true}
+              <Image
+                size="mini"
+                circular
                 src="/assets/img/avat.jpg"
                 color="lightgray"
                 className="avatar"
