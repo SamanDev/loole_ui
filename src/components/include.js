@@ -873,7 +873,6 @@ export const vsComponentTitle = (item) => {
           </div>
         </div>
       </div>
-      <p>{title}</p>
     </>
   );
 };

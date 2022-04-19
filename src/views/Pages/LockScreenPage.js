@@ -144,6 +144,7 @@ function LockScreenPage(prop) {
                 Loading
                 <br />
                 <br />
+                <h1>{title.replace(/-/g, " ")}</h1>
                 {BackBTC()}
                 {haveAdmin(currentUser.roles) && (
                   <>
