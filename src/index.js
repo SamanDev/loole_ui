@@ -519,8 +519,13 @@ function Main(prop) {
                         inverted
                         onClick={() => myFunction("togllehide")}
                         color="orange"
-                        content="Create Account"
-                      />
+                      >
+                        Don’t have an account?
+                        <br />
+                        <p style={{ marginTop: 5, fontWeight: "bold" }}>
+                          Create Account
+                        </p>
+                      </Button>
                     </div>
                     <div className="togllehide hide">
                       <Header as="h3" inverted>
