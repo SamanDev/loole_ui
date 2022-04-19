@@ -6,6 +6,7 @@ import { useParams } from "react-router";
 import GameSlide from "components/GameSlide";
 import Games from "server/Games";
 import { themeColors } from "const.js";
+import Market from "components/market.component";
 import GlobalContext from "context/GlobalState";
 function scrollToTop() {
   window.scrollTo({
@@ -158,6 +159,19 @@ const Landing = (prop) => {
             <GameSlide />
           </div>
         </div>
+        <div className="section   section-no-padding">
+          <div className="container" style={{ minHeight: 500 }}>
+            <h4 className="header-text  text-center" id="market">
+              Don't ever be out!
+            </h4>
+            <Market />
+          </div>
+        </div>
+        <footer className="footer">
+          <div className="container">
+            &copy; 2021 <a href="https://loole.gg">Loole.gg</a>, made with love
+          </div>
+        </footer>
       </div>
     </>
   );

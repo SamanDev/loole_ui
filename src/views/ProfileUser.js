@@ -10,6 +10,7 @@ import { userDetails, getOffset, setAvatar } from "components/include";
 import { useUserProfile } from "services/hooks";
 import DashStat from "components/userstat.component";
 import GlobalContext from "context/GlobalState";
+import Market from "components/market.component";
 function scrollTo(elem) {
   var x = getOffset(document.getElementById(elem)).top;
 
@@ -104,6 +105,14 @@ function profile(prop) {
             <div className="container" style={{ minHeight: 500 }}>
               <UserEvents {...prop} user={currentUser} myStateLoc={true} />
             </div>
+          </div>
+        </div>
+        <div className="section   section-no-padding">
+          <div className="container" style={{ minHeight: 500 }}>
+            <h4 className="header-text  text-center" id="market">
+              Don't ever be out!
+            </h4>
+            <Market />
           </div>
         </div>
         <footer className="footer">
