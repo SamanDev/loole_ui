@@ -53,15 +53,15 @@ const Landing = () => {
         <div className="section section-gray" style={{ margin: 0 }}>
           <div className="container">
             {_constants == "terms-and-conditions" && (
-              <div class="td-pb-span8 td-main-content" role="main">
-                <div class="td-ss-main-content">
-                  <div class="clearfix"></div>
-                  <div class="td-page-header">
-                    <h1 class="entry-title td-page-title">
+              <div className="td-pb-span8 td-main-content" role="main">
+                <div className="td-ss-main-content">
+                  <div className="clearfix"></div>
+                  <div className="td-page-header">
+                    <h1 className="entry-title td-page-title">
                       <span>Terms and Conditions</span>
                     </h1>
                   </div>
-                  <div class="td-page-content tagdiv-type">
+                  <div className="td-page-content tagdiv-type">
                     <p>
                       <span>Updated August 14th. 2020</span>
                     </p>
@@ -1606,20 +1606,20 @@ const Landing = () => {
                       </span>
                     </p>
                   </div>
-                  <div class="clearfix"></div>
+                  <div className="clearfix"></div>
                 </div>
               </div>
             )}
             {_constants == "privacy-policy" && (
-              <div class="td-pb-span8 td-main-content" role="main">
-                <div class="td-ss-main-content">
-                  <div class="clearfix"></div>
-                  <div class="td-page-header">
-                    <h1 class="entry-title td-page-title">
+              <div className="td-pb-span8 td-main-content" role="main">
+                <div className="td-ss-main-content">
+                  <div className="clearfix"></div>
+                  <div className="td-page-header">
+                    <h1 className="entry-title td-page-title">
                       <span>Privacy Policy</span>
                     </h1>
                   </div>
-                  <div class="td-page-content tagdiv-type">
+                  <div className="td-page-content tagdiv-type">
                     <p>
                       <span>Effective Date:</span>&nbsp;March 10, 2020
                     </p>
@@ -3433,7 +3433,7 @@ const Landing = () => {
                       <span>(last modified: 10th of March, 2020)</span>
                     </p>
                   </div>
-                  <div class="clearfix"></div>
+                  <div className="clearfix"></div>
                 </div>
               </div>
             )}
