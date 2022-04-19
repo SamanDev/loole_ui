@@ -197,7 +197,7 @@ function Landing(prop) {
 
         <footer className="footer">
           <div className="container">
-            &copy; 2021 <a href="https://loole.gg">Loole.gg</a>, made with love
+            &copy; 2021 <a href="/home">Loole.gg</a>, made with love
           </div>
         </footer>
       </div>
