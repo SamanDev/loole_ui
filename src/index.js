@@ -370,12 +370,12 @@ function Main(prop) {
         }
       }
     });
-    setInterval(() => {
+    /*setInterval(() => {
       try {
         var el = document.getElementsByTagName("iframe")[0];
         el.remove();
       } catch (e) {}
-    }, 100000);
+    }, 100000);*/
   }, []);
   useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);
