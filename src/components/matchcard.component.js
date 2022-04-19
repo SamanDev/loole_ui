@@ -179,14 +179,14 @@ function MatchCard(prop) {
               size="25"
               round={true}
               name="?"
-              src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
+              src="/assets/img/avat.jpg"
               color="lightgray"
             />
             <Avatar
               size="25"
               round={true}
               name="?"
-              src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
+              src="/assets/img/avat.jpg"
               color="gray"
             />
           </span>

@@ -470,7 +470,7 @@ export const vsComponentPlayer = (
               <Avatar
                 size="50"
                 round={true}
-                src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
+                src="/assets/img/avat.jpg"
                 color="lightgray"
                 className="avatar"
               />
@@ -505,7 +505,7 @@ export const vsComponentPlayer = (
               <Avatar
                 size="50"
                 round={true}
-                src="https://graph.facebook.com/100008343750912/picture?width=200&height=200"
+                src="/assets/img/avat.jpg"
                 color="lightgray"
                 className="avatar"
               />
