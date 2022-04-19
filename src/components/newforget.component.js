@@ -153,8 +153,8 @@ function FormExampleFieldErrorLabel(prop) {
         fluid
         name="password"
         type="password"
-        label="Password"
-        placeholder="Password"
+        label="New Password"
+        placeholder="New Password"
         onChange={updateHandler}
       />
       <Form.Button
