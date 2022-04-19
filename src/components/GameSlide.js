@@ -12,7 +12,7 @@ export default function GameSlide() {
         <Header inverted as="h3" style={{ marginBottom: 5, width: 180 }}>
           {item.name}
         </Header>
-        <Header as="h5" inverted style={{ marginTop: 0 }}>
+        <Header as="div" inverted style={{ marginTop: 0 }}>
           {item.active ? (
             <>
               {item.haveMatch && "1 vs 1"}

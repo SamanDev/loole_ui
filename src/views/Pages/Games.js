@@ -186,15 +186,13 @@ const Landing = (prop) => {
                   <p>
                     Loole.gg is the best site to play&nbsp;FREE {_game}{" "}
                     tournaments and stand a chance to win amazing cash prizes.
-                    Every weekend thousands of players make money online
+                    Every weekend thousands sof players make money online
                     competing in our <b>Free {_game} tournaments</b>. We give
                     away&nbsp;
                     <strong>thousands of euros in prizes every season. </strong>
                     So, what are you waiting for?{" "}
-                    <b>
-                      Join our expansive {_game} community and start earning
-                      your share of the epic prizes!&nbsp;
-                    </b>
+                    <b>Join our expansive {_game} community </b>and start
+                    earning your share of the epic prizes!&nbsp;
                   </p>
                 </div>
                 <div className="clearfix"></div>
@@ -223,7 +221,7 @@ const Landing = (prop) => {
             <GameSlide />
           </div>
         </div>
-        <HowIt />
+
         <div className="section   section-no-padding">
           <div className="container" style={{ minHeight: 500 }}>
             <h4 className="header-text  text-center" id="market">

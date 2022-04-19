@@ -22,7 +22,7 @@ function MatchCard(prop) {
       />
 
       <div className="content extra">
-        <Card.Header as="h5" style={{ textAlign: "left" }}>
+        <Card.Header as="div" style={{ textAlign: "left", fontSize: 15 }}>
           {item.title}
         </Card.Header>
 
