@@ -1,13 +1,26 @@
-import React from "react";
-
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 // react-bootstrap components
 import GameSlide from "components/GameSlide";
-
+import { Card, Dimmer, Loader, Header, Breadcrumb } from "semantic-ui-react";
 const Landing = () => {
-  var _constants = window.location.href
-    .split("content/")[1]
-    .replace("%20", " ");
+  var _constants = window.location.href;
+  _constants = _constants.split("content/")[1].replace("%20", " ");
+  var _title = _constants.replace(/-/g, " ");
+  _title = _title.charAt(0).toUpperCase() + _title.slice(1);
+  useEffect(() => {
+    document.title = _title;
 
+    return () => {};
+  }, [_constants]);
+  const sections = [
+    { key: "Home", content: "Home", link: true, to: "/home", as: Link },
+    {
+      key: _title,
+      content: _title,
+      active: true,
+    },
+  ];
   return (
     <>
       <div className="wrapper">
@@ -22,7 +35,8 @@ const Landing = () => {
               src={"assets/images/games/8Pool.jpg"}
             />
           </div>
-          <div className="container">
+          <div className="container crump">
+            <Breadcrumb icon="right angle" sections={sections} />
             <div className="row">
               <div className="col-md-7"></div>
               <div className="col-md-5  hidden-xs">

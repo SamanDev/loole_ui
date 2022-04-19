@@ -74,7 +74,9 @@ function myFunction(classname, title) {
   x[2]?.classList.toggle("hide");
   x[3]?.classList.toggle("hide");
   x[4]?.classList.toggle("hide");
-  document.title = title;
+  if (title) {
+    document.title = title;
+  }
 }
 var unUser = defUser;
 if (localStorage.getItem("user")) {
@@ -225,7 +227,9 @@ function Main(prop) {
   }
   const { data: userReports } = useUserReports(userGet?.id);
   useEffect(() => {
-    document.title = "Login";
+    if (openModalLogin) {
+      document.title = "Login";
+    }
 
     return () => {};
   }, [openModalLogin]);
