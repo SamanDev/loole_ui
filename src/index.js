@@ -369,7 +369,7 @@ function Main(prop) {
     ReactGA.pageview(location.pathname + location.search);
     var newPath = location.pathname.split("/")[2];
 
-    if (myList.events == null && !eventsGet) {
+    if (currentUser?.accessToken && myList.events == null && !eventsGet) {
       queryClient.resetQueries(["Events"]);
     }
     var newEID = location.pathname.split("/")[2];

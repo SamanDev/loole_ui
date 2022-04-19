@@ -161,7 +161,11 @@ class ShetabDeposit extends Component {
     }
   }
   printErr = (error) => {
-    if (error?.response?.data?.status == 401 || error?.data?.status == 401) {
+    if (
+      error?.response?.data?.status == 401 ||
+      error?.data?.status == 401 ||
+      error?.response?.data?.details[0] == "Access is denied"
+    ) {
       prop.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
       prop.onUpdateItem("currentUser", defUser);

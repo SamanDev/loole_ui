@@ -385,8 +385,11 @@ class MatchSection extends Component {
       submit: false,
       loading: false,
     });
-    console.log(error);
-    if (error?.response?.data?.status == 401) {
+    if (
+      error?.response?.data?.status == 401 ||
+      error?.data?.status == 401 ||
+      error?.response?.data?.details[0] == "Access is denied"
+    ) {
       this.props.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
       this.context.setMyList({
