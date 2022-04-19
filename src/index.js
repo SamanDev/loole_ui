@@ -166,7 +166,10 @@ function Main(prop) {
     setUList({ currentUser: defUser });
     localStorage.setItem("user", JSON.stringify(defUser));
     AuthService.logout();
-    history.push("/home");
+    if (myPath == "panel") {
+      history.push("/home");
+      onUpdateItem("openModalLogin", false);
+    }
   };
   const findStateId = (st, val) => {
     return st.list.filter(function (v) {
