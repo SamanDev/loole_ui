@@ -424,11 +424,24 @@ class TournamentSection extends Component {
 
         content: hatchbackCar.map((mtch, z) => {
           hatchbackCar[z].matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
-          var _link = genLink(item, mtch);
-
+          var _link = genLink(item, mtch, z + 1);
+          var _tit =
+            item.gameMode +
+            " " +
+            item.gameName +
+            " for " +
+            item.prize +
+            item.outSign
+              .replace("Dollar", " USD")
+              .replace("Point", " Diamonds") +
+            " Prize  - " +
+            getMatchTitle(mtch.level, item.totalPlayer) +
+            " - No:" +
+            z +
+            1;
           return (
             <span key={z.toString()}>
-              <Link to={_link}>
+              <Link to={_link} rel="nofollow" title={_tit}>
                 <Segment inverted style={{ background: "none !important" }}>
                   <Grid columns={2}>
                     <Grid.Column

@@ -1709,7 +1709,7 @@ export const getGameTag = (game, userTags) => {
     );
   }
 };
-export const genLink = (item, match) => {
+export const genLink = (item, match, num) => {
   var _link =
     "/lobby/" +
     item.id +
@@ -1727,6 +1727,8 @@ export const genLink = (item, match) => {
       match.id +
       "/" +
       getMatchTitle(match.level, item.totalPlayer) +
+      " No" +
+      num +
       "/";
   }
 
