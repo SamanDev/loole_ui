@@ -200,7 +200,6 @@ function Admin(prop) {
     (item) =>
       item.username &&
       item.username.toLowerCase().indexOf("test") == -1 &&
-      item.username != currentUser.username &&
       item.username.toLowerCase().includes(filterText.toLowerCase())
   );
   const [firstOpen, setFirstOpen] = React.useState(false);
