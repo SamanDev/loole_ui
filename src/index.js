@@ -110,11 +110,10 @@ function Main(prop) {
       {
         id: "looleInfo",
         val: {
-          id: 555,
-          totalUser: 4,
-          totalMatch: 43,
-          totalBank: 4845.1,
-          totalCommission: 4.1000000000000005,
+          totalUser: 0,
+          totalMatch: 0,
+          totalBank: 0,
+          totalCommission: 0,
           date: "2022-01-02T14:57:43.810+00:00",
         },
       },
