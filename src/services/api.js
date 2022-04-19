@@ -77,7 +77,7 @@ const getInfo = async () => {
 };
 const getUser = async () => {
   // alert(JSON.stringify(authHeader()))
-  if (JSON.stringify(authHeader()) != "{}") {
+  if (JSON.stringify(authHeader()) != "{}" && authHeader()) {
     try {
       const { data } = await client.get("/getUser", { headers: authHeader() });
 
