@@ -278,10 +278,7 @@ class ShetabDeposit extends Component {
 
     this.form.validateAll();
 
-    if (
-      this.checkBtn.context._errors.length === 0 &&
-      !this.state.passreadyprp
-    ) {
+    if (this.checkBtn.context._errors.length === 0 && !this.state.passready) {
       this.setState({
         message: "",
         successful: false,
@@ -435,7 +432,7 @@ class ShetabDeposit extends Component {
     this.setState({
       message: "",
       successful: false,
-      passReady: true,
+
       loading: true,
     });
 
@@ -819,8 +816,9 @@ class ShetabDeposit extends Component {
                     <Button
                       color="red"
                       type="button"
-                      disabled={this.state.passReady}
+                      disabled={this.state.loading || this.state.passReady}
                       onClick={this.handleSendPass}
+                      loading={this.state.loading && !this.state.passReady}
                     >
                       Send Password
                     </Button>
@@ -903,7 +901,7 @@ class ShetabDeposit extends Component {
                   disabled={!this.state.passReady}
                   type="button"
                 >
-                  {this.state.loading && !this.state.passReady && (
+                  {this.state.loading && this.state.passReady && (
                     <span className="spinner-border spinner-border-sm  fa-wd"></span>
                   )}
                   <span> Deposit</span>
