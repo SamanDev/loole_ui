@@ -145,6 +145,7 @@ function LockScreenPage(prop) {
                 <br />
                 <br />
                 <h1>{title.replace(/-/g, " ")}</h1>
+                <Breadcrumb icon="right angle" sections={sections} />
                 {BackBTC()}
                 {haveAdmin(currentUser.roles) && (
                   <>
@@ -188,7 +189,7 @@ function LockScreenPage(prop) {
     },
     {
       key: event.gameMode,
-      content: event.gameMode,
+      content: title.replace(/-/g, " "),
       active: true,
     },
   ];
@@ -204,7 +205,7 @@ function LockScreenPage(prop) {
       },
       {
         key: event.gameMode,
-        content: event.gameMode,
+        content: title.replace(/-/g, " "),
         link: true,
         as: Link,
         to: "/lobby/" + event.id + "/" + title + "/",

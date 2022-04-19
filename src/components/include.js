@@ -335,7 +335,11 @@ export const getGroupBadgeBlock = (sign, amount, label, pos) => {
         </Label>
       )}
 
-      <Label size="small" basic>
+      <Label
+        size="small"
+        title={sign.replace("Dollar", "USD").replace("Point", "Diamonds")}
+        basic
+      >
         <Icon name={nIcon} color={nColor} />
 
         <CurrencyFormat
@@ -1715,7 +1719,7 @@ export const genLink = (item, match) => {
     item.gameName +
     " for " +
     item.prize +
-    item.outSign.replace("Dollar", " Bax").replace("Point", " Diamonds") +
+    item.outSign.replace("Dollar", " USD").replace("Point", " Diamonds") +
     " Prize/";
   if (match?.id && item.gameMode == "Tournament") {
     _link =
