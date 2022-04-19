@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlaystation, faXbox } from "@fortawesome/free-brands-svg-icons";
+import { useParams } from "react-router";
 import {
   faDesktop,
   faMobileAlt,
@@ -828,10 +829,14 @@ export const printEventBTN = (
   );
 };
 export const vsComponentTitle = (item) => {
+  var title = document.title;
+  title = title.replace(/-/g, " ");
   return (
     <>
       <Statistic inverted size="small" color={getColor(item.prize)}>
-        <Statistic.Value>{item.gameName} </Statistic.Value>
+        <Statistic.Value as="h1" style={{ margin: 0 }}>
+          {item.gameName}{" "}
+        </Statistic.Value>
         <Statistic.Label>
           <span className="text-muted">
             <FontAwesomeIcon fixedWidth icon={getIcon(item.gameConsole)} />{" "}
@@ -839,6 +844,7 @@ export const vsComponentTitle = (item) => {
           </span>
         </Statistic.Label>
       </Statistic>
+
       <div style={{ transform: "scale(1.6)" }}>
         <div style={{ margin: "15px 0", overflow: "hidden", width: "100%" }}>
           <div
@@ -867,6 +873,7 @@ export const vsComponentTitle = (item) => {
           </div>
         </div>
       </div>
+      <p>{title}</p>
     </>
   );
 };
