@@ -128,7 +128,7 @@ function Dashboard(prop) {
       );
     }
     return (
-      <Card.Group className="fours" style={{ marginBottom: 20 }}>
+      <Card.Group centered className="fours" style={{ marginBottom: 20 }}>
         {printBlockChallenge(newItem, filtermode, { ...prop })}
       </Card.Group>
     );

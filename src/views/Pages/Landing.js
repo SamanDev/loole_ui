@@ -24,6 +24,11 @@ function Landing(prop) {
       prop.onUpdateItem("looleInfo", looleInfo);
     }
   }, [looleInfo]);
+  useEffect(() => {
+    document.title = `Loole.GoodGame - Play Online Games for Cash`;
+
+    return () => {};
+  }, [prop]);
   return (
     <>
       <div className="wrapper">

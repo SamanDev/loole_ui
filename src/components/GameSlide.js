@@ -44,12 +44,13 @@ export default function GameSlide() {
           <h4 className="header-text text-center" style={{ color: "#fff" }}>
             GAMES YOU CAN PLAY
           </h4>
-          <Image.Group size="large">
+          <Image.Group size="large" style={{ textAlign: "center" }}>
             {Games.games.map((item, i) => {
               return (
                 <Image
                   bordered
                   rounded
+                  centered
                   key={i.toString()}
                   src={"/assets/images/games/" + item.name + ".jpg"}
                   alt={item.name}

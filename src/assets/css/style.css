@@ -1568,3 +1568,19 @@ video {
 .ui.steps .step > .icon ~ .content {
   min-height: auto !important;
 }
+
+.ui.breadcrumb,
+.crump .ui.breadcrumb {
+  display: block;
+  background: none !important;
+  padding: 20px 0 20px 0;
+  color: #fff;
+  text-align: left;
+}
+
+.crump .ui.breadcrumb .section {
+  background: none !important;
+}
+.ui.breadcrumb .divider {
+  color: rgba(255, 255, 255, 0.4);
+}

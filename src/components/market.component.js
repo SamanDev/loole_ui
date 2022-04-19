@@ -14,12 +14,12 @@ const getBlockChallenge = (filtermode, products) => {
   var newItem = [];
 
   products.map((item, i) => {
-    if (i < 3) {
+    if (i < 6) {
       newItem.push(item);
     }
   });
   return (
-    <Card.Group className="fours" style={{ marginBottom: 20 }}>
+    <Card.Group centered className="fours" style={{ marginBottom: 20 }}>
       {printBlockProduct(newItem)}
     </Card.Group>
   );

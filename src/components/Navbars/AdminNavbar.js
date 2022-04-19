@@ -9,7 +9,8 @@ import { defUser } from "const";
 import UserContext from "context/UserState";
 const LandNavbar = (prop) => {
   const history = useHistory();
-
+  const cashierMethod = prop.findStateId(prop.myState, "cashierMethod");
+  const openModalCashier = prop.findStateId(prop.myState, "openModalCashier");
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
   const logOut = () => {
@@ -19,6 +20,14 @@ const LandNavbar = (prop) => {
 
     history.push("/home");
   };
+  useEffect(() => {
+    var _page = prop.page.toString().replace(/,/g, "");
+    document.title = `Panel > ${_page}`;
+    if (cashierMethod && openModalCashier) {
+      document.title = `Panel > ${_page} > ${cashierMethod}`;
+    }
+    return () => {};
+  }, [prop.page, cashierMethod, openModalCashier]);
   return (
     <>
       <Menu

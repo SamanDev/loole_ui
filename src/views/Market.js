@@ -22,7 +22,7 @@ const getBlockChallenge = (filtermode, products) => {
     }
   });
   return (
-    <Card.Group className="fours" style={{ marginBottom: 20 }}>
+    <Card.Group centered className="fours" style={{ marginBottom: 20 }}>
       {printBlockProduct(newItem)}
     </Card.Group>
   );

@@ -12,6 +12,7 @@ import {
   Dimmer,
   Loader,
   Button,
+  Breadcrumb,
 } from "semantic-ui-react";
 import Active from "components/active.component";
 
@@ -49,6 +50,10 @@ function LockScreenPage(prop) {
     //prop.onUpdateItem("matchIDQ", parseInt(matchIDQ));
 
     document.title = title.replace(/-/g, " ");
+    if (params.matchlevel) {
+      document.title =
+        document.title + " - " + params.matchlevel.replace(/-/g, " ");
+    }
     return () => {};
   }, []);
   useEffect(() => {
@@ -165,7 +170,51 @@ function LockScreenPage(prop) {
       </>
     );
   }
-
+  var secSec = event.gameName;
+  var secLink = "/game/" + event.gameName;
+  if (currentUser?.accessToken) {
+    secSec = "Dashboard";
+    secLink = "/panel/dashboard";
+  }
+  var sections = [
+    { key: "Home", content: "Home", link: true, to: "/home", as: Link },
+    {
+      key: secSec,
+      content: secSec,
+      link: true,
+      as: Link,
+      to: secLink,
+    },
+    {
+      key: event.gameMode,
+      content: event.gameMode,
+      active: true,
+    },
+  ];
+  if (matchIDQ) {
+    sections = [
+      { key: "Home", content: "Home", link: true, to: "/home", as: Link },
+      {
+        key: secSec,
+        content: secSec,
+        link: true,
+        as: Link,
+        to: secLink,
+      },
+      {
+        key: event.gameMode,
+        content: event.gameMode,
+        link: true,
+        as: Link,
+        to: "/lobby/" + event.id + "/" + title + "/",
+      },
+      {
+        key: params.matchlevel.replace(/-/g, " "),
+        content: params.matchlevel.replace(/-/g, " "),
+        active: true,
+      },
+    ];
+  }
   return (
     <>
       <div
@@ -286,9 +335,10 @@ function LockScreenPage(prop) {
                         </Button>
                       </>
                     )}
+                    <Breadcrumb icon="right angle" sections={sections} />
                   </Col>
                 </Container>
-                <div style={{ height: "calc(100vh - 50px)", overflow: "auto" }}>
+                <div style={{ height: "calc(100vh - 90px)", overflow: "auto" }}>
                   <Container style={{ paddingBottom: 50 }}>
                     {eventDef.gameMode == "League" ? (
                       <LeagueSection {...prop} event={eventDef} />

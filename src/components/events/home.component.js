@@ -50,7 +50,7 @@ const HomeEvents = (prop) => {
         }
       });
       return (
-        <Card.Group className="fours" style={{ marginBottom: 20 }}>
+        <Card.Group className="fours" centered style={{ marginBottom: 20 }}>
           {printBlockChallenge(newItem, filtermode, { ...prop })}
         </Card.Group>
       );

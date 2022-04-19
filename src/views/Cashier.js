@@ -11,6 +11,7 @@ import { Card, Row, Col } from "react-bootstrap";
 
 function Cashier(prop) {
   const [myState, setMyState] = useState(prop.myState);
+
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
@@ -165,7 +166,7 @@ function Cashier(prop) {
       ),
     },
   ];
-
+  //if (typeof _title === "undefined") return null;
   return (
     <>
       <Active {...prop} />

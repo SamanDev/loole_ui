@@ -67,13 +67,14 @@ const cache = new Cache({
   sourceSize: 20,
 });
 ReactGA.initialize(TrackingID);
-function myFunction(classname) {
+function myFunction(classname, title) {
   var x = document.getElementsByClassName(classname);
   x[0]?.classList.toggle("hide");
   x[1]?.classList.toggle("hide");
   x[2]?.classList.toggle("hide");
   x[3]?.classList.toggle("hide");
   x[4]?.classList.toggle("hide");
+  document.title = title;
 }
 var unUser = defUser;
 if (localStorage.getItem("user")) {
@@ -223,6 +224,11 @@ function Main(prop) {
     localStorage.setItem("reffer", _i);
   }
   const { data: userReports } = useUserReports(userGet?.id);
+  useEffect(() => {
+    document.title = "Login";
+
+    return () => {};
+  }, [openModalLogin]);
   useEffect(() => {
     if (userReports) {
       updateNot(userReports);
@@ -491,7 +497,7 @@ function Main(prop) {
                 <Grid relaxed="very">
                   <Grid.Column mobile={16}>
                     <div className="togllehide togllehideforget">
-                      <Header as="h3" inverted>
+                      <Header as="h2" inverted>
                         Login
                       </Header>
 
@@ -505,7 +511,9 @@ function Main(prop) {
                       <Button
                         size="mini"
                         fluid
-                        onClick={() => myFunction("togllehideforget")}
+                        onClick={() =>
+                          myFunction("togllehideforget", "Password Recovery")
+                        }
                         color="black"
                         content="Password Recovery"
                       />
@@ -516,7 +524,9 @@ function Main(prop) {
                         size="small"
                         fluid
                         inverted
-                        onClick={() => myFunction("togllehide")}
+                        onClick={() =>
+                          myFunction("togllehide", "Create Account")
+                        }
                         color="orange"
                       >
                         Don’t have an account?
@@ -527,7 +537,7 @@ function Main(prop) {
                       </Button>
                     </div>
                     <div className="togllehide hide">
-                      <Header as="h3" inverted>
+                      <Header as="h2" inverted>
                         Create Account
                       </Header>
 
@@ -539,7 +549,7 @@ function Main(prop) {
                         size="small"
                         fluid
                         inverted
-                        onClick={() => myFunction("togllehide")}
+                        onClick={() => myFunction("togllehide", "Login")}
                         color="blue"
                         content="Login to your account"
                       />
@@ -547,7 +557,7 @@ function Main(prop) {
 
                     <span>
                       <div className="togllehideforget hide">
-                        <Header as="h4" inverted>
+                        <Header as="h2" inverted>
                           Password Recovery
                         </Header>
 
@@ -560,7 +570,9 @@ function Main(prop) {
                           size="small"
                           fluid
                           inverted
-                          onClick={() => myFunction("togllehideforget")}
+                          onClick={() =>
+                            myFunction("togllehideforget", "Login")
+                          }
                           color="blue"
                           content="Login to your account"
                         />

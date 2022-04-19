@@ -119,7 +119,7 @@ class ShetabDeposit extends Component {
       value: value.target.innerText,
       text: value.target.innerText,
     };
-    console.log(JSON.stringify(_val));
+    //console.log(JSON.stringify(_val));
     this.setMethodPay(_val);
   }
   setMethodPay(_val) {
@@ -221,7 +221,7 @@ class ShetabDeposit extends Component {
       cvv: e.cvv,
       submit: false,
     });
-    console.log(this.state);
+    //console.log(this.state);
   }
   setExpiration(e) {
     this.setState({
@@ -534,7 +534,7 @@ class ShetabDeposit extends Component {
       };
       this.setCardDef(_newval);
     }
-    console.log(currentUser2.payMethod[0]);
+    //console.log(currentUser2.payMethod[0]);
     this.setMethodPay(currentUser2.payMethod[0]);
   }
   render() {

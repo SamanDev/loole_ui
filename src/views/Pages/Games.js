@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { printBlockChallenge } from "components/include";
-import { Card, Dimmer, Loader, Header } from "semantic-ui-react";
+import { Card, Dimmer, Loader, Header, Breadcrumb } from "semantic-ui-react";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 // react-bootstrap components
 import GameSlide from "components/GameSlide";
 import Games from "server/Games";
@@ -98,27 +99,41 @@ const Landing = (prop) => {
       );
     }
     return (
-      <Card.Group className="fours" style={{ marginBottom: 20 }}>
+      <Card.Group centered className="fours" style={{ marginBottom: 20 }}>
         {printBlockChallenge(newItem, filtermode, { ...prop })}
       </Card.Group>
     );
   };
+  useEffect(() => {
+    document.title = `Play ${_game} for Real Money.`;
 
+    return () => {};
+  }, [prop]);
+  const sections = [
+    { key: "Home", content: "Home", link: true, to: "/home", as: Link },
+    {
+      key: _game,
+      content: _game,
+      active: true,
+    },
+  ];
   return (
     <>
       <div className="wrapper">
         <div
           className={"parallax filter-gradient " + _color + " section-gray"}
           data-color="red"
-          style={{ height: 200 }}
+          style={{ height: 300 }}
         >
-          <div className="parallax-background" style={{ height: 200 }}>
+          <div className="parallax-background">
             <img
               className="parallax-background-image"
+              style={{ filter: "blur(3px)" }}
               src={"/assets/images/games/" + _game + ".jpg"}
             />
           </div>
-          <div className="container">
+          <div className="container crump">
+            <Breadcrumb icon="right angle" sections={sections} />
             <h2
               className="header-text text-center"
               style={{
@@ -138,6 +153,7 @@ const Landing = (prop) => {
             </h1>
           </div>
         </div>
+
         <div className="section section-gray" style={{ margin: 0 }}>
           <div className="container">
             <h4 className="header-text text-center">Is it Real Cash?</h4>

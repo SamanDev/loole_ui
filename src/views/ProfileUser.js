@@ -5,12 +5,13 @@ import "react-vertical-timeline-component/style.min.css";
 import TagsForm from "components/profile/tags.component";
 import UserEvents from "components/events/user.component";
 // react-bootstrap components
-import { Dimmer, Loader, Segment } from "semantic-ui-react";
+import { Dimmer, Loader, Segment, Breadcrumb } from "semantic-ui-react";
 import { userDetails, getOffset, setAvatar } from "components/include";
 import { useUserProfile } from "services/hooks";
 import DashStat from "components/userstat.component";
 import GlobalContext from "context/GlobalState";
 import Market from "components/market.component";
+import { Link } from "react-router-dom";
 function scrollTo(elem) {
   var x = getOffset(document.getElementById(elem)).top;
 
@@ -44,7 +45,14 @@ function profile(prop) {
   }
 
   var str = currentUser.username;
-
+  const sections = [
+    { key: "Home", content: "Home", link: true, to: "/home", as: Link },
+    {
+      key: str,
+      content: str + " Profile",
+      active: true,
+    },
+  ];
   var res = str.substring(0, 1);
   res = res + " " + str.substring(1, 2);
   res = setAvatar(str);
@@ -61,7 +69,8 @@ function profile(prop) {
               src="/assets/img/showcases/showcase-1/bg.jpg"
             />
           </div>
-          <div className="container user">
+          <div className="container user crump">
+            <Breadcrumb icon="right angle" sections={sections} />
             <div className="row">
               <div className="col-md-12">
                 <div className="description">
