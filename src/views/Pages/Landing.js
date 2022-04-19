@@ -43,6 +43,7 @@ function Landing(prop) {
             <img
               className="parallax-background-image"
               src="/assets/img/showcases/showcase-1/bg.jpg"
+              alt="loole home"
             />
           </div>
           <div className="container">
@@ -74,6 +75,7 @@ function Landing(prop) {
                   <img
                     className="phone"
                     src="assets/img/showcases/showcase-1/iphone.png"
+                    alt="loole dashboard"
                   />
                 </div>
               </div>
@@ -82,7 +84,7 @@ function Landing(prop) {
         </div>
         <div className="section section-gray section-clients section-no-padding">
           <div className="container text-center">
-            <h4 className="header-text">They were the first to go PlayIT</h4>
+            <h2 className="header-text">They were the first to go PlayIT</h2>
             <p>
               How're you? The Loole introduces the players to each other and
               puts my pair of money in a safe place. After the game, the winner
@@ -143,7 +145,10 @@ function Landing(prop) {
                   </div>
                 </div>
                 <div className="col-md-6 mobile hidden">
-                  <img src="assets/img/showcases/showcase-1/mac.png" />
+                  <img
+                    src="assets/img/showcases/showcase-1/mac.png"
+                    alt="loole on pc"
+                  />
                 </div>
               </div>
             </div>
@@ -151,7 +156,10 @@ function Landing(prop) {
           <div className="container">
             <div className="row">
               <div className="col-md-6 mobile hidden">
-                <img src="assets/img/showcases/showcase-1/iphones.png" />
+                <img
+                  src="assets/img/showcases/showcase-1/iphones.png"
+                  alt="loole on mobile"
+                />
               </div>
               <div className="col-md-6">
                 <div className="description">

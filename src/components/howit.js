@@ -52,6 +52,7 @@ export default function GameSlide() {
                       <div className="col-md-3" key={index}>
                         <img
                           src={"/assets/img/" + value + ".jpg"}
+                          alt={"how it work " + value}
                           style={{
                             maxWidth: "90%",
                             margin: "10px auto",
