@@ -155,7 +155,53 @@ const Landing = (prop) => {
             </h1>
           </div>
         </div>
-
+        <div className="section" style={{ margin: 0 }}>
+          <div className="container">
+            <div className="td-pb-span8 td-main-content" role="main">
+              <div className="td-ss-main-content">
+                <div className="clearfix"></div>
+                <div className="td-page-header">
+                  <h3 className="entry-title td-page-title">
+                    <span>Play {_game} for Money</span>
+                  </h3>
+                </div>
+                <div className="td-page-content tagdiv-type">
+                  <p>
+                    Have you ever dreamed of{" "}
+                    <b>making money just by playing {_game} on your console?</b>
+                    &nbsp;Well, this dream is now a reality for thousands of
+                    gamers on <b>Loole.gg </b>Loole is a&nbsp;new esports
+                    platform that lets you bet money on your
+                    {_game} skills against other online players from around the
+                    world.
+                  </p>
+                </div>
+                <br /> <br />
+                <div className="td-page-header">
+                  <h3 className="entry-title td-page-title">
+                    <span>FREE {_game} Tournaments</span>
+                  </h3>
+                </div>
+                <div className="td-page-content tagdiv-type">
+                  <p>
+                    Loole.gg is the best site to play&nbsp;FREE {_game}{" "}
+                    tournaments and stand a chance to win amazing cash prizes.
+                    Every weekend thousands of players make money online
+                    competing in our <b>Free {_game} tournaments</b>. We give
+                    away&nbsp;
+                    <strong>thousands of euros in prizes every season. </strong>
+                    So, what are you waiting for?{" "}
+                    <b>
+                      Join our expansive {_game} community and start earning
+                      your share of the epic prizes!&nbsp;
+                    </b>
+                  </p>
+                </div>
+                <div className="clearfix"></div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="section section-gray" style={{ margin: 0 }}>
           <div className="container">
             <h4 className="header-text text-center">Is it Real Cash?</h4>

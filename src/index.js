@@ -68,12 +68,14 @@ const cache = new Cache({
 });
 ReactGA.initialize(TrackingID);
 function myFunction(classname, title) {
-  var x = document.getElementsByClassName(classname);
-  x[0]?.classList.toggle("hide");
-  x[1]?.classList.toggle("hide");
-  x[2]?.classList.toggle("hide");
-  x[3]?.classList.toggle("hide");
-  x[4]?.classList.toggle("hide");
+  if (classname) {
+    var x = document.getElementsByClassName(classname);
+    x[0]?.classList.toggle("hide");
+    x[1]?.classList.toggle("hide");
+    x[2]?.classList.toggle("hide");
+    x[3]?.classList.toggle("hide");
+    x[4]?.classList.toggle("hide");
+  }
   if (title) {
     document.title = title;
   }
@@ -733,7 +735,7 @@ function App() {
 
 ReactDOM.render(
   <BrowserRouter>
-    <ConfigProvider cache={cache}>
+    <ConfigProvider>
       <App />
     </ConfigProvider>
   </BrowserRouter>,
