@@ -43,9 +43,9 @@ function Landing(prop) {
             <div className="row">
               <div className="col-md-7">
                 <div className="description">
-                  <h2>
+                  <h1>
                     With Loole App you can make money from your games skils
-                  </h2>
+                  </h1>
                   <br />
                   <p>
                     Now gaming is not just about spending time, it is about
