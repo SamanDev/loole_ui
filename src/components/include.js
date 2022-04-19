@@ -1732,7 +1732,7 @@ export const genLink = (item, match, num) => {
       "/";
   }
 
-  return _link.replace(/ /g, "-");
+  return _link.replace(/ /g, "-").replace("-Noundefined", "");
 };
 export const findActiveMatch = (event, matchID, username) => {
   var _match;
