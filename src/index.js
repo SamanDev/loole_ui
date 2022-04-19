@@ -476,7 +476,7 @@ function Main(prop) {
             basic
             size="small"
             dimmer="blurring"
-            style={{ maxWidth: 450 }}
+            style={{ maxWidth: 510 }}
             open={openModalLogin}
             onClose={() => {
               if (!isLoading) {
