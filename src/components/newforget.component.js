@@ -9,7 +9,7 @@ function FormExampleFieldErrorLabel(prop) {
   const [myState, setMyState] = useState({
     list: [
       { id: "email", val: "" },
-      { id: "reffer", val: "" },
+      { id: "password", val: "" },
       { id: "accept", val: false },
       { id: "hasError", val: false },
       { id: "loading", val: false },
@@ -69,28 +69,21 @@ function FormExampleFieldErrorLabel(prop) {
   };
   const handleSubmit = () => {
     var email = findStateId(myState, "email");
-
-    var reffer = null;
-    if (localStorage.getItem("reffer")) {
-      reffer = localStorage.getItem("reffer");
-    }
+    var password = findStateId(myState, "password");
 
     onUpdateItem("loading", true);
 
     if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
-      AuthService.register(email).then(
+      AuthService.forgetPass(email, password).then(
         (response) => {
           onUpdateItem("loading", false);
 
-          if (response.data.accessToken) {
-            prop.onUpdateItem("currentUser", response.data);
-            localStorage.setItem("user", JSON.stringify(response.data));
-            UserWebsocket.disconnect();
-            UserWebsocket.connect(
-              response.data.accessToken + "&user=" + response.data.username,
-              response.data
-            );
-            history.push("/panel/dashboard");
+          if (response.data == "Waiting...") {
+            Swal.fire(
+              "",
+              "Activation link send to <b>" + email + "</b> successfully.",
+              "success"
+            ).then((result) => {});
           } else {
             onUpdateItem("loading", false);
             Swal.fire({
@@ -101,17 +94,37 @@ function FormExampleFieldErrorLabel(prop) {
           }
         },
         (error) => {
-          const resMessage =
+          var resMessage =
             (error.response &&
               error.response.data &&
               error.response.data.message) ||
             error.message ||
             error.toString();
+          if (resMessage == "Validation Failed") {
+            var _alarm = error.response.data?.details[0].toString();
+
+            if (error.response.data?.details.length > 1) {
+              _alarm =
+                _alarm + "\n" + error.response.data?.details[1].toString();
+            }
+            try {
+              _alarm = _alarm
+                .replace("\n", "</li><li>")
+                .replace("\n", "</li><li>")
+                .replace("\n", "</li><li>")
+                .replace("\n", "</li><li>");
+            } catch (e) {}
+
+            resMessage =
+              "<ul style='text-align: left;list-style: circle;font-size: 13px;'><li>" +
+              _alarm +
+              "</li></ul>";
+          }
           onUpdateItem("loading", false);
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: resMessage,
+            html: resMessage,
           });
         }
       );
@@ -121,6 +134,7 @@ function FormExampleFieldErrorLabel(prop) {
   };
 
   var email = findStateId(myState, "email");
+  var password = findStateId(myState, "password");
 
   var loading = findStateId(myState, "loading");
   return (
@@ -134,7 +148,15 @@ function FormExampleFieldErrorLabel(prop) {
         placeholder="Email"
         onChange={updateHandler}
       />
-
+      <Form.Input
+        error={getError(password, "Please enter your password", "")}
+        fluid
+        name="password"
+        type="password"
+        label="Password"
+        placeholder="Password"
+        onChange={updateHandler}
+      />
       <Form.Button
         loading={loading}
         onClick={() => onUpdateItem("submit", true)}

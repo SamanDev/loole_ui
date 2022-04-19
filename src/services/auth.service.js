@@ -79,6 +79,16 @@ class AuthService {
         return response;
       });
   }
+  forgetPass(email, newPassword) {
+    return axios
+      .put(API_URL + "forgetPassword", {
+        email,
+        newPassword,
+      })
+      .then((response) => {
+        return response;
+      });
+  }
 
   getCurrentUser() {
     if (localStorage.getItem("user")) {

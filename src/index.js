@@ -473,6 +473,7 @@ function Main(prop) {
             basic
             size="small"
             dimmer="blurring"
+            style={{ maxWidth: 450 }}
             open={openModalLogin}
             onClose={() => {
               if (!isLoading) {
@@ -486,7 +487,7 @@ function Main(prop) {
             <Modal.Content>
               <Segment inverted padded="very">
                 <Grid relaxed="very">
-                  <Grid.Column mobile={16} tablet={8} computer={8}>
+                  <Grid.Column mobile={16}>
                     <div className="togllehide togllehideforget">
                       <Header as="h3" inverted>
                         Login
@@ -494,60 +495,50 @@ function Main(prop) {
 
                       <Login onUpdateItem={onUpdateItem} />
                     </div>
-                    <span className="mobile only">
-                      <div
-                        className="togllehide togllehideforget"
-                        style={{ marginTop: 10 }}
-                      >
-                        <Button
-                          size="mini"
-                          fluid
-                          onClick={() => myFunction("togllehideforget")}
-                          color="black"
-                          content="Password Recovery"
-                        />
-                        <Divider horizontal inverted style={{ marginTop: 10 }}>
-                          Or
-                        </Divider>
-                        <Button
-                          size="small"
-                          fluid
-                          inverted
-                          onClick={() => myFunction("togllehide")}
-                          color="orange"
-                          content="Create Account"
-                        />
-                      </div>
-                      <div className="togllehide hide">
-                        <Header as="h3" inverted>
-                          Create Account
-                        </Header>
 
-                        <Register onUpdateItem={onUpdateItem} />
-                        <Divider horizontal inverted style={{ marginTop: 20 }}>
-                          Or
-                        </Divider>
-                        <Button
-                          size="small"
-                          fluid
-                          inverted
-                          onClick={() => myFunction("togllehide")}
-                          color="blue"
-                          content="Login to your account"
-                        />
-                      </div>
-                    </span>
+                    <div
+                      className="togllehide togllehideforget"
+                      style={{ marginTop: 10 }}
+                    >
+                      <Button
+                        size="mini"
+                        fluid
+                        onClick={() => myFunction("togllehideforget")}
+                        color="black"
+                        content="Password Recovery"
+                      />
+                      <Divider horizontal inverted style={{ marginTop: 10 }}>
+                        Or
+                      </Divider>
+                      <Button
+                        size="small"
+                        fluid
+                        inverted
+                        onClick={() => myFunction("togllehide")}
+                        color="orange"
+                        content="Create Account"
+                      />
+                    </div>
+                    <div className="togllehide hide">
+                      <Header as="h3" inverted>
+                        Create Account
+                      </Header>
+
+                      <Register onUpdateItem={onUpdateItem} />
+                      <Divider horizontal inverted style={{ marginTop: 20 }}>
+                        Or
+                      </Divider>
+                      <Button
+                        size="small"
+                        fluid
+                        inverted
+                        onClick={() => myFunction("togllehide")}
+                        color="blue"
+                        content="Login to your account"
+                      />
+                    </div>
+
                     <span>
-                      <div className="togllehideforget mobile hidden">
-                        <Divider horizontal inverted style={{ marginTop: 40 }}>
-                          Or
-                        </Divider>
-                        <Header as="h4" inverted>
-                          Password Recovery
-                        </Header>
-
-                        <Forget onUpdateItem={onUpdateItem} />
-                      </div>
                       <div className="togllehideforget hide">
                         <Header as="h4" inverted>
                           Password Recovery
@@ -569,22 +560,7 @@ function Main(prop) {
                       </div>
                     </span>
                   </Grid.Column>
-
-                  <Grid.Column mobile={16} tablet={8} computer={8}>
-                    <span className="mobile hidden">
-                      <Header as="h3" inverted>
-                        Create Account
-                      </Header>
-
-                      <Register onUpdateItem={onUpdateItem} />
-                    </span>
-                  </Grid.Column>
                 </Grid>
-                <span className="mobile hidden">
-                  <Divider vertical inverted>
-                    OR
-                  </Divider>
-                </span>
               </Segment>
             </Modal.Content>
           </Modal>

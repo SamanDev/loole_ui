@@ -114,22 +114,26 @@ function FormExampleFieldErrorLabel(prop) {
             error.message ||
             error.toString();
           if (resMessage == "Validation Failed") {
+            var _alarm = error.response.data?.details[0].toString();
+
+            if (error.response.data?.details.length > 1) {
+              _alarm =
+                _alarm + "\n" + error.response.data?.details[1].toString();
+            }
+            try {
+              _alarm = _alarm
+                .replace("\n", "</li><li>")
+                .replace("\n", "</li><li>")
+                .replace("\n", "</li><li>")
+                .replace("\n", "</li><li>");
+            } catch (e) {}
+
             resMessage =
               "<ul style='text-align: left;list-style: circle;font-size: 13px;'><li>" +
-              error.response.data.details[0]
-                .replace("\n", "</li><li>")
-                .replace("\n", "</li><li>")
-                .replace("\n", "</li><li>")
-                .replace("\n", "</li><li>") +
-              "</li><li>" +
-              error.response.data.details[1]
-                .replace("\n", "</li><li>")
-                .replace("\n", "</li><li>")
-                .replace("\n", "</li><li>")
-                .replace("\n", "</li><li>") +
+              _alarm +
               "</li></ul>";
           }
-          console.log(resMessage);
+
           onUpdateItem("loading", false);
           Swal.fire({
             icon: "error",
