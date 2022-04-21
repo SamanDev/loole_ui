@@ -39,15 +39,22 @@ function LockScreenPage(prop) {
   const Econtext = useContext(EventContext);
 
   const title = params.title;
-  _tit = title.replace(/-/g, " ");
-  if (params.matchlevel) {
-    _tit = _tit + " - " + params.matchlevel.replace(/-/g, " ");
-  }
+
   _arrTit = title.split("-");
   const _desc =
     "Loole.gg is an online global platform where you can compete for real cash and coins in your " +
     _arrTit[1] +
     " game.";
+  _tit = _arrTit[1] + " " + _arrTit[0];
+  if (params.matchlevel) {
+    _tit =
+      _tit +
+      " - " +
+      params.matchlevel
+        .replace(/-/g, " ")
+        .replace("Final No1", "Final Match")
+        .replace(" No", " No ");
+  }
   const { currentUser } = context.uList;
   const { event } = Econtext.eList;
   const eventDef = event;
@@ -241,6 +248,20 @@ function LockScreenPage(prop) {
   }
   return (
     <>
+      <Helmet>
+        <title>{_tit}</title>
+        <meta name="description" content={_desc} />
+        <meta
+          name="keywords"
+          content={
+            "loole.gg, " +
+            _arrTit[1] +
+            ", " +
+            _arrTit[0] +
+            ", gaming, video, games, challenge, competition"
+          }
+        />
+      </Helmet>
       <div
         className="full-page lock-page"
         data-color="black"
