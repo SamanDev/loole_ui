@@ -141,8 +141,60 @@ function LockScreenPage(prop) {
       () => {}
     );
   };
-
-  if (!eventDef || !currentUser || (!match && eventDef?.gameMode != "League")) {
+  var secSec = _arrTit[1];
+  var secLink = "/game/" + _arrTit[1];
+  if (currentUser?.accessToken) {
+    secSec = "Dashboard";
+    secLink = "/panel/dashboard";
+  }
+  var sections = [
+    { key: "Home", content: "Home", link: true, to: "/home", as: Link },
+    {
+      key: secSec,
+      content: secSec,
+      link: true,
+      as: Link,
+      to: secLink,
+    },
+    {
+      key: _arrTit[1],
+      content: _arrTit[1] + " " + _arrTit[0],
+      active: true,
+    },
+  ];
+  if (matchIDQ) {
+    sections = [
+      { key: "Home", content: "Home", link: true, to: "/home", as: Link },
+      {
+        key: secSec,
+        content: secSec,
+        link: true,
+        as: Link,
+        to: secLink,
+      },
+      {
+        key: _arrTit[0],
+        content: _arrTit[0],
+        link: true,
+        as: Link,
+        to: "/lobby/" + event.id + "/" + title + "/",
+      },
+      {
+        key: params.matchlevel.replace(/-/g, " "),
+        content: params.matchlevel
+          .replace(/-/g, " ")
+          .replace("Final No1", "Final Match")
+          .replace(" No", " No "),
+        active: true,
+      },
+    ];
+  }
+  if (
+    !eventDef ||
+    1 == 2 ||
+    !currentUser ||
+    (!match && eventDef?.gameMode != "League")
+  ) {
     return (
       <>
         <Helmet>
@@ -163,26 +215,21 @@ function LockScreenPage(prop) {
               background: "transparent",
             }}
           >
+            <Container
+              style={{
+                top: "0",
+                width: "100%",
+                position: "relative",
+                zIndex: 3,
+                color: "#fff",
+              }}
+            >
+              <Breadcrumb icon="right angle" sections={sections} />
+              <h1>{title.replace(/-/g, " ")}</h1>
+              <p>{_desc}</p>
+            </Container>
             <Dimmer active style={{ background: "transparent" }}>
-              <Loader size="large">
-                Loading
-                <br />
-                <br />
-                <h1>{title.replace(/-/g, " ")}</h1>
-                <Breadcrumb icon="right angle" sections={sections} />
-                {BackBTC()}
-                {haveAdmin(currentUser.roles) && (
-                  <>
-                    <br />
-                    <br /> <br />
-                    <br /> <br />
-                    <br />
-                    <Button inverted color="red" onClick={handleDelete}>
-                      Delet Match
-                    </Button>
-                  </>
-                )}
-              </Loader>
+              <Loader size="large">Loading</Loader>
             </Dimmer>
           </Segment>
 
@@ -196,69 +243,12 @@ function LockScreenPage(prop) {
       </>
     );
   }
-  var secSec = event.gameName;
-  var secLink = "/game/" + event.gameName;
-  if (currentUser?.accessToken) {
-    secSec = "Dashboard";
-    secLink = "/panel/dashboard";
-  }
-  var sections = [
-    { key: "Home", content: "Home", link: true, to: "/home", as: Link },
-    {
-      key: secSec,
-      content: secSec,
-      link: true,
-      as: Link,
-      to: secLink,
-    },
-    {
-      key: event.gameMode,
-      content: _arrTit[1] + " " + _arrTit[0],
-      active: true,
-    },
-  ];
-  if (matchIDQ) {
-    sections = [
-      { key: "Home", content: "Home", link: true, to: "/home", as: Link },
-      {
-        key: secSec,
-        content: secSec,
-        link: true,
-        as: Link,
-        to: secLink,
-      },
-      {
-        key: event.gameMode,
-        content: _arrTit[0],
-        link: true,
-        as: Link,
-        to: "/lobby/" + event.id + "/" + title + "/",
-      },
-      {
-        key: params.matchlevel.replace(/-/g, " "),
-        content: params.matchlevel
-          .replace(/-/g, " ")
-          .replace("Final No1", "Final Match")
-          .replace(" No", " No "),
-        active: true,
-      },
-    ];
-  }
+
   return (
     <>
       <Helmet>
         <title>{_tit}</title>
         <meta name="description" content={_desc} />
-        <meta
-          name="keywords"
-          content={
-            "loole.gg, " +
-            _arrTit[1] +
-            ", " +
-            _arrTit[0] +
-            ", gaming, video, games, challenge, competition"
-          }
-        />
       </Helmet>
       <div
         className="full-page lock-page"
