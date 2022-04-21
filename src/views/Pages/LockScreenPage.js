@@ -208,7 +208,7 @@ function LockScreenPage(prop) {
     },
     {
       key: event.gameMode,
-      content: title.replace(/-/g, " "),
+      content: _arrTit[1] + " " + _arrTit[0],
       active: true,
     },
   ];
@@ -224,14 +224,17 @@ function LockScreenPage(prop) {
       },
       {
         key: event.gameMode,
-        content: title.replace(/-/g, " "),
+        content: _arrTit[0],
         link: true,
         as: Link,
         to: "/lobby/" + event.id + "/" + title + "/",
       },
       {
         key: params.matchlevel.replace(/-/g, " "),
-        content: params.matchlevel.replace(/-/g, " "),
+        content: params.matchlevel
+          .replace(/-/g, " ")
+          .replace("Final No1", "Final Match")
+          .replace(" No", " No "),
         active: true,
       },
     ];
