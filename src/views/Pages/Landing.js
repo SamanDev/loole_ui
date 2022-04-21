@@ -69,6 +69,9 @@ function Landing(prop) {
                     you can earn money. It only plays with gamers around the
                     world who claim to be like you.
                   </p>
+                  <br />
+                  <br />
+                  <br />
                 </div>
               </div>
               <div className="col-md-5  hidden-xs">
