@@ -157,7 +157,7 @@ function LockScreenPage(prop) {
       to: secLink,
     },
     {
-      key: _arrTit[1],
+      key: _arrTit[1] + " " + _arrTit[0],
       content: _arrTit[1] + " " + _arrTit[0],
       active: true,
     },
