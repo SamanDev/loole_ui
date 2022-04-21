@@ -929,7 +929,7 @@ export const vsComponent = (
       <Countdown
         renderer={rendererBig}
         finish={item.status + "@@@" + _finishTxt}
-        txt="@@@Avalable until"
+        txt="@@@Available until"
         match={match}
         colorfinish={getColor(item.prize)}
         date={item.expire}
@@ -2565,7 +2565,7 @@ export const printGameBlock = (item) => {
           Play {item.name} for Cash now!
         </Button>
         <p>
-          Avalable for:{" "}
+          Available for:{" "}
           {item.gameconsole.map((consolename, z) => (
             <small className="text-muted" key={z}>
               <FontAwesomeIcon

@@ -69,10 +69,6 @@ function Landing(prop) {
                     you can earn money. It only plays with gamers around the
                     world who claim to be like you.
                   </p>
-                  <h5>
-                    <br />
-                    <br />
-                  </h5>
                 </div>
               </div>
               <div className="col-md-5  hidden-xs">
@@ -193,7 +189,7 @@ function Landing(prop) {
           <div className="container" style={{ minHeight: 500 }}>
             <h4 className="header-text text-center">Is it Real Cash?</h4>
             <p className="header-text text-center">
-              Absolutly YES! Cash on the table.
+              Absolutely YES! Cash on the table.
             </p>
 
             <HomeEvents {...prop} />

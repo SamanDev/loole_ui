@@ -322,15 +322,15 @@ class LeagueSection extends Component {
             match={item}
             txt="@@@Start at"
             colorfinish={getColorStatus(item.status)}
-            finish={item.status + "@@@Not Avalable"}
+            finish={item.status + "@@@Not Available"}
             date={item.startTime}
           />
           <Countdown
             renderer={rendererBig}
             match={item}
-            txt="@@@Avalable Until"
+            txt="@@@Available Until"
             colorfinish={getColorStatus(item.status)}
-            finish={item.status + "@@@Not Avalable"}
+            finish={item.status + "@@@Not Available"}
             date={item.expire}
           />
           <Divider fitted style={{ opacity: 0 }} />

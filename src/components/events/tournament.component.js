@@ -415,7 +415,7 @@ class TournamentSection extends Component {
                 size="mini"
                 txt="@@@Start at"
                 colorfinish={getColorStatus(item.status)}
-                finish={item.status + "@@@Not Avalable"}
+                finish={item.status + "@@@Not Available"}
                 date={hatchbackCar[0].startTime}
               />
             </>
@@ -539,7 +539,7 @@ class TournamentSection extends Component {
             match={matchLevelFind}
             txt="@@@Start at"
             colorfinish={getColorStatus(item.status)}
-            finish={item.status + "@@@Not Avalable"}
+            finish={item.status + "@@@Not Available"}
             date={matchLevelFind.startTime}
           />
           <Divider fitted style={{ opacity: 0 }} />

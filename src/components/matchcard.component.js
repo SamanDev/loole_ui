@@ -45,7 +45,7 @@ function MatchCard(prop) {
     item?.status == "Expired" ||
     item?.status == "Finished"
   ) {
-    _finishTxt = "Not Avalable";
+    _finishTxt = "Not Available";
   }
   _finishTxt = "";
   item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
@@ -109,9 +109,9 @@ function MatchCard(prop) {
           {item.gameMode == "League" ? (
             <Countdown
               renderer={rendererBig}
-              txt="@@@Avalable until"
+              txt="@@@Available until"
               colorfinish={getColorStatus(item.status)}
-              finish={item.status + "@@@Not Avalable"}
+              finish={item.status + "@@@Not Available"}
               match={item}
               date={item.expire}
               mode={_mode}
@@ -122,9 +122,9 @@ function MatchCard(prop) {
               {item.gameMode == "Tournament" ? (
                 <Countdown
                   renderer={rendererBig}
-                  txt="@@@Avalable until"
+                  txt="@@@Available until"
                   colorfinish={getColorStatus(item.status)}
-                  finish={item.status + "@@@Not Avalable"}
+                  finish={item.status + "@@@Not Available"}
                   match={item}
                   date={item.startTime}
                   mode={_mode}
@@ -134,9 +134,9 @@ function MatchCard(prop) {
                 <>
                   <Countdown
                     renderer={rendererBig}
-                    txt="@@@Avalable until"
+                    txt="@@@Available until"
                     colorfinish={getColorStatus(item.status)}
-                    finish={item.status + "@@@Not Avalable"}
+                    finish={item.status + "@@@Not Available"}
                     match={item.matchTables[0]}
                     date={item.expire}
                     mode={_mode}

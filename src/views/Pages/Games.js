@@ -237,7 +237,7 @@ const Landing = (prop) => {
           <div className="container">
             <h4 className="header-text text-center">Is it Real Cash?</h4>
             <p className="header-text text-center">
-              Absolutly YES! Cash on the table.
+              Absolutely YES! Cash on the table.
             </p>
             <div
               style={{ minHeight: 300, position: "relative", marginTop: 20 }}

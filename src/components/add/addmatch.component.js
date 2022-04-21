@@ -413,7 +413,7 @@ class AddMatch extends Component {
                 />
               </Form.Field>
               <Form.Field>
-                <label>Avalable for</label>
+                <label>Available for</label>
 
                 <Button.Group
                   widths="4"

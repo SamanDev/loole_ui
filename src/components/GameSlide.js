@@ -22,7 +22,7 @@ export default function GameSlide() {
               {item.haveLeague && "League"}
             </>
           ) : (
-            <>Comming Soon</>
+            <>Coming Soon</>
           )}
         </Header>
       </>
