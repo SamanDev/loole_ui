@@ -649,7 +649,7 @@ class TournamentSection extends Component {
                   }}
                 />
               </p>
-              <h5>Nobody is currently live</h5>
+              <h3>Nobody is currently live</h3>
               <Message>
                 <p>
                   By connecting your Twitch account you will automatically be

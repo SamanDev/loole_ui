@@ -1584,3 +1584,8 @@ video {
 .ui.breadcrumb .divider {
   color: rgba(255, 255, 255, 0.4);
 }
+.ui.statistic > h1.value,
+.ui.statistics .statistic > h1.value {
+  font-size: 20px !important;
+  margin: 0;
+}

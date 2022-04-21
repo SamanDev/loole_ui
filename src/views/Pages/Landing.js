@@ -36,7 +36,7 @@ function Landing(prop) {
         />
         <meta
           name="keywords"
-          content="loole.gg, esport, gaming, video, games, challenge, starcraft 2, smite, league of legends, dota2, competition, tournament"
+          content="loole.gg, gaming, video, games, challenge, 8Pool, ClashRoyale, fifa2021, competition, tournament"
         />
       </Helmet>
       <div className="wrapper">
@@ -57,18 +57,16 @@ function Landing(prop) {
             <div className="row">
               <div className="col-md-7">
                 <div className="description">
-                  <h1>
-                    With Loole App you can make money from your games skils
-                  </h1>
+                  <h1>Loole app lets you earn money with your gaming skills</h1>
                   <br />
                   <p>
-                    Now gaming is not just about spending time, it is about
-                    making money and having fun.
+                    Gaming today is not only about passing time, but also about
+                    earning money and having fun.
                   </p>
                   <p>
-                    Any gamer or player who wants to make money from his skill
-                    must install the Loole app on his phone because you can make
-                    money with the Loole. He only plays with players around the
+                    Any gamer or player who wants to earn money with his skills
+                    must install the Loole app on his phone, because with Loole
+                    you can earn money. It only plays with gamers around the
                     world who claim to be like you.
                   </p>
                   <h5>

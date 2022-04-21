@@ -141,23 +141,13 @@ function LockScreenPage(prop) {
       () => {}
     );
   };
-  console.log(_desc);
+
   if (!eventDef || !currentUser || (!match && eventDef?.gameMode != "League")) {
     return (
       <>
         <Helmet>
           <title>{_tit}</title>
           <meta name="description" content={_desc} />
-          <meta
-            name="keywords"
-            content={
-              "loole.gg, " +
-              _arrTit[1] +
-              ", " +
-              _arrTit[0] +
-              ", gaming, video, games, challenge, competition"
-            }
-          />
         </Helmet>
         <div
           className="full-page lock-page"

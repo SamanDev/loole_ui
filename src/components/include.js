@@ -472,6 +472,7 @@ export const vsComponentPlayer = (
                 size="mini"
                 circular
                 src="/assets/img/avat.jpg"
+                alt="no user"
                 color="lightgray"
                 className="avatar"
               />
@@ -507,6 +508,7 @@ export const vsComponentPlayer = (
                 size="mini"
                 circular
                 src="/assets/img/avat.jpg"
+                alt="no user"
                 color="lightgray"
                 className="avatar"
               />
@@ -838,9 +840,9 @@ export const vsComponentTitle = (item) => {
   title = title.replace(/-/g, " ");
   return (
     <>
-      <Statistic inverted size="small" color={getColor(item.prize)}>
-        <Statistic.Value as="h1" style={{ margin: 0 }}>
-          {item.gameName}{" "}
+      <Statistic inverted color={getColor(item.prize)}>
+        <Statistic.Value as="h1">
+          {item.gameName} {item.gameMode}{" "}
         </Statistic.Value>
         <Statistic.Label>
           <span className="text-muted">

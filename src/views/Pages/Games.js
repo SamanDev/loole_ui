@@ -145,16 +145,6 @@ const Landing = (prop) => {
             " game."
           }
         />
-        <meta
-          name="keywords"
-          content={
-            "loole.gg, " +
-            _game +
-            ", " +
-            _mode +
-            ", gaming, video, games, challenge, competition"
-          }
-        />
       </Helmet>
       <div className="wrapper">
         <div
