@@ -41,8 +41,9 @@ function LockScreenPage(prop) {
   const title = params.title;
 
   _arrTit = title.split("-");
-  const _desc =
-    "Loole.gg is an online global platform where you can compete for real cash and coins in your " +
+  var _desc =
+    title.replace(/-/g, " ") +
+    ". Loole.gg is an online global platform where you can compete for real cash and coins in your " +
     _arrTit[1] +
     " game.";
   _tit = _arrTit[1] + " " + _arrTit[0];
@@ -54,6 +55,13 @@ function LockScreenPage(prop) {
         .replace(/-/g, " ")
         .replace("Final No1", "Final Match")
         .replace(" No", " No ");
+    _desc =
+      params.matchlevel
+        .replace(/-/g, " ")
+        .replace("Final No1", "Final Match")
+        .replace(" No", " MatchNo ") +
+      " of " +
+      _desc;
   }
   const { currentUser } = context.uList;
   const { event } = Econtext.eList;
