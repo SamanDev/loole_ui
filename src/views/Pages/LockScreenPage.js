@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-
+import { Helmet } from "react-helmet";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router";
 // react-bootstrap components
@@ -27,6 +27,8 @@ import MatchTourSection from "components/events/tournamentmatch.component";
 import { haveAdmin, getQueryVariable } from "components/include";
 import UserContext from "context/UserState";
 import EventContext from "context/EventState";
+var _tit;
+var _arrTit;
 function LockScreenPage(prop) {
   const history = useHistory();
   const params = useParams();
@@ -37,7 +39,15 @@ function LockScreenPage(prop) {
   const Econtext = useContext(EventContext);
 
   const title = params.title;
-
+  _tit = title.replace(/-/g, " ");
+  if (params.matchlevel) {
+    _tit = _tit + " - " + params.matchlevel.replace(/-/g, " ");
+  }
+  _arrTit = title.split("-");
+  const _desc =
+    "Loole.gg is an online global platform where you can compete for real cash and coins in your " +
+    _arrTit[1] +
+    " game.";
   const { currentUser } = context.uList;
   const { event } = Econtext.eList;
   const eventDef = event;
@@ -49,11 +59,6 @@ function LockScreenPage(prop) {
 
     //prop.onUpdateItem("matchIDQ", parseInt(matchIDQ));
 
-    document.title = title.replace(/-/g, " ");
-    if (params.matchlevel) {
-      document.title =
-        document.title + " - " + params.matchlevel.replace(/-/g, " ");
-    }
     return () => {};
   }, []);
   useEffect(() => {
@@ -121,10 +126,24 @@ function LockScreenPage(prop) {
       () => {}
     );
   };
-
+  console.log(_desc);
   if (!eventDef || !currentUser || (!match && eventDef?.gameMode != "League")) {
     return (
       <>
+        <Helmet>
+          <title>{_tit}</title>
+          <meta name="description" content={_desc} />
+          <meta
+            name="keywords"
+            content={
+              "loole.gg, " +
+              _arrTit[1] +
+              ", " +
+              _arrTit[0] +
+              ", gaming, video, games, challenge, competition"
+            }
+          />
+        </Helmet>
         <div
           className="full-page lock-page"
           data-color="black"

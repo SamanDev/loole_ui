@@ -8,6 +8,7 @@ import LandStat from "components/landstat.component";
 import Market from "components/market.component";
 import { themeColors } from "const.js";
 import UserContext from "context/UserState";
+import { Helmet } from "react-helmet";
 const d = new Date();
 let da = d.getSeconds();
 let day = da % 7;
@@ -25,13 +26,19 @@ function Landing(prop) {
       prop.onUpdateItem("looleInfo", looleInfo);
     }
   }, [looleInfo]);
-  useEffect(() => {
-    document.title = `Loole.GoodGame - Play Online Games for Cash`;
-
-    return () => {};
-  }, [prop]);
   return (
     <>
+      <Helmet>
+        <title>Loole App - Play Online Games for Cash</title>
+        <meta
+          name="description"
+          content="Loole.gg is an online global platform where you can compete for real cash and coins in your favorite video games on both consoles, PC and Mobile."
+        />
+        <meta
+          name="keywords"
+          content="loole.gg, esport, gaming, video, games, challenge, starcraft 2, smite, league of legends, dota2, competition, tournament"
+        />
+      </Helmet>
       <div className="wrapper">
         <div
           className={

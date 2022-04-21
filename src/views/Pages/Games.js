@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Helmet } from "react-helmet";
 import { printBlockChallenge } from "components/include";
 import { Card, Dimmer, Loader, Header, Breadcrumb } from "semantic-ui-react";
 import { useParams } from "react-router";
@@ -20,8 +21,27 @@ var moment = require("moment");
 const d = new Date();
 let da = d.getSeconds();
 let day = da % 7;
+var _color = "red";
+var _label;
+var _mode;
 const Landing = (prop) => {
   const getLabel = (item) => {
+    if (item.haveMatch) {
+      _mode = "1 vs 1";
+    }
+    if (item.haveMatch && item.haveTournament) {
+      _mode = _mode + ", ";
+    }
+    if (item.haveTournament) {
+      _mode = _mode + "Tournaments";
+    }
+    if (item.haveMatch && item.haveLeague) {
+      _mode = _mode + ", ";
+    }
+    if (item.haveLeague) {
+      _mode = _mode + "League";
+    }
+
     return (
       <>
         {item.name}
@@ -53,8 +73,6 @@ const Landing = (prop) => {
   const context = useContext(GlobalContext);
   const { events } = context.myList;
 
-  var _color = "red";
-  var _label;
   {
     Games.games.map((item, i) => {
       if (item.name.toLowerCase() == _game?.toLowerCase()) {
@@ -105,11 +123,7 @@ const Landing = (prop) => {
       </Card.Group>
     );
   };
-  useEffect(() => {
-    document.title = `Play ${_game} for Real Money.`;
 
-    return () => {};
-  }, [prop]);
   const sections = [
     { key: "Home", content: "Home", link: true, to: "/home", as: Link },
     {
@@ -118,8 +132,30 @@ const Landing = (prop) => {
       active: true,
     },
   ];
+
   return (
     <>
+      <Helmet>
+        <title>Play {_game} for Real Money.</title>
+        <meta
+          name="description"
+          content={
+            "Loole.gg is an online global platform where you can compete for real cash and coins in your " +
+            _game +
+            " game."
+          }
+        />
+        <meta
+          name="keywords"
+          content={
+            "loole.gg, " +
+            _game +
+            ", " +
+            _mode +
+            ", gaming, video, games, challenge, competition"
+          }
+        />
+      </Helmet>
       <div className="wrapper">
         <div
           className={"parallax filter-gradient " + _color + " section-gray"}
@@ -134,7 +170,7 @@ const Landing = (prop) => {
               src={"/assets/images/games/" + _game + ".jpg"}
             />
           </div>
-          <div className="container crump">
+          <div className="container crumb">
             <Breadcrumb icon="right angle" sections={sections} />
             <h2
               className="header-text text-center"
@@ -153,6 +189,13 @@ const Landing = (prop) => {
             >
               Play {_game} for Real Money.
             </h1>
+            <p
+              className="text-center"
+              style={{ padding: "0px 20px", color: "#eee" }}
+            >
+              Loole.gg is an online global platform where you can compete for
+              real cash and coins in your {_game} game.
+            </p>
           </div>
         </div>
         <div className="section" style={{ margin: 0 }}>
@@ -168,10 +211,10 @@ const Landing = (prop) => {
                 <div className="td-page-content tagdiv-type">
                   <p>
                     Have you ever dreamed of{" "}
-                    <b>making money just by playing {_game} on your console?</b>
+                    <b>making money just by playing {_game}?</b>
                     &nbsp;Well, this dream is now a reality for thousands of
-                    gamers on <b>Loole.gg </b>Loole is a&nbsp;new esports
-                    platform that lets you bet money on your
+                    gamers on <b>Loole.gg </b>Loole is a new platform that lets
+                    you bet money on your
                     {_game} skills against other online players from around the
                     world.
                   </p>

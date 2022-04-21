@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Helmet } from "react-helmet";
 import ReactDOM from "react-dom";
 import { useParams } from "react-router";
 import {
@@ -735,8 +736,10 @@ function App() {
 
 ReactDOM.render(
   <BrowserRouter>
-    <ConfigProvider>
-      <App />
+    <ConfigProvider cache={cache}>
+      <div className="application">
+        <App />
+      </div>
     </ConfigProvider>
   </BrowserRouter>,
 
