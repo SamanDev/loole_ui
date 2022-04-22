@@ -46,7 +46,16 @@ function LockScreenPage(prop) {
     ". Loole.gg is an online global platform where you can compete for real cash and coins in your " +
     _arrTit[1] +
     " game.";
-  _tit = _arrTit[1] + " " + _arrTit[0];
+  _tit =
+    _arrTit[1] +
+    " " +
+    _arrTit[0] +
+    " - " +
+    _arrTit[3] +
+    " " +
+    _arrTit[4] +
+    " " +
+    _arrTit[5];
   if (params.matchlevel) {
     _tit =
       _tit +
