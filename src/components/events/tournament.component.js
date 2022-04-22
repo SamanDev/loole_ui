@@ -441,7 +441,7 @@ class TournamentSection extends Component {
             1;
           return (
             <span key={z.toString()}>
-              <Link to={_link} title={_tit}>
+              <Link to={_link} title={_tit} rel="nofollow">
                 <Segment inverted style={{ background: "none !important" }}>
                   <Grid columns={2}>
                     <Grid.Column

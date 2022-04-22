@@ -225,8 +225,6 @@ function LockScreenPage(prop) {
               }}
             >
               <Breadcrumb icon="right angle" sections={sections} />
-              <h1>{title.replace(/-/g, " ")}</h1>
-              <p>{_desc}</p>
             </Container>
             <Dimmer active style={{ background: "transparent" }}>
               <Loader size="large">Loading</Loader>
