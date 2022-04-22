@@ -7,7 +7,7 @@ import Active from "components/active.component";
 import { Spinner } from "react-bootstrap";
 import MarketCard from "components/marketcard.component";
 import Market from "server/Market";
-
+import { Helmet } from "react-helmet";
 //const EventList = JSON.parse(userService.getEvents());
 
 const getBlockChallenge = (filtermode, products) => {
@@ -176,6 +176,9 @@ function Dashboard(prop) {
   updateCount(products);
   return (
     <>
+      <Helmet>
+        <title>MarketPlace</title>
+      </Helmet>
       <Active {...prop} />
 
       <Tab

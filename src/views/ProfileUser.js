@@ -12,6 +12,8 @@ import DashStat from "components/userstat.component";
 import GlobalContext from "context/GlobalState";
 import Market from "components/market.component";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import RegisterBtn from "components/registerBtn";
 function scrollTo(elem) {
   var x = getOffset(document.getElementById(elem)).top;
 
@@ -20,6 +22,8 @@ function scrollTo(elem) {
     behavior: "smooth",
   });
 }
+var str;
+var res;
 function profile(prop) {
   const { data: userGet } = useUserProfile(prop.user);
   //const token = userGet;
@@ -33,7 +37,14 @@ function profile(prop) {
     }
   }, [userGet]);
   const currentUser = prop.findStateId(myState, "profileUser");
-
+  useEffect(() => {
+    if (currentUser) {
+      str = currentUser.username;
+      res = str.substring(0, 1);
+      res = res + " " + str.substring(1, 2);
+      res = setAvatar(str);
+    }
+  }, [currentUser]);
   if (!userGet || !currentUser) {
     return (
       <Segment style={{ height: "100%", width: "100%", position: "absolute" }}>
@@ -44,7 +55,6 @@ function profile(prop) {
     );
   }
 
-  var str = currentUser.username;
   const sections = [
     { key: "Home", content: "Home", link: true, to: "/home", as: Link },
     {
@@ -53,11 +63,12 @@ function profile(prop) {
       active: true,
     },
   ];
-  var res = str.substring(0, 1);
-  res = res + " " + str.substring(1, 2);
-  res = setAvatar(str);
+
   return (
     <>
+      <Helmet>
+        <title>{currentUser.username} Profile - Loole.gg</title>
+      </Helmet>
       <div className="wrapper">
         <div
           className="parallax filter-gradient gray section-gray"
@@ -100,13 +111,16 @@ function profile(prop) {
           </div>
         </div>
 
-        <div className="section  section-clients section-no-padding">
+        <div className="section  section-clients section-no-padding section-gray">
+          <div className="text-center" style={{ marginBottom: 40 }}>
+            <RegisterBtn {...prop} color="red" />
+          </div>
           <div className="container">
             <h4 className="header-text  text-center">Game Tags</h4>
             <TagsForm {...prop} myStateLoc="hi" />
           </div>
         </div>
-        <div className="section section-gray section-clients section-no-padding">
+        <div className="section section-clients section-no-padding">
           <div className="container-fluid">
             <h4 className="header-text  text-center" id="userlastactivity">
               Last Activity
@@ -116,7 +130,7 @@ function profile(prop) {
             </div>
           </div>
         </div>
-        <div className="section   section-no-padding">
+        <div className="section   section-gray">
           <div className="container" style={{ minHeight: 500 }}>
             <h4 className="header-text  text-center" id="market">
               Don't ever be out!

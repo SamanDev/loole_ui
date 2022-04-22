@@ -6,6 +6,7 @@ import GameSlide from "components/GameSlide";
 import HowIt from "components/howit";
 import LandStat from "components/landstat.component";
 import Market from "components/market.component";
+import RegisterBtn from "components/registerBtn";
 import { themeColors } from "const.js";
 import UserContext from "context/UserState";
 import { Helmet } from "react-helmet";
@@ -42,7 +43,7 @@ function Landing(prop) {
       <div className="wrapper">
         <div
           className={
-            "parallax filter-gradient " + themeColors[day] + " section-gray"
+            "parallax filter-gradient " + themeColors[day + 1] + " section-gray"
           }
           data-color="red"
         >
@@ -70,6 +71,8 @@ function Landing(prop) {
                     world who claim to be like you.
                   </p>
                   <br />
+                  <br />
+                  <RegisterBtn {...prop} color={themeColors[day]} />
                   <br />
                   <br />
                 </div>

@@ -68,19 +68,7 @@ const cache = new Cache({
   sourceSize: 20,
 });
 ReactGA.initialize(TrackingID);
-function myFunction(classname, title) {
-  if (classname) {
-    var x = document.getElementsByClassName(classname);
-    x[0]?.classList.toggle("hide");
-    x[1]?.classList.toggle("hide");
-    x[2]?.classList.toggle("hide");
-    x[3]?.classList.toggle("hide");
-    x[4]?.classList.toggle("hide");
-  }
-  if (title) {
-    document.title = title;
-  }
-}
+const myFunc = (classname, title) => {};
 var unUser = defUser;
 if (localStorage.getItem("user")) {
   try {
@@ -176,6 +164,16 @@ function Main(prop) {
       onUpdateItem("openModalLogin", false);
     }
   };
+  const myFunction = (classname, title) => {
+    if (classname) {
+      var x = document.getElementsByClassName(classname);
+      x[0]?.classList.toggle("hide");
+      x[1]?.classList.toggle("hide");
+      x[2]?.classList.toggle("hide");
+      x[3]?.classList.toggle("hide");
+      x[4]?.classList.toggle("hide");
+    }
+  };
   const findStateId = (st, val) => {
     return st.list.filter(function (v) {
       return v.id === val;
@@ -229,13 +227,7 @@ function Main(prop) {
     localStorage.setItem("reffer", _i);
   }
   const { data: userReports } = useUserReports(userGet?.id);
-  useEffect(() => {
-    if (openModalLogin) {
-      document.title = "Login";
-    }
 
-    return () => {};
-  }, [openModalLogin]);
   useEffect(() => {
     if (userReports) {
       updateNot(userReports);
@@ -623,6 +615,7 @@ function Main(prop) {
                   isLoading={isLoading}
                   onUpdateItem={onUpdateItem}
                   findStateId={findStateId}
+                  myFunction={myFunction}
                   onReset={onReset}
                 />
               )}
@@ -636,6 +629,7 @@ function Main(prop) {
                   myState={myState}
                   onUpdateItem={onUpdateItem}
                   findStateId={findStateId}
+                  myFunction={myFunction}
                 />
               )}
             />
@@ -647,6 +641,7 @@ function Main(prop) {
                   myState={myState}
                   onUpdateItem={onUpdateItem}
                   findStateId={findStateId}
+                  myFunction={myFunction}
                 />
               )}
             />
@@ -659,6 +654,7 @@ function Main(prop) {
                   myState={myState}
                   onUpdateItem={onUpdateItem}
                   findStateId={findStateId}
+                  myFunction={myFunction}
                 />
               )}
             />
@@ -670,6 +666,7 @@ function Main(prop) {
                   myState={myState}
                   onUpdateItem={onUpdateItem}
                   findStateId={findStateId}
+                  myFunction={myFunction}
                 />
               )}
             />
@@ -681,6 +678,7 @@ function Main(prop) {
                   myState={myState}
                   onUpdateItem={onUpdateItem}
                   findStateId={findStateId}
+                  myFunction={myFunction}
                 />
               )}
             />
@@ -692,6 +690,7 @@ function Main(prop) {
                   myState={myState}
                   onUpdateItem={onUpdateItem}
                   findStateId={findStateId}
+                  myFunction={myFunction}
                 />
               )}
             />
@@ -703,6 +702,7 @@ function Main(prop) {
                   myState={myState}
                   onUpdateItem={onUpdateItem}
                   findStateId={findStateId}
+                  myFunction={myFunction}
                 />
               )}
             />
@@ -719,7 +719,7 @@ function App() {
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
-        queryFn: myFunction,
+        queryFn: myFunc,
         retry: (failureCount, error) => {
           setErr401(true);
         },

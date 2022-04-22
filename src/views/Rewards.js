@@ -7,7 +7,7 @@ import Report from "components/reportdiamond.component";
 // react-bootstrap components
 import UserContext from "context/UserState";
 import { Tab } from "semantic-ui-react";
-
+import { Helmet } from "react-helmet";
 function profile(prop) {
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
@@ -41,6 +41,9 @@ function profile(prop) {
 
   return (
     <>
+      <Helmet>
+        <title>Rewards</title>
+      </Helmet>
       <Active {...prop} />
 
       <Tab

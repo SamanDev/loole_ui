@@ -20,14 +20,7 @@ const LandNavbar = (prop) => {
 
     history.push("/home");
   };
-  useEffect(() => {
-    var _page = prop.page.toString().replace(/,/g, "");
-    document.title = `Panel > ${_page}`;
-    if (cashierMethod && openModalCashier) {
-      document.title = `Panel > ${_page} > ${cashierMethod}`;
-    }
-    return () => {};
-  }, [prop.page, cashierMethod, openModalCashier]);
+
   return (
     <>
       <Menu

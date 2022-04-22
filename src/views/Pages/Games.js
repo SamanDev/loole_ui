@@ -11,6 +11,7 @@ import { themeColors } from "const.js";
 import Market from "components/market.component";
 import GlobalContext from "context/GlobalState";
 import HowIt from "components/howit";
+import RegisterBtn from "components/registerBtn";
 function scrollToTop() {
   window.scrollTo({
     top: 0,
@@ -150,12 +151,12 @@ const Landing = (prop) => {
         <div
           className={"parallax filter-gradient " + _color + " section-gray"}
           data-color="red"
-          style={{ height: 300 }}
+          style={{ height: 350 }}
         >
           <div className="parallax-background">
             <img
               className="parallax-background-image"
-              style={{ filter: "blur(3px)" }}
+              style={{ filter: "blur(4px)" }}
               alt={_game + " for Real Money."}
               src={"/assets/images/games/" + _game + ".jpg"}
             />
@@ -231,6 +232,9 @@ const Landing = (prop) => {
                 <div className="clearfix"></div>
               </div>
             </div>
+            <div className="text-center" style={{ marginTop: 40 }}>
+              <RegisterBtn {...prop} color="red" />
+            </div>
           </div>
         </div>
         <div className="section section-gray" style={{ margin: 0 }}>
@@ -255,7 +259,7 @@ const Landing = (prop) => {
           </div>
         </div>
 
-        <div className="section   section-no-padding">
+        <div className="section section-gray   section-no-padding">
           <div className="container" style={{ minHeight: 500 }}>
             <h4 className="header-text  text-center" id="market">
               Don't ever be out!

@@ -10,14 +10,14 @@ export const themeColors = [
   "orange",
   "blue",
   "green",
-  "gray",
+  "grey",
   "orange",
   "blue",
   "red",
   "orange",
   "blue",
   "green",
-  "gray",
+  "grey",
 ];
 export const themeDashColors = [
   "red",

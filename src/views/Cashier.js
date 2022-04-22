@@ -8,7 +8,7 @@ import Report from "components/report.component";
 // react-bootstrap components
 import UserContext from "context/UserState";
 import { Card, Row, Col } from "react-bootstrap";
-
+import { Helmet } from "react-helmet";
 function Cashier(prop) {
   const [myState, setMyState] = useState(prop.myState);
 
@@ -169,6 +169,9 @@ function Cashier(prop) {
   //if (typeof _title === "undefined") return null;
   return (
     <>
+      <Helmet>
+        <title>Cashier</title>
+      </Helmet>
       <Active {...prop} />
       <Tab
         panes={panes}

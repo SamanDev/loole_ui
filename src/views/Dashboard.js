@@ -4,6 +4,7 @@ import { Tab, Card, Menu, Label, Dimmer, Loader } from "semantic-ui-react";
 import Active from "components/active.component";
 import DashStat from "components/dashstat.component";
 import GlobalContext from "context/GlobalState";
+import { Helmet } from "react-helmet";
 var moment = require("moment");
 
 function Dashboard(prop) {
@@ -224,6 +225,9 @@ function Dashboard(prop) {
 
   return (
     <>
+      <Helmet>
+        <title>Dashboard</title>
+      </Helmet>
       <Active {...prop} />
       <DashStat {...prop} />
       <Tab

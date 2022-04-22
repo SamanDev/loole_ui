@@ -7,6 +7,7 @@ import TagsForm from "components/profile/tags.component";
 import SocialForm from "components/profile/social.component";
 import UserEvents from "components/events/user.component";
 import Report from "components/report.component";
+import { Helmet } from "react-helmet";
 // react-bootstrap components
 
 import { Tab } from "semantic-ui-react";
@@ -63,6 +64,9 @@ function profile(prop) {
 
   return (
     <>
+      <Helmet>
+        <title>Profile</title>
+      </Helmet>
       <Active {...prop} />
 
       <Tab
