@@ -146,6 +146,24 @@ const Landing = (prop) => {
             " game."
           }
         />
+        <meta property="og:url" content={"https://loole.gg/game/" + _game} />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:title"
+          content={"Play " + _game + " for Real Money."}
+        />
+        <meta
+          property="og:description"
+          content={
+            "Loole.gg is an online global platform where you can compete for real cash and coins in your " +
+            _game +
+            " game."
+          }
+        />
+        <meta
+          property="og:image"
+          content={"https://loole.gg/assets/images/games/" + _game + ".jpg"}
+        />
       </Helmet>
       <div className="wrapper">
         <div
