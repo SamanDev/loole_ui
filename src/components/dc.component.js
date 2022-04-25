@@ -33,15 +33,16 @@ function FormExampleFieldErrorLabel(prop) {
   };
   const handleSubmit = () => {
     onUpdateItem("loading", true);
+    UserWebsocket.disconnect();
     if (localStorage.getItem("user")) {
       const usr = JSON.parse(localStorage.getItem("user"));
       if (usr.accessToken) {
         UserWebsocket.connect(usr.accessToken + "&user=" + usr.username, usr);
       } else {
-        UserWebsocket.connect();
+        //UserWebsocket.connect();
       }
     } else {
-      UserWebsocket.connect();
+      //UserWebsocket.connect();
     }
   };
 

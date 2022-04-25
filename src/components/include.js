@@ -394,7 +394,8 @@ export const vsComponentPlayer = (
   isloading,
   handlechangeReadyEvent,
   loading,
-  matchidQ
+  matchidQ,
+  setVisible
 ) => {
   try {
     var player = matchidFind.matchPlayers[num];
@@ -626,7 +627,7 @@ export const vsComponentPlayer = (
                 <Statistic inverted color="olive" size="mini">
                   <Statistic.Label>Nickname</Statistic.Label>
 
-                  <Statistic.Value>
+                  <Statistic.Value className="nnick">
                     {isPlayerInMatch(matchidFind, currentUser.username)
                       ? _p.nickName
                       : "**********"}
@@ -635,7 +636,22 @@ export const vsComponentPlayer = (
 
                 <TransitionExampleTransitionExplorer
                   objanim={
-                    <div style={{ padding: 10 }}>
+                    <div
+                      style={{ padding: 10 }}
+                      onClick={() => {
+                        navigator.clipboard.readText().then((clipText) => {
+                          if (clipText.indexOf("http") > -1) {
+                            setVisible(true);
+                            document.getElementById("chatinput").value =
+                              clipText;
+                            document.getElementById("chatinput").focus();
+                            document.getElementById("chatinput").blur();
+                          } else {
+                            setVisible(true);
+                          }
+                        });
+                      }}
+                    >
                       Paste your ClashRoyale Invite link in chat bar.
                     </div>
                   }

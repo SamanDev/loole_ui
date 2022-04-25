@@ -6,6 +6,8 @@ import { Button, Card, Image } from "semantic-ui-react";
 import Swal from "sweetalert2";
 function MatchCard(prop) {
   var item = prop.item;
+  var imgARR = item.images[0].src.split("/");
+  var imgName = imgARR[imgARR.length - 1];
   const errMs = () => {
     Swal.fire(
       "Error!",
@@ -17,7 +19,7 @@ function MatchCard(prop) {
     <Card>
       <Image
         alt={item.title}
-        src={item.images[0].src}
+        src={"/assets/market/" + imgName}
         style={{ background: "gray !important", height: 167 }}
       />
 

@@ -246,12 +246,15 @@ function Main(prop) {
         );
       }
     } else {
+      setUList({ currentUser: userGet });
+
+      localStorage.setItem("user", JSON.stringify(userGet));
     }
   }, [userGet]);
   useEffect(() => {
     if (prop.err401) {
-      localStorage.setItem("user", JSON.stringify(defUser));
-      setUList({ currentUser: defUser });
+      // localStorage.setItem("user", JSON.stringify(defUser));
+      // setUList({ currentUser: defUser });
     }
   }, [prop.err401]);
   useEffect(() => {
@@ -303,13 +306,11 @@ function Main(prop) {
     });
     eventBus.on("eventsDC", () => {
       if (
-        currentUser?.accessToken &&
         !findStateId(myState, "profileUser") &&
         !findStateId(myState, "openModalLogin")
       ) {
         onUpdateItem("openModalSoket", true);
       } else {
-        onUpdateItem("openModalSoket", false);
       }
     });
     eventBus.on("eventsConnect", () => {
@@ -317,6 +318,7 @@ function Main(prop) {
         queryClient.resetQueries(["Events"]);
         queryClient.resetQueries(["Event"]);
         queryClient.resetQueries(["Cois"]);
+        queryClient.resetQueries(["User"]);
         onUpdateItem("openModalSoket", false);
       }
     });

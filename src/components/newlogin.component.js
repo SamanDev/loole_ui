@@ -85,7 +85,6 @@ function FormExampleFieldErrorLabel(prop) {
             localStorage.setItem("user", JSON.stringify(response.data));
             setUList({ currentUser: response.data });
 
-            UserWebsocket.disconnect();
             UserWebsocket.connect(
               response.data.accessToken + "&user=" + response.data.username,
               response.data

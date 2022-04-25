@@ -423,7 +423,8 @@ class MatchSection extends Component {
                     loading,
                     false,
                     false,
-                    matchid
+                    matchid,
+                    this.props.setVisible
                   )}
                 </Grid.Column>
                 <Grid.Column
@@ -444,7 +445,8 @@ class MatchSection extends Component {
                     loading,
                     false,
                     false,
-                    matchid
+                    matchid,
+                    this.props.setVisible
                   )}
                 </Grid.Column>
               </Grid>

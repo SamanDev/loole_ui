@@ -229,7 +229,7 @@ function LockScreenPage(prop) {
                 top: "0",
                 width: "100%",
                 position: "relative",
-                zIndex: 3,
+                zIndex: 300,
                 color: "#fff",
               }}
             >
@@ -393,9 +393,14 @@ function LockScreenPage(prop) {
                                 {...prop}
                                 event={eventDef}
                                 matchIDQ={matchIDQ}
+                                setVisible={setVisible}
                               />
                             ) : (
-                              <MatchSection {...prop} event={eventDef} />
+                              <MatchSection
+                                {...prop}
+                                event={eventDef}
+                                setVisible={setVisible}
+                              />
                             )}
                           </>
                         )}

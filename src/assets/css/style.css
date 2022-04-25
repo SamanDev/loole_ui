@@ -564,10 +564,9 @@ label {
 }
 
 @media only screen and (max-width: 600px) {
-  .ui.cards > .card {
-    width: 90%;
-    margin-right: auto;
-    margin-left: auto;
+  .ui.mini.statistic > .value.nnick,
+  .ui.mini.statistics .statistic > .value.nnick {
+    font-size: 12px !important;
   }
   .mynav {
     height: auto;
@@ -995,6 +994,7 @@ div.chatavatar {
 }
 .blurring.dimmable > .dimmer {
   background-color: rgba(0, 0, 0, 0.8) !important;
+  z-index: 1000;
 }
 .swal2-container.swal2-center {
   filter: none !important;

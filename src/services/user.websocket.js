@@ -1,7 +1,8 @@
-import { USERSOCKETURL, USERSOCKETPUBLICURL } from "const";
+import { USERSOCKETURL, USERSOCKETPUBLICURL, defUser } from "const";
 //import Dashboard from 'views/Dashboard'
 import eventBus from "views/eventBus";
 import userService from "services/user.service";
+
 var ws;
 var timerId = 0;
 var res = false;
@@ -18,9 +19,7 @@ class UserWebsocket {
       //userService.getEvents();
       //localStorage.removeItem("events");
       //userService.getEvents();
-
       console.log("Websocket is connect");
-
       ws.onopen = function live() {
         var timeout = 20000;
         if (ws?.readyState == ws?.OPEN) {
@@ -107,6 +106,7 @@ class UserWebsocket {
         console.log(e.type);
 
         if (e.type === "error") {
+          //localStorage.setItem("user", JSON.stringify(defUser));
           eventBus.dispatch("eventsDC", "");
           // localStorage.clear();
           //window.location.reload();
@@ -115,8 +115,11 @@ class UserWebsocket {
       };
       ws.onclose = function (e) {
         //ws?.close();
-
-        // eventBus.dispatch("eventsDC", "");
+        //ws = null;
+        console.log(ws);
+        console.log(token);
+        // localStorage.setItem("user", JSON.stringify(defUser));
+        //eventBus.dispatch("eventsDC", "");
         setTimeout(function () {
           if (ws != null) {
             eventBus.dispatch("eventsConnect", "");
@@ -137,9 +140,10 @@ class UserWebsocket {
       //   ws = null;
       //eventBus.dispatch("eventsDC", "");
       console.log("Websocket is in disconnected state");
+      //eventBus.dispatch("eventsDC", "");
     } else {
-      ws?.close();
-      ws = null;
+      //ws?.close();
+      //eventBus.dispatch("eventsDC", "");
     }
   }
 

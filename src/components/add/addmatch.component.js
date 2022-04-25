@@ -146,6 +146,13 @@ class AddMatch extends Component {
       gameName: "",
     };
   }
+  componentDidMount() {
+    if (this.context.uList.currentUser.balance < 10) {
+      this.setState({
+        inSign: { key: "point", text: "Diamonds", value: "Point" },
+      });
+    }
+  }
 
   setGameName(e, data) {
     this.setState({
@@ -376,7 +383,7 @@ class AddMatch extends Component {
           style={{ width: "100%" }}
         >
           <Row>
-            <Col sm="6">
+            <Col xs="12" sm="12" md="6">
               <Form.Field
                 control={Select}
                 label="Game"
@@ -451,12 +458,13 @@ class AddMatch extends Component {
                 />
               </Form.Field>
             </Col>
-            <Col sm="6">
+            <Col xs="12" sm="12" md="6">
               {this.state.GName.value.indexOf(" - ") > -1 && (
                 <>
                   <div className="mobile only">
                     <Card.Group
-                      className="fours one"
+                      className="fours "
+                      centered
                       style={{ margin: "20px auto" }}
                     >
                       <MatchCard item={item} />

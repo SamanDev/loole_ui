@@ -97,10 +97,12 @@ const getUser = async () => {
         return defUser;
       }
     } catch (e) {
-      localStorage.setItem("user", JSON.stringify(defUser));
-
-      UserWebsocket.connect();
-      return defUser;
+      console.log(e);
+      if (e.toString().indexOf("code 500") > -1) {
+        localStorage.setItem("user", JSON.stringify(defUser));
+        UserWebsocket.connect();
+        return defUser;
+      }
     }
   } else {
     localStorage.setItem("user", JSON.stringify(defUser));

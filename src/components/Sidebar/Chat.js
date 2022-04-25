@@ -419,6 +419,9 @@ class Chatbar extends Component {
                   value={messageBox && messageBox}
                   placeholder="type something..."
                   onChange={this.changeMessageBox}
+                  onFocus={this.changeMessageBox}
+                  onBlur={this.handleChat}
+                  id="chatinput"
                 />
 
                 <Row>
