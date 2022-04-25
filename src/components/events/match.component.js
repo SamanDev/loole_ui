@@ -394,15 +394,12 @@ class MatchSection extends Component {
       localStorage.setItem("user", JSON.stringify(defUser));
       this.context.setUList({ currentUser: defUser });
     } else {
-      const resMessage2 = error?.response?.data || error.toString();
+      const resMessage = error?.response?.data || error.toString();
 
-      if (
-        resMessage2.indexOf("Error") > -1 &&
-        resMessage2.indexOf("balan") == -1
-      ) {
+      if (resMessage.indexOf("Error") > -1) {
         {
           printJoinalerts(
-            resMessage2,
+            resMessage,
             GName,
             this.context.uList.currentUser,
             handleTagForm,
