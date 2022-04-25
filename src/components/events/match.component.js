@@ -399,7 +399,7 @@ class MatchSection extends Component {
       if (resMessage2.indexOf("Error") > -1) {
         {
           printJoinalerts(
-            resMessage,
+            resMessage2,
             GName,
             this.context.uList.currentUser,
             handleTagForm,
