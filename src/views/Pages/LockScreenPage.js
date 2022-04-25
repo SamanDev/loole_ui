@@ -229,7 +229,7 @@ function LockScreenPage(prop) {
                 top: "0",
                 width: "100%",
                 position: "relative",
-                zIndex: 300,
+                zIndex: 30000,
                 color: "#fff",
               }}
             >

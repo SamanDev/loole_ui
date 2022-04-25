@@ -246,7 +246,7 @@ function Main(prop) {
         );
       }
     } else {
-      setUList({ currentUser: userGet });
+      //setUList({ currentUser: userGet });
 
       localStorage.setItem("user", JSON.stringify(userGet));
     }
@@ -274,7 +274,7 @@ function Main(prop) {
       localStorage.setItem("_defEvent", JSON.stringify(_defEvent));
       onUpdateItem("eventIDQ", eventGet.id);
 
-      var _find = findActiveMatch(eventGet, matchIDQ, currentUser.username);
+      var _find = findActiveMatch(eventGet, matchIDQ, currentUser?.username);
       if (_find?.id && eventGet.matchTables?.length > 1 && matchIDQ) {
         onUpdateItem("matchIDQ", _find.id);
       }
@@ -286,7 +286,7 @@ function Main(prop) {
   useEffect(() => {
     //onUpdateItem("matchIDQ", matchIDQ);
     if (eventDef?.matchTables) {
-      var _find = findActiveMatch(eventDef, matchIDQ, currentUser.username);
+      var _find = findActiveMatch(eventDef, matchIDQ, currentUser?.username);
       onUpdateItem("match", _find);
     }
   }, [matchIDQ]);

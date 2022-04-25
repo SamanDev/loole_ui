@@ -392,14 +392,11 @@ class MatchSection extends Component {
     ) {
       this.props.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
-      this.context.setMyList({
-        ...this.context.myList,
-        currentUser: defUser,
-      });
+      this.context.setUList({ currentUser: defUser });
     } else {
-      const resMessage = error?.response?.data || error.toString();
+      const resMessage2 = error?.response?.data || error.toString();
 
-      if (resMessage.indexOf("Error") > -1) {
+      if (resMessage2.indexOf("Error") > -1) {
         {
           printJoinalerts(
             resMessage,
