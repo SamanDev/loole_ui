@@ -388,11 +388,13 @@ class MatchSection extends Component {
     if (
       error?.response?.data?.status == 401 ||
       error?.data?.status == 401 ||
-      error?.response?.data?.details[0] == "Access is denied"
+      error?.response?.data?.details
     ) {
-      this.props.onUpdateItem("openModalLogin", true);
-      localStorage.setItem("user", JSON.stringify(defUser));
-      this.context.setUList({ currentUser: defUser });
+      if (error?.response?.data?.details[0] == "Access is denied") {
+        this.props.onUpdateItem("openModalLogin", true);
+        localStorage.setItem("user", JSON.stringify(defUser));
+        this.context.setUList({ currentUser: defUser });
+      }
     } else {
       const resMessage = error?.response?.data || error.toString();
 
