@@ -398,7 +398,7 @@ class MatchSection extends Component {
 
       if (
         resMessage2.indexOf("Error") > -1 &&
-        resMessage2.indexOf("Balan") == -1
+        resMessage2.indexOf("balan") == -1
       ) {
         {
           printJoinalerts(
