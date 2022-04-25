@@ -1,44 +1,39 @@
 {
-    "data":[
-        {
-            "key": "btc",
-            
-            "text": "BitCoin"
-        },
-        {
-            "key": "usdt",
-           
-            "text": "TetherUS"
-        }
-        ,
-        {
-            "key": "eth",
-           
-            "text": "Ethereum"
-        }
-        ,
-        {
-            "key": "bnb",
-           
-            "text": "BNB"
-        }
-        ,
-        {
-            "key": "zec",
-           
-            "text": "Zcash"
-        }
-        ,
-        {
-            "key": "ltc",
-           
-            "text": "Litecoin"
-        }
-        ,
-        {
-            "key": "ada",
-           
-            "text": "ADA"
-        }
-    ]
+  "data": [
+    {
+      "key": "btc",
+
+      "text": "BitCoin"
+    },
+    {
+      "key": "usdt",
+
+      "text": "TetherUS"
+    },
+    {
+      "key": "eth",
+
+      "text": "Ethereum"
+    },
+    {
+      "key": "bnb",
+
+      "text": "BNB"
+    },
+    {
+      "key": "zec",
+
+      "text": "Zcash"
+    },
+    {
+      "key": "ltc",
+
+      "text": "Litecoin"
+    },
+    {
+      "key": "ada",
+
+      "text": "ADA"
+    }
+  ]
 }

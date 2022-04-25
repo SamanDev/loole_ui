@@ -1,143 +1,120 @@
 {
-    "games": [
+  "games": [
+    {
+      "name": "8Pool",
+      "active": true,
+      "haveMatch": true,
+      "haveTournament": true,
+      "haveLeague": false,
+      "gameconsole": [
         {
-            
-            "name": "8Pool",
-            "active": true,
-            "haveMatch": true,
-            "haveTournament": true,
-            "haveLeague": false,
-            "gameconsole": [
-                {
-                    
-                    "consolename": "Mobile"
-                }
-            ],
-            "modes": [
-                {
-                    
-                    "modename": "Duel"
-                }
-            ]
-        },
-        {
-           
-            "name": "ClashRoyale",
-            "active": true,
-            "haveMatch": true,
-            "haveTournament": true,
-            "haveLeague": false,
-            "gameconsole": [
-                {
-                    
-                    "consolename": "Mobile"
-                }
-            ],
-            "modes": [
-                {
-                    
-                    "modename": "Duel"
-                }
-            ]
-        },
-        
-        {
-            
-            "name": "Fifa2021",
-            "active": true,
-            "haveMatch": true,
-            "haveTournament": true,
-            "haveLeague": false,
-            "gameconsole": [
-                {
-                    
-                    "consolename": "PS4"
-                },
-                {
-                   
-                    "consolename": "PS5"
-                },{
-                    
-                    "consolename": "XBOX"
-                }
-            ],
-            "modes": [
-                {
-                    
-                    "modename": "Duel"
-                }
-            ]
-        },
-        {
-            
-            "name": "RainbowSix",
-            "active": false,
-            "haveMatch": false,
-            "haveTournament": false,
-            "haveLeague": true,
-            "gameconsole": [
-                {
-                    
-                    "consolename": "PS4"
-                },
-                {
-                   
-                    "consolename": "PC"
-                }
-            ],
-            "modes": [
-                {
-                    
-                    "modename": "KillRace"
-                },
-                {
-                   
-                    "modename": "Duel"
-                }
-            ]
-        },
-        {
-           
-            "name": "CallOfDuty",
-            "active": true,
-            "haveMatch": false,
-            "haveTournament": false,
-            "haveLeague": true,
-            "gameconsole": [
-                {
-              
-                    "consolename": "All"
-                }
-            ],
-            "modes": [
-                {
-                    
-                    "modename": "KillRace"
-                }
-            ]
+          "consolename": "Mobile"
         }
-        ,
+      ],
+      "modes": [
         {
-            "id": 8,
-            "name": "Fortnite",
-            "active": false,
-            "haveMatch": false,
-            "haveTournament": false,
-            "haveLeague": true,
-            "gameconsole": [
-                {
-                    
-                    "consolename": "All"
-                }
-               
-            ],
-            "modes": [
-                {
-                    
-                    "modename": "KillRace"
-                }
-            ]
+          "modename": "Duel"
         }
-       
-    ]
+      ]
+    },
+    {
+      "name": "ClashRoyale",
+      "active": true,
+      "haveMatch": true,
+      "haveTournament": true,
+      "haveLeague": false,
+      "gameconsole": [
+        {
+          "consolename": "Mobile"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "Duel"
+        }
+      ]
+    },
+
+    {
+      "name": "Fifa2021",
+      "active": true,
+      "haveMatch": true,
+      "haveTournament": true,
+      "haveLeague": false,
+      "gameconsole": [
+        {
+          "consolename": "PS4"
+        },
+        {
+          "consolename": "PS5"
+        },
+        {
+          "consolename": "XBOX"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "Duel"
+        }
+      ]
+    },
+    {
+      "name": "RainbowSix",
+      "active": false,
+      "haveMatch": false,
+      "haveTournament": false,
+      "haveLeague": true,
+      "gameconsole": [
+        {
+          "consolename": "PS4"
+        },
+        {
+          "consolename": "PC"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "KillRace"
+        },
+        {
+          "modename": "Duel"
+        }
+      ]
+    },
+    {
+      "name": "CallOfDuty",
+      "active": true,
+      "haveMatch": false,
+      "haveTournament": false,
+      "haveLeague": true,
+      "gameconsole": [
+        {
+          "consolename": "All"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "KillRace"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Fortnite",
+      "active": false,
+      "haveMatch": false,
+      "haveTournament": false,
+      "haveLeague": true,
+      "gameconsole": [
+        {
+          "consolename": "All"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "KillRace"
+        }
+      ]
+    }
+  ]
 }

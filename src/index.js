@@ -68,7 +68,7 @@ const cache = new Cache({
   sourceSize: 20,
 });
 ReactGA.initialize(TrackingID);
-const myFunc = (classname, title) => {};
+const myFunc = () => {};
 var unUser = defUser;
 if (localStorage.getItem("user")) {
   try {
