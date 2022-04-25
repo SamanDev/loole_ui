@@ -396,7 +396,10 @@ class MatchSection extends Component {
     } else {
       const resMessage2 = error?.response?.data || error.toString();
 
-      if (resMessage2.indexOf("Error") > -1) {
+      if (
+        resMessage2.indexOf("Error") > -1 &&
+        resMessage2.indexOf("Balan") == -1
+      ) {
         {
           printJoinalerts(
             resMessage2,
