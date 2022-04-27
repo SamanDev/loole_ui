@@ -15,6 +15,7 @@ import {
   List,
   Message,
 } from "semantic-ui-react";
+import AddToCalendar from "components/addtocal.component";
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
 import userService from "services/user.service";
@@ -514,6 +515,7 @@ class TournamentSection extends Component {
     setTimeout(() => {
       $("#jsonhtml").html($("#jsonhtml2").text());
     }, 100);
+
     return (
       <>
         <Col
@@ -622,6 +624,10 @@ class TournamentSection extends Component {
           ))}
           {item.status != "Canceled" && item.status != "Expired" && (
             <>
+              <Divider fitted style={{ opacity: 0 }} />
+              <br />
+              <br />
+              <AddToCalendar item={item} />
               <Divider style={{ opacity: 0 }} />
               <Accordion
                 defaultActiveIndex={[matchLevelFind.level - 1]}
