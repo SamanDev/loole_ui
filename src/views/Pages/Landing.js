@@ -43,7 +43,9 @@ function Landing(prop) {
       <div className="wrapper">
         <div
           className={
-            "parallax filter-gradient " + themeColors[day + 1] + " section-gray"
+            "parallax filter-gradient " +
+            themeColors[day + 1].replace("grey", "gray") +
+            " section-gray"
           }
           data-color="red"
         >
@@ -107,7 +109,9 @@ function Landing(prop) {
         <div className="section " style={{ padding: 0 }}>
           <div
             className={
-              " filter-gradient " + themeColors[day + 1] + " section-gray"
+              " filter-gradient " +
+              themeColors[day + 1].replace("grey", "gray") +
+              " section-gray"
             }
             data-color="orange"
           >

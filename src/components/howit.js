@@ -16,7 +16,9 @@ export default function GameSlide() {
       <div className="section " style={{ padding: 0 }}>
         <div
           className={
-            " filter-gradient " + themeColors[day + 2] + " section-gray"
+            " filter-gradient " +
+            themeColors[day + 2].replace("grey", "gray") +
+            " section-gray"
           }
           data-color="orange"
         >

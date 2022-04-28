@@ -270,7 +270,11 @@ const Landing = (prop) => {
         </div>
         <div className="section section-game " style={{ padding: 0 }}>
           <div
-            className={" filter-gradient " + themeColors[day] + ""}
+            className={
+              " filter-gradient " +
+              themeColors[day].replace("grey", "gray") +
+              ""
+            }
             data-color="orange"
           >
             <GameSlide />

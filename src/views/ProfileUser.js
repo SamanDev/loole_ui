@@ -116,15 +116,15 @@ function profile(prop) {
             <RegisterBtn {...prop} color="red" />
           </div>
           <div className="container">
-            <h4 className="header-text  text-center">Game Tags</h4>
+            <h2 className="header-text  text-center">Game Tags</h2>
             <TagsForm {...prop} myStateLoc="hi" />
           </div>
         </div>
         <div className="section section-clients section-no-padding">
           <div className="container-fluid">
-            <h4 className="header-text  text-center" id="userlastactivity">
+            <h3 className="header-text  text-center" id="userlastactivity">
               Last Activity
-            </h4>
+            </h3>
             <div className="container" style={{ minHeight: 500 }}>
               <UserEvents {...prop} user={currentUser} myStateLoc={true} />
             </div>
