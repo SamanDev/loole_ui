@@ -110,7 +110,7 @@ function Landing(prop) {
           <div
             className={
               " filter-gradient " +
-              themeColors[day + 1].replace("grey", "gray") +
+              themeColors[day + 2].replace("grey", "gray") +
               " section-gray"
             }
             data-color="orange"
