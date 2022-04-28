@@ -189,7 +189,10 @@ function LockScreenPage(prop) {
         to: "/lobby/" + params.id + "/" + title + "/",
       },
       {
-        key: params.matchlevel.replace(/-/g, " "),
+        key: params.matchlevel
+          .replace(/-/g, " ")
+          .replace("Final No1", "Final Match")
+          .replace(" No", " No "),
         content: params.matchlevel
           .replace(/-/g, " ")
           .replace("Final No1", "Final Match")
