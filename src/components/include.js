@@ -1876,13 +1876,14 @@ export const userDetails = (currentUser) => {
     <>
       <div className="text-center">
         <Statistic size="mini">
-          <Statistic.Value>{currentUser.username}</Statistic.Value>
+          <Statistic.Value as="h1">{currentUser.username}</Statistic.Value>
           <Statistic.Label>
             <small className="text-muted">From </small>
             <br />
             <img
               src={"/assets/images/famfamfam_flag_icons/png/" + flag + ".png"}
               style={{ position: "relative", top: -1 }}
+              alt={flagLabel}
             />{" "}
             {flagLabel}
             <br />
@@ -1895,10 +1896,7 @@ export const userDetails = (currentUser) => {
             )}
           </Statistic.Label>
         </Statistic>
-        <Card.Header
-          as="h5"
-          style={{ marginBottom: 0, marginTop: 15 }}
-        ></Card.Header>
+        <Card.Header style={{ marginBottom: 0, marginTop: 15 }}></Card.Header>
 
         <ListGroup horizontal style={{ display: "inline-flex", marginTop: 10 }}>
           {haveSocialTag("Instagram", currentUser.userSocialAccounts) && (

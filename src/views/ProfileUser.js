@@ -58,7 +58,7 @@ function profile(prop) {
   const sections = [
     { key: "Home", content: "Home", link: true, to: "/home", as: Link },
     {
-      key: str,
+      key: str + " Profile",
       content: str + " Profile",
       active: true,
     },

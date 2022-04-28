@@ -1,24 +1,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-<url>
-<loc>
-https://loole.gg/home
-</loc>
-<priority>1</priority>
-</url>
-<url>
-<loc>https://loole.gg/game/8Pool</loc>
-<priority>0.9</priority>
-</url>
-<url>
-<loc>https://loole.gg/game/ClashRoyale</loc>
-<priority>0.9</priority>
-</url>
-<url>
-<loc>https://loole.gg/game/Fifa2021</loc>
-<priority>0.9</priority>
-</url>
-<url>
-<loc>https://loole.gg/game/CallOfDuty</loc>
-<priority>0.9</priority>
-</url>
+    <url>
+        <loc>https://loole.gg/home</loc>
+        <priority>1</priority>
+    </url>
+    <url>
+        <loc>https://loole.gg/game/8Pool</loc>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://loole.gg/game/ClashRoyale</loc>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://loole.gg/game/Fifa2021</loc>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://loole.gg/game/CallOfDuty</loc>
+        <priority>0.9</priority>
+    </url>
 </urlset>
