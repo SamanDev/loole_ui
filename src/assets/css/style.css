@@ -2,7 +2,19 @@
 .tim-row {
   margin-bottom: 20px;
 }
-
+.add-to-container {
+  padding: 0 !important;
+}
+.add-to-container,
+.add-to-container a {
+  color: #000 !important;
+  text-align: center !important;
+  font-size: 16px !important;
+}
+.add-to-container a {
+  padding: 15px 10px;
+  display: block;
+}
 .tim-white-buttons {
   background-color: #777777;
 }

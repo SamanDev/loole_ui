@@ -14,7 +14,7 @@
     "node-sass": "^4.0.0",
     "prop-types": "15.7.2",
     "react": "17.0.1",
-    "react-add-to-calendar": "^0.1.5",
+    "react-add-to-calendar-hoc": "^1.0.10",
     "react-avatar": "^3.10.0",
     "react-bootstrap": "1.4.3",
     "react-countdown": "^2.3.1",

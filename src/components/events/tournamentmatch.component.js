@@ -28,6 +28,7 @@ import { Divider, Segment, Grid, Statistic, Button } from "semantic-ui-react";
 import { POSTURLTest } from "const";
 import Admin from "components/events/admin.component";
 import UserContext from "context/UserState";
+import AddToCal from "components/addtocal.component";
 const API_URL_TEST = POSTURLTest;
 const Toast = Swal.mixin({
   toast: true,
@@ -337,6 +338,9 @@ class MatchSection extends Component {
   };
   render() {
     const item = this.state.item;
+
+    const tit = this.props.tit;
+    const desc = this.props.desc;
     const currentUser = this.context.uList.currentUser;
 
     const eventIDQ = this.state.item.id;
@@ -386,6 +390,7 @@ class MatchSection extends Component {
                 "yes",
                 matchid
               )}
+
             <Countdown
               renderer={rendererBig}
               finish={item.status + "@@@" + _finishTxt}
@@ -394,6 +399,15 @@ class MatchSection extends Component {
               colorfinish={getColor(item.prize)}
               date={match.startTime}
             />
+            <Divider fitted style={{ opacity: 0 }} />
+
+            <div
+              style={{ position: "relative", maxWidth: 300, margin: "auto" }}
+            >
+              <AddToCal item={item} tit={tit} desc={desc} match={match} />
+            </div>
+            <br />
+            <br />
             <Admin {...this.props} />
             <Divider fitted style={{ opacity: 0 }} />
 

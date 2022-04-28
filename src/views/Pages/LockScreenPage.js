@@ -385,7 +385,12 @@ function LockScreenPage(prop) {
                     ) : (
                       <>
                         {eventDef.gameMode == "Tournament" && !matchIDQ ? (
-                          <TournamentSection {...prop} event={eventDef} />
+                          <TournamentSection
+                            {...prop}
+                            event={eventDef}
+                            tit={_tit}
+                            desc={_desc}
+                          />
                         ) : (
                           <>
                             {eventDef.gameMode == "Tournament" ? (
@@ -394,6 +399,8 @@ function LockScreenPage(prop) {
                                 event={eventDef}
                                 matchIDQ={matchIDQ}
                                 setVisible={setVisible}
+                                tit={_tit}
+                                desc={_desc}
                               />
                             ) : (
                               <MatchSection
