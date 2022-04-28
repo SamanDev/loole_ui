@@ -48,7 +48,7 @@ class Example extends React.Component {
           style={{ position: "absolute", left: 0, width: "100%", top: 45 }}
         >
           {args.children.map((link, i) => (
-            <Button key={i} color="gray" className="add-to-container">
+            <Button key={i} className="add-to-container">
               {link}
             </Button>
           ))}
