@@ -783,9 +783,7 @@ div.chatavatar {
 .ui.toggle.checkbox input:checked ~ label:before {
   background: rgba(0, 255, 0, 0.9) !important;
 }
-.four a {
-  overflow: hidden;
-}
+
 .sidebar-mini .sidebar .sidebar-wrapper > .nav li > a .sb-avatar span {
   opacity: 1;
   transform: none;
@@ -799,14 +797,23 @@ div.chatavatar {
   background-color: rgba(255, 255, 255, 0.15) !important;
   margin-left: 1px !important;
 }
-.ui.fours.cards .fluid.image {
+.ui.fours.cards div.fluid.image {
   text-align: center;
-  height: 200px;
+
   overflow: hidden;
+  min-width: 100%;
+  max-height: 200px;
+}
+.ui.market.cards .fluid.image {
+  min-height: 130px;
 }
 .ui.fours.cards .fluid.image img {
   width: auto;
   height: 200px;
+  min-width: 100%;
+}
+.ui.cards > .card {
+  min-width: 240px;
 }
 .ui.fours.cards .cover {
   position: absolute;
@@ -905,6 +912,30 @@ div.chatavatar {
   min-height: 100vh;
 }
 @media only screen and (max-width: 767px) {
+  .ui.fours.cards .fluid.image img {
+    width: 100%;
+    height: auto;
+    min-height: 200px;
+  }
+
+  .ui.fours.cards .fluid.image {
+    min-height: 200px;
+  }
+  .ui.two.cards .card {
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .ui.cards.market .fluid.image {
+    float: right;
+    width: 110px;
+    height: auto;
+    margin-bottom: 10px;
+    min-height: 52px;
+    border-left: 1px solid gray;
+    border-bottom: 1px solid gray;
+    box-shadow: -9px 12px 20px grey;
+    margin-left: 10px;
+  }
   [class*="mobile hidden"],
   [class*="tablet only"]:not(.mobile),
   [class*="computer only"]:not(.mobile),
@@ -1087,13 +1118,7 @@ div.chatavatar {
   .main-panel .navbar.fixed-top {
     width: 100%;
   }
-  .ui.four.cards {
-    margin-right: -30px !important;
-    margin-left: -30px !important;
-  }
-  .ui.four.cards > .card {
-    width: 100% !important;
-  }
+
   .main-panel .navbar.fixed-top * {
     font-size: 18px;
   }
@@ -1314,7 +1339,7 @@ video {
   overflow: auto;
 }
 .maxheight.dash .ui.segment.tab {
-  height: calc(-220px + 100vh);
+  height: calc(-250px + 100vh);
   overflow: auto;
 }
 .chall.card-user .card-body {
@@ -1600,4 +1625,12 @@ video {
 .ui.statistics .statistic > h1.value {
   font-size: 20px !important;
   margin: 0;
+}
+.landing-page .ui.menu .item {
+  line-height: 67px !important;
+  display: inline-block;
+  height: 60px;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
 }

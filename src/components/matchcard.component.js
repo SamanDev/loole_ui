@@ -83,7 +83,7 @@ function MatchCard(prop) {
         ui={false}
       />
       <div className={"text-center cover " + item.status}>
-        <div style={{ transform: "scale(.8)", padding: "30px 0", height: 185 }}>
+        <div style={{ transform: "scale(.8)", padding: "10px 0", height: 185 }}>
           {printStatus(
             item,
             _mode,

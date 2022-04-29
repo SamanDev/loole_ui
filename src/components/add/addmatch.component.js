@@ -18,6 +18,7 @@ import {
 import { Row, Col } from "react-bootstrap";
 import { handleTagForm, printJoinalerts } from "components/include";
 import MatchCard from "components/matchcard.component";
+import MatchBlock from "components/matchblock.component";
 import UserContext from "context/UserState";
 var moment = require("moment");
 
@@ -388,6 +389,7 @@ class AddMatch extends Component {
                 control={Select}
                 label="Game"
                 placeholder="Game"
+                size="small"
                 value={this.state.GName.value}
                 onChange={this.setGameName}
                 options={getBlockGames("Match")}
@@ -405,6 +407,7 @@ class AddMatch extends Component {
                 <label>Bet</label>
                 <Input
                   fluid
+                  size="small"
                   label={
                     <Dropdown
                       value={this.state.inSign.value}
@@ -425,6 +428,7 @@ class AddMatch extends Component {
                 <Button.Group
                   widths="4"
                   type="button"
+                  size="small"
                   buttons={[
                     {
                       key: "30",
@@ -472,8 +476,9 @@ class AddMatch extends Component {
                   </div>
                   <div className="mobile hidden">
                     <Card.Group
-                      className="fours "
-                      style={{ marginBottom: 20, float: "right" }}
+                      className="fours"
+                      itemsPerRow="1"
+                      style={{ position: "relative", top: -30, float: "right" }}
                     >
                       <MatchCard item={item} />
                     </Card.Group>
@@ -483,7 +488,7 @@ class AddMatch extends Component {
             </Col>
           </Row>
 
-          <Button.Group size="large" inverted fluid widths="2">
+          <Button.Group size="small" inverted fluid widths="2">
             <Button
               color="green"
               fluid

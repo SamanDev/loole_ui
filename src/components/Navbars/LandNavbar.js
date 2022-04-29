@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthService from "services/auth.service";
-import { Menu } from "semantic-ui-react";
+import { Menu, Button } from "semantic-ui-react";
 
 import { Container } from "react-bootstrap";
 import { defUser } from "const";
 import UserContext from "context/UserState";
+import { MenuItem } from "react-rainbow-components";
 const LandNavbar = (prop) => {
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
@@ -24,42 +25,71 @@ const LandNavbar = (prop) => {
   };
   return (
     <>
-      <Container>
-        <Menu secondary>
+      <Container id="homes">
+        <Menu
+          inverted
+          pointing
+          borderless
+          fixed="top"
+          style={{ height: 70, overflow: "hidden", zIndex: 10000 }}
+          size="small"
+        >
           <Menu.Item
             to="/home"
             as={Link}
-            style={{ fontFamily: "Work Sans", paddingLeft: 0, fontSize: 16 }}
+            onClick={() => prop.scrollTo("homes")}
           >
             <img
               src={"/assets/img/logoloole.svg"}
               alt="loole.gg logo"
-              style={{ height: 50, width: 50, marginRight: 10 }}
+              style={{ height: 45, width: 45 }}
+              className="ui"
             />
-            Loole.gg
+            <span
+              className="mobile hidden"
+              style={{
+                display: "inline-block",
+                marginLeft: 10,
+                fontWeight: "bold",
+              }}
+            >
+              Loole.gg
+            </span>
           </Menu.Item>
 
-          <Menu.Menu position="right">
-            <Menu.Item
-              className="mobile hidden"
-              onClick={() => prop.scrollTo("market")}
-            >
+          <Menu.Menu
+            position="right"
+            style={{ minWidth: "auto", overflow: "auto", height: 70 }}
+          >
+            <Menu.Item className="mobile hidd3en" to="/home#how" as={Link}>
+              How it works
+            </Menu.Item>
+            <Menu.Item className="mobile hidd3en" to="/home#games" as={Link}>
+              Games
+            </Menu.Item>
+            <Menu.Item className="mobile hidden" to="#market" as={Link}>
               Market
             </Menu.Item>
             {currentUser?.accessToken ? (
               <>
-                <Menu.Item name="Dashboard" to={"/panel/dashboard"} as={Link} />
-                <Menu.Item
-                  name="logout"
-                  className="mobile hidden"
-                  onClick={() => logOut()}
-                />
+                <Menu.Item>
+                  <Button to={"/panel/dashboard"} as={Link} color="red">
+                    Dashboard
+                  </Button>
+                </Menu.Item>
+                <Menu.Item className="mobile hidden" onClick={() => logOut()}>
+                  Logout
+                </Menu.Item>
               </>
             ) : (
-              <Menu.Item
-                onClick={() => prop.onUpdateItem("openModalLogin", true)}
-              >
-                Login / Register
+              <Menu.Item>
+                <Button
+                  id="lgnbtn"
+                  color="red"
+                  onClick={() => prop.onUpdateItem("openModalLogin", true)}
+                >
+                  Login <span className="mobile hidden"> / Register</span>
+                </Button>
               </Menu.Item>
             )}
           </Menu.Menu>

@@ -65,7 +65,13 @@ const HomeEvents = (prop) => {
         }
       });
       return (
-        <Card.Group centered className="fours" style={{ marginBottom: 20 }}>
+        <Card.Group
+          className="fours"
+          itemsPerRow="3"
+          stackable
+          doubling
+          style={{ marginBottom: 20, textAlign: "left" }}
+        >
           {printBlockChallenge(newItem, filtermode, { ...prop })}
         </Card.Group>
       );
@@ -89,12 +95,8 @@ const HomeEvents = (prop) => {
     return (
       <>
         {!prop.myStateLoc && <Header as="h3">My Events</Header>}
-        <Carousel
-          style={{ textAlign: "left", maxWidth: 300, margin: "auto" }}
-          controls={false}
-        >
-          {getBlockChallenge("all", events)}
-        </Carousel>
+
+        {getBlockChallenge("all", events)}
       </>
     );
   }

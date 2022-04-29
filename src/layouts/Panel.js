@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { ConfigProvider } from "react-avatar";
 import { Route, Switch, useHistory } from "react-router-dom";
 
-import { Checkbox, Modal, Menu, Sidebar } from "semantic-ui-react";
+import { Checkbox, Modal, Menu, Sidebar, Segment } from "semantic-ui-react";
 
 import { DEFCOLORS, themeDashColors } from "const";
 // core components
@@ -205,7 +205,9 @@ function Panel(props) {
                         }
                       >
                         <Modal.Content>
-                          <AddMatch token={currentUser} {...props} />
+                          <Segment inverted padded>
+                            <AddMatch token={currentUser} {...props} />
+                          </Segment>
                         </Modal.Content>
                       </Modal>
                       <Modal

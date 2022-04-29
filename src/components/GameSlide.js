@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Image, Header } from "semantic-ui-react";
+import { Image, Header, Card } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { Colors } from "const.js";
 // react-bootstrap components
@@ -40,37 +40,43 @@ export default function GameSlide() {
           zIndex: 3,
         }}
       >
-        <div className="container" style={{ marginTop: 60 }}>
+        <div className="container" id="games" style={{ marginTop: 60 }}>
           <h4 className="header-text text-center" style={{ color: "#fff" }}>
             GAMES YOU CAN PLAY
           </h4>
-          <Image.Group size="large" style={{ textAlign: "center" }}>
+          <Card.Group
+            centered
+            itemsPerRow="2"
+            stackable
+            style={{
+              marginBottom: 20,
+              textAlign: "left",
+            }}
+          >
             {Games.games.map((item, i) => {
               return (
-                <Image
-                  bordered
-                  rounded
-                  centered
-                  key={i.toString()}
-                  src={"/assets/images/games/" + item.name + ".jpg"}
-                  alt={item.name}
-                  as={Link}
-                  label={{
-                    content: getLabel(item),
-                    ribbon: true,
-                    color: Colors[i].toLowerCase(),
-                  }}
-                  style={
-                    item.active
-                      ? { minHeight: 200 }
-                      : { minHeight: 200, filter: "grayscale(90%)" }
-                  }
-                  size="medium"
-                  to={"/game/" + item.name}
-                />
+                <Card key={i.toString()}>
+                  <Image
+                    wrapped
+                    ui={false}
+                    bordered
+                    rounded
+                    centered
+                    src={"/assets/images/games/" + item.name + ".jpg"}
+                    alt={item.name}
+                    as={Link}
+                    label={{
+                      content: getLabel(item),
+                      ribbon: true,
+                      color: Colors[i].toLowerCase(),
+                    }}
+                    style={item.active ? {} : { filter: "grayscale(90%)" }}
+                    to={"/game/" + item.name}
+                  />
+                </Card>
               );
             })}
-          </Image.Group>
+          </Card.Group>
         </div>
       </div>
     </>

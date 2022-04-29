@@ -22,7 +22,13 @@ const getBlockChallenge = (filtermode, products) => {
     }
   });
   return (
-    <Card.Group centered className="fours" style={{ marginBottom: 20 }}>
+    <Card.Group
+      className="fours"
+      stackable
+      doubling
+      itemsPerRow="4"
+      style={{ marginBottom: 20, textAlign: "left" }}
+    >
       {printBlockProduct(newItem)}
     </Card.Group>
   );

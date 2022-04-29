@@ -37,6 +37,7 @@ import {
   Dimmer,
   Checkbox,
   Image,
+  Flag,
 } from "semantic-ui-react";
 // react-bootstrap components
 import {
@@ -1867,7 +1868,7 @@ export const userDetails = (currentUser) => {
   var flag = "ir";
   var flagLabel = "Iran, Islamic Republic of";
   if (currentUser.country.value && currentUser.country.value != flag) {
-    flag = currentUser.country.value;
+    flag = currentUser.country.value.toLowerCase();
     flagLabel = currentUser.country.label;
   }
   var lastLogin = moment(currentUser.lastLogin).format();
@@ -1880,11 +1881,7 @@ export const userDetails = (currentUser) => {
           <Statistic.Label>
             <small className="text-muted">From </small>
             <br />
-            <img
-              src={"/assets/images/famfamfam_flag_icons/png/" + flag + ".png"}
-              style={{ position: "relative", top: -1 }}
-              alt={flagLabel}
-            />{" "}
+            <Flag name={flag} style={{ position: "relative", top: -1 }} />{" "}
             {flagLabel}
             <br />
             <br />
@@ -2010,7 +2007,7 @@ export const haveGameTag = (game, userTags) => {
     return true;
   }
 };
-export const printBlockChallenge = (newItem, filtermode, prop) => {
+export const printBlockChallenge = (newItem, filtermode) => {
   // const history = useHistory();
   var filter = filtermode;
   if (filter == "all") {
@@ -2044,7 +2041,7 @@ export const printBlockChallenge = (newItem, filtermode, prop) => {
     );
   } else {
     return newItem.map((item, i) => {
-      return <MatchCard key={i.toString()} item={item} {...prop} />;
+      return <MatchCard key={i.toString()} item={item} />;
     });
   }
 };

@@ -55,7 +55,6 @@ function MatchBlock(prop) {
   return (
     <Card color={getColorStatus(item.status)} as={Link} to={_link}>
       <Label
-        size="mini"
         color={getColorStatus(item.status)}
         ribbon
         style={{

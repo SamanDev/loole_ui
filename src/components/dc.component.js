@@ -40,10 +40,10 @@ function FormExampleFieldErrorLabel(prop) {
       if (usr.accessToken) {
         UserWebsocket.connect(usr.accessToken + "&user=" + usr.username, usr);
       } else {
-        //UserWebsocket.connect();
+        UserWebsocket.connect();
       }
     } else {
-      //UserWebsocket.connect();
+      UserWebsocket.connect();
     }
   };
 

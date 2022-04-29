@@ -50,7 +50,13 @@ const HomeEvents = (prop) => {
         }
       });
       return (
-        <Card.Group className="fours" centered style={{ marginBottom: 20 }}>
+        <Card.Group
+          className="fours"
+          stackable
+          doubling
+          itemsPerRow="3"
+          style={{ marginBottom: 20, textAlign: "left" }}
+        >
           {printBlockChallenge(newItem, filtermode, { ...prop })}
         </Card.Group>
       );
@@ -69,16 +75,7 @@ const HomeEvents = (prop) => {
   if (responsive >= 768) {
     return <>{getBlockChallenge("all", events)}</>;
   } else {
-    return (
-      <>
-        <Carousel
-          style={{ textAlign: "left", maxWidth: 300, margin: "auto" }}
-          controls={false}
-        >
-          {getBlockChallenge("all", events)}
-        </Carousel>
-      </>
-    );
+    return <>{getBlockChallenge("all", events)}</>;
   }
 };
 

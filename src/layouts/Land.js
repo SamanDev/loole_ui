@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import { ConfigProvider } from "react-avatar";
 import { DEFCOLORS } from "const";
@@ -14,16 +14,19 @@ import Games from "views/Pages/Games.js";
 import Content from "views/Pages/Content.js";
 import { getOffset } from "components/include";
 function scrollTo(elem) {
-  var x = getOffset(document.getElementById(elem)).top;
+  setTimeout(function () {
+    var x = getOffset(document.getElementById(elem)).top;
 
-  window.scrollTo({
-    top: x,
-    behavior: "smooth",
-  });
+    window.scrollTo({
+      top: x - 90,
+      behavior: "smooth",
+    });
+  }, 100);
 }
 function Auth(props) {
   const getRoutes = (routes) => {
     //scrollToTop();
+
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return getRoutes(prop.views);
@@ -36,12 +39,20 @@ function Auth(props) {
             key={key}
             render={() => (
               <>
-                {prop.component == "Landing" && <Landing {...props} />}
-                {prop.component == "User" && <User {...props} />}
-                {prop.component == "Games" && <Games {...props} />}
-                {prop.component == "Content" && <Content {...props} />}
+                {prop.component == "Landing" && (
+                  <Landing {...props} scrollTo={scrollTo} />
+                )}
+                {prop.component == "User" && (
+                  <User {...props} scrollTo={scrollTo} />
+                )}
+                {prop.component == "Games" && (
+                  <Games {...props} scrollTo={scrollTo} />
+                )}
+                {prop.component == "Content" && (
+                  <Content {...props} scrollTo={scrollTo} />
+                )}
                 {prop.component == "LockScreenPage" && (
-                  <LockScreenPage {...props} />
+                  <LockScreenPage {...props} scrollTo={scrollTo} />
                 )}
               </>
             )}
@@ -67,7 +78,14 @@ function Auth(props) {
       }
     });
   };
-
+  useEffect(() => {
+    if (window.location.hash) {
+      var hash = window.location.hash;
+      scrollTo(hash.replace("#", ""));
+    } else {
+      // Fragment doesn't exist
+    }
+  }, [window.location.hash]);
   return (
     <>
       <ConfigProvider colors={DEFCOLORS}>

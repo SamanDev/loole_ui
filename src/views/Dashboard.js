@@ -129,8 +129,14 @@ function Dashboard(prop) {
       );
     }
     return (
-      <Card.Group centered className="fours" style={{ marginBottom: 20 }}>
-        {printBlockChallenge(newItem, filtermode, { ...prop })}
+      <Card.Group
+        className="fours"
+        stackable
+        doubling
+        itemsPerRow="4"
+        style={{ marginBottom: 20, textAlign: "left" }}
+      >
+        {printBlockChallenge(newItem, filtermode)}
       </Card.Group>
     );
   };

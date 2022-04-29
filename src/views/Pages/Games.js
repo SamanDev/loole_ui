@@ -1,7 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Helmet } from "react-helmet";
 import { printBlockChallenge } from "components/include";
-import { Card, Dimmer, Loader, Header, Breadcrumb } from "semantic-ui-react";
+import {
+  Card,
+  Dimmer,
+  Loader,
+  Header,
+  Breadcrumb,
+  Segment,
+} from "semantic-ui-react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 // react-bootstrap components
@@ -12,6 +19,7 @@ import Market from "components/market.component";
 import GlobalContext from "context/GlobalState";
 import HowIt from "components/howit";
 import RegisterBtn from "components/registerBtn";
+import Helpblog from "components/help.component";
 function scrollToTop() {
   window.scrollTo({
     top: 0,
@@ -119,8 +127,15 @@ const Landing = (prop) => {
       );
     }
     return (
-      <Card.Group centered className="fours" style={{ marginBottom: 20 }}>
-        {printBlockChallenge(newItem, filtermode, { ...prop })}
+      <Card.Group
+        className="fours"
+        stackable
+        centered
+        doubling
+        itemsPerRow="3"
+        style={{ marginBottom: 20, textAlign: "left" }}
+      >
+        {printBlockChallenge(newItem, filtermode)}
       </Card.Group>
     );
   };
@@ -169,7 +184,7 @@ const Landing = (prop) => {
         <div
           className={"parallax filter-gradient " + _color + " section-gray"}
           data-color="red"
-          style={{ height: 350 }}
+          style={{ height: 400, overflow: "hidden" }}
         >
           <div className="parallax-background">
             <img
@@ -184,7 +199,7 @@ const Landing = (prop) => {
             <h2
               className="header-text text-center"
               style={{
-                padding: "40px 20px 10px 20px",
+                padding: "10px 20px 10px 20px",
                 fontSize: "40px",
                 fontWeight: "bold",
                 color: "#fff",
@@ -207,54 +222,60 @@ const Landing = (prop) => {
             </p>
           </div>
         </div>
-        <div className="section" style={{ margin: 0 }}>
-          <div className="container">
-            <div className="td-pb-span8 td-main-content" role="main">
-              <div className="td-ss-main-content">
-                <div className="clearfix"></div>
-                <div className="td-page-header">
-                  <h3 className="entry-title td-page-title">
-                    <span>Play {_game} for Money</span>
-                  </h3>
-                </div>
-                <div className="td-page-content tagdiv-type">
-                  <p>
-                    Have you ever dreamed of{" "}
-                    <b>making money just by playing {_game}?</b>
-                    &nbsp;Well, this dream is now a reality for thousands of
-                    gamers on <b>Loole.gg </b>Loole is a new platform that lets
-                    you bet money on your
-                    {_game} skills against other online players from around the
-                    world.
-                  </p>
-                </div>
-                <br /> <br />
-                <div className="td-page-header">
-                  <h3 className="entry-title td-page-title">
-                    <span>FREE {_game} Tournaments</span>
-                  </h3>
-                </div>
-                <div className="td-page-content tagdiv-type">
-                  <p>
-                    Loole.gg is the best site to play&nbsp;FREE {_game}{" "}
-                    tournaments and stand a chance to win amazing cash prizes.
-                    Every weekend thousands sof players make money online
-                    competing in our <b>Free {_game} tournaments</b>. We give
-                    away&nbsp;
-                    <strong>thousands of euros in prizes every season. </strong>
-                    So, what are you waiting for?{" "}
-                    <b>Join our expansive {_game} community </b>and start
-                    earning your share of the epic prizes!&nbsp;
-                  </p>
-                </div>
-                <div className="clearfix"></div>
+        <Segment
+          size="small"
+          className="container"
+          style={{ position: "relative", zIndex: 5, top: -50 }}
+        >
+          <div className="td-pb-span8 td-main-content" role="main">
+            <div className="td-ss-main-content">
+              <div className="clearfix"></div>
+              <div className="td-page-header">
+                <h3 className="entry-title td-page-title">
+                  <span>Play {_game} for Money</span>
+                </h3>
               </div>
-            </div>
-            <div className="text-center" style={{ marginTop: 40 }}>
-              <RegisterBtn {...prop} color="red" />
+              <div className="td-page-content tagdiv-type">
+                <p>
+                  Have you ever dreamed of{" "}
+                  <b>making money just by playing {_game}?</b>
+                  &nbsp;Well, this dream is now a reality for thousands of
+                  gamers on <b>Loole.gg </b>Loole is a new platform that lets
+                  you bet money on your
+                  {_game} skills against other online players from around the
+                  world.
+                </p>
+              </div>
+              <div className="text-center" style={{ marginTop: 10 }}>
+                <RegisterBtn {...prop} color="red" />
+              </div>
+              <br /> <br />
+              <div className="td-page-header">
+                <h3 className="entry-title td-page-title">
+                  <span>FREE {_game} Tournaments</span>
+                </h3>
+              </div>
+              <div className="td-page-content tagdiv-type">
+                <p>
+                  Loole.gg is the best site to play&nbsp;FREE {_game}{" "}
+                  tournaments and stand a chance to win amazing cash prizes.
+                  Every weekend thousands sof players make money online
+                  competing in our <b>Free {_game} tournaments</b>. We give
+                  away&nbsp;
+                  <strong>thousands of euros in prizes every season. </strong>
+                  So, what are you waiting for?{" "}
+                  <b>Join our expansive {_game} community </b>and start earning
+                  your share of the epic prizes!&nbsp;
+                </p>
+              </div>
+              <div className="clearfix"></div>
             </div>
           </div>
-        </div>
+          <div className="text-center" style={{ marginTop: 40 }}>
+            <Helpblog {...prop} game={_game} lang="ir" />
+          </div>
+        </Segment>
+
         <div className="section section-gray" style={{ margin: 0 }}>
           <div className="container">
             <h4 className="header-text text-center">Is it Real Cash?</h4>
@@ -281,12 +302,12 @@ const Landing = (prop) => {
           </div>
         </div>
 
-        <div className="section section-gray   section-no-padding">
+        <div className="section section-gray   section-no-padding mobile hidsden">
           <div className="container" style={{ minHeight: 500 }}>
             <h4 className="header-text  text-center" id="market">
               Don't ever be out!
             </h4>
-            <Market />
+            <Market {...prop} />
           </div>
         </div>
         <footer className="footer">

@@ -9,18 +9,24 @@ function MatchCard(prop) {
   var imgARR = item.images[0].src.split("/");
   var imgName = imgARR[imgARR.length - 1];
   const errMs = () => {
-    Swal.fire(
-      "Error!",
-      "You do not have enough balance in your wallet to complete this transaction.",
-      "error"
-    ).then(() => {});
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user?.accessToken != "") {
+      Swal.fire(
+        "Error!",
+        "You do not have enough balance in your wallet to complete this transaction.",
+        "error"
+      ).then(() => {});
+    } else {
+      prop.onUpdateItem("openModalLogin", true);
+    }
   };
   return (
     <Card>
       <Image
         alt={item.title}
         src={"/assets/market/" + imgName}
-        style={{ background: "gray !important", height: 167 }}
+        style={{ background: "gray !important" }}
+        fluid
       />
 
       <div className="content extra">
@@ -41,7 +47,10 @@ function MatchCard(prop) {
               "green"
             )}
           </div>
-          <div className="content right floated ">
+          <div
+            className="content right floated "
+            style={{ zIndex: 10, position: "relative" }}
+          >
             <Button color="red" size="mini" onClick={() => errMs()}>
               Buy
             </Button>

@@ -27,6 +27,7 @@ function Landing(prop) {
       prop.onUpdateItem("looleInfo", looleInfo);
     }
   }, [looleInfo]);
+
   return (
     <>
       <Helmet>
@@ -125,7 +126,7 @@ function Landing(prop) {
             <h4 className="header-text  text-center" id="market">
               Don't ever be out!
             </h4>
-            <Market />
+            <Market {...prop} />
           </div>
         </div>
         <div

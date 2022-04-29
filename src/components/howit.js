@@ -15,11 +15,7 @@ export default function GameSlide() {
     <>
       <div className="section " style={{ padding: 0 }}>
         <div
-          className={
-            " filter-gradient " +
-            themeColors[day + 2].replace("grey", "gray") +
-            " section-gray"
-          }
+          className={" filter-gradient gray section-gray"}
           data-color="orange"
         >
           <div
@@ -32,7 +28,7 @@ export default function GameSlide() {
               zIndex: 3,
             }}
           >
-            <div className="container" style={{ marginTop: 60 }}>
+            <div className="container" id="how" style={{ marginTop: 60 }}>
               <div className="info">
                 <h4
                   className="header-text text-center"
@@ -51,7 +47,7 @@ export default function GameSlide() {
                 <div className="row">
                   {elements.map((value, index) => {
                     return (
-                      <div className="col-md-3" key={index}>
+                      <div className="col-xs-6 col-sm-6 col-md-3" key={index}>
                         <img
                           src={"/assets/img/" + value + ".jpg"}
                           alt={"how it work " + value}

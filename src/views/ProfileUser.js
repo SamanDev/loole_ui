@@ -38,7 +38,7 @@ function profile(prop) {
   }, [userGet]);
   const currentUser = prop.findStateId(myState, "profileUser");
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser?.id > 0) {
       str = currentUser.username;
       res = str.substring(0, 1);
       res = res + " " + str.substring(1, 2);
@@ -77,14 +77,15 @@ function profile(prop) {
           <div className="parallax-background">
             <img
               className="parallax-background-image"
+              alt="user profile"
               src="/assets/img/showcases/showcase-1/bg.jpg"
             />
           </div>
-          <div className="container user crump">
+          <div className="container  crump">
             <Breadcrumb icon="right angle" sections={sections} />
             <div className="row">
               <div className="col-md-12">
-                <div className="description">
+                <div className="description" style={{ marginTop: 20 }}>
                   <div
                     className=" winner avatar"
                     style={{ width: 92, height: 92 }}

@@ -43,6 +43,8 @@ function TagsForm(prop) {
           <Col
             lg="4"
             xl="3"
+            md="4"
+            xs="6"
             key={i.toString()}
             onClick={() =>
               handleTagForm(arrTagMode[i], arrPlatform[i], currentUser)

@@ -309,7 +309,11 @@ function Main(prop) {
         !findStateId(myState, "profileUser") &&
         !findStateId(myState, "openModalLogin")
       ) {
-        onUpdateItem("openModalSoket", true);
+        if (userGet?.accessToken) {
+          onUpdateItem("openModalSoket", true);
+        } else {
+          onUpdateItem("openModalSoket", true);
+        }
       } else {
       }
     });
@@ -378,7 +382,7 @@ function Main(prop) {
     ReactGA.pageview(location.pathname + location.search);
     var newPath = location.pathname.split("/")[2];
 
-    if (currentUser?.accessToken && myList.events == null && !eventsGet) {
+    if (currentUser?.accessToken || (myList.events == null && !eventsGet)) {
       queryClient.resetQueries(["Events"]);
     }
     var newEID = location.pathname.split("/")[2];
@@ -660,18 +664,7 @@ function Main(prop) {
                 />
               )}
             />
-            <Route
-              path="/mobile"
-              render={(props) => (
-                <LandLayout
-                  {...props}
-                  myState={myState}
-                  onUpdateItem={onUpdateItem}
-                  findStateId={findStateId}
-                  myFunction={myFunction}
-                />
-              )}
-            />
+
             <Route
               path="/home"
               render={(props) => (
