@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, lazy, Suspense } from "react";
 import { Helmet } from "react-helmet";
 import ReactDOM from "react-dom";
 import { useParams } from "react-router";
@@ -18,9 +18,9 @@ import { defUser, TrackingID } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import LandLayout from "layouts/Land.js";
+const LandLayout = lazy(() => import("layouts/Land.js"));
+const PanelLayout = lazy(() => import("layouts/Panel.js"));
 
-import PanelLayout from "layouts/Panel.js";
 import Login from "components/newlogin.component";
 import Register from "components/newregister.component";
 import Forget from "components/newforget.component";
@@ -77,12 +77,13 @@ if (localStorage.getItem("user")) {
 }
 var _defEvents = null;
 var _defEvent = {};
-
+const renderLoader = () => <p>Loading</p>;
 function Main(prop) {
   const queryClient = useQueryClient();
   const history = useHistory();
   const location = useLocation();
   const params = useParams();
+
   var myPath = location.pathname.split("/")[1];
   const [myList, setMyList] = useState({
     events: _defEvents,
@@ -730,13 +731,15 @@ function App() {
 }
 
 ReactDOM.render(
-  <BrowserRouter>
-    <ConfigProvider cache={cache}>
-      <div className="application">
-        <App />
-      </div>
-    </ConfigProvider>
-  </BrowserRouter>,
+  <Suspense fallback={renderLoader()}>
+    <BrowserRouter>
+      <ConfigProvider cache={cache}>
+        <div className="application">
+          <App />
+        </div>
+      </ConfigProvider>
+    </BrowserRouter>
+  </Suspense>,
 
   document.getElementById("root")
 );
