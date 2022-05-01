@@ -7,7 +7,17 @@ import "assets/css/landing-page.css";
 const LockScreenPage = lazy(() => import("views/Pages/LockScreenPage.js"));
 const LandNavbar = lazy(() => import("components/Navbars/LandNavbar.js"));
 const Landing = lazy(() => import("views/Pages/Landing.js"));
-
+import {
+  Grid,
+  Header,
+  Icon,
+  Modal,
+  Divider,
+  Dimmer,
+  Loader,
+  Segment,
+  Button,
+} from "semantic-ui-react";
 import User from "views/Pages/User.js";
 import routes from "routes.js";
 import Games from "views/Pages/Games.js";
@@ -78,7 +88,11 @@ function Auth(props) {
       }
     });
   };
-  const renderLoader = () => <p>Loading</p>;
+  const renderLoader = () => (
+    <Dimmer active inverted>
+      <Loader size="large">Loading</Loader>
+    </Dimmer>
+  );
   useEffect(() => {
     if (window.location.hash) {
       var hash = window.location.hash;

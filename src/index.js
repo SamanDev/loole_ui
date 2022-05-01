@@ -12,7 +12,7 @@ import {
 } from "react-router-dom";
 import AuthService from "services/auth.service";
 import { Cache, ConfigProvider } from "react-avatar";
-
+import "assets/css/landing-page.css";
 import Swal from "sweetalert2";
 import { defUser, TrackingID } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -77,7 +77,11 @@ if (localStorage.getItem("user")) {
 }
 var _defEvents = null;
 var _defEvent = {};
-const renderLoader = () => <p>Loading</p>;
+const renderLoader = () => (
+  <Dimmer active inverted>
+    <Loader size="large">Loading</Loader>
+  </Dimmer>
+);
 function Main(prop) {
   const queryClient = useQueryClient();
   const history = useHistory();

@@ -74,7 +74,7 @@ function MatchBlock(prop) {
       </Label>
       <Image
         alt={item.gameName}
-        src={"/assets/images/games/" + item.gameName + ".jpg"}
+        src={"/assets/images/games/" + item.gameName + ".webp"}
         fluid
         style={{ background: "gray !important" }}
         wrapped

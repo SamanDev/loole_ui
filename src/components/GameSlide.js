@@ -62,7 +62,7 @@ export default function GameSlide() {
                     bordered
                     rounded
                     centered
-                    src={"/assets/images/games/" + item.name + ".jpg"}
+                    src={"/assets/images/games/" + item.name + ".webp"}
                     alt={item.name}
                     as={Link}
                     label={{

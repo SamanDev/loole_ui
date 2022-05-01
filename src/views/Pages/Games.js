@@ -191,7 +191,7 @@ const Landing = (prop) => {
               className="parallax-background-image"
               style={{ filter: "blur(4px)" }}
               alt={_game + " for Real Money."}
-              src={"/assets/images/games/" + _game + ".jpg"}
+              src={"/assets/images/games/" + _game + ".webp"}
             />
           </div>
           <div className="container crumb">

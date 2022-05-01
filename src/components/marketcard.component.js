@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 function MatchCard(prop) {
   var item = prop.item;
   var imgARR = item.images[0].src.split("/");
-  var imgName = imgARR[imgARR.length - 1];
+  var imgName = imgARR[imgARR.length - 1].replace(".png", ".webp");
   const errMs = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user?.accessToken != "") {

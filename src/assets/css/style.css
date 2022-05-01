@@ -1418,9 +1418,8 @@ video {
 .lock-page .card-match .card-header .avatar {
   height: 79px !important;
 }
-.hide2 {
-  margin: 0 -30px !important;
-  width: 110% !important;
+.hide {
+  display: none;
 }
 .card-chat p {
   line-height: 18px;
