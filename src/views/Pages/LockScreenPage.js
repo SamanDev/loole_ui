@@ -79,7 +79,7 @@ function LockScreenPage(prop) {
   const eventIDQ = event?.id;
 
   useEffect(() => {
-    prop.onUpdateItem("eventIDQ", parseInt(event?.id));
+    prop.onUpdateItem("eventIDQ", parseInt(params.id));
 
     //prop.onUpdateItem("matchIDQ", parseInt(matchIDQ));
 

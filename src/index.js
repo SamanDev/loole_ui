@@ -18,10 +18,11 @@ import { defUser, TrackingID } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
-//const LandLayout = lazy(() => import("layouts/Land.js"));
+const LandLayout = lazy(() => import("layouts/Land.js"));
 const PanelLayout = lazy(() => import("layouts/Panel.js"));
 
-import LandLayout from "layouts/Land.js";
+//import LandLayout from "layouts/Land.js";
+//import PanelLayout from "layouts/Panel.js";
 import Login from "components/newlogin.component";
 import Register from "components/newregister.component";
 import Forget from "components/newforget.component";
@@ -389,7 +390,10 @@ function Main(prop) {
     ReactGA.pageview(location.pathname + location.search);
     var newPath = location.pathname.split("/")[2];
 
-    if (currentUser?.accessToken || (myList.events == null && !eventsGet)) {
+    if (
+      (currentUser?.accessToken && newPath == "dashboard") ||
+      (myList.events == null && !eventsGet)
+    ) {
       queryClient.resetQueries(["Events"]);
     }
     var newEID = location.pathname.split("/")[2];
@@ -731,21 +735,20 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient} contextSharing={true}>
-      <Main err401={err401} />
+      <Suspense fallback={renderLoader()}>
+        <Main err401={err401} />
+      </Suspense>
     </QueryClientProvider>
   );
 }
 
 ReactDOM.render(
-  <Suspense fallback={renderLoader()}>
-    <BrowserRouter>
-      <ConfigProvider cache={cache}>
-        <div className="application">
-          <App />
-        </div>
-      </ConfigProvider>
-    </BrowserRouter>
-  </Suspense>,
-
+  <BrowserRouter>
+    <ConfigProvider cache={cache}>
+      <div className="application">
+        <App />
+      </div>
+    </ConfigProvider>
+  </BrowserRouter>,
   document.getElementById("root")
 );

@@ -23,7 +23,7 @@ import Market from "views/Market.js";
 import Cashier from "views/Cashier.js";
 import Profile from "views/Profile.js";
 import CreateMatch from "views/Add.js";
-import LockScreenPage from "views/Pages/LockScreenPage.js";
+
 import ShetabDeposit from "components/deposit/shetabdeposit.component";
 import ShetabCashout from "components/deposit/shetabcashout.component";
 import CrDeposit from "components/deposit/crdeposit.component";
@@ -96,9 +96,7 @@ function Panel(props) {
                 {prop.component == "AdminCost" && <AdminCost {...props} />}
                 {prop.component == "Profile" && <Profile {...props} />}
                 {prop.component == "Dashboard" && <Dashboard {...props} />}
-                {prop.component == "LockScreenPage" && (
-                  <LockScreenPage {...props} />
-                )}
+
                 {prop.component == "Cashier" && <Cashier {...props} />}
                 {prop.component == "Rewards" && <Rewards {...props} />}
                 {prop.component == "Market" && <Market {...props} />}

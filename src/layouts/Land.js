@@ -4,16 +4,32 @@ import { ConfigProvider } from "react-avatar";
 import { DEFCOLORS } from "const";
 
 //const LockScreenPage = lazy(() => import("views/Pages/LockScreenPage.js"));
-const LandNavbar = lazy(() => import("components/Navbars/LandNavbar.js"));
+//const LandNavbar = lazy(() => import("components/Navbars/LandNavbar.js"));
 const Landing = lazy(() => import("views/Pages/Landing.js"));
 const Games = lazy(() => import("views/Pages/Games.js"));
 const Content = lazy(() => import("views/Pages/Content.js"));
 const User = lazy(() => import("views/Pages/User.js"));
-
+import {
+  Grid,
+  Header,
+  Icon,
+  Modal,
+  Divider,
+  Dimmer,
+  Loader,
+  Segment,
+  Button,
+} from "semantic-ui-react";
 import routes from "routes.js";
+import LandNavbar from "components/Navbars/LandNavbar.js";
 import LockScreenPage from "views/Pages/LockScreenPage.js";
 
 import { getOffset } from "components/include";
+const renderLoader = () => (
+  <Dimmer active inverted>
+    <Loader size="large">Loading</Loader>
+  </Dimmer>
+);
 function scrollTo(elem) {
   setTimeout(function () {
     var x = getOffset(document.getElementById(elem)).top;
@@ -91,19 +107,21 @@ function Auth(props) {
 
   return (
     <>
-      <ConfigProvider colors={DEFCOLORS}>
-        {getPage(routes).indexOf("Match Lobby") > -1 ? (
-          <Switch>{getRoutes(routes)}</Switch>
-        ) : (
-          <div className="landing-page landing-page1 landing-mobile">
-            {/* Navbar */}
-            <LandNavbar {...props} scrollTo={scrollTo} />
-            {/* End Navbar */}
-
+      <Suspense fallback={renderLoader()}>
+        <ConfigProvider colors={DEFCOLORS}>
+          {getPage(routes).indexOf("Match Lobby") > -1 ? (
             <Switch>{getRoutes(routes)}</Switch>
-          </div>
-        )}
-      </ConfigProvider>
+          ) : (
+            <div className="landing-page landing-page1 landing-mobile">
+              {/* Navbar */}
+              <LandNavbar {...props} scrollTo={scrollTo} />
+              {/* End Navbar */}
+
+              <Switch>{getRoutes(routes)}</Switch>
+            </div>
+          )}
+        </ConfigProvider>
+      </Suspense>
     </>
   );
 }
