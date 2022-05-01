@@ -9,7 +9,7 @@ import { DEFCOLORS, themeDashColors } from "const";
 // core components
 import ModalExampleShorthand from "components/modal.component";
 import SidebarMy from "components/Sidebar/Sidebar.js";
-import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
+
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import CrCode from "components/cr.component";
 import routes from "routes.js";

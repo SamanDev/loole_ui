@@ -17,10 +17,11 @@ import Swal from "sweetalert2";
 import { defUser, TrackingID } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-const LandLayout = lazy(() => import("layouts/Land.js"));
+import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
+//const LandLayout = lazy(() => import("layouts/Land.js"));
 const PanelLayout = lazy(() => import("layouts/Panel.js"));
 
+import LandLayout from "layouts/Land.js";
 import Login from "components/newlogin.component";
 import Register from "components/newregister.component";
 import Forget from "components/newforget.component";
@@ -286,6 +287,7 @@ function Main(prop) {
 
       queryClient.setQueryData(["Event", eventGet.id], eventGet);
       onUpdateItem("match", _find);
+      console.log(myState);
     }
   }, [eventGet]);
   useEffect(() => {
