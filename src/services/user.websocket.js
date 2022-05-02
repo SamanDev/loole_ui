@@ -32,6 +32,11 @@ class UserWebsocket {
       //userService.getEvents();
      
      ws.onopen = function live() {
+      if (ws?.readyState == ws?.OPEN) {
+        if (ws) {
+          eventBus.dispatch("eventsConnect", "");
+        }
+      }
       /*   var timeout = 20000;
         if (ws?.readyState == ws?.OPEN) {
           ws?.send("Ping");
