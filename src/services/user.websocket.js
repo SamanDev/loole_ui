@@ -4,24 +4,35 @@ import eventBus from "views/eventBus";
 import userService from "services/user.service";
 
 var ws;
+var ws2;
 var timerId = 0;
 var res = false;
 class UserWebsocket {
   connect(token, user) {
     //console.log(ws);
-    if (ws == null || ws.url.indexOf("public") > -1) {
-      if (token) {
+    if (token) {
+     
+        ws2?.close();
+        ws2 = null;
+        if (ws == null)  {
         ws = new WebSocket(USERSOCKETURL + token);
-      } else {
-        ws = new WebSocket(USERSOCKETPUBLICURL);
+        console.log("Websocket user is connected");
+        }
+    }else {
+      ws?.close();
+      ws = null;
+      if (ws2 == null)  {
+        ws2 = new WebSocket(USERSOCKETPUBLICURL);
+        console.log("Websocket public is connected");
+      }
       }
       //eventBus.dispatch("eventsConnect", "");
       //userService.getEvents();
       //localStorage.removeItem("events");
       //userService.getEvents();
-      console.log("Websocket is connect");
-      ws.onopen = function live() {
-        var timeout = 20000;
+     
+     ws.onopen = function live() {
+      /*   var timeout = 20000;
         if (ws?.readyState == ws?.OPEN) {
           ws?.send("Ping");
           if (ws) {
@@ -36,17 +47,17 @@ class UserWebsocket {
                 if (timerId) {
                   clearTimeout(timerId);
                 }
-                res = false;
+              //  res = false;
                 try {
                   ws = null;
                   ws.close();
                 } catch (e) {}
               } catch (e) {}
             }
-            res = false;
+           // res = false;
           }, 2000);
         }
-      };
+      };*/
       ws.onmessage = function (data) {
         var message = data.data;
         //  new UserWebsocket().serverMessage(data.data);
@@ -82,7 +93,7 @@ class UserWebsocket {
 
             ws?.close();
             ws = null;
-            eventBus.dispatch("eventsDC", "");
+          //  eventBus.dispatch("eventsDC", "");
           } else if (message === "PasswordChanged") {
             eventBus.dispatch(
               "eventsDataPass",
@@ -100,27 +111,32 @@ class UserWebsocket {
         }
       };
       ws.onerror = function (e) {
-        if (timerId) {
+      /*  if (timerId) {
           clearTimeout(timerId);
         }
-        console.log(e.type);
+        console.log(e.type);*/
 
         if (e.type === "error") {
           //localStorage.setItem("user", JSON.stringify(defUser));
-          eventBus.dispatch("eventsDC", "");
+        //  eventBus.dispatch("eventsDC", "");
           // localStorage.clear();
           //window.location.reload();
           //window.location.replace("/auth/login-page");
         }
       };
       ws.onclose = function (e) {
+        setTimeout(function () {
+        if (ws2 == null && token) {
+          eventBus.dispatch("eventsDC", "");
+        }
+      }, 1000);
         //ws?.close();
         //ws = null;
-        console.log(ws);
-        console.log(token);
+      //  console.log(ws);
+      //  console.log(token);
         // localStorage.setItem("user", JSON.stringify(defUser));
         //eventBus.dispatch("eventsDC", "");
-        setTimeout(function () {
+      /*  setTimeout(function () {
           if (ws != null) {
             eventBus.dispatch("eventsConnect", "");
           } else {
@@ -128,7 +144,7 @@ class UserWebsocket {
               eventBus.dispatch("eventsDC", "");
             }
           }
-        }, 200);
+        }, 200);*/
       };
     }
   }

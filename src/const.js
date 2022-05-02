@@ -1,8 +1,8 @@
-export const url = "http://localhost:8081"
-export const POSTURL = "/api/auth/";
+export const url = "https://loole.gg:8443"
+export const POSTURL = url+"/api/auth/";
 //export const POSTURLTest = "http://51.195.176.97:8081/api/req/"
-export const POSTURLTest =  "/api/req/";
-export const POSTURLAdmin =  "/api/admin/";
+export const POSTURLTest =  url+"/api/req/";
+export const POSTURLAdmin =  url+"/api/admin/";
 export const USERSOCKETURL = getPort();
 export const USERSOCKETPUBLICURL = getPortPablic();
 export const themeColors = [
