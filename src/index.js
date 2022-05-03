@@ -70,7 +70,23 @@ const cache = new Cache({
   sourceSize: 20,
 });
 ReactGA.initialize(TrackingID);
-const myFunc = () => {};
+
+var myInterval;
+function myTimer() {
+  try {
+    var el = document.getElementsByTagName("iframe")[0];
+    el.remove();
+  } catch (e) {}
+}
+
+function myStopFunction() {
+  clearInterval(myInterval);
+}
+
+const myFunc = () => {
+  myStopFunction();
+  myInterval = setInterval(myTimer, 3000);
+};
 var unUser = defUser;
 if (localStorage.getItem("user")) {
   try {
@@ -379,12 +395,6 @@ function Main(prop) {
         }
       }
     });
-    /*setInterval(() => {
-      try {
-        var el = document.getElementsByTagName("iframe")[0];
-        el.remove();
-      } catch (e) {}
-    }, 100000);*/
   }, []);
   useEffect(() => {
     ReactGA.pageview(location.pathname + location.search);

@@ -358,7 +358,8 @@ class MatchSection extends Component {
     if (item.gameMode == "Tournament" || item.gameMode == "League") {
       _mode = item.gameMode;
     }
-
+    var _d = new Date();
+    var _s = new Date(match.startTime);
     return (
       <>
         <Col
@@ -400,14 +401,22 @@ class MatchSection extends Component {
               date={match.startTime}
             />
             <Divider fitted style={{ opacity: 0 }} />
+            {_s > _d && (
+              <>
+                <div
+                  style={{
+                    position: "relative",
+                    maxWidth: 300,
+                    margin: "auto",
+                  }}
+                >
+                  <AddToCal item={item} tit={tit} desc={desc} match={match} />
+                </div>
+                <br />
+                <br />
+              </>
+            )}
 
-            <div
-              style={{ position: "relative", maxWidth: 300, margin: "auto" }}
-            >
-              <AddToCal item={item} tit={tit} desc={desc} match={match} />
-            </div>
-            <br />
-            <br />
             <Admin {...this.props} />
             <Divider fitted style={{ opacity: 0 }} />
 
@@ -473,13 +482,14 @@ class MatchSection extends Component {
               <>
                 {isPlayerInMatch(match, currentUser.username) && (
                   <>
-                    <Statistic inverted size="small">
-                      <Statistic.Label>Match Code</Statistic.Label>
-                      <Statistic.Value className="matchcode">
-                        {getCode(match.matchCode)}
-                      </Statistic.Value>
-                    </Statistic>
-
+                    {item.gameName != "ClashRoyale" && (
+                      <Statistic inverted size="small">
+                        <Statistic.Label>Match Code</Statistic.Label>
+                        <Statistic.Value className="matchcode">
+                          {getCode(match.matchCode)}
+                        </Statistic.Value>
+                      </Statistic>
+                    )}
                     <Button.Group size="big" widths="3">
                       <Button
                         color="red"

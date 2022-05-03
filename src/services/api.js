@@ -83,7 +83,7 @@ const getUser = async () => {
 
       if (data.accessToken) {
         localStorage.setItem("user", JSON.stringify(data));
-
+        //alert(JSON.stringify(data.accessToken));
         var loc = window.location.href;
 
         //eventBus.dispatch("eventsDataUser", usr);

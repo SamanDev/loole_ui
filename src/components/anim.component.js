@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Transition } from "semantic-ui-react";
-var timer;
+var myInterval;
 export default class TransitionExampleTransitionExplorer extends Component {
   constructor(props) {
     super(props);
-
+    this.myStopFunction = this.myStopFunction.bind(this);
+    this.myTimer = this.myTimer.bind(this);
     this.state = {
       animation: this.props.animation,
       duration: this.props.duration,
@@ -16,13 +17,18 @@ export default class TransitionExampleTransitionExplorer extends Component {
     this.setState((prevState) => ({ visible: !prevState.visible }));
   };
   componentDidMount() {
-    timer = setInterval(() => {
-      this.toggleVisibility();
-    }, 3000);
+    this.myStopFunction();
+    myInterval = setInterval(this.myTimer, 3000);
   }
   componentWillUnmount() {
-    clearInterval(timer);
+    this.myStopFunction();
   }
+  myStopFunction = () => {
+    clearInterval(myInterval);
+  };
+  myTimer = () => {
+    this.toggleVisibility();
+  };
   render() {
     const { animation, duration, visible, objanim } = this.state;
 

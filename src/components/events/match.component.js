@@ -536,13 +536,14 @@ class MatchSection extends Component {
               <>
                 {isPlayerInMatch(match, currentUser.username) && (
                   <>
-                    <Statistic inverted size="small">
-                      <Statistic.Label>Match Code</Statistic.Label>
-                      <Statistic.Value className="matchcode">
-                        {getCode(match.matchCode)}
-                      </Statistic.Value>
-                    </Statistic>
-
+                    {item.gameName != "ClashRoyale" && (
+                      <Statistic inverted size="small">
+                        <Statistic.Label>Match Code</Statistic.Label>
+                        <Statistic.Value className="matchcode">
+                          {getCode(match.matchCode)}
+                        </Statistic.Value>
+                      </Statistic>
+                    )}
                     <Button.Group size="big" widths="3">
                       <Button
                         color="red"

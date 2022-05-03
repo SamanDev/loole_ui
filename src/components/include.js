@@ -644,7 +644,10 @@ export const vsComponentPlayer = (
                           if (clipText.indexOf("http") > -1) {
                             setVisible(true);
                             document.getElementById("chatinput").value =
-                              clipText;
+                              clipText.replace(
+                                "Click this link to add as friend in Clash Royale!",
+                                ""
+                              );
                             document.getElementById("chatinput").focus();
                             document.getElementById("chatinput").blur();
                           } else {
@@ -1012,13 +1015,14 @@ export const vsComponent = (
         <>
           {isPlayerInMatch(match, currentUser.username) && (
             <>
-              <Statistic inverted size="small">
-                <Statistic.Label>Match Code</Statistic.Label>
-                <Statistic.Value className="matchcode">
-                  {getCode(match.matchCode)}
-                </Statistic.Value>
-              </Statistic>
-
+              {item.gameName != "ClashRoyale" && (
+                <Statistic inverted size="small">
+                  <Statistic.Label>Match Code</Statistic.Label>
+                  <Statistic.Value className="matchcode">
+                    {getCode(match.matchCode)}
+                  </Statistic.Value>
+                </Statistic>
+              )}
               <Button.Group size="big" widths="3">
                 <Button
                   color="red"
