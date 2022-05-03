@@ -6,7 +6,7 @@ import userService from "services/user.service";
 import { setAvatar } from "components/include";
 // react-bootstrap components
 import { Button, Card, Form, Row, Col } from "react-bootstrap";
-import { Input, Comment, Icon, TextArea } from "semantic-ui-react";
+import { Input, Comment, Icon } from "semantic-ui-react";
 
 function getchatTime(date) {
   var today = new Date(date);
@@ -287,8 +287,12 @@ class Chatbar extends Component {
   }
 
   changeMessageBox(e) {
+    var _t = e.target.value;
+    _t = _t
+      .replace(/\r?\n|\r/g, "")
+      .replace("Click this link to add as friend in Clash Royale!", "");
     this.setState({
-      messageBox: e.target.value,
+      messageBox: _t,
     });
   }
 
@@ -410,21 +414,19 @@ class Chatbar extends Component {
                   this.form = c;
                 }}
               >
-                <TextArea
+                <Input
                   loading={currentUser.accessToken != "" && isLoading && true}
                   disabled={
                     (currentUser.accessToken == "" || isLoading) && true
                   }
-                  style={{ minHeight: 50, width: "100%" }}
+                  fluid
                   value={messageBox && messageBox}
                   placeholder="type something..."
                   onChange={this.changeMessageBox}
                   onFocus={this.changeMessageBox}
                   onBlur={this.handleChat}
                   id="chatinput"
-                >
-                  {messageBox}
-                </TextArea>
+                />
 
                 <Row>
                   <Col>

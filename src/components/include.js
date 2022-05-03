@@ -644,10 +644,12 @@ export const vsComponentPlayer = (
                           if (clipText.indexOf("http") > -1) {
                             setVisible(true);
                             document.getElementById("chatinput").value =
-                              clipText.replace(
-                                "Click this link to add as friend in Clash Royale!",
-                                ""
-                              );
+                              clipText
+                                .replace(/\r?\n|\r/g, "")
+                                .replace(
+                                  "Click this link to add as friend in Clash Royale!",
+                                  ""
+                                );
                             document.getElementById("chatinput").focus();
                             document.getElementById("chatinput").blur();
                           } else {
