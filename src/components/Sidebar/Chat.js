@@ -6,7 +6,7 @@ import userService from "services/user.service";
 import { setAvatar } from "components/include";
 // react-bootstrap components
 import { Button, Card, Form, Row, Col } from "react-bootstrap";
-import { Input, Comment, Icon } from "semantic-ui-react";
+import { Input, Comment, Icon, TextArea } from "semantic-ui-react";
 
 function getchatTime(date) {
   var today = new Date(date);
@@ -410,7 +410,7 @@ class Chatbar extends Component {
                   this.form = c;
                 }}
               >
-                <Input
+                <TextArea
                   loading={currentUser.accessToken != "" && isLoading && true}
                   disabled={
                     (currentUser.accessToken == "" || isLoading) && true
