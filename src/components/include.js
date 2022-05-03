@@ -644,14 +644,7 @@ export const vsComponentPlayer = (
                         navigator.clipboard.readText().then((clipText) => {
                           if (clipText.indexOf("http") > -1) {
                             setVisible(true);
-                            setMessageBox(
-                              clipText
-                                .replace(/\r?\n|\r/g, "")
-                                .replace(
-                                  "Click this link to add as friend in Clash Royale!",
-                                  ""
-                                )
-                            );
+                            setMessageBox(clipText);
 
                             document.getElementById("chatinput").focus();
                             document.getElementById("chatinput").blur();

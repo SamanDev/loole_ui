@@ -7,7 +7,14 @@ import { setAvatar } from "components/include";
 // react-bootstrap components
 import { Button, Card, Form, Row, Col } from "react-bootstrap";
 import { Input, Comment, Icon } from "semantic-ui-react";
-
+function urlify(text) {
+  var urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, function (url) {
+    return '<a href="' + url + '">' + url + "</a>";
+  });
+  // or alternatively
+  // return text.replace(urlRegex, '<a href="$1">$1</a>')
+}
 function getchatTime(date) {
   var today = new Date(date);
   var dateExpired =
@@ -73,20 +80,7 @@ function mycreateChats(
             <br />
             <div className="text-justify" style={{ paddingBottom: 10 }}>
               <small>
-                {item.message.indexOf("http:") > -1 ||
-                item.message.indexOf("https:") > -1 ? (
-                  <>
-                    <a
-                      href={item.message}
-                      target="_blank"
-                      style={{ color: "#97cbff" }}
-                    >
-                      {item.message}
-                    </a>
-                  </>
-                ) : (
-                  <>{item.message}</>
-                )}
+                <>{urlify(item.message)}</>
               </small>
             </div>
             <Avatar
@@ -290,9 +284,7 @@ class Chatbar extends Component {
 
   changeMessageBox(e) {
     var _t = e.target.value;
-    _t = _t
-      .replace(/\r?\n|\r/g, "")
-      .replace("Click this link to add as friend in Clash Royale!", "");
+    _t = _t.replace(/\r?\n|\r/g, "");
     this.setState({
       messageBox: _t,
     });
