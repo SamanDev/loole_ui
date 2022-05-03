@@ -91,6 +91,7 @@ function LockScreenPage(prop) {
 
   const match = prop.findStateId(myState, "match");
   const [visible, setVisible] = React.useState(false);
+  const [messageBox, setMessageBox] = React.useState("");
   const devWid = document.documentElement.clientWidth;
 
   const BackBTC = () => {
@@ -314,6 +315,7 @@ function LockScreenPage(prop) {
                     chats={match.matchChats}
                     username={currentUser}
                     onUpdateItem={prop.onUpdateItem}
+                    messageBox={messageBox}
                   />
                 ) : (
                   <>
@@ -328,6 +330,7 @@ function LockScreenPage(prop) {
                         chats={match.matchChats}
                         username={currentUser}
                         onUpdateItem={prop.onUpdateItem}
+                        messageBox={messageBox}
                       />
                     ) : (
                       <Chatbar
@@ -339,6 +342,7 @@ function LockScreenPage(prop) {
                         eventchats={eventDef.chats}
                         chats="null"
                         username={currentUser}
+                        messageBox={messageBox}
                       />
                     )}
                   </>
@@ -404,12 +408,14 @@ function LockScreenPage(prop) {
                                 setVisible={setVisible}
                                 tit={_tit}
                                 desc={_desc}
+                                setMessageBox={setMessageBox}
                               />
                             ) : (
                               <MatchSection
                                 {...prop}
                                 event={eventDef}
                                 setVisible={setVisible}
+                                setMessageBox={setMessageBox}
                               />
                             )}
                           </>

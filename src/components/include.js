@@ -396,7 +396,8 @@ export const vsComponentPlayer = (
   handlechangeReadyEvent,
   loading,
   matchidQ,
-  setVisible
+  setVisible,
+  setMessageBox
 ) => {
   try {
     var player = matchidFind.matchPlayers[num];
@@ -643,15 +644,18 @@ export const vsComponentPlayer = (
                         navigator.clipboard.readText().then((clipText) => {
                           if (clipText.indexOf("http") > -1) {
                             setVisible(true);
-                            document.getElementById("chatinput").value =
+                            setMessageBox(
                               clipText
                                 .replace(/\r?\n|\r/g, "")
                                 .replace(
                                   "Click this link to add as friend in Clash Royale!",
                                   ""
-                                );
+                                )
+                            );
+
                             document.getElementById("chatinput").focus();
                             document.getElementById("chatinput").blur();
+                            setMessageBox("");
                           } else {
                             setVisible(true);
                           }

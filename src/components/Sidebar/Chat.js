@@ -270,7 +270,8 @@ class Chatbar extends Component {
     if (
       props.eventchats !== state.eventchats ||
       props.chats !== state.chats ||
-      props.matchID !== state.matchID
+      props.matchID !== state.matchID ||
+      (props.messageBox !== state.messageBox && props.messageBox !== "")
     ) {
       return {
         eventID: props.eventID,
@@ -281,6 +282,7 @@ class Chatbar extends Component {
         masterplayer: props.masterplayer,
         secondplayer: props.secondplayer,
         currentUser: props.username,
+        messageBox: props.messageBox,
       };
     }
     return null;

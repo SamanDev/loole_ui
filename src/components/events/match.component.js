@@ -490,7 +490,8 @@ class MatchSection extends Component {
                     this.handlechangeReadyEvent,
                     isloading,
                     "",
-                    this.props.setVisible
+                    this.props.setVisible,
+                    this.props.setMessageBox
                   )}
                 </Grid.Column>
                 <Grid.Column
@@ -512,7 +513,8 @@ class MatchSection extends Component {
                     this.handlechangeReadyEvent,
                     isloading,
                     "",
-                    this.props.setVisible
+                    this.props.setVisible,
+                    this.props.setMessageBox
                   )}
                 </Grid.Column>
               </Grid>
