@@ -415,14 +415,16 @@ class Chatbar extends Component {
                   disabled={
                     (currentUser.accessToken == "" || isLoading) && true
                   }
-                  fluid
+                  style={{ minHeight: 50, width: "100%" }}
                   value={messageBox && messageBox}
                   placeholder="type something..."
                   onChange={this.changeMessageBox}
                   onFocus={this.changeMessageBox}
                   onBlur={this.handleChat}
                   id="chatinput"
-                />
+                >
+                  {messageBox}
+                </TextArea>
 
                 <Row>
                   <Col>
