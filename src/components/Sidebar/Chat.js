@@ -4,17 +4,11 @@ import Avatar from "react-avatar";
 import Swal from "sweetalert2";
 import userService from "services/user.service";
 import { setAvatar } from "components/include";
+import Linkify from "linkify-react";
 // react-bootstrap components
 import { Button, Card, Form, Row, Col } from "react-bootstrap";
 import { Input, Comment, Icon } from "semantic-ui-react";
-function urlify(text) {
-  var urlRegex = /(https?:\/\/[^\s]+)/g;
-  return text.replace(urlRegex, function (url) {
-    return '<a href="' + url + '">' + url + "</a>";
-  });
-  // or alternatively
-  // return text.replace(urlRegex, '<a href="$1">$1</a>')
-}
+const options = { target: "_blank", className: "text-info" };
 function getchatTime(date) {
   var today = new Date(date);
   var dateExpired =
@@ -78,9 +72,9 @@ function mycreateChats(
               {item.username}
             </small>
             <br />
-            <div className="text-justify" style={{ paddingBottom: 10 }}>
+            <div className="text-left" style={{ paddingBottom: 10 }}>
               <small>
-                <>{urlify(item.message)}</>
+                <Linkify options={options}>{item.message}</Linkify>
               </small>
             </div>
             <Avatar
@@ -284,7 +278,7 @@ class Chatbar extends Component {
 
   changeMessageBox(e) {
     var _t = e.target.value;
-    _t = _t.replace(/\r?\n|\r/g, "");
+
     this.setState({
       messageBox: _t,
     });
