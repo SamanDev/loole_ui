@@ -101,6 +101,17 @@ class UserService {
         return response;
       });
   }
+  sendPushToken(token) {
+    return axios
+      .post(
+        API_URL_TEST + "sendPushToken",
+        { token },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
   saveSocial(accountName, accountId) {
     return axios
       .post(
