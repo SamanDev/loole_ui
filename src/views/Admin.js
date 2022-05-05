@@ -572,13 +572,13 @@ function Admin(prop) {
               </Form.Field>
               <Button.Group widths="2">
                 <Button
-                  color={cashBankModel == "Dollar" && "blue"}
+                  color={cashBankModel == "Dollar" ? "blue" : "grey"}
                   onClick={() => setCashBankModel("Dollar")}
                 >
                   Dollar
                 </Button>
                 <Button
-                  color={cashBankModel == "Point" && "blue"}
+                  color={cashBankModel == "Point" ? "blue" : "grey"}
                   onClick={() => setCashBankModel("Point")}
                 >
                   Point
@@ -586,13 +586,13 @@ function Admin(prop) {
               </Button.Group>
               <Button.Group widths="2">
                 <Button
-                  color={cashName == "add" && "green"}
+                  color={cashName == "add" ? "green" : "grey"}
                   onClick={() => setCashName("add")}
                 >
                   add
                 </Button>
                 <Button
-                  color={cashName == "remove" && "red"}
+                  color={cashName == "remove" ? "red" : "grey"}
                   onClick={() => setCashName("remove")}
                 >
                   remove

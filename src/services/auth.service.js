@@ -63,8 +63,8 @@ class AuthService {
       //window.location.replace("/");
     } else {
     }
-    UserWebsocket.disconnect();
-    UserWebsocket.connect();
+    //UserWebsocket.disconnect();
+    //UserWebsocket.connect();
   }
 
   register(username, email, password, refer) {

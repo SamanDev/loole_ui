@@ -93,20 +93,20 @@ const getUser = async () => {
         return data;
       } else {
         localStorage.setItem("user", JSON.stringify(defUser));
-        UserWebsocket.connect();
+        //UserWebsocket.connect();
         return defUser;
       }
     } catch (e) {
       console.log(e);
       if (e.toString().indexOf("code 500") > -1) {
         localStorage.setItem("user", JSON.stringify(defUser));
-        UserWebsocket.connect();
+        //UserWebsocket.connect();
         return defUser;
       }
     }
   } else {
     localStorage.setItem("user", JSON.stringify(defUser));
-    UserWebsocket.connect();
+    //UserWebsocket.connect();
 
     return defUser;
   }

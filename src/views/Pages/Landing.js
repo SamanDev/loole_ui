@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { useInfo } from "services/hooks";
 import HomeEvents from "components/events/home.component";
 import GameSlide from "components/GameSlide";
 import HowIt from "components/howit";
@@ -10,6 +9,7 @@ import RegisterBtn from "components/registerBtn";
 import { themeColors } from "const.js";
 import UserContext from "context/UserState";
 import { Helmet } from "react-helmet";
+import Footer from "components/Navbars/Footer.js";
 const d = new Date();
 let da = d.getSeconds();
 let day = da % 7;
@@ -18,15 +18,10 @@ function Landing(prop) {
   useEffect(() => {
     setMyState(prop.myState);
   }, [prop.myState]);
-  const { data: looleInfo } = useInfo();
+
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
   const elements = ["1", "2", "3", "4"];
-  useEffect(() => {
-    if (looleInfo) {
-      prop.onUpdateItem("looleInfo", looleInfo);
-    }
-  }, [looleInfo]);
 
   return (
     <>
@@ -207,11 +202,7 @@ function Landing(prop) {
           </div>
         </div>
 
-        <footer className="footer">
-          <div className="container">
-            &copy; 2021 <a href="/home">Loole.gg</a>, made with love
-          </div>
-        </footer>
+        <Footer {...prop} />
       </div>
     </>
   );

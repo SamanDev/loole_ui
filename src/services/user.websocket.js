@@ -68,6 +68,9 @@ class UserWebsocket {
         ws = ws2;
       }
     }
+    if (ws == null) {
+      ws = ws2;
+    }
     //eventBus.dispatch("eventsConnect", "");
     //userService.getEvents();
     //localStorage.removeItem("events");

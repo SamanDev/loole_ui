@@ -18,6 +18,7 @@ import { defUser, TrackingID } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
+import { useInfo } from "services/hooks";
 const LandLayout = lazy(() => import("layouts/Land.js"));
 const PanelLayout = lazy(() => import("layouts/Panel.js"));
 
@@ -181,7 +182,8 @@ function Main(prop) {
   const logOut = () => {
     setUList({ currentUser: defUser });
     localStorage.setItem("user", JSON.stringify(defUser));
-    AuthService.logout();
+    //AuthService.logout();
+    console.log(myPath);
     if (myPath == "panel") {
       history.push("/home");
       onUpdateItem("openModalLogin", false);
@@ -240,11 +242,18 @@ function Main(prop) {
   var openModalSoket = findStateId(myState, "openModalSoket");
   var openModalVideo = findStateId(myState, "openModalVideo");
   var openModalVideoSRC = findStateId(myState, "openModalVideoSRC");
-  const { data: userGet, isLoading } = useUser();
+  const { data: looleInfo } = useInfo();
+
+  useEffect(() => {
+    if (looleInfo) {
+      onUpdateItem("looleInfo", looleInfo);
+    }
+  }, [looleInfo]);
+  const { data: userGet, isLoading: userLoading } = useUser();
 
   //const { data: eventsGet } = useAllEventsByStatus('All');
 
-  const { data: eventsGet } = useAllEvents();
+  const { data: eventsGet, isLoading: eventsLoading } = useAllEvents();
   if (window.location.pathname.toString().indexOf("/i/") > -1) {
     var _i = window.location.pathname.toString().split("/i/")[1];
     localStorage.setItem("reffer", _i);
@@ -257,7 +266,7 @@ function Main(prop) {
     }
   }, [userReports]);
   useEffect(() => {
-    if (userGet?.accessToken) {
+    if (!userLoading && userGet?.accessToken) {
       setUList({ currentUser: userGet });
 
       localStorage.setItem("user", JSON.stringify(userGet));
@@ -402,7 +411,7 @@ function Main(prop) {
 
     if (
       (currentUser?.accessToken && newPath == "dashboard") ||
-      (myList.events == null && !eventsGet)
+      (myList.events == null && !eventsGet && !eventsLoading)
     ) {
       queryClient.resetQueries(["Events"]);
     }
@@ -425,7 +434,7 @@ function Main(prop) {
     //queryClient.resetQueries(["Event"]);
   }, [location]);
 
-  if (!currentUser) {
+  if (userLoading) {
     return (
       <Segment style={{ height: "100%", width: "100%", position: "absolute" }}>
         <Dimmer active inverted>
@@ -510,7 +519,7 @@ function Main(prop) {
             style={{ maxWidth: 510 }}
             open={openModalLogin}
             onClose={() => {
-              if (!isLoading) {
+              if (!userLoading) {
                 onUpdateItem("openModalLogin", false);
                 if (!currentUser?.accessToken) {
                   logOut();
@@ -639,7 +648,7 @@ function Main(prop) {
                 <PanelLayout
                   {...props}
                   myState={myState}
-                  isLoading={isLoading}
+                  isLoading={userLoading}
                   onUpdateItem={onUpdateItem}
                   findStateId={findStateId}
                   myFunction={myFunction}

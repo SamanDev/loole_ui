@@ -14,6 +14,7 @@ import Market from "components/market.component";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import RegisterBtn from "components/registerBtn";
+import Footer from "components/Navbars/Footer.js";
 function scrollTo(elem) {
   var x = getOffset(document.getElementById(elem)).top;
 
@@ -139,11 +140,7 @@ function profile(prop) {
             <Market />
           </div>
         </div>
-        <footer className="footer">
-          <div className="container">
-            &copy; 2021 <a href="https://loole.gg">Loole.gg</a>, made with love
-          </div>
-        </footer>
+        <Footer {...prop} />
       </div>
     </>
   );

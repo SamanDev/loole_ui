@@ -1,18 +1,26 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 // react-bootstrap components
-import GameSlide from "components/GameSlide";
+import { Helmet } from "react-helmet";
+import Footer from "components/Navbars/Footer.js";
 import { Card, Dimmer, Loader, Header, Breadcrumb } from "semantic-ui-react";
-const Landing = () => {
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}
+const Landing = (prop) => {
   var _constants = window.location.href;
   _constants = _constants.split("content/")[1].replace("%20", " ");
   var _title = _constants.replace(/-/g, " ");
   _title = _title.charAt(0).toUpperCase() + _title.slice(1);
   useEffect(() => {
-    document.title = _title;
+    scrollToTop();
 
     return () => {};
   }, [_constants]);
+
   const sections = [
     { key: "Home", content: "Home", link: true, to: "/home", as: Link },
     {
@@ -23,31 +31,37 @@ const Landing = () => {
   ];
   return (
     <>
+      <Helmet>
+        <title> {_title}</title>
+      </Helmet>
       <div className="wrapper">
         <div
-          className="parallax filter-gradient orange section-gray"
+          className="parallax filter-gradient red section-gray"
           data-color="red"
-          style={{ height: 100 }}
+          style={{ height: 170, color: "#fff" }}
         >
-          <div className="parallax-background">
-            <img
-              className="parallax-background-image"
-              src={"assets/images/games/8Pool.jpg"}
-            />
-          </div>
+          <div className="parallax-background"></div>
           <div className="container crump">
             <Breadcrumb icon="right angle" sections={sections} />
-            <div className="row">
-              <div className="col-md-7"></div>
-              <div className="col-md-5  hidden-xs">
-                <div className="parallax-image">
-                  <img
-                    className="phone"
-                    src="/assets/img/showcases/showcase-1/iphone.png"
-                  />
-                </div>
-              </div>
-            </div>
+            {_constants == "terms-and-conditions" ? (
+              <>
+                <h1 className="entry-title td-page-title">
+                  <span>Terms and Conditions</span>
+                </h1>
+                <p>
+                  <span>Updated August 14th. 2021</span>
+                </p>
+              </>
+            ) : (
+              <>
+                <h1 className="entry-title td-page-title">
+                  <span>Privacy Policy</span>
+                </h1>
+                <p>
+                  <span>Effective Date:</span>&nbsp;March 10, 2021
+                </p>
+              </>
+            )}
           </div>
         </div>
         <div className="section section-gray" style={{ margin: 0 }}>
@@ -56,21 +70,14 @@ const Landing = () => {
               <div className="td-pb-span8 td-main-content" role="main">
                 <div className="td-ss-main-content">
                   <div className="clearfix"></div>
-                  <div className="td-page-header">
-                    <h1 className="entry-title td-page-title">
-                      <span>Terms and Conditions</span>
-                    </h1>
-                  </div>
+                  <div className="td-page-header"></div>
                   <div className="td-page-content tagdiv-type">
-                    <p>
-                      <span>Updated August 14th. 2020</span>
-                    </p>
                     <p>
                       <b>OVERVIEW – PLAY NICE</b>
                     </p>
                     <p>
                       <span>
-                        Repeat Technologies, Inc. “Loole.gg” (formerly known as
+                        Loole Technologies, Inc. “Loole.gg” (formerly known as
                         XY Gaming) strives to provide a fair and equitable
                         system for all our users. We endeavor to treat our
                         clients as we would like to be treated and expect all
@@ -1241,30 +1248,30 @@ const Landing = () => {
                         protect, defend and hold harmless Loole.gg, its parents,
                         subsidiaries, affiliates and divisions, and their
                         respective directors, officers, employees, agents and
-                        representatives (the “Repeat Entities”), from and
-                        against any and all third party claims, liabilities,
-                        losses, damages, injuries, demands, actions, causes of
-                        action, suits, proceedings, judgments and expenses,
-                        including reasonable attorneys’ fees, court costs and
-                        other legal expenses including, without limitation,
-                        those costs incurred at the trial and appellate levels
-                        and in any bankruptcy, reorganization, insolvency or
-                        other similar proceedings, and any other legal expenses
-                        (collectively, “Claims”) arising from or connected with
-                        your use of the Website, any payment methods used, any
-                        funding of your account, and/or your participation in
-                        any Contest. The Website may contain links to third
-                        party websites that are not owned or controlled by
-                        Loole.gg. Loole.gg has no control over, and assumes no
-                        responsibility for, the content, privacy policies, or
-                        practices of any third-party websites. In addition,
-                        Loole.gg will not and cannot censor or edit the content
-                        of any third-party site. By using the Website, you
-                        expressly relieve Loole.gg from any and all liability
-                        arising from your use of any third-party website.
-                        Accordingly, we encourage you to be aware when you leave
-                        the Website and to read the terms and conditions and
-                        privacy policy of each other website that you visit.
+                        representatives (the “Loole Entities”), from and against
+                        any and all third party claims, liabilities, losses,
+                        damages, injuries, demands, actions, causes of action,
+                        suits, proceedings, judgments and expenses, including
+                        reasonable attorneys’ fees, court costs and other legal
+                        expenses including, without limitation, those costs
+                        incurred at the trial and appellate levels and in any
+                        bankruptcy, reorganization, insolvency or other similar
+                        proceedings, and any other legal expenses (collectively,
+                        “Claims”) arising from or connected with your use of the
+                        Website, any payment methods used, any funding of your
+                        account, and/or your participation in any Contest. The
+                        Website may contain links to third party websites that
+                        are not owned or controlled by Loole.gg. Loole.gg has no
+                        control over, and assumes no responsibility for, the
+                        content, privacy policies, or practices of any
+                        third-party websites. In addition, Loole.gg will not and
+                        cannot censor or edit the content of any third-party
+                        site. By using the Website, you expressly relieve
+                        Loole.gg from any and all liability arising from your
+                        use of any third-party website. Accordingly, we
+                        encourage you to be aware when you leave the Website and
+                        to read the terms and conditions and privacy policy of
+                        each other website that you visit.
                       </span>
                     </p>
                     <p>
@@ -1614,17 +1621,10 @@ const Landing = () => {
               <div className="td-pb-span8 td-main-content" role="main">
                 <div className="td-ss-main-content">
                   <div className="clearfix"></div>
-                  <div className="td-page-header">
-                    <h1 className="entry-title td-page-title">
-                      <span>Privacy Policy</span>
-                    </h1>
-                  </div>
+                  <div className="td-page-header"></div>
                   <div className="td-page-content tagdiv-type">
                     <p>
-                      <span>Effective Date:</span>&nbsp;March 10, 2020
-                    </p>
-                    <p>
-                      <span>Repeat Technologies, Inc. “</span>
+                      <span>Loole Technologies, Inc. “</span>
                       <span>Loole.gg</span>
                       <span>”</span>
                       <span> (f</span>
@@ -1645,8 +1645,7 @@ const Landing = () => {
                     </p>
                     <p>
                       <span>
-                        Loole.gg, (“us”, “we”, or “our”) operates the
-                        https://www.
+                        Loole.gg, (“us”, “we”, or “our”) operates the https://
                       </span>
                       <span>Loole.gg</span>
                       <span> website (the “Service”).</span>
@@ -2803,79 +2802,7 @@ const Landing = () => {
                         <span>https://policies.google.com/privacy?hl=en</span>
                       </a>
                     </p>
-                    <ul>
-                      <li>
-                        <b>Facebook</b>
-                      </li>
-                    </ul>
-                    <p>
-                      <span>
-                        Facebook remarketing service is provided by Facebook
-                        Inc.
-                      </span>
-                    </p>
-                    <p>
-                      <span>
-                        You can learn more about interest-based advertising from
-                        Facebook by visiting this page:&nbsp;
-                      </span>
-                      <a href="https://www.facebook.com/help/164968693837950">
-                        <span>
-                          https://www.facebook.com/help/164968693837950
-                        </span>
-                      </a>
-                    </p>
-                    <p>
-                      <span>
-                        To opt-out from Facebook’s interest-based ads follow
-                        these instructions from Facebook:&nbsp;
-                      </span>
-                      <a href="https://www.facebook.com/help/568137493302217">
-                        <span>
-                          https://www.facebook.com/help/568137493302217
-                        </span>
-                      </a>
-                    </p>
-                    <p>
-                      <span>
-                        Facebook adheres to the Self-Regulatory Principles for
-                        Online Behavioral Advertising established by the Digital
-                        Advertising Alliance. You can also opt-out from Facebook
-                        and other participating companies through the Digital
-                        Advertising Alliance in the USA&nbsp;
-                      </span>
-                      <a href="http://www.aboutads.info/choices/">
-                        <span>http://www.aboutads.info/choices/</span>
-                      </a>
-                      <span>
-                        , the Digital Advertising Alliance of Canada in
-                        Canada&nbsp;
-                      </span>
-                      <a href="http://youradchoices.ca/">
-                        <span>http://youradchoices.ca/</span>
-                      </a>
-                      <span>
-                        &nbsp;or the European Interactive Digital Advertising
-                        Alliance in Europe&nbsp;
-                      </span>
-                      <a href="http://www.youronlinechoices.eu/">
-                        <span>http://www.youronlinechoices.eu/</span>
-                      </a>
-                      <span>
-                        , or opt-out using your mobile device settings.
-                      </span>
-                    </p>
-                    <p>
-                      <span>
-                        For more information on the privacy practices of
-                        Facebook, please visit Facebook’s Data Policy:&nbsp;
-                      </span>
-                      <a href="https://www.facebook.com/privacy/explanation">
-                        <span>
-                          https://www.facebook.com/privacy/explanation
-                        </span>
-                      </a>
-                    </p>
+
                     <ol>
                       <li>
                         <span> Personal Information about Children</span>
@@ -3426,11 +3353,11 @@ const Landing = () => {
                     </p>
                     <p>
                       <span>
-                        Copyright © 2018 Loole.gg – All Rights Reserved
+                        Copyright © 2021 Loole.gg – All Rights Reserved
                       </span>
                     </p>
                     <p>
-                      <span>(last modified: 10th of March, 2020)</span>
+                      <span>(last modified: 10th of March, 2021)</span>
                     </p>
                   </div>
                   <div className="clearfix"></div>
@@ -3439,18 +3366,7 @@ const Landing = () => {
             )}
           </div>
         </div>
-        <div className="section section-game " style={{ padding: 0 }}>
-          <div className="parallax filter-gradient red" data-color="orange">
-            <div className="parallax-background">
-              <img
-                className="parallax-background-image"
-                src="/assets/img/bg.jpg"
-              />
-            </div>
-
-            <GameSlide />
-          </div>
-        </div>
+        <Footer {...prop} />
       </div>
     </>
   );

@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import GameSlide from "components/GameSlide";
 import Games from "server/Games";
 import { themeColors } from "const.js";
+import Footer from "components/Navbars/Footer.js";
 import Market from "components/market.component";
 import GlobalContext from "context/GlobalState";
 import HowIt from "components/howit";
@@ -310,11 +311,8 @@ const Landing = (prop) => {
             <Market {...prop} />
           </div>
         </div>
-        <footer className="footer">
-          <div className="container">
-            &copy; 2021 <a href="/home">Loole.gg</a>, made with love
-          </div>
-        </footer>
+
+        <Footer {...prop} />
       </div>
     </>
   );
