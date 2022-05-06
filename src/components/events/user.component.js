@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { printBlockChallenge } from "components/include";
+import { printBlockChallenge } from "components/include.js";
 import $ from "jquery";
-import { Spinner, Carousel } from "react-bootstrap";
 import { Header, Dimmer, Loader, Card } from "semantic-ui-react";
 import UserContext from "context/UserState";
 import { useUserEvents } from "services/hooks";

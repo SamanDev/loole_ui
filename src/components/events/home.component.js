@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import $ from "jquery";
 
-import { printBlockChallenge } from "components/include";
+import { printBlockChallenge } from "components/include.js";
 import { Card, Dimmer, Loader } from "semantic-ui-react";
 // react-bootstrap components
-import { Spinner, Carousel } from "react-bootstrap";
 import GlobalContext from "context/GlobalState";
 var moment = require("moment");
 const HomeEvents = (prop) => {

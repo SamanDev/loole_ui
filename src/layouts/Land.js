@@ -1,30 +1,20 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
 import { ConfigProvider } from "react-avatar";
-import { DEFCOLORS } from "const";
+import { DEFCOLORS } from "const.js";
 
-//const LockScreenPage = lazy(() => import("views/Pages/LockScreenPage.js"));
-//const LandNavbar = lazy(() => import("components/Navbars/LandNavbar.js"));
+const LockScreenPage = lazy(() => import("views/Pages/LockScreenPage.js"));
+const LandNavbar = lazy(() => import("components/Navbars/LandNavbar.js"));
 const Landing = lazy(() => import("views/Pages/Landing.js"));
 const Games = lazy(() => import("views/Pages/Games.js"));
 const Content = lazy(() => import("views/Pages/Content.js"));
 const User = lazy(() => import("views/Pages/User.js"));
-import {
-  Grid,
-  Header,
-  Icon,
-  Modal,
-  Divider,
-  Dimmer,
-  Loader,
-  Segment,
-  Button,
-} from "semantic-ui-react";
+import { Dimmer, Loader } from "semantic-ui-react";
 import routes from "routes.js";
-import LandNavbar from "components/Navbars/LandNavbar.js";
-import LockScreenPage from "views/Pages/LockScreenPage.js";
+//import LandNavbar from "components/Navbars/LandNavbar.js";
+//import LockScreenPage from "views/Pages/LockScreenPage.js";
 
-import { getOffset } from "components/include";
+import { getOffset } from "components/include.js";
 const renderLoader = () => (
   <Dimmer active inverted>
     <Loader size="large">Loading</Loader>

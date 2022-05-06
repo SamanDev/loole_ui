@@ -3,7 +3,7 @@ import authHeader from "./auth-header";
 import uploadHeader from "./upload-header";
 
 import UserWebsocket from "services/user.websocket";
-import { POSTURLTest, defUser } from "const";
+import { POSTURLTest, defUser } from "const.js";
 import { useState } from "react";
 import eventBus from "views/eventBus";
 import * as api from "services/api";

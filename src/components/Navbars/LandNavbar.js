@@ -4,9 +4,9 @@ import AuthService from "services/auth.service";
 import { Menu, Button } from "semantic-ui-react";
 
 import { Container } from "react-bootstrap";
-import { defUser } from "const";
+import { defUser } from "const.js";
 import UserContext from "context/UserState";
-import { MenuItem } from "react-rainbow-components";
+
 const LandNavbar = (prop) => {
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {

@@ -11,7 +11,7 @@ import Games from "server/Games";
 import { Row, Col } from "react-bootstrap";
 import MatchCard from "components/matchcard.component";
 import { Header, Card } from "semantic-ui-react";
-import { handleTagForm } from "components/include";
+import { handleTagForm } from "components/include.js";
 
 const getBlockGames = (filtermode) => {
   var gamemap = [];

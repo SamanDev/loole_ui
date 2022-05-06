@@ -22,7 +22,7 @@ import {
   getCode,
   getColor,
   rendererBig,
-} from "components/include";
+} from "components/include.js";
 import { Divider, Segment, Grid, Statistic, Button } from "semantic-ui-react";
 import { POSTURLTest } from "const";
 import UserContext from "context/UserState";

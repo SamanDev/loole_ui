@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Segment, Sidebar, Dimmer } from "semantic-ui-react";
-import { getQueryVariable, isPlayerInMatch } from "components/include";
+import { getQueryVariable, isPlayerInMatch } from "components/include.js";
 import TransitionExampleTransitionExplorer from "components/anim.component";
 import { useParams } from "react-router";
 const SidebarExampleSidebar = (prop) => {

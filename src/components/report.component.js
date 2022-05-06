@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 // react-bootstrap components
 import { Link } from "react-router-dom";
 import { Header, Dimmer, Loader } from "semantic-ui-react";
-import { get_date_locale, getGroupBadgeBlock } from "components/include";
+import { get_date_locale, getGroupBadgeBlock } from "components/include.js";
 import DataTable from "react-data-table-component";
 import { useUserReports } from "services/hooks";
 function editCounry(options) {

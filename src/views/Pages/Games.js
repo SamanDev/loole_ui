@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Helmet } from "react-helmet";
-import { printBlockChallenge } from "components/include";
+import { printBlockChallenge } from "components/include.js";
 import {
   Card,
   Dimmer,

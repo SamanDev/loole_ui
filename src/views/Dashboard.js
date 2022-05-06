@@ -1,16 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
-import { printBlockChallenge } from "components/include";
+import { printBlockChallenge } from "components/include.js";
 import { Tab, Card, Menu, Label, Dimmer, Loader } from "semantic-ui-react";
 import Active from "components/active.component";
 import DashStat from "components/dashstat.component";
 import GlobalContext from "context/GlobalState";
 import { Helmet } from "react-helmet";
 var moment = require("moment");
-function dynamicSort(property) {
-  return function (a, b) {
-    return a[property] > b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-  };
-}
 
 function Dashboard(prop) {
   const context = useContext(GlobalContext);

@@ -1,11 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth-header";
-import uploadHeader from "./upload-header";
-import { useHistory } from "react-router";
 
-import UserWebsocket from "services/user.websocket";
-import { POSTURLTest, defUser, POSTURLAdmin } from "const";
-import eventBus from "views/eventBus";
+import { POSTURLTest, defUser, POSTURLAdmin } from "const.js";
 const API_URL_TEST = POSTURLTest;
 
 const client = axios.create({

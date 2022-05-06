@@ -4,7 +4,7 @@ import { Input, Segment } from "semantic-ui-react";
 import CurrencyFormat from "react-currency-format";
 import { Col } from "react-bootstrap";
 import { Header, Dimmer } from "semantic-ui-react";
-import { genLink, getMatchTitle } from "components/include";
+import { genLink, getMatchTitle } from "components/include.js";
 import GlobalContext from "context/GlobalState";
 import { Link } from "react-router-dom";
 function editCounry(options) {

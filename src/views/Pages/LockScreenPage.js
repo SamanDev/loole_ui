@@ -24,7 +24,7 @@ import LeagueSection from "components/events/league.component";
 import TournamentSection from "components/events/tournament.component";
 import MatchSection from "components/events/match.component";
 import MatchTourSection from "components/events/tournamentmatch.component";
-import { haveAdmin, getQueryVariable } from "components/include";
+import { haveAdmin, getQueryVariable } from "components/include.js";
 import UserContext from "context/UserState";
 import EventContext from "context/EventState";
 var _tit;

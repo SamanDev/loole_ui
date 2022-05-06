@@ -8,7 +8,7 @@ import {
   get_date_locale,
   getGroupBadgeBlock,
   haveAdmin,
-} from "components/include";
+} from "components/include.js";
 import DataTable from "react-data-table-component";
 import { useUserReports } from "services/hooks";
 import UserContext from "context/UserState";

@@ -23,7 +23,7 @@ import {
   rendererBig,
   getMatchTitle,
   findActiveMatch,
-} from "components/include";
+} from "components/include.js";
 import { Divider, Segment, Grid, Statistic, Button } from "semantic-ui-react";
 import { POSTURLTest } from "const";
 import Admin from "components/events/admin.component";
