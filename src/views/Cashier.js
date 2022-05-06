@@ -5,6 +5,7 @@ import { Tab, Menu } from "semantic-ui-react";
 import { useAllCoins } from "services/hooks";
 import Active from "components/active.component";
 import Report from "components/report.component";
+import ReportDiamond from "components/reportdiamond.component";
 // react-bootstrap components
 import UserContext from "context/UserState";
 import { Card, Row, Col } from "react-bootstrap";
@@ -162,6 +163,15 @@ function Cashier(prop) {
       render: () => (
         <Tab.Pane attached={false}>
           <Report user={currentUser} />
+        </Tab.Pane>
+      ),
+    },
+    {
+      id: 4,
+      menuItem: <Menu.Item key={"3"}>Diamonds</Menu.Item>,
+      render: () => (
+        <Tab.Pane attached={false}>
+          <ReportDiamond user={currentUser} />
         </Tab.Pane>
       ),
     },
