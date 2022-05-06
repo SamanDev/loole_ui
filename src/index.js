@@ -18,13 +18,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
 import { useInfo } from "services/hooks";
 const LandLayout = lazy(() => import("layouts/Land"));
-const PanelLayout = lazy(() => import("layouts/Panel"));
+//const PanelLayout = lazy(() => import("layouts/Panel"));
 const Chart = lazy(() => import("components/chart.component"));
 //const Login = lazy(() => import("components/newlogin.component"));
 //const Register = lazy(() => import("components/newregister.component"));
 //const Forget = lazy(() => import("components/newforget.component"));
 
-//import PanelLayout from "layouts/Panel.js";
+import PanelLayout from "layouts/Panel.js";
 import Login from "components/newlogin.component";
 import Register from "components/newregister.component";
 import Forget from "components/newforget.component";
