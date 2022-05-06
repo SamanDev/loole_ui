@@ -168,7 +168,7 @@ function Cashier(prop) {
     },
     {
       id: 4,
-      menuItem: <Menu.Item key={"3"}>Diamonds</Menu.Item>,
+      menuItem: <Menu.Item key={"4"}>Diamonds</Menu.Item>,
       render: () => (
         <Tab.Pane attached={false}>
           <ReportDiamond user={currentUser} />
