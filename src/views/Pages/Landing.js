@@ -48,7 +48,7 @@ function Landing(prop) {
           <div className="parallax-background">
             <img
               className="parallax-background-image"
-              src="/assets/img/showcases/showcase-1/bg.jpg"
+              src="/assets/img/showcases/showcase-1/bg-min.webp"
               alt="loole home"
             />
           </div>
@@ -79,7 +79,7 @@ function Landing(prop) {
                 <div className="parallax-image">
                   <img
                     className="phone"
-                    src="assets/img/showcases/showcase-1/iphone.png"
+                    src="assets/img/showcases/showcase-1/iphone-min.webp"
                     alt="loole dashboard"
                   />
                 </div>
@@ -153,7 +153,7 @@ function Landing(prop) {
                 </div>
                 <div className="col-md-6 mobile hidden">
                   <img
-                    src="assets/img/showcases/showcase-1/mac.png"
+                    src="assets/img/showcases/showcase-1/mac-min.webp"
                     alt="loole on pc"
                   />
                 </div>
@@ -164,7 +164,7 @@ function Landing(prop) {
             <div className="row">
               <div className="col-md-6 mobile hidden">
                 <img
-                  src="assets/img/showcases/showcase-1/iphones.png"
+                  src="assets/img/showcases/showcase-1/iphones-min.webp"
                   alt="loole on mobile"
                 />
               </div>

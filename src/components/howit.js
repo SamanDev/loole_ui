@@ -49,7 +49,7 @@ export default function GameSlide() {
                     return (
                       <div className="col-xs-6 col-sm-6 col-md-3" key={index}>
                         <img
-                          src={"/assets/img/" + value + ".jpg"}
+                          src={"/assets/img/" + value + "-min.webp"}
                           alt={"how it work " + value}
                           className="img-responsive"
                           width="908"
