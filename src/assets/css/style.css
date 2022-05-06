@@ -39,7 +39,8 @@
   width: 260px;
   text-transform: none;
 }
-#games img {
+#games img,
+.img-responsive {
   max-width: 100%;
   aspect-ratio: attr(width) / attr(height);
 }

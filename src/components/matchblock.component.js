@@ -62,7 +62,7 @@ function MatchBlock(prop) {
           maxWidth: 170,
           position: "absolute",
           top: 15,
-          left: -10,
+          left: -14,
         }}
       >
         {item.status == "Pending" && <Icon loading name="spinner" />}
@@ -75,6 +75,9 @@ function MatchBlock(prop) {
       <Image
         alt={item.gameName}
         src={"/assets/images/games/" + item.gameName + ".webp"}
+        width="800"
+        height="450"
+        className="img-responsive"
         fluid
         style={{ background: "gray !important" }}
         wrapped

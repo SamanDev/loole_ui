@@ -36,8 +36,8 @@ function editCounry(options) {
         (item.mode.indexOf("Expired") > -1 ||
           current.mode.indexOf("Expired") > -1)
     );
-    if (!x) {
-      if (!y) {
+    if (!x || 1 == 1) {
+      if (!y || 1 == 1) {
         return itm.concat([current]);
       } else {
         return itm.filter(function (item) {

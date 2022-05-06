@@ -25,6 +25,9 @@ function MatchCard(prop) {
       <Image
         alt={item.title}
         src={"/assets/market/" + imgName}
+        width="302"
+        height="167"
+        className="img-responsive"
         style={{ background: "gray !important" }}
         fluid
       />

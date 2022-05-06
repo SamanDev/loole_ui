@@ -51,8 +51,12 @@ export default function GameSlide() {
                         <img
                           src={"/assets/img/" + value + ".jpg"}
                           alt={"how it work " + value}
+                          className="img-responsive"
+                          width="908"
+                          height="1600"
                           style={{
                             maxWidth: "90%",
+                            height: "auto",
                             margin: "10px auto",
                             display: "block",
                           }}

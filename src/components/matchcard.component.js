@@ -64,7 +64,7 @@ function MatchCard(prop) {
           maxWidth: 170,
           position: "absolute",
           top: 15,
-          left: -10,
+          left: -14,
         }}
       >
         {item.status == "Pending" && <Icon loading name="spinner" />}
@@ -78,6 +78,9 @@ function MatchCard(prop) {
         alt={item.gameName}
         src={"/assets/images/games/" + item.gameName + ".webp"}
         fluid
+        width="800"
+        height="450"
+        className="img-responsive"
         style={{ background: "gray !important" }}
         wrapped
         ui={false}
