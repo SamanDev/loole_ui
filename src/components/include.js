@@ -386,6 +386,21 @@ export const getGroupBadgeList = (sign, amount, classes) => {
   );
 };
 
+export const printTag = (game, tag) => {
+  var _tag = tag.replace(/-/g, "");
+
+  if (game == "8Pool") {
+    _tag =
+      _tag.substring(0, 3) +
+      "-" +
+      _tag.substring(3, 6) +
+      "-" +
+      _tag.substring(6, 9) +
+      "-" +
+      _tag.substring(9, 10);
+  }
+  return _tag;
+};
 export const vsComponentPlayer = (
   item,
   matchidFind,
@@ -586,6 +601,7 @@ export const vsComponentPlayer = (
       _p = plyr;
     }
   });
+  console.log(_p);
   var info = (
     <>
       {_p &&
@@ -601,7 +617,11 @@ export const vsComponentPlayer = (
                     </Statistic.Label>
                     <Statistic.Value>
                       {isPlayerInMatch(matchidFind, currentUser.username) ? (
-                        <CopyText color="red" size="small" myid={_p.tagId} />
+                        <CopyText
+                          color="red"
+                          size="small"
+                          myid={printTag(item.gameName, _p.tagId)}
+                        />
                       ) : (
                         "**********"
                       )}
@@ -615,7 +635,8 @@ export const vsComponentPlayer = (
                       <Statistic.Label>Nickname</Statistic.Label>
 
                       <Statistic.Value>
-                        {isPlayerInMatch(matchidFind, currentUser.username)
+                        {isPlayerInMatch(matchidFind, currentUser.username) ||
+                        haveAdmin(currentUser.role)
                           ? _p.nickName
                           : "**********"}
                       </Statistic.Value>
@@ -630,7 +651,8 @@ export const vsComponentPlayer = (
                   <Statistic.Label>Nickname</Statistic.Label>
 
                   <Statistic.Value className="nnick">
-                    {isPlayerInMatch(matchidFind, currentUser.username)
+                    {isPlayerInMatch(matchidFind, currentUser.username) ||
+                    haveAdmin(currentUser.role)
                       ? _p.nickName
                       : "**********"}
                   </Statistic.Value>
@@ -1706,6 +1728,7 @@ export const getGameTag = (game, userTags) => {
         resName = tag.nickName;
         if (resName == "") resName = "Connected";
         if (res != "" && game == "ClashRoyale") res = "#" + res;
+        if (res != "" && game == "8Pool") res = printTag(game, res);
       }
     });
   }

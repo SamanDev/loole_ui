@@ -39,7 +39,10 @@
   width: 260px;
   text-transform: none;
 }
-
+#games img {
+  max-width: 100%;
+  aspect-ratio: attr(width) / attr(height);
+}
 .tim-row {
   padding-top: 60px;
 }

@@ -447,7 +447,8 @@ class MatchSection extends Component {
                     false,
                     false,
                     matchid,
-                    this.props.setVisible
+                    this.props.setVisible,
+                    this.props.setMessageBox
                   )}
                 </Grid.Column>
                 <Grid.Column
@@ -469,7 +470,8 @@ class MatchSection extends Component {
                     false,
                     false,
                     matchid,
-                    this.props.setVisible
+                    this.props.setVisible,
+                    this.props.setMessageBox
                   )}
                 </Grid.Column>
               </Grid>

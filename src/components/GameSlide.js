@@ -63,6 +63,8 @@ export default function GameSlide() {
                     rounded
                     centered
                     src={"/assets/images/games/" + item.name + ".webp"}
+                    width="800"
+                    height="450"
                     alt={item.name}
                     as={Link}
                     label={{

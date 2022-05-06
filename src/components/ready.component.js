@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Segment, Sidebar, Dimmer } from "semantic-ui-react";
 import { getQueryVariable, isPlayerInMatch } from "components/include";
 import TransitionExampleTransitionExplorer from "components/anim.component";
+import { useParams } from "react-router";
 const SidebarExampleSidebar = (prop) => {
   const [objanim, setObjanim] = useState(prop.objanim);
   const [visible, setVisible] = useState(prop.visible);
@@ -11,7 +12,9 @@ const SidebarExampleSidebar = (prop) => {
   const [player, setPlayer] = useState(prop.player);
   const [matchidFind, setMatchidFind] = useState(prop.matchidFind);
   const [isChecked, setIsChecked] = useState(prop.ischeck);
+  const params = useParams();
 
+  const matchIDQ = params.matchid;
   useEffect(() => {
     setPlayer(prop.player);
   }, [prop.player]);
@@ -33,17 +36,13 @@ const SidebarExampleSidebar = (prop) => {
   useEffect(() => {
     setUser(prop.user);
   }, [prop.user]);
-  if (
-    prop.item.gameMode == "Tournament" &&
-    visible &&
-    !getQueryVariable("matchid")
-  ) {
+  if (prop.item.gameMode == "Tournament" && visible && !matchIDQ) {
     setVisible(false);
   }
   var padd = "200px";
 
   //if(matchidFind.status == "Pending" && item.gameMode == 'Tournament') {padd = padd + 50}
-  if (prop.item.gameMode == "Tournament" && !getQueryVariable("matchid")) {
+  if (prop.item.gameMode == "Tournament" && !matchIDQ) {
     padd = "100px";
   }
 

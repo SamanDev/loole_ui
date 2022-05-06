@@ -435,13 +435,7 @@ function Main(prop) {
   }, [location]);
 
   if (userLoading) {
-    return (
-      <Segment style={{ height: "100%", width: "100%", position: "absolute" }}>
-        <Dimmer active inverted>
-          <Loader size="large">Loading</Loader>
-        </Dimmer>
-      </Segment>
-    );
+    return renderLoader();
   }
   var _key = findStateId(myState, "profileUser");
   if (!_key) {
