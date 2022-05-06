@@ -33,7 +33,7 @@ function Landing(prop) {
         />
         <meta
           name="keywords"
-          content="loole.gg, gaming, video, games, challenge, 8Pool, ClashRoyale, fifa2021, competition, tournament"
+          content="loole.gg, gaming, video, games, challenge, 8Pool, ClashRoyale, fifa2021, fifa2022, competition, tournament"
         />
       </Helmet>
       <div className="wrapper">

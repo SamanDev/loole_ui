@@ -14,6 +14,15 @@ const HomeEvents = (prop) => {
   const getBlockChallenge = (filtermode, events) => {
     var newItem = [];
     if (events) {
+      events?.sort(function (a, b) {
+        if (a === b || (a.status === b.status && a.id === b.id)) return 0;
+
+        if (a.status > b.status) return -1;
+        if (a.status < b.status) return 1;
+
+        if (a.id > b.id) return -1;
+        if (a.id < b.id) return 1;
+      });
       events.map((item, i) => {
         if (
           item.gameConsole == filtermode ||

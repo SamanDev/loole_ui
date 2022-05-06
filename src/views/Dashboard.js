@@ -6,6 +6,11 @@ import DashStat from "components/dashstat.component";
 import GlobalContext from "context/GlobalState";
 import { Helmet } from "react-helmet";
 var moment = require("moment");
+function dynamicSort(property) {
+  return function (a, b) {
+    return a[property] > b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+  };
+}
 
 function Dashboard(prop) {
   const context = useContext(GlobalContext);
@@ -87,8 +92,15 @@ function Dashboard(prop) {
   };
   const getBlockChallenge = (filtermode, events) => {
     var newItem = [];
+    events?.sort(function (a, b) {
+      if (a === b || (a.status === b.status && a.id === b.id)) return 0;
 
-    events?.sort((a, b) => (a.id < b.id ? 1 : -1));
+      if (a.status > b.status) return -1;
+      if (a.status < b.status) return 1;
+
+      if (a.id > b.id) return -1;
+      if (a.id < b.id) return 1;
+    });
     events?.map((_item, i) => {
       var item = JSON.parse(JSON.stringify(_item));
       if (
@@ -103,7 +115,7 @@ function Dashboard(prop) {
         var timestring2 = new Date();
         var startdate = moment(timestring1).format();
         var expected_enddate = moment(timestring2).format();
-        startdate = moment(startdate).add(1, "hours").format();
+        startdate = moment(startdate).add(4, "days").format();
 
         if (
           item.status != "Pending" &&

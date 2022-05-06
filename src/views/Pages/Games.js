@@ -93,7 +93,15 @@ const Landing = (prop) => {
   }
   const getBlockChallenge = (filtermode, events) => {
     var newItem = [];
+    events?.sort(function (a, b) {
+      if (a === b || (a.status === b.status && a.id === b.id)) return 0;
 
+      if (a.status > b.status) return -1;
+      if (a.status < b.status) return 1;
+
+      if (a.id > b.id) return -1;
+      if (a.id < b.id) return 1;
+    });
     events?.map((_item) => {
       var item = JSON.parse(JSON.stringify(_item));
       if (item.gameName == _game) {
@@ -131,7 +139,6 @@ const Landing = (prop) => {
       <Card.Group
         className="fours"
         stackable
-        centered
         doubling
         itemsPerRow="3"
         style={{ marginBottom: 20, textAlign: "left" }}
