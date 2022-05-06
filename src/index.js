@@ -14,7 +14,7 @@ import AuthService from "services/auth.service";
 import { Cache, ConfigProvider } from "react-avatar";
 import "assets/css/landing-page.css";
 import Swal from "sweetalert2";
-import { defUser, TrackingID } from "const";
+import { defUser, TrackingID,startServiceWorker } from "const";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
@@ -22,7 +22,7 @@ import { useInfo } from "services/hooks";
 const LandLayout = lazy(() => import("layouts/Land.js"));
 const PanelLayout = lazy(() => import("layouts/Panel.js"));
 
-//import LandLayout from "layouts/Land.js";
+
 //import PanelLayout from "layouts/Panel.js";
 import Login from "components/newlogin.component";
 import Register from "components/newregister.component";
@@ -102,6 +102,7 @@ const renderLoader = () => (
   </Dimmer>
 );
 function Main(prop) {
+  startServiceWorker();
   const queryClient = useQueryClient();
   const history = useHistory();
   const location = useLocation();

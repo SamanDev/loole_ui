@@ -5,6 +5,32 @@ export const POSTURLTest =  url+"/api/req/";
 export const POSTURLAdmin =  url+"/api/admin/";
 export const USERSOCKETURL = getPort();
 export const USERSOCKETPUBLICURL = getPortPablic();
+export function startServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    // The URL constructor is available in all browsers that support SW.
+    const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
+
+    window.addEventListener('load', () => {
+      const swUrl = `${process.env.PUBLIC_URL}/firebase-messaging-sw.js`;
+console.log("window.addEventListener(load - swUrl: "+swUrl)
+    
+        navigator.serviceWorker.register(swUrl)
+        .then(function(registration) {
+            
+          console.log('Registration successful, scope is:', registration.scope);
+        }).catch(function(err) {
+          console.log('Service worker registration failed, error:', err);
+      });
+        navigator.serviceWorker.ready.then(() => {
+          console.log(
+            'This web app is being served cache-first by a service ' +
+              'worker. To learn more, visit https://bit.ly/CRA-PWA'
+          );
+        });
+     
+    });
+  }
+}
 export const themeColors = [
   "red",
   "orange",
