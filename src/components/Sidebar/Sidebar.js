@@ -6,7 +6,7 @@ import { haveAdmin } from "components/include";
 import { Nav } from "react-bootstrap";
 import { setAvatar } from "components/include";
 import { useLocation, useHistory, Link } from "react-router-dom";
-import { defUser } from "const";
+import { defUser } from "const.js";
 import UserContext from "context/UserState";
 function Sidebar({ routes, image, background, token, onUpdateItem }) {
   const context = useContext(UserContext);

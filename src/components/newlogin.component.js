@@ -80,7 +80,7 @@ function FormExampleFieldErrorLabel(prop) {
       AuthService.login(username.trim(), password).then(
         (response) => {
           onUpdateItem("loading", false);
-          console.log(response.data);
+
           if (response.data.accessToken) {
             localStorage.setItem("user", JSON.stringify(response.data));
             setUList({ currentUser: response.data });

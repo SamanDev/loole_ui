@@ -21,6 +21,7 @@ const LandNavbar = (prop) => {
   }
   const logOut = () => {
     setUList({ currentUser: defUser });
+    localStorage.setItem("user", JSON.stringify(defUser));
     AuthService.logout();
   };
   return (

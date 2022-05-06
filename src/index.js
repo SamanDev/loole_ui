@@ -18,13 +18,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
 import { useInfo } from "services/hooks";
 const LandLayout = lazy(() => import("layouts/Land"));
-//const PanelLayout = lazy(() => import("layouts/Panel"));
+const PanelLayout = lazy(() => import("layouts/Panel"));
 const Chart = lazy(() => import("components/chart.component"));
 //const Login = lazy(() => import("components/newlogin.component"));
 //const Register = lazy(() => import("components/newregister.component"));
 //const Forget = lazy(() => import("components/newforget.component"));
 
-import PanelLayout from "layouts/Panel.js";
+//import PanelLayout from "layouts/Panel.js";
 import Login from "components/newlogin.component";
 import Register from "components/newregister.component";
 import Forget from "components/newforget.component";
@@ -101,7 +101,6 @@ const renderLoader = () => (
   </Dimmer>
 );
 function Main(prop) {
-  startServiceWorker();
   const queryClient = useQueryClient();
   const history = useHistory();
   const location = useLocation();
@@ -279,10 +278,10 @@ function Main(prop) {
       }
     } else {
       //setUList({ currentUser: userGet });
-
-      localStorage.setItem("user", JSON.stringify(userGet));
+      //localStorage.setItem("user", JSON.stringify(userGet));
     }
-  }, [userGet]);
+  }, [userGet, userLoading]);
+
   useEffect(() => {
     if (prop.err401) {
       // localStorage.setItem("user", JSON.stringify(defUser));
@@ -361,10 +360,7 @@ function Main(prop) {
     });
 
     eventBus.on("eventsDataActive", (mmyevent) => {
-      var curU = JSON.parse(JSON.stringify(currentUser));
-      curU.userActivate = true;
-      setUList({ currentUser: curU });
-      localStorage.setItem("user", JSON.stringify(curU));
+      queryClient.resetQueries(["User"]);
       Swal.fire("", mmyevent, "success");
     });
     eventBus.on("eventsDataEventDo", (eventGet) => {
@@ -733,6 +729,7 @@ function Main(prop) {
   );
 }
 function App() {
+  startServiceWorker();
   const [err401, setErr401] = useState(false);
   const queryClient = new QueryClient({
     defaultOptions: {
