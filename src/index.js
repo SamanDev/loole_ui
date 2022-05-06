@@ -430,9 +430,6 @@ function Main(prop) {
     //queryClient.resetQueries(["Event"]);
   }, [location]);
 
-  if (userLoading) {
-    return renderLoader();
-  }
   var _key = findStateId(myState, "profileUser");
   if (!_key) {
     _key = currentUser;

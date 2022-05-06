@@ -14,15 +14,6 @@ const d = new Date();
 let da = d.getSeconds();
 let day = da % 7;
 function Landing(prop) {
-  const [myState, setMyState] = useState(prop.myState);
-  useEffect(() => {
-    setMyState(prop.myState);
-  }, [prop.myState]);
-
-  const context = useContext(UserContext);
-  const { currentUser } = context.uList;
-  const elements = ["1", "2", "3", "4"];
-
   return (
     <>
       <Helmet>
