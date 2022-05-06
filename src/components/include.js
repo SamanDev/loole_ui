@@ -601,7 +601,7 @@ export const vsComponentPlayer = (
       _p = plyr;
     }
   });
-  console.log(_p);
+  //sconsole.log(_p);
   var info = (
     <>
       {_p &&
