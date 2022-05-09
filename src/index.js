@@ -30,7 +30,7 @@ import { useInfo } from "services/hooks";
 import Login from "components/newlogin.component";
 import Register from "components/newregister.component";
 import Forget from "components/newforget.component";
-//import Chart from "components/chart.component";
+import Chart from "components/chart.component";
 import DC from "components/dc.component";
 import eventBus from "views/eventBus";
 import {
@@ -64,7 +64,7 @@ import EventContext from "context/EventState";
 import UserContext from "context/UserState";
 const LandLayout = lazy(() => import("layouts/Land"));
 const PanelLayout = lazy(() => import("layouts/Panel"));
-const Chart = lazy(() => import("components/chart.component"));
+//const Chart = lazy(() => import("components/chart.component"));
 const cache = new Cache({
   // Keep cached source failures for up to 7 days
   sourceTTL: 7 * 24 * 3600 * 1000,

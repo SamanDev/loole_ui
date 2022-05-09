@@ -210,12 +210,7 @@ function LockScreenPage(prop) {
       },
     ];
   }
-  if (
-    !eventDef ||
-    1 == 2 ||
-    !currentUser ||
-    (!match && eventDef?.gameMode != "League")
-  ) {
+  if (!eventDef || !currentUser || (!match && eventDef?.gameMode != "League")) {
     return (
       <>
         <Helmet>
