@@ -13,6 +13,53 @@
       href="%PUBLIC_URL%/apple-icon.png"
       />
 
+
+
+    <script>
+  var myPath = document.location.pathname.split("/")[1];
+  
+if(myPath=='game'){
+  var _g = document.location.pathname.split("/")[2];
+  var _title = document.createElement('title');
+  _title.text = 'Play '+_g+' for Real Money.'
+  document.getElementsByTagName('head')[0].appendChild(_title);
+
+  var _desc = document.createElement('meta');
+  _desc.name = "description";
+  _desc.content = "Loole.gg is an online global platform where you can compete for real cash and coins in your " +
+            _g +
+            " game.";
+  document.getElementsByTagName('head')[0].appendChild(_desc);
+
+  var _ogurl = document.createElement('meta');
+  _ogurl.property = "og:url";
+  _ogurl.content = "https://loole.gg/game/" + _g;
+  document.getElementsByTagName('head')[0].appendChild(_ogurl);
+
+  var _ogtype = document.createElement('meta');
+  _ogtype.property = "og:type";
+  _ogtype.content = "article";
+  document.getElementsByTagName('head')[0].appendChild(_ogtype);
+
+  var _ogtitle = document.createElement('meta');
+  _ogtitle.property = "og:title";
+  _ogtitle.content = 'Play '+_g+' for Real Money.';
+  document.getElementsByTagName('head')[0].appendChild(_ogtitle);
+
+  var _ogdesc = document.createElement('meta');
+  _ogdesc.property = "og:description";
+  _ogdesc.content = "Loole.gg is an online global platform where you can compete for real cash and coins in your " +
+            _g +
+            " game.";
+  document.getElementsByTagName('head')[0].appendChild(_ogdesc);
+  
+  var _ogimg = document.createElement('meta');
+  _ogimg.property = "og:image";
+  _ogimg.content = "https://loole.gg/assets/images/games/" + _g +" .jpg";
+  document.getElementsByTagName('head')[0].appendChild(_ogimg);
+}
+
+</script>
   </head>
   <body class="off-canvas-sidebar">
     <noscript> You need to enable JavaScript to run this app. </noscript>

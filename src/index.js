@@ -742,20 +742,20 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient} contextSharing={true}>
-      <Suspense fallback={renderLoader()}>
-        <Main err401={err401} />
-      </Suspense>
+      <Main err401={err401} />
     </QueryClientProvider>
   );
 }
 
 ReactDOM.render(
-  <BrowserRouter>
-    <ConfigProvider cache={cache}>
-      <div className="application">
-        <App />
-      </div>
-    </ConfigProvider>
-  </BrowserRouter>,
+  <Suspense fallback={renderLoader()}>
+    <BrowserRouter>
+      <ConfigProvider cache={cache}>
+        <div className="application">
+          <App />
+        </div>
+      </ConfigProvider>
+    </BrowserRouter>
+  </Suspense>,
   document.getElementById("root")
 );
