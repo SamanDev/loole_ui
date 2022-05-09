@@ -10,13 +10,16 @@ import {
   useLocation,
 } from "react-router-dom";
 import { Cache, ConfigProvider } from "react-avatar";
-import "assets/css/landing-page.css";
+
 import Swal from "sweetalert2";
 import { defUser, TrackingID, startServiceWorker } from "const.js";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import "assets/css/landing-page.css";
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.1";
+import "semantic-ui-css/semantic.min.css";
+
+import "assets/css/style.css";
 import { useInfo } from "services/hooks";
 
 //const Login = lazy(() => import("components/newlogin.component"));
@@ -54,8 +57,7 @@ import {
   useUserReports,
 } from "services/hooks";
 import ReactGA from "react-ga";
-import "semantic-ui-css/semantic.min.css";
-import "assets/css/style.css";
+
 import UserWebsocket from "services/user.websocket";
 import GlobalContext from "context/GlobalState";
 import EventContext from "context/EventState";
