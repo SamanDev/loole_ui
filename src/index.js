@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 import { defUser, TrackingID, startServiceWorker } from "const.js";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
+import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.1";
 import { useInfo } from "services/hooks";
 const LandLayout = lazy(() => import("layouts/Land"));
 const PanelLayout = lazy(() => import("layouts/Panel"));

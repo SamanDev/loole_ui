@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Avatar from "react-avatar";
 import { Link } from "react-router-dom";
-import "react-vertical-timeline-component/style.min.css";
 import { faTwitch } from "@fortawesome/free-brands-svg-icons";
 import {
   Statistic,
@@ -15,7 +14,6 @@ import {
   List,
   Message,
 } from "semantic-ui-react";
-import AddToCal from "components/addtocal.component";
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
 import userService from "services/user.service";
@@ -39,7 +37,6 @@ import {
   findMatch,
   genLink,
 } from "components/include";
-import { POSTURLTest } from "const";
 import UserContext from "context/UserState";
 const Toast = Swal.mixin({
   toast: true,

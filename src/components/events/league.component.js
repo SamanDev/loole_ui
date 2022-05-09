@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Avatar from "react-avatar";
 
 import { Link } from "react-router-dom";
-import "react-vertical-timeline-component/style.min.css";
 import { faTwitch } from "@fortawesome/free-brands-svg-icons";
 
 import {

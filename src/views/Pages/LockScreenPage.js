@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, lazy } from "react";
 import { Helmet } from "react-helmet";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router";
@@ -20,10 +20,18 @@ import Chatbar from "components/Sidebar/Chat.js";
 import userService from "services/user.service";
 
 //import LeagueSection  from "components/events/league.component";
-import LeagueSection from "components/events/league.component";
-import TournamentSection from "components/events/tournament.component";
-import MatchSection from "components/events/match.component";
-import MatchTourSection from "components/events/tournamentmatch.component";
+const LeagueSection = lazy(() => import("components/events/league.component"));
+const TournamentSection = lazy(() =>
+  import("components/events/tournament.component")
+);
+const MatchSection = lazy(() => import("components/events/match.component"));
+const MatchTourSection = lazy(() =>
+  import("components/events/tournamentmatch.component")
+);
+//import LeagueSection from "components/events/league.component";
+//import TournamentSection from "components/events/tournament.component";
+//import MatchSection from "components/events/match.component";
+//import MatchTourSection from "components/events/tournamentmatch.component";
 import { haveAdmin, getQueryVariable } from "components/include.js";
 import UserContext from "context/UserState";
 import EventContext from "context/EventState";

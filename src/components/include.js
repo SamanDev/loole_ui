@@ -1,6 +1,13 @@
-import React from "react";
+import React, { lazy } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlaystation, faXbox } from "@fortawesome/free-brands-svg-icons";
+import {
+  faPlaystation,
+  faXbox,
+  faInstagram,
+  faTwitch,
+  faYoutube,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 import { useParams } from "react-router";
 import {
   faDesktop,
@@ -14,17 +21,17 @@ import { Link } from "react-router-dom";
 import CurrencyFormat from "react-currency-format";
 import userService from "services/user.service";
 import MatchCard from "components/matchblock.component";
-import TransitionExampleTransitionExplorer from "components/anim.component";
+//import TransitionExampleTransitionExplorer from "components/anim.component";
+//const MatchCard = lazy(() => import("components/matchblock.component"));
+const TransitionExampleTransitionExplorer = lazy(() =>
+  import("components/anim.component")
+);
+const CopyText = lazy(() => import("components/copy.component"));
+const SidebarExampleSidebar = lazy(() => import("components/ready.component"));
 import eventBus from "views/eventBus";
-import CopyText from "components/copy.component";
-import {
-  faInstagram,
-  faTwitch,
-  faYoutube,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
+//import CopyText from "components/copy.component";
 import Moment from "moment";
-import SidebarExampleSidebar from "components/ready.component";
+//import SidebarExampleSidebar from "components/ready.component";
 import {
   Statistic,
   Button,
@@ -49,8 +56,8 @@ import {
   ListGroup,
 } from "react-bootstrap";
 
-var moment = require("moment");
-var nullplayer = {
+const moment = require("moment");
+const nullplayer = {
   id: 100000,
 
   username: false,

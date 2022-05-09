@@ -1,25 +1,21 @@
-import React, { useEffect, lazy, Suspense } from "react";
+import React, { useEffect, lazy } from "react";
 import { Switch, Route } from "react-router-dom";
 import { ConfigProvider } from "react-avatar";
 import { DEFCOLORS } from "const.js";
 
-const LockScreenPage = lazy(() => import("views/Pages/LockScreenPage.js"));
-const LandNavbar = lazy(() => import("components/Navbars/LandNavbar.js"));
-const Landing = lazy(() => import("views/Pages/Landing.js"));
-const Games = lazy(() => import("views/Pages/Games.js"));
-const Content = lazy(() => import("views/Pages/Content.js"));
-const User = lazy(() => import("views/Pages/User.js"));
-import { Dimmer, Loader } from "semantic-ui-react";
-import routes from "routes.js";
+const LockScreenPage = lazy(() => import("views/Pages/LockScreenPage"));
+const LandNavbar = lazy(() => import("components/Navbars/LandNavbar"));
+const Landing = lazy(() => import("views/Pages/Landing"));
+const Games = lazy(() => import("views/Pages/Games"));
+const Content = lazy(() => import("views/Pages/Content"));
+const User = lazy(() => import("views/Pages/User"));
+
+import routes from "routes";
 //import LandNavbar from "components/Navbars/LandNavbar.js";
 //import LockScreenPage from "views/Pages/LockScreenPage.js";
 
-import { getOffset } from "components/include.js";
-const renderLoader = () => (
-  <Dimmer active inverted>
-    <Loader size="large">Loading</Loader>
-  </Dimmer>
-);
+import { getOffset } from "components/include";
+
 function scrollTo(elem) {
   setTimeout(function () {
     var x = getOffset(document.getElementById(elem)).top;
@@ -97,21 +93,19 @@ function Auth(props) {
 
   return (
     <>
-      <Suspense fallback={renderLoader()}>
-        <ConfigProvider colors={DEFCOLORS}>
-          {getPage(routes).indexOf("Match Lobby") > -1 ? (
-            <Switch>{getRoutes(routes)}</Switch>
-          ) : (
-            <div className="landing-page landing-page1 landing-mobile">
-              {/* Navbar */}
-              <LandNavbar {...props} scrollTo={scrollTo} />
-              {/* End Navbar */}
+      <ConfigProvider colors={DEFCOLORS}>
+        {getPage(routes).indexOf("Match Lobby") > -1 ? (
+          <Switch>{getRoutes(routes)}</Switch>
+        ) : (
+          <div className="landing-page landing-page1 landing-mobile">
+            {/* Navbar */}
+            <LandNavbar {...props} scrollTo={scrollTo} />
+            {/* End Navbar */}
 
-              <Switch>{getRoutes(routes)}</Switch>
-            </div>
-          )}
-        </ConfigProvider>
-      </Suspense>
+            <Switch>{getRoutes(routes)}</Switch>
+          </div>
+        )}
+      </ConfigProvider>
     </>
   );
 }

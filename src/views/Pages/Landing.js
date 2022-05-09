@@ -1,15 +1,19 @@
-import React, { useState, useEffect, useContext } from "react";
-
-import HomeEvents from "components/events/home.component";
-import GameSlide from "components/GameSlide";
-import HowIt from "components/howit";
-import LandStat from "components/landstat.component";
+import React, { useState, useEffect, useContext, lazy } from "react";
+const HomeEvents = lazy(() => import("components/events/home.component"));
+const GameSlide = lazy(() => import("components/GameSlide"));
+const HowIt = lazy(() => import("components/howit"));
+const LandStat = lazy(() => import("components/landstat.component"));
+const Footer = lazy(() => import("components/Navbars/Footer"));
+//import HomeEvents from "components/events/home.component";
+//import GameSlide from "components/GameSlide";
+//import HowIt from "components/howit";
+//import LandStat from "components/landstat.component";
 import Market from "components/market.component";
 import RegisterBtn from "components/registerBtn";
 import { themeColors } from "const.js";
 import UserContext from "context/UserState";
 import { Helmet } from "react-helmet";
-import Footer from "components/Navbars/Footer.js";
+//import Footer from "components/Navbars/Footer";
 const d = new Date();
 let da = d.getSeconds();
 let day = da % 7;

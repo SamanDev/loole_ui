@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Avatar from "react-avatar";
 import { withRouter } from "react-router-dom";
-import "react-vertical-timeline-component/style.min.css";
+
 import TagsForm from "components/profile/tags.component";
 import UserEvents from "components/events/user.component";
 // react-bootstrap components

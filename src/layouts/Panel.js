@@ -13,7 +13,7 @@ import SidebarMy from "components/Sidebar/Sidebar.js";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import CrCode from "components/cr.component";
 import routes from "routes.js";
-
+import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.0";
 import Admin from "views/Admin.js";
 import AdminEvents from "views/AdminEvents.js";
 import AdminCost from "views/AdminCost.js";
