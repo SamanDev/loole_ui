@@ -15,11 +15,10 @@ import Swal from "sweetalert2";
 import { defUser, TrackingID, startServiceWorker } from "const.js";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.1";
 import { useInfo } from "services/hooks";
-const LandLayout = lazy(() => import("layouts/Land"));
-const PanelLayout = lazy(() => import("layouts/Panel"));
-const Chart = lazy(() => import("components/chart.component"));
+
 //const Login = lazy(() => import("components/newlogin.component"));
 //const Register = lazy(() => import("components/newregister.component"));
 //const Forget = lazy(() => import("components/newforget.component"));
@@ -61,7 +60,9 @@ import UserWebsocket from "services/user.websocket";
 import GlobalContext from "context/GlobalState";
 import EventContext from "context/EventState";
 import UserContext from "context/UserState";
-
+const LandLayout = lazy(() => import("layouts/Land"));
+const PanelLayout = lazy(() => import("layouts/Panel"));
+const Chart = lazy(() => import("components/chart.component"));
 const cache = new Cache({
   // Keep cached source failures for up to 7 days
   sourceTTL: 7 * 24 * 3600 * 1000,
@@ -742,20 +743,20 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient} contextSharing={true}>
-      <Suspense fallback={renderLoader()}>
-        <Main err401={err401} />
-      </Suspense>
+      <Main err401={err401} />
     </QueryClientProvider>
   );
 }
 
 ReactDOM.render(
   <BrowserRouter>
-    <ConfigProvider cache={cache}>
-      <div className="application">
-        <App />
-      </div>
-    </ConfigProvider>
+    <Suspense fallback={renderLoader()}>
+      <ConfigProvider cache={cache}>
+        <div className="application">
+          <App />
+        </div>
+      </ConfigProvider>
+    </Suspense>
   </BrowserRouter>,
   document.getElementById("root")
 );
