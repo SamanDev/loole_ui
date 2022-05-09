@@ -185,7 +185,7 @@ const Landing = (prop) => {
         />
         <meta
           property="og:image"
-          content={"https://loole.gg/assets/images/games/" + _game + ".jpg"}
+          content={"https://loole.gg/assets/images/games/" + _game + ".webp"}
         />
       </Helmet>
       <div className="wrapper">
