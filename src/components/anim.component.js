@@ -18,7 +18,7 @@ export default class TransitionExampleTransitionExplorer extends Component {
   };
   componentDidMount() {
     this.myStopFunction();
-    myInterval = setInterval(this.myTimer, 3000);
+    myInterval = setInterval(this.myTimer, this.props.duration + 3000);
   }
   componentWillUnmount() {
     this.myStopFunction();

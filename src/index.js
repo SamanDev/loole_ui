@@ -315,7 +315,7 @@ function Main(prop) {
 
       queryClient.setQueryData(["Event", eventGet.id], eventGet);
       onUpdateItem("match", _find);
-      console.log(myState);
+      // console.log(myState);
     }
   }, [eventGet]);
   useEffect(() => {

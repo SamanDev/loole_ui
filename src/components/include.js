@@ -1530,7 +1530,7 @@ export const printStatus = (
                   className="winner avatar"
                   style={{ width: 92, height: 92, borderRadius: 100 }}
                 ></div>
-                <div className=" ">
+                <div>
                   <Icon
                     circular
                     inverted
@@ -1565,7 +1565,7 @@ export const printStatus = (
                         className="winner avatar"
                         style={{ width: 92, height: 92, borderRadius: 100 }}
                       ></div>
-                      <div className=" ">
+                      <div>
                         <Icon
                           circular
                           inverted
