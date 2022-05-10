@@ -2103,19 +2103,13 @@ export const handleSaveTags = (
     .saveTags(gameName.replace("2", ""), gamePlatform, gameID, gameNickname)
     .then(
       (response) => {
-        let jsonBool = isJson(response.data);
-
-        if (jsonBool) {
-          if (response.data.accessToken) {
-            localStorage.setItem("user", JSON.stringify(response.data));
-            eventBus.dispatch("eventsDataUser", response.data);
-            eventBus.remove("eventsDataUser");
-            Swal.fire("", "Data saved successfully.", "success");
-          }
-          //window.location.reload(false);
-        } else {
-          Swal.fire("", response.data, "error");
+        if (response.data?.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          eventBus.dispatch("eventsDataUser", response.data);
+          eventBus.remove("eventsDataUser");
+          Swal.fire("", "Data saved successfully.", "success");
         }
+        //window.location.reload(false);
       },
       (error) => {
         const resMessage =

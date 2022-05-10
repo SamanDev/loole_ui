@@ -43,14 +43,23 @@ function TagsForm(prop) {
     setMyState(prop.myState);
   }, [prop.myState]);
   useEffect(() => {
-    if (!userKey) {
+    console.log(uList.currentUser);
+    if (
+      (!userKey.accessToken &&
+        userKey?.username == uList.currentUser.username) ||
+      !userKey
+    ) {
       setUserKey(uList.currentUser);
+    } else {
+      var profileUser = prop.findStateId(myState, "profileUser");
+      if (profileUser && profileUser.username != uList.currentUser.username) {
+        setUserKey(profileUser);
+      } else {
+        setUserKey(uList.currentUser);
+      }
     }
   }, [uList.currentUser]);
 
-  if (!userKey) {
-    setUserKey(uList.currentUser);
-  }
   const currentUser = userKey;
   const getGameTag = (game, userTags) => {
     var res = "Not Connected";
@@ -74,7 +83,7 @@ function TagsForm(prop) {
       return (
         <>
           <Statistic size="mini" color="red" className="notconnected">
-            {uList.currentUser.userTags == userTags ? (
+            {currentUser.userTags == userTags ? (
               <Statistic.Value>Click to connect</Statistic.Value>
             ) : (
               <Statistic.Value>Login to connect</Statistic.Value>
@@ -99,7 +108,7 @@ function TagsForm(prop) {
             <Statistic.Label>{resName}</Statistic.Label>
           </Statistic>
 
-          {currentUser.userTags == userTags ||
+          {(userKey?.userTags == userTags && userKey?.accessToken) ||
           haveAdmin(uList.currentUser.roles) ? (
             <Button
               icon
@@ -187,39 +196,45 @@ function TagsForm(prop) {
           className="fours card-tags"
           stackable
           doubling
-          itemsPerRow="3"
+          itemsPerRow="4"
           style={{ marginBottom: 20, textAlign: "left" }}
         >
-          {arrLogos.map((number, i) => (
-            <Card
-              fluid
-              key={i.toString()}
-              onClick={() =>
-                handleTagForm(arrTagMode[i], arrPlatform[i], userKey)
-              }
-              color={
-                haveGameTag(arrTagMode[i], userKey?.userTags) ? "green" : "red"
-              }
-            >
-              <div
-                style={
-                  haveGameTag(arrTagMode[i], userKey?.userTags)
-                    ? { opacity: 1 }
-                    : { opacity: 0.5 }
-                }
-              >
-                <div className="img">
-                  <img
-                    alt={number}
-                    src={"/assets/images/logos/" + number}
-                    width="auto"
-                    height="90"
-                  />
-                </div>
-                {getGameTag(arrTagMode[i], currentUser?.userTags)}
-              </div>
-            </Card>
-          ))}
+          {arrLogos.map(
+            (number, i) =>
+              (!prop.myStateLoc ||
+                haveGameTag(arrTagMode[i], userKey?.userTags)) && (
+                <Card
+                  fluid
+                  key={i.toString()}
+                  onClick={() =>
+                    handleTagForm(arrTagMode[i], arrPlatform[i], userKey)
+                  }
+                  color={
+                    haveGameTag(arrTagMode[i], userKey?.userTags)
+                      ? "green"
+                      : "red"
+                  }
+                >
+                  <div
+                    style={
+                      haveGameTag(arrTagMode[i], userKey?.userTags)
+                        ? { opacity: 1 }
+                        : { opacity: 0.5 }
+                    }
+                  >
+                    <div className="img">
+                      <img
+                        alt={number}
+                        src={"/assets/images/logos/" + number}
+                        width="auto"
+                        height="90"
+                      />
+                    </div>
+                    {getGameTag(arrTagMode[i], userKey?.userTags)}
+                  </div>
+                </Card>
+              )
+          )}
         </Card.Group>
       </Segment>
     </>

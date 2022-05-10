@@ -66,7 +66,7 @@ const HomeEvents = (prop) => {
       return (
         <Card.Group
           className="fours"
-          itemsPerRow="3"
+          itemsPerRow={prop.myStateLoc ? 3 : 4}
           stackable
           doubling
           style={{ marginBottom: 20, textAlign: "left" }}

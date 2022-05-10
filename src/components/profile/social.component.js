@@ -88,7 +88,8 @@ function TagsForm(prop) {
             <Statistic.Label>{resName}</Statistic.Label>
           </Statistic>
 
-          {uList.currentUser.userSocialAccounts == userTags ||
+          {(uList.currentUser.userSocialAccounts == userTags &&
+            currentUser.accessToken) ||
           haveAdmin(uList.currentUser.roles) ? (
             <Button
               icon

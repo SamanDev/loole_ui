@@ -143,6 +143,7 @@ function FormExampleFieldErrorLabel(prop) {
               response.data
             );
             if (location.pathname.indexOf("home") > -1) {
+              prop.onUpdateItem("openModalLogin", false);
               history.push("/panel/dashboard");
             } else {
               prop.onUpdateItem("openModalLogin", false);
