@@ -1725,43 +1725,7 @@ export const getCode = (code) => {
     );
   }
 };
-export const getGameTag = (game, userTags) => {
-  var res = "Not Connected";
-  var resName = "";
-  if (userTags) {
-    userTags.map(function (tag) {
-      if (tag.gameName == game) {
-        res = tag.tagId;
-        resName = tag.nickName;
-        if (resName == "") resName = "Connected";
-        if (res != "" && game == "ClashRoyale") res = "#" + res;
-        if (res != "" && game == "8Pool") res = printTag(game, res);
-      }
-    });
-  }
-  res = res.split("@@")[0];
-  if (res == "Not Connected") {
-    return (
-      <p style={{ opacity: 0.5, margin: 0, lineHeight: "20px" }}>
-        <small className="text-muted">
-          <b>{res}</b>
-          <br />
-          Click to connect
-        </small>
-      </p>
-    );
-  } else {
-    return (
-      <p style={{ margin: 0, lineHeight: "20px" }}>
-        <small>
-          <b>{resName}</b>
-          <br />
-          {res}
-        </small>
-      </p>
-    );
-  }
-};
+
 export const genLink = (item, match, num) => {
   var _link =
     "/lobby/" +
@@ -1849,42 +1813,7 @@ export const isPlayerInMatch = (match, username) => {
 
   return _is;
 };
-export const getSocialTag = (game, userTags) => {
-  var res = "Not Connected";
-  var resName = "";
 
-  if (userTags) {
-    userTags.map(function (tag) {
-      if (tag.accountName == game) {
-        res = tag.accountId;
-        resName = "";
-        if (resName == "") resName = "Connected";
-      }
-    });
-  }
-  res = res.split("@@")[0];
-  if (res == "Not Connected") {
-    return (
-      <p style={{ opacity: 0.5, margin: 0, lineHeight: "20px" }}>
-        <small className="text-muted">
-          <b>{res}</b>
-          <br />
-          Click to connect
-        </small>
-      </p>
-    );
-  } else {
-    return (
-      <p style={{ margin: 0, lineHeight: "20px" }}>
-        <small>
-          <b>{resName}</b>
-          <br />
-          {res}
-        </small>
-      </p>
-    );
-  }
-};
 export const showSocialTag = (game, userTags) => {
   var res = null;
   if (userTags) {

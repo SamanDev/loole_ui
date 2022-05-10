@@ -195,6 +195,50 @@ class UserService {
         })
     );
   }
+  deleteTag(id) {
+    return (
+      axios
+
+        //s.delete(API_URL_TEST + "deleteAllEvent", { headers: authHeader() })
+        .post(
+          API_URL_TEST + "deleteTag",
+          { id },
+          {
+            headers: authHeader(),
+          }
+        )
+        .then((response) => {
+          // localStorage.setItem("events", JSON.stringify(response.data));
+          //localStorage.setItem("user", JSON.stringify(response.data));
+          return response;
+        })
+        .catch((error) => {
+          return error;
+        })
+    );
+  }
+  deleteSocial(id) {
+    return (
+      axios
+
+        //s.delete(API_URL_TEST + "deleteAllEvent", { headers: authHeader() })
+        .post(
+          API_URL_TEST + "deleteSocial",
+          { id },
+          {
+            headers: authHeader(),
+          }
+        )
+        .then((response) => {
+          // localStorage.setItem("events", JSON.stringify(response.data));
+          //localStorage.setItem("user", JSON.stringify(response.data));
+          return response;
+        })
+        .catch((error) => {
+          return error;
+        })
+    );
+  }
   changeReadyEvent(id) {
     return axios
       .put(API_URL_TEST + "changeReadyEvent", { id }, { headers: authHeader() })

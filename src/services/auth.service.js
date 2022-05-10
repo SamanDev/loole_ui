@@ -27,11 +27,12 @@ class AuthService {
       });
   }
 
-  login(username, password) {
+  login(username, password, token) {
     return axios
       .post(API_URL + "signin", {
         username,
         password,
+        token,
       })
       .then((response) => {
         return response;

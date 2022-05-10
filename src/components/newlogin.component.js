@@ -1,10 +1,17 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Form } from "semantic-ui-react";
 import AuthService from "../services/auth.service";
 import UserWebsocket from "services/user.websocket";
 import Swal from "sweetalert2";
 import UserContext from "context/UserState";
+import {
+  getMessaging,
+  getToken,
+  onMessage,
+  onBackgroundMessage,
+} from "firebase/messaging";
+import { initializeApp } from "firebase/app";
 function FormExampleFieldErrorLabel(prop) {
   const history = useHistory();
   let location = useLocation();
@@ -14,12 +21,57 @@ function FormExampleFieldErrorLabel(prop) {
     list: [
       { id: "username", val: "" },
       { id: "password", val: "" },
+      { id: "token", val: "" },
       { id: "hasError", val: null },
       { id: "loading", val: false },
       { id: "submit", val: false },
     ],
   });
+  useEffect(() => {
+    const firebaseConfig = {
+      apiKey: "AIzaSyCGTpxJqdzeBpgV2Uq8KniTQWLHb69DONM",
+      authDomain: "loole-b974f.firebaseapp.com",
+      projectId: "loole-b974f",
+      storageBucket: "loole-b974f.appspot.com",
+      messagingSenderId: "30488129618",
+      appId: "1:30488129618:web:99f67dea2fe2823b332f8b",
+      measurementId: "G-56RR0GT32B",
+    };
 
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
+    var token;
+    getToken(messaging, {
+      vapidKey:
+        "BFj8seYu2V-U2yWrmRyG4zdiX08epdYDYhAL5x6DSoxOLsE_9q3hn7QjrSPthUkp6XBRzSpRdOoF3P3pZfiCnw8",
+    })
+      .then((currentToken) => {
+        if (currentToken) {
+          // Send the token to your server and update the UI if necessary
+          //  console.log("currentToken : " + currentToken);
+          //  userService.sendPushToken(currentToken);
+          token = currentToken;
+
+          onUpdateItem("token", currentToken);
+        } else {
+          // Show permission request UI
+          console.log(
+            "No registration token available. Request permission to generate one."
+          );
+          // ...
+        }
+      })
+      .catch((err) => {
+        console.log("An error occurred while retrieving token. ", err);
+        // ...
+      });
+    onMessage(getMessaging(), (message) => {
+      console.log(
+        "New foreground notification from Firebase Messaging!",
+        message.notification
+      );
+    });
+  }, []);
   const updateHandler = (e, data) => {
     var val = data.value;
     if (!data.value) {
@@ -73,11 +125,12 @@ function FormExampleFieldErrorLabel(prop) {
   const handleSubmit = () => {
     var username = findStateId(myState, "username");
     var password = findStateId(myState, "password");
+    var token = findStateId(myState, "token");
 
     onUpdateItem("loading", true);
 
     if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
-      AuthService.login(username.trim(), password).then(
+      AuthService.login(username.trim(), password, token).then(
         (response) => {
           onUpdateItem("loading", false);
 

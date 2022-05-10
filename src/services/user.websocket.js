@@ -24,45 +24,6 @@ class UserWebsocket {
         ws = new WebSocket(USERSOCKETURL + token);
         console.log("Websocket user is connected");
       }
-      const firebaseConfig = {
-        apiKey: "AIzaSyCGTpxJqdzeBpgV2Uq8KniTQWLHb69DONM",
-        authDomain: "loole-b974f.firebaseapp.com",
-        projectId: "loole-b974f",
-        storageBucket: "loole-b974f.appspot.com",
-        messagingSenderId: "30488129618",
-        appId: "1:30488129618:web:99f67dea2fe2823b332f8b",
-        measurementId: "G-56RR0GT32B",
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const messaging = getMessaging(app);
-      getToken(messaging, {
-        vapidKey:
-          "BFj8seYu2V-U2yWrmRyG4zdiX08epdYDYhAL5x6DSoxOLsE_9q3hn7QjrSPthUkp6XBRzSpRdOoF3P3pZfiCnw8",
-      })
-        .then((currentToken) => {
-          if (currentToken) {
-            // Send the token to your server and update the UI if necessary
-            console.log("currentToken : " + currentToken);
-            userService.sendPushToken(currentToken);
-          } else {
-            // Show permission request UI
-            console.log(
-              "No registration token available. Request permission to generate one."
-            );
-            // ...
-          }
-        })
-        .catch((err) => {
-          console.log("An error occurred while retrieving token. ", err);
-          // ...
-        });
-      onMessage(getMessaging(), (message) => {
-        console.log(
-          "New foreground notification from Firebase Messaging!",
-          message.notification
-        );
-      });
     } else {
       ws?.close();
       ws = null;

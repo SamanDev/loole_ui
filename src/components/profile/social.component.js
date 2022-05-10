@@ -11,34 +11,102 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { Card, Row, Col } from "react-bootstrap";
-import {
-  getModalTag,
-  getSocialTag,
-  haveSocialTag,
-  isJson,
-} from "components/include";
-import { Header } from "semantic-ui-react";
+import { getModalTag, haveSocialTag, isJson } from "components/include";
+
+import { Button, Icon, Header } from "semantic-ui-react";
 import UserContext from "context/UserState";
-var arrLogos = [
-  "psn.svg",
-  "xbox.svg",
-  "8pool.png",
-  "clashroyale.png",
-  "activition.png",
-  "epic.svg",
-];
-var arrTagMode = [
-  "PSN",
-  "XBOX",
-  "8Pool",
-  "ClashRoyale",
-  "CallOfDuty",
-  "Fortnite",
-];
-var arrPlatform = ["PSN", "XBOX", "Mobile", "Mobile", "Activition", "All"];
+
 function TagsForm(prop) {
   const context = useContext(UserContext);
-  const { currentUser } = context.uList;
+  const [isLoading, setIsLoading] = useState(false);
+  const [isID, setIsID] = useState(false);
+  const { uList, setUList } = context;
+  const { currentUser } = uList;
+  const getSocialTag = (game, userTags) => {
+    var res = "Not Connected";
+    var resName = "";
+    var resID = "";
+    if (userTags) {
+      userTags.map(function (tag) {
+        if (tag.accountName == game) {
+          res = tag.accountId;
+          resID = tag.id;
+          resName = "";
+          if (resName == "") resName = "Connected";
+        }
+      });
+    }
+    res = res.split("@@")[0];
+    if (res == "Not Connected") {
+      return (
+        <p style={{ opacity: 0.5, margin: 0, lineHeight: "20px" }}>
+          <small className="text-muted">
+            <b>{res}</b>
+            <br />
+            Click to connect
+          </small>
+        </p>
+      );
+    } else {
+      return (
+        <p style={{ margin: 0, lineHeight: "20px" }}>
+          <small>
+            <b>{resName}</b>
+            <br />
+            {res}
+          </small>
+          <Button
+            icon
+            color="red"
+            size="mini"
+            loading={isLoading && isID == resID}
+            onClick={() => handleDelete(resID)}
+            style={{ position: "absolute", top: -10, right: -10 }}
+          >
+            <Icon name="delete" />
+          </Button>
+        </p>
+      );
+    }
+  };
+  const handleDelete = (id) => {
+    setIsLoading(true);
+    setIsID(id);
+    userService.deleteSocial(id).then(
+      (response) => {
+        setIsLoading(false);
+        setIsID(false);
+        if (response.data?.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          setUList({ currentUser: response.data });
+
+          Swal.fire("", "Data saved successfully.", "success");
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: response.data,
+          });
+        }
+      },
+      (error) => {
+        setIsLoading(false);
+        setIsID(false);
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: resMessage,
+        });
+      }
+    );
+  };
   const handlecSetInstagram = (game, platform) => {
     const resetPw2 = async () => {
       const swalval = await Swal.fire(getModalTag(game));
@@ -74,8 +142,8 @@ function TagsForm(prop) {
 
         if (jsonBool) {
           if (response.data.accessToken) {
-            prop.onUpdateItem("currentUser", response.data);
             localStorage.setItem("user", JSON.stringify(response.data));
+            setUList({ currentUser: response.data });
 
             Swal.fire("", "Data saved successfully.", "success");
           }
