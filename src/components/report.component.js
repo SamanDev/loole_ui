@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 
 // react-bootstrap components
 import { Link } from "react-router-dom";
-import { Header, Dimmer, Loader } from "semantic-ui-react";
+import { Header, Dimmer, Loader, Icon } from "semantic-ui-react";
 import { get_date_locale, getGroupBadgeBlock } from "components/include.js";
 import DataTable from "react-data-table-component";
 import { useUserReports } from "services/hooks";
@@ -200,7 +200,13 @@ function Report(prop) {
   if (isLoading) {
     return (
       <>
-        <Header as="h3">Transactions</Header>
+        <Header as="h2">
+          <Icon name="dollar" />
+          <Header.Content>
+            Transactions
+            <Header.Subheader>See your Bank Transactions</Header.Subheader>
+          </Header.Content>
+        </Header>
         <Dimmer active inverted>
           <Loader size="large">Loading</Loader>
         </Dimmer>
@@ -209,8 +215,13 @@ function Report(prop) {
   }
   return (
     <>
-      <Header as="h3">Transactions</Header>
-
+      <Header as="h2">
+        <Icon name="dollar" />
+        <Header.Content>
+          Transactions
+          <Header.Subheader>See your Bank Transactions</Header.Subheader>
+        </Header.Content>
+      </Header>
       <DataTable
         columns={columns}
         data={myData}

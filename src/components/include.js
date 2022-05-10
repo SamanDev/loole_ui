@@ -1839,9 +1839,13 @@ export const userDetails = (currentUser) => {
     <>
       <div className="text-center">
         <Statistic size="mini">
-          <Statistic.Value as="h1">{currentUser.username}</Statistic.Value>
+          <Statistic.Value as="h1">
+            {currentUser.username}
+            <br />
+            <br />
+          </Statistic.Value>
           <Statistic.Label>
-            <small className="text-muted">From </small>
+            <small className="text-muteds">From </small>
             <br />
             <Flag name={flag} style={{ position: "relative", top: -1 }} />{" "}
             {flagLabel}
@@ -1849,15 +1853,15 @@ export const userDetails = (currentUser) => {
             <br />
             {currentUser.lastLogin && (
               <>
-                <small className="text-muted">Last Login</small>
+                <small className="text-mutedd">Last Login</small>
                 <br /> {lastLogin}
               </>
             )}
           </Statistic.Label>
         </Statistic>
-        <Card.Header style={{ marginBottom: 0, marginTop: 15 }}></Card.Header>
+        <Card.Header style={{ margin: 0 }}></Card.Header>
 
-        <ListGroup horizontal style={{ display: "inline-flex", marginTop: 10 }}>
+        <ListGroup horizontal style={{ display: "inline-flex", marginTop: 0 }}>
           {haveSocialTag("Instagram", currentUser.userSocialAccounts) && (
             <ListGroup.Item
               action

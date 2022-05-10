@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Form, Header, Segment } from "semantic-ui-react";
+import { Form, Header, Segment, Icon } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
@@ -172,71 +172,84 @@ function ProfileForm(prop) {
   res = setAvatar(str);
   return (
     <>
-      <Header as="h3">Profile</Header>
+      <Header as="h2">
+        <Icon name="user" />
+        <Header.Content>
+          Profile
+          <Header.Subheader>Manage your Accounts Performance</Header.Subheader>
+        </Header.Content>
+      </Header>
       <Row style={{ marginRight: 0 }}>
         <Col md="8" sm="6">
-          <Form onSubmit={handleSubmitInfo} size="small">
-            <Form.Input
-              fluid
-              name="username"
-              label="Username"
-              placeholder="Username"
-              value={currentUser.username}
-              readOnly
-            />
-            <Form.Input
-              fluid
-              name="email"
-              label="Email"
-              placeholder="Email"
-              value={currentUser.email}
-              readOnly
-            />
-
-            <Form.Input
-              error={getError(nameLoc, "Please enter your name", "")}
-              fluid
-              name="name"
-              label="Full Name"
-              placeholder="Full Name"
-              value={nameLoc ? nameLoc : ""}
-              onChange={updateHandler}
-            />
-            <Form.Field>
-              <label>Country</label>
-              <CountryList value={countryLoc} onUpdateItem={onUpdateItem} />
-            </Form.Field>
-            <Form.Field>
-              <label>Birthday</label>
-              <Birthday
-                onUpdateItem={onUpdateItem}
-                value={birthdayLoc ? birthdayLoc : "01/01/1990"}
+          <Segment padded>
+            <Form onSubmit={handleSubmitInfo} size="small">
+              <Form.Input
+                fluid
+                name="username"
+                label="Username"
+                placeholder="Username"
+                value={currentUser.username}
+                readOnly
               />
-            </Form.Field>
+              <Form.Input
+                fluid
+                name="email"
+                label="Email"
+                placeholder="Email"
+                value={currentUser.email}
+                readOnly
+              />
 
-            <Form.Button
-              loading={loading}
-              disabled={loading}
-              style={{ marginBottom: 30 }}
-              color="green"
-              onClick={() => onUpdateItem("submit", true)}
-              fluid
-              size="large"
-              content="Update Profile"
-            />
-          </Form>
+              <Form.Input
+                error={getError(nameLoc, "Please enter your name", "")}
+                fluid
+                name="name"
+                label="Full Name"
+                placeholder="Full Name"
+                value={nameLoc ? nameLoc : ""}
+                onChange={updateHandler}
+              />
+              <Form.Field>
+                <label>Country</label>
+                <CountryList value={countryLoc} onUpdateItem={onUpdateItem} />
+              </Form.Field>
+              <Form.Field>
+                <label>Birthday</label>
+                <Birthday
+                  onUpdateItem={onUpdateItem}
+                  value={birthdayLoc ? birthdayLoc : "01/01/1990"}
+                />
+              </Form.Field>
+
+              <Form.Button
+                loading={loading}
+                disabled={loading}
+                style={{ marginBottom: 30 }}
+                color="green"
+                onClick={() => onUpdateItem("submit", true)}
+                fluid
+                size="large"
+                content="Update Profile"
+              />
+            </Form>
+          </Segment>
         </Col>
         <Col md="4" className="text-center">
-          <Segment placeholder>
+          <Segment placeholder tertiary>
             <a href={"/user/" + currentUser.username} target="_blank">
               <Avatar
                 size="100"
-                style={{ margin: "20px auto" }}
+                style={{
+                  margin: "-20px auto",
+                  position: "relative",
+                  top: "-50px",
+                }}
                 title={currentUser.username}
                 name={res}
                 round={true}
               />
             </a>
+
             {userDetails(currentUser)}
           </Segment>
         </Col>

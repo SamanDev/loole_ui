@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { printBlockChallenge } from "components/include.js";
 import $ from "jquery";
-import { Header, Dimmer, Loader, Card } from "semantic-ui-react";
+import { Header, Dimmer, Loader, Card, Icon, Segment } from "semantic-ui-react";
 import UserContext from "context/UserState";
 import { useUserEvents } from "services/hooks";
 var moment = require("moment");
@@ -78,27 +78,44 @@ const HomeEvents = (prop) => {
   };
   if (!events) {
     return (
-      <Dimmer active inverted>
-        <Loader size="large">Loading</Loader>
-      </Dimmer>
-    );
-  }
-  if (responsive >= 768) {
-    return (
       <>
-        {!prop.myStateLoc && <Header as="h3">My Events</Header>}
-        {getBlockChallenge("all", events)}
+        <Header as="h2">
+          <Icon name="osi" />
+          <Header.Content>
+            My Events
+            <Header.Subheader>See your Events</Header.Subheader>
+          </Header.Content>
+        </Header>
+        <Segment padded className="segmentmax">
+          {" "}
+          <Dimmer active inverted>
+            <Loader size="large">Loading</Loader>
+          </Dimmer>
+        </Segment>
       </>
     );
-  } else {
-    return (
-      <>
-        {!prop.myStateLoc && <Header as="h3">My Events</Header>}
+  }
 
-        {getBlockChallenge("all", events)}
-      </>
-    );
-  }
+  return (
+    <>
+      {!prop.myStateLoc ? (
+        <>
+          <Header as="h2">
+            <Icon name="osi" />
+            <Header.Content>
+              My Events
+              <Header.Subheader>See your Events</Header.Subheader>
+            </Header.Content>
+          </Header>
+          <Segment padded className="segmentmax">
+            {getBlockChallenge("all", events)}
+          </Segment>
+        </>
+      ) : (
+        <>{getBlockChallenge("all", events)}</>
+      )}
+    </>
+  );
 };
 
 export default HomeEvents;

@@ -10,10 +10,22 @@ import {
   faYoutube,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import { Card, Row, Col } from "react-bootstrap";
-import { getModalTag, haveSocialTag, isJson } from "components/include";
+import { Row, Col } from "react-bootstrap";
+import {
+  getModalTag,
+  haveSocialTag,
+  isJson,
+  haveAdmin,
+} from "components/include";
 
-import { Button, Icon, Header } from "semantic-ui-react";
+import {
+  Button,
+  Icon,
+  Header,
+  Card,
+  Statistic,
+  Segment,
+} from "semantic-ui-react";
 import UserContext from "context/UserState";
 
 function TagsForm(prop) {
@@ -21,7 +33,17 @@ function TagsForm(prop) {
   const [isLoading, setIsLoading] = useState(false);
   const [isID, setIsID] = useState(false);
   const { uList, setUList } = context;
-  const { currentUser } = uList;
+  const [userKey, setUserKey] = useState(
+    prop.findStateId(prop.myState, "profileUser")
+  );
+  useEffect(() => {
+    setUserKey(uList.currentUser);
+  }, [uList.currentUser]);
+  if (!userKey) {
+    setUserKey(uList.currentUser);
+  }
+  const currentUser = userKey;
+
   const getSocialTag = (game, userTags) => {
     var res = "Not Connected";
     var resName = "";
@@ -39,33 +61,59 @@ function TagsForm(prop) {
     res = res.split("@@")[0];
     if (res == "Not Connected") {
       return (
-        <p style={{ opacity: 0.5, margin: 0, lineHeight: "20px" }}>
-          <small className="text-muted">
-            <b>{res}</b>
-            <br />
-            Click to connect
-          </small>
-        </p>
-      );
-    } else {
-      return (
-        <p style={{ margin: 0, lineHeight: "20px" }}>
-          <small>
-            <b>{resName}</b>
-            <br />
-            {res}
-          </small>
+        <>
+          <Statistic size="mini" color="red" className="notconnected">
+            {currentUser.userSocialAccounts == userTags ? (
+              <Statistic.Value>Click to connect</Statistic.Value>
+            ) : (
+              <Statistic.Label>Login to connect</Statistic.Label>
+            )}
+            <Statistic.Label>{res}</Statistic.Label>
+          </Statistic>
           <Button
             icon
             color="red"
             size="mini"
-            loading={isLoading && isID == resID}
-            onClick={() => handleDelete(resID)}
-            style={{ position: "absolute", top: -10, right: -10 }}
+            style={{ position: "absolute", top: 5, right: 5, opacity: 0 }}
           >
             <Icon name="delete" />
           </Button>
-        </p>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Statistic size="mini" color="green">
+            <Statistic.Value>{res}</Statistic.Value>
+            <Statistic.Label>{resName}</Statistic.Label>
+          </Statistic>
+
+          {uList.currentUser.userSocialAccounts == userTags ||
+          haveAdmin(uList.currentUser.roles) ? (
+            <Button
+              icon
+              color="red"
+              size="mini"
+              loading={isLoading && isID == resID}
+              disabled={isLoading && isID == resID}
+              onClick={() => {
+                handleDelete(resID);
+              }}
+              style={{ position: "absolute", top: 5, right: 5 }}
+            >
+              <Icon name="delete" />
+            </Button>
+          ) : (
+            <Button
+              icon
+              color="red"
+              size="mini"
+              style={{ position: "absolute", top: 5, right: 5, opacity: 0 }}
+            >
+              <Icon name="delete" />
+            </Button>
+          )}
+        </>
       );
     }
   };
@@ -77,8 +125,10 @@ function TagsForm(prop) {
         setIsLoading(false);
         setIsID(false);
         if (response.data?.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-          setUList({ currentUser: response.data });
+          if (response.data?.username == uList.currentUser.username) {
+            localStorage.setItem("user", JSON.stringify(response.data));
+            setUList({ currentUser: response.data });
+          }
 
           Swal.fire("", "Data saved successfully.", "success");
         } else {
@@ -138,17 +188,11 @@ function TagsForm(prop) {
 
     userService.saveSocial(accountName, accountId).then(
       (response) => {
-        let jsonBool = isJson(response.data);
+        if (response.data?.accessToken) {
+          localStorage.setItem("user", JSON.stringify(response.data));
+          setUList({ currentUser: response.data });
 
-        if (jsonBool) {
-          if (response.data.accessToken) {
-            localStorage.setItem("user", JSON.stringify(response.data));
-            setUList({ currentUser: response.data });
-
-            Swal.fire("", "Data saved successfully.", "success");
-          }
-        } else {
-          Swal.fire("", response.data, "error");
+          Swal.fire("", "Data saved successfully.", "success");
         }
       },
       (error) => {
@@ -162,72 +206,63 @@ function TagsForm(prop) {
       }
     );
   };
+  const _block = (mode, icon) => {
+    return (
+      <Card
+        fluid
+        onClick={() => handlecSetInstagram("Social - " + mode, mode)}
+        color={
+          haveSocialTag(mode, currentUser.userSocialAccounts) ? "green" : "grey"
+        }
+      >
+        <div
+          style={
+            haveSocialTag(mode, currentUser.userSocialAccounts)
+              ? { opacity: 1 }
+              : { opacity: 0.5 }
+          }
+        >
+          <div className="img">{icon}</div>
+          {getSocialTag(mode, currentUser.userSocialAccounts)}
+        </div>
+      </Card>
+    );
+  };
   return (
     <>
-      <Header as="h3">Social Accounts</Header>
-      <div className="card-social">
-        <Row className="card-tags" style={{ marginRight: 0 }}>
-          <Col
-            lg="4"
-            xl="3"
-            onClick={() =>
-              handlecSetInstagram("Social - Instagram", "Instagram")
-            }
-          >
-            <div className="counter-box bg-color-1 card">
-              <div className="img">
-                <FontAwesomeIcon
-                  icon={faInstagram}
-                  style={{ color: "#e95950" }}
-                />
-                {getSocialTag("Instagram", currentUser.userSocialAccounts)}
-              </div>
-            </div>
-          </Col>
-          <Col
-            lg="4"
-            xl="3"
-            onClick={() => handlecSetInstagram("Social - Twitch", "Twitch")}
-          >
-            <div className="counter-box bg-color-1 card">
-              <div className="img">
-                <FontAwesomeIcon icon={faTwitch} style={{ color: "#6441a5" }} />
-                {getSocialTag("Twitch", currentUser.userSocialAccounts)}
-              </div>
-            </div>
-          </Col>
-          <Col
-            lg="4"
-            xl="3"
-            onClick={() => handlecSetInstagram("Social - Youtube", "Youtube")}
-          >
-            <div className="counter-box bg-color-1 card">
-              <div className="img">
-                <FontAwesomeIcon
-                  icon={faYoutube}
-                  style={{ color: "#FF0000" }}
-                />
-                {getSocialTag("Youtube", currentUser.userSocialAccounts)}
-              </div>
-            </div>
-          </Col>
-          <Col
-            lg="4"
-            xl="3"
-            onClick={() => handlecSetInstagram("Social - Twitter", "Twitter")}
-          >
-            <div className="counter-box bg-color-1 card">
-              <div className="img">
-                <FontAwesomeIcon
-                  icon={faTwitter}
-                  style={{ color: "#00acee" }}
-                />
-                {getSocialTag("Twitter", currentUser.userSocialAccounts)}
-              </div>
-            </div>
-          </Col>
-        </Row>
-      </div>
+      <Header as="h2">
+        <Icon name="osi" />
+        <Header.Content>
+          Social Accounts
+          <Header.Subheader>Manage your Social Accounts</Header.Subheader>
+        </Header.Content>
+      </Header>
+      <Segment padded>
+        <Card.Group
+          className="fours card-social card-tags"
+          stackable
+          doubling
+          itemsPerRow="4"
+          style={{ marginBottom: 20, textAlign: "left" }}
+        >
+          {_block(
+            "Instagram",
+            <FontAwesomeIcon icon={faInstagram} style={{ color: "#e95950" }} />
+          )}
+          {_block(
+            "Twitch",
+            <FontAwesomeIcon icon={faTwitch} style={{ color: "#6441a5" }} />
+          )}
+          {_block(
+            "Youtube",
+            <FontAwesomeIcon icon={faYoutube} style={{ color: "#FF0000" }} />
+          )}
+          {_block(
+            "Twitter",
+            <FontAwesomeIcon icon={faTwitter} style={{ color: "#00acee" }} />
+          )}
+        </Card.Group>
+      </Segment>
     </>
   );
 }

@@ -7,10 +7,12 @@ import TagsForm from "components/profile/tags.component";
 import SocialForm from "components/profile/social.component";
 import UserEvents from "components/events/user.component";
 import Report from "components/report.component";
+
+import ReportDiamond from "components/reportdiamond.component";
 import { Helmet } from "react-helmet";
 // react-bootstrap components
 
-import { Tab } from "semantic-ui-react";
+import { Tab, Segment, Dimmer, Divider } from "semantic-ui-react";
 import UserContext from "context/UserState";
 function profile(prop) {
   const [myState, setMyState] = useState(prop.myState);
@@ -28,7 +30,9 @@ function profile(prop) {
       menuItem: "Profile",
       render: () => (
         <Tab.Pane>
-          <ProfileForm {...prop} />
+          <Segment secondary padded>
+            <ProfileForm {...prop} />
+          </Segment>
         </Tab.Pane>
       ),
     },
@@ -37,8 +41,11 @@ function profile(prop) {
       menuItem: "Tags",
       render: () => (
         <Tab.Pane>
-          <TagsForm {...prop} />
-          <SocialForm {...prop} />
+          <Segment secondary padded>
+            <TagsForm {...prop} />
+
+            <SocialForm {...prop} />
+          </Segment>
         </Tab.Pane>
       ),
     },
@@ -47,7 +54,9 @@ function profile(prop) {
       menuItem: "My Events",
       render: () => (
         <Tab.Pane>
-          <UserEvents {...prop} />
+          <Segment secondary padded>
+            <UserEvents {...prop} />
+          </Segment>
         </Tab.Pane>
       ),
     },
@@ -56,7 +65,20 @@ function profile(prop) {
       menuItem: "Transactions",
       render: () => (
         <Tab.Pane>
-          <Report user={currentUser} />
+          <Segment secondary padded>
+            <Report user={currentUser} />
+          </Segment>
+        </Tab.Pane>
+      ),
+    },
+    {
+      id: 5,
+      menuItem: "Diamonds",
+      render: () => (
+        <Tab.Pane>
+          <Segment secondary padded>
+            <ReportDiamond user={currentUser} />
+          </Segment>
         </Tab.Pane>
       ),
     },

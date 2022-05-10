@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 
 // react-bootstrap components
 import { Link } from "react-router-dom";
-import { Header, Dimmer, Loader } from "semantic-ui-react";
+import { Header, Dimmer, Loader, Icon } from "semantic-ui-react";
 import {
   get_date_locale,
   getGroupBadgeBlock,
@@ -202,7 +202,13 @@ function Report(prop) {
   if (isLoading) {
     return (
       <>
-        <Header as="h3">Transactions</Header>
+        <Header as="h2">
+          <Icon name="diamond" />
+          <Header.Content>
+            Diamonds
+            <Header.Subheader>See your Diamonds Transactions</Header.Subheader>
+          </Header.Content>
+        </Header>
         <Dimmer active inverted>
           <Loader size="large">Loading</Loader>
         </Dimmer>
@@ -211,7 +217,13 @@ function Report(prop) {
   }
   return (
     <>
-      <Header as="h3">Transactions</Header>
+      <Header as="h2">
+        <Icon name="diamond" />
+        <Header.Content>
+          Diamonds
+          <Header.Subheader>See your Diamonds Transactions</Header.Subheader>
+        </Header.Content>
+      </Header>
 
       <DataTable
         columns={columns}
