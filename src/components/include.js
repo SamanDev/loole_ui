@@ -406,6 +406,9 @@ export const printTag = (game, tag) => {
       "-" +
       _tag.substring(9, 10);
   }
+  if (game == "CallOfDuty") {
+    _tag = _tag.replace("%23", "#");
+  }
   return _tag;
 };
 export const vsComponentPlayer = (
@@ -1400,8 +1403,9 @@ export const getModalTag = (filtermode) => {
          <div className="form-group">
          <label>Platform</label>
          <select class="form-control" id="tagplatform">
-         <option value="PSN">Playstation Network</option>
+         <option value="psn">Playstation Network</option>
          <option value="xbl">Xbox Live</option>
+         <option value="acti">Activision ID</option>
          <option value="steam">Steam</option>
          <option value="battle">Battle.net</option>
          </select>
@@ -1420,7 +1424,7 @@ export const getModalTag = (filtermode) => {
       preConfirm: () => {
         if (document.getElementById("tagid").value) {
           return {
-            tagid: document.getElementById("tagid").value,
+            tagid: document.getElementById("tagid").value.replace("#", "%23"),
             tagplatform: document.getElementById("tagplatform").value,
           };
         } else {
@@ -2108,6 +2112,8 @@ export const handleSaveTags = (
           eventBus.dispatch("eventsDataUser", response.data);
           eventBus.remove("eventsDataUser");
           Swal.fire("", "Data saved successfully.", "success");
+        } else {
+          Swal.fire("Error!", response.data, "error");
         }
         //window.location.reload(false);
       },

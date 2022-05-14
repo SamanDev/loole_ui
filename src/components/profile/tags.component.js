@@ -74,6 +74,7 @@ function TagsForm(prop) {
           resID = tag.id;
           if (resName == "") resName = "Connected";
           if (res != "" && game == "ClashRoyale") res = "#" + res;
+          if (res != "" && game == "CallOfDuty") res = printTag(game, res);
           if (res != "" && game == "8Pool") res = printTag(game, res);
         }
       });

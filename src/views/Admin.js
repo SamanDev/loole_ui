@@ -281,6 +281,42 @@ function Admin(prop) {
         }
       });
   };
+  const deletUserConfirm = (e, data) => {
+    Swal.fire({
+      title: "Are you sure?",
+
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deletUser();
+      }
+    });
+  };
+  const deletUser = (e, data) => {
+    if (!cashId || !cashUser) {
+      return false;
+    }
+    setCashLoad(true);
+    adminService.deleteUser(cashId).then((response) => {
+      if (response) {
+        Swal.fire({
+          title: "Success",
+          text: "Saved",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: `Ok`,
+        }).then(() => {
+          prop.onReset("AdminUsers");
+          setFirstOpen(false);
+          setCashLoad(false);
+        });
+      }
+    });
+  };
   const headerRow = ["Name", "Value"];
   const renderBodyRow = ({ name, value, user }, i) => ({
     key: name || `row-${i}`,
@@ -609,6 +645,17 @@ function Admin(prop) {
                 onClick={updateBalace}
               >
                 Submit
+              </Button>
+              <Button
+                type="submit"
+                loading={cashLoad}
+                disabled={cashLoad}
+                color="red"
+                fluid
+                onClick={deletUserConfirm}
+                style={{ marginTop: 20 }}
+              >
+                DeletUser
               </Button>
             </Form>
           </Modal.Content>

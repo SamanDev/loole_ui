@@ -6,7 +6,7 @@ import Rewards from "components/Rewards.component";
 import Report from "components/reportdiamond.component";
 // react-bootstrap components
 import UserContext from "context/UserState";
-import { Tab } from "semantic-ui-react";
+import { Tab, Segment } from "semantic-ui-react";
 import { Helmet } from "react-helmet";
 function profile(prop) {
   const [myState, setMyState] = useState(prop.myState);
@@ -33,7 +33,9 @@ function profile(prop) {
       menuItem: "My Earns",
       render: () => (
         <Tab.Pane>
-          <Report user={currentUser} />
+          <Segment secondary padded>
+            <Report user={currentUser} />
+          </Segment>
         </Tab.Pane>
       ),
     },

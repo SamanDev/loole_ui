@@ -41,6 +41,17 @@ class AdminService {
         return response;
       });
   };
+  deleteUser = (id) => {
+    return axios
+      .delete(
+        API_URL_TEST + "deleteUser?id=" + id,
+
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
+      });
+  };
   addGateway = (name, mode) => {
     return axios
       .post(
