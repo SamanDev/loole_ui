@@ -221,7 +221,6 @@ function LockScreenPage(prop) {
           className="full-page lock-page"
           data-color="black"
           style={{ height: "100vh", overflow: "auto" }}
-          data-image={"/assets/img/bg.jpg"}
         >
           <Segment
             style={{

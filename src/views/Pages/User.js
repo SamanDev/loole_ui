@@ -12,13 +12,6 @@ function profile(prop) {
     <>
       <div>
         <Profile user={currentUser} {...prop} />
-
-        <div
-          className="full-page-background"
-          style={{
-            backgroundImage: "url('/assets/img/bg.jpg')",
-          }}
-        ></div>
       </div>
     </>
   );

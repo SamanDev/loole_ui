@@ -8,18 +8,8 @@ import { Menu, Icon } from "semantic-ui-react";
 import { defUser } from "const";
 import UserContext from "context/UserState";
 const LandNavbar = (prop) => {
-  const history = useHistory();
-  const cashierMethod = prop.findStateId(prop.myState, "cashierMethod");
-  const openModalCashier = prop.findStateId(prop.myState, "openModalCashier");
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
-  const logOut = () => {
-    prop.onUpdateItem("currentUser", defUser);
-
-    AuthService.logout();
-
-    history.push("/home");
-  };
 
   return (
     <>
@@ -41,13 +31,13 @@ const LandNavbar = (prop) => {
         <Menu.Menu position="right">
           <Menu.Item
             className="tablet hidden mobile hidden"
-            onClick={(e) => document.body.classList.toggle("sidebar-mini")}
+            onClick={() => document.body.classList.toggle("sidebar-mini")}
           >
             <Icon name="bars" size="large" />
           </Menu.Item>
           <Menu.Item
             className="mobile only tablet only"
-            onClick={(e) =>
+            onClick={() =>
               document.documentElement.classList.toggle("nav-open")
             }
           >

@@ -79,7 +79,7 @@ function profile(prop) {
             <img
               className="parallax-background-image"
               alt="user profile"
-              src="/assets/img/showcases/showcase-1/bg.jpg"
+              src="/assets/img/showcases/showcase-1/bg-min.webp"
             />
           </div>
           <div className="container  crump">

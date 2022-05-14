@@ -72,9 +72,9 @@ function Sidebar({ routes, image, background, token, onUpdateItem }) {
             </Nav.Link>
           ) : (
             <>
-              {(prop.name == "Admin" ||
+              {(prop.name == "AdminUsers" ||
                 prop.name == "AdminEvents" ||
-                prop.name == "AdminCosts" ||
+                prop.name == "AdminController" ||
                 prop.name == "CreateEvent") &&
                 haveAdmin(token.roles) && (
                   <Nav.Link to={prop.layout + prop.path} as={Link}>

@@ -41,6 +41,17 @@ class AdminService {
         return response;
       });
   };
+  addGateway = (name, mode) => {
+    return axios
+      .post(
+        API_URL_TEST + "addGateway",
+        { name, mode },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
+      });
+  };
 
   updateUserByAdmin = (id, key, value) => {
     return axios

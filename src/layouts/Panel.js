@@ -16,7 +16,7 @@ import routes from "routes.js";
 
 import Admin from "views/Admin.js";
 import AdminEvents from "views/AdminEvents.js";
-import AdminCost from "views/AdminCost.js";
+import AdminController from "views/AdminController.js";
 import Dashboard from "views/Dashboard.js";
 import Rewards from "views/Rewards.js";
 import Market from "views/Market.js";
@@ -95,7 +95,9 @@ function Panel(props) {
               <>
                 {prop.component == "Admin" && <Admin {...props} />}
                 {prop.component == "AdminEvents" && <AdminEvents {...props} />}
-                {prop.component == "AdminCost" && <AdminCost {...props} />}
+                {prop.component == "AdminController" && (
+                  <AdminController {...props} />
+                )}
                 {prop.component == "Profile" && <Profile {...props} />}
                 {prop.component == "Dashboard" && <Dashboard {...props} />}
 
@@ -132,7 +134,7 @@ function Panel(props) {
             <div className="wrapper ">
               <SidebarMy
                 routes={routes}
-                image="/assets/img/bg.jpg"
+                image="/assets/img/showcases/showcase-1/bg-min.webp"
                 background={themeDashColors[day]}
                 token={currentUser}
                 page={currpage}

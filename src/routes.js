@@ -8,9 +8,9 @@ var routes = [
     show: false,
   },
   {
-    path: "/admin",
+    path: "/adminusers",
     layout: "/panel",
-    name: "Admin",
+    name: "AdminUsers",
     icon: "nc-icon nc-circle-09",
     component: "Admin",
     show: false,
@@ -24,11 +24,11 @@ var routes = [
     show: false,
   },
   {
-    path: "/admincosts",
+    path: "/admincontroller",
     layout: "/panel",
-    name: "AdminCosts",
+    name: "AdminController",
     icon: "nc-icon nc-circle-09",
-    component: "AdminCost",
+    component: "AdminController",
     show: false,
   },
   {

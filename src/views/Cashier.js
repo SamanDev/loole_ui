@@ -152,7 +152,7 @@ function Cashier(prop) {
               style={{ marginBottom: 20, textAlign: "left" }}
             >
               {userMethods.map(function (cashierGateway, u) {
-                if (cashierGateway.name != "Digipay" || 1 == 1) {
+                if (cashierGateway.name != "VisaGiftCode") {
                   return <>{_block(cashierGateway, "Cashout")}</>;
                 }
               })}
