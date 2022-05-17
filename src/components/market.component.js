@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { lazy } from "react";
 // react component used to create charts
 // react components used to create a SVG / Vector map
-import { Tab, Card, Menu, Label, Dimmer } from "semantic-ui-react";
-import Active from "components/active.component";
+import { Card, Dimmer } from "semantic-ui-react";
 // react-bootstrap components
-import { Spinner } from "react-bootstrap";
-import MarketCard from "components/marketcard.component";
-import Market from "server/Market";
-
+//import MarketCard from "components/marketcard.component";
+import Market from "server/MarketNew";
+//const Market = lazy(() => import("server/Market"));
+const MarketCard = lazy(() => import("components/marketcardNew.component"));
 //const EventList = JSON.parse(userService.getEvents());
 
 function Dashboard(prop) {
-  const products = Market.getMarketplace;
+  const products = Market;
   const getBlockChallenge = (filtermode, products) => {
     var newItem = [];
 

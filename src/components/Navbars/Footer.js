@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
-import LandStat from "components/landstat.component";
+import React, { lazy } from "react";
+//import LandStat from "components/landstat.component";
 import { List, Grid, Divider, Icon } from "semantic-ui-react";
-import RegisterBtn from "components/registerBtn";
+const RegisterBtn = lazy(() => import("components/registerBtn"));
+const LandStat = lazy(() => import("components/landstat.component"));
 import { Link } from "react-router-dom";
 const LandNavbar = (prop) => {
   return (

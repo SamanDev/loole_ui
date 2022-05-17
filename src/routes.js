@@ -139,14 +139,7 @@ var routes = [
     component: "Landing",
     show: false,
   },
-  {
-    path: "/",
-    layout: "/mobile",
-    name: "Mobbile",
-    icon: "nc-icon nc-chart-pie-35",
-    component: "LandingMobile",
-    show: false,
-  },
+
   {
     path: "/",
     layout: "/game/:gamename",

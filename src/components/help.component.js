@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 
 import { Button, Icon, Flag } from "semantic-ui-react";
 const LandNavbar = (prop) => {

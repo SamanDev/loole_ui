@@ -35,7 +35,7 @@ a,
 td {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: "Helvetica Neue", "Open Sans", Arial, sans-serif;
+  font-family: "Helvetica Neue", "Open Sans", Arial, sans-serif !important;
 }
 
 h1,
@@ -52,17 +52,17 @@ h4,
 
 h1,
 .h1 {
-  font-size: 52px;
+  font-size: 42px !important;
 }
 
 h2,
 .h2 {
-  font-size: 36px;
+  font-size: 36px !important;
 }
 
 h3,
 .h3 {
-  font-size: 28px;
+  font-size: 28px !important;
   margin: 20px 0 10px;
 }
 
@@ -91,7 +91,7 @@ p {
 
 /*     General overwrite     */
 body {
-  font-family: "Helvetica Neue", "Open Sans", Arial, sans-serif;
+  font-family: "Helvetica Neue", "Open Sans", Arial, sans-serif !important;
 }
 
 a {

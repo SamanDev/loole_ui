@@ -1,34 +1,11 @@
 import React, { Component } from "react";
-import Select from "react-select";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import Avatar from "react-avatar";
 
-import $ from "jquery";
-import Countdown from "react-countdown";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { withRouter } from "react-router-dom";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import AuthService from "services/auth.service";
-import NumericInput from "react-numeric-input";
-import Active from "components/active.component";
-import userService from "services/user.service";
 
 // react-bootstrap components
-import { Badge, Card, Nav, Row, Col, Tab } from "react-bootstrap";
+import { Card, Nav, Tab } from "react-bootstrap";
 
-import {
-  setAvatar,
-  getColor,
-  getIcon,
-  renderer,
-  isJson,
-  getModalTag,
-  printRequired,
-  haveAdmin,
-} from "components/include";
-import Games from "server/Games";
+import { haveAdmin } from "components/include";
 
 import AddTournament from "components/add/addtournament.component";
 import AddLeague from "components/add/addleague.component";

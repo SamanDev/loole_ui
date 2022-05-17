@@ -4,10 +4,16 @@ import { getGroupBadgeBlock } from "components/include.js";
 import { Button, Card, Image } from "semantic-ui-react";
 // react-bootstrap components
 import Swal from "sweetalert2";
+var newM = [];
 function MatchCard(prop) {
   var item = prop.item;
+  var itemNew = {};
   var imgARR = item.images[0].src.split("/");
   var imgName = imgARR[imgARR.length - 1].replace(".png", ".webp");
+  itemNew.title = item.title;
+  itemNew.image = imgName;
+  itemNew.price = item.price;
+  newM.push(itemNew);
   const errMs = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user?.accessToken != "") {
@@ -20,6 +26,7 @@ function MatchCard(prop) {
       prop.onUpdateItem("openModalLogin", true);
     }
   };
+  console.log(newM);
   return (
     <Card>
       <Image

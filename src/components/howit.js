@@ -1,10 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Image, Header } from "semantic-ui-react";
-import { Link } from "react-router-dom";
-import { Colors } from "const.js";
+import React from "react";
 // react-bootstrap components
-import Games from "server/Games";
-import { themeColors } from "const.js";
 export default function GameSlide() {
   const elements = ["1", "2", "3", "4"];
   const d = new Date();

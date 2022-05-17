@@ -11,25 +11,27 @@ import {
 } from "react-router-dom";
 import { Cache, ConfigProvider } from "react-avatar";
 
-import Swal from "sweetalert2";
+//import Swal from "sweetalert2";
 import { defUser, TrackingID, startServiceWorker } from "const.js";
+import "assets/css/landing-page.css";
+import "assets/css/style.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "assets/css/landing-page.css";
+
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.1";
 import "semantic-ui-css/semantic.min.css";
 
-import "assets/css/style.css";
 import { useInfo } from "services/hooks";
 
-//const Login = lazy(() => import("components/newlogin.component"));
-//const Register = lazy(() => import("components/newregister.component"));
-//const Forget = lazy(() => import("components/newforget.component"));
+const Swal = lazy(() => import("sweetalert2"));
+const Login = lazy(() => import("components/newlogin.component"));
+const Register = lazy(() => import("components/newregister.component"));
+const Forget = lazy(() => import("components/newforget.component"));
 
 //import PanelLayout from "layouts/Panel.js";
-import Login from "components/newlogin.component";
-import Register from "components/newregister.component";
-import Forget from "components/newforget.component";
+//import Login from "components/newlogin.component";
+//import Register from "components/newregister.component";
+//import Forget from "components/newforget.component";
 import Chart from "components/chart.component";
 import DC from "components/dc.component";
 import eventBus from "views/eventBus";

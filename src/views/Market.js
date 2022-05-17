@@ -5,8 +5,8 @@ import { Tab, Card, Menu, Label, Dimmer } from "semantic-ui-react";
 import Active from "components/active.component";
 // react-bootstrap components
 import { Spinner } from "react-bootstrap";
-import MarketCard from "components/marketcard.component";
-import Market from "server/Market";
+import MarketCard from "components/marketcardNew.component";
+import Market from "server/MarketNew";
 import { Helmet } from "react-helmet";
 //const EventList = JSON.parse(userService.getEvents());
 
@@ -126,7 +126,7 @@ function Dashboard(prop) {
     }
   };
 
-  const products = Market.getMarketplace;
+  const products = Market;
   const key = prop.findStateId(myState, "keyMarket");
 
   const panes = [
