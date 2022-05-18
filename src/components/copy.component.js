@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Popup, Label } from "semantic-ui-react";
+import { Popup, Label, Segment } from "semantic-ui-react";
 import Swal from "sweetalert2";
 const Toast = Swal.mixin({
   toast: false,
@@ -50,13 +50,17 @@ function copyText(prop) {
     return (
       <Popup
         content="Copy to Clipboard"
-        size="mini"
         {...prop}
         position="top center"
         trigger={
-          <p {...prop} onClick={() => copyDo(myID)}>
+          <Segment
+            basic
+            {...prop}
+            style={{ paddingLeft: 0, paddingRight: 0 }}
+            onClick={() => copyDo(myID)}
+          >
             {myID}
-          </p>
+          </Segment>
         }
       />
     );

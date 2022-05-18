@@ -43,7 +43,7 @@ function Dashboard(prop) {
           />
           <Message.Content>
             <Message.Header>Invite A Friend</Message.Header>
-            <div>
+            <div style={{ margin: "10px 0" }}>
               When a friend you have invited plays their first challenge you
               will receive {getGroupBadgeBlock("Point", 1000, "")}
               and they will receive{" "}
@@ -52,25 +52,24 @@ function Dashboard(prop) {
               {getGroupBadgeBlock("Point", 20, "small left")} per game they play
               for life.
             </div>
-            <p>
-              and also yu get{" "}
-              <Label size="big" basic>
-                <Icon name="percent" color="blue" />
+            <div style={{ margin: "10px 0" }}>
+              And also yu get{" "}
+              <Label color="blue">
+                <Icon name="percent" inverted />
                 %10 Comissions
               </Label>
               for{" "}
-              <Label size="big" basic>
-                <Icon name="dollar" color="red" />
+              <Label color="red">
+                <Icon name="dollar" inverted />
                 Real Money Event
-              </Label>
+              </Label>{" "}
               for life.
-            </p>
-            <Message attached="bottom" warning size="huge">
+            </div>
+            <Message attached="bottom" warning>
               <Message.Header>Share your unique invite link:</Message.Header>
               <div>
                 <CopyText
-                  color="red"
-                  size="small"
+                  size="large"
                   myid={"https://loole.gg/i/" + currentUser.username}
                 />
               </div>
@@ -106,7 +105,7 @@ function Dashboard(prop) {
           />
           <Message.Content>
             <Message.Header>Earn Free Diamonds!</Message.Header>
-            <p>
+            <p style={{ margin: "10px 0" }}>
               Maximise your daily earning by taking advantage of loole.gg's
               bonuses and start earning free Diamonds every day. You can earn
               Diamonds by logging in, playing games, inviting friends and many

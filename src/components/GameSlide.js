@@ -9,9 +9,12 @@ export default function GameSlide() {
   const getLabel = (item) => {
     return (
       <>
-        <Header inverted as="h3" style={{ marginBottom: 5, width: 180 }}>
+        <h3
+          className="header-text"
+          style={{ marginBottom: 5, width: 180, color: "#fff" }}
+        >
           {item.name}
-        </Header>
+        </h3>
         <Header as="div" inverted style={{ marginTop: 0 }}>
           {item.active ? (
             <>
@@ -32,7 +35,6 @@ export default function GameSlide() {
     <>
       <div
         style={{
-          overflow: "auto",
           height: "100%",
           width: "100%",
           position: "relative",
@@ -41,9 +43,28 @@ export default function GameSlide() {
         }}
       >
         <div className="container" id="games" style={{ marginTop: 60 }}>
-          <h4 className="header-text text-center" style={{ color: "#fff" }}>
+          <h4
+            className="header-text text-center"
+            style={{
+              color: "#fff",
+              position: "relative",
+              zIndex: 2,
+              margin: 0,
+            }}
+          >
             GAMES YOU CAN PLAY
           </h4>
+          <p
+            className="header-text text-center"
+            style={{
+              color: "#fff",
+              position: "relative",
+              zIndex: 2,
+              marginTop: 5,
+            }}
+          >
+            1 vs 1, Tournaments, League
+          </p>
           <Card.Group
             centered
             itemsPerRow="2"

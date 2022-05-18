@@ -1,26 +1,19 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, lazy } from "react";
 import { Helmet } from "react-helmet";
 import { printBlockChallenge } from "components/include.js";
-import {
-  Card,
-  Dimmer,
-  Loader,
-  Header,
-  Breadcrumb,
-  Segment,
-} from "semantic-ui-react";
+import { Card, Header, Breadcrumb, Segment } from "semantic-ui-react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 // react-bootstrap components
-import GameSlide from "components/GameSlide";
+const GameSlide = lazy(() => import("components/GameSlide"));
 import Games from "server/Games";
 import { themeColors } from "const.js";
-import Footer from "components/Navbars/Footer.js";
-import Market from "components/market.component";
+const Footer = lazy(() => import("components/Navbars/Footer"));
+const Market = lazy(() => import("components/market.component"));
 import GlobalContext from "context/GlobalState";
-import HowIt from "components/howit";
-import RegisterBtn from "components/registerBtn";
-import Helpblog from "components/help.component";
+const RegisterBtn = lazy(() => import("components/registerBtn"));
+const Helpblog = lazy(() => import("components/help.component"));
+
 function scrollToTop() {
   window.scrollTo({
     top: 0,
@@ -128,13 +121,6 @@ const Landing = (prop) => {
       }
     });
 
-    if (!events) {
-      return (
-        <Dimmer active inverted>
-          <Loader size="large">Loading</Loader>
-        </Dimmer>
-      );
-    }
     return (
       <Card.Group
         className="fours"
@@ -297,16 +283,19 @@ const Landing = (prop) => {
             </div>
           </div>
         </div>
-        <div className="section section-game " style={{ padding: 0 }}>
+        <div className="section " style={{ padding: 0, overflow: "auto" }}>
           <div
             className={
               " filter-gradient " +
               themeColors[day].replace("grey", "gray") +
-              ""
+              " "
             }
             data-color="orange"
+            style={{ position: "static" }}
           >
-            <GameSlide />
+            <div className="container">
+              <GameSlide />
+            </div>
           </div>
         </div>
 

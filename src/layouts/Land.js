@@ -1,8 +1,8 @@
-import React, { useEffect, lazy } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
 import { ConfigProvider } from "react-avatar";
 import { DEFCOLORS } from "const.js";
-
+import { Dimmer, Loader } from "semantic-ui-react";
 const LockScreenPage = lazy(() => import("views/Pages/LockScreenPage"));
 const LandNavbar = lazy(() => import("components/Navbars/LandNavbar"));
 const Landing = lazy(() => import("views/Pages/Landing"));
@@ -15,7 +15,11 @@ import routes from "routes";
 //import LockScreenPage from "views/Pages/LockScreenPage.js";
 
 import { getOffset } from "components/include";
-
+const renderLoader = (inverted) => (
+  <Dimmer active inverted={inverted}>
+    <Loader size="large">Loading</Loader>
+  </Dimmer>
+);
 function scrollTo(elem) {
   setTimeout(function () {
     var x = getOffset(document.getElementById(elem)).top;
@@ -43,19 +47,29 @@ function Auth(props) {
             render={() => (
               <>
                 {prop.component == "Landing" && (
-                  <Landing {...props} scrollTo={scrollTo} />
+                  <Suspense fallback={renderLoader(true)}>
+                    <Landing {...props} scrollTo={scrollTo} />
+                  </Suspense>
                 )}
                 {prop.component == "User" && (
-                  <User {...props} scrollTo={scrollTo} />
+                  <Suspense fallback={renderLoader(true)}>
+                    <User {...props} scrollTo={scrollTo} />
+                  </Suspense>
                 )}
                 {prop.component == "Games" && (
-                  <Games {...props} scrollTo={scrollTo} />
+                  <Suspense fallback={renderLoader(true)}>
+                    <Games {...props} scrollTo={scrollTo} />
+                  </Suspense>
                 )}
                 {prop.component == "Content" && (
-                  <Content {...props} scrollTo={scrollTo} />
+                  <Suspense fallback={renderLoader(true)}>
+                    <Content {...props} scrollTo={scrollTo} />
+                  </Suspense>
                 )}
                 {prop.component == "LockScreenPage" && (
-                  <LockScreenPage {...props} scrollTo={scrollTo} />
+                  <Suspense fallback={renderLoader(true)}>
+                    <LockScreenPage {...props} scrollTo={scrollTo} />
+                  </Suspense>
                 )}
               </>
             )}
@@ -93,19 +107,21 @@ function Auth(props) {
 
   return (
     <>
-      <ConfigProvider colors={DEFCOLORS}>
-        {getPage(routes).indexOf("Match Lobby") > -1 ? (
-          <Switch>{getRoutes(routes)}</Switch>
-        ) : (
-          <div className="landing-page landing-page1 landing-mobile">
-            {/* Navbar */}
-            <LandNavbar {...props} scrollTo={scrollTo} />
-            {/* End Navbar */}
-
+      <Suspense fallback={renderLoader(true)}>
+        <ConfigProvider colors={DEFCOLORS}>
+          {getPage(routes).indexOf("Match Lobby") > -1 ? (
             <Switch>{getRoutes(routes)}</Switch>
-          </div>
-        )}
-      </ConfigProvider>
+          ) : (
+            <div className="landing-page landing-page1 landing-mobile">
+              {/* Navbar */}
+              <LandNavbar {...props} scrollTo={scrollTo} />
+              {/* End Navbar */}
+
+              <Switch>{getRoutes(routes)}</Switch>
+            </div>
+          )}
+        </ConfigProvider>
+      </Suspense>
     </>
   );
 }

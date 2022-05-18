@@ -235,9 +235,9 @@ const ChartStat = (prop) => {
       style={{
         width: "100%",
         height: 400,
-        background: "rgba(0,0,0,1)",
+
         borderRadius: 20,
-        padding: "40px 20px 10px 0px",
+        padding: "0px 20px 10px 0px",
       }}
     >
       <ResponsiveContainer width="100%" height="100%">

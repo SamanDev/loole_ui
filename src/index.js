@@ -14,26 +14,27 @@ import { Cache, ConfigProvider } from "react-avatar";
 //import Swal from "sweetalert2";
 import { defUser, TrackingID, startServiceWorker } from "const.js";
 import "assets/css/landing-page.css";
-import "assets/css/style.css";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "assets/scss/light-bootstrap-dashboard-pro-react.scss?v=2.0.1";
 import "semantic-ui-css/semantic.min.css";
 
+import "assets/css/style.css";
 import { useInfo } from "services/hooks";
 
 const Swal = lazy(() => import("sweetalert2"));
 const Login = lazy(() => import("components/newlogin.component"));
 const Register = lazy(() => import("components/newregister.component"));
 const Forget = lazy(() => import("components/newforget.component"));
+const Chart = lazy(() => import("components/chart.component"));
+const DC = lazy(() => import("components/dc.component"));
 
 //import PanelLayout from "layouts/Panel.js";
 //import Login from "components/newlogin.component";
 //import Register from "components/newregister.component";
 //import Forget from "components/newforget.component";
-import Chart from "components/chart.component";
-import DC from "components/dc.component";
+//import Chart from "components/chart.component";
+//import DC from "components/dc.component";
 import eventBus from "views/eventBus";
 import {
   findActiveMatch,
@@ -100,11 +101,12 @@ if (localStorage.getItem("user")) {
 }
 var _defEvents = null;
 var _defEvent = {};
-const renderLoader = () => (
-  <Dimmer active inverted>
+const renderLoader = (inverted) => (
+  <Dimmer active={inverted} inverted={inverted}>
     <Loader size="large">Loading</Loader>
   </Dimmer>
 );
+
 function Main(prop) {
   const queryClient = useQueryClient();
   const history = useHistory();
@@ -468,46 +470,64 @@ function Main(prop) {
           }}
         >
           <Modal size="mini" basic open={openModalSoket}>
-            <Modal.Header className="text-center">
-              <Icon.Group size="huge">
-                <Icon size="big" color="red" name="dont" />
-                <Icon color="grey" name="user" />
-              </Icon.Group>
-              <br />
-              Connection error...
-            </Modal.Header>
-            <Modal.Content>
-              <DC onUpdateItem={onUpdateItem} />
-            </Modal.Content>
+            <Segment inverted padded="very">
+              <Modal.Header className="text-center">
+                <Icon.Group size="huge">
+                  <Icon size="big" color="red" name="dont" />
+                  <Icon color="grey" name="user" />
+                </Icon.Group>
+                <br />
+                Connection error...
+                <br />
+                <br />
+                <br />
+              </Modal.Header>
+              <Modal.Content>
+                <DC onUpdateItem={onUpdateItem} />
+              </Modal.Content>
+            </Segment>
           </Modal>
           <Modal
             basic
             open={openModalChart}
             onClose={() => onUpdateItem("openModalChart", false)}
           >
-            <Modal.Header>
-              Profit Chart{" "}
-              <div style={{ float: "right" }}>
-                {Number.parseFloat(nProfit) > 0 ? (
-                  <span className="text-success">+{nProfit}</span>
-                ) : (
-                  <span className="text-danger">{nProfit}</span>
-                )}
-              </div>
-            </Modal.Header>
+            <Segment inverted padded="very">
+              <Suspense fallback={renderLoader(false)}>
+                <Modal.Header
+                  className="header-text"
+                  style={{ color: "#fff", fontSize: 22 }}
+                >
+                  Profit Chart{" "}
+                  <div style={{ float: "right" }}>
+                    ${" "}
+                    {Number.parseFloat(nProfit) > 0 ? (
+                      <span className="text-success">+{nProfit}</span>
+                    ) : (
+                      <span className="text-danger">{nProfit}</span>
+                    )}
+                  </div>
+                </Modal.Header>
 
-            <Modal.Content style={{ overflow: "hidden", position: "relative" }}>
-              <Chart
-                myState={myState}
-                onUpdateItem={onUpdateItem}
-                findStateId={findStateId}
-              />
-            </Modal.Content>
+                <Modal.Content
+                  style={{
+                    overflow: "hidden",
+                    position: "relative",
+                  }}
+                >
+                  <Chart
+                    myState={myState}
+                    onUpdateItem={onUpdateItem}
+                    findStateId={findStateId}
+                  />
+                </Modal.Content>
+              </Suspense>
+            </Segment>
           </Modal>
           <Modal
             basic
             size="small"
-            dimmer="blurring"
+            dimmer
             style={{ maxWidth: 510 }}
             open={openModalLogin}
             onClose={() => {
@@ -521,76 +541,31 @@ function Main(prop) {
           >
             <Modal.Content>
               <Segment inverted padded="very">
-                <Grid relaxed="very">
-                  <Grid.Column mobile={16}>
-                    <div className="togllehide togllehideforget">
-                      <Header as="h2" inverted>
-                        Login
-                      </Header>
-
-                      <Login onUpdateItem={onUpdateItem} />
-                    </div>
-
-                    <div
-                      className="togllehide togllehideforget"
-                      style={{ marginTop: 10 }}
-                    >
-                      <Button
-                        size="mini"
-                        fluid
-                        onClick={() =>
-                          myFunction("togllehideforget", "Password Recovery")
-                        }
-                        color="black"
-                        content="Password Recovery"
-                      />
-                      <Divider horizontal inverted style={{ marginTop: 10 }}>
-                        Or
-                      </Divider>
-                      <Button
-                        size="small"
-                        fluid
-                        inverted
-                        onClick={() =>
-                          myFunction("togllehide", "Create Account")
-                        }
-                        color="orange"
-                      >
-                        Don’t have an account?
-                        <br />
-                        <p style={{ marginTop: 5, fontWeight: "bold" }}>
-                          Create Account
-                        </p>
-                      </Button>
-                    </div>
-                    <div className="togllehide hide">
-                      <Header as="h2" inverted>
-                        Create Account
-                      </Header>
-
-                      <Register onUpdateItem={onUpdateItem} />
-                      <Divider horizontal inverted style={{ marginTop: 20 }}>
-                        Or
-                      </Divider>
-                      <Button
-                        size="small"
-                        fluid
-                        inverted
-                        onClick={() => myFunction("togllehide", "Login")}
-                        color="blue"
-                        content="Login to your account"
-                      />
-                    </div>
-
-                    <span>
-                      <div className="togllehideforget hide">
+                <Suspense fallback={renderLoader(false)}>
+                  <Grid relaxed="very">
+                    <Grid.Column mobile={16}>
+                      <div className="togllehide togllehideforget">
                         <Header as="h2" inverted>
-                          Password Recovery
+                          Login
                         </Header>
 
-                        <Forget onUpdateItem={onUpdateItem} />
+                        <Login onUpdateItem={onUpdateItem} />
+                      </div>
 
-                        <Divider horizontal inverted style={{ marginTop: 20 }}>
+                      <div
+                        className="togllehide togllehideforget"
+                        style={{ marginTop: 10 }}
+                      >
+                        <Button
+                          size="mini"
+                          fluid
+                          onClick={() =>
+                            myFunction("togllehideforget", "Password Recovery")
+                          }
+                          color="black"
+                          content="Password Recovery"
+                        />
+                        <Divider horizontal inverted style={{ marginTop: 10 }}>
                           Or
                         </Divider>
                         <Button
@@ -598,15 +573,66 @@ function Main(prop) {
                           fluid
                           inverted
                           onClick={() =>
-                            myFunction("togllehideforget", "Login")
+                            myFunction("togllehide", "Create Account")
                           }
+                          color="orange"
+                        >
+                          Don’t have an account?
+                          <br />
+                          <p style={{ marginTop: 5, fontWeight: "bold" }}>
+                            Create Account
+                          </p>
+                        </Button>
+                      </div>
+                      <div className="togllehide hide">
+                        <Header as="h2" inverted>
+                          Create Account
+                        </Header>
+
+                        <Register onUpdateItem={onUpdateItem} />
+                        <Divider horizontal inverted style={{ marginTop: 20 }}>
+                          Or
+                        </Divider>
+                        <Button
+                          size="small"
+                          fluid
+                          inverted
+                          onClick={() => myFunction("togllehide", "Login")}
                           color="blue"
                           content="Login to your account"
                         />
                       </div>
-                    </span>
-                  </Grid.Column>
-                </Grid>
+
+                      <span>
+                        <div className="togllehideforget hide">
+                          <Header as="h2" inverted>
+                            Password Recovery
+                          </Header>
+
+                          <Forget onUpdateItem={onUpdateItem} />
+
+                          <Divider
+                            horizontal
+                            inverted
+                            style={{ marginTop: 20 }}
+                          >
+                            Or
+                          </Divider>
+                          <Button
+                            size="small"
+                            fluid
+                            inverted
+                            onClick={() =>
+                              myFunction("togllehideforget", "Login")
+                            }
+                            color="blue"
+                            content="Login to your account"
+                          />
+                        </div>
+                      </span>
+                    </Grid.Column>
+                  </Grid>
+                </Suspense>
               </Segment>
             </Modal.Content>
           </Modal>
@@ -637,90 +663,90 @@ function Main(prop) {
             <Route
               path="/panel"
               render={(props) => (
-                <PanelLayout
-                  {...props}
-                  myState={myState}
-                  isLoading={userLoading}
-                  onUpdateItem={onUpdateItem}
-                  findStateId={findStateId}
-                  myFunction={myFunction}
-                  onReset={onReset}
-                />
+                <Suspense fallback={renderLoader(true)}>
+                  <PanelLayout
+                    {...props}
+                    myState={myState}
+                    isLoading={userLoading}
+                    onUpdateItem={onUpdateItem}
+                    findStateId={findStateId}
+                    myFunction={myFunction}
+                    onReset={onReset}
+                  />
+                </Suspense>
               )}
             />
 
             <Route
               path="/lobby/:id/:title/"
               render={(props) => (
-                <LandLayout
-                  {...props}
-                  myState={myState}
-                  onUpdateItem={onUpdateItem}
-                  findStateId={findStateId}
-                  myFunction={myFunction}
-                />
-              )}
-            />
-            <Route
-              path="/matchlobby"
-              render={(props) => (
-                <LandLayout
-                  {...props}
-                  myState={myState}
-                  onUpdateItem={onUpdateItem}
-                  findStateId={findStateId}
-                  myFunction={myFunction}
-                />
+                <Suspense fallback={renderLoader(true)}>
+                  <LandLayout
+                    {...props}
+                    myState={myState}
+                    onUpdateItem={onUpdateItem}
+                    findStateId={findStateId}
+                    myFunction={myFunction}
+                  />
+                </Suspense>
               )}
             />
 
             <Route
               path="/game/:gamename"
               render={(props) => (
-                <LandLayout
-                  {...props}
-                  myState={myState}
-                  onUpdateItem={onUpdateItem}
-                  findStateId={findStateId}
-                  myFunction={myFunction}
-                />
+                <Suspense fallback={renderLoader(true)}>
+                  <LandLayout
+                    {...props}
+                    myState={myState}
+                    onUpdateItem={onUpdateItem}
+                    findStateId={findStateId}
+                    myFunction={myFunction}
+                  />
+                </Suspense>
               )}
             />
 
             <Route
               path="/home"
               render={(props) => (
-                <LandLayout
-                  {...props}
-                  myState={myState}
-                  onUpdateItem={onUpdateItem}
-                  findStateId={findStateId}
-                  myFunction={myFunction}
-                />
+                <Suspense fallback={renderLoader(true)}>
+                  <LandLayout
+                    {...props}
+                    myState={myState}
+                    onUpdateItem={onUpdateItem}
+                    findStateId={findStateId}
+                    myFunction={myFunction}
+                  />
+                </Suspense>
               )}
             />
             <Route
               path="/user/:username"
               render={(props) => (
-                <LandLayout
-                  {...props}
-                  myState={myState}
-                  onUpdateItem={onUpdateItem}
-                  findStateId={findStateId}
-                  myFunction={myFunction}
-                />
+                <Suspense fallback={renderLoader(true)}>
+                  <LandLayout
+                    {...props}
+                    myState={myState}
+                    onUpdateItem={onUpdateItem}
+                    findStateId={findStateId}
+                    myFunction={myFunction}
+                  />
+                </Suspense>
               )}
             />
             <Route
               path="/content"
               render={(props) => (
-                <LandLayout
-                  {...props}
-                  myState={myState}
-                  onUpdateItem={onUpdateItem}
-                  findStateId={findStateId}
-                  myFunction={myFunction}
-                />
+                <Suspense fallback={renderLoader(true)}>
+                  <LandLayout
+                    {...props}
+                    myState={myState}
+                    onUpdateItem={onUpdateItem}
+                    findStateId={findStateId}
+                    myFunction={myFunction}
+                  />
+                </Suspense>
               )}
             />
             <Redirect from="/" to="/home" />
@@ -754,13 +780,11 @@ function App() {
 
 ReactDOM.render(
   <BrowserRouter>
-    <Suspense fallback={renderLoader()}>
-      <ConfigProvider cache={cache}>
-        <div className="application">
-          <App />
-        </div>
-      </ConfigProvider>
-    </Suspense>
+    <ConfigProvider cache={cache}>
+      <div className="application">
+        <App />
+      </div>
+    </ConfigProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

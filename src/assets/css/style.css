@@ -1345,11 +1345,11 @@ video {
   max-height: 80vh;
 }
 .maxheight .ui.segment.tab {
-  height: calc(-140px + 100vh);
+  height: calc(-125px + 100vh);
   overflow: auto;
 }
 .maxheight.dash .ui.segment.tab {
-  height: calc(-250px + 100vh);
+  height: calc(-210px + 100vh);
   overflow: auto;
 }
 .maxheight .ui.secondary.segment {
@@ -1654,10 +1654,13 @@ video {
   margin: 0;
 }
 .landing-page .ui.menu .item {
-  line-height: 67px !important;
+  line-height: 70px !important;
   display: inline-block;
-  height: 60px;
+  height: 70px;
   overflow: hidden;
   padding-top: 0;
   padding-bottom: 0;
+}
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, 0.65);
 }

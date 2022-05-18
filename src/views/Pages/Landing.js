@@ -98,14 +98,15 @@ function Landing(prop) {
             <LandStat {...prop} />
           </div>
         </div>
-        <div className="section " style={{ padding: 0 }}>
+        <div className="section " style={{ padding: 0, overflow: "auto" }}>
           <div
             className={
               " filter-gradient " +
               themeColors[day + 2].replace("grey", "gray") +
-              " section-gray"
+              " "
             }
             data-color="orange"
+            style={{ position: "static" }}
           >
             <div className="container">
               <GameSlide />

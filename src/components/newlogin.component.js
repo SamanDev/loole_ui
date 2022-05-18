@@ -167,7 +167,10 @@ function FormExampleFieldErrorLabel(prop) {
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: resMessage,
+            text: resMessage.replace(
+              "Error: Unauthorized",
+              "Username or password is incorrect."
+            ),
           });
         }
       );

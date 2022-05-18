@@ -32,7 +32,7 @@ const LandNavbar = (prop) => {
           pointing
           borderless
           fixed="top"
-          style={{ height: 70, overflow: "hidden", zIndex: 10000 }}
+          style={{ height: 70, overflow: "hidden", zIndex: 1000 }}
           size="small"
         >
           <Menu.Item
