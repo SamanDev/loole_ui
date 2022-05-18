@@ -41,7 +41,7 @@ const renderLoader = (sections) => (
   <div
     className="full-page lock-page"
     data-color="black"
-    style={{ height: "100vh", overflow: "auto" }}
+    style={{ height: "100%", overflow: "auto" }}
   >
     <Segment
       style={{
@@ -258,7 +258,7 @@ function LockScreenPage(prop) {
         <div
           className="full-page lock-page"
           data-color="black"
-          style={{ height: "100vh", overflow: "auto" }}
+          style={{ height: "100%", overflow: "auto" }}
         >
           <Segment
             style={{
@@ -313,164 +313,153 @@ function LockScreenPage(prop) {
             position: "relative",
             zIndex: "23",
             paddingTop: 0,
+            overflow: "auto",
+            height: "100vh",
           }}
         >
-          <Segment
-            style={{
-              height: "100%",
-              width: "100%",
-              position: "absolute",
-              background: "transparent",
-              padding: 0,
-              border: "none",
-            }}
-          >
-            <Suspense fallback={renderLoader(sections)}>
-              <Sidebar.Pushable as={Segment} basic>
-                <Sidebar
-                  animation="push"
-                  icon="labeled"
-                  width="thin"
-                  onHide={() => setVisible(false)}
-                  style={{
-                    width: "100vw",
-                    maxWidth: 300,
-                    height: "100vh !important",
-                    padding: 0,
-                  }}
-                  vertical
-                  visible={devWid > 991 ? true : visible}
-                  as={Segment}
-                  basic
-                >
-                  {match &&
-                  eventDef.gameMode != "Tournament" &&
-                  eventDef.gameMode != "League" ? (
-                    <Chatbar
-                      eventID={eventIDQ}
-                      matchID={matchIDQ}
-                      eventstatus={eventDef.status}
-                      masterplayer={match.matchPlayers[0]?.username}
-                      secondplayer={match.matchPlayers[1]?.username}
-                      eventchats={eventDef.chats}
-                      chats={match.matchChats}
-                      username={currentUser}
-                      onUpdateItem={prop.onUpdateItem}
-                      messageBox={messageBox}
-                    />
-                  ) : (
-                    <>
-                      {matchIDQ ? (
-                        <Chatbar
-                          eventID={eventIDQ}
-                          matchID={matchIDQ}
-                          eventstatus={eventDef.status}
-                          masterplayer={match.matchPlayers[0]?.username}
-                          secondplayer={match.matchPlayers[1]?.username}
-                          eventchats="null"
-                          chats={match.matchChats}
-                          username={currentUser}
-                          onUpdateItem={prop.onUpdateItem}
-                          messageBox={messageBox}
-                        />
-                      ) : (
-                        <Chatbar
-                          eventID={eventIDQ}
-                          matchID={matchIDQ}
-                          eventstatus={eventDef.status}
-                          masterplayer="null"
-                          secondplayer="null"
-                          eventchats={eventDef.chats}
-                          chats="null"
-                          username={currentUser}
-                          messageBox={messageBox}
-                        />
-                      )}
-                    </>
-                  )}
-                </Sidebar>
+          <Suspense fallback={renderLoader(sections)}>
+            <Sidebar.Pushable as={Segment} basic>
+              <Sidebar
+                animation="push"
+                icon="labeled"
+                width="thin"
+                onHide={() => setVisible(false)}
+                style={{
+                  width: "100vw",
+                  maxWidth: 300,
+                  height: "100% !important",
+                  padding: 0,
+                }}
+                vertical
+                visible={devWid > 991 ? true : visible}
+                as={Segment}
+                basic
+              >
+                {match &&
+                eventDef.gameMode != "Tournament" &&
+                eventDef.gameMode != "League" ? (
+                  <Chatbar
+                    eventID={eventIDQ}
+                    matchID={matchIDQ}
+                    eventstatus={eventDef.status}
+                    masterplayer={match.matchPlayers[0]?.username}
+                    secondplayer={match.matchPlayers[1]?.username}
+                    eventchats={eventDef.chats}
+                    chats={match.matchChats}
+                    username={currentUser}
+                    onUpdateItem={prop.onUpdateItem}
+                    messageBox={messageBox}
+                  />
+                ) : (
+                  <>
+                    {matchIDQ ? (
+                      <Chatbar
+                        eventID={eventIDQ}
+                        matchID={matchIDQ}
+                        eventstatus={eventDef.status}
+                        masterplayer={match.matchPlayers[0]?.username}
+                        secondplayer={match.matchPlayers[1]?.username}
+                        eventchats="null"
+                        chats={match.matchChats}
+                        username={currentUser}
+                        onUpdateItem={prop.onUpdateItem}
+                        messageBox={messageBox}
+                      />
+                    ) : (
+                      <Chatbar
+                        eventID={eventIDQ}
+                        matchID={matchIDQ}
+                        eventstatus={eventDef.status}
+                        masterplayer="null"
+                        secondplayer="null"
+                        eventchats={eventDef.chats}
+                        chats="null"
+                        username={currentUser}
+                        messageBox={messageBox}
+                      />
+                    )}
+                  </>
+                )}
+              </Sidebar>
 
-                <Sidebar.Pusher
-                  style={{ background: "none", padding: 0, height: "100vh" }}
-                >
-                  <Container>
-                    <Col
-                      className="mx-auto "
-                      lg="8"
-                      md="10"
-                      style={{ padding: 0, marginTop: 20 }}
-                    >
-                      <Active {...prop} />
-                      {BackBTC()}
-                      <Button
-                        inverted
-                        color="blue"
-                        floated="right"
-                        className="mobile tablet only"
-                        onClick={() => setVisible(!visible)}
-                      >
-                        Chat...
-                      </Button>
-                      {haveAdmin(currentUser.roles) && (
-                        <>
-                          <Button
-                            floated="right"
-                            inverted
-                            color="red"
-                            onClick={handleDelete}
-                          >
-                            Delet Match
-                          </Button>
-                        </>
-                      )}
-                      <Breadcrumb icon="right angle" sections={sections} />
-                    </Col>
-                  </Container>
-                  <div
-                    style={{ height: "calc(100vh - 90px)", overflow: "auto" }}
+              <Sidebar.Pusher
+                style={{ background: "none", padding: 0, height: "100%" }}
+              >
+                <Container>
+                  <Col
+                    className="mx-auto "
+                    lg="8"
+                    md="10"
+                    style={{ padding: 0, marginTop: 20 }}
                   >
-                    <Container style={{ paddingBottom: 50 }}>
-                      {eventDef.gameMode == "League" ? (
-                        <LeagueSection {...prop} event={eventDef} />
-                      ) : (
-                        <>
-                          {eventDef.gameMode == "Tournament" && !matchIDQ ? (
-                            <TournamentSection
-                              {...prop}
-                              event={eventDef}
-                              tit={_tit}
-                              desc={_desc}
-                            />
-                          ) : (
-                            <>
-                              {eventDef.gameMode == "Tournament" ? (
-                                <MatchTourSection
-                                  {...prop}
-                                  event={eventDef}
-                                  matchIDQ={matchIDQ}
-                                  setVisible={setVisible}
-                                  tit={_tit}
-                                  desc={_desc}
-                                  setMessageBox={setMessageBox}
-                                />
-                              ) : (
-                                <MatchSection
-                                  {...prop}
-                                  event={eventDef}
-                                  setVisible={setVisible}
-                                  setMessageBox={setMessageBox}
-                                />
-                              )}
-                            </>
-                          )}
-                        </>
-                      )}
-                    </Container>
-                  </div>
-                </Sidebar.Pusher>
-              </Sidebar.Pushable>
-            </Suspense>
-          </Segment>
+                    <Active {...prop} />
+                    {BackBTC()}
+                    <Button
+                      inverted
+                      color="blue"
+                      floated="right"
+                      className="mobile tablet only"
+                      onClick={() => setVisible(!visible)}
+                    >
+                      Chat...
+                    </Button>
+                    {haveAdmin(currentUser.roles) && (
+                      <>
+                        <Button
+                          floated="right"
+                          inverted
+                          color="red"
+                          onClick={handleDelete}
+                        >
+                          Delet Match
+                        </Button>
+                      </>
+                    )}
+                    <Breadcrumb icon="right angle" sections={sections} />
+                  </Col>
+                </Container>
+                <div style={{ height: "calc(100% - 90px)", overflow: "auto" }}>
+                  <Container style={{ paddingBottom: 50 }}>
+                    {eventDef.gameMode == "League" ? (
+                      <LeagueSection {...prop} event={eventDef} />
+                    ) : (
+                      <>
+                        {eventDef.gameMode == "Tournament" && !matchIDQ ? (
+                          <TournamentSection
+                            {...prop}
+                            event={eventDef}
+                            tit={_tit}
+                            desc={_desc}
+                          />
+                        ) : (
+                          <>
+                            {eventDef.gameMode == "Tournament" ? (
+                              <MatchTourSection
+                                {...prop}
+                                event={eventDef}
+                                matchIDQ={matchIDQ}
+                                setVisible={setVisible}
+                                tit={_tit}
+                                desc={_desc}
+                                setMessageBox={setMessageBox}
+                              />
+                            ) : (
+                              <MatchSection
+                                {...prop}
+                                event={eventDef}
+                                setVisible={setVisible}
+                                setMessageBox={setMessageBox}
+                              />
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </Container>
+                </div>
+              </Sidebar.Pusher>
+            </Sidebar.Pushable>
+          </Suspense>
         </div>
         <div
           className="full-page-background"

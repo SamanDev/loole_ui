@@ -218,7 +218,10 @@ function Report(prop) {
   return (
     <>
       <Header as="h2">
-        <Icon name="diamond" />
+        <Icon.Group className="icon" size="big">
+          <Icon name="diamond" />
+          <Icon corner="bottom right" color="teal" name="list ul" />
+        </Icon.Group>
         <Header.Content>
           Diamonds
           <Header.Subheader>See your Diamonds Transactions</Header.Subheader>

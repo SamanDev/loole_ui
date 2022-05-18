@@ -23,14 +23,13 @@ function profile(prop) {
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
 
-  var dataTransaction = currentUser.usersReports;
   const panes = [
     {
       id: 1,
       menuItem: "Profile",
       render: () => (
         <Tab.Pane>
-          <Segment secondary padded>
+          <Segment secondary>
             <ProfileForm {...prop} />
           </Segment>
         </Tab.Pane>
@@ -41,7 +40,7 @@ function profile(prop) {
       menuItem: "Tags",
       render: () => (
         <Tab.Pane>
-          <Segment secondary padded>
+          <Segment secondary>
             <TagsForm {...prop} />
 
             <SocialForm {...prop} />
@@ -54,7 +53,7 @@ function profile(prop) {
       menuItem: "My Events",
       render: () => (
         <Tab.Pane>
-          <Segment secondary padded>
+          <Segment secondary>
             <UserEvents {...prop} />
           </Segment>
         </Tab.Pane>
@@ -65,7 +64,7 @@ function profile(prop) {
       menuItem: "Transactions",
       render: () => (
         <Tab.Pane>
-          <Segment secondary padded>
+          <Segment secondary>
             <Report user={currentUser} />
           </Segment>
         </Tab.Pane>
@@ -76,7 +75,7 @@ function profile(prop) {
       menuItem: "Diamonds",
       render: () => (
         <Tab.Pane>
-          <Segment secondary padded>
+          <Segment secondary>
             <ReportDiamond user={currentUser} />
           </Segment>
         </Tab.Pane>

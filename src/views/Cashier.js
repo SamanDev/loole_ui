@@ -57,34 +57,28 @@ function Cashier(prop) {
       _limit = "Max: $300";
     }
     return (
-      <Card
-        fluid
-        color={mode == "Deposit" ? "red" : "green"}
-        onClick={() => handleMethod(cashierGateway.mode + mode)}
-      >
-        <div>
-          <div className="img">
-            <img
-              alt={cashierGateway.mode}
-              style={{ maxHeight: 50 }}
-              src={"/assets/images/" + _img}
-            ></img>
-          </div>
-          <Statistic
-            size="mini"
-            color="grey"
-            style={{
-              marginTop: 0,
-              opacity: 0.7,
-              padding: 20,
-              lineHeight: "40px",
-            }}
-          >
-            <Statistic.Value>{cashierGateway.mode}</Statistic.Value>
-            <Statistic.Label>{_limit}</Statistic.Label>
-          </Statistic>
+      <div>
+        <div className="img">
+          <img
+            alt={cashierGateway.mode}
+            style={{ maxHeight: 50 }}
+            src={"/assets/images/" + _img}
+          ></img>
         </div>
-      </Card>
+        <Statistic
+          size="mini"
+          color={mode != "Deposit" ? "red" : "green"}
+          style={{
+            marginTop: 0,
+            opacity: 0.7,
+            padding: 20,
+            lineHeight: "40px",
+          }}
+        >
+          <Statistic.Value>{cashierGateway.mode}</Statistic.Value>
+          <Statistic.Label>{_limit}</Statistic.Label>
+        </Statistic>
+      </div>
     );
   };
   const panes = [
@@ -108,15 +102,26 @@ function Cashier(prop) {
             <Header>Select your Deposit method</Header>
 
             <Card.Group
-              className="fours card-tags"
-              stackable
-              doubling
+              className="fours card-tags cash-card"
               itemsPerRow="4"
+              doubling
+              stackable
               style={{ marginBottom: 20, textAlign: "left" }}
             >
               {userMethods.map(function (cashierGateway, u) {
                 if (cashierGateway.name != "Digipay" || 1 == 1) {
-                  return <>{_block(cashierGateway, "Deposit")}</>;
+                  return (
+                    <Card
+                      fluid
+                      color={"green"}
+                      onClick={() =>
+                        handleMethod(cashierGateway.mode + "Deposit")
+                      }
+                      key={u}
+                    >
+                      {_block(cashierGateway, "Deposit")}
+                    </Card>
+                  );
                 }
               })}
             </Card.Group>
@@ -133,7 +138,7 @@ function Cashier(prop) {
             <Header as="h2">
               <Icon.Group className="icon" size="big">
                 <Icon name="dollar" />
-                <Icon corner="center right" color="green" name="share  " />
+                <Icon corner="bottom right" color="green" name="share" />
               </Icon.Group>
               <Header.Content>
                 Withdrawal
@@ -145,15 +150,26 @@ function Cashier(prop) {
 
             <Header>Select your Cashout method</Header>
             <Card.Group
-              className="fours card-tags"
-              stackable
+              className="fours card-tags cash-card"
               doubling
+              stackable
               itemsPerRow="4"
               style={{ marginBottom: 20, textAlign: "left" }}
             >
               {userMethods.map(function (cashierGateway, u) {
                 if (cashierGateway.name != "VisaGiftCode") {
-                  return <>{_block(cashierGateway, "Cashout")}</>;
+                  return (
+                    <Card
+                      fluid
+                      color={"red"}
+                      onClick={() =>
+                        handleMethod(cashierGateway.mode + "Cashout")
+                      }
+                      key={u}
+                    >
+                      {_block(cashierGateway, "Cashout")}
+                    </Card>
+                  );
                 }
               })}
             </Card.Group>
@@ -174,7 +190,7 @@ function Cashier(prop) {
     },
     {
       id: 4,
-      menuItem: <Menu.Item key={"4"}>Diamonds</Menu.Item>,
+      menuItem: "Diamonds",
       render: () => (
         <Tab.Pane>
           <Segment secondary padded>

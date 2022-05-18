@@ -584,6 +584,10 @@ label {
   .ui.mini.statistics .statistic > .value.nnick {
     font-size: 12px !important;
   }
+  .ui.header,
+  .ui.header .sub.header {
+    font-size: 90% !important;
+  }
   .mynav {
     height: auto;
     min-height: 50px;
@@ -657,6 +661,10 @@ label {
 .notconnected.ui.statistic > .value,
 .notconnected.ui.statistics .statistic > .value {
   transform: scale(0.7);
+}
+.cash-card .ui.statistic > .value,
+.cash-card .ui.statistics .statistic > .value {
+  font-size: 15px !important;
 }
 .l-quote .chatdate {
   color: rgba(255, 255, 255, 0.6);
@@ -919,8 +927,9 @@ div.chatavatar {
   z-index: 23;
 
   padding: 0;
-  min-height: 100vh;
+  height: 100%;
 }
+
 @media only screen and (max-width: 767px) {
   .ui.fours.cards .fluid.image img {
     width: 100%;
@@ -954,6 +963,9 @@ div.chatavatar {
   [class*="or lower hidden"] {
     display: none !important;
   }
+  .dash-stat .ui.card {
+    overflow: hidden;
+  }
   .dash-stat .content {
     padding: 5px !important;
   }
@@ -962,13 +974,23 @@ div.chatavatar {
     margin-left: 10px;
   }
   .dash-stat .ui.statistic > .label {
-    font-size: 70% !important;
+    font-size: 60% !important;
   }
   .dash-stat .ui.statistic > .value {
-    font-size: 90% !important;
+    font-size: 100% !important;
+  }
+  .ui.tabular.menu {
+    overflow: hidden;
+    overflow-x: auto !important;
+    white-space: nowrap;
+
+    -webkit-overflow-scrolling: touch;
+  }
+  .ui.tabular.menu::-webkit-scrollbar {
+    display: none;
   }
   .ui.tabular.menu .item {
-    font-size: 90% !important;
+    font-size: 80% !important;
   }
   .ui.tabular.menu .item .label {
     margin-left: 2px;

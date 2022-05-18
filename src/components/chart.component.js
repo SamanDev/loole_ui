@@ -218,10 +218,10 @@ const ChartStat = (prop) => {
       <div
         style={{
           width: "100%",
-          height: 400,
-          background: "rgba(0,0,0,1)",
+          height: "calc(100vw / 1.7)",
+          maxHeight: 400,
           borderRadius: 20,
-          padding: "40px 20px 10px 0px",
+          padding: "0px 20px 10px 0px",
         }}
       >
         <Dimmer active>
@@ -234,8 +234,8 @@ const ChartStat = (prop) => {
     <div
       style={{
         width: "100%",
-        height: 400,
-
+        height: "calc(100vw / 1.7)",
+        maxHeight: 400,
         borderRadius: 20,
         padding: "0px 20px 10px 0px",
       }}

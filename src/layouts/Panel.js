@@ -220,50 +220,52 @@ function Panel(props) {
                           props.onUpdateItem("openModalCashier", false)
                         }
                       >
-                        {cashierMethod == "CryptoCurrenciesDeposit" && (
-                          <>
-                            {!myNotificationItem ? (
-                              <CrDeposit coins={coins} {...props} />
-                            ) : (
-                              <CrCode note={myNotificationItem} {...props} />
-                            )}
-                          </>
-                        )}
+                        <Segment inverted padded="very">
+                          {cashierMethod == "CryptoCurrenciesDeposit" && (
+                            <>
+                              {!myNotificationItem ? (
+                                <CrDeposit coins={coins} {...props} />
+                              ) : (
+                                <CrCode note={myNotificationItem} {...props} />
+                              )}
+                            </>
+                          )}
 
-                        {cashierMethod == "PerfectMoneyDeposit" && (
-                          <>
-                            {" "}
-                            <PMDeposit coins={coins} {...props} />
-                          </>
-                        )}
-                        {cashierMethod == "VisaGiftCodeDeposit" && (
-                          <>
-                            {" "}
-                            <VisaDeposit {...props} />
-                          </>
-                        )}
-                        {cashierMethod == "IranShetabDeposit" && (
-                          <>
-                            <ShetabDeposit coins={coins} {...props} />
-                          </>
-                        )}
+                          {cashierMethod == "PerfectMoneyDeposit" && (
+                            <>
+                              {" "}
+                              <PMDeposit coins={coins} {...props} />
+                            </>
+                          )}
+                          {cashierMethod == "VisaGiftCodeDeposit" && (
+                            <>
+                              {" "}
+                              <VisaDeposit {...props} />
+                            </>
+                          )}
+                          {cashierMethod == "IranShetabDeposit" && (
+                            <>
+                              <ShetabDeposit coins={coins} {...props} />
+                            </>
+                          )}
 
-                        {cashierMethod == "CryptoCurrenciesCashout" && (
-                          <>
-                            <CrCashout coins={coins} {...props} />
-                          </>
-                        )}
-                        {cashierMethod == "PerfectMoneyCashout" && (
-                          <>
-                            {" "}
-                            <PMCashout coins={coins} {...props} />
-                          </>
-                        )}
-                        {cashierMethod == "IranShetabCashout" && (
-                          <>
-                            <ShetabCashout coins={coins} {...props} />
-                          </>
-                        )}
+                          {cashierMethod == "CryptoCurrenciesCashout" && (
+                            <>
+                              <CrCashout coins={coins} {...props} />
+                            </>
+                          )}
+                          {cashierMethod == "PerfectMoneyCashout" && (
+                            <>
+                              {" "}
+                              <PMCashout coins={coins} {...props} />
+                            </>
+                          )}
+                          {cashierMethod == "IranShetabCashout" && (
+                            <>
+                              <ShetabCashout coins={coins} {...props} />
+                            </>
+                          )}
+                        </Segment>
                       </Modal>
                     </div>
 

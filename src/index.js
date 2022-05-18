@@ -471,20 +471,22 @@ function Main(prop) {
         >
           <Modal size="mini" basic open={openModalSoket}>
             <Segment inverted padded="very">
-              <Modal.Header className="text-center">
-                <Icon.Group size="huge">
-                  <Icon size="big" color="red" name="dont" />
-                  <Icon color="grey" name="user" />
-                </Icon.Group>
-                <br />
-                Connection error...
-                <br />
-                <br />
-                <br />
-              </Modal.Header>
-              <Modal.Content>
-                <DC onUpdateItem={onUpdateItem} />
-              </Modal.Content>
+              <Suspense fallback={renderLoader(false)}>
+                <Modal.Header className="text-center">
+                  <Icon.Group size="huge">
+                    <Icon size="big" color="red" name="dont" />
+                    <Icon color="grey" name="user" />
+                  </Icon.Group>
+                  <br />
+                  Connection error...
+                  <br />
+                  <br />
+                  <br />
+                </Modal.Header>
+                <Modal.Content>
+                  <DC onUpdateItem={onUpdateItem} />
+                </Modal.Content>
+              </Suspense>
             </Segment>
           </Modal>
           <Modal
@@ -492,7 +494,7 @@ function Main(prop) {
             open={openModalChart}
             onClose={() => onUpdateItem("openModalChart", false)}
           >
-            <Segment inverted padded="very">
+            <Segment inverted padded>
               <Suspense fallback={renderLoader(false)}>
                 <Modal.Header
                   className="header-text"

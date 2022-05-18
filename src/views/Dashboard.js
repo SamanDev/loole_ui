@@ -1,6 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import { printBlockChallenge } from "components/include.js";
-import { Tab, Card, Menu, Label, Dimmer, Loader } from "semantic-ui-react";
+import {
+  Tab,
+  Card,
+  Menu,
+  Label,
+  Dimmer,
+  Loader,
+  Segment,
+} from "semantic-ui-react";
 import Active from "components/active.component";
 import DashStat from "components/dashstat.component";
 import GlobalContext from "context/GlobalState";
@@ -69,7 +77,7 @@ function Dashboard(prop) {
             var expected_enddate = moment(timestring2).format();
             startdate = moment(startdate).add(3, "hours").format();
 
-            if (item.status != "Pending") {
+            if (item.status != "Pending" && item.status != "InPlay") {
               if (startdate > expected_enddate) {
                 //newItem.push(item)
               }
@@ -141,7 +149,7 @@ function Dashboard(prop) {
         stackable
         doubling
         itemsPerRow="4"
-        style={{ marginBottom: 20, textAlign: "left" }}
+        style={{ marginBottom: 20, marginTop: 5, textAlign: "left" }}
       >
         {printBlockChallenge(newItem, filtermode)}
       </Card.Group>

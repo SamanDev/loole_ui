@@ -179,9 +179,9 @@ function ProfileForm(prop) {
           <Header.Subheader>Manage your Accounts Performance</Header.Subheader>
         </Header.Content>
       </Header>
-      <Row style={{ marginRight: 0 }}>
-        <Col md="8" sm="6">
-          <Segment padded>
+      <Row>
+        <Col md="8" sm="6" style={{ marginBottom: 30 }}>
+          <Segment>
             <Form onSubmit={handleSubmitInfo} size="small">
               <Form.Input
                 fluid
