@@ -41,6 +41,19 @@ class AdminService {
         return response;
       });
   };
+  deleteEvent(id) {
+    return (
+      axios
+
+        //s.delete(API_URL_TEST + "deleteAllEvent", { headers: authHeader() })
+        .delete(API_URL_TEST + "deleteEvent?id=" + id, {
+          headers: authHeader(),
+        })
+        .then((response) => {
+          return response;
+        })
+    );
+  }
   deleteUser = (id) => {
     return axios
       .delete(

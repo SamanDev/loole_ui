@@ -392,7 +392,23 @@ export const getGroupBadgeList = (sign, amount, classes) => {
     </Badge>
   );
 };
+export const getIconPlat = (name) => {
+  console.log(name);
+  if (!name) return null;
+  var _i = faDesktop;
 
+  if (name.toLowerCase() == "mobile") {
+    _i = faMobileAlt;
+  }
+  if (name.toLowerCase() == "psn") {
+    _i = faPlaystation;
+  }
+  if (name.toLowerCase() == "xbl") {
+    _i = faXbox;
+  }
+
+  return <Icon as={FontAwesomeIcon} fixedWidth icon={_i} />;
+};
 export const printTag = (game, tag) => {
   var _tag = tag.replace(/-/g, "");
 
@@ -2074,6 +2090,9 @@ export const handleTagForm = (game, platform, currentUser) => {
             if (v.tagplatform && v.tagplatform != "") {
               gamePlatform = v.tagplatform;
             }
+            if (gameID != "" && gameNickname == "") {
+              gameNickname = gameID;
+            }
 
             handleSaveTags(gameName, gamePlatform, gameID, gameNickname);
           }
@@ -2113,7 +2132,12 @@ export const handleSaveTags = (
           eventBus.remove("eventsDataUser");
           Swal.fire("", "Data saved successfully.", "success");
         } else {
-          Swal.fire("Error!", response.data, "error");
+          Swal.fire("Error!", response.data?.message, "error").then(
+            (result) => {
+              var currentUser = JSON.parse(localStorage.getItem("user"));
+              handleTagForm(gameName, gamePlatform, currentUser);
+            }
+          );
         }
         //window.location.reload(false);
       },

@@ -5,17 +5,24 @@ import { Colors } from "const.js";
 // react-bootstrap components
 import Games from "server/Games";
 
-export default function GameSlide() {
+export default function GameSlide(prop) {
   const getLabel = (item) => {
     return (
       <>
-        <h3
+        <h5
           className="header-text"
-          style={{ marginBottom: 5, width: 180, color: "#fff" }}
+          style={{ marginBottom: 5, width: 180, color: "#fff", fontSize: 25 }}
         >
           {item.name}
-        </h3>
-        <Header as="div" inverted style={{ marginTop: 0 }}>
+        </h5>
+        <div
+          style={{
+            marginTop: 0,
+            color: "#eee",
+            fontSize: 13,
+            marginBottom: 8,
+          }}
+        >
           {item.active ? (
             <>
               {item.haveMatch && "1 vs 1"}
@@ -27,7 +34,7 @@ export default function GameSlide() {
           ) : (
             <>Coming Soon</>
           )}
-        </Header>
+        </div>
       </>
     );
   };
@@ -67,7 +74,7 @@ export default function GameSlide() {
           </p>
           <Card.Group
             centered
-            itemsPerRow="2"
+            itemsPerRow={prop.size}
             stackable
             style={{
               marginBottom: 20,

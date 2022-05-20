@@ -6,6 +6,7 @@ import {
   printTag,
   haveAdmin,
   haveGameTag,
+  getIconPlat,
 } from "components/include";
 import { Row, Col } from "react-bootstrap";
 import UserContext from "context/UserState";
@@ -65,17 +66,23 @@ function TagsForm(prop) {
     var res = "Not Connected";
     var resName = "";
     var resID = "";
-
+    var resPlatform = "";
     if (userTags) {
       userTags.map(function (tag) {
         if (tag.gameName == game) {
           res = tag.tagId;
           resName = tag.nickName;
           resID = tag.id;
+          resPlatform = tag.gamePlatform;
           if (resName == "") resName = "Connected";
           if (res != "" && game == "ClashRoyale") res = "#" + res;
-          if (res != "" && game == "CallOfDuty") res = printTag(game, res);
+          if (res != "" && game == "CallOfDuty") {
+            res = printTag(game, res);
+          }
           if (res != "" && game == "8Pool") res = printTag(game, res);
+          if (game == "8Pool" || game == "ClashRoyale") resPlatform = "mobile";
+          if (game == "PSN") resPlatform = "psn";
+          if (game == "XBOX") resPlatform = "xbl";
         }
       });
     }
@@ -106,7 +113,9 @@ function TagsForm(prop) {
         <>
           <Statistic size="mini" color="green">
             <Statistic.Value>{res}</Statistic.Value>
-            <Statistic.Label>{resName}</Statistic.Label>
+            <Statistic.Label>
+              {getIconPlat(resPlatform)} {resName}
+            </Statistic.Label>
           </Statistic>
 
           {(userKey?.userTags == userTags && userKey?.accessToken) ||
@@ -197,6 +206,7 @@ function TagsForm(prop) {
           className="fours card-tags"
           stackable
           doubling
+          centered
           itemsPerRow="4"
           style={{ marginBottom: 20, textAlign: "left" }}
         >
@@ -231,6 +241,7 @@ function TagsForm(prop) {
                         height="90"
                       />
                     </div>
+
                     {getGameTag(arrTagMode[i], userKey?.userTags)}
                   </div>
                 </Card>

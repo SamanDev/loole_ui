@@ -12,7 +12,7 @@ const Footer = lazy(() => import("components/Navbars/Footer"));
 const Market = lazy(() => import("components/market.component"));
 import GlobalContext from "context/GlobalState";
 const RegisterBtn = lazy(() => import("components/registerBtn"));
-const Helpblog = lazy(() => import("components/help.component"));
+const Helpblog = lazy(() => import("components/helpsectoin.component"));
 
 function scrollToTop() {
   window.scrollTo({
@@ -48,9 +48,8 @@ const Landing = (prop) => {
     return (
       <>
         {item.name}
-        <Header
-          as="div"
-          inverted
+        <div
+          className="header-text text-center"
           style={{ marginTop: 5, color: "#ccc", fontSize: 20 }}
         >
           {item.haveMatch && "1 vs 1"}
@@ -58,7 +57,7 @@ const Landing = (prop) => {
           {item.haveTournament && "Tournaments"}
           {item.haveMatch && item.haveLeague && ", "}
           {item.haveLeague && "League"}
-        </Header>
+        </div>
       </>
     );
   };
@@ -219,54 +218,57 @@ const Landing = (prop) => {
         <Segment
           size="small"
           className="container"
+          secondary
           style={{ position: "relative", zIndex: 5, top: -50 }}
         >
-          <div className="td-pb-span8 td-main-content" role="main">
-            <div className="td-ss-main-content">
-              <div className="clearfix"></div>
-              <div className="td-page-header">
-                <h3 className="entry-title td-page-title">
-                  <span>Play {_game} for Money</span>
-                </h3>
+          <div class="section " style={{ margin: 0, padding: "10px 0" }}>
+            <div className="td-pb-span8 td-main-content" role="main">
+              <div className="td-ss-main-content">
+                <div className="clearfix"></div>
+                <div className="td-page-header">
+                  <h3 className="entry-title td-page-title">
+                    <span>Play {_game} for Money</span>
+                  </h3>
+                </div>
+                <div className="td-page-content tagdiv-type">
+                  <p>
+                    Have you ever dreamed of{" "}
+                    <b>making money just by playing {_game}?</b>
+                    &nbsp;Well, this dream is now a reality for thousands of
+                    gamers on <b>Loole.gg </b>Loole is a new platform that lets
+                    you bet money on your
+                    {_game} skills against other online players from around the
+                    world.
+                  </p>
+                </div>
+                <div className="text-center" style={{ marginTop: 30 }}>
+                  <RegisterBtn {...prop} color="red" />
+                </div>
+                <br /> <br />
+                <div className="td-page-header">
+                  <h3 className="entry-title td-page-title">
+                    <span>FREE {_game} Tournaments</span>
+                  </h3>
+                </div>
+                <div className="td-page-content tagdiv-type">
+                  <p>
+                    Loole.gg is the best site to play&nbsp;FREE {_game}{" "}
+                    tournaments and stand a chance to win amazing cash prizes.
+                    Every weekend thousands sof players make money online
+                    competing in our <b>Free {_game} tournaments</b>. We give
+                    away&nbsp;
+                    <strong>thousands of euros in prizes every season. </strong>
+                    So, what are you waiting for?{" "}
+                    <b>Join our expansive {_game} community </b>and start
+                    earning your share of the epic prizes!&nbsp;
+                  </p>
+                </div>
+                <div className="clearfix"></div>
               </div>
-              <div className="td-page-content tagdiv-type">
-                <p>
-                  Have you ever dreamed of{" "}
-                  <b>making money just by playing {_game}?</b>
-                  &nbsp;Well, this dream is now a reality for thousands of
-                  gamers on <b>Loole.gg </b>Loole is a new platform that lets
-                  you bet money on your
-                  {_game} skills against other online players from around the
-                  world.
-                </p>
-              </div>
-              <div className="text-center" style={{ marginTop: 10 }}>
-                <RegisterBtn {...prop} color="red" />
-              </div>
-              <br /> <br />
-              <div className="td-page-header">
-                <h3 className="entry-title td-page-title">
-                  <span>FREE {_game} Tournaments</span>
-                </h3>
-              </div>
-              <div className="td-page-content tagdiv-type">
-                <p>
-                  Loole.gg is the best site to play&nbsp;FREE {_game}{" "}
-                  tournaments and stand a chance to win amazing cash prizes.
-                  Every weekend thousands sof players make money online
-                  competing in our <b>Free {_game} tournaments</b>. We give
-                  away&nbsp;
-                  <strong>thousands of euros in prizes every season. </strong>
-                  So, what are you waiting for?{" "}
-                  <b>Join our expansive {_game} community </b>and start earning
-                  your share of the epic prizes!&nbsp;
-                </p>
-              </div>
-              <div className="clearfix"></div>
             </div>
-          </div>
-          <div className="text-center" style={{ marginTop: 40 }}>
-            <Helpblog {...prop} game={_game} lang="ir" />
+            <div className="text-center" style={{ marginTop: 40 }}>
+              <Helpblog {...prop} game={_game} />
+            </div>
           </div>
         </Segment>
 
@@ -294,7 +296,7 @@ const Landing = (prop) => {
             style={{ position: "static" }}
           >
             <div className="container">
-              <GameSlide />
+              <GameSlide size="3" />
             </div>
           </div>
         </div>

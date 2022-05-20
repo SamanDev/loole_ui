@@ -9,9 +9,22 @@ import {
   getGroupBadgeBlock,
   haveAdmin,
 } from "components/include.js";
+
 import DataTable from "react-data-table-component";
 import { useUserReports } from "services/hooks";
 import UserContext from "context/UserState";
+const genLink = (row) => {
+  var _link =
+    "/lobby/" +
+    row.eventId +
+    "/" +
+    row.mode.replace("Registered", "") +
+    " " +
+    row.description.split(" - ")[1] +
+    "/";
+  return _link.replace(/ /g, "-").replace("-Noundefined", "");
+};
+
 function editCounry(options) {
   var newArray = [];
   var newArrayDelete = [];
@@ -96,16 +109,7 @@ const columns = [
       <>
         {row.eventId ? (
           <>
-            <Link
-              to={
-                "/lobby/" +
-                row.eventId +
-                "/" +
-                row.description.split(" - ")[1]?.replace("Point", "") +
-                "/"
-              }
-              target="_blank"
-            >
+            <Link to={genLink(row)} target="_blank">
               {row.description
                 .split("&")[0]
                 .split(" - ")[0]

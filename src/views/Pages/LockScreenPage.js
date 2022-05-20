@@ -15,9 +15,10 @@ import {
   Breadcrumb,
 } from "semantic-ui-react";
 import Active from "components/active.component";
-
+import Swal from "sweetalert2";
 import Chatbar from "components/Sidebar/Chat.js";
 import userService from "services/user.service";
+import adminService from "services/admin.service";
 
 //import LeagueSection  from "components/events/league.component";
 const LeagueSection = lazy(() => import("components/events/league.component"));
@@ -172,16 +173,39 @@ function LockScreenPage(prop) {
       </>
     );
   };
-  const handleDelete = (e) => {
+  const deletUserConfirm = (e) => {
     e.preventDefault();
+    Swal.fire({
+      title: "Are you sure?",
 
-    userService.deleteEvent(eventIDQ).then(
-      () => {
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDelete();
+      }
+    });
+  };
+  const handleDelete = () => {
+    adminService.deleteEvent(eventIDQ).then(
+      (response) => {
         history.push("/panel/dashboard");
         //window.location.replace("/panel/dashboard");
         //return <Redirect to="/panel/dashboard" />;
       },
-      () => {}
+      (error) => {
+        console.log(error);
+        Swal.fire({
+          title: "Error",
+          text: error.data,
+          icon: "error",
+          showCancelButton: false,
+          confirmButtonText: `Ok`,
+        });
+      }
     );
   };
   const handleAllDelete = (id) => {
@@ -370,7 +394,7 @@ function LockScreenPage(prop) {
                         eventID={eventIDQ}
                         matchID={matchIDQ}
                         eventstatus={eventDef.status}
-                        masterplayer="null"
+                        masterplayer={eventDef.players}
                         secondplayer="null"
                         eventchats={eventDef.chats}
                         chats="null"
@@ -409,7 +433,7 @@ function LockScreenPage(prop) {
                           floated="right"
                           inverted
                           color="red"
-                          onClick={handleDelete}
+                          onClick={deletUserConfirm}
                         >
                           Delet Match
                         </Button>

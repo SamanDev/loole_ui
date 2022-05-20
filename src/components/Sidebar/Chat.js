@@ -56,7 +56,11 @@ function mycreateChats(
   const listItems = finalChat.map((item, i) => (
     <Comment key={i.toString()}>
       {item.mode == "CHAT" &&
-      (masterplayer == item.username || secondplayer == item.username) ? (
+      (masterplayer == item.username ||
+        secondplayer == item.username ||
+        JSON.stringify(masterplayer).indexOf(
+          '"username":"' + item.username + '"'
+        ) > -1) ? (
         <>
           <div
             className={

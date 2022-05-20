@@ -109,7 +109,7 @@ function Landing(prop) {
             style={{ position: "static" }}
           >
             <div className="container">
-              <GameSlide />
+              <GameSlide size="2" />
             </div>
           </div>
         </div>
