@@ -435,7 +435,21 @@ class LeagueSection extends Component {
                               </Link>{" "}
                               <Label style={{ marginLeft: 5 }}>
                                 {getIconPlat(player.gamePlatform)}
-                                {printTag(item.gameName, player.tagId)}
+                                <span
+                                  onClick={() =>
+                                    window.open(
+                                      "https://cod.tracker.gg/warzone/profile/" +
+                                        player.gamePlatform
+                                          .toLowerCase()
+                                          .replace("battle", "battlenet") +
+                                        "/" +
+                                        player.tagId +
+                                        "/"
+                                    )
+                                  }
+                                >
+                                  {printTag(item.gameName, player.tagId)}
+                                </span>
                               </Label>
                             </span>
                             <span style={{ float: "right", marginLeft: 5 }}>
@@ -560,7 +574,7 @@ class LeagueSection extends Component {
                             {getGroupBadgeBlock(
                               item.outSign,
                               win.prize,
-                              "Current",
+                              "Prize",
                               "right",
                               "green"
                             )}
