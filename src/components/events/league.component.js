@@ -4,6 +4,7 @@ import Avatar from "react-avatar";
 import { Link } from "react-router-dom";
 import { faTwitch } from "@fortawesome/free-brands-svg-icons";
 
+import CurrencyFormat from "react-currency-format";
 import {
   Button,
   Label,
@@ -279,8 +280,7 @@ class LeagueSection extends Component {
         }
       }
     }
-    console.log(totalPay);
-    console.log(potential_brackets);
+
     var _mode = item.gameMode;
     var _color = "#404040";
     var _finishTxt = "Not Joinable";
@@ -298,12 +298,10 @@ class LeagueSection extends Component {
     item?.players.sort(function (a, b) {
       if (a === b || (a.ranking === b.ranking && a.totalScore === b.totalScore))
         return 0;
-
-      if (a.ranking > b.ranking) return 1;
-      if (a.ranking < b.ranking) return -1;
-
       if (a.totalScore > b.totalScore) return -1;
       if (a.totalScore < b.totalScore) return 1;
+      if (a.ranking > b.ranking) return 1;
+      if (a.ranking < b.ranking) return -1;
     });
     icEnd = 0;
     icStart = 0;
@@ -316,7 +314,7 @@ class LeagueSection extends Component {
           className="mx-auto text-center "
           lg="8"
           md="10"
-          style={{ padding: 0, marginTop: 20 }}
+          style={{ padding: 0, marginTop: 20, overflow: "hidden" }}
         >
           {vsComponentTitle(item)}
           <Divider fitted style={{ opacity: 0 }} />
@@ -433,28 +431,44 @@ class LeagueSection extends Component {
                                   name={setAvatar(player.username)}
                                 />
                               </Link>{" "}
-                              <Label style={{ marginLeft: 5 }}>
-                                {getIconPlat(player.gamePlatform)}
-                                <span
-                                  onClick={() =>
-                                    window.open(
+                              <Label
+                                style={{ marginLeft: 5 }}
+                                onClick={() =>
+                                  window
+                                    .open(
                                       "https://cod.tracker.gg/warzone/profile/" +
                                         player.gamePlatform
                                           .toLowerCase()
                                           .replace("battle", "battlenet") +
                                         "/" +
                                         player.tagId +
-                                        "/"
+                                        "/",
+                                      "_blank"
                                     )
-                                  }
-                                >
-                                  {printTag(item.gameName, player.tagId)}
-                                </span>
+                                    .focus()
+                                }
+                                style={{ cursor: "pointer" }}
+                              >
+                                {getIconPlat(player.gamePlatform)}
+
+                                {printTag(item.gameName, player.tagId)}
                               </Label>
                             </span>
                             <span style={{ float: "right", marginLeft: 5 }}>
                               <Label color="black">
-                                {player.totalScore ? player.totalScore : 0}
+                                {player.totalScore ? (
+                                  <CurrencyFormat
+                                    value={Number.parseFloat(
+                                      player.totalScore
+                                    ).toFixed(0)}
+                                    displayType={"text"}
+                                    thousandSeparator={true}
+                                    prefix={""}
+                                    renderText={(value) => value}
+                                  />
+                                ) : (
+                                  0
+                                )}
                               </Label>
                             </span>
                           </List.Content>
@@ -486,112 +500,125 @@ class LeagueSection extends Component {
                 </List>
               </Message>
             </Segment>
-            <Segment inverted color="violet">
-              <Header as="h2">Watch Live</Header>
-              <p>
-                <FontAwesomeIcon
-                  icon={faTwitch}
-                  style={{
-                    color: "#fff",
-                    fontSize: 40,
-                  }}
-                />
-              </p>
-              <h5>Nobody is currently live</h5>
-              <Message>
-                <p>
-                  By connecting your Twitch account you will automatically be
-                  shown on the Watch Live pages of the tournaments you are
-                  playing in
-                </p>
-                <Button
-                  color="violet"
-                  onClick={this.handleHowStream}
-                  disabled={this.state.isloading}
-                >
-                  How to Stream
-                </Button>
-              </Message>
-            </Segment>
+            {item.status != "Canceled" &&
+              item.status != "Expired" &&
+              item.status != "Finished" && (
+                <Segment inverted color="violet">
+                  <Header as="h2">Watch Live</Header>
+                  <p>
+                    <FontAwesomeIcon
+                      icon={faTwitch}
+                      style={{
+                        color: "#fff",
+                        fontSize: 40,
+                      }}
+                    />
+                  </p>
+                  <h5>Nobody is currently live</h5>
+                  <Message>
+                    <p>
+                      By connecting your Twitch account you will automatically
+                      be shown on the Watch Live pages of the tournaments you
+                      are playing in
+                    </p>
+                    <Button
+                      color="violet"
+                      onClick={this.handleHowStream}
+                      disabled={this.state.isloading}
+                    >
+                      How to Stream
+                    </Button>
+                  </Message>
+                </Segment>
+              )}
             <Segment inverted color="blue">
-              <Header as="h2">
-                Potential Prize
-                <div
-                  style={{
-                    position: "relative",
-                    zIndex: 1,
-                    transform: "scale(1.3 )",
-                  }}
-                >
-                  {getGroupBadgeBlock(
-                    item.outSign,
-                    item.prize,
-                    "Potential Prize",
-                    "left",
-                    "green"
-                  )}
-                </div>
-                <p style={{ margin: "20px 0" }}>
-                  Potential Prize Pool represents how much are players in
-                  specific positions will get paid if the tournament becomes
-                  full.
-                </p>
-              </Header>
-              <Message>
-                <List divided inverted relaxed>
-                  {potential_brackets.map((win, i) => {
-                    icStart = icStart + 1;
-                    icEnd = icEnd + parseInt(win.number);
-
-                    var icShow = "#" + icStart;
-                    if (icStart != icEnd) {
-                      icShow = icShow + " - #" + icEnd;
-                      icStart = icEnd;
-                    }
-
-                    return (
-                      <List.Item
-                        key={i.toString()}
-                        style={
-                          item.players.length < parseInt(i + 1)
-                            ? { opacity: 0.4 }
-                            : { opacity: 1 }
-                        }
+              {item.status == "Pending" ||
+                (item.status == "InPlay" && (
+                  <>
+                    <Header as="h2">
+                      Potential Prize
+                      <div
+                        style={{
+                          position: "relative",
+                          zIndex: 1,
+                          marginTop: 20,
+                          transform: "scale(1.3 )",
+                        }}
                       >
-                        <List.Content>
-                          <span style={{ fontSize: 17 }}>
-                            <Label color="green">%{win.percent}</Label>
-                            <Label
-                              pointing="left"
-                              size="mini"
-                              basic
-                              color="blue"
+                        {getGroupBadgeBlock(
+                          item.outSign,
+                          item.prize,
+                          "Potential Prize",
+                          "left",
+                          "green"
+                        )}
+                      </div>
+                      <p style={{ margin: "20px 0" }}>
+                        Potential Prize Pool represents how much are players in
+                        specific positions will get paid if the tournament
+                        becomes full.
+                      </p>
+                    </Header>
+                    <Message>
+                      <List divided inverted relaxed>
+                        {potential_brackets.map((win, i) => {
+                          icStart = icStart + 1;
+                          icEnd = icEnd + parseInt(win.number);
+
+                          var icShow = "#" + icStart;
+                          if (icStart != icEnd) {
+                            icShow = icShow + " - #" + icEnd;
+                            icStart = icEnd;
+                          }
+
+                          return (
+                            <List.Item
+                              key={i.toString()}
+                              style={
+                                item.players.length < parseInt(i + 1)
+                                  ? { opacity: 0.4 }
+                                  : { opacity: 1 }
+                              }
                             >
-                              {icShow}
-                            </Label>
-                          </span>
-                          <span style={{ textAlign: "left", marginLeft: 5 }}>
-                            {getGroupBadgeBlock(
-                              item.outSign,
-                              win.prize,
-                              "Prize",
-                              "right",
-                              "green"
-                            )}
-                          </span>
-                        </List.Content>
-                      </List.Item>
-                    );
-                  })}
-                </List>
-              </Message>
-              <Divider clearing />
+                              <List.Content>
+                                <span style={{ fontSize: 17 }}>
+                                  <Label color="green">%{win.percent}</Label>
+                                  <Label
+                                    pointing="left"
+                                    size="mini"
+                                    basic
+                                    color="blue"
+                                  >
+                                    {icShow}
+                                  </Label>
+                                </span>
+                                <span
+                                  style={{ textAlign: "left", marginLeft: 5 }}
+                                >
+                                  {getGroupBadgeBlock(
+                                    item.outSign,
+                                    win.prize,
+                                    "Prize",
+                                    "right",
+                                    "green"
+                                  )}
+                                </span>
+                              </List.Content>
+                            </List.Item>
+                          );
+                        })}
+                      </List>
+                    </Message>
+                    <Divider clearing />
+                  </>
+                ))}
               <Header as="h2">
                 Current Prize
                 <div
                   style={{
                     position: "relative",
                     zIndex: 1,
+                    marginTop: 20,
                     transform: "scale(1.3 )",
                   }}
                 >

@@ -393,7 +393,6 @@ export const getGroupBadgeList = (sign, amount, classes) => {
   );
 };
 export const getIconPlat = (name) => {
-  console.log(name);
   if (!name) return null;
   var _i = faDesktop;
 

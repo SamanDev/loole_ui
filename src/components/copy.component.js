@@ -56,7 +56,7 @@ function copyText(prop) {
           <Segment
             basic
             {...prop}
-            style={{ paddingLeft: 0, paddingRight: 0 }}
+            style={{ paddingLeft: 0, paddingRight: 0, paddingBottom: 0 }}
             onClick={() => copyDo(myID)}
           >
             {myID}

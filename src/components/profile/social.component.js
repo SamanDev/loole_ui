@@ -238,13 +238,13 @@ function TagsForm(prop) {
           <Header.Subheader>Manage your Social Accounts</Header.Subheader>
         </Header.Content>
       </Header>
-      <Segment padded>
+      <Segment>
         <Card.Group
           className="fours card-social card-tags"
           stackable
           doubling
           itemsPerRow="4"
-          style={{ marginBottom: 20, textAlign: "left" }}
+          style={{ marginBottom: 20, textAlign: "left", marginTop: 5 }}
         >
           {_block(
             "Instagram",

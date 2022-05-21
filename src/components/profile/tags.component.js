@@ -201,14 +201,14 @@ function TagsForm(prop) {
           </Header.Content>
         </Header>
       )}
-      <Segment padded basic={prop.myStateLoc ? true : false}>
+      <Segment basic={prop.myStateLoc ? true : false}>
         <Card.Group
           className="fours card-tags"
           stackable
           doubling
           centered
           itemsPerRow="4"
-          style={{ marginBottom: 20, textAlign: "left" }}
+          style={{ marginBottom: 20, textAlign: "left", marginTop: 5 }}
         >
           {arrLogos.map(
             (number, i) =>

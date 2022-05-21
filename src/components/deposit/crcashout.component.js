@@ -77,14 +77,13 @@ function CrDeposit(prop) {
     return _error;
   };
   const handleSubmit = () => {
-    console.log(myState);
     var Coin = findStateId(myState, "coin");
     var Amount = findStateId(myState, "amount");
     onUpdateItem("submit", true);
     onUpdateItem("loading", true);
 
     if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
-      userService.createDepositCyripto("deposit", Amount, Coin).then(
+      userService.createDepositCyripto("cashout", Amount, Coin).then(
         (response) => {
           onUpdateItem("loading", false);
 

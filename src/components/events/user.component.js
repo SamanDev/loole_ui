@@ -69,7 +69,7 @@ const HomeEvents = (prop) => {
           itemsPerRow={prop.myStateLoc ? 3 : 4}
           stackable
           doubling
-          style={{ marginBottom: 20, textAlign: "left" }}
+          style={{ marginBottom: 20, textAlign: "left", marginTop: 5 }}
         >
           {printBlockChallenge(newItem, filtermode, { ...prop })}
         </Card.Group>
@@ -107,7 +107,7 @@ const HomeEvents = (prop) => {
               <Header.Subheader>See your Events</Header.Subheader>
             </Header.Content>
           </Header>
-          <Segment padded className="segmentmax">
+          <Segment className="segmentmax">
             {getBlockChallenge("all", events)}
           </Segment>
         </>

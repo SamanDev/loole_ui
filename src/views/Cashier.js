@@ -87,7 +87,7 @@ function Cashier(prop) {
       menuItem: "Deposit",
       render: () => (
         <Tab.Pane>
-          <Segment secondary padded>
+          <Segment secondary>
             <Header as="h2">
               <Icon.Group className="icon" size="big">
                 <Icon name="dollar" />
@@ -98,33 +98,34 @@ function Cashier(prop) {
                 <Header.Subheader>Add cash to your Account</Header.Subheader>
               </Header.Content>
             </Header>
+            <Segment>
+              <Header>Select your Deposit method</Header>
 
-            <Header>Select your Deposit method</Header>
-
-            <Card.Group
-              className="fours card-tags cash-card"
-              itemsPerRow="4"
-              doubling
-              stackable
-              style={{ marginBottom: 20, textAlign: "left" }}
-            >
-              {userMethods.map(function (cashierGateway, u) {
-                if (cashierGateway.name != "Digipay" || 1 == 1) {
-                  return (
-                    <Card
-                      fluid
-                      color={"green"}
-                      onClick={() =>
-                        handleMethod(cashierGateway.mode + "Deposit")
-                      }
-                      key={u}
-                    >
-                      {_block(cashierGateway, "Deposit")}
-                    </Card>
-                  );
-                }
-              })}
-            </Card.Group>
+              <Card.Group
+                className="fours card-tags cash-card"
+                itemsPerRow="4"
+                doubling
+                stackable
+                style={{ marginBottom: 20, textAlign: "left" }}
+              >
+                {userMethods.map(function (cashierGateway, u) {
+                  if (cashierGateway.name != "Digipay" || 1 == 1) {
+                    return (
+                      <Card
+                        fluid
+                        color={"green"}
+                        onClick={() =>
+                          handleMethod(cashierGateway.mode + "Deposit")
+                        }
+                        key={u}
+                      >
+                        {_block(cashierGateway, "Deposit")}
+                      </Card>
+                    );
+                  }
+                })}
+              </Card.Group>
+            </Segment>
           </Segment>
         </Tab.Pane>
       ),
@@ -134,7 +135,7 @@ function Cashier(prop) {
       menuItem: "Withdrawal",
       render: () => (
         <Tab.Pane>
-          <Segment secondary padded>
+          <Segment secondary>
             <Header as="h2">
               <Icon.Group className="icon" size="big">
                 <Icon name="dollar" />
@@ -147,32 +148,33 @@ function Cashier(prop) {
                 </Header.Subheader>
               </Header.Content>
             </Header>
-
-            <Header>Select your Cashout method</Header>
-            <Card.Group
-              className="fours card-tags cash-card"
-              doubling
-              stackable
-              itemsPerRow="4"
-              style={{ marginBottom: 20, textAlign: "left" }}
-            >
-              {userMethods.map(function (cashierGateway, u) {
-                if (cashierGateway.name != "VisaGiftCode") {
-                  return (
-                    <Card
-                      fluid
-                      color={"red"}
-                      onClick={() =>
-                        handleMethod(cashierGateway.mode + "Cashout")
-                      }
-                      key={u}
-                    >
-                      {_block(cashierGateway, "Cashout")}
-                    </Card>
-                  );
-                }
-              })}
-            </Card.Group>
+            <Segment>
+              <Header>Select your Cashout method</Header>
+              <Card.Group
+                className="fours card-tags cash-card"
+                doubling
+                stackable
+                itemsPerRow="4"
+                style={{ marginBottom: 20, textAlign: "left" }}
+              >
+                {userMethods.map(function (cashierGateway, u) {
+                  if (cashierGateway.name != "VisaGiftCode") {
+                    return (
+                      <Card
+                        fluid
+                        color={"red"}
+                        onClick={() =>
+                          handleMethod(cashierGateway.mode + "Cashout")
+                        }
+                        key={u}
+                      >
+                        {_block(cashierGateway, "Cashout")}
+                      </Card>
+                    );
+                  }
+                })}
+              </Card.Group>
+            </Segment>
           </Segment>
         </Tab.Pane>
       ),
@@ -182,7 +184,7 @@ function Cashier(prop) {
       menuItem: "Transactions",
       render: () => (
         <Tab.Pane>
-          <Segment secondary padded>
+          <Segment secondary>
             <Report user={currentUser} />
           </Segment>
         </Tab.Pane>
@@ -193,7 +195,7 @@ function Cashier(prop) {
       menuItem: "Diamonds",
       render: () => (
         <Tab.Pane>
-          <Segment secondary padded>
+          <Segment secondary>
             <ReportDiamond user={currentUser} />
           </Segment>
         </Tab.Pane>

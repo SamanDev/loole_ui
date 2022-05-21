@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 
 // react-bootstrap components
 import { Link } from "react-router-dom";
-import { Header, Dimmer, Loader, Icon } from "semantic-ui-react";
+import { Header, Dimmer, Loader, Icon, Segment } from "semantic-ui-react";
 import {
   get_date_locale,
   getGroupBadgeBlock,
@@ -24,7 +24,13 @@ const genLink = (row) => {
     "/";
   return _link.replace(/ /g, "-").replace("-Noundefined", "");
 };
-
+const devWid = document.documentElement.clientWidth;
+var _perPage = 10;
+var _style = { minHeight: "calc(100vh - 240px)", padding: 0 };
+if (devWid < 700) {
+  _perPage = 8;
+  _style = { minHeight: "calc(100vh - 260px)", padding: 0 };
+}
 function editCounry(options) {
   var newArray = [];
   var newArrayDelete = [];
@@ -231,20 +237,22 @@ function Report(prop) {
           <Header.Subheader>See your Diamonds Transactions</Header.Subheader>
         </Header.Content>
       </Header>
-
-      <DataTable
-        columns={columns}
-        data={myData}
-        defaultSortFieldId={1}
-        defaultSortAsc={false}
-        expandOnRowClicked={haveAdmin(currentUser.roles) ? true : false}
-        pagination
-        conditionalRowStyles={conditionalRowStyles}
-        expandableRows
-        expandableRowsHideExpander={true}
-        expandableRowsComponent={ExpandedComponent}
-        noDataComponent={noDataComponent}
-      />
+      <Segment style={_style}>
+        <DataTable
+          columns={columns}
+          data={myData}
+          defaultSortFieldId={1}
+          defaultSortAsc={false}
+          expandOnRowClicked={haveAdmin(currentUser.roles) ? true : false}
+          pagination
+          paginationPerPage={_perPage}
+          conditionalRowStyles={conditionalRowStyles}
+          expandableRows
+          expandableRowsHideExpander={true}
+          expandableRowsComponent={ExpandedComponent}
+          noDataComponent={noDataComponent}
+        />
+      </Segment>
     </>
   );
 }

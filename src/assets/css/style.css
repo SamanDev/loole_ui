@@ -584,9 +584,12 @@ label {
   .ui.mini.statistics .statistic > .value.nnick {
     font-size: 12px !important;
   }
-  .ui.header,
+  .ui.header {
+    font-size: 130% !important;
+  }
+
   .ui.header .sub.header {
-    font-size: 90% !important;
+    font-size: 70% !important;
   }
   .mynav {
     height: auto;
@@ -827,11 +830,15 @@ div.chatavatar {
 }
 .ui.fours.cards .fluid.image img {
   width: auto;
-  height: 200px;
-  min-width: 100%;
+  min-height: 200px;
+  max-width: 100%;
+  transform: translateX(-50%);
+  left: 50%;
+  position: relative;
 }
 .ui.cards > .card {
   min-width: 270px;
+  max-width: 455px;
 }
 .ui.fours.cards .cover {
   position: absolute;
@@ -929,14 +936,19 @@ div.chatavatar {
   padding: 0;
   height: 100%;
 }
-
+.maxheight.dash .ui.segment.tab {
+  height: calc(-210px + 100vh);
+  overflow: auto;
+}
 @media only screen and (max-width: 767px) {
   .ui.fours.cards .fluid.image img {
     width: 100%;
     height: auto;
     min-height: 200px;
   }
-
+  .maxheight.dash .ui.segment.tab {
+    height: calc(-240px + 100vh);
+  }
   .ui.fours.cards .fluid.image {
     min-height: 200px;
   }
@@ -979,18 +991,20 @@ div.chatavatar {
   .dash-stat .ui.statistic > .value {
     font-size: 100% !important;
   }
-  .ui.tabular.menu {
+  .ui.tabular.menu,
+  .ui.pointing.menu {
     overflow: hidden;
     overflow-x: auto !important;
     white-space: nowrap;
 
     -webkit-overflow-scrolling: touch;
   }
-  .ui.tabular.menu::-webkit-scrollbar {
+  .ui.tabular.menu::-webkit-scrollbar,
+  .ui.pointing.menu::-webkit-scrollbar {
     display: none;
   }
   .ui.tabular.menu .item {
-    font-size: 80% !important;
+    font-size: 100% !important;
   }
   .ui.tabular.menu .item .label {
     margin-left: 2px;
@@ -1367,13 +1381,10 @@ video {
   max-height: 80vh;
 }
 .maxheight .ui.segment.tab {
-  height: calc(-125px + 100vh);
+  height: calc(-120px + 100vh);
   overflow: auto;
 }
-.maxheight.dash .ui.segment.tab {
-  height: calc(-210px + 100vh);
-  overflow: auto;
-}
+
 .maxheight .ui.secondary.segment {
   min-height: 100%;
   height: auto;
@@ -1510,7 +1521,11 @@ video {
   border: 0 !important;
 }
 .picker span {
-  display: none;
+  left: 12px;
+}
+.picker input {
+  padding-left: 36px !important;
+  font-size: 12px !important;
 }
 .form-control,
 .form-control:not(.form-control-lg) *,

@@ -302,15 +302,12 @@ class TournamentSection extends Component {
           //item.matchLevel.push(genMatch(5, 1, "3rd Place"));
         }
       }
+      var potential_brackets = [];
       var current_brackets = [];
 
-      //var tournamentPayout = "8,100.00@16,65.00,35.00@32,50.00,30.00,20.00@64,48.00,27.00,15.00,10.00"
-      var tournamentPayout =
-        "4,100.00@8,65.00,35.00@16,50.00,30.00,10.00,10.00@32,50.00,30.00,10.00,10.00@64,50.00,30.00,10.00,10.000";
-      //var events = eventGet;
-
-      if (item.tournamentPayout) {
-        var tournamentPayout = item.tournamentPayout
+      var tournamentPayout = false;
+      if (item.tournamentPayout && !tournamentPayout) {
+        tournamentPayout = item.tournamentPayout
           .replace("4,", "1-4,")
           .replace("8,", "5-8,")
           .replace("16,", "9-16,")
@@ -321,18 +318,8 @@ class TournamentSection extends Component {
         for (var i = 0; i < payArr.length; i++) {
           var paylvl = payArr[i].split(",");
           var payplyer = paylvl[0].split("-");
-          var tItem = item.players.length;
+          var tItem = item.totalPlayer;
 
-          if (item.status == "Pending" || item.gameMode == "League") {
-            tItem = item.totalPlayer;
-          }
-          // console.log(payplyer[0])
-          if (
-            item.players.length > item.totalPlayer ||
-            item.players.length == 0
-          ) {
-            tItem = item.totalPlayer;
-          }
           if (
             parseInt(payplyer[0]) <= tItem &&
             parseInt(payplyer[1]) >= tItem
@@ -342,7 +329,7 @@ class TournamentSection extends Component {
                 paylvl[j] = paylvl[j] + "x1";
               }
               var intX = paylvl[j].split("x");
-              current_brackets.push({
+              potential_brackets.push({
                 prize: (intX[0] * totalPay) / 100,
                 percent: intX[0],
                 number: intX[1],
@@ -350,30 +337,25 @@ class TournamentSection extends Component {
             }
           }
         }
-        for (var i = payArr.length - 1; i < payArr.length; i++) {
+
+        for (var i = 0; i < payArr.length; i++) {
           var paylvl = payArr[i].split(",");
           var payplyer = paylvl[0].split("-");
           var tItem = item.players.length;
-          if (item.status == "Pending" || item.gameMode == "League") {
-            tItem = item.totalPlayer;
-          }
-          if (
-            item.players.length > item.totalPlayer ||
-            item.players.length == 0
-          ) {
-            tItem = item.totalPlayer;
-          }
+          var totalPay2 = (totalPay / item.totalPlayer) * tItem;
+
           if (
             parseInt(payplyer[0]) <= tItem &&
             parseInt(payplyer[1]) >= tItem
           ) {
+            //totalPay2 = totalPay2 / tItem / parseInt(payplyer[1]);
             for (var j = 1; j < paylvl.length; j++) {
               if (paylvl[j].indexOf("x") == -1) {
                 paylvl[j] = paylvl[j] + "x1";
               }
               var intX = paylvl[j].split("x");
-              item.potential_brackets.push({
-                prize: (intX[0] * totalPay) / 100,
+              current_brackets.push({
+                prize: (intX[0] * totalPay2) / 100,
                 percent: intX[0],
                 number: intX[1],
               });
@@ -639,57 +621,152 @@ class TournamentSection extends Component {
             md="10"
             style={{ padding: 0, marginTop: 120 }}
           >
-            <Segment inverted color="violet">
-              <Header as="h2">Watch Live</Header>
-              <p>
-                <FontAwesomeIcon
-                  icon={faTwitch}
-                  style={{
-                    color: "#fff",
-                    fontSize: 40,
-                  }}
-                />
-              </p>
-              <h3>Nobody is currently live</h3>
-              <Message>
-                <p>
-                  By connecting your Twitch account you will automatically be
-                  shown on the Watch Live pages of the tournaments you are
-                  playing in
-                </p>
-                <Button
-                  color="violet"
-                  onClick={this.handleHowStream}
-                  disabled={this.state.isloading}
-                >
-                  How to Stream
-                </Button>
-              </Message>
-            </Segment>
+            {item.status != "Canceled" &&
+              item.status != "Expired" &&
+              item.status != "Finished" && (
+                <Segment inverted color="violet">
+                  <Header as="h2">Watch Live</Header>
+                  <p>
+                    <FontAwesomeIcon
+                      icon={faTwitch}
+                      style={{
+                        color: "#fff",
+                        fontSize: 40,
+                      }}
+                    />
+                  </p>
+                  <h3>Nobody is currently live</h3>
+                  <Message>
+                    <p>
+                      By connecting your Twitch account you will automatically
+                      be shown on the Watch Live pages of the tournaments you
+                      are playing in
+                    </p>
+                    <Button
+                      color="violet"
+                      onClick={this.handleHowStream}
+                      disabled={this.state.isloading}
+                    >
+                      How to Stream
+                    </Button>
+                  </Message>
+                </Segment>
+              )}
             <Segment inverted color="blue">
+              {item.status == "Pending" && (
+                <>
+                  <Header as="h2">
+                    Potential Prize
+                    <div
+                      style={{
+                        position: "relative",
+                        zIndex: 1,
+                        marginTop: 20,
+                        transform: "scale(1.3 )",
+                      }}
+                    >
+                      {getGroupBadgeBlock(
+                        item.outSign,
+                        item.prize,
+                        "Potential Prize",
+                        "left",
+                        "green"
+                      )}
+                    </div>
+                    <p style={{ margin: "20px 0" }}>
+                      Potential Prize Pool represents how much are players in
+                      specific positions will get paid if the tournament becomes
+                      full.
+                    </p>
+                  </Header>
+                  <Message>
+                    <List divided inverted relaxed>
+                      {potential_brackets.map((win, i) => {
+                        icStart = icStart + 1;
+                        icEnd = icEnd + parseInt(win.number);
+
+                        var icShow = "#" + icStart;
+                        if (icStart != icEnd) {
+                          icShow = icShow + " - #" + icEnd;
+                          icStart = icEnd;
+                        }
+
+                        return (
+                          <List.Item
+                            key={i.toString()}
+                            style={
+                              item.players.length < parseInt(i + 1)
+                                ? { opacity: 0.4 }
+                                : { opacity: 1 }
+                            }
+                          >
+                            <List.Content>
+                              <span style={{ fontSize: 17 }}>
+                                <Label color="green">%{win.percent}</Label>
+                                <Label
+                                  pointing="left"
+                                  size="mini"
+                                  basic
+                                  color="blue"
+                                >
+                                  {icShow}
+                                </Label>
+                              </span>
+                              <span
+                                style={{ textAlign: "left", marginLeft: 5 }}
+                              >
+                                {getGroupBadgeBlock(
+                                  item.outSign,
+                                  win.prize,
+                                  "Prize",
+                                  "right",
+                                  "green"
+                                )}
+                              </span>
+                            </List.Content>
+                          </List.Item>
+                        );
+                      })}
+                    </List>
+                  </Message>{" "}
+                  <Divider clearing />
+                </>
+              )}
               <Header as="h2">
-                Prizes
+                Current Prize
                 <div
                   style={{
                     position: "relative",
                     zIndex: 1,
+                    marginTop: 20,
                     transform: "scale(1.3 )",
                   }}
                 >
                   {getGroupBadgeBlock(
                     item.outSign,
-                    item.prize,
-                    "Prize",
+                    totalPay2,
+                    "Current Prize",
                     "left",
                     "green"
                   )}
                 </div>
-              </Header>
+                <p style={{ margin: "20px 0" }}>
+                  Current Prize Pool represents how much are players in specific
+                  positions are currently getting paid. When the Tournament is
+                  full, the current prize and potential prize pools will be
+                  equal.
+                </p>
+              </Header>{" "}
               <Message>
                 <List divided inverted relaxed>
                   {current_brackets.map((win, i) => {
+                    if (i == 0) {
+                      icStart = 0;
+                      icEnd = 0;
+                    }
                     icStart = icStart + 1;
                     icEnd = icEnd + parseInt(win.number);
+
                     var icShow = "#" + icStart;
                     if (icStart != icEnd) {
                       icShow = icShow + " - #" + icEnd;
@@ -697,7 +774,14 @@ class TournamentSection extends Component {
                     }
 
                     return (
-                      <List.Item key={i.toString()}>
+                      <List.Item
+                        key={i.toString()}
+                        style={
+                          item.players.length < parseInt(i + 1)
+                            ? { opacity: 0.4 }
+                            : { opacity: 1 }
+                        }
+                      >
                         <List.Content>
                           <span style={{ fontSize: 17 }}>
                             <Label color="green">%{win.percent}</Label>
@@ -714,7 +798,7 @@ class TournamentSection extends Component {
                             {getGroupBadgeBlock(
                               item.outSign,
                               win.prize,
-                              "Prize",
+                              "Current",
                               "right",
                               "green"
                             )}
@@ -726,7 +810,8 @@ class TournamentSection extends Component {
                 </List>
               </Message>
             </Segment>
-            <Segment inverted color="purple">
+
+            <Segment inverted color="purple" className="hide">
               <Header as="h2">Rules</Header>
               <Message id="jsonhtml" style={{ textAlign: "left" }}></Message>
               <span id="jsonhtml2" className="hide">

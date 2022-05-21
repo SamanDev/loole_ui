@@ -190,6 +190,13 @@ function ProfileForm(prop) {
                 placeholder="Username"
                 value={currentUser.username}
                 readOnly
+                icon="user"
+                iconPosition="left"
+                action={{
+                  color: "teal",
+                  disabled: true,
+                  icon: "check",
+                }}
               />
               <Form.Input
                 fluid
@@ -198,6 +205,13 @@ function ProfileForm(prop) {
                 placeholder="Email"
                 value={currentUser.email}
                 readOnly
+                icon="at"
+                iconPosition="left"
+                action={{
+                  color: "teal",
+                  disabled: true,
+                  icon: "check",
+                }}
               />
 
               <Form.Input
@@ -208,6 +222,8 @@ function ProfileForm(prop) {
                 placeholder="Full Name"
                 value={nameLoc ? nameLoc : ""}
                 onChange={updateHandler}
+                icon="male"
+                iconPosition="left"
               />
               <Form.Field>
                 <label>Country</label>
@@ -215,6 +231,7 @@ function ProfileForm(prop) {
               </Form.Field>
               <Form.Field>
                 <label>Birthday</label>
+
                 <Birthday
                   onUpdateItem={onUpdateItem}
                   value={birthdayLoc ? birthdayLoc : "01/01/1990"}

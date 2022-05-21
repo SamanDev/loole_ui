@@ -33,7 +33,7 @@ function profile(prop) {
       menuItem: "My Earns",
       render: () => (
         <Tab.Pane>
-          <Segment secondary padded>
+          <Segment secondary>
             <Report user={currentUser} />
           </Segment>
         </Tab.Pane>

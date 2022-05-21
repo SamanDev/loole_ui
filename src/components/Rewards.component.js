@@ -19,7 +19,7 @@ function Dashboard(prop) {
 
   return (
     <>
-      <Segment secondary padded>
+      <Segment secondary>
         <Header as="h2">
           <Icon.Group className="icon" size="big">
             <Icon name="dollar" />
@@ -33,7 +33,7 @@ function Dashboard(prop) {
           </Header.Content>
         </Header>
 
-        <Message icon>
+        <Message icon style={{ lineHeight: "30px" }}>
           <Icon
             name="add user"
             circular
@@ -54,13 +54,13 @@ function Dashboard(prop) {
             </div>
             <div style={{ margin: "10px 0" }}>
               And also yu get{" "}
-              <Label color="blue">
-                <Icon name="percent" inverted />
-                %10 Comissions
-              </Label>
+              <Label color="blue" basic size="small">
+                <Icon name="percent" />
+                10 Comissions
+              </Label>{" "}
               for{" "}
-              <Label color="red">
-                <Icon name="dollar" inverted />
+              <Label color="red" basic size="small">
+                <Icon name="dollar" />
                 Real Money Event
               </Label>{" "}
               for life.
@@ -95,7 +95,7 @@ function Dashboard(prop) {
           </Header.Content>
         </Header>
 
-        <Message icon>
+        <Message icon style={{ lineHeight: "30px" }}>
           <Icon
             name="diamond"
             circular
