@@ -243,6 +243,10 @@ function Main(prop) {
   const eventDef = eList.event;
   const eventIDQ = findStateId(myState, "eventIDQ");
   const matchIDQ = findStateId(myState, "matchIDQ");
+  const profileUser = findStateId(myState, "profileUser")
+    ? findStateId(myState, "profileUser")
+    : currentUser;
+
   var openModalLogin = findStateId(myState, "openModalLogin");
   var openModalChart = findStateId(myState, "openModalChart");
   var openModalSoket = findStateId(myState, "openModalSoket");
@@ -277,7 +281,7 @@ function Main(prop) {
 
       localStorage.setItem("user", JSON.stringify(userGet));
 
-      if (findStateId(myState, "profileUser") == false) {
+      if (!findStateId(myState, "profileUser")) {
         UserWebsocket.connect(
           userGet.accessToken + "&user=" + userGet.username,
           userGet
@@ -329,19 +333,8 @@ function Main(prop) {
       onUpdateItem("match", _find);
     }
   }, [matchIDQ]);
-  var nProfit = 0;
+
   useEffect(() => {
-    if (!_key) {
-      _key = currentUser;
-    }
-
-    _key.userAnalyses?.sort((a, b) => (a.id < b.id ? 1 : -1));
-
-    try {
-      nProfit = Number.parseFloat(_key.profit).toFixed(2);
-    } catch (e) {
-      nProfit = 0;
-    }
     eventBus.on("eventsData", (eventsGet) => {
       _defEvents = eventsGet;
 
@@ -448,8 +441,6 @@ function Main(prop) {
     ReactGA.pageview(document.location.pathname, document.title);
   }, [document.title]);
 
-  var _key = findStateId(myState, "profileUser");
-
   return (
     <GlobalContext.Provider
       value={{
@@ -503,10 +494,14 @@ function Main(prop) {
                   Profit Chart{" "}
                   <div style={{ float: "right" }}>
                     ${" "}
-                    {Number.parseFloat(nProfit) > 0 ? (
-                      <span className="text-success">+{nProfit}</span>
+                    {Number.parseFloat(profileUser.profit) > 0 ? (
+                      <span className="text-success">
+                        +{Number.parseFloat(profileUser.profit).toFixed(2)}
+                      </span>
                     ) : (
-                      <span className="text-danger">{nProfit}</span>
+                      <span className="text-danger">
+                        {Number.parseFloat(profileUser.profit).toFixed(2)}
+                      </span>
                     )}
                   </div>
                 </Modal.Header>
