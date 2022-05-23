@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { getGroupBadgeBlock } from "components/include.js";
 import { Button, Card, Image } from "semantic-ui-react";
@@ -10,10 +10,14 @@ function MatchCard(prop) {
   var itemNew = {};
   var imgARR = item.images[0].src.split("/");
   var imgName = imgARR[imgARR.length - 1].replace(".png", ".webp");
-  itemNew.title = item.title;
-  itemNew.image = imgName;
-  itemNew.price = item.price;
-  newM.push(itemNew);
+  useEffect(() => {
+    itemNew.title = item.title;
+    itemNew.image = imgName;
+    itemNew.price = item.price;
+    newM.push(itemNew);
+    console.log(newM);
+  }, []);
+
   const errMs = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user?.accessToken != "") {
@@ -26,7 +30,7 @@ function MatchCard(prop) {
       prop.onUpdateItem("openModalLogin", true);
     }
   };
-  console.log(newM);
+
   return (
     <Card>
       <Image

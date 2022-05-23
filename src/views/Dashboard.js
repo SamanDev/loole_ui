@@ -242,7 +242,9 @@ function Dashboard(prop) {
       render: () => <Tab.Pane>{getBlockChallenge("League", events)}</Tab.Pane>,
     },
   ];
-  updateCount(events);
+  useEffect(() => {
+    updateCount(events);
+  }, [events]);
 
   return (
     <>

@@ -179,7 +179,10 @@ function Dashboard(prop) {
       render: () => <Tab.Pane>{getBlockChallenge("Steam", products)}</Tab.Pane>,
     },
   ];
-  updateCount(products);
+  useEffect(() => {
+    updateCount(products);
+  }, [products]);
+
   return (
     <>
       <Helmet>

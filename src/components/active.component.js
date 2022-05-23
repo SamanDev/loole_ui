@@ -9,10 +9,6 @@ import UserContext from "context/UserState";
 function Active(prop) {
   const [loading, setLoading] = useState(false);
 
-  const [myState, setMyState] = useState(prop.myState);
-  useEffect(() => {
-    setMyState(prop.myState);
-  }, [prop.myState]);
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
 

@@ -329,8 +329,19 @@ function Main(prop) {
       onUpdateItem("match", _find);
     }
   }, [matchIDQ]);
-
+  var nProfit = 0;
   useEffect(() => {
+    if (!_key) {
+      _key = currentUser;
+    }
+
+    _key.userAnalyses?.sort((a, b) => (a.id < b.id ? 1 : -1));
+
+    try {
+      nProfit = Number.parseFloat(_key.profit).toFixed(2);
+    } catch (e) {
+      nProfit = 0;
+    }
     eventBus.on("eventsData", (eventsGet) => {
       _defEvents = eventsGet;
 
@@ -438,17 +449,6 @@ function Main(prop) {
   }, [document.title]);
 
   var _key = findStateId(myState, "profileUser");
-  if (!_key) {
-    _key = currentUser;
-  }
-
-  _key.userAnalyses?.sort((a, b) => (a.id < b.id ? 1 : -1));
-  var nProfit = 0;
-  try {
-    nProfit = Number.parseFloat(_key.profit).toFixed(2);
-  } catch (e) {
-    nProfit = 0;
-  }
 
   return (
     <GlobalContext.Provider

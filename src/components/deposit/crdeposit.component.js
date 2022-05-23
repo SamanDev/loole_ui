@@ -91,7 +91,7 @@ function CrDeposit(prop) {
         (response) => {
           onUpdateItem("loading", false);
 
-          if (response.data.address) {
+          if (response.data?.address) {
             //prop.onUpdateItem("openModalCashier", false);
             prop.onReset("Reports");
             //history.push("/panel/dashboard");
