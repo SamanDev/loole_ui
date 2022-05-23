@@ -245,7 +245,7 @@ function Main(prop) {
   const matchIDQ = findStateId(myState, "matchIDQ");
   const profileUser = findStateId(myState, "profileUser")
     ? findStateId(myState, "profileUser")
-    : currentUser;
+    : uList.currentUser;
 
   var openModalLogin = findStateId(myState, "openModalLogin");
   var openModalChart = findStateId(myState, "openModalChart");
@@ -280,7 +280,7 @@ function Main(prop) {
       setUList({ currentUser: userGet });
 
       localStorage.setItem("user", JSON.stringify(userGet));
-
+      onUpdateItem("profileUser", userGet);
       if (!findStateId(myState, "profileUser")) {
         UserWebsocket.connect(
           userGet.accessToken + "&user=" + userGet.username,
