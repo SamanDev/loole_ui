@@ -21,8 +21,8 @@
       "name": "ClashRoyale",
       "active": true,
       "haveMatch": true,
-      "haveTournament": true,
-      "haveLeague": false,
+      "haveTournament": false,
+      "haveLeague": true,
       "gameconsole": [
         {
           "consolename": "Mobile"

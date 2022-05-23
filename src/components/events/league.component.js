@@ -65,6 +65,7 @@ class LeagueSection extends Component {
     super(props);
     this.showDetails = this.showDetails.bind(this);
     this.handleJoinMatch = this.handleJoinMatch.bind(this);
+    this.handleHowStream = this.handleHowStream.bind(this);
     this.state = {
       myState: this.props.myState,
       item: this.props.event,
@@ -83,6 +84,37 @@ class LeagueSection extends Component {
       loading: false,
       message: "",
     };
+  }
+  handleHowStream(e) {
+    e.preventDefault();
+
+    Swal.fire({
+      title: "How to Stream",
+      html: `<div class="card-plain card text-left" >
+          <ol><li><b>Join Tournament</b>
+          <p>
+          Click the Join Tournament button above to participate in the event.</p></li>
+          <li><b>Connect Twitch          </b>
+          <p>
+          Go to your profile and connect Twitch account to Loole.gg</p></li>
+          <li><b>Start Streaming          </b>
+          <p>
+          If you've joined the event and connected your Twitch, just start streaming and that's it!</p></li>
+          </ol>
+   
+          
+          `,
+      icon: "question",
+      showConfirmButton: false,
+      showCancelButton: true,
+      confirmButtonText: `Go to Cashier`,
+      canceleButtonText: `Back`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.props.history.push("/panel/cashier");
+      }
+    });
   }
   showDetails(player) {
     $(".gdetails").addClass("hide");
@@ -227,6 +259,59 @@ class LeagueSection extends Component {
         weight: " + 20",
       },
     ];
+    var RuleTrack = [
+      {
+        text: "Min Match",
+        weight: "20",
+      },
+      {
+        text: "Min Level",
+        weight: "50",
+      },
+      {
+        text: "Total Point",
+        weight: "Average of Top 20",
+      },
+    ];
+    if (item.gameName == "ClashRoyale") {
+      RuleTrack = [
+        {
+          text: "Mode Track",
+          weight: "Battle",
+        },
+        {
+          text: "Min Match",
+          weight: "20",
+        },
+        {
+          text: "Max Cup",
+          weight: "20,000",
+        },
+        {
+          text: "Total Point",
+          weight: "Average of Top 20",
+        },
+      ];
+      pointTrack = [
+        {
+          text: "HP",
+          weight: " x 0.06",
+        },
+
+        {
+          text: "3 - 0 Win",
+          weight: " + 240",
+        },
+        {
+          text: "+2 Win",
+          weight: " + 60",
+        },
+        {
+          text: "+1 Win",
+          weight: " + 20",
+        },
+      ];
+    }
     //var events = eventGet;
     var tournamentPayout = false;
     if (item.tournamentPayout && !tournamentPayout) {
@@ -431,28 +516,55 @@ class LeagueSection extends Component {
                                   name={setAvatar(player.username)}
                                 />
                               </Link>{" "}
-                              <Label
-                                style={{ marginLeft: 5 }}
-                                onClick={() =>
-                                  window
-                                    .open(
-                                      "https://cod.tracker.gg/warzone/profile/" +
-                                        player.gamePlatform
-                                          .toLowerCase()
-                                          .replace("battle", "battlenet") +
-                                        "/" +
-                                        player.tagId +
-                                        "/",
-                                      "_blank"
-                                    )
-                                    .focus()
-                                }
-                                style={{ cursor: "pointer" }}
-                              >
-                                {getIconPlat(player.gamePlatform)}
+                              {item.gameName == "CallOfDuty" && (
+                                <>
+                                  <Label
+                                    style={{ marginLeft: 5 }}
+                                    onClick={() =>
+                                      window
+                                        .open(
+                                          "https://cod.tracker.gg/warzone/profile/" +
+                                            player.gamePlatform
+                                              .toLowerCase()
+                                              .replace("battle", "battlenet") +
+                                            "/" +
+                                            player.tagId +
+                                            "/",
+                                          "_blank"
+                                        )
+                                        .focus()
+                                    }
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    {getIconPlat(player.gamePlatform)}
 
-                                {printTag(item.gameName, player.tagId)}
-                              </Label>
+                                    {printTag(item.gameName, player.tagId)}
+                                  </Label>
+                                </>
+                              )}
+                              {item.gameName == "ClashRoyale" && (
+                                <>
+                                  <Label
+                                    style={{ marginLeft: 5 }}
+                                    onClick={() =>
+                                      window
+                                        .open(
+                                          "https://statsroyale.com/profile/" +
+                                            printTag(
+                                              item.gameName,
+                                              player.tagId
+                                            ) +
+                                            "/battles/",
+                                          "_blank"
+                                        )
+                                        .focus()
+                                    }
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    {printTag(item.gameName, player.nickName)}
+                                  </Label>
+                                </>
+                              )}
                             </span>
                             <span style={{ float: "right", marginLeft: 5 }}>
                               <Label color="black">
@@ -480,6 +592,25 @@ class LeagueSection extends Component {
               </Segment>
             )}
             <Segment inverted color="yellow">
+              <Header as="h2">Results Tracking Rules</Header>
+              <Message color="red">
+                <List divided relaxed>
+                  {RuleTrack.map((win, i) => {
+                    return (
+                      <List.Item key={i.toString()}>
+                        <List.Content style={{ textAlign: "left" }}>
+                          <span style={{ fontSize: 17 }}>
+                            <Label>{win.text}</Label>
+                          </span>
+                          <span style={{ float: "right", marginLeft: 5 }}>
+                            <Label color="red">{win.weight}</Label>
+                          </span>
+                        </List.Content>
+                      </List.Item>
+                    );
+                  })}
+                </List>
+              </Message>
               <Header as="h2">Results Tracking</Header>
               <Message>
                 <List divided inverted relaxed>
@@ -532,178 +663,185 @@ class LeagueSection extends Component {
                 </Segment>
               )}
             <Segment inverted color="blue">
-              {item.status == "Pending" ||
-                (item.status == "InPlay" && (
-                  <>
-                    <Header as="h2">
-                      Potential Prize
-                      <div
-                        style={{
-                          position: "relative",
-                          zIndex: 1,
-                          marginTop: 20,
-                          transform: "scale(1.3 )",
-                        }}
-                      >
-                        {getGroupBadgeBlock(
-                          item.outSign,
-                          item.prize,
-                          "Potential Prize",
-                          "left",
-                          "green"
-                        )}
-                      </div>
-                      <p style={{ margin: "20px 0" }}>
-                        Potential Prize Pool represents how much are players in
-                        specific positions will get paid if the tournament
-                        becomes full.
-                      </p>
-                    </Header>
-                    <Message>
-                      <List divided inverted relaxed>
-                        {potential_brackets.map((win, i) => {
-                          icStart = icStart + 1;
-                          icEnd = icEnd + parseInt(win.number);
+              {(item.status == "Pending" || item.status == "InPlay") && (
+                <>
+                  <Header as="h2">
+                    Potential Prize
+                    <div
+                      style={{
+                        position: "relative",
+                        zIndex: 1,
+                        marginTop: 20,
+                        transform: "scale(1.3 )",
+                      }}
+                    >
+                      {getGroupBadgeBlock(
+                        item.outSign,
+                        item.prize,
+                        "Potential Prize",
+                        "left",
+                        "green"
+                      )}
+                    </div>
+                    <p style={{ margin: "20px 0" }}>
+                      Potential Prize Pool represents how much are players in
+                      specific positions will get paid if the tournament becomes
+                      full.
+                    </p>
+                  </Header>
+                  <Message>
+                    <List divided inverted relaxed>
+                      {potential_brackets.map((win, i) => {
+                        icStart = icStart + 1;
+                        icEnd = icEnd + parseInt(win.number);
 
-                          var icShow = "#" + icStart;
-                          if (icStart != icEnd) {
-                            icShow = icShow + " - #" + icEnd;
-                            icStart = icEnd;
-                          }
-
-                          return (
-                            <List.Item
-                              key={i.toString()}
-                              style={
-                                item.players.length < parseInt(i + 1)
-                                  ? { opacity: 0.4 }
-                                  : { opacity: 1 }
-                              }
-                            >
-                              <List.Content>
-                                <span style={{ fontSize: 17 }}>
-                                  <Label color="green">%{win.percent}</Label>
-                                  <Label
-                                    pointing="left"
-                                    size="mini"
-                                    basic
-                                    color="blue"
-                                  >
-                                    {icShow}
-                                  </Label>
-                                </span>
-                                <span
-                                  style={{ textAlign: "left", marginLeft: 5 }}
-                                >
-                                  {getGroupBadgeBlock(
-                                    item.outSign,
-                                    win.prize,
-                                    "Prize",
-                                    "right",
-                                    "green"
-                                  )}
-                                </span>
-                              </List.Content>
-                            </List.Item>
-                          );
-                        })}
-                      </List>
-                    </Message>
-                    <Divider clearing />
-                  </>
-                ))}
-              <Header as="h2">
-                Current Prize
-                <div
-                  style={{
-                    position: "relative",
-                    zIndex: 1,
-                    marginTop: 20,
-                    transform: "scale(1.3 )",
-                  }}
-                >
-                  {getGroupBadgeBlock(
-                    item.outSign,
-                    totalPay * item.players.length,
-                    "Current Prize",
-                    "left",
-                    "green"
-                  )}
-                </div>
-                <p style={{ margin: "20px 0" }}>
-                  Current Prize Pool represents how much are players in specific
-                  positions are currently getting paid. When the Tournament is
-                  full, the current prize and potential prize pools will be
-                  equal.
-                </p>
-              </Header>{" "}
-              <Message>
-                <List divided inverted relaxed>
-                  {current_brackets.map((win, i) => {
-                    if (i == 0) {
-                      icStart = 0;
-                      icEnd = 0;
-                    }
-                    icStart = icStart + 1;
-                    icEnd = icEnd + parseInt(win.number);
-
-                    var icShow = "#" + icStart;
-                    if (icStart != icEnd) {
-                      icShow = icShow + " - #" + icEnd;
-                      icStart = icEnd;
-                    }
-
-                    return (
-                      <List.Item
-                        key={i.toString()}
-                        style={
-                          item.players.length < parseInt(i + 1)
-                            ? { opacity: 0.4 }
-                            : { opacity: 1 }
+                        var icShow = "#" + icStart;
+                        if (icStart != icEnd) {
+                          icShow = icShow + " - #" + icEnd;
+                          icStart = icEnd;
                         }
-                      >
-                        <List.Content>
-                          <span style={{ fontSize: 17 }}>
-                            <Label color="green">%{win.percent}</Label>
-                            <Label
-                              pointing="left"
-                              size="mini"
-                              basic
-                              color="blue"
-                            >
-                              {icShow}
-                            </Label>
-                          </span>
-                          <span style={{ textAlign: "left", marginLeft: 5 }}>
-                            {getGroupBadgeBlock(
-                              item.outSign,
-                              win.prize,
-                              "Current",
-                              "right",
-                              "green"
-                            )}
-                          </span>
-                        </List.Content>
-                      </List.Item>
-                    );
-                  })}
-                </List>
-              </Message>
+
+                        return (
+                          <List.Item
+                            key={i.toString()}
+                            style={
+                              item.players.length < parseInt(i + 1)
+                                ? { opacity: 0.4 }
+                                : { opacity: 1 }
+                            }
+                          >
+                            <List.Content>
+                              <span style={{ fontSize: 17 }}>
+                                <Label color="green">%{win.percent}</Label>
+                                <Label
+                                  pointing="left"
+                                  size="mini"
+                                  basic
+                                  color="blue"
+                                >
+                                  {icShow}
+                                </Label>
+                              </span>
+                              <span
+                                style={{ textAlign: "left", marginLeft: 5 }}
+                              >
+                                {getGroupBadgeBlock(
+                                  item.outSign,
+                                  win.prize,
+                                  "Prize",
+                                  "right",
+                                  "green"
+                                )}
+                              </span>
+                            </List.Content>
+                          </List.Item>
+                        );
+                      })}
+                    </List>
+                  </Message>
+                  <Divider clearing />
+                </>
+              )}
+              {item.players.length > 0 && (
+                <>
+                  <Header as="h2">
+                    Current Prize
+                    <div
+                      style={{
+                        position: "relative",
+                        zIndex: 1,
+                        marginTop: 20,
+                        transform: "scale(1.3 )",
+                      }}
+                    >
+                      {getGroupBadgeBlock(
+                        item.outSign,
+                        totalPay * item.players.length,
+                        "Current Prize",
+                        "left",
+                        "green"
+                      )}
+                    </div>
+                    <p style={{ margin: "20px 0" }}>
+                      Current Prize Pool represents how much are players in
+                      specific positions are currently getting paid. When the
+                      Tournament is full, the current prize and potential prize
+                      pools will be equal.
+                    </p>
+                  </Header>{" "}
+                  <Message>
+                    <List divided inverted relaxed>
+                      {current_brackets.map((win, i) => {
+                        if (i == 0) {
+                          icStart = 0;
+                          icEnd = 0;
+                        }
+                        icStart = icStart + 1;
+                        icEnd = icEnd + parseInt(win.number);
+
+                        var icShow = "#" + icStart;
+                        if (icStart != icEnd) {
+                          icShow = icShow + " - #" + icEnd;
+                          icStart = icEnd;
+                        }
+
+                        return (
+                          <List.Item
+                            key={i.toString()}
+                            style={
+                              item.players.length < parseInt(i + 1)
+                                ? { opacity: 0.4 }
+                                : { opacity: 1 }
+                            }
+                          >
+                            <List.Content>
+                              <span style={{ fontSize: 17 }}>
+                                <Label color="green">%{win.percent}</Label>
+                                <Label
+                                  pointing="left"
+                                  size="mini"
+                                  basic
+                                  color="blue"
+                                >
+                                  {icShow}
+                                </Label>
+                              </span>
+                              <span
+                                style={{ textAlign: "left", marginLeft: 5 }}
+                              >
+                                {getGroupBadgeBlock(
+                                  item.outSign,
+                                  win.prize,
+                                  "Current",
+                                  "right",
+                                  "green"
+                                )}
+                              </span>
+                            </List.Content>
+                          </List.Item>
+                        );
+                      })}
+                    </List>
+                  </Message>
+                </>
+              )}
             </Segment>
-            <Segment inverted color="purple">
-              <Header as="h2">Rules</Header>
-              <Message color="red" size="big">
-                <b>
-                  Solo, Duo, Trio and Squad - PC and Console, Excludes Blood
-                  Money and Plunder
-                </b>
-              </Message>
-              <Message id="jsonhtml" style={{ textAlign: "left" }}></Message>
-              <span id="jsonhtml2" className="hide">
-                {" "}
-                {item.rules}
-              </span>
-            </Segment>
+            {item.gameName == "CallOfDuty" && (
+              <Segment inverted color="purple">
+                <Header as="h2">Rules</Header>
+                <Message color="red" size="big">
+                  <b>
+                    Solo, Duo, Trio and Squad - PC and Console, Excludes Blood
+                    Money and Plunder
+                  </b>
+                </Message>
+                <Message id="jsonhtml" style={{ textAlign: "left" }}></Message>
+                <span id="jsonhtml2" className="hide">
+                  {" "}
+                  {item.rules}
+                </span>
+              </Segment>
+            )}
           </Col>
         </Col>
       </>
