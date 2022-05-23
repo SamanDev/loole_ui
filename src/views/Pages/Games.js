@@ -221,7 +221,7 @@ const Landing = (prop) => {
           secondary
           style={{ position: "relative", zIndex: 5, top: -50 }}
         >
-          <div class="section " style={{ margin: 0, padding: "10px 0" }}>
+          <div className="section " style={{ margin: 0, padding: "10px 0" }}>
             <div className="td-pb-span8 td-main-content" role="main">
               <div className="td-ss-main-content">
                 <div className="clearfix"></div>

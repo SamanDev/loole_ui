@@ -27,7 +27,7 @@ function Cashier(prop) {
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
   const { data: eventCoins } = useAllCoins();
-
+  var key = prop.findStateId(myState, "keyCashier");
   var userMethods = currentUser.cashierGateways;
 
   userMethods = userMethods.filter(
@@ -37,7 +37,7 @@ function Cashier(prop) {
   useEffect(() => {
     prop.onUpdateItem("coins", eventCoins);
   }, [eventCoins]);
-  const key = prop.findStateId(myState, "keyCashier");
+
   const handleMethod = (method) => {
     prop.onUpdateItem("cashierMethod", method);
     prop.onUpdateItem("openModalCashier", true);
@@ -158,7 +158,12 @@ function Cashier(prop) {
                 style={{ marginBottom: 20, textAlign: "left" }}
               >
                 {userMethods.map(function (cashierGateway, u) {
-                  if (cashierGateway.name != "VisaGiftCode") {
+                  if (
+                    (cashierGateway.name != "VisaGiftCode" &&
+                      cashierGateway.mode != "IranShetab") ||
+                    (cashierGateway.mode == "IranShetab" &&
+                      currentUser.bankInfos.length > 0)
+                  ) {
                     return (
                       <Card
                         fluid
@@ -211,8 +216,8 @@ function Cashier(prop) {
       <Active {...prop} />
       <Tab
         panes={panes}
-        className="maxheight "
-        defaultActiveIndex={key}
+        className="maxheight"
+        activeIndex={key}
         onTabChange={(e, data) => {
           prop.onUpdateItem("keyCashier", data.activeIndex);
         }}

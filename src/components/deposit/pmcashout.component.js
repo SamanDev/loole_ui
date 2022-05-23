@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { IMaskInput } from "react-imask";
 import { withRouter } from "react-router-dom";
 import userService from "services/user.service";
@@ -12,10 +12,13 @@ import {
   Label,
   Modal,
 } from "semantic-ui-react";
+import UserContext from "context/UserState";
 import Swal from "sweetalert2";
 import { useHistory } from "react-router";
 function CrDeposit(prop) {
   const history = useHistory();
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
   const [myState, setMyState] = useState({
     list: [
       { id: "amount", val: "10" },
@@ -26,6 +29,10 @@ function CrDeposit(prop) {
     ],
   });
   const setAmount = (e) => {
+    if (parseFloat(e) > currentUser.balance && currentUser.balance > 10) {
+      e = parseInt(currentUser.balance - 1).toString();
+    }
+
     onUpdateItem("amount", e);
   };
   const updateHandler = (e, data) => {
@@ -76,25 +83,27 @@ function CrDeposit(prop) {
     return _error;
   };
   const handleSubmit = () => {
-    console.log(myState);
-
     var Amount = findStateId(myState, "amount");
     onUpdateItem("submit", true);
     onUpdateItem("loading", true);
 
     if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
-      userService.createDepositCyripto("deposit", Amount, Coin).then(
+      userService.createCashoutPM(Amount).then(
         (response) => {
           onUpdateItem("loading", false);
 
-          if (response.address) {
-            //prop.onUpdateItem("openModalCashier", false)
-            //history.push("/panel/dashboard");
+          if (response.data.accessToken) {
+            Swal.fire("", "Cashout saved successfully.", "success").then(
+              (result) => {
+                prop.onUpdateItem("openModalCashier", false);
+                prop.onUpdateItem("keyCashier", 2);
+              }
+            );
           } else {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: response,
+              text: response.data,
             });
           }
         },

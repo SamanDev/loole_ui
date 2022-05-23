@@ -66,8 +66,11 @@ class MatchSection extends Component {
       message: "",
     };
   }
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props, state, handlechangeReadyEvent) {
     if (props.event !== state.item) {
+      if (state.item.status == "Pending" && props.event.status == "Ready") {
+        userService.changeReadyEvent(props.event.id);
+      }
       return {
         myState: props.myState,
         item: props.event,
@@ -264,6 +267,9 @@ class MatchSection extends Component {
       .then(
         (response) => {
           //alert(response)
+          this.setState({
+            isloading: false,
+          });
           if (response.data.accessToken) {
             this.context.setUList({ currentUser: response.data });
             localStorage.setItem("user", JSON.stringify(response.data));
@@ -379,18 +385,19 @@ class MatchSection extends Component {
       value: this.state.item.gameName + " - " + this.state.item.gameConsole,
       label: this.state.item.gameName + " - " + this.state.item.gameConsole,
     };
+
     this.setState({
       successful: false,
       message: "",
       submit: false,
       loading: false,
     });
-    if (
-      error?.response?.data?.status == 401 ||
-      error?.data?.status == 401 ||
-      error?.response?.data?.details
-    ) {
-      if (error?.response?.data?.details[0] == "Access is denied") {
+    if (error?.response?.data?.status == 401 || error?.data?.status == 401) {
+      if (
+        (error?.response?.data?.details &&
+          error?.response?.data?.details[0] == "Access is denied") ||
+        1 == 1
+      ) {
         this.props.onUpdateItem("openModalLogin", true);
         localStorage.setItem("user", JSON.stringify(defUser));
         this.context.setUList({ currentUser: defUser });

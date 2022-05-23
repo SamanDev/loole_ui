@@ -91,7 +91,7 @@ function CrDeposit(prop) {
         (response) => {
           onUpdateItem("loading", false);
 
-          if (response.address) {
+          if (response.data.address) {
             //prop.onUpdateItem("openModalCashier", false);
             prop.onReset("Reports");
             //history.push("/panel/dashboard");
@@ -99,7 +99,7 @@ function CrDeposit(prop) {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: response,
+              text: response.data,
             });
           }
         },

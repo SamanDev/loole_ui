@@ -256,7 +256,6 @@ function Panel(props) {
                           )}
                           {cashierMethod == "PerfectMoneyCashout" && (
                             <>
-                              {" "}
                               <PMCashout coins={coins} {...props} />
                             </>
                           )}

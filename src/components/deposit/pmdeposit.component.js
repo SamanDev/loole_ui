@@ -29,7 +29,6 @@ function CrDeposit(prop) {
       { id: "submit", val: false },
     ],
   });
-  
 
   const updateHandler = (e, data) => {
     var val = data.value;
@@ -79,9 +78,9 @@ function CrDeposit(prop) {
     return _error;
   };
   const handleSubmit = () => {
-    console.log(myState)
+    console.log(myState);
     var Voucher = findStateId(myState, "Voucher");
-  var Code = findStateId(myState, "Code");
+    var Code = findStateId(myState, "Code");
     onUpdateItem("submit", true);
     onUpdateItem("loading", true);
 
@@ -90,15 +89,18 @@ function CrDeposit(prop) {
         (response) => {
           onUpdateItem("loading", false);
 
-          if (response.address) {
-            //prop.onUpdateItem("openModalCashier", false)
-                //history.push("/panel/dashboard");
-            
+          if (response.data.accessToken) {
+            Swal.fire("", "Deposit saved successfully.", "success").then(
+              (result) => {
+                prop.onUpdateItem("openModalCashier", false);
+                history.push("/panel/dashboard");
+              }
+            );
           } else {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: response,
+              text: response.data,
             });
           }
         },
@@ -128,54 +130,47 @@ function CrDeposit(prop) {
   return (
     <>
       <Header as="h2" inverted>
-      eVoucher PerfectMoney Deposit
+        eVoucher PerfectMoney Deposit
       </Header>
-      <Form
-        onSubmit={handleSubmit}
-        size="big"
-       inverted
-        style={{ padding: 15 }}
-      >
+      <Form onSubmit={handleSubmit} size="big" inverted style={{ padding: 15 }}>
         <Modal.Content style={{ paddingBottom: 90 }}>
-        <Form.Input
-        error={getError(Voucher, "Please enter Voucher Number", "")}
-        fluid
-        
-        label="Voucher Number"
-        placeholder="Voucher Number"
+          <Form.Input
+            error={getError(Voucher, "Please enter Voucher Number", "")}
+            fluid
+            label="Voucher Number"
+            placeholder="Voucher Number"
             name="Voucher"
-        onChange={updateHandler}
-      />
-      <Form.Input
-        error={getError(Code, "Please enter Activation Code", "")}
-        fluid
-        
-        label="Activation Code"
-        placeholder="Activation Code"
+            onChange={updateHandler}
+          />
+          <Form.Input
+            error={getError(Code, "Please enter Activation Code", "")}
+            fluid
+            label="Activation Code"
+            placeholder="Activation Code"
             name="Code"
-        onChange={updateHandler}
-      />
-       
-    
+            onChange={updateHandler}
+          />
         </Modal.Content>
 
         <Divider />
-        <Button.Group size='large'  fluid widths='2'>
-      <Button
-          loading={loading}
-          disabled={loading}
-          color="green"
-          onClick={() => onUpdateItem("submit", true)}
-    
-        >
-          Deposit
-        </Button>
-        <Button.Or />
-    <Button  type="button"  color='red'   onClick={() => prop.onUpdateItem('openModalCashier',false)}>
-              Close
-            </Button>
-  </Button.Group>
-        
+        <Button.Group size="large" fluid widths="2">
+          <Button
+            loading={loading}
+            disabled={loading}
+            color="green"
+            onClick={() => onUpdateItem("submit", true)}
+          >
+            Deposit
+          </Button>
+          <Button.Or />
+          <Button
+            type="button"
+            color="red"
+            onClick={() => prop.onUpdateItem("openModalCashier", false)}
+          >
+            Close
+          </Button>
+        </Button.Group>
       </Form>
     </>
   );

@@ -257,7 +257,7 @@ function LockScreenPage(prop) {
         content: _arrTit[0],
         link: true,
         as: Link,
-        to: "/lobby/" + params.id + "/" + title + "/",
+        to: "/lobby/" + params.id + "/" + title + "",
       },
       {
         key: params.matchlevel

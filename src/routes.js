@@ -106,7 +106,7 @@ var routes = [
 
   {
     path: "/",
-    layout: "/lobby/:id/:title/:matchid/:matchlevel/",
+    layout: "/lobby/:id/:title/:matchid/:matchlevel",
 
     name: "Match Lobby",
     icon: "nc-icon nc-simple-add",
@@ -115,7 +115,7 @@ var routes = [
   },
   {
     path: "/",
-    layout: "/lobby/:id/:title/",
+    layout: "/lobby/:id/:title",
 
     name: "Match Lobby",
     icon: "nc-icon nc-simple-add",

@@ -3,7 +3,14 @@ import { withRouter } from "react-router-dom";
 
 // react-bootstrap components
 import { Link } from "react-router-dom";
-import { Header, Dimmer, Loader, Icon, Segment } from "semantic-ui-react";
+import {
+  Header,
+  Dimmer,
+  Loader,
+  Icon,
+  Segment,
+  Table,
+} from "semantic-ui-react";
 import {
   get_date_locale,
   getGroupBadgeBlock,
@@ -23,6 +30,51 @@ const genLink = (row) => {
     row.description.split(" - ")[1] +
     "/";
   return _link.replace(/ /g, "-").replace("-Noundefined", "");
+};
+function CleanData(options) {
+  var newArray = [];
+
+  if (options) {
+    var getC = options;
+
+    //options.map((item, w) => {
+    Object.keys(getC).map(function (key) {
+      var _obj = getC[key];
+      var _val = key;
+      if (_obj) {
+        newArray.push({
+          name: key,
+
+          value: _obj,
+        });
+      }
+    });
+  }
+
+  return newArray;
+}
+const headerRow = ["Name", "Value"];
+const renderBodyRow = ({ name, value }, i) => ({
+  key: name || `row-${i}`,
+  cells: [name, value],
+});
+const ExpandedComponent = (props) => {
+  var data = props.data;
+
+  var _data = [CleanData(data)];
+
+  var jdata = JSON.parse(JSON.stringify(_data));
+
+  return (
+    <Segment>
+      <Table
+        celled
+        color="red"
+        renderBodyRow={renderBodyRow}
+        tableData={jdata[0]}
+      />
+    </Segment>
+  );
 };
 const devWid = document.documentElement.clientWidth;
 var _perPage = 10;
@@ -164,9 +216,7 @@ const columns = [
     sortable: true,
   },
 ];
-const ExpandedComponent = ({ data }) => (
-  <pre>{JSON.stringify(data, null, 2)}</pre>
-);
+
 const noDataComponent = (
   <div
     style={{

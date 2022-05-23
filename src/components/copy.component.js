@@ -53,14 +53,13 @@ function copyText(prop) {
         {...prop}
         position="top center"
         trigger={
-          <Segment
-            basic
+          <div
             {...prop}
             style={{ paddingLeft: 0, paddingRight: 0, paddingBottom: 0 }}
             onClick={() => copyDo(myID)}
           >
             {myID}
-          </Segment>
+          </div>
         }
       />
     );

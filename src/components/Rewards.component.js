@@ -67,11 +67,8 @@ function Dashboard(prop) {
             </div>
             <Message attached="bottom" warning>
               <Message.Header>Share your unique invite link:</Message.Header>
-              <div>
-                <CopyText
-                  size="large"
-                  myid={"https://loole.gg/i/" + currentUser.username}
-                />
+              <div style={{ fontSize: "20px" }}>
+                <CopyText myid={"https://loole.gg/i/" + currentUser.username} />
               </div>
             </Message>
 

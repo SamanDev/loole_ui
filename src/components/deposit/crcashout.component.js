@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { IMaskInput } from "react-imask";
 import { withRouter } from "react-router-dom";
 import userService from "services/user.service";
@@ -14,19 +14,27 @@ import {
   Modal,
 } from "semantic-ui-react";
 import Swal from "sweetalert2";
+import UserContext from "context/UserState";
 import { useHistory } from "react-router";
 function CrDeposit(prop) {
   const history = useHistory();
+  const context = useContext(UserContext);
+  const { currentUser } = context.uList;
   const [myState, setMyState] = useState({
     list: [
       { id: "amount", val: "10" },
       { id: "coin", val: "BTC" },
+      { id: "wallet", val: "" },
       { id: "hasError", val: null },
       { id: "loading", val: false },
       { id: "submit", val: false },
     ],
   });
   const setAmount = (e) => {
+    if (parseFloat(e) > currentUser.balance && currentUser.balance > 10) {
+      e = parseInt(currentUser.balance - 1).toString();
+    }
+
     onUpdateItem("amount", e);
   };
   const updateHandler = (e, data) => {
@@ -79,22 +87,27 @@ function CrDeposit(prop) {
   const handleSubmit = () => {
     var Coin = findStateId(myState, "coin");
     var Amount = findStateId(myState, "amount");
+    var Wallet = findStateId(myState, "wallet");
     onUpdateItem("submit", true);
     onUpdateItem("loading", true);
 
     if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
-      userService.createDepositCyripto("cashout", Amount, Coin).then(
+      userService.createDepositCyripto("cashout", Amount, Coin, Wallet).then(
         (response) => {
           onUpdateItem("loading", false);
 
-          if (response.address) {
-            //prop.onUpdateItem("openModalCashier", false)
-            //history.push("/panel/dashboard");
+          if (response.data.status === 1) {
+            Swal.fire("", "Cashout saved successfully.", "success").then(
+              (result) => {
+                prop.onUpdateItem("openModalCashier", false);
+                prop.onUpdateItem("keyCashier", 2);
+              }
+            );
           } else {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: response,
+              text: response.data,
             });
           }
         },
@@ -120,7 +133,7 @@ function CrDeposit(prop) {
   var Coin = findStateId(myState, "coin");
   var Amount = findStateId(myState, "amount");
   var loading = findStateId(myState, "loading");
-
+  var Wallet = findStateId(myState, "wallet");
   return (
     <>
       <Header as="h2" inverted>
@@ -136,6 +149,15 @@ function CrDeposit(prop) {
               value={Coin}
             />
           </Form.Field>
+          <Form.Input
+            error={getError(Wallet, "Please enter your wallet Address", "")}
+            fluid
+            label={Coin + " Wallet"}
+            placeholder={Coin + " Wallet Address"}
+            name="wallet"
+            value={Wallet}
+            onChange={updateHandler}
+          />
           <Form.Field>
             <label>Amount</label>
             <Input

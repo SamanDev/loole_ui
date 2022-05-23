@@ -172,14 +172,7 @@ class ShetabCashout extends Component {
     currentUser2 = this.context.uList.currentUser;
 
     currentUser2.cardsdef = [];
-    currentUser2.cardsdef.push({
-      key: "1",
-      value: "6104138910794789",
-      text: "6104 1389 1079 4789",
-      CardNo: "6104 1389 1079 4789",
-      Expiration: "1105",
-      cvv: "842",
-    });
+
     currentUser2?.bankInfos.map((item, i) => {
       if (item.active) {
         let joy = item.cardNumber.match(/.{1,4}/g);

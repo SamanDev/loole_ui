@@ -348,6 +348,7 @@ function Admin(prop) {
           getwaysList
         ),
       ];
+
       var jdata = JSON.parse(JSON.stringify(newdata));
 
       return (
@@ -488,6 +489,22 @@ function Admin(prop) {
         <>
           <CurrencyFormat
             value={Number.parseFloat(row.point).toFixed(0)}
+            displayType={"text"}
+            thousandSeparator={true}
+            prefix={""}
+            renderText={(value) => value}
+          />
+        </>
+      ),
+      sortable: true,
+    },
+    {
+      name: "Profit",
+      selector: (row) => row.profit,
+      format: (row) => (
+        <>
+          <CurrencyFormat
+            value={Number.parseFloat(row.profit).toFixed(0)}
             displayType={"text"}
             thousandSeparator={true}
             prefix={""}

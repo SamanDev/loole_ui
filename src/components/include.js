@@ -474,6 +474,7 @@ export const vsComponentPlayer = (
   if (
     matchidFind.status == "InPlay" &&
     item.players[num].nickName &&
+    item.players[num].tagId != item.players[num].nickName &&
     isPlayerInMatch(matchidFind, currentUser.username)
   ) {
     padd = 150;
@@ -641,7 +642,8 @@ export const vsComponentPlayer = (
                       {getTagName(item.gameName, item.gameConsole)} iD
                     </Statistic.Label>
                     <Statistic.Value>
-                      {isPlayerInMatch(matchidFind, currentUser.username) ? (
+                      {isPlayerInMatch(matchidFind, currentUser.username) ||
+                      haveAdmin(currentUser.role) ? (
                         <CopyText
                           color="red"
                           size="small"
@@ -653,7 +655,7 @@ export const vsComponentPlayer = (
                     </Statistic.Value>
                   </Statistic>
                 )}
-                {_p.nickName && (
+                {_p.nickName && _p.tagId != _p.nickName && (
                   <>
                     <Divider fitted style={{ opacity: 0 }} />
                     <Statistic inverted color="olive" size="mini">
@@ -1756,16 +1758,17 @@ export const genLink = (item, match, num) => {
     " for " +
     item.prize +
     item.outSign.replace("Dollar", " USD").replace("Point", " Diamonds") +
-    " Prize/";
+    " Prize";
   if (match?.id && item.gameMode == "Tournament") {
     _link =
       _link +
+      "/" +
       match.id +
       "/" +
       getMatchTitle(match.level, item.totalPlayer) +
       " No" +
       num +
-      "/";
+      "";
   }
 
   return _link.replace(/ /g, "-").replace("-Noundefined", "");

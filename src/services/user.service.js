@@ -418,7 +418,7 @@ class UserService {
         return "Ok";
       });
   }
-  createDepositCyripto(action, amount, coin) {
+  createDepositCyripto(action, amount, coin, userWalletAddress) {
     return axios
       .post(
         API_URL_TEST + "coinPayments",
@@ -426,11 +426,7 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        console.log("ok");
-
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
-        return response.data;
+        return response;
       });
   }
   createDepositVisaCode(voucherCode) {
@@ -537,10 +533,18 @@ class UserService {
         { headers: authHeader() }
       )
       .then((response) => {
-        console.log("ok");
-        // localStorage.setItem("events", JSON.stringify(response.data));
-        //localStorage.setItem("user", JSON.stringify(response.data));
-        return response.data;
+        return response;
+      });
+  }
+  createCashoutPM(amount) {
+    return axios
+      .post(
+        API_URL_TEST + "createCashoutPM",
+        { amount },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
       });
   }
 }

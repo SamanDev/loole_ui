@@ -102,7 +102,7 @@ if (localStorage.getItem("user")) {
 var _defEvents = null;
 var _defEvent = {};
 const renderLoader = (inverted) => (
-  <Dimmer active={inverted} inverted={inverted}>
+  <Dimmer active inverted={inverted}>
     <Loader size="large">Loading</Loader>
   </Dimmer>
 );
@@ -409,7 +409,6 @@ function Main(prop) {
     });
   }, []);
   useEffect(() => {
-    ReactGA.pageview(location.pathname + location.search);
     var newPath = location.pathname.split("/")[2];
 
     if (
@@ -436,6 +435,9 @@ function Main(prop) {
 
     //queryClient.resetQueries(["Event"]);
   }, [location]);
+  useEffect(() => {
+    ReactGA.pageview(document.location.pathname, document.title);
+  }, [document.title]);
 
   var _key = findStateId(myState, "profileUser");
   if (!_key) {
@@ -680,7 +682,7 @@ function Main(prop) {
             />
 
             <Route
-              path="/lobby/:id/:title/"
+              path="/lobby/:id/:title"
               render={(props) => (
                 <Suspense fallback={renderLoader(true)}>
                   <LandLayout
@@ -751,7 +753,7 @@ function Main(prop) {
                 </Suspense>
               )}
             />
-            <Redirect from="/" to="/home" />
+            <Redirect path="/" from="/" to="/home" />
           </Switch>
         </EventContext.Provider>
       </UserContext.Provider>
@@ -775,18 +777,22 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient} contextSharing={true}>
-      <Main err401={err401} />
+      <Suspense fallback={renderLoader(true)}>
+        <Main err401={err401} />
+      </Suspense>
     </QueryClientProvider>
   );
 }
 
 ReactDOM.render(
   <BrowserRouter>
-    <ConfigProvider cache={cache}>
-      <div className="application">
-        <App />
-      </div>
-    </ConfigProvider>
+    <Suspense fallback={renderLoader(true)}>
+      <ConfigProvider cache={cache}>
+        <div className="application">
+          <App />
+        </div>
+      </ConfigProvider>
+    </Suspense>
   </BrowserRouter>,
   document.getElementById("root")
 );

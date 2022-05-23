@@ -3,10 +3,62 @@ import { withRouter } from "react-router-dom";
 
 // react-bootstrap components
 import { Link } from "react-router-dom";
-import { Header, Dimmer, Loader, Icon, Segment } from "semantic-ui-react";
+import {
+  Header,
+  Dimmer,
+  Loader,
+  Icon,
+  Segment,
+  Table,
+} from "semantic-ui-react";
 import { get_date_locale, getGroupBadgeBlock } from "components/include.js";
 import DataTable from "react-data-table-component";
 import { useUserReports } from "services/hooks";
+function CleanData(options) {
+  var newArray = [];
+
+  if (options) {
+    var getC = options;
+
+    //options.map((item, w) => {
+    Object.keys(getC).map(function (key) {
+      var _obj = getC[key];
+      var _val = key;
+      if (_obj) {
+        newArray.push({
+          name: key,
+
+          value: _obj,
+        });
+      }
+    });
+  }
+
+  return newArray;
+}
+const headerRow = ["Name", "Value"];
+const renderBodyRow = ({ name, value }, i) => ({
+  key: name || `row-${i}`,
+  cells: [name, value],
+});
+const ExpandedComponent = (props) => {
+  var data = props.data;
+
+  var _data = [CleanData(data)];
+
+  var jdata = JSON.parse(JSON.stringify(_data));
+
+  return (
+    <Segment>
+      <Table
+        celled
+        color="red"
+        renderBodyRow={renderBodyRow}
+        tableData={jdata[0]}
+      />
+    </Segment>
+  );
+};
 function editCounry(options) {
   var newArray = [];
   var newArrayDelete = [];
@@ -59,6 +111,7 @@ function editCounry(options) {
 
   return newArray;
 }
+
 const devWid = document.documentElement.clientWidth;
 var _perPage = 10;
 if (devWid < 700) {
@@ -125,16 +178,27 @@ const columns = [
           </>
         ) : (
           <>
-            {row.description
-              .replace("Event Id", "EID")
-              .replaceAll('","', " ")
-              .replace("Point", "Diamonds") +
-              " " +
-              row.mode
-                .replace("Point", "")
-                .replace("Duel", "")
-                .replace("Registered", " Join")
-                .replace("Unregistered", " Leave")}
+            {row.mode == "Deposit" || row.mode == "Cashout" ? (
+              <>
+                {row.mode}
+
+                {" - "}
+                {row.coin ? row.coin : row.gateway}
+              </>
+            ) : (
+              <>
+                {row.description
+                  .replace("Event Id", "EID")
+                  .replaceAll('","', " ")
+                  .replace("Point", "Diamonds") +
+                  " " +
+                  row.mode
+                    .replace("Point", "")
+                    .replace("Duel", "")
+                    .replace("Registered", " Join")
+                    .replace("Unregistered", " Leave")}
+              </>
+            )}
           </>
         )}
       </>
@@ -155,14 +219,18 @@ const columns = [
   {
     name: "EndBank",
     selector: (row) => row.endBalance,
-    format: (row) => getGroupBadgeBlock("Dollar", row.endBalance, "small left"),
+    format: (row) => (
+      <>
+        {row.status != "Pending"
+          ? getGroupBadgeBlock("Dollar", row.endBalance, "small left")
+          : row.status}
+      </>
+    ),
     sortable: true,
     width: "150px",
   },
 ];
-const ExpandedComponent = ({ data }) => (
-  <pre>{JSON.stringify(data, null, 2)}</pre>
-);
+
 const noDataComponent = (
   <div
     style={{
