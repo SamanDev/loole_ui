@@ -339,9 +339,7 @@ function Main(prop) {
       queryClient.setQueryData(["Events", "All"], eventsGet);
     });
     eventBus.on("eventsDataUser", (userGet) => {
-      setUList({ currentUser: userGet });
-
-      localStorage.setItem("user", JSON.stringify(userGet));
+      queryClient.resetQueries(["User"]);
     });
     eventBus.on("eventsDC", () => {
       if (
