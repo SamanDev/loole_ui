@@ -188,8 +188,7 @@ function Main(prop) {
   const logOut = () => {
     setUList({ currentUser: defUser });
     localStorage.setItem("user", JSON.stringify(defUser));
-    //AuthService.logout();
-    console.log(myPath);
+
     if (myPath == "panel") {
       history.push("/home");
       onUpdateItem("openModalLogin", false);
@@ -211,7 +210,6 @@ function Main(prop) {
     })[0].val;
   };
   const onUpdateItem = (key, val) => {
-    // console.log(val);
     if (findStateId(myState, key) != val) {
       setMyState(() => {
         const list = myState.list.map((item) => {
