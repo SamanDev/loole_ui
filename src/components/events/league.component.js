@@ -20,6 +20,7 @@ import userService from "services/user.service";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddToCal from "components/addtocal.component";
+import Table from "components/table.component";
 import Countdown from "react-countdown";
 import { Col, ProgressBar } from "react-bootstrap";
 import {
@@ -486,7 +487,12 @@ class LeagueSection extends Component {
                     {item.players.map((player, i) => {
                       return (
                         <List.Item key={i.toString()}>
-                          <List.Content style={{ textAlign: "left" }}>
+                          <List.Content
+                            style={{ textAlign: "left" }}
+                            onClick={() =>
+                              $("#" + player.username).toggleClass("hide")
+                            }
+                          >
                             <span>
                               <Link
                                 to={"/user/" + player.username}
@@ -566,6 +572,11 @@ class LeagueSection extends Component {
                                 )}
                               </Label>
                             </span>
+                            <Table
+                              data={player.clashRoyaleSet}
+                              className="hide"
+                              id={player.username}
+                            />
                           </List.Content>
                         </List.Item>
                       );

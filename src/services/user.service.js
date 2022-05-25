@@ -401,6 +401,16 @@ class UserService {
         return error;
       });
   }
+  reScotr(id) {
+    return axios
+      .post(API_URL_TEST + "testCR", { id }, { headers: authHeader() })
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        return error;
+      });
+  }
   deleteEvents() {
     return axios
       .delete(
