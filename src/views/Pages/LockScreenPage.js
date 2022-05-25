@@ -445,7 +445,12 @@ function LockScreenPage(prop) {
                 <div style={{ height: "calc(100% - 90px)", overflow: "auto" }}>
                   <Container style={{ paddingBottom: 50 }}>
                     {eventDef.gameMode == "League" ? (
-                      <LeagueSection {...prop} event={eventDef} />
+                      <LeagueSection
+                        {...prop}
+                        event={eventDef}
+                        tit={_tit}
+                        desc={_desc}
+                      />
                     ) : (
                       <>
                         {eventDef.gameMode == "Tournament" && !matchIDQ ? (

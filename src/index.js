@@ -270,6 +270,7 @@ function Main(prop) {
 
   useEffect(() => {
     if (userReports) {
+      queryClient.setQueryData(["userReports"], userReports);
       updateNot(userReports);
     }
   }, [userReports]);

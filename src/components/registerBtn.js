@@ -12,9 +12,11 @@ const LandNavbar = (prop) => {
   const { currentUser } = context.uList;
   const { setUList } = context;
   const openModalLogin = prop.findStateId(myState, "openModalLogin");
-  if (currentUser?.accessToken && openModalLogin) {
-    prop.onUpdateItem("openModalLogin", false);
-  }
+  useEffect(() => {
+    if (currentUser?.accessToken && openModalLogin == true) {
+      prop.onUpdateItem("openModalLogin", false);
+    }
+  }, [currentUser]);
 
   return (
     <>

@@ -13,20 +13,13 @@ import {
   Header,
   List,
   Message,
-  Icon,
 } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlaystation, faXbox } from "@fortawesome/free-brands-svg-icons";
-
-import {
-  faDesktop,
-  faMobileAlt,
-  faGlobe,
-} from "@fortawesome/free-solid-svg-icons";
+import AddToCal from "components/addtocal.component";
 import Countdown from "react-countdown";
 import { Col, ProgressBar } from "react-bootstrap";
 import {
@@ -41,6 +34,7 @@ import {
   printJoinalerts,
   getIconPlat,
   printTag,
+  isJson,
 } from "components/include";
 import UserContext from "context/UserState";
 const Toast = Swal.mixin({
@@ -229,10 +223,16 @@ class LeagueSection extends Component {
   render() {
     const item = this.props.event;
     const currentUser = this.context.uList.currentUser;
+    const tit = this.props.tit;
+    const desc = this.props.desc;
     let { progress, isUpLoading, progressLable, loading, activeIndex } =
       this.state;
+    var _d = new Date();
+    var _s = new Date(item.startTime);
+    var _track = item.rules;
     var current_brackets = [];
     var potential_brackets = [];
+
     var pointTrack = [
       {
         text: "Kills",
@@ -273,44 +273,11 @@ class LeagueSection extends Component {
         weight: "Average of Top 20",
       },
     ];
-    if (item.gameName == "ClashRoyale") {
-      RuleTrack = [
-        {
-          text: "Mode Track",
-          weight: "Battle",
-        },
-        {
-          text: "Min Match",
-          weight: "20",
-        },
-        {
-          text: "Max Cup",
-          weight: "20,000",
-        },
-        {
-          text: "Total Point",
-          weight: "Average of Top 20",
-        },
-      ];
-      pointTrack = [
-        {
-          text: "HP",
-          weight: " x 0.06",
-        },
 
-        {
-          text: "3 - 0 Win",
-          weight: " + 240",
-        },
-        {
-          text: "+2 Win",
-          weight: " + 60",
-        },
-        {
-          text: "+1 Win",
-          weight: " + 20",
-        },
-      ];
+    if (isJson(_track)) {
+      var _JsonTrack = JSON.parse(_track);
+      RuleTrack = _JsonTrack["RuleTrack"];
+      pointTrack = _JsonTrack["pointTrack"];
     }
     //var events = eventGet;
     var tournamentPayout = false;
@@ -438,6 +405,22 @@ class LeagueSection extends Component {
             null,
             this.handleJoinMatch,
             this.props.onUpdateItem
+          )}
+          <Divider style={{ opacity: 0 }} />
+          {_s > _d && (
+            <>
+              <div
+                style={{
+                  position: "relative",
+                  maxWidth: 300,
+                  margin: "auto",
+                }}
+              >
+                <AddToCal item={item} tit={tit} desc={desc} match={null} />
+              </div>
+              <br />
+              <br />
+            </>
           )}
           {(item.status == "Pending" || item.status == "InPlay") &&
             item.players.length != item.totalPlayer && (

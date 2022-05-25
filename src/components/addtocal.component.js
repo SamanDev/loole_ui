@@ -21,17 +21,23 @@ class Example extends React.Component {
 
   render() {
     var startTime = moment(this.props.item.startTime).format("YYYYMMDDTHHmmss");
+    if (this.props.item.timeMinute) {
+      var endTime = moment(startTime)
+        .add(this.props.item.timeMinute * this.props.item.eventLevel, "minutes")
+        .format("YYYYMMDDTHHmmss");
+      var duration = parseFloat(this.props.item.timeMinute / 60);
+    } else {
+      var endTime = moment(this.props.item.finished).format("YYYYMMDDTHHmmss");
+      var duration = parseFloat(endTime - startTime);
+    }
 
-    var endTime = moment(startTime)
-      .add(this.props.item.timeMinute * this.props.item.eventLevel, "minutes")
-      .format("YYYYMMDDTHHmmss");
     if (this.props.match) {
       startTime = moment(this.props.match.startTime).format("YYYYMMDDTHHmmss");
       endTime = moment(startTime)
         .add(this.props.item.timeMinute, "minutes")
         .format("YYYYMMDDTHHmmss");
     }
-    const duration = parseFloat(this.props.item.timeMinute / 60);
+
     const eventInDifferentTimezone = {
       description: window.location.toString() + " " + this.props.desc,
       duration,
