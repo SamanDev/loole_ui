@@ -13,6 +13,7 @@ import {
   printStatus,
   getMatchTitle,
   findMatch,
+  date_edit,
 } from "components/include.js";
 import {
   Icon,
@@ -49,6 +50,7 @@ function MatchCard(prop) {
   }
   _finishTxt = "";
   item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
+
   var timestring1 = item.startTime;
   var timestring2 = new Date();
   var startdate = moment(timestring1).format();
@@ -116,7 +118,7 @@ function MatchCard(prop) {
               colorfinish={getColorStatus(item.status)}
               finish={item.status + "@@@Not Available"}
               match={item}
-              date={item.expire}
+              date={date_edit(item.finished)}
               mode={_mode}
               color={_color}
             />
@@ -129,7 +131,7 @@ function MatchCard(prop) {
                   colorfinish={getColorStatus(item.status)}
                   finish={item.status + "@@@Not Available"}
                   match={item}
-                  date={item.startTime}
+                  date={date_edit(item.startTime)}
                   mode={_mode}
                   color={_color}
                 />
@@ -141,7 +143,7 @@ function MatchCard(prop) {
                     colorfinish={getColorStatus(item.status)}
                     finish={item.status + "@@@Not Available"}
                     match={item.matchTables[0]}
-                    date={item.expire}
+                    date={date_edit(item.expire)}
                     mode={_mode}
                     color={_color}
                   />

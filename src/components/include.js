@@ -95,9 +95,12 @@ export const get_date_locale = (thisDate) => {
   return b;
 };
 export const date_edit = (thisDate) => {
-  //console.log('thisDate: '+thisDate)
-  var mom = moment(thisDate).format("YYYY-MM-DDThh:mm:ss.000-08:00");
-  //thisDate = thisDate.replace('+00:00','-08:00');
+  var thisDate2 = thisDate.replace("-07:00", "+00:00");
+
+  var mom = moment(thisDate2).format();
+  console.log(mom);
+  mom = get_date_locale(mom);
+  console.log(mom);
   //console.log('momennt: '+mom)
   return mom;
 };
@@ -2192,7 +2195,7 @@ export const editDateTime = (datee) => {
   } catch (e) {
     var dt = datee.replace(" ", "T") + "00Z";
     console.log(dt);
-    var dtN = Moment(dt).format("YYYY-MM-DDThh:mm:ss.000-08:00");
+    var dtN = Moment(dt).format("YYYY-MM-DDThh:mm:ss.000+08:00");
     console.log(dtN);
     var datenew = new Date(dtN);
     var dateExpired = datenew.toISOString();

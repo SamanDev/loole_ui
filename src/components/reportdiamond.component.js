@@ -12,7 +12,7 @@ import {
   Table,
 } from "semantic-ui-react";
 import {
-  get_date_locale,
+  date_edit,
   getGroupBadgeBlock,
   haveAdmin,
 } from "components/include.js";
@@ -157,7 +157,7 @@ const columns = [
   {
     name: "Date",
     selector: (row) => row.createDate,
-    format: (row) => get_date_locale(row.createDate),
+    format: (row) => date_edit(row.createDate),
     width: "150px",
   },
   {

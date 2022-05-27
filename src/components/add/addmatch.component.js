@@ -16,7 +16,13 @@ import {
   Header,
 } from "semantic-ui-react";
 import { Row, Col } from "react-bootstrap";
-import { handleTagForm, printJoinalerts } from "components/include";
+import {
+  handleTagForm,
+  printJoinalerts,
+  date_edit,
+  date_locale,
+  get_date_locale,
+} from "components/include";
 import MatchCard from "components/matchcard.component";
 import MatchBlock from "components/matchblock.component";
 import UserContext from "context/UserState";
@@ -315,11 +321,18 @@ class AddMatch extends Component {
   render() {
     const currentUser = this.context.uList.currentUser;
     var timestring1 = new Date();
-    var startdate = moment(timestring1).format();
 
-    startdate = moment(startdate)
+    var utcDate = timestring1.toUTCString();
+
+    var startdate = moment(utcDate).format();
+
+    var enddate = moment(startdate)
       .add(this.state.AvalableFor.value, "minutes")
-      .format();
+      .format("YYYY-MM-DDThh:mm:ss.000");
+
+    startdate = moment(startdate).format();
+    enddate = moment(enddate).format();
+
     var item = {
       commission: 90,
       id: 33,
@@ -338,8 +351,8 @@ class AddMatch extends Component {
       inSign: this.state.inSign.value,
       outSign: this.state.inSign.value,
       rules: null,
-      expire: startdate,
-      startTime: "2021-11-01T20:34:39.000+00:00",
+      expire: date_edit(enddate),
+      startTime: date_edit(startdate),
       finished: "2021-11-01T20:34:39.000+00:00",
       players: [
         {
@@ -435,7 +448,7 @@ class AddMatch extends Component {
                       content: "30 M",
                       type: "button",
                       active: this.state.AvalableFor.value == "30" && true,
-                      onClick: () => this.setAvalableFor({ value: "1" }),
+                      onClick: () => this.setAvalableFor({ value: "30" }),
                     },
                     {
                       key: "60",

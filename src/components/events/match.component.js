@@ -22,6 +22,7 @@ import {
   getCode,
   getColor,
   rendererBig,
+  date_edit,
 } from "components/include.js";
 import { Divider, Segment, Grid, Statistic, Button } from "semantic-ui-react";
 import { POSTURLTest } from "const";
@@ -473,7 +474,7 @@ class MatchSection extends Component {
               txt="@@@Available until"
               match={match}
               colorfinish={getColor(item.prize)}
-              date={item.expire}
+              date={date_edit(item.expire)}
             />
             <Admin {...this.props} />
             <Segment basic>

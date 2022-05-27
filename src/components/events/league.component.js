@@ -36,6 +36,7 @@ import {
   getIconPlat,
   printTag,
   isJson,
+  date_edit,
 } from "components/include";
 import UserContext from "context/UserState";
 const Toast = Swal.mixin({
@@ -56,6 +57,7 @@ var icStart = 0;
 var icStartL = 0;
 var isJoin = false;
 var activePlayer = 0;
+var _minMatch = 0;
 class LeagueSection extends Component {
   static contextType = UserContext;
   constructor(props) {
@@ -224,11 +226,10 @@ class LeagueSection extends Component {
     return null;
   }
   render() {
-    const item = this.props.event;
     const currentUser = this.context.uList.currentUser;
     const tit = this.props.tit;
     const desc = this.props.desc;
-    let { progress, isUpLoading, progressLable, loading, activeIndex } =
+    let { progress, isUpLoading, progressLable, loading, activeIndex, item } =
       this.state;
     var _d = new Date();
     var _s = new Date(item.startTime);
@@ -401,17 +402,19 @@ class LeagueSection extends Component {
               txt="@@@Start at"
               colorfinish={getColorStatus(item.status)}
               finish={item.status + "@@@Not Available"}
-              date={item.startTime}
+              date={date_edit(item.startTime)}
             />
           )}
+
           <Countdown
             renderer={rendererBig}
             match={item}
             txt="@@@Available Until"
             colorfinish={getColorStatus(item.status)}
             finish={item.status + "@@@Not Available"}
-            date={item.expire}
+            date={date_edit(item.finished)}
           />
+
           {item.status != "Finished" && (
             <>
               <Divider fitted style={{ opacity: 0 }} />
@@ -596,6 +599,7 @@ class LeagueSection extends Component {
                             <Table
                               data={player.clashRoyaleSet}
                               className="hide"
+                              minMatch={_minMatch}
                               id={player.username}
                             />
                           </List.Content>
@@ -611,6 +615,9 @@ class LeagueSection extends Component {
               <Message color="red">
                 <List divided relaxed>
                   {RuleTrack.map((win, i) => {
+                    if (win.text == "Min Match") {
+                      _minMatch = win.weight;
+                    }
                     return (
                       <List.Item key={i.toString()}>
                         <List.Content style={{ textAlign: "left" }}>
