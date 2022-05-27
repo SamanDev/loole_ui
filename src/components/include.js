@@ -91,7 +91,7 @@ export const getPageVariable = () => {
 
 export const get_date_locale = (thisDate) => {
   var d = new Date(thisDate);
-  var b = d.toLocaleDateString() + " " + d.toTimeString().split(" ")[0];
+  var b = d.toLocaleDateString() + " " + d.toTimeString();
   return b;
 };
 export const date_edit = (thisDate) => {

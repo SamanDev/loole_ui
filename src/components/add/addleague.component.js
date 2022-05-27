@@ -166,7 +166,7 @@ class AddTour extends Component {
   }
   setRules(e) {
     this.setState({
-      Rules: e,
+      Rules: e.target.value,
     });
   }
   setTournamentPayout(e) {

@@ -9,6 +9,7 @@ import { haveAdmin } from "components/include";
 
 import AddTournament from "components/add/addtournament.component";
 import AddLeague from "components/add/addleague.component";
+import AddClashRoyale from "components/add/addclashroyale.component";
 import UserContext from "context/UserState";
 class CreateMatch extends Component {
   static contextType = UserContext;
@@ -31,6 +32,9 @@ class CreateMatch extends Component {
                 <Nav.Item>
                   <Nav.Link eventKey="league">League</Nav.Link>
                 </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="clashroyale">ClashRoyale</Nav.Link>
+                </Nav.Item>
               </>
             )}
           </Nav>
@@ -45,6 +49,12 @@ class CreateMatch extends Component {
                 </Tab.Pane>
                 <Tab.Pane eventKey="league" className="ui  segment  tab basic">
                   <AddLeague token={currentUser} {...this.props} />
+                </Tab.Pane>
+                <Tab.Pane
+                  eventKey="clashroyale"
+                  className="ui  segment  tab basic"
+                >
+                  <AddClashRoyale token={currentUser} {...this.props} />
                 </Tab.Pane>
               </Tab.Content>
             </Card.Body>

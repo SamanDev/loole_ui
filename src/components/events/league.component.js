@@ -45,7 +45,9 @@ const Toast = Swal.mixin({
   timer: 3000,
   timerProgressBar: true,
 });
-
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
 //console.log(item);
 var dateExpired = null;
 var dateStart = null;
@@ -284,7 +286,12 @@ class LeagueSection extends Component {
     var tournamentPayout = false;
     if (item.tournamentPayout && !tournamentPayout) {
       tournamentPayout = item.tournamentPayout
-        .replace("70,", "1-70,")
+        .replace("2,", "1-2,")
+        .replace("5,", "3-5,")
+        .replace("10,", "6-10,")
+        .replace("20,", "11-20,")
+        .replace("50,", "21-50,")
+        .replace("70,", "51-70,")
         .replace("100,", "71-100,")
         .replace("200,", "101-200,")
         .replace("400,", "201-400,")
@@ -315,17 +322,25 @@ class LeagueSection extends Component {
         var paylvl = payArr[i].split(",");
         var payplyer = paylvl[0].split("-");
         var tItem = item.players.length;
-        var totalPay2 = totalPay * tItem;
+        var totalPay2 = totalPay;
 
         if (parseInt(payplyer[0]) <= tItem && parseInt(payplyer[1]) >= tItem) {
-          totalPay2 = totalPay2 / parseInt(payplyer[1]);
+          console.log(payplyer[0]);
+          console.log(payplyer);
+          console.log(tItem);
+          console.log(totalPay2);
+          totalPay2 = totalPay2 / parseInt(payplyer[0]);
+
           for (var j = 1; j < paylvl.length; j++) {
             if (paylvl[j].indexOf("x") == -1) {
               paylvl[j] = paylvl[j] + "x1";
             }
+
             var intX = paylvl[j].split("x");
+            console.log(totalPay2);
+            console.log(parseInt(intX[0]));
             current_brackets.push({
-              prize: intX[0] * totalPay2,
+              prize: parseInt(intX[0]) * totalPay2,
               percent: intX[0],
               number: intX[1],
             });
@@ -379,14 +394,16 @@ class LeagueSection extends Component {
             item.status
           )}
           <Divider fitted style={{ opacity: 0 }} />
-          <Countdown
-            renderer={rendererBig}
-            match={item}
-            txt="@@@Start at"
-            colorfinish={getColorStatus(item.status)}
-            finish={item.status + "@@@Not Available"}
-            date={item.startTime}
-          />
+          {item.status == "Pending" && (
+            <Countdown
+              renderer={rendererBig}
+              match={item}
+              txt="@@@Start at"
+              colorfinish={getColorStatus(item.status)}
+              finish={item.status + "@@@Not Available"}
+              date={item.startTime}
+            />
+          )}
           <Countdown
             renderer={rendererBig}
             match={item}
@@ -395,89 +412,93 @@ class LeagueSection extends Component {
             finish={item.status + "@@@Not Available"}
             date={item.expire}
           />
-          <Divider fitted style={{ opacity: 0 }} />
-
-          {printEventBTN(
-            item,
-            currentUser,
-            loading,
-            activePlayer,
-            isJoin,
-            null,
-            this.handleJoinMatch,
-            this.props.onUpdateItem
-          )}
-          <Divider style={{ opacity: 0 }} />
-          {_s > _d && (
+          {item.status != "Finished" && (
             <>
-              <div
-                style={{
-                  position: "relative",
-                  maxWidth: 300,
-                  margin: "auto",
-                }}
-              >
-                <AddToCal item={item} tit={tit} desc={desc} match={null} />
-              </div>
-              <br />
-              <br />
+              <Divider fitted style={{ opacity: 0 }} />
+
+              {printEventBTN(
+                item,
+                currentUser,
+                loading,
+                activePlayer,
+                isJoin,
+                null,
+                this.handleJoinMatch,
+                this.props.onUpdateItem
+              )}
+              <Divider style={{ opacity: 0 }} />
+              {_s > _d && (
+                <>
+                  <div
+                    style={{
+                      position: "relative",
+                      maxWidth: 300,
+                      margin: "auto",
+                    }}
+                  >
+                    <AddToCal item={item} tit={tit} desc={desc} match={null} />
+                  </div>
+                  <br />
+                  <br />
+                </>
+              )}
+              {(item.status == "Pending" || item.status == "InPlay") &&
+                item.players.length != item.totalPlayer && (
+                  <>
+                    <small
+                      style={{
+                        marginTop: 10,
+                        marginBottom: 10,
+                        display: "block",
+                        fontSize: 20,
+                      }}
+                    >
+                      {item.players.length}/{item.totalPlayer}
+                    </small>
+                    <ProgressBar
+                      animated
+                      variant="danger"
+                      now={(item.players.length / item.totalPlayer) * 100}
+                      style={{
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        maxWidth: "50%",
+                      }}
+                    />
+                  </>
+                )}
+
+              {item.players.map((user, z) => (
+                <span key={z}>
+                  {currentUser.username == user.username && (isJoin = true)}
+                  {z < 5 ? (
+                    <>
+                      {z < 4 ? (
+                        <Avatar
+                          size="25"
+                          title={user.username}
+                          round={true}
+                          name={setAvatar(user.username)}
+                        />
+                      ) : (
+                        <Avatar
+                          size="25"
+                          round={true}
+                          value={"+" + (item.players.length - 4)}
+                          color="gray"
+                        />
+                      )}
+                    </>
+                  ) : null}
+                </span>
+              ))}
             </>
           )}
-          {(item.status == "Pending" || item.status == "InPlay") &&
-            item.players.length != item.totalPlayer && (
-              <>
-                <small
-                  style={{
-                    marginTop: 10,
-                    marginBottom: 10,
-                    display: "block",
-                    fontSize: 20,
-                  }}
-                >
-                  {item.players.length}/{item.totalPlayer}
-                </small>
-                <ProgressBar
-                  animated
-                  variant="danger"
-                  now={(item.players.length / item.totalPlayer) * 100}
-                  style={{
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    maxWidth: "50%",
-                  }}
-                />
-              </>
-            )}
-
-          {item.players.map((user, z) => (
-            <span key={z}>
-              {currentUser.username == user.username && (isJoin = true)}
-              {z < 5 ? (
-                <>
-                  {z < 4 ? (
-                    <Avatar
-                      size="25"
-                      title={user.username}
-                      round={true}
-                      name={setAvatar(user.username)}
-                    />
-                  ) : (
-                    <Avatar
-                      size="25"
-                      round={true}
-                      value={"+" + (item.players.length - 4)}
-                      color="gray"
-                    />
-                  )}
-                </>
-              ) : null}
-            </span>
-          ))}
           <Col
             className="mx-auto text-center "
             lg="8"
             md="10"
-            style={{ padding: 0, marginTop: 120 }}
+            style={{ padding: 0, marginTop: 20 }}
           >
             {item.players?.length > 0 && (
               <Segment inverted color="red">
@@ -597,7 +618,19 @@ class LeagueSection extends Component {
                             <Label>{win.text}</Label>
                           </span>
                           <span style={{ float: "right", marginLeft: 5 }}>
-                            <Label color="red">{win.weight}</Label>
+                            <Label color="red">
+                              {isNumeric(win.weight) ? (
+                                <CurrencyFormat
+                                  value={win.weight}
+                                  displayType={"text"}
+                                  thousandSeparator={true}
+                                  prefix={""}
+                                  renderText={(value) => value}
+                                />
+                              ) : (
+                                win.weight
+                              )}
+                            </Label>
                           </span>
                         </List.Content>
                       </List.Item>
