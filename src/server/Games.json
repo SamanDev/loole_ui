@@ -34,6 +34,23 @@
         }
       ]
     },
+    {
+      "name": "BrawlStars",
+      "active": false,
+      "haveMatch": true,
+      "haveTournament": false,
+      "haveLeague": true,
+      "gameconsole": [
+        {
+          "consolename": "Mobile"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "Duel"
+        }
+      ]
+    },
 
     {
       "name": "Fifa2022",
