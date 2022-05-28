@@ -36,7 +36,7 @@ const getBlockGames = (filtermode) => {
   Games.games.map((item) => {
     item.gameconsole.map((consoles) => {
       if (filtermode == "Match") {
-        if (item.haveMatch == true) {
+        if (item.haveMatch == true && item.active) {
           gamemap.push({
             value: item.name + " - " + consoles.consolename,
             text: item.name + " - " + consoles.consolename,

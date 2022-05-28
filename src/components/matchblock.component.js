@@ -50,7 +50,15 @@ function MatchBlock(prop) {
     _finishTxt = "Not Available";
   }
   _finishTxt = "";
-  item.players.sort((a, b) => (a.id > b.id ? 1 : -1));
+
+  item?.players.sort(function (a, b) {
+    if (a === b || (a.ranking === b.ranking && a.totalScore === b.totalScore))
+      return 0;
+    if (a.totalScore > b.totalScore) return -1;
+    if (a.totalScore < b.totalScore) return 1;
+    if (a.ranking > b.ranking) return 1;
+    if (a.ranking < b.ranking) return -1;
+  });
   var _link = genLink(item);
 
   return (
