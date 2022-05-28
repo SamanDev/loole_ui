@@ -333,10 +333,10 @@ function Main(prop) {
 
   useEffect(() => {
     eventBus.on("eventsData", (eventsGet) => {
-      _defEvents = eventsGet;
+      //  _defEvents = eventsGet;
 
-      setMyList({ events: eventsGet });
-      localStorage.setItem("_defEventsBus", JSON.stringify(_defEvents));
+      //  setMyList({ events: eventsGet });
+      //  localStorage.setItem("_defEventsBus", JSON.stringify(_defEvents));
       queryClient.setQueryData(["Events", "All"], eventsGet);
     });
     eventBus.on("eventsDataUser", (userGet) => {
@@ -371,7 +371,8 @@ function Main(prop) {
     });
     eventBus.on("eventsDataEventDo", (eventGet) => {
       if (eventGet?.id) {
-        queryClient.setQueryData(["Event", eventGet.id], eventGet);
+        //squeryClient.setQueryData(["Event", eventGet.id], eventGet);
+        queryClient.resetQueries(["Event", eventGet.id]);
         var _find = findActiveMatch(eventGet, matchIDQ, currentUser.username);
 
         if (

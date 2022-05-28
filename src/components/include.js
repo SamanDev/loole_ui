@@ -91,16 +91,46 @@ export const getPageVariable = () => {
 
 export const get_date_locale = (thisDate) => {
   var d = new Date(thisDate);
+
   var b = d.toLocaleDateString() + " " + d.toTimeString();
   return b;
 };
 export const date_edit = (thisDate) => {
+  //var thisDate2 = thisDate.replace("-07:00", "+00:00");
+
+  var mom = moment.parseZone(thisDate).utc().format();
+  console.log(mom);
+  mom = editDateTime(mom);
+  // console.log(mom);
+  //console.log('momennt: '+mom)
+  return mom;
+};
+export const date_edit_report = (thisDate) => {
   var thisDate2 = thisDate.replace("-07:00", "+00:00");
 
-  var mom = moment(thisDate2).format();
-  console.log(mom);
-  mom = get_date_locale(mom);
-  console.log(mom);
+  var mom = moment(thisDate2).local().format("YYYY-MM-DD HH:mm");
+
+  // console.log(mom);
+  //console.log('momennt: '+mom)
+  return mom;
+};
+export const date_edit_card = (thisDate) => {
+  var thisDate2 = thisDate.replace("-07:00", "+00:00");
+
+  var mom = moment(thisDate2).local().format();
+
+  // console.log(mom);
+  //console.log('momennt: '+mom)
+  return mom;
+};
+export const date_edit_dec = (thisDate) => {
+  //var thisDate2 = thisDate.replace("-07:00", "+00:00");
+
+  var mom = moment(thisDate).local().format();
+  //mom = moment(mom).utcOffset("+07:00").format();
+
+  //mom = date_edit_report(mom);
+
   //console.log('momennt: '+mom)
   return mom;
 };
@@ -2186,18 +2216,15 @@ export const printRequired = () => {
 export const editDateTime = (datee) => {
   //dt = Moment(dt).format('YYYY-MM-DDThh:mm:ss.0')
   //var date = new Date();
-
+  console.log(datee);
   try {
     var dt = datee;
     var datenew = new Date(dt);
-
+    console.log(datenew);
     var dateExpired = datenew.toISOString();
+    console.log(dateExpired);
   } catch (e) {
-    var dt = datee.replace(" ", "T") + "00Z";
-    console.log(dt);
-    var dtN = Moment(dt).format("YYYY-MM-DDThh:mm:ss.000+08:00");
-    console.log(dtN);
-    var datenew = new Date(dtN);
+    var datenew = new Date();
     var dateExpired = datenew.toISOString();
   }
   return dateExpired;

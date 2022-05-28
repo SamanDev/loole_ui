@@ -15,7 +15,7 @@ import {
   getMatchTitle,
   findMatch,
   genLink,
-  date_edit,
+  date_edit_card,
 } from "components/include.js";
 import {
   Icon,
@@ -114,7 +114,7 @@ function MatchBlock(prop) {
               colorfinish={getColorStatus(item.status)}
               finish={item.status + "@@@Not Available"}
               match={item}
-              date={date_edit(item.finished)}
+              date={date_edit_card(item.finished)}
               mode={_mode}
               color={_color}
             />
@@ -127,7 +127,7 @@ function MatchBlock(prop) {
                   colorfinish={getColorStatus(item.status)}
                   finish={item.status + "@@@Not Available"}
                   match={item}
-                  date={date_edit(item.startTime)}
+                  date={date_edit_card(item.startTime)}
                   mode={_mode}
                   color={_color}
                 />
@@ -140,7 +140,7 @@ function MatchBlock(prop) {
                     colorfinish={getColorStatus(item.status)}
                     finish={item.status + "@@@Not Available"}
                     match={item}
-                    date={date_edit(item.expire)}
+                    date={date_edit_card(item.expire)}
                     mode={_mode}
                     color={_color}
                   />

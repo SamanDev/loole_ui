@@ -11,7 +11,7 @@ import {
   Segment,
   Table,
 } from "semantic-ui-react";
-import { date_edit, getGroupBadgeBlock } from "components/include.js";
+import { date_edit_report, getGroupBadgeBlock } from "components/include.js";
 import DataTable from "react-data-table-component";
 import { useUserReports } from "services/hooks";
 function CleanData(options) {
@@ -142,7 +142,7 @@ const columns = [
   {
     name: "Date",
     selector: (row) => row.createDate,
-    format: (row) => date_edit(row.createDate),
+    format: (row) => date_edit_report(row.createDate),
     width: "150px",
   },
   {

@@ -12,7 +12,7 @@ import {
   Table,
 } from "semantic-ui-react";
 import {
-  date_edit,
+  date_edit_report,
   getGroupBadgeBlock,
   haveAdmin,
 } from "components/include.js";
@@ -20,6 +20,7 @@ import {
 import DataTable from "react-data-table-component";
 import { useUserReports } from "services/hooks";
 import UserContext from "context/UserState";
+var moment = require("moment");
 const genLink = (row) => {
   var _link =
     "/lobby/" +
@@ -157,8 +158,8 @@ const columns = [
   {
     name: "Date",
     selector: (row) => row.createDate,
-    format: (row) => date_edit(row.createDate),
-    width: "150px",
+    format: (row) => date_edit_report(row.createDate),
+    width: "350px",
   },
   {
     name: "Description",

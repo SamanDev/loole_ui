@@ -22,6 +22,9 @@ import {
   date_edit,
   date_locale,
   get_date_locale,
+  date_edit_dec,
+  date_edit_card,
+  editDateTime,
 } from "components/include";
 import MatchCard from "components/matchcard.component";
 import MatchBlock from "components/matchblock.component";
@@ -117,8 +120,11 @@ const getBlockGameModesVal = (filtermode) => {
 
   return gamemaplocal[0];
 };
-var moment = require("moment");
 
+var now = new Date();
+
+var start = moment(now).format();
+var startUtc = editDateTime(start);
 class AddMatch extends Component {
   static contextType = UserContext;
   constructor(props) {

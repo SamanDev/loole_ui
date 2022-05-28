@@ -190,7 +190,7 @@ function LockScreenPage(prop) {
     });
   };
   const handleDelete = () => {
-    userService.reScotr(eventIDQ).then(
+    adminService.deleteEvent(eventIDQ).then(
       (response) => {
         history.push("/panel/dashboard");
         //window.location.replace("/panel/dashboard");

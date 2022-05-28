@@ -13,7 +13,7 @@ import {
   printStatus,
   getMatchTitle,
   findMatch,
-  date_edit,
+  date_edit_card,
 } from "components/include.js";
 import {
   Icon,
@@ -118,7 +118,7 @@ function MatchCard(prop) {
               colorfinish={getColorStatus(item.status)}
               finish={item.status + "@@@Not Available"}
               match={item}
-              date={date_edit(item.finished)}
+              date={date_edit_card(item.finished)}
               mode={_mode}
               color={_color}
             />
@@ -131,7 +131,7 @@ function MatchCard(prop) {
                   colorfinish={getColorStatus(item.status)}
                   finish={item.status + "@@@Not Available"}
                   match={item}
-                  date={date_edit(item.startTime)}
+                  date={date_edit_card(item.startTime)}
                   mode={_mode}
                   color={_color}
                 />
@@ -143,7 +143,7 @@ function MatchCard(prop) {
                     colorfinish={getColorStatus(item.status)}
                     finish={item.status + "@@@Not Available"}
                     match={item.matchTables[0]}
-                    date={date_edit(item.expire)}
+                    date={date_edit_card(item.expire)}
                     mode={_mode}
                     color={_color}
                   />

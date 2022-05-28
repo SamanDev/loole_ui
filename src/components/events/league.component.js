@@ -37,6 +37,7 @@ import {
   printTag,
   isJson,
   date_edit,
+  date_edit_card,
 } from "components/include";
 import UserContext from "context/UserState";
 const Toast = Swal.mixin({
@@ -392,8 +393,11 @@ class LeagueSection extends Component {
             _mode,
             _color,
             item.status + "@@@" + _finishTxt,
-            item.status
+            item.status,
+            "",
+            "yes"
           )}
+
           <Divider fitted style={{ opacity: 0 }} />
           {item.status == "Pending" && (
             <Countdown
@@ -402,19 +406,17 @@ class LeagueSection extends Component {
               txt="@@@Start at"
               colorfinish={getColorStatus(item.status)}
               finish={item.status + "@@@Not Available"}
-              date={date_edit(item.startTime)}
+              date={date_edit_card(item.startTime)}
             />
           )}
-
           <Countdown
             renderer={rendererBig}
             match={item}
             txt="@@@Available Until"
             colorfinish={getColorStatus(item.status)}
             finish={item.status + "@@@Not Available"}
-            date={date_edit(item.finished)}
+            date={date_edit_card(item.finished)}
           />
-
           {item.status != "Finished" && (
             <>
               <Divider fitted style={{ opacity: 0 }} />

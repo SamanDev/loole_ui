@@ -11,7 +11,12 @@ import Games from "server/Games";
 import { Row, Col } from "react-bootstrap";
 import MatchCard from "components/matchcard.component";
 import { Header, Card, Grid, Divider } from "semantic-ui-react";
-import { handleTagForm } from "components/include";
+import {
+  handleTagForm,
+  date_edit,
+  date_edit_dec,
+  editDateTime,
+} from "components/include";
 
 const getBlockGames = (filtermode) => {
   var gamemap = [];
@@ -79,16 +84,17 @@ const getBlockGameModesVal = (filtermode) => {
   return gamemaplocal[0];
 };
 var moment = require("moment");
-var nowS = new Date();
-var nowE = moment(nowS).add(1, "days");
+var now = new Date();
 
-var stdate = moment(nowE).format("YYYY-MM-DDTHH:00");
+var start = moment(now).format();
 
-var nowS2 = new Date();
-var nowE2 = moment(nowS2).add(3, "days");
+var startUtc = date_edit_dec(start);
+startUtc = moment(startUtc).format("YYYY-MM-DDTHH:mm");
+var startFrmat = startUtc;
 
-var endate = moment(nowE2).format("YYYY-MM-DDTHH:00");
-var _StartTime = new Date(stdate).valueOf();
+var end = moment(start).add(30, "minutes");
+
+var endFormat = moment(end).format("YYYY-MM-DDTHH:mm");
 
 function getRules(minMatch, MinCup, MaxCup, hp, tc, w3, w2, w1, drow) {
   var _rules = {
@@ -148,24 +154,24 @@ class AddTour extends Component {
       GName: { value: "ClashRoyale - Mobile", label: "ClashRoyale - Mobile" },
       GameMode: { value: "Duel", label: "Duel" },
       TournamentMode: { value: "4", label: "4 Players" },
-
+      iteem: {},
       currentUser: this.props.token,
       gamemaplocal: [],
       BetAmount: 10,
-      Prize: "",
+      Prize: 0,
       AvalableFor: { value: "60", label: "1 Hour" },
       TotalPlayer: 200,
-      StartTimeLeague: stdate,
+      StartTimeLeague: startFrmat,
       timePlusEnd: 30,
-      timePlusStr: { value: "days", label: "Days" },
-      EndTimeLeague: endate,
+      timePlusStr: { value: "minutes", label: "Minutes" },
+      EndTimeLeague: endFormat,
       loading: false,
       submit: false,
       GameTag: "",
       message: "",
       Rules: "",
-      inSign: { value: "Dollar", label: "Dollar" },
-      outSign: { value: "Dollar", label: "Dollar" },
+      inSign: { value: "Point", label: "Point" },
+      outSign: { value: "Point", label: "Point" },
       tournamentPayout:
         "2,100.00@5,70.00,30.00@10,50.00,30.00,20.00@20,40.00,30.00,20.00,10.00@50,35.00,25.00,15.00,10.00,8.00,7.00@70,30.00,20.00,14.00,10.00,8.00,7.00,6.00,5.00@100,29.00,18.00,12.50,10.00,8.00,6.50,5.50,4.50,3.50,2.50@200,28.00,17.50,11.50,8.50,7.00,5.50,4.50,3.50,2.50,1.50,1.00x10@400,27.00,16.50,10.50,8.00,6.25,4.75,3.75,2.75,1.75,1.25,0.75x10,0.50x20@700,26.00,15.50,10.00,7.50,6.00,4.50,3.50,2.50,1.50,1.00,0.65x10,0.40x20,0.25x30@1000,25.00,15.00,10.00,7.25,5.50,4.25,3.25,2.25,1.25,0.75,0.55x10,0.40x20,0.25x30,0.15x30",
       gamePlatform: "",
@@ -180,6 +186,26 @@ class AddTour extends Component {
       rW1: 20,
       rDrow: 500,
     };
+  }
+  componentDidMount() {
+    var now = new Date();
+    var start = moment(now).format();
+    var startUtc = date_edit_dec(start);
+    startUtc = moment(startUtc).format("YYYY-MM-DDTHH:mm");
+    // startUtc = moment.parseZone(startUtc).utc().format();
+    var startFrmat = startUtc;
+    this.setState({
+      StartTimeLeague: startFrmat,
+    });
+    var end = moment(start).add(
+      this.state.timePlusEnd,
+      this.state.timePlusStr.value
+    );
+    end = moment(end).format("YYYY-MM-DDTHH:mm");
+    var endFormat = end;
+    this.setState({
+      EndTimeLeague: endFormat,
+    });
   }
   getBlockTournamentVal = () => {
     var tourmap = {
@@ -204,7 +230,6 @@ class AddTour extends Component {
     });
   }
   setPlusSign(e) {
-    console.log(e);
     this.setState({
       timePlusStr: e,
     });
@@ -321,18 +346,16 @@ class AddTour extends Component {
     this.updateEnd();
   }
   updateEnd() {
-    var nowS = new Date(this.state.StartTimeLeague);
-    var nowE = moment(nowS);
+    var now = new Date(this.state.StartTimeLeague);
 
-    var nowS2 = new Date(nowE);
-    var nowE2 = moment(nowS2).add(
+    var end = moment(now).add(
       this.state.timePlusEnd,
       this.state.timePlusStr.value
     );
 
-    var endate = moment(nowE2).format("YYYY-MM-DDTHH:mm");
+    var endFormat = moment(end).format("YYYY-MM-DDTHH:mm");
     this.setState({
-      EndTimeLeague: endate,
+      EndTimeLeague: endFormat,
     });
   }
   setSelectedTag(e, p, currentUser) {
@@ -379,17 +402,18 @@ class AddTour extends Component {
       successful: false,
       loading: true,
     });
-    var sdate = new Date(this.state.StartTimeLeague).valueOf();
-    var edate = new Date(this.state.EndTimeLeague).valueOf();
+    var a = this.state.StartTimeLeague;
+    var b = this.state.EndTimeLeague;
 
+    //return false;
     userService
       .createLeague(
         this.state.GName.value.split(" - ")[0],
         this.state.GName.value.split(" - ")[1],
         "League",
         this.state.BetAmount,
-        sdate,
-        edate,
+        a,
+        b,
         this.state.TotalPlayer,
         this.state.tournamentPayout,
 
@@ -435,36 +459,29 @@ class AddTour extends Component {
   render() {
     var { currentUser } = this.state;
 
-    var nowE = moment(this.state.startTimeLeague);
-
-    var stdate = moment(nowE).format("YYYY-MM-DDTHH:mm");
-
-    var nowE2 = moment(this.state.EndTimeLeague);
-
-    var endate = moment(nowE2).format("YYYY-MM-DDTHH:mm");
     var item = {
       commission: 90,
       id: 33,
       gameName: this.state.GName.value.split(" - ")[0],
       gameConsole: this.state.GName.value.split(" - ")[1],
-      gameMode: "Leauge",
+      gameMode: "League",
       status: "Pending",
-      totalPlayer: this.state.TournamentMode.value,
+      totalPlayer: this.state.TotalPlayer,
       eventLevel: 1,
       nextLevel: 1,
       timeMinute: this.state.AvalableFor.value * 1000 * 60,
       prize: this.state.Prize
         ? this.state.Prize
-        : (this.state.BetAmount * this.state.TournamentMode.value * 90) / 100,
+        : (this.state.BetAmount * this.state.TotalPlayer * 90) / 100,
       tournamentPayout: null,
       amount: this.state.BetAmount,
       winner: null,
       inSign: this.state.inSign.value,
       outSign: this.state.outSign.value,
       rules: null,
-      expire: endate,
-      startTime: stdate,
-      finished: "2021-11-01T20:34:39.000+00:00",
+      expire: this.state.EndTimeLeague,
+      startTime: this.state.StartTimeLeague,
+      finished: this.state.EndTimeLeague,
       players: [
         {
           id: 86,
@@ -497,7 +514,7 @@ class AddTour extends Component {
         },
       ],
     };
-
+    console.log(item);
     return (
       <>
         <Header as="h3">Create a ClashRoyale League</Header>
@@ -618,6 +635,7 @@ class AddTour extends Component {
                         name="EndTime"
                         value={this.state.EndTimeLeague}
                         onChange={this.setEndTimeLeague}
+                        onBlur={this.updateEnd}
                       />
                     </div>
                   </Grid.Column>
