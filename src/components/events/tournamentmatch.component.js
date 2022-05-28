@@ -23,6 +23,7 @@ import {
   rendererBig,
   getMatchTitle,
   findActiveMatch,
+  date_edit_card,
 } from "components/include.js";
 import { Divider, Segment, Grid, Statistic, Button } from "semantic-ui-react";
 import { POSTURLTest } from "const";
@@ -398,7 +399,7 @@ class MatchSection extends Component {
               txt="@@@Start at"
               match={match}
               colorfinish={getColor(item.prize)}
-              date={match.startTime}
+              date={date_edit_card(match.startTime)}
             />
             <Divider fitted style={{ opacity: 0 }} />
             {_s > _d && (

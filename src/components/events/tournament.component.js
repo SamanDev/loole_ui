@@ -36,6 +36,7 @@ import {
   genMatch,
   findMatch,
   genLink,
+  date_edit_card,
 } from "components/include";
 import UserContext from "context/UserState";
 const Toast = Swal.mixin({
@@ -398,7 +399,7 @@ class TournamentSection extends Component {
                 txt="@@@Start at"
                 colorfinish={getColorStatus(item.status)}
                 finish={item.status + "@@@Not Available"}
-                date={hatchbackCar[0].startTime}
+                date={date_edit_card(hatchbackCar[0].startTime)}
               />
             </>
           ),
@@ -523,7 +524,7 @@ class TournamentSection extends Component {
             txt="@@@Start at"
             colorfinish={getColorStatus(item.status)}
             finish={item.status + "@@@Not Available"}
-            date={matchLevelFind.startTime}
+            date={date_edit_card(matchLevelFind.startTime)}
           />
           <Divider fitted style={{ opacity: 0 }} />
 

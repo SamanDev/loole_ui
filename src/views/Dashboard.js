@@ -126,7 +126,7 @@ function Dashboard(prop) {
           item.status != "Ready"
         ) {
           //item.gameConsole = startdate + ' '+ expected_enddate;
-          if (startdate > expected_enddate) {
+          if (startdate > expected_enddate && item.players.length > 1) {
             newItem.push(item);
           }
         } else {

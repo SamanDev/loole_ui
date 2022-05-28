@@ -61,7 +61,7 @@ var activePlayer = 0;
 var _minMatch = 0;
 var current_brackets = [];
 var potential_brackets = [];
-
+var totalPay = 0;
 var pointTrack = [
   {
     text: "Kills",
@@ -259,10 +259,11 @@ class LeagueSection extends Component {
   };
 
   static getDerivedStateFromProps(props, state) {
+    tournamentPayout = false;
+    current_brackets = [];
+    potential_brackets = [];
+    totalPay = props.event.prize;
     if (props.event !== state.item) {
-      tournamentPayout = false;
-      current_brackets = [];
-      potential_brackets = [];
       return {
         myState: props.myState,
         item: props.event,
@@ -287,9 +288,50 @@ class LeagueSection extends Component {
       var _JsonTrack = JSON.parse(_track);
       RuleTrack = _JsonTrack["RuleTrack"];
       pointTrack = _JsonTrack["pointTrack"];
+    } else {
+      pointTrack = [
+        {
+          text: "Kills",
+          weight: " x 20",
+        },
+        {
+          text: "Damage Done",
+          weight: " x 0.006",
+        },
+        {
+          text: "Time Played",
+          weight: " x 0.04",
+        },
+        {
+          text: "1st Place",
+          weight: " + 240",
+        },
+        {
+          text: "2nd or 3rd Place",
+          weight: " + 60",
+        },
+        {
+          text: "4th to 8th Place",
+          weight: " + 20",
+        },
+      ];
+      RuleTrack = [
+        {
+          text: "Min Match",
+          weight: "20",
+        },
+        {
+          text: "Min Level",
+          weight: "50",
+        },
+        {
+          text: "Total Point",
+          weight: "Average of Top 20",
+        },
+      ];
     }
     //var events = eventGet;
-    var totalPay = item.prize;
+    totalPay = item.prize;
     if (item.tournamentPayout && !tournamentPayout) {
       tournamentPayout = item.tournamentPayout
         .replace("2,", "1-2,")

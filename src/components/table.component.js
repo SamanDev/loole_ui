@@ -2,6 +2,12 @@ import React from "react";
 import { Header, Image, Table } from "semantic-ui-react";
 import { date_edit, get_date_locale, editDateTime } from "components/include";
 const moment = require("moment");
+function getchatTime(date) {
+  var thisDate2 = date.replace("-07:00", "+00:00");
+  var dateExpired = moment(thisDate2).local().format("MM/DD - HH:mm");
+
+  return dateExpired;
+}
 const TableExampleCollapsing = (props) => {
   var _data = props.data;
   _data.sort((a, b) => (a.score < b.score ? 1 : -1));
@@ -33,11 +39,9 @@ const TableExampleCollapsing = (props) => {
         <Table.Body>
           {_data.map((item, i) => {
             if (i < parseInt(props.minMatch) * 3 && i < 10) {
-              var _date = date_edit(item.battleTime);
-              var stdate = moment(_date).format("MM-DD HH:mm");
               return (
                 <Table.Row key={i} disabled={i >= parseInt(props.minMatch)}>
-                  <Table.Cell>{stdate}</Table.Cell>
+                  <Table.Cell>{getchatTime(item.battleTime)}</Table.Cell>
                   <Table.Cell>{item.crowns}</Table.Cell>
                   <Table.Cell>{item.hp}</Table.Cell>
                   <Table.Cell>{item.trophyChange}</Table.Cell>

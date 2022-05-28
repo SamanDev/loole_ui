@@ -14,25 +14,31 @@ import {
   Dropdown,
 } from "semantic-ui-react";
 var moment = require("moment");
+function getchatTime(date) {
+  var thisDate2 = date.replace("-07:00", "+00:00");
+  var dateExpired = moment(thisDate2).local().format("YYYYMMDDTHHmmss");
+
+  return dateExpired;
+}
 class Example extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    var startTime = moment(this.props.item.startTime).format("YYYYMMDDTHHmmss");
+    var startTime = getchatTime(this.props.item.startTime);
     if (this.props.item.timeMinute) {
       var endTime = moment(startTime)
         .add(this.props.item.timeMinute * this.props.item.eventLevel, "minutes")
         .format("YYYYMMDDTHHmmss");
       var duration = parseFloat(this.props.item.timeMinute / 60);
     } else {
-      var endTime = moment(this.props.item.finished).format("YYYYMMDDTHHmmss");
+      var endTime = getchatTime(this.props.item.finished);
       var duration = parseFloat(endTime - startTime);
     }
 
     if (this.props.match) {
-      startTime = moment(this.props.match.startTime).format("YYYYMMDDTHHmmss");
+      startTime = getchatTime(this.props.match.startTime);
       endTime = moment(startTime)
         .add(this.props.item.timeMinute, "minutes")
         .format("YYYYMMDDTHHmmss");
