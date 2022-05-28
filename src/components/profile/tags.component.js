@@ -44,7 +44,6 @@ function TagsForm(prop) {
     setMyState(prop.myState);
   }, [prop.myState]);
   useEffect(() => {
-    console.log(uList.currentUser);
     if (
       (!userKey.accessToken &&
         userKey?.username == uList.currentUser.username) ||

@@ -3,16 +3,17 @@ import Avatar from "react-avatar";
 
 import Swal from "sweetalert2";
 import userService from "services/user.service";
-import { setAvatar } from "components/include";
+import { setAvatar, get_date_locale } from "components/include";
 import Linkify from "linkify-react";
 // react-bootstrap components
 import { Button, Card, Form, Row, Col } from "react-bootstrap";
 import { Input, Comment, Icon } from "semantic-ui-react";
+const moment = require("moment");
 const options = { target: "_blank", className: "text-info" };
 function getchatTime(date) {
-  var today = new Date(date);
-  var dateExpired =
-    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var thisDate2 = date.replace("-07:00", "+00:00");
+  var dateExpired = moment(thisDate2).local().format("MM/DD - HH:mm");
+
   return dateExpired;
 }
 function getchatClass(message, mode) {

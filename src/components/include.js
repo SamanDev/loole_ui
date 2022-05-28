@@ -99,7 +99,7 @@ export const date_edit = (thisDate) => {
   //var thisDate2 = thisDate.replace("-07:00", "+00:00");
 
   var mom = moment.parseZone(thisDate).utc().format();
-  console.log(mom);
+  //console.log(mom);
   mom = editDateTime(mom);
   // console.log(mom);
   //console.log('momennt: '+mom)
@@ -2216,13 +2216,13 @@ export const printRequired = () => {
 export const editDateTime = (datee) => {
   //dt = Moment(dt).format('YYYY-MM-DDThh:mm:ss.0')
   //var date = new Date();
-  console.log(datee);
+  //console.log(datee);
   try {
     var dt = datee;
     var datenew = new Date(dt);
-    console.log(datenew);
+    // console.log(datenew);
     var dateExpired = datenew.toISOString();
-    console.log(dateExpired);
+    //  console.log(dateExpired);
   } catch (e) {
     var datenew = new Date();
     var dateExpired = datenew.toISOString();

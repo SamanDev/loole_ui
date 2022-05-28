@@ -48,7 +48,12 @@ function Panel(props) {
   const [sidebarBackground, setSidebarBackground] = React.useState("orange");
   const [visible, setVisible] = React.useState(false);
   const [myState, setMyState] = useState(props.myState);
-
+  useEffect(() => {
+    setMyState(props.myState);
+    if (profileUser) {
+      props.onUpdateItem("profileUser", false);
+    }
+  }, [props.myState]);
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
 
@@ -83,9 +88,6 @@ function Panel(props) {
       }
       if (prop.layout === "/panel") {
         //sconsole.log(prop.component)
-        if (profileUser) {
-          props.onUpdateItem("profileUser", false);
-        }
 
         return (
           <Route

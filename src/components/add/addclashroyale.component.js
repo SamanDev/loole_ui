@@ -514,7 +514,7 @@ class AddTour extends Component {
         },
       ],
     };
-    console.log(item);
+
     return (
       <>
         <Header as="h3">Create a ClashRoyale League</Header>

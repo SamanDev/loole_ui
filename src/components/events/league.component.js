@@ -59,6 +59,50 @@ var icStartL = 0;
 var isJoin = false;
 var activePlayer = 0;
 var _minMatch = 0;
+var current_brackets = [];
+var potential_brackets = [];
+
+var pointTrack = [
+  {
+    text: "Kills",
+    weight: "+ 20",
+  },
+  {
+    text: "Damage Done",
+    weight: "+ 0.06",
+  },
+  {
+    text: "Time Played",
+    weight: "+ 0.04",
+  },
+  {
+    text: "1st Place",
+    weight: " + 240",
+  },
+  {
+    text: "2nd or 3rd Place",
+    weight: " + 60",
+  },
+  {
+    text: "4th to 8th Place",
+    weight: " + 20",
+  },
+];
+var RuleTrack = [
+  {
+    text: "Min Match",
+    weight: "20",
+  },
+  {
+    text: "Min Level",
+    weight: "50",
+  },
+  {
+    text: "Total Point",
+    weight: "Average of Top 20",
+  },
+];
+var tournamentPayout = false;
 class LeagueSection extends Component {
   static contextType = UserContext;
   constructor(props) {
@@ -216,6 +260,9 @@ class LeagueSection extends Component {
 
   static getDerivedStateFromProps(props, state) {
     if (props.event !== state.item) {
+      tournamentPayout = false;
+      current_brackets = [];
+      potential_brackets = [];
       return {
         myState: props.myState,
         item: props.event,
@@ -235,49 +282,6 @@ class LeagueSection extends Component {
     var _d = new Date();
     var _s = new Date(item.startTime);
     var _track = item.rules;
-    var current_brackets = [];
-    var potential_brackets = [];
-
-    var pointTrack = [
-      {
-        text: "Kills",
-        weight: "+ 20",
-      },
-      {
-        text: "Damage Done",
-        weight: "+ 0.06",
-      },
-      {
-        text: "Time Played",
-        weight: "+ 0.04",
-      },
-      {
-        text: "1st Place",
-        weight: " + 240",
-      },
-      {
-        text: "2nd or 3rd Place",
-        weight: " + 60",
-      },
-      {
-        text: "4th to 8th Place",
-        weight: " + 20",
-      },
-    ];
-    var RuleTrack = [
-      {
-        text: "Min Match",
-        weight: "20",
-      },
-      {
-        text: "Min Level",
-        weight: "50",
-      },
-      {
-        text: "Total Point",
-        weight: "Average of Top 20",
-      },
-    ];
 
     if (isJson(_track)) {
       var _JsonTrack = JSON.parse(_track);
@@ -285,7 +289,7 @@ class LeagueSection extends Component {
       pointTrack = _JsonTrack["pointTrack"];
     }
     //var events = eventGet;
-    var tournamentPayout = false;
+    var totalPay = item.prize;
     if (item.tournamentPayout && !tournamentPayout) {
       tournamentPayout = item.tournamentPayout
         .replace("2,", "1-2,")
@@ -300,7 +304,7 @@ class LeagueSection extends Component {
         .replace("700,", "401-700,")
         .replace("1000,", "701-1000,");
       var payArr = tournamentPayout.split("@");
-      var totalPay = item.prize / item.totalPlayer;
+
       for (var i = 0; i < payArr.length; i++) {
         var paylvl = payArr[i].split(",");
         var payplyer = paylvl[0].split("-");
@@ -312,8 +316,9 @@ class LeagueSection extends Component {
               paylvl[j] = paylvl[j] + "x1";
             }
             var intX = paylvl[j].split("x");
+
             potential_brackets.push({
-              prize: intX[0] * totalPay,
+              prize: (intX[0] * totalPay) / 100,
               percent: intX[0],
               number: intX[1],
             });
@@ -324,25 +329,22 @@ class LeagueSection extends Component {
         var paylvl = payArr[i].split(",");
         var payplyer = paylvl[0].split("-");
         var tItem = item.players.length;
-        var totalPay2 = totalPay;
 
+        if (item.inSign != item.outSign) {
+          var totalPay2 = (totalPay / item.totalPlayer) * item.players.length;
+        } else {
+          var totalPay2 = (totalPay * item.players.length) / item.totalPlayer;
+        }
         if (parseInt(payplyer[0]) <= tItem && parseInt(payplyer[1]) >= tItem) {
-          console.log(payplyer[0]);
-          console.log(payplyer);
-          console.log(tItem);
-          console.log(totalPay2);
-          totalPay2 = totalPay2 / parseInt(payplyer[0]);
-
           for (var j = 1; j < paylvl.length; j++) {
             if (paylvl[j].indexOf("x") == -1) {
               paylvl[j] = paylvl[j] + "x1";
             }
 
             var intX = paylvl[j].split("x");
-            console.log(totalPay2);
-            console.log(parseInt(intX[0]));
+
             current_brackets.push({
-              prize: parseInt(intX[0]) * totalPay2,
+              prize: (parseInt(intX[0]) * totalPay2) / 100,
               percent: intX[0],
               number: intX[1],
             });
@@ -378,6 +380,13 @@ class LeagueSection extends Component {
     setTimeout(() => {
       $("#jsonhtml").html($("#jsonhtml2").text());
     }, 1000);
+    {
+      RuleTrack.map((win, i) => {
+        if (win.text == "Min Match") {
+          _minMatch = win.weight;
+        }
+      });
+    }
     return (
       <>
         <Col
@@ -509,7 +518,7 @@ class LeagueSection extends Component {
               <Segment inverted color="red">
                 <Header as="h2">Players</Header>
                 <Message>
-                  <List divided inverted relaxed>
+                  <List divided inverted selection verticalAlign="middle">
                     {item.players.map((player, i) => {
                       return (
                         <List.Item key={i.toString()}>
@@ -520,9 +529,13 @@ class LeagueSection extends Component {
                             }
                           >
                             <span>
+                              <Label size="mini" circular color="black">
+                                {player.ranking}
+                              </Label>
                               <Link
                                 to={"/user/" + player.username}
                                 target="_blank"
+                                style={{ position: "relative", left: 5 }}
                               >
                                 <Avatar
                                   size="20"
@@ -530,7 +543,7 @@ class LeagueSection extends Component {
                                   round={true}
                                   name={setAvatar(player.username)}
                                 />
-                              </Link>{" "}
+                              </Link>
                               {item.gameName == "CallOfDuty" && (
                                 <>
                                   <Label
@@ -560,7 +573,7 @@ class LeagueSection extends Component {
                               {item.gameName == "ClashRoyale" && (
                                 <>
                                   <Label
-                                    style={{ marginLeft: 5 }}
+                                    size="small"
                                     onClick={() =>
                                       window
                                         .open(
@@ -582,7 +595,17 @@ class LeagueSection extends Component {
                               )}
                             </span>
                             <span style={{ float: "right", marginLeft: 5 }}>
-                              <Label color="black">
+                              <Label
+                                size="mini"
+                                color={
+                                  player.clashRoyaleSet.length >= _minMatch
+                                    ? "green"
+                                    : "red"
+                                }
+                              >
+                                {player.clashRoyaleSet.length}/{_minMatch}
+                              </Label>
+                              <Label color="black" size="mini">
                                 {player.totalScore ? (
                                   <CurrencyFormat
                                     value={Number.parseFloat(
@@ -600,7 +623,7 @@ class LeagueSection extends Component {
                             </span>
                             <Table
                               data={player.clashRoyaleSet}
-                              className="hide"
+                              className="hide dataresult"
                               minMatch={_minMatch}
                               id={player.username}
                             />
@@ -617,9 +640,6 @@ class LeagueSection extends Component {
               <Message color="red">
                 <List divided relaxed>
                   {RuleTrack.map((win, i) => {
-                    if (win.text == "Min Match") {
-                      _minMatch = win.weight;
-                    }
                     return (
                       <List.Item key={i.toString()}>
                         <List.Content style={{ textAlign: "left" }}>
@@ -792,7 +812,7 @@ class LeagueSection extends Component {
                     >
                       {getGroupBadgeBlock(
                         item.outSign,
-                        totalPay * item.players.length,
+                        (totalPay * item.players.length) / item.totalPlayer,
                         "Current Prize",
                         "left",
                         "green"
