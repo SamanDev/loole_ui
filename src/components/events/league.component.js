@@ -637,7 +637,9 @@ class LeagueSection extends Component {
                               )}
                               {current_brackets[i]?.prize &&
                                 (item.status == "InPlay" ||
-                                  item.status == "Finished") && (
+                                  item.status == "Finished") &&
+                                player.clashRoyaleSet.length >= _minMatch &&
+                                player.totalScore > 0 && (
                                   <>
                                     {getGroupBadgeBlock(
                                       item.outSign,
