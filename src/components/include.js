@@ -108,7 +108,7 @@ export const date_edit = (thisDate) => {
 export const date_edit_report = (thisDate) => {
   var thisDate2 = thisDate.replace("-07:00", "+00:00");
 
-  var mom = moment(thisDate2).local().format("YYYY-MM-DD HH:mm");
+  var mom = moment(thisDate2).local().format("MM-DD HH:mm");
 
   // console.log(mom);
   //console.log('momennt: '+mom)
@@ -126,7 +126,8 @@ export const date_edit_card = (thisDate) => {
 export const date_edit_dec = (thisDate) => {
   //var thisDate2 = thisDate.replace("-07:00", "+00:00");
 
-  var mom = moment(thisDate).local().format();
+  //var mom = moment(thisDate).local().format();
+  var mom = moment.parseZone(thisDate).utc().format();
   //mom = moment(mom).utcOffset("+07:00").format();
 
   //mom = date_edit_report(mom);
@@ -383,14 +384,17 @@ export const getGroupBadgeBlock = (sign, amount, label, pos) => {
         basic
       >
         <Icon name={nIcon} color={nColor} />
-
-        <CurrencyFormat
-          value={nAmount}
-          displayType={"text"}
-          thousandSeparator={true}
-          prefix={""}
-          renderText={(value) => value}
-        />
+        {!isNaN(parseFloat(amount)) && isFinite(amount) ? (
+          <CurrencyFormat
+            value={nAmount}
+            displayType={"text"}
+            thousandSeparator={true}
+            prefix={""}
+            renderText={(value) => value}
+          />
+        ) : (
+          amount
+        )}
       </Label>
       {pos == "left" && (
         <Label pointing={pos} size="mini" basic color="blue">

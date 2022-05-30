@@ -10,12 +10,25 @@ import withReactContent from "sweetalert2-react-content";
 import Games from "server/Games";
 import { Row, Col } from "react-bootstrap";
 import MatchCard from "components/matchcard.component";
-import { Header, Card, Grid, Divider } from "semantic-ui-react";
+
+import Tracking from "components/tracking.component";
+import {
+  Button,
+  Label,
+  Divider,
+  Segment,
+  Header,
+  List,
+  Message,
+  Card,
+  Grid,
+} from "semantic-ui-react";
 import {
   handleTagForm,
   date_edit,
   date_edit_dec,
   editDateTime,
+  isJson,
 } from "components/include";
 
 const getBlockGames = (filtermode) => {
@@ -83,6 +96,7 @@ const getBlockGameModesVal = (filtermode) => {
 
   return gamemaplocal[0];
 };
+
 var moment = require("moment");
 var now = new Date();
 
@@ -95,15 +109,23 @@ var startFrmat = startUtc;
 var end = moment(start).add(30, "minutes");
 
 var endFormat = moment(end).format("YYYY-MM-DDTHH:mm");
-
-function getRules(minMatch, MinCup, MaxCup, hp, tc, w3, w2, w1, drow) {
+function editTime(date) {
+  var end = moment(date).add(7, "hours");
+  end = moment(end).utc().format();
+  return end;
+}
+function getRules(mode, minMatch, MinCup, MaxCup, hp, tc, w3, w2, w1, drow) {
+  var TrackMode = "Average of Top " + minMatch + "";
+  if (mode.value.split(" - ")[1] == "First Matches") {
+    TrackMode = "First " + minMatch + " Matches";
+  }
   var _rules = {
     RuleTrack: [
-      { text: "Mode Track", weight: "Battle" },
+      { text: "Mode Track", weight: "" + mode.value.split(" - ")[0] + "" },
       { text: "Min Match", weight: "" + minMatch + "" },
       { text: "Min Trophy", weight: "" + MinCup + "" },
       { text: "Max Trophy", weight: "" + MaxCup + "" },
-      { text: "Total Point", weight: "Average of Top " + minMatch + "" },
+      { text: "Total Point", weight: TrackMode },
     ],
     pointTrack: [
       { text: "HP", weight: " x " + hp + "" },
@@ -111,7 +133,7 @@ function getRules(minMatch, MinCup, MaxCup, hp, tc, w3, w2, w1, drow) {
       { text: "3 - 0 Win", weight: " + " + w3 + "" },
       { text: "+2 Win", weight: " + " + w2 + "" },
       { text: "+1 Win", weight: " + " + w1 + "" },
-      { text: "Drew", weight: " + " + drow + "" },
+      { text: "Draw", weight: " + " + drow + "" },
     ],
   };
   return JSON.stringify(_rules);
@@ -141,6 +163,7 @@ class AddTour extends Component {
     this.setEndTimeLeague = this.setEndTimeLeague.bind(this);
     this.setPrize = this.setPrize.bind(this);
     this.setRMinMatch = this.setRMinMatch.bind(this);
+    this.setRMode = this.setRMode.bind(this);
     this.setRMinCup = this.setRMinCup.bind(this);
     this.setRMaxCup = this.setRMaxCup.bind(this);
     this.setRHP = this.setRHP.bind(this);
@@ -170,34 +193,41 @@ class AddTour extends Component {
       GameTag: "",
       message: "",
       Rules: "",
+      RulesJson: {},
       inSign: { value: "Point", label: "Point" },
       outSign: { value: "Point", label: "Point" },
       tournamentPayout:
         "2,100.00@5,70.00,30.00@10,50.00,30.00,20.00@20,40.00,30.00,20.00,10.00@50,35.00,25.00,15.00,10.00,8.00,7.00@70,30.00,20.00,14.00,10.00,8.00,7.00,6.00,5.00@100,29.00,18.00,12.50,10.00,8.00,6.50,5.50,4.50,3.50,2.50@200,28.00,17.50,11.50,8.50,7.00,5.50,4.50,3.50,2.50,1.50,1.00x10@400,27.00,16.50,10.50,8.00,6.25,4.75,3.75,2.75,1.75,1.25,0.75x10,0.50x20@700,26.00,15.50,10.00,7.50,6.00,4.50,3.50,2.50,1.50,1.00,0.65x10,0.40x20,0.25x30@1000,25.00,15.00,10.00,7.25,5.50,4.25,3.25,2.25,1.25,0.75,0.55x10,0.40x20,0.25x30,0.15x30",
       gamePlatform: "",
       gameName: "",
-      rMinMatch: 2,
+      rMinMatch: 10,
+      rMode: {
+        value: "Ladder Battles - Top Average",
+        label: "Ladder Battles - Top Average",
+      },
+
       rMinCup: 100,
-      rMaxCup: 20000,
+      rMaxCup: 10000,
       rHP: 0.006,
-      rTC: 2,
+      rTC: 1,
       rW3: 240,
-      rW2: 60,
-      rW1: 20,
-      rDrow: 500,
+      rW2: 100,
+      rW1: 50,
+      rDrow: 50,
     };
   }
   componentDidMount() {
     var now = new Date();
     var start = moment(now).format();
     var startUtc = date_edit_dec(start);
+    var startUtc = moment(startUtc).add(30, "minutes");
     startUtc = moment(startUtc).format("YYYY-MM-DDTHH:mm");
     // startUtc = moment.parseZone(startUtc).utc().format();
     var startFrmat = startUtc;
     this.setState({
       StartTimeLeague: startFrmat,
     });
-    var end = moment(start).add(
+    var end = moment(startFrmat).add(
       this.state.timePlusEnd,
       this.state.timePlusStr.value
     );
@@ -206,6 +236,7 @@ class AddTour extends Component {
     this.setState({
       EndTimeLeague: endFormat,
     });
+    this.setRules();
   }
   getBlockTournamentVal = () => {
     var tourmap = {
@@ -222,6 +253,11 @@ class AddTour extends Component {
     this.setState({
       GName: e,
       GameMode: getBlockGameModesVal(e),
+    });
+  }
+  setRMode(e) {
+    this.setState({
+      rMode: e,
     });
   }
   setInSign(e) {
@@ -242,6 +278,7 @@ class AddTour extends Component {
   }
   setRules(e) {
     var _R = getRules(
+      this.state.rMode,
       this.state.rMinMatch,
       this.state.rMinCup,
       this.state.rMaxCup,
@@ -254,6 +291,7 @@ class AddTour extends Component {
     );
     this.setState({
       Rules: _R,
+      RulesJson: JSON.parse(_R),
     });
   }
   setTournamentPayout(e) {
@@ -402,8 +440,8 @@ class AddTour extends Component {
       successful: false,
       loading: true,
     });
-    var a = this.state.StartTimeLeague;
-    var b = this.state.EndTimeLeague;
+    var a = editTime(moment(this.state.StartTimeLeague).format());
+    var b = editTime(moment(this.state.EndTimeLeague).format());
 
     //return false;
     userService
@@ -479,9 +517,11 @@ class AddTour extends Component {
       inSign: this.state.inSign.value,
       outSign: this.state.outSign.value,
       rules: null,
-      expire: this.state.EndTimeLeague,
-      startTime: this.state.StartTimeLeague,
-      finished: this.state.EndTimeLeague,
+      expire: moment(this.state.EndTimeLeague).format(),
+      startTime: moment(this.state.StartTimeLeague)
+        .local()
+        .format("YYYY-MM-DD HH:mm:ss"),
+      finished: moment(this.state.EndTimeLeague).format(),
       players: [
         {
           id: 86,
@@ -589,6 +629,7 @@ class AddTour extends Component {
                         onBlur={this.updateEnd}
                       />
                     </div>
+                    <small>ServerTime: {moment(now).utc().format()}</small>
                   </Grid.Column>
                   <Grid.Column>
                     <div className="form-group">
@@ -611,6 +652,14 @@ class AddTour extends Component {
                         onBlur={this.updateEnd}
                       />
                     </div>
+                    <small>
+                      Start: {moment(this.state.StartTimeLeague).utc().format()}
+                    </small>
+                    <br />
+                    <small>
+                      Send:{" "}
+                      {editTime(moment(this.state.StartTimeLeague).format())}
+                    </small>
                   </Grid.Column>
                   <Grid.Column>
                     <div className="form-group">
@@ -638,6 +687,9 @@ class AddTour extends Component {
                         onBlur={this.updateEnd}
                       />
                     </div>
+                    <small>
+                      EndTime: {moment(this.state.EndTimeLeague).utc().format()}
+                    </small>
                   </Grid.Column>
                   <Grid.Column>
                     <div className="form-group">
@@ -676,6 +728,38 @@ class AddTour extends Component {
                 <Grid.Row>
                   <Grid.Column>
                     <div className="form-group">
+                      <label>Battle Mode</label>
+                      <Select
+                        className="react-select default"
+                        classNamePrefix="react-select"
+                        name="InSign"
+                        value={this.state.rMode}
+                        onChange={this.setRMode}
+                        options={[
+                          {
+                            value: "Ladder Battles - Top Average",
+                            label: "Ladder Battles - Top Average",
+                          },
+                          {
+                            value: "Ladder Battles - First Matches",
+                            label: "Ladder Battles - First Matches",
+                          },
+                          {
+                            value: "Team Battles - Top Average",
+                            label: "Team Battles - Top Average",
+                          },
+                          {
+                            value: "Team Battles - First Matches",
+                            label: "Team Battles - First Matches",
+                          },
+                        ]}
+                        placeholder=""
+                        isSearchable={false}
+                        onBlur={this.setRules}
+                      />
+                    </div>
+
+                    <div className="form-group">
                       <label>Min Match</label>
                       <NumericInput
                         min={2}
@@ -684,6 +768,18 @@ class AddTour extends Component {
                         className="form-control"
                         value={this.state.rMinMatch}
                         onChange={this.setRMinMatch}
+                        onBlur={this.setRules}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Win +3</label>
+                      <NumericInput
+                        min={2}
+                        step={1}
+                        max={50000}
+                        className="form-control"
+                        value={this.state.rW3}
+                        onChange={this.setRW3}
                         onBlur={this.setRules}
                       />
                     </div>
@@ -701,6 +797,30 @@ class AddTour extends Component {
                         onBlur={this.setRules}
                       />
                     </div>
+                    <div className="form-group">
+                      <label>HP</label>
+                      <NumericInput
+                        min={2}
+                        step={1}
+                        max={50}
+                        className="form-control"
+                        value={this.state.rHP}
+                        onChange={this.setRHP}
+                        onBlur={this.setRules}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Win +2</label>
+                      <NumericInput
+                        min={2}
+                        step={1}
+                        max={50000}
+                        className="form-control"
+                        value={this.state.rW2}
+                        onChange={this.setRW2}
+                        onBlur={this.setRules}
+                      />
+                    </div>
                   </Grid.Column>
                   <Grid.Column>
                     <div className="form-group">
@@ -715,54 +835,18 @@ class AddTour extends Component {
                         onBlur={this.setRules}
                       />
                     </div>
-                  </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                  <Grid.Column>
                     <div className="form-group">
-                      <label>HP</label>
-                      <NumericInput
-                        min={2}
-                        step={1}
-                        max={50}
-                        className="form-control"
-                        value={this.state.rHP}
-                        onChange={this.setRHP}
-                        onBlur={this.setRules}
-                      />
-                    </div>
-                  </Grid.Column>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>Win +3</label>
+                      <label>Drow</label>
                       <NumericInput
                         min={2}
                         step={1}
                         max={50000}
                         className="form-control"
-                        value={this.state.rW3}
-                        onChange={this.setRW3}
+                        value={this.state.rDrow}
+                        onChange={this.setRDrow}
                         onBlur={this.setRules}
                       />
                     </div>
-                  </Grid.Column>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>Win +2</label>
-                      <NumericInput
-                        min={2}
-                        step={1}
-                        max={50000}
-                        className="form-control"
-                        value={this.state.rW2}
-                        onChange={this.setRW2}
-                        onBlur={this.setRules}
-                      />
-                    </div>
-                  </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                  <Grid.Column>
                     <div className="form-group">
                       <label>Win +1</label>
                       <NumericInput
@@ -776,21 +860,8 @@ class AddTour extends Component {
                       />
                     </div>
                   </Grid.Column>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>Drow</label>
-                      <NumericInput
-                        min={2}
-                        step={1}
-                        max={50000}
-                        className="form-control"
-                        value={this.state.rDrow}
-                        onChange={this.setRDrow}
-                        onBlur={this.setRules}
-                      />
-                    </div>
-                  </Grid.Column>
                 </Grid.Row>
+
                 <Divider />
               </Grid>
               <div className="form-group hide">
@@ -857,6 +928,7 @@ class AddTour extends Component {
                 </Card.Group>
               </>
             )}
+            {isJson(this.state.Rules) && <Tracking rules={this.state.Rules} />}
           </Col>
         </Row>
       </>

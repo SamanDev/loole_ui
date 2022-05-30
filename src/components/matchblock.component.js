@@ -118,11 +118,17 @@ function MatchBlock(prop) {
           {item.gameMode == "League" ? (
             <Countdown
               renderer={rendererBig}
-              txt="@@@Available until"
+              txt={
+                item.status == "Pending" ? "@@@Start at" : "@@@Available until"
+              }
               colorfinish={getColorStatus(item.status)}
               finish={item.status + "@@@Not Available"}
               match={item}
-              date={date_edit_card(item.finished)}
+              date={
+                item.status == "Pending"
+                  ? date_edit_card(item.startTime)
+                  : date_edit_card(item.finished)
+              }
               mode={_mode}
               color={_color}
             />
@@ -131,7 +137,11 @@ function MatchBlock(prop) {
               {item.gameMode == "Tournament" ? (
                 <Countdown
                   renderer={rendererBig}
-                  txt="@@@Available until"
+                  txt={
+                    item.status == "Pending"
+                      ? "@@@Start at"
+                      : "@@@Available until"
+                  }
                   colorfinish={getColorStatus(item.status)}
                   finish={item.status + "@@@Not Available"}
                   match={item}

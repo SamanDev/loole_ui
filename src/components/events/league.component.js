@@ -21,6 +21,8 @@ import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddToCal from "components/addtocal.component";
 import Table from "components/table.component";
+import Tracking from "components/tracking.component";
+import Invite from "components/invite.component";
 import Countdown from "react-countdown";
 import { Col, ProgressBar } from "react-bootstrap";
 import {
@@ -47,9 +49,7 @@ const Toast = Swal.mixin({
   timer: 3000,
   timerProgressBar: true,
 });
-function isNumeric(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
+
 //console.log(item);
 var dateExpired = null;
 var dateStart = null;
@@ -483,7 +483,7 @@ class LeagueSection extends Component {
                 this.props.onUpdateItem
               )}
               <Divider style={{ opacity: 0 }} />
-              {_s > _d && (
+              {_s > _d && item.status == "Pending" && (
                 <>
                   <div
                     style={{
@@ -635,6 +635,19 @@ class LeagueSection extends Component {
                                   </Label>
                                 </>
                               )}
+                              {current_brackets[i]?.prize &&
+                                (item.status == "InPlay" ||
+                                  item.status == "Finished") && (
+                                  <>
+                                    {getGroupBadgeBlock(
+                                      item.outSign,
+                                      current_brackets[i]?.prize,
+                                      "Prize",
+                                      "left",
+                                      "green"
+                                    )}
+                                  </>
+                                )}
                             </span>
                             <span style={{ float: "right", marginLeft: 5 }}>
                               <Label
@@ -677,58 +690,8 @@ class LeagueSection extends Component {
                 </Message>
               </Segment>
             )}
-            <Segment inverted color="yellow">
-              <Header as="h2">Results Tracking Rules</Header>
-              <Message color="red">
-                <List divided relaxed>
-                  {RuleTrack.map((win, i) => {
-                    return (
-                      <List.Item key={i.toString()}>
-                        <List.Content style={{ textAlign: "left" }}>
-                          <span style={{ fontSize: 17 }}>
-                            <Label>{win.text}</Label>
-                          </span>
-                          <span style={{ float: "right", marginLeft: 5 }}>
-                            <Label color="red">
-                              {isNumeric(win.weight) ? (
-                                <CurrencyFormat
-                                  value={win.weight}
-                                  displayType={"text"}
-                                  thousandSeparator={true}
-                                  prefix={""}
-                                  renderText={(value) => value}
-                                />
-                              ) : (
-                                win.weight
-                              )}
-                            </Label>
-                          </span>
-                        </List.Content>
-                      </List.Item>
-                    );
-                  })}
-                </List>
-              </Message>
-              <Header as="h2">Results Tracking</Header>
-              <Message>
-                <List divided inverted relaxed>
-                  {pointTrack.map((win, i) => {
-                    return (
-                      <List.Item key={i.toString()}>
-                        <List.Content style={{ textAlign: "left" }}>
-                          <span style={{ fontSize: 17 }}>
-                            <Label>{win.text}</Label>
-                          </span>
-                          <span style={{ float: "right", marginLeft: 5 }}>
-                            <Label color="green">{win.weight}</Label>
-                          </span>
-                        </List.Content>
-                      </List.Item>
-                    );
-                  })}
-                </List>
-              </Message>
-            </Segment>
+            <Tracking rules={item.rules} />
+
             {item.status != "Canceled" &&
               item.status != "Expired" &&
               item.status != "Finished" && (
@@ -866,6 +829,7 @@ class LeagueSection extends Component {
                       Tournament is full, the current prize and potential prize
                       pools will be equal.
                     </p>
+                    <Invite />
                   </Header>{" "}
                   <Message>
                     <List divided inverted relaxed>

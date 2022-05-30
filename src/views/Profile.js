@@ -6,9 +6,9 @@ import ProfileForm from "components/profile/profile.component";
 import TagsForm from "components/profile/tags.component";
 import SocialForm from "components/profile/social.component";
 import UserEvents from "components/events/user.component";
-import Report from "components/report.component";
+import Report from "components/reportUser.component";
 
-import ReportDiamond from "components/reportdiamond.component";
+import ReportDiamond from "components/reportdiamondUser.component";
 import { Helmet } from "react-helmet";
 // react-bootstrap components
 
