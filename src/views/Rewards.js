@@ -64,7 +64,7 @@ function profile(prop) {
       <DashStat {...prop} />
       <Tab
         panes={panes}
-        className="maxheight"
+        className="maxheight dash"
         activeIndex={key}
         onTabChange={(e, data) => {
           prop.onUpdateItem("keyReward", data.activeIndex);

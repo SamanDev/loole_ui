@@ -194,7 +194,7 @@ function Dashboard(prop) {
       <DashStat {...prop} />
       <Tab
         panes={panes}
-        className="maxheight "
+        className="maxheight dash"
         defaultActiveIndex={key}
         onTabChange={(e, data) => {
           prop.onUpdateItem("keyMarket", data.activeIndex);

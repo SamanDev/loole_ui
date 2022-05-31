@@ -219,7 +219,7 @@ function Cashier(prop) {
       <DashStat {...prop} />
       <Tab
         panes={panes}
-        className="maxheight"
+        className="maxheight dash"
         activeIndex={key}
         onTabChange={(e, data) => {
           prop.onUpdateItem("keyCashier", data.activeIndex);
