@@ -73,8 +73,8 @@ function Dashboard(prop) {
               size="small"
               fluid
               color="red"
-              content="VIEW DETAILED EARNINGS"
-              onClick={() => prop.onUpdateItem("keyReward", 1)}
+              content="VIEW COMMITIONS"
+              onClick={() => prop.onUpdateItem("keyReward", 2)}
             />
           </Message.Content>
         </Message>

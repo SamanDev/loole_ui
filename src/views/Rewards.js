@@ -4,6 +4,7 @@ import Active from "components/active.component";
 
 import Rewards from "components/Rewards.component";
 import Report from "components/reportdiamondUser.component";
+import ReportCom from "components/reportcommition.component";
 // react-bootstrap components
 import UserContext from "context/UserState";
 import { Tab, Segment } from "semantic-ui-react";
@@ -37,6 +38,17 @@ function profile(prop) {
         <Tab.Pane>
           <Segment secondary>
             <Report user={currentUser} />
+          </Segment>
+        </Tab.Pane>
+      ),
+    },
+    {
+      id: 3,
+      menuItem: "Commitions",
+      render: () => (
+        <Tab.Pane>
+          <Segment secondary>
+            <ReportCom user={currentUser} />
           </Segment>
         </Tab.Pane>
       ),
