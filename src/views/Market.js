@@ -8,6 +8,8 @@ import { Spinner } from "react-bootstrap";
 import MarketCard from "components/marketcardNew.component";
 import Market from "server/MarketNew";
 import { Helmet } from "react-helmet";
+
+import DashStat from "components/dashstat.component";
 //const EventList = JSON.parse(userService.getEvents());
 
 const getBlockChallenge = (filtermode, products) => {
@@ -189,7 +191,7 @@ function Dashboard(prop) {
         <title>MarketPlace</title>
       </Helmet>
       <Active {...prop} />
-
+      <DashStat {...prop} />
       <Tab
         panes={panes}
         className="maxheight "

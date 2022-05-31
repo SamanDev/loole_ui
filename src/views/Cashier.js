@@ -14,6 +14,8 @@ import { useAllCoins } from "services/hooks";
 import Active from "components/active.component";
 import Report from "components/reportUser.component";
 import ReportDiamond from "components/reportdiamondUser.component";
+
+import DashStat from "components/dashstat.component";
 // react-bootstrap components
 import UserContext from "context/UserState";
 import { Row, Col } from "react-bootstrap";
@@ -214,6 +216,7 @@ function Cashier(prop) {
         <title>Cashier</title>
       </Helmet>
       <Active {...prop} />
+      <DashStat {...prop} />
       <Tab
         panes={panes}
         className="maxheight"

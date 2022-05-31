@@ -7,6 +7,8 @@ import Report from "components/reportdiamondUser.component";
 // react-bootstrap components
 import UserContext from "context/UserState";
 import { Tab, Segment } from "semantic-ui-react";
+
+import DashStat from "components/dashstat.component";
 import { Helmet } from "react-helmet";
 function profile(prop) {
   const [myState, setMyState] = useState(prop.myState);
@@ -47,7 +49,7 @@ function profile(prop) {
         <title>Rewards</title>
       </Helmet>
       <Active {...prop} />
-
+      <DashStat {...prop} />
       <Tab
         panes={panes}
         className="maxheight"
