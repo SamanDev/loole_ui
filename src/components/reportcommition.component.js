@@ -79,10 +79,10 @@ const ExpandedComponent = (props) => {
 };
 const devWid = document.documentElement.clientWidth;
 var _perPage = 10;
-var _style = { minHeight: "calc(100vh - 240px)", padding: 0 };
+var _style = { minHeight: "calc(100vh - 340px)", padding: 0 };
 if (devWid < 700) {
   _perPage = 8;
-  _style = { minHeight: "calc(100vh - 260px)", padding: 0 };
+  _style = { minHeight: "calc(100vh - 360px)", padding: 0 };
 }
 function editCounry(options) {
   var newArray = [];

@@ -295,7 +295,7 @@ function Report(prop) {
           <Header.Subheader>See your Bank Transactions</Header.Subheader>
         </Header.Content>
       </Header>
-      <Segment style={{ minHeight: "calc(100vh - 240px)", padding: 0 }}>
+      <Segment style={{ minHeight: "calc(100vh - 340px)", padding: 0 }}>
         <DataTable
           columns={columns}
           data={myData}
