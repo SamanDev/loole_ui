@@ -1892,7 +1892,8 @@ export const userDetails = (currentUser) => {
     flag = currentUser.country.value.toLowerCase();
     flagLabel = currentUser.country.label;
   }
-  var lastLogin = moment(currentUser.lastLogin).format();
+  var lastLogin = date_edit_card(currentUser.lastLogin);
+  lastLogin = moment(lastLogin).local().format();
   lastLogin = moment(lastLogin).startOf("second").fromNow();
   return (
     <>
