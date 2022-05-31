@@ -45,28 +45,19 @@ function Dashboard(prop) {
             <Message.Header>Invite A Friend</Message.Header>
             <div style={{ margin: "10px 0" }}>
               When a friend you have invited plays their first challenge you
-              will receive {getGroupBadgeBlock("Point", 1000, "")}
+              will receive {getGroupBadgeBlock("Point", 500, "")}
               and they will receive{" "}
               {getGroupBadgeBlock("Point", 500, "small left")}. Then for every
               challenge they play on the site you get an extra{" "}
               {getGroupBadgeBlock("Point", 20, "small left")} per game they play
               for life.
             </div>
-            <div style={{ margin: "10px 0" }}>
-              And also yu get{" "}
-              <Label color="blue" basic size="small">
-                <Icon name="percent" />
-                10 Comissions
-              </Label>{" "}
-              for{" "}
-              <Label color="red" basic size="small">
-                <Icon name="dollar" />
-                Real Money Event
-              </Label>{" "}
-              for life.
-            </div>
+
             <Message attached="bottom" warning>
-              <Message.Header>Share your unique invite link:</Message.Header>
+              <p>
+                Share your unique invite link to your friends and get %10
+                commission:
+              </p>
               <div style={{ fontSize: "20px" }}>
                 <CopyText myid={"https://loole.gg/i/" + currentUser.username} />
               </div>
