@@ -809,7 +809,7 @@ div.chatavatar {
   opacity: 1;
   transform: none;
 }
-.lock-page .ui.message {
+.lock-page .ui.message:not(.org) {
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
 }

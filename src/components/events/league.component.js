@@ -690,6 +690,7 @@ class LeagueSection extends Component {
                     })}
                   </List>
                 </Message>
+                <Invite />
               </Segment>
             )}
             <Tracking rules={item.rules} />

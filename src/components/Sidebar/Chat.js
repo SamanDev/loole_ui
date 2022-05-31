@@ -3,7 +3,11 @@ import Avatar from "react-avatar";
 
 import Swal from "sweetalert2";
 import userService from "services/user.service";
-import { setAvatar, get_date_locale } from "components/include";
+import {
+  setAvatar,
+  get_date_locale,
+  getGroupBadgeBlock,
+} from "components/include";
 import Linkify from "linkify-react";
 // react-bootstrap components
 import { Button, Card, Form, Row, Col } from "react-bootstrap";
@@ -16,15 +20,28 @@ function getchatTime(date) {
 
   return dateExpired;
 }
+function getchatwin(sign, msg) {
+  var _chat = msg.split(" ");
+  var _chat2 = getGroupBadgeBlock(sign, _chat[1], "", "right hide", "green");
+
+  return <>{_chat2}</>;
+}
 function getchatClass(message, mode) {
   if (mode == "Alert") {
     var classAlert = "alert-primary";
     if (message.indexOf(" Finished") > -1) {
       classAlert = "alert-danger";
     }
+    if (message.indexOf(" Started") > -1) {
+      classAlert = "alert-success";
+    }
+    if (message.indexOf("Added ") > -1) {
+      classAlert = "alert-danger";
+    }
     return classAlert;
   } else {
     var classChat = "sys-quote text-center text-muted";
+
     if (message.indexOf(" is  ready ") > -1) {
       classChat = "sys-quote text-center text-success";
     }
@@ -44,6 +61,7 @@ function getchatClass(message, mode) {
     if (message.indexOf(": ") > -1) {
       classChat = "alert-warning sys-quote text-center";
     }
+
     return classChat;
   }
 }
@@ -159,7 +177,20 @@ function mycreateChats(
             <small>
               {item.mode}
               <br />
-              {item.message}
+              {item.message.indexOf("Added ") > -1 ? (
+                <>
+                  {item.message.split(" ")[0]}{" "}
+                  <span
+                    style={{ transform: "scale(.8)", display: "inline-block" }}
+                  >
+                    {getchatwin(item.username, item.message)}
+                  </span>{" "}
+                  {item.message.split(" ")[2]} {item.message.split(" ")[3]}{" "}
+                  {item.message.split(" ")[4]}
+                </>
+              ) : (
+                <>{item.message}</>
+              )}
             </small>
             <div className="chatdate" style={{ top: -10 }}>
               {getchatTime(item.time)}
