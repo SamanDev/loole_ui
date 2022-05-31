@@ -6,6 +6,7 @@ const LandStat = lazy(() => import("components/landstat.component"));
 const Footer = lazy(() => import("components/Navbars/Footer"));
 const Market = lazy(() => import("components/market.component"));
 const RegisterBtn = lazy(() => import("components/registerBtn"));
+const Helpblog = lazy(() => import("components/helpsectoin.component"));
 //import HomeEvents from "components/events/home.component";
 //import GameSlide from "components/GameSlide";
 //import HowIt from "components/howit";
@@ -187,7 +188,11 @@ function Landing(prop) {
           </div>
         </div>
         <HowIt />
-
+        <div className="section ">
+          <div className="text-center container">
+            <Helpblog {...prop} />
+          </div>
+        </div>
         <div className="section section-gray section-no-padding">
           <div className="container" style={{ minHeight: 500 }}>
             <h4 className="header-text text-center">Is it Real Cash?</h4>

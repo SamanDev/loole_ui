@@ -29,6 +29,7 @@ const MatchSection = lazy(() => import("components/events/match.component"));
 const MatchTourSection = lazy(() =>
   import("components/events/tournamentmatch.component")
 );
+const Helpblog = lazy(() => import("components/helpsectoin.component"));
 //import LeagueSection from "components/events/league.component";
 //import TournamentSection from "components/events/tournament.component";
 //import MatchSection from "components/events/match.component";
@@ -485,6 +486,12 @@ function LockScreenPage(prop) {
                         )}
                       </>
                     )}
+                    <div
+                      className="text-center"
+                      style={{ maxWidth: 493, margin: "40px auto" }}
+                    >
+                      <Helpblog {...prop} game={eventDef.gameName} />
+                    </div>
                   </Container>
                 </div>
               </Sidebar.Pusher>

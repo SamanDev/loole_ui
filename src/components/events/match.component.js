@@ -271,6 +271,7 @@ class MatchSection extends Component {
           //alert(response)
           this.setState({
             isloading: false,
+            loading: false,
           });
           if (response.data.accessToken) {
             this.context.setUList({ currentUser: response.data });

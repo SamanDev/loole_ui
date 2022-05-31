@@ -219,6 +219,7 @@ const Landing = (prop) => {
           size="small"
           className="container"
           secondary
+          padded="very"
           style={{ position: "relative", zIndex: 5, top: -50 }}
         >
           <div className="section " style={{ margin: 0, padding: "10px 0" }}>

@@ -14,6 +14,17 @@ import {
 import { date_edit_report, getGroupBadgeBlock } from "components/include.js";
 import DataTable from "react-data-table-component";
 import { useUserReports } from "services/hooks";
+const genLink = (row) => {
+  var _link =
+    "/lobby/" +
+    row.eventId +
+    "/" +
+    row.mode.replace("Registered", "") +
+    " " +
+    row.description.split(" - ")[1] +
+    "";
+  return _link.replace(/ /g, "-").replace("-Noundefined", "");
+};
 function CleanData(options) {
   var newArray = [];
 
@@ -166,21 +177,13 @@ const columns = [
       <>
         {row.eventId ? (
           <>
-            <Link
-              to={
-                "/lobby/" +
-                row.eventId +
-                "/" +
-                row.description.split(" - ")[1]?.replace("Dollar", "") +
-                "/"
-              }
-              target="_blank"
-            >
+            <Link to={genLink(row)}>
               {row.description
                 .split("&")[0]
                 .split(" - ")[0]
                 .replace("Event Id", "EID")}
             </Link>
+
             {" - "}
             {row.description.split(" - ")[1]?.replace("Dollar", "") +
               " - " +

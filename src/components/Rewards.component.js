@@ -53,12 +53,18 @@ function Dashboard(prop) {
               for life.
             </div>
 
-            <Message attached="bottom" warning>
+            <Message
+              attached="bottom"
+              color="black"
+              className="org"
+              size="mini"
+              style={{ textAlign: "left" }}
+            >
               <p>
                 Share your unique invite link to your friends and get %10
                 commission:
               </p>
-              <div style={{ fontSize: "20px" }}>
+              <div style={{ fontSize: "20px", paddingBottom: 8 }}>
                 <CopyText myid={"https://loole.gg/i/" + currentUser.username} />
               </div>
             </Message>
@@ -112,10 +118,7 @@ function Dashboard(prop) {
                   <Message.Item>
                     Daily Login {getGroupBadgeBlock("Point", 20, "small left")}
                   </Message.Item>
-                  <Message.Item>
-                    Compete in a Diamonds Event{" "}
-                    {getGroupBadgeBlock("Point", 20, "small left")}
-                  </Message.Item>
+
                   <Message.Item>
                     Compete in a real money Event{" "}
                     {getGroupBadgeBlock("Point", 100, "small left")}
