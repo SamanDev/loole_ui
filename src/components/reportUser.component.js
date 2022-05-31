@@ -148,8 +148,9 @@ const columns = [
         <span style={{ opacity: 0, position: "absolute" }}>
           {getGroupBadgeBlock("Dollar", row.startBalance, "small left ")} +
         </span>
-        {getGroupBadgeBlock("Dollar", row.startBalance, "small left")} +
-        {getGroupBadgeBlock("Dollar", row.amount, "small left")} =
+        {getGroupBadgeBlock("Dollar", row.startBalance, "small left")}
+        {row.endBalance < row.startBalance ? " - " : " + "}
+        {getGroupBadgeBlock("Dollar", row.amount, "small left")} {" = "}
         {row.status != "Pending"
           ? getGroupBadgeBlock("Dollar", row.endBalance, "small left")
           : row.status}

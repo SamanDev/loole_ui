@@ -13,7 +13,7 @@ import {
 import { useAllCoins } from "services/hooks";
 import Active from "components/active.component";
 import Report from "components/reportUser.component";
-import ReportDiamond from "components/reportdiamond.component";
+import ReportDiamond from "components/reportdiamondUser.component";
 // react-bootstrap components
 import UserContext from "context/UserState";
 import { Row, Col } from "react-bootstrap";

@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import Active from "components/active.component";
 
 import Rewards from "components/Rewards.component";
-import Report from "components/reportdiamond.component";
+import Report from "components/reportdiamondUser.component";
 // react-bootstrap components
 import UserContext from "context/UserState";
 import { Tab, Segment } from "semantic-ui-react";

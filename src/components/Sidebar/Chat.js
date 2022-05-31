@@ -8,6 +8,7 @@ import {
   get_date_locale,
   getGroupBadgeBlock,
 } from "components/include";
+import { Link } from "react-router-dom";
 import Linkify from "linkify-react";
 // react-bootstrap components
 import { Button, Card, Form, Row, Col } from "react-bootstrap";
@@ -186,7 +187,18 @@ function mycreateChats(
                     {getchatwin(item.username, item.message)}
                   </span>{" "}
                   {item.message.split(" ")[2]} {item.message.split(" ")[3]}{" "}
-                  {item.message.split(" ")[4]}
+                  <Link
+                    to={"/user/" + item.message.split(" ")[4]}
+                    target="_blank"
+                    style={{ position: "relative", left: 5 }}
+                  >
+                    <Avatar
+                      size="20"
+                      title={item.message.split(" ")[4]}
+                      round={true}
+                      name={setAvatar(item.message.split(" ")[4])}
+                    />
+                  </Link>
                 </>
               ) : (
                 <>{item.message}</>

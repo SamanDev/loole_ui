@@ -163,8 +163,9 @@ const columns = [
         <span style={{ opacity: 0, position: "absolute" }}>
           {getGroupBadgeBlock("Point", row.startBalance, "small left ")} +
         </span>
-        {getGroupBadgeBlock("Point", row.startBalance, "small left")} +
-        {getGroupBadgeBlock("Point", row.amount, "small left")} =
+        {getGroupBadgeBlock("Point", row.startBalance, "small left")}
+        {row.endBalance < row.startBalance ? " - " : " + "}
+        {getGroupBadgeBlock("Point", row.amount, "small left")} {" = "}
         {getGroupBadgeBlock("Point", row.endBalance, "small left")}
       </>
     ),

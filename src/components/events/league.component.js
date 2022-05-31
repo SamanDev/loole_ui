@@ -645,7 +645,7 @@ class LeagueSection extends Component {
                                       item.outSign,
                                       current_brackets[i]?.prize,
                                       "Prize",
-                                      "left",
+                                      "left hide",
                                       "green"
                                     )}
                                   </>
