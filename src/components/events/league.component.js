@@ -342,9 +342,7 @@ class LeagueSection extends Component {
         .replace("70,", "51-70,")
         .replace("100,", "71-100,")
         .replace("200,", "101-200,")
-        .replace("400,", "201-400,")
-        .replace("700,", "401-700,")
-        .replace("1000,", "701-1000,");
+        .replace("400,", "201-500,");
       var payArr = tournamentPayout.split("@");
 
       for (var i = 0; i < payArr.length; i++) {
