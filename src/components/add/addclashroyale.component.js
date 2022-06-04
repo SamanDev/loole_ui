@@ -119,7 +119,7 @@ function getRules(mode, minMatch, MinCup, MaxCup, hp, tc, w3, w2, w1, drow) {
   if (mode.value.split(" - ")[1] == "First Matches") {
     TrackMode = "Average of First " + minMatch + "";
   }
-  if (mode.value.split(" - ")[0] == "Team") {
+  if (mode.value.split(" ")[0] == "Team") {
     tc = 0;
   }
   var _rules = {
