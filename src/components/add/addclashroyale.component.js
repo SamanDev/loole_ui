@@ -117,7 +117,10 @@ function editTime(date) {
 function getRules(mode, minMatch, MinCup, MaxCup, hp, tc, w3, w2, w1, drow) {
   var TrackMode = "Average of Top " + minMatch + "";
   if (mode.value.split(" - ")[1] == "First Matches") {
-    TrackMode = "First " + minMatch + " Matches";
+    TrackMode = "Average of First " + minMatch + "";
+  }
+  if (mode.value.split(" - ")[0] == "Team") {
+    tc = 0;
   }
   var _rules = {
     RuleTrack: [
@@ -125,7 +128,7 @@ function getRules(mode, minMatch, MinCup, MaxCup, hp, tc, w3, w2, w1, drow) {
       { text: "Min Match", weight: "" + minMatch + "" },
       { text: "Min Trophy", weight: "" + MinCup + "" },
       { text: "Max Trophy", weight: "" + MaxCup + "" },
-      { text: "Total Point", weight: TrackMode },
+      { text: "Total Score", weight: TrackMode },
     ],
     pointTrack: [
       { text: "HP", weight: " x " + hp + "" },
@@ -277,6 +280,10 @@ class AddTour extends Component {
     });
   }
   setRules(e) {
+    if (this.state.rMode.value.split(" ")[0] == "Team") {
+      this.setRTC(0);
+    }
+
     var _R = getRules(
       this.state.rMode,
       this.state.rMinMatch,
@@ -786,12 +793,24 @@ class AddTour extends Component {
                           onBlur={this.setRules}
                         />
                       </div>
+                      <div className="form-group">
+                        <label>Trophy Change</label>
+                        <NumericInput
+                          min={0}
+                          step={1}
+                          max={10}
+                          className="form-control"
+                          value={this.state.rTC}
+                          onChange={this.setRTC}
+                          onBlur={this.setRules}
+                        />
+                      </div>
                     </Grid.Column>
                     <Grid.Column>
                       <div className="form-group">
                         <label>Min Trophy</label>
                         <NumericInput
-                          min={2}
+                          min={0}
                           step={1}
                           max={50000}
                           className="form-control"
@@ -803,7 +822,7 @@ class AddTour extends Component {
                       <div className="form-group">
                         <label>HP</label>
                         <NumericInput
-                          min={2}
+                          min={0}
                           step={1}
                           max={50}
                           className="form-control"

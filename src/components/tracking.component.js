@@ -86,6 +86,7 @@ function Tracking(prop) {
       <Message>
         <List divided inverted relaxed>
           {pointTrack.map((win, i) => {
+            if (win.weight.split(" ")[2] == "0") return null;
             return (
               <List.Item key={i.toString()}>
                 <List.Content style={{ textAlign: "left" }}>
