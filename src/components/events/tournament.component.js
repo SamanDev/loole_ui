@@ -14,6 +14,7 @@ import {
   List,
   Message,
 } from "semantic-ui-react";
+import Invite from "components/invite.component";
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
 import userService from "services/user.service";
@@ -757,6 +758,7 @@ class TournamentSection extends Component {
                   full, the current prize and potential prize pools will be
                   equal.
                 </p>
+                <Invite />
               </Header>{" "}
               <Message>
                 <List divided inverted relaxed>
