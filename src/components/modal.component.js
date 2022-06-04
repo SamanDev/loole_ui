@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { genLink } from "components/include.js";
 function ModalExampleShorthand(prop) {
   const [key, setKey] = useState(prop.mykey);
   const [item, setItem] = useState(prop.note);
@@ -40,7 +40,7 @@ function ModalExampleShorthand(prop) {
       </Menu.Item>
     );
   } else {
-    return <Link className="item" to={"/panel/lobby?id=" + item.id}></Link>;
+    return <Link className="item" to={genLink(item.id)}></Link>;
   }
 }
 

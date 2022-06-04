@@ -478,7 +478,7 @@ class MatchSection extends Component {
               colorfinish={getColor(item.prize)}
               date={date_edit_card(item.expire)}
             />
-            <Admin {...this.props} />
+
             <Segment basic>
               <Grid columns={2}>
                 <Grid.Column
@@ -528,7 +528,7 @@ class MatchSection extends Component {
                   )}
                 </Grid.Column>
               </Grid>
-
+              <Admin {...this.props} />
               <Divider vertical inverted>
                 {printMatchBTN(
                   item,

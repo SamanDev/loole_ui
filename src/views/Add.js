@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 // react-bootstrap components
 import { Card, Nav, Tab } from "react-bootstrap";
 
-import { haveAdmin } from "components/include";
+import { haveAdmin, haveModerator } from "components/include";
 
 import AddTournament from "components/add/addtournament.component";
 import AddLeague from "components/add/addleague.component";
@@ -22,10 +22,13 @@ class CreateMatch extends Component {
 
     return (
       <>
-        <Tab.Container id="plain-tabs-example" defaultActiveKey="tournsment">
-          <Nav role="tablist" variant="tabs">
-            {haveAdmin(currentUser.roles) && (
-              <>
+        {(haveAdmin(currentUser.roles) || haveModerator(currentUser.roles)) && (
+          <>
+            <Tab.Container
+              id="plain-tabs-example"
+              defaultActiveKey="clashroyale"
+            >
+              <Nav role="tablist" variant="tabs">
                 <Nav.Item>
                   <Nav.Link eventKey="tournsment">Tournament</Nav.Link>
                 </Nav.Item>
@@ -35,31 +38,34 @@ class CreateMatch extends Component {
                 <Nav.Item>
                   <Nav.Link eventKey="clashroyale">ClashRoyale</Nav.Link>
                 </Nav.Item>
-              </>
-            )}
-          </Nav>
-          <Card>
-            <Card.Body>
-              <Tab.Content className="maxheight ">
-                <Tab.Pane
-                  eventKey="tournsment"
-                  className="ui  segment  tab basic"
-                >
-                  <AddTournament token={currentUser} {...this.props} />
-                </Tab.Pane>
-                <Tab.Pane eventKey="league" className="ui  segment  tab basic">
-                  <AddLeague token={currentUser} {...this.props} />
-                </Tab.Pane>
-                <Tab.Pane
-                  eventKey="clashroyale"
-                  className="ui  segment  tab basic"
-                >
-                  <AddClashRoyale token={currentUser} {...this.props} />
-                </Tab.Pane>
-              </Tab.Content>
-            </Card.Body>
-          </Card>
-        </Tab.Container>
+              </Nav>
+              <Card>
+                <Card.Body>
+                  <Tab.Content className="maxheight ">
+                    <Tab.Pane
+                      eventKey="tournsment"
+                      className="ui  segment  tab basic"
+                    >
+                      <AddTournament token={currentUser} {...this.props} />
+                    </Tab.Pane>
+                    <Tab.Pane
+                      eventKey="league"
+                      className="ui  segment  tab basic"
+                    >
+                      <AddLeague token={currentUser} {...this.props} />
+                    </Tab.Pane>
+                    <Tab.Pane
+                      eventKey="clashroyale"
+                      className="ui  segment  tab basic"
+                    >
+                      <AddClashRoyale token={currentUser} {...this.props} />
+                    </Tab.Pane>
+                  </Tab.Content>
+                </Card.Body>
+              </Card>
+            </Tab.Container>
+          </>
+        )}
       </>
     );
   }

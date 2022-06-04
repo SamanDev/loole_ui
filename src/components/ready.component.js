@@ -3,7 +3,7 @@ import { Segment, Sidebar, Dimmer } from "semantic-ui-react";
 import { getQueryVariable, isPlayerInMatch } from "components/include.js";
 import TransitionExampleTransitionExplorer from "components/anim.component";
 import { useParams } from "react-router";
-const SidebarExampleSidebar = (prop) => {
+const ReadySection = (prop) => {
   const [objanim, setObjanim] = useState(prop.objanim);
   const [visible, setVisible] = useState(prop.visible);
   const [isUser, setIsUser] = useState(prop.isUser);
@@ -114,4 +114,4 @@ const SidebarExampleSidebar = (prop) => {
   );
 };
 
-export default SidebarExampleSidebar;
+export default ReadySection;

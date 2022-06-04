@@ -234,7 +234,23 @@ function Main(prop) {
       queryClient.resetQueries(["AdminUsers"]);
     }
   };
+  const forceLobby = (events, username) => {
+    events?.map((_item, i) => {
+      var item = JSON.parse(JSON.stringify(_item));
 
+      {
+        item.players.map((player, j) => {
+          if (
+            player.username == username &&
+            item.status == "InPlay" &&
+            item.totalPlayer == 2
+          ) {
+            history.push(genLink(item));
+          }
+        });
+      }
+    });
+  };
   // const query = mutationCache.findAll("User");
   //const query = mutationCache.getAll()
   const currentUser = uList.currentUser;
@@ -300,6 +316,7 @@ function Main(prop) {
     if (eventsGet?.length > 0) {
       _defEvents = eventsGet;
       setMyList({ events: eventsGet });
+      forceLobby(eventsGet, currentUser.username);
     }
   }, [eventsGet]);
 

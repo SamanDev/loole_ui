@@ -289,6 +289,7 @@ class UserService {
     finished,
     totalPlayer,
     tournamentPayout,
+    timeMinute,
     inSign,
     outSign,
     currency,
@@ -306,6 +307,7 @@ class UserService {
           finished,
           totalPlayer,
           tournamentPayout,
+          timeMinute,
           inSign,
           outSign,
           currency,
@@ -432,7 +434,7 @@ class UserService {
     return axios
       .post(
         API_URL_TEST + "coinPayments",
-        { action, coin, amount },
+        { action, coin, amount, userWalletAddress },
         { headers: authHeader() }
       )
       .then((response) => {

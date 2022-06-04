@@ -27,11 +27,11 @@ const TransitionExampleTransitionExplorer = lazy(() =>
   import("components/anim.component")
 );
 const CopyText = lazy(() => import("components/copy.component"));
-const SidebarExampleSidebar = lazy(() => import("components/ready.component"));
+const ReadySection = lazy(() => import("components/ready.component"));
 import eventBus from "views/eventBus";
 //import CopyText from "components/copy.component";
 import Moment from "moment";
-//import SidebarExampleSidebar from "components/ready.component";
+//import ReadySection from "components/ready.component";
 import {
   Statistic,
   Button,
@@ -504,7 +504,9 @@ export const vsComponentPlayer = (
   }
   if (
     matchidFind.status == "InPlay" &&
-    isPlayerInMatch(matchidFind, currentUser.username)
+    (isPlayerInMatch(matchidFind, currentUser.username) ||
+      haveAdmin(currentUser.roles) ||
+      haveModerator(currentUser.roles))
   ) {
     padd = 60;
   }
@@ -512,7 +514,9 @@ export const vsComponentPlayer = (
     matchidFind.status == "InPlay" &&
     item.players[num].nickName &&
     item.players[num].tagId != item.players[num].nickName &&
-    isPlayerInMatch(matchidFind, currentUser.username)
+    (isPlayerInMatch(matchidFind, currentUser.username) ||
+      haveAdmin(currentUser.roles) ||
+      haveModerator(currentUser.roles))
   ) {
     padd = 150;
   }
@@ -664,12 +668,14 @@ export const vsComponentPlayer = (
       _p = plyr;
     }
   });
-  //sconsole.log(_p);
+
   var info = (
     <>
       {_p &&
         _p.username != "Tournament Player" &&
-        isPlayerInMatch(matchidFind, currentUser.username) && (
+        (isPlayerInMatch(matchidFind, currentUser.username) ||
+          haveAdmin(currentUser.roles) ||
+          haveModerator(currentUser.roles)) && (
           <>
             {item.gameName != "ClashRoyale" ? (
               <>
@@ -680,7 +686,8 @@ export const vsComponentPlayer = (
                     </Statistic.Label>
                     <Statistic.Value>
                       {isPlayerInMatch(matchidFind, currentUser.username) ||
-                      haveAdmin(currentUser.role) ? (
+                      haveAdmin(currentUser.roles) ||
+                      haveModerator(currentUser.roles) ? (
                         <CopyText
                           color="red"
                           size="small"
@@ -700,7 +707,7 @@ export const vsComponentPlayer = (
 
                       <Statistic.Value>
                         {isPlayerInMatch(matchidFind, currentUser.username) ||
-                        haveAdmin(currentUser.role)
+                        haveAdmin(currentUser.roles)
                           ? _p.nickName
                           : "**********"}
                       </Statistic.Value>
@@ -716,7 +723,7 @@ export const vsComponentPlayer = (
 
                   <Statistic.Value className="nnick">
                     {isPlayerInMatch(matchidFind, currentUser.username) ||
-                    haveAdmin(currentUser.role)
+                    haveAdmin(currentUser.roles)
                       ? _p.nickName
                       : "**********"}
                   </Statistic.Value>
@@ -760,7 +767,7 @@ export const vsComponentPlayer = (
           !_p ? { opacity: 0.3, overflow: "hidden" } : { overflow: "hidden" }
         }
       >
-        <SidebarExampleSidebar
+        <ReadySection
           user={user}
           player={player}
           item={item}
@@ -771,7 +778,9 @@ export const vsComponentPlayer = (
           ischeck={ischeck}
           visible={
             (matchidFind.status == "Ready" || matchidFind.status == "InPlay") &&
-            isPlayerInMatch(matchidFind, currentUser.username)
+            (isPlayerInMatch(matchidFind, currentUser.username) ||
+              haveAdmin(currentUser.roles) ||
+              haveModerator(currentUser.roles))
               ? true
               : false
           }
@@ -2197,6 +2206,18 @@ export const haveAdmin = (userTags) => {
   if (userTags) {
     userTags.map(function (tag) {
       if (tag.name == "ROLE_ADMIN") {
+        isAdmin = true;
+      }
+    });
+  }
+
+  return isAdmin;
+};
+export const haveModerator = (userTags) => {
+  var isAdmin = false;
+  if (userTags) {
+    userTags.map(function (tag) {
+      if (tag.name == "ROLE_MODERATOR") {
         isAdmin = true;
       }
     });

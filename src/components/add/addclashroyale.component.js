@@ -197,7 +197,7 @@ class AddTour extends Component {
       inSign: { value: "Point", label: "Point" },
       outSign: { value: "Point", label: "Point" },
       tournamentPayout:
-        "2,100.00@5,70.00,30.00@10,50.00,30.00,20.00@20,40.00,30.00,20.00,10.00@50,35.00,25.00,15.00,10.00,8.00,7.00@70,30.00,20.00,14.00,10.00,8.00,7.00,6.00,5.00@100,29.00,18.00,12.50,10.00,8.00,6.50,5.50,4.50,3.50,2.50@200,28.00,17.50,11.50,8.50,7.00,5.50,4.50,3.50,2.50,1.50,1.00x10@400,27.00,16.50,10.50,8.00,6.25,4.75,3.75,2.75,1.75,1.25,0.75x10,0.50x20@700,26.00,15.50,10.00,7.50,6.00,4.50,3.50,2.50,1.50,1.00,0.65x10,0.40x20,0.25x30@1000,25.00,15.00,10.00,7.25,5.50,4.25,3.25,2.25,1.25,0.75,0.55x10,0.40x20,0.25x30,0.15x30",
+        "2,100.00@5,70.00,30.00@10,50.00,30.00,20.00@20,40.00,30.00,20.00,10.00@50,35.00,25.00,15.00,10.00,8.00,7.00@70,30.00,20.00,14.00,10.00,8.00,7.00,6.00,5.00@100,29.00,18.00,12.50,10.00,8.00,6.50,5.50,4.50,3.50,2.50@200,28.00,17.50,11.50,8.50,7.00,5.50,4.50,3.50,2.50,1.50,1.00x10@400,27.00,16.50,10.50,8.00,6.25,4.75,3.75,2.75,1.75,1.25,0.75x10,0.50x20@700,26.00,15.50,10.00,7.50,6.00,4.50,3.50,2.50,1.50,1.00,0.65x10,0.40x20,0.25x30@1000,25.00,15.00,10.00,7.25,5.50,4.25,3.25,2.25,1.25,0.75,0.55x10,0.40x20,0.25x30,0.15x302,100.00@5,70.00,30.00@10,50.00,30.00,20.00@20,40.00,30.00,20.00,10.00@50,35.00,25.00,15.00,10.00,8.00,7.00@70,30.00,20.00,14.00,10.00,8.00,7.00,6.00,5.00@100,29.00,18.00,12.50,10.00,8.00,6.50,5.50,4.50,3.50,2.50@200,28.00,17.50,11.50,8.50,7.00,5.50,4.50,3.50,2.50,1.50,1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00@500,27.00,16.50,10.50,8.00,6.25,4.75,3.75,2.75,1.75,1.25,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50,0.50",
       gamePlatform: "",
       gameName: "",
       rMinMatch: 10,
@@ -454,7 +454,7 @@ class AddTour extends Component {
         b,
         this.state.TotalPlayer,
         this.state.tournamentPayout,
-
+        10,
         this.state.inSign.value,
         this.state.outSign.value,
         this.state.outSign.value,
@@ -507,7 +507,7 @@ class AddTour extends Component {
       totalPlayer: this.state.TotalPlayer,
       eventLevel: 1,
       nextLevel: 1,
-      timeMinute: this.state.AvalableFor.value * 1000 * 60,
+      timeMinute: 10,
       prize: this.state.Prize
         ? this.state.Prize
         : (this.state.BetAmount * this.state.TotalPlayer * 90) / 100,
@@ -566,355 +566,358 @@ class AddTour extends Component {
                 this.form = c;
               }}
             >
-              <Grid columns={3} relaxed>
-                <Grid.Row>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>Bet</label>
-                      <NumericInput
-                        min={1}
-                        step={1}
-                        max={1000}
-                        className="form-control"
-                        name="BetAmount"
-                        value={this.state.BetAmount}
-                        onChange={this.setBetAmount}
-                      />
-                    </div>
-                  </Grid.Column>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>InSign</label>
-                      <Select
-                        className="react-select default"
-                        classNamePrefix="react-select"
-                        name="InSign"
-                        value={this.state.inSign}
-                        onChange={this.setInSign}
-                        options={[
-                          { value: "Dollar", label: "Dollar" },
-                          { value: "Point", label: "Point" },
-                        ]}
-                        placeholder=""
-                        isSearchable={false}
-                      />
-                    </div>
-                  </Grid.Column>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>Total Players</label>
-                      <NumericInput
-                        min={1}
-                        step={1}
-                        max={1000}
-                        className="form-control"
-                        name="TotalPlayer"
-                        value={this.state.TotalPlayer}
-                        onChange={this.setTotalPlayer}
-                      />
-                    </div>
-                  </Grid.Column>
-                </Grid.Row>
+              <Segment secondary>
+                <Grid columns={3} relaxed>
+                  <Grid.Row style={{ marginRight: 0, marginLeft: 0 }}>
+                    <Grid.Column>
+                      <div className="form-group">
+                        <label>Bet</label>
+                        <NumericInput
+                          min={1}
+                          step={1}
+                          max={1000}
+                          className="form-control"
+                          name="BetAmount"
+                          value={this.state.BetAmount}
+                          onChange={this.setBetAmount}
+                        />
+                      </div>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <div className="form-group">
+                        <label>InSign</label>
+                        <Select
+                          className="react-select default"
+                          classNamePrefix="react-select"
+                          name="InSign"
+                          value={this.state.inSign}
+                          onChange={this.setInSign}
+                          options={[
+                            { value: "Dollar", label: "Dollar" },
+                            { value: "Point", label: "Point" },
+                          ]}
+                          placeholder=""
+                          isSearchable={false}
+                        />
+                      </div>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <div className="form-group">
+                        <label>Total Players</label>
+                        <NumericInput
+                          min={1}
+                          step={1}
+                          max={500}
+                          className="form-control"
+                          name="TotalPlayer"
+                          value={this.state.TotalPlayer}
+                          onChange={this.setTotalPlayer}
+                        />
+                      </div>
+                    </Grid.Column>
+                  </Grid.Row>
 
-                <Grid.Row>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>Start Time</label>
-                      <Input
-                        type="datetime-local"
-                        className="form-control"
-                        name="StartTime"
-                        value={this.state.StartTimeLeague}
-                        onChange={this.setStartTimeLeague}
-                        onBlur={this.updateEnd}
-                      />
-                    </div>
-                    <small>ServerTime: {moment(now).utc().format()}</small>
-                  </Grid.Column>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>Start PlusMode</label>
-                      <Select
-                        className="react-select default"
-                        classNamePrefix="react-select"
-                        name="InSign"
-                        value={this.state.timePlusStr}
-                        onChange={this.setPlusSign}
-                        options={[
-                          { value: "minutes", label: "Minutes" },
-                          { value: "hours", label: "Hours" },
-                          { value: "days", label: "Days" },
-                          { value: "weeks", label: "Weeks" },
-                          { value: "months", label: "Months" },
-                        ]}
-                        placeholder=""
-                        isSearchable={false}
-                        onBlur={this.updateEnd}
-                      />
-                    </div>
-                    <small>
-                      Start: {moment(this.state.StartTimeLeague).utc().format()}
-                    </small>
-                    <br />
-                    <small>
-                      Send:{" "}
-                      {editTime(moment(this.state.StartTimeLeague).format())}
-                    </small>
-                  </Grid.Column>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>Start Plus</label>
-                      <NumericInput
-                        className="form-control"
-                        name="Plus"
-                        value={this.state.timePlusEnd}
-                        onChange={this.setTimePlusEnd}
-                        onBlur={this.updateEnd}
-                      />
-                    </div>
-                  </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>End Time</label>
-                      <Input
-                        type="datetime-local"
-                        className="form-control"
-                        name="EndTime"
-                        value={this.state.EndTimeLeague}
-                        onChange={this.setEndTimeLeague}
-                        onBlur={this.updateEnd}
-                      />
-                    </div>
-                    <small>
-                      EndTime: {moment(this.state.EndTimeLeague).utc().format()}
-                    </small>
-                  </Grid.Column>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>OutSign</label>
-                      <Select
-                        className="react-select default"
-                        classNamePrefix="react-select"
-                        name="OutSign"
-                        value={this.state.outSign}
-                        onChange={this.setOutSign}
-                        options={[
-                          { value: "Dollar", label: "Dollar" },
-                          { value: "Point", label: "Point" },
-                        ]}
-                        placeholder=""
-                        isSearchable={false}
-                      />
-                    </div>
-                  </Grid.Column>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>Prize</label>
-                      <NumericInput
-                        min={1}
-                        step={1}
-                        max={1000}
-                        className="form-control"
-                        name="BetAmount"
-                        value={this.state.Prize}
-                        onChange={this.setPrize}
-                      />
-                    </div>
-                  </Grid.Column>
-                </Grid.Row>
-                <Divider />
-                <Grid.Row>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>Battle Mode</label>
-                      <Select
-                        className="react-select default"
-                        classNamePrefix="react-select"
-                        name="InSign"
-                        value={this.state.rMode}
-                        onChange={this.setRMode}
-                        options={[
-                          {
-                            value: "Ladder Battles - Top Average",
-                            label: "Ladder Battles - Top Average",
-                          },
-                          {
-                            value: "Ladder Battles - First Matches",
-                            label: "Ladder Battles - First Matches",
-                          },
-                          {
-                            value: "Team Battles - Top Average",
-                            label: "Team Battles - Top Average",
-                          },
-                          {
-                            value: "Team Battles - First Matches",
-                            label: "Team Battles - First Matches",
-                          },
-                        ]}
-                        placeholder=""
-                        isSearchable={false}
-                        onBlur={this.setRules}
-                      />
-                    </div>
+                  <Grid.Row style={{ marginRight: 0, marginLeft: 0 }}>
+                    <Grid.Column>
+                      <div className="form-group">
+                        <label>Start Time</label>
+                        <Input
+                          type="datetime-local"
+                          className="form-control"
+                          name="StartTime"
+                          value={this.state.StartTimeLeague}
+                          onChange={this.setStartTimeLeague}
+                          onBlur={this.updateEnd}
+                        />
+                      </div>
+                      <small>ServerTime: {moment(now).utc().format()}</small>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <div className="form-group">
+                        <label>Start PlusMode</label>
+                        <Select
+                          className="react-select default"
+                          classNamePrefix="react-select"
+                          name="InSign"
+                          value={this.state.timePlusStr}
+                          onChange={this.setPlusSign}
+                          options={[
+                            { value: "minutes", label: "Minutes" },
+                            { value: "hours", label: "Hours" },
+                            { value: "days", label: "Days" },
+                            { value: "weeks", label: "Weeks" },
+                            { value: "months", label: "Months" },
+                          ]}
+                          placeholder=""
+                          isSearchable={false}
+                          onBlur={this.updateEnd}
+                        />
+                      </div>
+                      <small>
+                        Start:{" "}
+                        {moment(this.state.StartTimeLeague).utc().format()}
+                      </small>
+                      <br />
+                      <small>
+                        Send:{" "}
+                        {editTime(moment(this.state.StartTimeLeague).format())}
+                      </small>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <div className="form-group">
+                        <label>Start Plus</label>
+                        <NumericInput
+                          className="form-control"
+                          name="Plus"
+                          value={this.state.timePlusEnd}
+                          onChange={this.setTimePlusEnd}
+                          onBlur={this.updateEnd}
+                        />
+                      </div>
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row style={{ marginRight: 0, marginLeft: 0 }}>
+                    <Grid.Column>
+                      <div className="form-group">
+                        <label>End Time</label>
+                        <Input
+                          type="datetime-local"
+                          className="form-control"
+                          name="EndTime"
+                          value={this.state.EndTimeLeague}
+                          onChange={this.setEndTimeLeague}
+                          onBlur={this.updateEnd}
+                        />
+                      </div>
+                      <small>
+                        EndTime:{" "}
+                        {moment(this.state.EndTimeLeague).utc().format()}
+                      </small>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <div className="form-group">
+                        <label>OutSign</label>
+                        <Select
+                          className="react-select default"
+                          classNamePrefix="react-select"
+                          name="OutSign"
+                          value={this.state.outSign}
+                          onChange={this.setOutSign}
+                          options={[
+                            { value: "Dollar", label: "Dollar" },
+                            { value: "Point", label: "Point" },
+                          ]}
+                          placeholder=""
+                          isSearchable={false}
+                        />
+                      </div>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <div className="form-group">
+                        <label>Prize</label>
+                        <NumericInput
+                          min={1}
+                          step={1}
+                          max={1000}
+                          className="form-control"
+                          name="BetAmount"
+                          value={this.state.Prize}
+                          onChange={this.setPrize}
+                        />
+                      </div>
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Divider />
+                  <Grid.Row style={{ marginRight: 0, marginLeft: 0 }}>
+                    <Grid.Column>
+                      <div className="form-group">
+                        <label>Battle Mode</label>
+                        <Select
+                          className="react-select default"
+                          classNamePrefix="react-select"
+                          name="InSign"
+                          value={this.state.rMode}
+                          onChange={this.setRMode}
+                          options={[
+                            {
+                              value: "Ladder Battles - Top Average",
+                              label: "Ladder Battles - Top Average",
+                            },
+                            {
+                              value: "Ladder Battles - First Matches",
+                              label: "Ladder Battles - First Matches",
+                            },
+                            {
+                              value: "Team Battles - Top Average",
+                              label: "Team Battles - Top Average",
+                            },
+                            {
+                              value: "Team Battles - First Matches",
+                              label: "Team Battles - First Matches",
+                            },
+                          ]}
+                          placeholder=""
+                          isSearchable={false}
+                          onBlur={this.setRules}
+                        />
+                      </div>
 
-                    <div className="form-group">
-                      <label>Min Match</label>
-                      <NumericInput
-                        min={2}
-                        step={1}
-                        max={50}
-                        className="form-control"
-                        value={this.state.rMinMatch}
-                        onChange={this.setRMinMatch}
-                        onBlur={this.setRules}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Win +3</label>
-                      <NumericInput
-                        min={2}
-                        step={1}
-                        max={50000}
-                        className="form-control"
-                        value={this.state.rW3}
-                        onChange={this.setRW3}
-                        onBlur={this.setRules}
-                      />
-                    </div>
-                  </Grid.Column>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>Min Trophy</label>
-                      <NumericInput
-                        min={2}
-                        step={1}
-                        max={50000}
-                        className="form-control"
-                        value={this.state.rMinCup}
-                        onChange={this.setRMinCup}
-                        onBlur={this.setRules}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>HP</label>
-                      <NumericInput
-                        min={2}
-                        step={1}
-                        max={50}
-                        className="form-control"
-                        value={this.state.rHP}
-                        onChange={this.setRHP}
-                        onBlur={this.setRules}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Win +2</label>
-                      <NumericInput
-                        min={2}
-                        step={1}
-                        max={50000}
-                        className="form-control"
-                        value={this.state.rW2}
-                        onChange={this.setRW2}
-                        onBlur={this.setRules}
-                      />
-                    </div>
-                  </Grid.Column>
-                  <Grid.Column>
-                    <div className="form-group">
-                      <label>Max Trophy</label>
-                      <NumericInput
-                        min={2}
-                        step={1}
-                        max={50000}
-                        className="form-control"
-                        value={this.state.rMaxCup}
-                        onChange={this.setRMaxCup}
-                        onBlur={this.setRules}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Drow</label>
-                      <NumericInput
-                        min={2}
-                        step={1}
-                        max={50000}
-                        className="form-control"
-                        value={this.state.rDrow}
-                        onChange={this.setRDrow}
-                        onBlur={this.setRules}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Win +1</label>
-                      <NumericInput
-                        min={2}
-                        step={1}
-                        max={50}
-                        className="form-control"
-                        value={this.state.rW1}
-                        onChange={this.setRW1}
-                        onBlur={this.setRules}
-                      />
-                    </div>
-                  </Grid.Column>
-                </Grid.Row>
-
-                <Divider />
-              </Grid>
-              <div className="form-group hide">
-                <label>Game</label>
-                <Select
-                  className="react-select default"
-                  classNamePrefix="react-select"
-                  name="GName"
-                  value={this.state.GName}
-                  onChange={this.setGameName}
-                  options={getBlockGames("League")}
-                  placeholder=""
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Rules</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="name"
-                  value={this.state.Rules}
-                />
-              </div>
-              <div className="form-group">
-                <label>PayOut</label>
-                <Input
-                  type="textarea"
-                  className="form-control"
-                  name="name"
-                  value={this.state.tournamentPayout}
-                  onChange={this.setTournamentPayout}
-                />
-              </div>
-              {this.state.message && (
-                <div className="form-group">
-                  <div className="alert alert-danger" role="alert">
-                    {this.state.message}
-                  </div>
+                      <div className="form-group">
+                        <label>Min Match</label>
+                        <NumericInput
+                          min={2}
+                          step={1}
+                          max={50}
+                          className="form-control"
+                          value={this.state.rMinMatch}
+                          onChange={this.setRMinMatch}
+                          onBlur={this.setRules}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Win +3</label>
+                        <NumericInput
+                          min={2}
+                          step={1}
+                          max={50000}
+                          className="form-control"
+                          value={this.state.rW3}
+                          onChange={this.setRW3}
+                          onBlur={this.setRules}
+                        />
+                      </div>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <div className="form-group">
+                        <label>Min Trophy</label>
+                        <NumericInput
+                          min={2}
+                          step={1}
+                          max={50000}
+                          className="form-control"
+                          value={this.state.rMinCup}
+                          onChange={this.setRMinCup}
+                          onBlur={this.setRules}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>HP</label>
+                        <NumericInput
+                          min={2}
+                          step={1}
+                          max={50}
+                          className="form-control"
+                          value={this.state.rHP}
+                          onChange={this.setRHP}
+                          onBlur={this.setRules}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Win +2</label>
+                        <NumericInput
+                          min={2}
+                          step={1}
+                          max={50000}
+                          className="form-control"
+                          value={this.state.rW2}
+                          onChange={this.setRW2}
+                          onBlur={this.setRules}
+                        />
+                      </div>
+                    </Grid.Column>
+                    <Grid.Column>
+                      <div className="form-group">
+                        <label>Max Trophy</label>
+                        <NumericInput
+                          min={2}
+                          step={1}
+                          max={50000}
+                          className="form-control"
+                          value={this.state.rMaxCup}
+                          onChange={this.setRMaxCup}
+                          onBlur={this.setRules}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Drow</label>
+                        <NumericInput
+                          min={2}
+                          step={1}
+                          max={50000}
+                          className="form-control"
+                          value={this.state.rDrow}
+                          onChange={this.setRDrow}
+                          onBlur={this.setRules}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Win +1</label>
+                        <NumericInput
+                          min={2}
+                          step={1}
+                          max={50}
+                          className="form-control"
+                          value={this.state.rW1}
+                          onChange={this.setRW1}
+                          onBlur={this.setRules}
+                        />
+                      </div>
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+                <div className="form-group hide">
+                  <label>Game</label>
+                  <Select
+                    className="react-select default"
+                    classNamePrefix="react-select"
+                    name="GName"
+                    value={this.state.GName}
+                    onChange={this.setGameName}
+                    options={getBlockGames("League")}
+                    placeholder=""
+                  />
                 </div>
-              )}
+              </Segment>
+              <Segment secondary>
+                <div className="form-group">
+                  <label>Rules</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="name"
+                    value={this.state.Rules}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>PayOut</label>
+                  <Input
+                    type="textarea"
+                    className="form-control"
+                    name="name"
+                    value={this.state.tournamentPayout}
+                    onChange={this.setTournamentPayout}
+                  />
+                </div>
+                {this.state.message && (
+                  <div className="form-group">
+                    <div className="alert alert-danger" role="alert">
+                      {this.state.message}
+                    </div>
+                  </div>
+                )}
 
-              <div className="form-group">
-                <button
-                  className="btn btn-primary btn-wd "
-                  disabled={this.state.loading}
-                >
-                  {this.state.loading && (
-                    <span className="spinner-border spinner-border-sm  fa-wd"></span>
-                  )}
-                  <span> Create League</span>
-                </button>
-              </div>
+                <div className="form-group">
+                  <button
+                    className="btn btn-primary btn-wd "
+                    disabled={this.state.loading}
+                  >
+                    {this.state.loading && (
+                      <span className="spinner-border spinner-border-sm  fa-wd"></span>
+                    )}
+                    <span> Create League</span>
+                  </button>
+                </div>
+              </Segment>
             </Form>
           </Col>
           <Col md="4" sm="6">

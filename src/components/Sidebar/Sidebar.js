@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import Avatar from "react-avatar";
 import AuthService from "services/auth.service";
-import { haveAdmin } from "components/include";
+import { haveAdmin, haveModerator } from "components/include";
 // react-bootstrap components
 import { Nav } from "react-bootstrap";
 import { setAvatar } from "components/include";
@@ -72,25 +72,27 @@ function Sidebar({ routes, image, background, token, onUpdateItem }) {
             </Nav.Link>
           ) : (
             <>
-              {(prop.name == "AdminUsers" ||
+              {(((prop.name == "AdminUsers" ||
                 prop.name == "AdminEvents" ||
                 prop.name == "AdminController" ||
                 prop.name == "CreateEvent") &&
-                haveAdmin(token.roles) && (
-                  <Nav.Link to={prop.layout + prop.path} as={Link}>
-                    {prop.icon ? (
-                      <>
-                        <i className={prop.icon} />
-                        <p>{prop.name}</p>
-                      </>
-                    ) : (
-                      <>
-                        <span className="sidebar-mini">{prop.mini}</span>
-                        <span className="sidebar-normal">{prop.name}</span>
-                      </>
-                    )}
-                  </Nav.Link>
-                )}
+                haveAdmin(token.roles)) ||
+                prop.name == "AdminEvents" ||
+                (prop.name == "CreateEvent" && haveModerator(token.roles))) && (
+                <Nav.Link to={prop.layout + prop.path} as={Link}>
+                  {prop.icon ? (
+                    <>
+                      <i className={prop.icon} />
+                      <p>{prop.name}</p>
+                    </>
+                  ) : (
+                    <>
+                      <span className="sidebar-mini">{prop.mini}</span>
+                      <span className="sidebar-normal">{prop.name}</span>
+                    </>
+                  )}
+                </Nav.Link>
+              )}
               {prop.name == "Profile" && (
                 <>
                   <Nav.Link to={prop.layout + prop.path} as={Link}>

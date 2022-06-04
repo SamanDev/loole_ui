@@ -1,25 +1,21 @@
 import React, { useEffect, useState, useContext } from "react";
-import { printBlockChallenge } from "components/include.js";
-import {
-  Tab,
-  Card,
-  Menu,
-  Label,
-  Dimmer,
-  Loader,
-  Segment,
-} from "semantic-ui-react";
+import { printBlockChallenge, genLink } from "components/include.js";
+import { Tab, Card, Menu, Label, Dimmer, Loader } from "semantic-ui-react";
+import { useHistory } from "react-router-dom";
 import Active from "components/active.component";
 import DashStat from "components/dashstat.component";
 import GlobalContext from "context/GlobalState";
+import UserContext from "context/UserState";
 import { Helmet } from "react-helmet";
 var moment = require("moment");
 
 function Dashboard(prop) {
   const context = useContext(GlobalContext);
   const { events } = context.myList;
+  const contextUser = useContext(UserContext);
+  const { currentUser } = contextUser.uList;
   const [myState, setMyState] = useState(prop.myState);
-
+  const history = useHistory();
   const [myStateThis, setMyStateThis] = useState({
     list: [
       { id: "All", val: 0 },

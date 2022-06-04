@@ -40,7 +40,7 @@ const HomeEvents = (prop) => {
           var timestring2 = new Date();
           var startdate = moment(timestring1).format();
           var expected_enddate = moment(timestring2).format();
-          startdate = moment(startdate).add(20, "days").format();
+          startdate = moment(startdate).add(3, "days").format();
 
           if (
             item.status != "Pending" &&

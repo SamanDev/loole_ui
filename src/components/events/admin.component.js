@@ -4,7 +4,12 @@ import adminService from "services/admin.service";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { defUser } from "const";
-import { handleTagForm, printJoinalerts, haveAdmin } from "components/include";
+import {
+  handleTagForm,
+  printJoinalerts,
+  haveAdmin,
+  haveModerator,
+} from "components/include";
 import { Button } from "semantic-ui-react";
 import UserContext from "context/UserState";
 class MatchSection extends Component {
@@ -197,31 +202,32 @@ class MatchSection extends Component {
 
     return (
       <>
-        {haveAdmin(currentUser.roles) && match.status == "InPlay" && (
-          <>
-            <Button.Group size="big" widths="3">
-              <Button
-                color={item.matchTables.length > 1 ? "green" : "red"}
-                inverted
-                onClick={this.handlecAlertLost}
-                disabled={loading}
-                loading={loading}
-              >
-                {match.matchPlayers[0].username} Lost
-              </Button>
+        {(haveAdmin(currentUser.roles) || haveModerator(currentUser.roles)) &&
+          match.status == "InPlay" && (
+            <>
+              <Button.Group size="big" widths="3">
+                <Button
+                  color={item.matchTables.length > 1 ? "green" : "red"}
+                  inverted
+                  onClick={this.handlecAlertLost}
+                  disabled={loading}
+                  loading={loading}
+                >
+                  {match.matchPlayers[0].username} Lost
+                </Button>
 
-              <Button
-                onClick={this.handlecAlertLost2}
-                color={item.matchTables.length > 1 ? "green" : "red"}
-                inverted
-                disabled={loading}
-                loading={loading}
-              >
-                {match.matchPlayers[1].username} Lost
-              </Button>
-            </Button.Group>
-          </>
-        )}
+                <Button
+                  onClick={this.handlecAlertLost2}
+                  color={item.matchTables.length > 1 ? "green" : "red"}
+                  inverted
+                  disabled={loading}
+                  loading={loading}
+                >
+                  {match.matchPlayers[1].username} Lost
+                </Button>
+              </Button.Group>
+            </>
+          )}
       </>
     );
   }

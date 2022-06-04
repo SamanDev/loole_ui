@@ -191,8 +191,8 @@ function LockScreenPage(prop) {
     });
   };
   const handleDelete = () => {
-    userService.reScotr(eventIDQ).then(
-      //adminService.deleteEvent(eventIDQ).then(
+    //userService.reScotr(eventIDQ).then(
+    adminService.deleteEvent(eventIDQ).then(
       (response) => {
         history.push("/panel/dashboard");
         //window.location.replace("/panel/dashboard");
@@ -208,6 +208,16 @@ function LockScreenPage(prop) {
           confirmButtonText: `Ok`,
         });
       }
+    );
+  };
+  const handleCount = () => {
+    userService.reScotr(eventIDQ).then(
+      //adminService.deleteEvent(eventIDQ).then(
+      (response) => {
+        //window.location.replace("/panel/dashboard");
+        //return <Redirect to="/panel/dashboard" />;
+      },
+      (error) => {}
     );
   };
   const handleAllDelete = (id) => {
@@ -438,6 +448,14 @@ function LockScreenPage(prop) {
                           onClick={deletUserConfirm}
                         >
                           Delet Match
+                        </Button>
+                        <Button
+                          floated="right"
+                          inverted
+                          color="yellow"
+                          onClick={handleCount}
+                        >
+                          Count
                         </Button>
                       </>
                     )}
