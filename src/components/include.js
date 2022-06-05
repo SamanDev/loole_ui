@@ -1679,7 +1679,7 @@ export const printStatus = (
               {_mode == "League" && isJson(_track) && (
                 <>
                   <Statistic.Label>
-                    {RuleTrack[0].weight} | {RuleTrack[4].weight}
+                    {RuleTrack[0]?.weight} | {RuleTrack[4]?.weight}
                   </Statistic.Label>
                 </>
               )}
@@ -1695,7 +1695,7 @@ export const printStatus = (
                       {item?.players?.length}/{item.totalPlayer}
                     </Statistic.Label>
                     <Statistic.Label>
-                      {RuleTrack[0].weight} | {RuleTrack[4].weight}
+                      {RuleTrack[0]?.weight} | {RuleTrack[4]?.weight}
                     </Statistic.Label>
                   </>
                 )}
