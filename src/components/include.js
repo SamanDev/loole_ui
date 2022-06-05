@@ -1584,9 +1584,13 @@ export const printStatus = (
   //console.log(item, _mode, _color,finish,status)
   var startdate = moment(item.startTime).format();
   var newD = moment(startdate).add(item.timeMinute, "minutes").format();
+  var _track = item.rules;
+  if (isJson(_track)) {
+    var _JsonTrack = JSON.parse(_track);
+    var RuleTrack = _JsonTrack["RuleTrack"];
+  }
   return (
     <>
-      <Divider fitted style={{ opacity: 0 }} />
       {item.winner ? (
         <Statistic inverted color={getColorStatus(status)} size="mini">
           <Statistic.Label>{_mode}</Statistic.Label>
@@ -1672,12 +1676,29 @@ export const printStatus = (
               <Statistic.Value>
                 {item?.players?.length}/{item.totalPlayer}
               </Statistic.Value>
+              {_mode == "League" && isJson(_track) && (
+                <>
+                  <Statistic.Label>
+                    {RuleTrack[0].weight} | {RuleTrack[4].weight}
+                  </Statistic.Label>
+                </>
+              )}
             </Statistic>
           ) : (
             <>
               <Statistic inverted color={getColorStatus(status)} size="tiny">
                 <Statistic.Label>{_mode}</Statistic.Label>
                 <Statistic.Value>{status}</Statistic.Value>
+                {_mode == "League" && isJson(_track) && (
+                  <>
+                    <Statistic.Label>
+                      {item?.players?.length}/{item.totalPlayer}
+                    </Statistic.Label>
+                    <Statistic.Label>
+                      {RuleTrack[0].weight} | {RuleTrack[4].weight}
+                    </Statistic.Label>
+                  </>
+                )}
               </Statistic>
 
               {finish.split("@@@")[1] &&

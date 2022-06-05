@@ -16,6 +16,7 @@ import {
   findMatch,
   genLink,
   date_edit_card,
+  isJson,
 } from "components/include.js";
 import {
   Icon,
@@ -26,10 +27,50 @@ import {
   Image,
 } from "semantic-ui-react";
 // react-bootstrap components
-
+var pointTrack = [
+  {
+    text: "Kills",
+    weight: "+ 20",
+  },
+  {
+    text: "Damage Done",
+    weight: "+ 0.06",
+  },
+  {
+    text: "Time Played",
+    weight: "+ 0.04",
+  },
+  {
+    text: "1st Place",
+    weight: " + 240",
+  },
+  {
+    text: "2nd or 3rd Place",
+    weight: " + 60",
+  },
+  {
+    text: "4th to 8th Place",
+    weight: " + 20",
+  },
+];
+var RuleTrack = [
+  {
+    text: "Min Match",
+    weight: "20",
+  },
+  {
+    text: "Min Level",
+    weight: "50",
+  },
+  {
+    text: "Total Point",
+    weight: "Average of Top 20",
+  },
+];
+var _mode = " 1 vs 1 ";
+var _color = "#404040";
+var _finishTxt = "Not Joinable";
 function MatchBlock(prop) {
-  var _mode = " 1 vs 1 ";
-  var _color = "#404040";
   var item = prop.item;
   var lists = item.matchTables;
 
@@ -40,7 +81,6 @@ function MatchBlock(prop) {
   if (item.gameMode == "Tournament" || item.gameMode == "League") {
     _mode = item.gameMode;
   }
-  var _finishTxt = "Not Joinable";
 
   if (
     item?.status == "Canceled" ||
@@ -60,7 +100,13 @@ function MatchBlock(prop) {
     if (a.ranking < b.ranking) return -1;
   });
   var _link = genLink(item);
+  var _track = item.rules;
 
+  if (isJson(_track)) {
+    var _JsonTrack = JSON.parse(_track);
+    RuleTrack = _JsonTrack["RuleTrack"];
+    pointTrack = _JsonTrack["pointTrack"];
+  }
   return (
     <Card color={getColorStatus(item.status)} as={Link} to={_link}>
       <Label
@@ -165,6 +211,15 @@ function MatchBlock(prop) {
                 </>
               )}
             </>
+          )}
+          {isJson(_track) && item.gameMode == "League" && 1 == 2 && (
+            <div>
+              <Statistic inverted color={getColorStatus(status)} size="tiny">
+                <Statistic.Label>
+                  {RuleTrack[0].weight} | {RuleTrack[4].weight}
+                </Statistic.Label>
+              </Statistic>
+            </div>
           )}
         </div>
         {item.players[0] ? (
