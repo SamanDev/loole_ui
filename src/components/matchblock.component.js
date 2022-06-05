@@ -67,10 +67,11 @@ var RuleTrack = [
     weight: "Average of Top 20",
   },
 ];
-var _mode = " 1 vs 1 ";
-var _color = "#404040";
-var _finishTxt = "Not Joinable";
+
 function MatchBlock(prop) {
+  var _mode = " 1 vs 1 ";
+  var _color = "#404040";
+  var _finishTxt = "Not Joinable";
   var item = prop.item;
   var lists = item.matchTables;
 

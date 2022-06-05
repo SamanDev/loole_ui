@@ -681,6 +681,7 @@ class LeagueSection extends Component {
                               className="hide dataresult"
                               minMatch={_minMatch}
                               id={player.username}
+                              pointTrack={pointTrack}
                             />
                           </List.Content>
                         </List.Item>

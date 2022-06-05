@@ -1594,6 +1594,13 @@ export const printStatus = (
       {item.winner ? (
         <Statistic inverted color={getColorStatus(status)} size="mini">
           <Statistic.Label>{_mode}</Statistic.Label>
+          {_mode == "League" && isJson(_track) && (
+            <>
+              <Statistic.Label>
+                {RuleTrack[0]?.weight} | {RuleTrack[4]?.weight}
+              </Statistic.Label>
+            </>
+          )}
           {_anim == "no" ? (
             <Statistic.Label>
               <div style={{ position: "relative", transform: "scale(.8)" }}>

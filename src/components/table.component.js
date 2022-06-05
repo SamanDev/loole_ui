@@ -10,6 +10,7 @@ function getchatTime(date) {
 }
 const TableExampleCollapsing = (props) => {
   var _data = props.data;
+  var _track = props.pointTrack;
   _data.sort((a, b) => (a.score < b.score ? 1 : -1));
 
   if (_data.length == 0) {
@@ -28,9 +29,12 @@ const TableExampleCollapsing = (props) => {
             <Table.Cell>
               <b>HP</b>
             </Table.Cell>
-            <Table.Cell>
-              <b>Trophy</b>
-            </Table.Cell>
+            {_track[1].weight.split(" ")[2] != "0" && (
+              <Table.Cell>
+                <b>Trophy</b>
+              </Table.Cell>
+            )}
+
             <Table.Cell style={{ textAlign: "right" }}>
               <b>Score</b>
             </Table.Cell>
@@ -44,7 +48,9 @@ const TableExampleCollapsing = (props) => {
                   <Table.Cell>{getchatTime(item.battleTime)}</Table.Cell>
                   <Table.Cell>{item.crowns}</Table.Cell>
                   <Table.Cell>{item.hp}</Table.Cell>
-                  <Table.Cell>{item.trophyChange}</Table.Cell>
+                  {_track[1].weight.split(" ")[2] != "0" && (
+                    <Table.Cell>{item.trophyChange}</Table.Cell>
+                  )}
                   <Table.Cell style={{ textAlign: "right" }}>
                     <b>{item.score}</b>
                   </Table.Cell>
