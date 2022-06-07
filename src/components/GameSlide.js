@@ -27,7 +27,7 @@ export default function GameSlide(prop) {
             <>
               {item.haveMatch && "1 vs 1"}
               {item.haveMatch && item.haveTournament && ", "}
-              {item.haveTournament && "Tournaments"}
+              {item.haveTournament && "Tournament"}
               {item.haveMatch && item.haveLeague && ", "}
               {item.haveLeague && "League"}
             </>
