@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import AuthService from "services/auth.service";
 import { Menu, Button } from "semantic-ui-react";
 
@@ -40,7 +40,7 @@ const LandNavbar = (prop) => {
         >
           <Menu.Item
             to="/home"
-            as={Link}
+            as={NavLink}
             onClick={() => prop.scrollTo("homes")}
           >
             <img
@@ -65,19 +65,16 @@ const LandNavbar = (prop) => {
             position="right"
             style={{ minWidth: "auto", overflow: "auto", height: 70 }}
           >
-            <Menu.Item className="mobile hidd3en" to="/home#how" as={Link}>
-              How it works
-            </Menu.Item>
-            <Menu.Item className="mobile hidd3en" to="/home#games" as={Link}>
+            <Menu.Item className="mobile hidd3en" to="/games" as={NavLink}>
               Games
             </Menu.Item>
-            <Menu.Item className="mobile hidden" to="#market" as={Link}>
+            <Menu.Item className="mobile hidden" to="/marketplace" as={NavLink}>
               Market
             </Menu.Item>
             {currentUser?.accessToken ? (
               <>
                 <Menu.Item>
-                  <Button to={"/panel/dashboard"} as={Link} color="red">
+                  <Button to={"/panel/dashboard"} as={NavLink} color="red">
                     Dashboard
                   </Button>
                 </Menu.Item>

@@ -77,8 +77,8 @@ function Sidebar({ routes, image, background, token, onUpdateItem }) {
                 prop.name == "AdminController" ||
                 prop.name == "CreateEvent") &&
                 haveAdmin(token.roles)) ||
-                prop.name == "AdminEvents" ||
-                (prop.name == "CreateEvent" && haveModerator(token.roles))) && (
+                ((prop.name == "AdminEvents" || prop.name == "CreateEvent") &&
+                  haveModerator(token.roles))) && (
                 <Nav.Link to={prop.layout + prop.path} as={Link}>
                   {prop.icon ? (
                     <>

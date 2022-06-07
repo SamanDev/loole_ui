@@ -6,9 +6,11 @@ import { Dimmer, Loader } from "semantic-ui-react";
 const LockScreenPage = lazy(() => import("views/Pages/LockScreenPage"));
 const LandNavbar = lazy(() => import("components/Navbars/LandNavbar"));
 const Landing = lazy(() => import("views/Pages/Landing"));
-const Games = lazy(() => import("views/Pages/Games"));
+const Game = lazy(() => import("views/Pages/Game"));
 const Content = lazy(() => import("views/Pages/Content"));
 const User = lazy(() => import("views/Pages/User"));
+const Market = lazy(() => import("views/Pages/MarketPlace"));
+const Games = lazy(() => import("views/Pages/Games"));
 
 import routes from "routes";
 //import LandNavbar from "components/Navbars/LandNavbar.js";
@@ -56,9 +58,19 @@ function Auth(props) {
                     <User {...props} scrollTo={scrollTo} />
                   </Suspense>
                 )}
+                {prop.component == "Game" && (
+                  <Suspense fallback={renderLoader(true)}>
+                    <Game {...props} scrollTo={scrollTo} />
+                  </Suspense>
+                )}
                 {prop.component == "Games" && (
                   <Suspense fallback={renderLoader(true)}>
                     <Games {...props} scrollTo={scrollTo} />
+                  </Suspense>
+                )}
+                {prop.component == "Market" && (
+                  <Suspense fallback={renderLoader(true)}>
+                    <Market {...props} scrollTo={scrollTo} />
                   </Suspense>
                 )}
                 {prop.component == "Content" && (

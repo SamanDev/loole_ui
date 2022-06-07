@@ -57,6 +57,7 @@ export default function GameSlide(prop) {
               position: "relative",
               zIndex: 2,
               margin: 0,
+              fontWeight: 400,
             }}
           >
             GAMES YOU CAN PLAY
@@ -68,9 +69,10 @@ export default function GameSlide(prop) {
               position: "relative",
               zIndex: 2,
               marginTop: 5,
+              fontWeight: 400,
             }}
           >
-            1 vs 1, Tournaments, League
+            1 vs 1, Tournament, League
           </p>
           <Card.Group
             centered
@@ -82,29 +84,31 @@ export default function GameSlide(prop) {
             }}
           >
             {Games.games.map((item, i) => {
-              return (
-                <Card key={i.toString()}>
-                  <Image
-                    wrapped
-                    ui={false}
-                    bordered
-                    rounded
-                    centered
-                    src={"/assets/images/games/" + item.name + ".webp"}
-                    width="800"
-                    height="450"
-                    alt={item.name}
-                    as={Link}
-                    label={{
-                      content: getLabel(item),
-                      ribbon: true,
-                      color: Colors[i].toLowerCase(),
-                    }}
-                    style={item.active ? {} : { filter: "grayscale(90%)" }}
-                    to={"/game/" + item.name}
-                  />
-                </Card>
-              );
+              if (prop.size == 2 || item.active) {
+                return (
+                  <Card key={i.toString()}>
+                    <Image
+                      wrapped
+                      ui={false}
+                      bordered
+                      rounded
+                      centered
+                      src={"/assets/images/games/" + item.name + ".webp"}
+                      width="800"
+                      height="450"
+                      alt={item.name}
+                      as={Link}
+                      label={{
+                        content: getLabel(item),
+                        ribbon: true,
+                        color: Colors[i].toLowerCase(),
+                      }}
+                      style={item.active ? {} : { filter: "grayscale(90%)" }}
+                      to={"/game/" + item.name}
+                    />
+                  </Card>
+                );
+              }
             })}
           </Card.Group>
         </div>

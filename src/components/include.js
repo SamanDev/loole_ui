@@ -231,18 +231,18 @@ export const printJoinalerts = (
       }
     });
   } else if (response == "pointBalanceError") {
-    var resMessage = "To enter this event you need to have more balance!";
+    var resMessage = "To enter this event you need to have more dimonds!";
     Swal.fire({
       title: "Error!",
       text: resMessage,
       icon: "error",
       showCancelButton: true,
-      confirmButtonText: `Go to Cashier`,
+      confirmButtonText: `Go to Rewards`,
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         propsSend.onUpdateItem("openModalAdd", false);
-        propsSend.history.push("/panel/cashier");
+        propsSend.history.push("/panel/rewards");
       }
     });
   } else if (response == "tagError") {
@@ -1869,6 +1869,18 @@ export const findActiveMatch = (event, matchID, username) => {
   }
   _match?.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
   return _match;
+};
+export const findEventByID = (events, id) => {
+  var _e = events.filter(function (i) {
+    return i.id === id;
+  });
+  var n;
+  try {
+    n = _e[0];
+  } catch (e) {
+    n = {};
+  }
+  return n;
 };
 export const findMatch = (item) => {
   var lists = item.matchTables;

@@ -840,7 +840,7 @@ div.chatavatar {
   left: 50%;
   position: relative;
 }
-.ui.cards > .card {
+.ui.fours.cards > .card {
   min-width: 270px;
   max-width: 455px;
 }

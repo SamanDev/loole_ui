@@ -25,10 +25,9 @@ const getBlockChallenge = (filtermode, products) => {
   });
   return (
     <Card.Group
-      className="fours"
       stackable
       doubling
-      itemsPerRow="4"
+      itemsPerRow="5"
       style={{ marginBottom: 20, textAlign: "left" }}
     >
       {printBlockProduct(newItem)}

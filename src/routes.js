@@ -139,13 +139,28 @@ var routes = [
     component: "Landing",
     show: false,
   },
-
+  {
+    path: "/",
+    layout: "/marketplace",
+    name: "MarketPlace",
+    icon: "nc-icon nc-chart-pie-35",
+    component: "Market",
+    show: false,
+  },
+  {
+    path: "/",
+    layout: "/games",
+    name: "User",
+    icon: "nc-icon nc-circle-09",
+    component: "Games",
+    show: false,
+  },
   {
     path: "/",
     layout: "/game/:gamename",
     name: "User",
     icon: "nc-icon nc-circle-09",
-    component: "Games",
+    component: "Game",
     show: false,
   },
   {

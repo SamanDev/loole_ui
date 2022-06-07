@@ -5,7 +5,7 @@ import { Button, Card, Image } from "semantic-ui-react";
 // react-bootstrap components
 import Swal from "sweetalert2";
 
-function MatchCard(prop) {
+function MarketBlock(prop) {
   var item = prop.item;
 
   const errMs = () => {
@@ -64,4 +64,4 @@ function MatchCard(prop) {
     </Card>
   );
 }
-export default MatchCard;
+export default MarketBlock;

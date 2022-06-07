@@ -30,13 +30,8 @@ const useAllGetways = () => {
   return result;
 };
 const useEventByID = (id) => {
-  if (id) {
-    const result = useQuery(["Event", parseInt(id)], api.getEventByID);
-    return result;
-  } else {
-    const result = useQuery(["Event", id]);
-    return result;
-  }
+  const result = useQuery(["Event", parseInt(id)], api.getEventByID);
+  return result;
 };
 const useUser = () => {
   const result = useQuery(["User"], api.getUser);

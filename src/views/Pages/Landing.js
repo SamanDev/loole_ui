@@ -1,5 +1,5 @@
 import React, { lazy } from "react";
-const HomeEvents = lazy(() => import("components/events/home.component"));
+const EventsFilter = lazy(() => import("components/blocks/eventsFilter"));
 const GameSlide = lazy(() => import("components/GameSlide"));
 const HowIt = lazy(() => import("components/howit"));
 const LandStat = lazy(() => import("components/landstat.component"));
@@ -97,33 +97,12 @@ function Landing(prop) {
               everything is instant and automatic.
             </p>
             <LandStat {...prop} />
+            <Helpblog {...prop} />
           </div>
         </div>
-        <div className="section " style={{ padding: 0, overflow: "auto" }}>
-          <div
-            className={
-              " filter-gradient " +
-              themeColors[day + 2].replace("grey", "gray") +
-              " "
-            }
-            data-color="orange"
-            style={{ position: "static" }}
-          >
-            <div className="container">
-              <GameSlide size="2" />
-            </div>
-          </div>
-        </div>
-        <div className="section   section-no-padding">
-          <div className="container" style={{ minHeight: 500 }}>
-            <h4 className="header-text  text-center" id="market">
-              Don't ever be out!
-            </h4>
-            <Market {...prop} />
-          </div>
-        </div>
+
         <div
-          className="section section-presentation section-gray  section-no-padding"
+          className="section section-presentation   section-no-padding"
           style={{ padding: 0, margin: 0, overflow: "visible" }}
         >
           <div style={{ overflow: "hidden" }}>
@@ -188,19 +167,14 @@ function Landing(prop) {
           </div>
         </div>
         <HowIt />
-        <div className="section ">
-          <div className="text-center container">
-            <Helpblog {...prop} />
-          </div>
-        </div>
+
         <div className="section section-gray section-no-padding">
           <div className="container" style={{ minHeight: 500 }}>
             <h4 className="header-text text-center">Is it Real Cash?</h4>
             <p className="header-text text-center">
               Absolutely YES! Cash on the table.
             </p>
-
-            <HomeEvents {...prop} />
+            <EventsFilter filtermode="all" min="6" days="2" itemsPerRow="3" />
           </div>
         </div>
 

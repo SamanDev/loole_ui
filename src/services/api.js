@@ -59,11 +59,12 @@ const getAllEventsByStatus = async (status) => {
 };
 const getEventByID = async (ids) => {
   const id = ids.queryKey[1];
+  if (id) {
+    const { data } = await client.post(`/getEventById`, { id });
+    //console.log(data)
 
-  const { data } = await client.post(`/getEventById`, { id });
-  //console.log(data)
-
-  return data;
+    return data;
+  }
 };
 const getInfo = async () => {
   const { data } = await client.get(`/getLooleInfo`);

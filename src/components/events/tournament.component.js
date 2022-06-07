@@ -169,7 +169,8 @@ class TournamentSection extends Component {
                 response.data,
                 GName,
                 this.context.uList.currentUser,
-                handleTagForm
+                handleTagForm,
+                this.props
               );
             }
           }
@@ -212,7 +213,8 @@ class TournamentSection extends Component {
             resMessage,
             GName,
             this.context.uList.currentUser,
-            handleTagForm
+            handleTagForm,
+            this.props
           );
         }
       } else {

@@ -7,6 +7,7 @@ import DashStat from "components/dashstat.component";
 import GlobalContext from "context/GlobalState";
 import UserContext from "context/UserState";
 import { Helmet } from "react-helmet";
+import EventsFilter from "components/blocks/eventsFilter";
 var moment = require("moment");
 
 function Dashboard(prop) {
@@ -145,6 +146,7 @@ function Dashboard(prop) {
         stackable
         doubling
         itemsPerRow="4"
+        {...prop}
         style={{ marginBottom: 20, marginTop: 5, textAlign: "left" }}
       >
         {printBlockChallenge(newItem, filtermode)}
@@ -163,7 +165,17 @@ function Dashboard(prop) {
           </Label>
         </Menu.Item>
       ),
-      render: () => <Tab.Pane>{getBlockChallenge("all", events)}</Tab.Pane>,
+      render: () => (
+        <Tab.Pane>
+          <EventsFilter
+            filtermode="all"
+            min="8"
+            days="2"
+            itemsPerRow="4"
+            {...prop}
+          />
+        </Tab.Pane>
+      ),
     },
     {
       id: 2,
@@ -180,7 +192,17 @@ function Dashboard(prop) {
           </Label>
         </Menu.Item>
       ),
-      render: () => <Tab.Pane>{getBlockChallenge("Mobile", events)}</Tab.Pane>,
+      render: () => (
+        <Tab.Pane>
+          <EventsFilter
+            filtermode="Mobile"
+            min="8"
+            days="2"
+            itemsPerRow="4"
+            {...prop}
+          />
+        </Tab.Pane>
+      ),
     },
     {
       id: 3,
@@ -198,7 +220,16 @@ function Dashboard(prop) {
         </Menu.Item>
       ),
       render: () => (
-        <Tab.Pane>{getBlockChallenge("NoMobile", events)}</Tab.Pane>
+        <Tab.Pane>
+          {" "}
+          <EventsFilter
+            filtermode="NoMobile"
+            min="8"
+            days="2"
+            itemsPerRow="4"
+            {...prop}
+          />
+        </Tab.Pane>
       ),
     },
     {
@@ -217,7 +248,16 @@ function Dashboard(prop) {
         </Menu.Item>
       ),
       render: () => (
-        <Tab.Pane>{getBlockChallenge("Tournament", events)}</Tab.Pane>
+        <Tab.Pane>
+          {" "}
+          <EventsFilter
+            filtermode="Tournament"
+            min="8"
+            days="2"
+            itemsPerRow="4"
+            {...prop}
+          />
+        </Tab.Pane>
       ),
     },
     {
@@ -235,7 +275,17 @@ function Dashboard(prop) {
           </Label>
         </Menu.Item>
       ),
-      render: () => <Tab.Pane>{getBlockChallenge("League", events)}</Tab.Pane>,
+      render: () => (
+        <Tab.Pane>
+          <EventsFilter
+            filtermode="League"
+            min="8"
+            days="2"
+            itemsPerRow="4"
+            {...prop}
+          />
+        </Tab.Pane>
+      ),
     },
   ];
   useEffect(() => {

@@ -6,9 +6,10 @@ export default function GameSlide() {
   let da = d.getSeconds();
   let day = da % 7;
 
-  return (
-    <>
-      <div className="section " style={{ padding: 0 }}>
+  return <></>;
+}
+{
+  /* <div className="section " style={{ padding: 0 }}>
         <div
           className={" filter-gradient gray section-gray"}
           data-color="orange"
@@ -63,7 +64,5 @@ export default function GameSlide() {
             </div>
           </div>
         </div>
-      </div>
-    </>
-  );
+      </div> */
 }

@@ -40,6 +40,7 @@ import {
   findActiveMatch,
   isPlayerInMatch,
   genLink,
+  findEventByID,
 } from "components/include.js";
 import { useQueryClient, QueryClient, QueryClientProvider } from "react-query";
 import {
@@ -100,7 +101,17 @@ if (localStorage.getItem("user")) {
   } catch (e) {}
 }
 var _defEvents = null;
+if (localStorage.getItem("_defEvents")) {
+  try {
+    _defEvents = JSON.parse(localStorage.getItem("_defEvents"));
+  } catch (e) {}
+}
 var _defEvent = {};
+if (localStorage.getItem("_defEvent")) {
+  try {
+    _defEvent = JSON.parse(localStorage.getItem("_defEvent"));
+  } catch (e) {}
+}
 const renderLoader = (inverted) => (
   <Dimmer active inverted={inverted}>
     <Loader size="large">Loading</Loader>
@@ -223,7 +234,6 @@ function Main(prop) {
           list: list,
         };
       });
-      //console.log(myState);
     }
   };
   const onReset = (key) => {
@@ -316,30 +326,53 @@ function Main(prop) {
     if (eventsGet?.length > 0) {
       _defEvents = eventsGet;
       setMyList({ events: eventsGet });
-      forceLobby(eventsGet, currentUser.username);
+      localStorage.setItem("_defEvents", JSON.stringify(_defEvents));
+      //forceLobby(eventsGet, currentUser.username);
     }
   }, [eventsGet]);
 
-  const { data: eventGet } = useEventByID(eventIDQ);
+  const { data: eventGet, isLoading: eventLoading } = useEventByID(eventIDQ);
 
   useEffect(() => {
-    if (eventGet?.id) {
-      _defEvent = eventGet;
+    if (!eventLoading && eventGet?.id && eventIDQ) {
+      if (eventGet.id == eventIDQ) {
+        console.log("i: " + eventGet.id);
+        _defEvent = eventGet;
 
-      setEList({ event: eventGet });
+        setEList({ event: eventGet });
+        localStorage.setItem("_defEvent", JSON.stringify(_defEvent));
+
+        var _find = findActiveMatch(eventGet, matchIDQ, currentUser?.username);
+        if (_find?.id && eventGet.matchTables?.length > 1 && matchIDQ) {
+          onUpdateItem("matchIDQ", _find.id);
+        }
+
+        // queryClient.setQueryData(["Event", eventGet.id], eventGet);
+        onUpdateItem("match", _find);
+        // console.log(myState);
+      }
+    }
+  }, [eventGet]);
+  useEffect(() => {
+    if (eventIDQ && myList.events && !eventsLoading) {
+      _defEvent = findEventByID(myList.events, eventIDQ);
+
+      setEList({ event: _defEvent });
       localStorage.setItem("_defEvent", JSON.stringify(_defEvent));
-      onUpdateItem("eventIDQ", eventGet.id);
+      var _find = findActiveMatch(_defEvent, matchIDQ, currentUser?.username);
 
-      var _find = findActiveMatch(eventGet, matchIDQ, currentUser?.username);
-      if (_find?.id && eventGet.matchTables?.length > 1 && matchIDQ) {
+      if (_find?.id && _defEvent.matchTables?.length > 1 && matchIDQ) {
         onUpdateItem("matchIDQ", _find.id);
       }
 
-      queryClient.setQueryData(["Event", eventGet.id], eventGet);
+      // queryClient.setQueryData(["Event", _defEvent.id], _defEvent);
       onUpdateItem("match", _find);
-      // console.log(myState);
+    } else {
+      if (myList.events) {
+        forceLobby(myList.events, currentUser.username);
+      }
     }
-  }, [eventGet]);
+  }, [eventIDQ, myList.events]);
   useEffect(() => {
     //onUpdateItem("matchIDQ", matchIDQ);
     if (eventDef?.matchTables) {
@@ -350,11 +383,12 @@ function Main(prop) {
 
   useEffect(() => {
     eventBus.on("eventsData", (eventsGet) => {
-      //  _defEvents = eventsGet;
+      /* _defEvents = eventsGet;
 
-      //  setMyList({ events: eventsGet });
-      //  localStorage.setItem("_defEventsBus", JSON.stringify(_defEvents));
-      queryClient.setQueryData(["Events", "All"], eventsGet);
+      setMyList({ events: eventsGet });
+      localStorage.setItem("_defEvents", JSON.stringify(_defEvents));
+      queryClient.setQueryData(["Events", "All"], eventsGet); */
+      queryClient.resetQueries(["Events"]);
     });
     eventBus.on("eventsDataUser", (userGet) => {
       queryClient.resetQueries(["User"]);
@@ -432,14 +466,13 @@ function Main(prop) {
       (currentUser?.accessToken && newPath == "dashboard") ||
       (myList.events == null && !eventsGet && !eventsLoading)
     ) {
-      queryClient.resetQueries(["Events"]);
+      //queryClient.resetQueries(["Events"]);
     }
     var newEID = location.pathname.split("/")[2];
     var newMID = location.pathname.split("/")[4];
     //alert(newEID);
     if (eventIDQ != parseInt(newEID) && newEID > 0) {
-      onUpdateItem("eventIDQ", parseInt(newEID));
-
+      //onUpdateItem("eventIDQ", parseInt(newEID));
       //queryClient.resetQueries(["Event"]);
     } else {
       if (eventIDQ != parseInt(newEID)) {
@@ -450,7 +483,7 @@ function Main(prop) {
 
     onUpdateItem("matchIDQ", parseInt(newMID));
 
-    //queryClient.resetQueries(["Event"]);
+    //queryClient.resetQueries(["Events"]);
   }, [location]);
   useEffect(() => {
     ReactGA.pageview(document.location.pathname, document.title);
@@ -748,6 +781,34 @@ function Main(prop) {
               )}
             />
             <Route
+              path="/marketplace"
+              render={(props) => (
+                <Suspense fallback={renderLoader(true)}>
+                  <LandLayout
+                    {...props}
+                    myState={myState}
+                    onUpdateItem={onUpdateItem}
+                    findStateId={findStateId}
+                    myFunction={myFunction}
+                  />
+                </Suspense>
+              )}
+            />
+            <Route
+              path="/games"
+              render={(props) => (
+                <Suspense fallback={renderLoader(true)}>
+                  <LandLayout
+                    {...props}
+                    myState={myState}
+                    onUpdateItem={onUpdateItem}
+                    findStateId={findStateId}
+                    myFunction={myFunction}
+                  />
+                </Suspense>
+              )}
+            />
+            <Route
               path="/content"
               render={(props) => (
                 <Suspense fallback={renderLoader(true)}>
@@ -770,6 +831,7 @@ function Main(prop) {
 }
 function App() {
   startServiceWorker();
+  myFunc();
   const [err401, setErr401] = useState(false);
   const queryClient = new QueryClient({
     defaultOptions: {
