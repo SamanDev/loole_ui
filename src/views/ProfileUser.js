@@ -132,14 +132,7 @@ function profile(prop) {
             </div>
           </div>
         </div>
-        <div className="section   section-gray">
-          <div className="container" style={{ minHeight: 500 }}>
-            <h4 className="header-text  text-center" id="market">
-              Don't ever be out!
-            </h4>
-            <Market />
-          </div>
-        </div>
+
         <Footer {...prop} />
       </div>
     </>
