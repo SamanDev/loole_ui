@@ -68,7 +68,11 @@ const LandNavbar = (prop) => {
             <Menu.Item className="mobile hidd3en" to="/games" as={NavLink}>
               Games
             </Menu.Item>
-            <Menu.Item className="mobile hidden" to="/marketplace" as={NavLink}>
+            <Menu.Item
+              className="mobile hid6den"
+              to="/marketplace"
+              as={NavLink}
+            >
               Market
             </Menu.Item>
             {currentUser?.accessToken ? (
