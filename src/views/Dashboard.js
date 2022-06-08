@@ -171,8 +171,8 @@ function Dashboard(prop) {
         <Tab.Pane>
           <EventsFilterUser
             filtermode="all"
-            min="8"
-            days="2"
+            min="3"
+            days="1"
             itemsPerRow="4"
             {...prop}
           />

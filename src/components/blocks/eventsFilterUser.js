@@ -58,7 +58,7 @@ const EventsFilter = ({
           (startdate > expected_enddate || newItem.length < min) &&
           item.players.length > 1
         ) {
-          //newItem.push(item);
+          newItem.push(item);
         }
       } else {
         newItem.push(item);
