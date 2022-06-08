@@ -10,6 +10,7 @@ const EventsFilter = ({
   days,
   game,
   itemsPerRow,
+  username,
 }) => {
   const context = useContext(GlobalContext);
   const { events } = context.myList;
@@ -44,6 +45,18 @@ const EventsFilter = ({
       if (item.gameName == game) {
         canShow = true;
       }
+    }
+    {
+      item.players.map((player, j) => {
+        if (
+          player.username == username &&
+          (item.status == "InPlay" ||
+            item.status == "Ready" ||
+            item.status == "Pending")
+        ) {
+          canShow = false;
+        }
+      });
     }
     if (canShow) {
       //item.players.sort((a, b) => (a.id > b.id) ? 1 : -1)

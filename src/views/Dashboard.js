@@ -182,6 +182,7 @@ function Dashboard(prop) {
             days="2"
             itemsPerRow="4"
             {...prop}
+            username={currentUser.username}
           />
         </Tab.Pane>
       ),
