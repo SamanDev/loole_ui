@@ -2234,12 +2234,20 @@ export const handleSaveTags = (
             }
           );
         } else {
-          Swal.fire("Error!", response.data?.message, "error").then(
-            (result) => {
-              var currentUser = JSON.parse(localStorage.getItem("user"));
-              handleTagForm(gameName, gamePlatform, currentUser);
-            }
-          );
+          if (
+            gameName.replace("2", "") == "CallOfDuty" &&
+            gameID.indexOf("%23") > -1 &&
+            gamePlatform != "acti"
+          ) {
+            handleSaveTags(gameName, "acti", gameID, gameNickname);
+          } else {
+            Swal.fire("Error!", response.data?.message, "error").then(
+              (result) => {
+                var currentUser = JSON.parse(localStorage.getItem("user"));
+                handleTagForm(gameName, gamePlatform, currentUser);
+              }
+            );
+          }
         }
         //window.location.reload(false);
       },
