@@ -950,7 +950,9 @@ class AddTour extends Component {
                 </Card.Group>
               </>
             )}
-            {isJson(this.state.Rules) && <Tracking rules={this.state.Rules} />}
+            {isJson(this.state.Rules) && (
+              <Tracking item={item} rules={this.state.Rules} />
+            )}
           </Col>
         </Row>
       </>

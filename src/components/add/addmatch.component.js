@@ -20,14 +20,9 @@ import {
   handleTagForm,
   printJoinalerts,
   date_edit,
-  date_locale,
-  get_date_locale,
-  date_edit_dec,
-  date_edit_card,
   editDateTime,
 } from "components/include";
 import MatchCard from "components/matchcard.component";
-import MatchBlock from "components/matchblock.component";
 import UserContext from "context/UserState";
 var moment = require("moment");
 
@@ -140,7 +135,7 @@ class AddMatch extends Component {
     this.setSelectedTag = this.setSelectedTag.bind(this);
 
     this.setInSign = this.setInSign.bind(this);
-
+    this.setMax = this.setMax.bind(this);
     this.state = {
       GName: { value: "8Pool - Mobile", text: "8Pool - Mobile" },
       GameMode: { value: "Duel", text: "Duel" },
@@ -177,6 +172,7 @@ class AddMatch extends Component {
     this.setState({
       inSign: data,
     });
+    this.setMax(data, this.state.BetAmount);
   }
 
   setGameMode(e, data) {
@@ -184,10 +180,38 @@ class AddMatch extends Component {
       GameMode: data,
     });
   }
+  setMax(data, amount) {
+    var _max = this.context.uList.currentUser.balance;
+    var _e = this.state.BetAmount;
+    var _mode = this.state.inSign.value;
+    if (data) {
+      _mode = data.value;
+    }
+    if (amount) {
+      _e = amount;
+    }
+    if (_mode == "Point") {
+      _max = this.context.uList.currentUser.point;
+    }
+    if (parseFloat(_e) > _max) {
+      _e = parseInt(_max - 1);
+    }
+    if (_e < 0) {
+      _e = 0;
+    }
+    if (_e != this.state.BetAmount) {
+      this.setBetAmount("max", { value: _e });
+    }
+  }
   setBetAmount(e, data) {
+    var _e = parseInt(data.value);
+
     this.setState({
-      BetAmount: data.value,
+      BetAmount: _e,
     });
+    if (e != "max") {
+      this.setMax(this.state.inSign, data.value);
+    }
 
     //this.setTournamentMode(getBlockTournamentVal(e, this.state.TournamentMode));
   }
@@ -333,9 +357,10 @@ class AddMatch extends Component {
 
     var startdate = moment(utcDate).format();
 
-    var enddate = moment(startdate)
-      .add(this.state.AvalableFor.value, "minutes")
-      .format("YYYY-MM-DDThh:mm:ss.000");
+    var enddate = moment(startdate).add(
+      this.state.AvalableFor.value,
+      "minutes"
+    );
 
     startdate = moment(startdate).format();
     enddate = moment(enddate).format();
@@ -393,6 +418,7 @@ class AddMatch extends Component {
         },
       ],
     };
+
     return (
       <>
         <Header as="h2" inverted>
@@ -428,6 +454,7 @@ class AddMatch extends Component {
                 <Input
                   fluid
                   size="small"
+                  type="tel"
                   label={
                     <Dropdown
                       value={this.state.inSign.value}
@@ -451,13 +478,6 @@ class AddMatch extends Component {
                   size="small"
                   buttons={[
                     {
-                      key: "30",
-                      content: "30 M",
-                      type: "button",
-                      active: this.state.AvalableFor.value == "30" && true,
-                      onClick: () => this.setAvalableFor({ value: "30" }),
-                    },
-                    {
                       key: "60",
                       content: "1 H",
                       type: "button",
@@ -465,18 +485,18 @@ class AddMatch extends Component {
                       onClick: () => this.setAvalableFor({ value: "60" }),
                     },
                     {
-                      key: "360",
-                      content: "6 H",
+                      key: "120",
+                      content: "2 H",
                       type: "button",
-                      active: this.state.AvalableFor.value == "360" && true,
-                      onClick: () => this.setAvalableFor({ value: "360" }),
+                      active: this.state.AvalableFor.value == "120" && true,
+                      onClick: () => this.setAvalableFor({ value: "120" }),
                     },
                     {
-                      key: "1440",
-                      content: "1 D",
+                      key: "180",
+                      content: "3 H",
                       type: "button",
-                      active: this.state.AvalableFor.value == "1440" && true,
-                      onClick: () => this.setAvalableFor({ value: "1440" }),
+                      active: this.state.AvalableFor.value == "180" && true,
+                      onClick: () => this.setAvalableFor({ value: "180" }),
                     },
                   ]}
                 />
