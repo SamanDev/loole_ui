@@ -570,6 +570,10 @@ class LeagueSection extends Component {
                 <Message>
                   <List divided inverted selection verticalAlign="middle">
                     {item.players.map((player, i) => {
+                      var _set = player.clashRoyaleSet;
+                      if (item.gameName == "CallOfDuty") {
+                        _set = player.callOfDuties;
+                      }
                       return (
                         <List.Item key={i.toString()}>
                           <List.Content
@@ -647,7 +651,7 @@ class LeagueSection extends Component {
                               {current_brackets[i]?.prize &&
                                 (item.status == "InPlay" ||
                                   item.status == "Finished") &&
-                                player.clashRoyaleSet.length >= _minMatch &&
+                                _set.length >= _minMatch &&
                                 player.totalScore > 0 && (
                                   <>
                                     {getGroupBadgeBlock(
@@ -664,13 +668,12 @@ class LeagueSection extends Component {
                               <Label
                                 size="mini"
                                 color={
-                                  player.clashRoyaleSet.length >= _minMatch
-                                    ? "green"
-                                    : "red"
+                                  _set.length >= _minMatch ? "green" : "red"
                                 }
                               >
-                                {player.clashRoyaleSet.length}/{_minMatch}
+                                {_set.length}/{_minMatch}
                               </Label>
+
                               <Label color="black" size="mini">
                                 {player.totalScore ? (
                                   <CurrencyFormat
@@ -687,13 +690,15 @@ class LeagueSection extends Component {
                                 )}
                               </Label>
                             </span>
+
                             <Table
-                              data={player.clashRoyaleSet}
+                              data={_set}
                               className="hide dataresult"
                               minMatch={_minMatch}
                               id={player.username}
                               pointTrack={pointTrack}
                               ruleTrack={RuleTrack}
+                              game={item.gameName}
                             />
                           </List.Content>
                         </List.Item>
