@@ -58,7 +58,7 @@ const TableExampleCollapsing = (props) => {
           </Table.Header>
           <Table.Body>
             {_data.map((item, i) => {
-              if (i < parseInt(props.minMatch) * 3 && i < 20) {
+              if (i < parseInt(props.minMatch) && i < 20) {
                 return (
                   <Table.Row key={i} disabled={i >= parseInt(props.minMatch)}>
                     <Table.Cell>{getchatTime(item.battleTime)}</Table.Cell>
@@ -110,7 +110,7 @@ const TableExampleCollapsing = (props) => {
           </Table.Header>
           <Table.Body>
             {_data.map((item, i) => {
-              if (i < parseInt(props.minMatch) * 3 && i < 20) {
+              if (i < parseInt(props.minMatch) && i < 20) {
                 var _dd = new Date(item.utcStartTime);
                 _dd = moment(_dd).format();
                 return (
