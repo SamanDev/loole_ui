@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import CurrencyFormat from "react-currency-format";
 import userService from "services/user.service";
 import MatchCard from "components/matchblock.component";
+import $ from "jquery";
 //import TransitionExampleTransitionExplorer from "components/anim.component";
 //const MatchCard = lazy(() => import("components/matchblock.component"));
 const TransitionExampleTransitionExplorer = lazy(() =>
@@ -857,7 +858,7 @@ export const printMatchBTN = (
                     <>
                       <Button
                         animated
-                        className="mobile hidden"
+                        className="mobile hidden joineventbtn"
                         size="small"
                         inverted
                         onClick={handleJoinMatch}
@@ -871,7 +872,7 @@ export const printMatchBTN = (
                       </Button>
                       <Button
                         size="small"
-                        className="mobile only"
+                        className="mobile only joineventbtn"
                         inverted
                         onClick={handleJoinMatch}
                         color="green"
@@ -920,6 +921,7 @@ export const printEventBTN = (
                 onClick={handleJoinMatch}
                 loading={isloading}
                 color="green"
+                className="joineventbtn"
                 disabled={isloading || !currentUser.userActivate}
               >
                 <Button.Content visible>Join Event</Button.Content>
@@ -2219,8 +2221,12 @@ export const handleSaveTags = (
         if (response.data?.accessToken) {
           localStorage.setItem("user", JSON.stringify(response.data));
           eventBus.dispatch("eventsDataUser", response.data);
-          eventBus.remove("eventsDataUser");
-          Swal.fire("", "Data saved successfully.", "success");
+          //eventBus.remove("eventsDataUser");
+          Swal.fire("", "Data saved successfully.", "success").then(
+            (result) => {
+              $(".joineventbtn:visible").trigger("click");
+            }
+          );
         } else {
           Swal.fire("Error!", response.data?.message, "error").then(
             (result) => {

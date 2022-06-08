@@ -11,6 +11,7 @@ import {
   onMessage,
   onBackgroundMessage,
 } from "firebase/messaging";
+import $ from "jquery";
 import { initializeApp } from "firebase/app";
 function FormExampleFieldErrorLabel(prop) {
   const history = useHistory();
@@ -148,6 +149,7 @@ function FormExampleFieldErrorLabel(prop) {
               history.push("/panel/dashboard");
             } else {
               prop.onUpdateItem("openModalLogin", false);
+              $(".joineventbtn:visible").trigger("click");
             }
           } else {
             Swal.fire({
