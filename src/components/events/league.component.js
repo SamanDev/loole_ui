@@ -42,6 +42,7 @@ import {
   date_edit_card,
 } from "components/include";
 import UserContext from "context/UserState";
+var moment = require("moment");
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -102,6 +103,12 @@ var RuleTrack = [
     weight: "Average of Top 20",
   },
 ];
+function getchatTime(date) {
+  var thisDate2 = date.replace("-07:00", "+00:00");
+  var dateExpired = moment(thisDate2).local().format("YYYY/MM/DD - HH:mm");
+
+  return dateExpired;
+}
 var tournamentPayout = false;
 class LeagueSection extends Component {
   static contextType = UserContext;
@@ -412,8 +419,10 @@ class LeagueSection extends Component {
         return 0;
       if (a.totalScore > b.totalScore) return -1;
       if (a.totalScore < b.totalScore) return 1;
-      if (a.ranking > b.ranking) return 1;
-      if (a.ranking < b.ranking) return -1;
+      if (a.startTime > b.startTime) return 1;
+      if (a.startTime < b.startTime) return -1;
+      //if (a.ranking > b.ranking) return 1;
+      //if (a.ranking < b.ranking) return -1;
     });
     icEnd = 0;
     icStart = 0;
@@ -557,6 +566,7 @@ class LeagueSection extends Component {
             {item.players?.length > 0 && (
               <Segment inverted color="red">
                 <Header as="h2">Players</Header>
+
                 <Message>
                   <List divided inverted selection verticalAlign="middle">
                     {item.players.map((player, i) => {
@@ -614,6 +624,7 @@ class LeagueSection extends Component {
                                 <>
                                   <Label
                                     size="small"
+                                    title={getchatTime(player.startTime)}
                                     onClick={() =>
                                       window
                                         .open(
@@ -682,6 +693,7 @@ class LeagueSection extends Component {
                               minMatch={_minMatch}
                               id={player.username}
                               pointTrack={pointTrack}
+                              ruleTrack={RuleTrack}
                             />
                           </List.Content>
                         </List.Item>
@@ -692,7 +704,7 @@ class LeagueSection extends Component {
                 <Invite />
               </Segment>
             )}
-            <Tracking rules={item.rules} />
+            <Tracking item={item} rules={item.rules} />
 
             {item.status != "Canceled" &&
               item.status != "Expired" &&

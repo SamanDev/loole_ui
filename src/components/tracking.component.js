@@ -1,48 +1,18 @@
-import React, { Component } from "react";
-import Avatar from "react-avatar";
-
-import { Link } from "react-router-dom";
-import { faTwitch } from "@fortawesome/free-brands-svg-icons";
+import React from "react";
 
 import CurrencyFormat from "react-currency-format";
-import {
-  Button,
-  Label,
-  Divider,
-  Segment,
-  Header,
-  List,
-  Message,
-} from "semantic-ui-react";
-import { withRouter } from "react-router-dom";
-import $ from "jquery";
-import userService from "services/user.service";
-import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import AddToCal from "components/addtocal.component";
-import Table from "components/table.component";
-import Countdown from "react-countdown";
-import { Col, ProgressBar } from "react-bootstrap";
-import {
-  setAvatar,
-  rendererBig,
-  printEventBTN,
-  vsComponentTitle,
-  getColorStatus,
-  printStatus,
-  handleTagForm,
-  getGroupBadgeBlock,
-  printJoinalerts,
-  getIconPlat,
-  printTag,
-  isJson,
-  date_edit,
-  date_edit_card,
-} from "components/include";
+import { Label, Segment, Header, List, Message } from "semantic-ui-react";
 
 var moment = require("moment");
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function getchatTime(date) {
+  var thisDate2 = date.replace("-07:00", "+00:00");
+  var dateExpired = moment(thisDate2).local().format("YYYY/MM/DD - HH:mm");
+
+  return dateExpired;
 }
 function Tracking(prop) {
   const rules = JSON.parse(prop.rules);
@@ -52,8 +22,29 @@ function Tracking(prop) {
   return (
     <Segment inverted color="yellow">
       <Header as="h2">Results Tracking Rules</Header>
+
       <Message color="red">
         <List divided relaxed>
+          <List.Item>
+            <List.Content style={{ textAlign: "left" }}>
+              <span style={{ fontSize: 17 }}>
+                <Label>Start</Label>
+              </span>
+              <span style={{ float: "right", marginLeft: 5 }}>
+                <Label color="blue">{getchatTime(prop.item.startTime)}</Label>
+              </span>
+            </List.Content>
+          </List.Item>
+          <List.Item>
+            <List.Content style={{ textAlign: "left" }}>
+              <span style={{ fontSize: 17 }}>
+                <Label>End</Label>
+              </span>
+              <span style={{ float: "right", marginLeft: 5 }}>
+                <Label color="blue">{getchatTime(prop.item.finished)}</Label>
+              </span>
+            </List.Content>
+          </List.Item>
           {RuleTrack.map((win, i) => {
             return (
               <List.Item key={i.toString()}>

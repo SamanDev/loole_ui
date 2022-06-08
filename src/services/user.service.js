@@ -293,7 +293,8 @@ class UserService {
     inSign,
     outSign,
     currency,
-    rules
+    rules,
+    prize
   ) {
     return axios
       .post(
@@ -312,6 +313,7 @@ class UserService {
           outSign,
           currency,
           rules,
+          prize,
         },
         { headers: authHeader() }
       )

@@ -316,7 +316,18 @@ function LockScreenPage(prop) {
               <Breadcrumb icon="right angle" sections={sections} />
             </Container>
             <Dimmer active style={{ background: "transparent" }}>
-              <Loader size="large">Loading</Loader>
+              {eventDef?.status == "Deleted" ? (
+                <p>
+                  <Icon name="recycle" color="red" size="huge" inverted />
+                  <br />
+                  Event deleted
+                  <br />
+                  <br />
+                  {BackBTC()}
+                </p>
+              ) : (
+                <Loader size="large">Loading</Loader>
+              )}
             </Dimmer>
           </Segment>
 

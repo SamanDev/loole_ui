@@ -410,6 +410,7 @@ class Chatbar extends Component {
     } = this.state;
     // this is for the rest of the collapses
     var finalChat = [];
+    var sysCal = 0;
     if (chats != "null") {
       {
         chats?.map((item, i) => {
@@ -418,9 +419,15 @@ class Chatbar extends Component {
       }
     }
     if (eventchats != "null") {
+      eventchats?.sort((a, b) => (a.time < b.time ? 1 : -1));
       {
         eventchats?.map((item, i) => {
-          finalChat.push(item);
+          if (item.message.indexOf("Calculating...") == -1 || sysCal < 5) {
+            finalChat.push(item);
+          }
+          if (item.message.indexOf("Calculating...") > -1) {
+            sysCal = sysCal + 1;
+          }
         });
       }
     }

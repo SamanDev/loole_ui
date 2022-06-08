@@ -356,17 +356,20 @@ function Main(prop) {
   useEffect(() => {
     if (eventIDQ && myList.events && !eventsLoading) {
       _defEvent = findEventByID(myList.events, eventIDQ);
+      if (_defEvent) {
+        setEList({ event: _defEvent });
+        localStorage.setItem("_defEvent", JSON.stringify(_defEvent));
+        var _find = findActiveMatch(_defEvent, matchIDQ, currentUser?.username);
 
-      setEList({ event: _defEvent });
-      localStorage.setItem("_defEvent", JSON.stringify(_defEvent));
-      var _find = findActiveMatch(_defEvent, matchIDQ, currentUser?.username);
+        if (_find?.id && _defEvent.matchTables?.length > 1 && matchIDQ) {
+          onUpdateItem("matchIDQ", _find.id);
+        }
 
-      if (_find?.id && _defEvent.matchTables?.length > 1 && matchIDQ) {
-        onUpdateItem("matchIDQ", _find.id);
+        // queryClient.setQueryData(["Event", _defEvent.id], _defEvent);
+        onUpdateItem("match", _find);
+      } else {
+        setEList({ event: { status: "Deleted" } });
       }
-
-      // queryClient.setQueryData(["Event", _defEvent.id], _defEvent);
-      onUpdateItem("match", _find);
     } else {
       if (myList.events) {
         forceLobby(myList.events, currentUser.username);

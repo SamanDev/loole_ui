@@ -81,7 +81,7 @@ function Panel(props) {
   var currpage = "Dashboard";
 
   const getRoutes = (routes) => {
-    //scrollToTop();
+    scrollToTop();
     return routes.map((prop, key) => {
       if (prop.collapse) {
         return getRoutes(prop.views);

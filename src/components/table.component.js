@@ -1,6 +1,5 @@
 import React from "react";
-import { Header, Image, Table } from "semantic-ui-react";
-import { date_edit, get_date_locale, editDateTime } from "components/include";
+import { Table } from "semantic-ui-react";
 const moment = require("moment");
 function getchatTime(date) {
   var thisDate2 = date.replace("-07:00", "+00:00");
@@ -11,7 +10,12 @@ function getchatTime(date) {
 const TableExampleCollapsing = (props) => {
   var _data = props.data;
   var _track = props.pointTrack;
-  _data.sort((a, b) => (a.score < b.score ? 1 : -1));
+  var _ruleTrack = props.ruleTrack;
+  if (_ruleTrack[4]?.weight.indexOf(" First") > -1) {
+    _data.sort((a, b) => (a.battleTime < b.battleTime ? 1 : -1));
+  } else {
+    _data.sort((a, b) => (a.score < b.score ? 1 : -1));
+  }
 
   if (_data.length == 0) {
     return null;
@@ -42,7 +46,7 @@ const TableExampleCollapsing = (props) => {
         </Table.Header>
         <Table.Body>
           {_data.map((item, i) => {
-            if (i < parseInt(props.minMatch) * 3 && i < 10) {
+            if (i < parseInt(props.minMatch) * 3 && i < 20) {
               return (
                 <Table.Row key={i} disabled={i >= parseInt(props.minMatch)}>
                   <Table.Cell>{getchatTime(item.battleTime)}</Table.Cell>

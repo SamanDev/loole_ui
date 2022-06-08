@@ -465,7 +465,8 @@ class AddTour extends Component {
         this.state.inSign.value,
         this.state.outSign.value,
         this.state.outSign.value,
-        this.state.Rules
+        this.state.Rules,
+        this.state.Prize
       )
 
       .then(
@@ -784,7 +785,7 @@ class AddTour extends Component {
                       <div className="form-group">
                         <label>Win +3</label>
                         <NumericInput
-                          min={2}
+                          min={0}
                           step={1}
                           max={50000}
                           className="form-control"
@@ -797,7 +798,6 @@ class AddTour extends Component {
                         <label>Trophy Change</label>
                         <NumericInput
                           min={0}
-                          step={1}
                           max={10}
                           className="form-control"
                           value={this.state.rTC}

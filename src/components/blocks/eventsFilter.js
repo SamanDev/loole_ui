@@ -20,6 +20,10 @@ const EventsFilter = ({
     if (a.status > b.status) return -1;
     if (a.status < b.status) return 1;
 
+    if (a.outSign > b.outSign) return 1;
+    if (a.outSign < b.outSign) return -1;
+    if (a.prize > b.prize) return -1;
+    if (a.prize < b.prize) return 1;
     if (a.id > b.id) return -1;
     if (a.id < b.id) return 1;
   });
