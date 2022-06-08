@@ -337,8 +337,10 @@ function Main(prop) {
         userGet
       );
     } else {
-      //setUList({ currentUser: userGet });
-      //localStorage.setItem("user", JSON.stringify(userGet));
+      if (!userLoading) {
+        setUList({ currentUser: defUser });
+        localStorage.setItem("user", JSON.stringify(defUser));
+      }
     }
   }, [userGet, userLoading]);
 
