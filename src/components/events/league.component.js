@@ -665,15 +665,16 @@ class LeagueSection extends Component {
                                 )}
                             </span>
                             <span style={{ float: "right", marginLeft: 5 }}>
-                              <Label
-                                size="mini"
-                                color={
-                                  _set.length >= _minMatch ? "green" : "red"
-                                }
-                              >
-                                {_set.length}/{_minMatch}
-                              </Label>
-
+                              {item.status != "Finished" && (
+                                <Label
+                                  size="mini"
+                                  color={
+                                    _set.length >= _minMatch ? "green" : "red"
+                                  }
+                                >
+                                  {_set.length}/{_minMatch}
+                                </Label>
+                              )}
                               <Label color="black" size="mini">
                                 {player.totalScore ? (
                                   <CurrencyFormat
