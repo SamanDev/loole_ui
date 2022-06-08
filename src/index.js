@@ -259,6 +259,19 @@ function Main(prop) {
           }
         });
       }
+      var _find = findActiveMatch(item, matchIDQ, username);
+
+      if (_find) {
+        if (_find.status == "InPlay") {
+          {
+            _find.matchPlayers.map((player, j) => {
+              if (player.username == username) {
+                history.push(genLink(item, _find));
+              }
+            });
+          }
+        }
+      }
     });
   };
   // const query = mutationCache.findAll("User");

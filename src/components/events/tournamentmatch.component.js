@@ -8,7 +8,7 @@ import withReactContent from "sweetalert2-react-content";
 import uploadHeader from "services/upload-header";
 import axios from "axios";
 import { defUser } from "const";
-import MatchCard from "components/matchcard.component";
+import MatchCard from "components/matchblock.component";
 import { Col, ProgressBar } from "react-bootstrap";
 import {
   printMatchBTN,
@@ -402,7 +402,7 @@ class MatchSection extends Component {
               date={date_edit_card(match.startTime)}
             />
             <Divider fitted style={{ opacity: 0 }} />
-            {_s > _d && (
+            {_s > _d && match.status == "Pending" && (
               <>
                 <div
                   style={{
@@ -427,7 +427,7 @@ class MatchSection extends Component {
                 {getMatchTitle(match.level, item.totalPlayer)}
               </Statistic.Value>
             </Statistic>
-            <Segment basic>
+            <Segment basic className="vsv">
               <Grid columns={2}>
                 <Grid.Column
                   style={{ background: "none !important" }}
@@ -539,7 +539,10 @@ class MatchSection extends Component {
           </>
 
           <Divider hidden />
-          <div className="ui cards fours centered">
+          <div
+            className="ui cards fours centered"
+            style={{ textAlign: "left" }}
+          >
             <MatchCard item={item} matchidFind={match} />
           </div>
         </Col>

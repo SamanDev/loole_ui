@@ -707,7 +707,8 @@ export const vsComponentPlayer = (
 
                       <Statistic.Value>
                         {isPlayerInMatch(matchidFind, currentUser.username) ||
-                        haveAdmin(currentUser.roles)
+                        haveAdmin(currentUser.roles) ||
+                        haveModerator(currentUser.roles)
                           ? _p.nickName
                           : "**********"}
                       </Statistic.Value>

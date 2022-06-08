@@ -11,7 +11,7 @@ import Games from "server/Games";
 import { Row, Col } from "react-bootstrap";
 import MatchCard from "components/matchcard.component";
 import { Header, Card } from "semantic-ui-react";
-import { handleTagForm } from "components/include.js";
+import { handleTagForm, date_edit_dec } from "components/include.js";
 
 const getBlockGames = (filtermode) => {
   var gamemap = [];
@@ -78,12 +78,24 @@ const getBlockGameModesVal = (filtermode) => {
 
   return gamemaplocal[0];
 };
-var moment = require("moment");
-var nowS = new Date();
-var nowE = moment(nowS).add(1, "hours");
 
-var stdate = moment(nowE).format("YYYY-MM-DDTHH:00");
-var _StartTime = new Date(stdate).valueOf();
+var moment = require("moment");
+var now = new Date();
+
+var start = moment(now).format();
+
+var startUtc = date_edit_dec(start);
+startUtc = moment(startUtc).format("YYYY-MM-DDTHH:mm");
+var startFrmat = startUtc;
+
+var end = moment(start).add(30, "minutes");
+
+var endFormat = moment(end).format("YYYY-MM-DDTHH:mm");
+function editTime(date) {
+  var end = moment(date).add(7, "hours");
+  end = moment(end).utc().format();
+  return end;
+}
 class AddTour extends Component {
   constructor(props) {
     super(props);
@@ -116,7 +128,7 @@ class AddTour extends Component {
       Prize: null,
       AvalableFor: { value: "60", label: "1 Hour" },
       StartTimePeriod: { value: "60", label: "1 Hour" },
-      StartTime: stdate,
+      StartTime: endFormat,
       loading: false,
       submit: false,
       GameTag: "",
@@ -239,7 +251,9 @@ class AddTour extends Component {
       successful: false,
       loading: true,
     });
-    var _Start = new Date(this.state.StartTime).valueOf();
+
+    var _Start = editTime(moment(this.state.StartTime).format());
+
     userService
       .createTournament(
         this.state.GName.value.split(" - ")[0],
@@ -322,9 +336,11 @@ class AddTour extends Component {
       inSign: this.state.inSign.value,
       outSign: this.state.outSign.value,
       rules: null,
-      expire: startdate,
-      startTime: _Start,
-      finished: "2021-11-01T20:34:39.000+00:00",
+      expire: moment(this.state.StartTime).format(),
+      startTime: moment(this.state.StartTime)
+        .local()
+        .format("YYYY-MM-DD HH:mm:ss"),
+      finished: moment(this.state.StartTime).format(),
       players: [
         {
           id: 86,

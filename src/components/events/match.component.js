@@ -479,7 +479,7 @@ class MatchSection extends Component {
               date={date_edit_card(item.expire)}
             />
 
-            <Segment basic>
+            <Segment basic className="vsv">
               <Grid columns={2}>
                 <Grid.Column
                   style={{ background: "none !important" }}
