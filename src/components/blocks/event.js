@@ -201,6 +201,12 @@ const printStatus = (item, _mode, _color, finish, status, _anim, matchidQ) => {
   if (isJson(_track)) {
     var _JsonTrack = JSON.parse(_track);
     var RuleTrack = _JsonTrack["RuleTrack"];
+    var _modeScore;
+    RuleTrack.map((win, i) => {
+      if (win.text.indexOf("Total ") > -1 || 1 == 1) {
+        _modeScore = win.weight;
+      }
+    });
   }
   return (
     <>
@@ -210,7 +216,7 @@ const printStatus = (item, _mode, _color, finish, status, _anim, matchidQ) => {
           {_mode == "League" && isJson(_track) && (
             <>
               <Statistic.Label>
-                {RuleTrack[0]?.weight} | {RuleTrack[4]?.weight}
+                {RuleTrack[0]?.weight} | {_modeScore}
               </Statistic.Label>
             </>
           )}
@@ -299,7 +305,7 @@ const printStatus = (item, _mode, _color, finish, status, _anim, matchidQ) => {
               {_mode == "League" && isJson(_track) && (
                 <>
                   <Statistic.Label>
-                    {RuleTrack[0]?.weight} | {RuleTrack[4]?.weight}
+                    {RuleTrack[0]?.weight} | {_modeScore}
                   </Statistic.Label>
                 </>
               )}

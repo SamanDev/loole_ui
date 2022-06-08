@@ -10,6 +10,7 @@ import { haveAdmin, haveModerator } from "components/include";
 import AddTournament from "components/add/addtournament.component";
 import AddLeague from "components/add/addleague.component";
 import AddClashRoyale from "components/add/addclashroyale.component";
+import AddWarzone from "components/add/addwarzone.component";
 import UserContext from "context/UserState";
 class CreateMatch extends Component {
   static contextType = UserContext;
@@ -24,10 +25,7 @@ class CreateMatch extends Component {
       <>
         {(haveAdmin(currentUser.roles) || haveModerator(currentUser.roles)) && (
           <>
-            <Tab.Container
-              id="plain-tabs-example"
-              defaultActiveKey="clashroyale"
-            >
+            <Tab.Container id="plain-tabs-example" defaultActiveKey="warzone">
               <Nav role="tablist" variant="tabs">
                 <Nav.Item>
                   <Nav.Link eventKey="tournsment">Tournament</Nav.Link>
@@ -37,6 +35,9 @@ class CreateMatch extends Component {
                 </Nav.Item>
                 <Nav.Item>
                   <Nav.Link eventKey="clashroyale">ClashRoyale</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="warzone">Warzone</Nav.Link>
                 </Nav.Item>
               </Nav>
               <Card>
@@ -59,6 +60,12 @@ class CreateMatch extends Component {
                       className="ui  segment  tab basic"
                     >
                       <AddClashRoyale token={currentUser} {...this.props} />
+                    </Tab.Pane>
+                    <Tab.Pane
+                      eventKey="warzone"
+                      className="ui  segment  tab basic"
+                    >
+                      <AddWarzone token={currentUser} {...this.props} />
                     </Tab.Pane>
                   </Tab.Content>
                 </Card.Body>

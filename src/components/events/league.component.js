@@ -902,7 +902,7 @@ class LeagueSection extends Component {
                 </>
               )}
             </Segment>
-            {item.gameName == "CallOfDuty" && (
+            {item.gameName == "CallOfDuty2" && (
               <Segment inverted color="purple">
                 <Header as="h2">Rules</Header>
                 <Message color="red" size="big">
