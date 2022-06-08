@@ -252,21 +252,23 @@ function Main(prop) {
         item.players.map((player, j) => {
           if (
             player.username == username &&
-            item.status == "InPlay" &&
+            (item.status == "InPlay" || item.status == "Ready") &&
             item.totalPlayer == 2
           ) {
             history.push(genLink(item));
+            return false;
           }
         });
       }
       var _find = findActiveMatch(item, matchIDQ, username);
 
       if (_find) {
-        if (_find.status == "InPlay") {
+        if (_find.status == "InPlay" && item.status == "InPlay") {
           {
             _find.matchPlayers.map((player, j) => {
               if (player.username == username) {
                 history.push(genLink(item, _find));
+                return false;
               }
             });
           }
@@ -437,6 +439,9 @@ function Main(prop) {
       Swal.fire("", mmyevent, "success");
     });
     eventBus.on("eventsDataEventDo", (eventGet) => {
+      queryClient.resetQueries(["Event"]);
+    });
+    eventBus.on("eventsDataEventDo2", (eventGet) => {
       if (eventGet?.id) {
         //squeryClient.setQueryData(["Event", eventGet.id], eventGet);
         queryClient.resetQueries(["Event", eventGet.id]);
@@ -479,10 +484,10 @@ function Main(prop) {
     var newPath = location.pathname.split("/")[2];
 
     if (
-      (currentUser?.accessToken && newPath == "dashboard") ||
+      (currentUser?.accessToken && newPath == "dashboard" && !eventsLoading) ||
       (myList.events == null && !eventsGet && !eventsLoading)
     ) {
-      //queryClient.resetQueries(["Events"]);
+      queryClient.resetQueries(["Events"]);
     }
     var newEID = location.pathname.split("/")[2];
     var newMID = location.pathname.split("/")[4];
