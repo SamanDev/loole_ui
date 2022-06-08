@@ -139,6 +139,7 @@ function Main(prop) {
   const [myState, setMyState] = useState({
     list: [
       { id: "profileUser", val: false },
+      { id: "eventsUser", val: [] },
 
       { id: "Notifications", val: null },
       { id: "NotificationsItem", val: null },
@@ -245,6 +246,7 @@ function Main(prop) {
     }
   };
   const forceLobby = (events, username) => {
+    var UserEvents = [];
     events?.map((_item, i) => {
       var item = JSON.parse(JSON.stringify(_item));
 
@@ -257,6 +259,14 @@ function Main(prop) {
           ) {
             history.push(genLink(item));
             return false;
+          }
+          if (
+            player.username == username &&
+            (item.status == "InPlay" ||
+              item.status == "Ready" ||
+              item.status == "Pending")
+          ) {
+            UserEvents.push(item);
           }
         });
       }
@@ -275,6 +285,7 @@ function Main(prop) {
         }
       }
     });
+    onUpdateItem("eventsUser", UserEvents);
   };
   // const query = mutationCache.findAll("User");
   //const query = mutationCache.getAll()
@@ -351,7 +362,7 @@ function Main(prop) {
   useEffect(() => {
     if (!eventLoading && eventGet?.id && eventIDQ) {
       if (eventGet.id == eventIDQ) {
-        console.log("i: " + eventGet.id);
+        // console.log("i: " + eventGet.id);
         _defEvent = eventGet;
 
         setEList({ event: eventGet });
@@ -488,6 +499,7 @@ function Main(prop) {
       (myList.events == null && !eventsGet && !eventsLoading)
     ) {
       queryClient.resetQueries(["Events"]);
+      queryClient.resetQueries(["UserEvent"]);
     }
     var newEID = location.pathname.split("/")[2];
     var newMID = location.pathname.split("/")[4];

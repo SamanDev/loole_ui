@@ -8,6 +8,8 @@ import GlobalContext from "context/GlobalState";
 import UserContext from "context/UserState";
 import { Helmet } from "react-helmet";
 import EventsFilter from "components/blocks/eventsFilter";
+import EventsFilterUser from "components/blocks/eventsFilterUser";
+import UserEvents from "components/events/userdash.component";
 var moment = require("moment");
 
 function Dashboard(prop) {
@@ -167,6 +169,13 @@ function Dashboard(prop) {
       ),
       render: () => (
         <Tab.Pane>
+          <EventsFilterUser
+            filtermode="all"
+            min="8"
+            days="2"
+            itemsPerRow="4"
+            {...prop}
+          />
           <EventsFilter
             filtermode="all"
             min="8"
