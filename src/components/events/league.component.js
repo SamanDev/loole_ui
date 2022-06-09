@@ -608,7 +608,8 @@ class LeagueSection extends Component {
                                           "https://cod.tracker.gg/warzone/profile/" +
                                             player.gamePlatform
                                               .toLowerCase()
-                                              .replace("battle", "battlenet") +
+                                              .replace("battle", "battlenet")
+                                              .replace("acti", "atvi") +
                                             "/" +
                                             player.tagId +
                                             "/",

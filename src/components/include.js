@@ -13,6 +13,7 @@ import {
   faDesktop,
   faMobileAlt,
   faGlobe,
+  faAngleDoubleUp,
 } from "@fortawesome/free-solid-svg-icons";
 import Avatar from "react-avatar";
 import Countdown from "react-countdown";
@@ -442,6 +443,9 @@ export const getIconPlat = (name) => {
   }
   if (name.toLowerCase() == "xbl") {
     _i = faXbox;
+  }
+  if (name.toLowerCase() == "acti") {
+    _i = faAngleDoubleUp;
   }
 
   return <Icon as={FontAwesomeIcon} fixedWidth icon={_i} />;
