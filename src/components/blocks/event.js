@@ -321,7 +321,7 @@ const printStatus = (item, _mode, _color, finish, status, _anim, matchidQ) => {
                       {item?.players?.length}/{item.totalPlayer}
                     </Statistic.Label>
                     <Statistic.Label>
-                      {RuleTrack[0]?.weight} | {RuleTrack[4]?.weight}
+                      {RuleTrack[0]?.weight} | {_modeScore}
                     </Statistic.Label>
                   </>
                 )}
@@ -602,7 +602,7 @@ const EventBlock = (prop) => {
             <div>
               <Statistic inverted color={getColorStatus(status)} size="tiny">
                 <Statistic.Label>
-                  {RuleTrack[0].weight} | {RuleTrack[4].weight}
+                  {RuleTrack[0].weight} | {_modeScore}
                 </Statistic.Label>
               </Statistic>
             </div>
