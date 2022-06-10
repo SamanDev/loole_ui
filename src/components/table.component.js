@@ -2,7 +2,11 @@ import React from "react";
 import { Table } from "semantic-ui-react";
 const moment = require("moment");
 function getchatTime(date) {
-  var thisDate2 = date.replace("-07:00", "+00:00");
+  //console.log(date);
+  try {
+    var thisDate2 = date.replace("-07:00", "+00:00");
+  } catch (e) {}
+
   var dateExpired = moment(thisDate2).local().format("MM/DD - HH:mm");
 
   return dateExpired;
@@ -111,12 +115,10 @@ const TableExampleCollapsing = (props) => {
           <Table.Body>
             {_data.map((item, i) => {
               if (i < parseInt(props.minMatch) && i < 20) {
-                var _dd = new Date(item.utcStartTime);
-                _dd = moment(_dd).format();
                 return (
                   <Table.Row key={i} disabled={i >= parseInt(props.minMatch)}>
-                    <Table.Cell>{getchatTime(_dd)}</Table.Cell>
-                    <Table.Cell>{item.ranking}</Table.Cell>
+                    <Table.Cell>{getchatTime(item.startTime)}</Table.Cell>
+                    <Table.Cell>{item.teamPlacement}</Table.Cell>
                     <Table.Cell>{item.damageDone}</Table.Cell>
                     {_track[1].weight.split(" ")[2] != "0" && (
                       <Table.Cell>{item.kills}</Table.Cell>
