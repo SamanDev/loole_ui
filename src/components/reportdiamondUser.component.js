@@ -254,7 +254,7 @@ function Report(prop) {
   const { currentUser } = context.uList;
   dataTransaction = userReports;
   useEffect(() => {
-    if (userReports) {
+    if (userReports && !isLoading) {
       setMydata(editCounry(userReports));
     }
   }, [userReports]);

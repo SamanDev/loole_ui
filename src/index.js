@@ -42,7 +42,12 @@ import {
   genLink,
   findEventByID,
 } from "components/include.js";
-import { useQueryClient, QueryClient, QueryClientProvider } from "react-query";
+import {
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+  QueryCache,
+} from "react-query";
 import {
   Grid,
   Header,
@@ -185,17 +190,19 @@ function Main(prop) {
 
   const updateNot = (userReports) => {
     var myNot = [];
-    //console.log(userReports);
-    userReports?.sort((a, b) => (a.id > b.id ? 1 : -1));
-    userReports?.map((item, i) => {
-      if (item.coinValue && item.status === "Pending" && myNot.length < 3) {
-        myNot.push(item);
-      }
-    });
-    myNot.sort((a, b) => (a.id < b.id ? 1 : -1));
-    //console.log(myNot);
-    onUpdateItem("Notifications", myNot);
-    onUpdateItem("NotificationsItem", myNot[0]);
+    try {
+      //console.log(userReports);
+      userReports?.sort((a, b) => (a.id > b.id ? 1 : -1));
+      userReports?.map((item, i) => {
+        if (item.coinValue && item.status === "Pending" && myNot.length < 3) {
+          myNot.push(item);
+        }
+      });
+      myNot.sort((a, b) => (a.id < b.id ? 1 : -1));
+      //console.log(myNot);
+      onUpdateItem("Notifications", myNot);
+      onUpdateItem("NotificationsItem", myNot[0]);
+    } catch (e) {}
   };
   const logOut = () => {
     setUList({ currentUser: defUser });
@@ -237,9 +244,24 @@ function Main(prop) {
       });
     }
   };
-  const onReset = (key) => {
+  const onReset = (key, data) => {
+    console.log(key);
     if (key === "Reports") {
       queryClient.resetQueries(["UserReports"]);
+    }
+    if (key === "User") {
+      localStorage.setItem("user", JSON.stringify(defUser));
+      setUList({ currentUser: defUser });
+
+      queryClient.setQueryData(["User"], defUser);
+      queryClient.resetQueries(["User"]);
+    }
+    if (key === "UserRefresh") {
+      if (data) {
+        queryClient.setQueryData(["User"], data);
+      }
+
+      queryClient.resetQueries(["User"]);
     }
     if (key === "AdminUsers") {
       queryClient.resetQueries(["AdminUsers"]);
@@ -309,7 +331,7 @@ function Main(prop) {
       onUpdateItem("looleInfo", looleInfo);
     }
   }, [looleInfo]);
-  const { data: userGet, isLoading: userLoading } = useUser();
+  const { data: userGet, isLoading: userLoading } = useUser(currentUser);
 
   //const { data: eventsGet } = useAllEventsByStatus('All');
 
@@ -322,8 +344,8 @@ function Main(prop) {
 
   useEffect(() => {
     if (userReports) {
-      queryClient.setQueryData(["userReports"], userReports);
-      updateNot(userReports);
+      //xxwqueryClient.setQueryData(["userReports"], userReports);
+      //updateNot(userReports);
     }
   }, [userReports]);
   useEffect(() => {
@@ -337,17 +359,18 @@ function Main(prop) {
         userGet
       );
     } else {
-      if (!userLoading) {
+      if (!userLoading && findStateId(myState, "openModalLogin")) {
         setUList({ currentUser: defUser });
         localStorage.setItem("user", JSON.stringify(defUser));
+        queryClient.setQueryData(["User"], defUser);
       }
     }
   }, [userGet, userLoading]);
 
   useEffect(() => {
     if (prop.err401) {
-      // localStorage.setItem("user", JSON.stringify(defUser));
-      // setUList({ currentUser: defUser });
+      localStorage.setItem("user", JSON.stringify(defUser));
+      setUList({ currentUser: defUser });
     }
   }, [prop.err401]);
   useEffect(() => {
@@ -629,7 +652,12 @@ function Main(prop) {
                           Login
                         </Header>
 
-                        <Login onUpdateItem={onUpdateItem} />
+                        <Login
+                          onUpdateItem={onUpdateItem}
+                          findStateId={findStateId}
+                          onReset={onReset}
+                          myState={myState}
+                        />
                       </div>
 
                       <div
@@ -868,13 +896,22 @@ function App() {
   startServiceWorker();
   myFunc();
   const [err401, setErr401] = useState(false);
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
-        queryFn: myFunc,
-        retry: (failureCount, error) => {
+        onError: (error) => {
+          console.log("onError " + error.message);
           setErr401(true);
+        },
+        onSuccess: () => {
+          console.log("onSuccess ");
+          setErr401(false);
+        },
+        retry: (failureCount, error) => {
+          //console.log("retry " + error);
+          //setErr401(true);
         },
       },
     },
@@ -883,7 +920,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient} contextSharing={true}>
       <Suspense fallback={renderLoader(true)}>
-        <Main err401={err401} />
+        <Main err401={err401} setErr401={setErr401} />
       </Suspense>
     </QueryClientProvider>
   );

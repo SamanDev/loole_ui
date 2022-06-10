@@ -263,7 +263,7 @@ function Report(prop) {
   const { data: userReports, isLoading } = useUserReports(prop.user.id);
 
   useEffect(() => {
-    if (userReports) {
+    if (userReports && !isLoading) {
       setMydata(editCounry(userReports));
     }
   }, [userReports]);

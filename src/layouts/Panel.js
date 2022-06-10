@@ -67,9 +67,9 @@ function Panel(props) {
   useEffect(() => {
     //console.log(currentUser);
     if (!props.isLoading) {
-      if (currentUser?.accessToken) {
+      if (context.uList.currentUser?.accessToken) {
         if (props.findStateId(myState, "openModalLogin")) {
-          props.onUpdateItem("openModalLogin", false);
+          //props.onUpdateItem("openModalLogin", false);
         }
       } else {
         if (!props.findStateId(myState, "openModalLogin")) {
@@ -77,7 +77,7 @@ function Panel(props) {
         }
       }
     }
-  }, [currentUser, props.isLoading]);
+  }, [context.uList, props.isLoading]);
   var currpage = "Dashboard";
 
   const getRoutes = (routes) => {

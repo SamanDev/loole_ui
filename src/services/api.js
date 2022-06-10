@@ -74,38 +74,19 @@ const getInfo = async () => {
 };
 const getUser = async () => {
   // alert(JSON.stringify(authHeader()))
-  if (JSON.stringify(authHeader()) != "{}" && authHeader()) {
-    try {
-      const { data } = await client.get("/getUser", { headers: authHeader() });
 
-      if (data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(data));
-        //alert(JSON.stringify(data.accessToken));
-        var loc = window.location.href;
+  const { data } = await client.get("/getUser", { headers: authHeader() });
 
-        //eventBus.dispatch("eventsDataUser", usr);
-        if (loc.indexOf("/user") == -1) {
-          //UserWebsocket.connect(data.accessToken+"&user="+data.username);
-        }
-        return data;
-      } else {
-        localStorage.setItem("user", JSON.stringify(defUser));
-        //UserWebsocket.connect();
-        return defUser;
-      }
-    } catch (e) {
-      console.log(e);
-      if (e.toString().indexOf("code 500") > -1) {
-        localStorage.setItem("user", JSON.stringify(defUser));
-        //UserWebsocket.connect();
-        return defUser;
-      }
+  if (data?.accessToken) {
+    localStorage.setItem("user", JSON.stringify(data));
+    //alert(JSON.stringify(data.accessToken));
+    var loc = window.location.href;
+
+    //eventBus.dispatch("eventsDataUser", usr);
+    if (loc.indexOf("/user") == -1) {
+      //UserWebsocket.connect(data.accessToken+"&user="+data.username);
     }
-  } else {
-    localStorage.setItem("user", JSON.stringify(defUser));
-    //UserWebsocket.connect();
-
-    return defUser;
+    return data;
   }
 };
 const getUserProfile = async (username) => {

@@ -1,33 +1,33 @@
-export const url = "https://loole.gg:8443"
-export const POSTURL = url+"/api/auth/";
+export const url = "https://loole.gg:8443";
+export const POSTURL = url + "/api/auth/";
 //export const POSTURLTest = "http://51.195.176.97:8081/api/req/"
-export const POSTURLTest =  url+"/api/req/";
-export const POSTURLAdmin =  url+"/api/admin/";
+export const POSTURLTest = url + "/api/req/";
+export const POSTURLAdmin = url + "/api/admin/";
 export const USERSOCKETURL = getPort();
 export const USERSOCKETPUBLICURL = getPortPablic();
 export function startServiceWorker() {
-  if ('serviceWorker' in navigator) {
+  if ("serviceWorker" in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
 
-    window.addEventListener('load', () => {
+    window.addEventListener("load", () => {
       const swUrl = `${process.env.PUBLIC_URL}/firebase-messaging-sw.js`;
-console.log("window.addEventListener(load - swUrl: "+swUrl)
-    
-        navigator.serviceWorker.register(swUrl)
-        .then(function(registration) {
-            
-          console.log('Registration successful, scope is:', registration.scope);
-        }).catch(function(err) {
-          console.log('Service worker registration failed, error:', err);
-      });
-        navigator.serviceWorker.ready.then(() => {
-          console.log(
-            'This web app is being served cache-first by a service ' +
-              'worker. To learn more, visit https://bit.ly/CRA-PWA'
-          );
+      console.log("window.addEventListener(load - swUrl: " + swUrl);
+
+      navigator.serviceWorker
+        .register(swUrl)
+        .then(function (registration) {
+          console.log("Registration successful, scope is:", registration.scope);
+        })
+        .catch(function (err) {
+          console.log("Service worker registration failed, error:", err);
         });
-     
+      navigator.serviceWorker.ready.then(() => {
+        console.log(
+          "This web app is being served cache-first by a service " +
+            "worker. To learn more, visit https://bit.ly/CRA-PWA"
+        );
+      });
     });
   }
 }
@@ -163,18 +163,37 @@ export const defUser = {
 
   cashierGateways: [
     {
-      id: 1,
+      id: 3,
+      name: "CoinPayments",
+      mode: "CryptoCurrencies",
+      active: true,
+    },
+    {
+      id: 2,
       name: "Hamrahcart",
       mode: "IranShetab",
       active: true,
     },
     {
-      id: 2,
+      id: 6,
+      name: "VisaGiftCode",
+      mode: "VisaGiftCode",
+      active: true,
+    },
+    {
+      id: 4,
+      name: "Digipay",
+      mode: "IranShetab",
+      active: true,
+    },
+    {
+      id: 1,
       name: "PerfectMoney",
       mode: "PerfectMoney",
       active: true,
     },
   ],
+
   userConnectionInfos: null,
   userAnalyses: null,
   usersReports: null,

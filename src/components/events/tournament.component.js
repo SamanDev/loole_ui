@@ -305,6 +305,37 @@ class TournamentSection extends Component {
           item.matchLevel.push(genMatch(5, 1, "Final"));
           //item.matchLevel.push(genMatch(5, 1, "3rd Place"));
         }
+        if (item.totalPlayer == 64) {
+          item.matchLevel.push(genMatch(1, 32, "Round 1"));
+          item.matchLevel.push(genMatch(2, 16, "Round 2"));
+          item.matchLevel.push(genMatch(3, 8, "Round 3"));
+          item.matchLevel.push(genMatch(4, 4, "Round 4"));
+          item.matchLevel.push(genMatch(5, 2, "SemiFinal"));
+
+          item.matchLevel.push(genMatch(6, 1, "Final"));
+          //item.matchLevel.push(genMatch(5, 1, "3rd Place"));
+        }
+        if (item.totalPlayer == 128) {
+          item.matchLevel.push(genMatch(1, 64, "Round 1"));
+          item.matchLevel.push(genMatch(2, 32, "Round 2"));
+          item.matchLevel.push(genMatch(3, 16, "Round 3"));
+          item.matchLevel.push(genMatch(4, 8, "Round 4"));
+          item.matchLevel.push(genMatch(5, 4, "Round 5"));
+          item.matchLevel.push(genMatch(6, 2, "SemiFinal"));
+
+          item.matchLevel.push(genMatch(7, 1, "Final"));
+        }
+        if (item.totalPlayer == 256) {
+          item.matchLevel.push(genMatch(1, 128, "Round 1"));
+          item.matchLevel.push(genMatch(2, 64, "Round 2"));
+          item.matchLevel.push(genMatch(3, 32, "Round 3"));
+          item.matchLevel.push(genMatch(4, 16, "Round 4"));
+          item.matchLevel.push(genMatch(5, 8, "Round 5"));
+          item.matchLevel.push(genMatch(6, 4, "Round 6"));
+          item.matchLevel.push(genMatch(7, 2, "SemiFinal"));
+
+          item.matchLevel.push(genMatch(8, 1, "Final"));
+        }
       }
       var potential_brackets = [];
       var current_brackets = [];
@@ -316,7 +347,9 @@ class TournamentSection extends Component {
           .replace("8,", "5-8,")
           .replace("16,", "9-16,")
           .replace("32,", "17-32,")
-          .replace("64,", "33-64,");
+          .replace("64,", "33-64,")
+          .replace("128,", "65-128,")
+          .replace("256,", "129-256,");
         var payArr = tournamentPayout.split("@");
         var totalPay = item.prize;
         for (var i = 0; i < payArr.length; i++) {

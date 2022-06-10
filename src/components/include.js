@@ -331,6 +331,69 @@ export const getMatchTitle = (level, totalPlayer) => {
     }
     //if(level==5){mTitle = "3rd Place"}
   }
+  if (totalPlayer == 64) {
+    if (level == 2) {
+      mTitle = "Round 2";
+    }
+    if (level == 3) {
+      mTitle = "Round 3";
+    }
+    if (level == 4) {
+      mTitle = "Round 4";
+    }
+    if (level == 5) {
+      mTitle = "SemiFinal";
+    }
+    if (level == 6) {
+      mTitle = "Final";
+    }
+    //if(level==5){mTitle = "3rd Place"}
+  }
+  if (totalPlayer == 128) {
+    if (level == 2) {
+      mTitle = "Round 2";
+    }
+    if (level == 3) {
+      mTitle = "Round 3";
+    }
+    if (level == 4) {
+      mTitle = "Round 4";
+    }
+    if (level == 5) {
+      mTitle = "Round 5";
+    }
+    if (level == 6) {
+      mTitle = "SemiFinal";
+    }
+    if (level == 7) {
+      mTitle = "Final";
+    }
+    //if(level==5){mTitle = "3rd Place"}
+  }
+  if (totalPlayer == 256) {
+    if (level == 2) {
+      mTitle = "Round 2";
+    }
+    if (level == 3) {
+      mTitle = "Round 3";
+    }
+    if (level == 4) {
+      mTitle = "Round 4";
+    }
+    if (level == 5) {
+      mTitle = "Round 5";
+    }
+    if (level == 6) {
+      mTitle = "Round 6";
+    }
+    if (level == 7) {
+      mTitle = "SemiFinal";
+    }
+    if (level == 8) {
+      mTitle = "Final";
+    }
+    //if(level==5){mTitle = "3rd Place"}
+  }
   return mTitle;
 };
 export const getGroupBadge = (sign, amount, classes) => {

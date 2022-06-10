@@ -138,7 +138,7 @@ class AddTour extends Component {
       inSign: { value: "Dollar", label: "Dollar" },
       outSign: { value: "Dollar", label: "Dollar" },
       tournamentPayout:
-        "4,100.00@8,65.00,35.00@16,50.00,30.00,10.00,10.00@32,50.00,30.00,10.00,10.00@64,50.00,30.00,10.00,10.000",
+        "4,100.00@8,65.00,35.00@16,50.00,30.00,10.00,10.00@32,50.00,30.00,10.00,10.00@128,30.00,20.00,10.00,10.00,7.50,7.50,7.50,7.50@256,20.00,15.00,7.50,7.50,5.00,5.00,5.00,5.00,3.75,3.75,3.75,3.75,3.75,3.75,3.75,3.75",
 
       gamePlatform: "",
       gameName: "",
@@ -438,6 +438,9 @@ class AddTour extends Component {
                     { value: "8", label: "8 Players" },
                     { value: "16", label: "16 Players" },
                     { value: "32", label: "32 Players" },
+                    { value: "64", label: "64 Players" },
+                    { value: "128", label: "128 Players" },
+                    { value: "256", label: "256 Players" },
                   ]}
                   placeholder=""
                   isSearchable={false}
