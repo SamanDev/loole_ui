@@ -265,6 +265,19 @@ export const printJoinalerts = (
     }
 
     setSelectedTag(e.replace(" Warzone", ""), p, currentUser);
+  } else {
+    Swal.fire({
+      title: "Error!",
+      text: response,
+      icon: "error",
+
+      confirmButtonText: `Ok`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        propsSend.onUpdateItem("openModalAdd", false);
+      }
+    });
   }
 };
 export const getColorStatus = (status) => {
