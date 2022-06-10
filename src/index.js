@@ -902,12 +902,14 @@ function App() {
       queries: {
         refetchOnWindowFocus: false,
         onError: (error) => {
-          console.log("onError " + error.message);
-          setErr401(true);
+          if (error.message.indexOf("401") > -1) {
+            setErr401(true);
+          }
         },
         onSuccess: () => {
-          console.log("onSuccess ");
-          setErr401(false);
+          if (err401) {
+            setErr401(false);
+          }
         },
         retry: (failureCount, error) => {
           //console.log("retry " + error);
