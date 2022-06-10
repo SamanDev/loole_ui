@@ -34,7 +34,9 @@ const useEventByID = (id) => {
   return result;
 };
 const useUser = () => {
-  const result = useQuery(["User"], api.getUser);
+  const result = useQuery(["User"], api.getUser, {
+    refetchOnWindowFocus: true,
+  });
 
   return result;
 };

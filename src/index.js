@@ -458,6 +458,7 @@ function Main(prop) {
           onUpdateItem("openModalSoket", true);
         }
       } else {
+        onUpdateItem("openModalSoket", false);
       }
     });
     eventBus.on("eventsConnect", () => {
@@ -581,7 +582,11 @@ function Main(prop) {
                   <br />
                 </Modal.Header>
                 <Modal.Content>
-                  <DC onUpdateItem={onUpdateItem} />
+                  <DC
+                    onUpdateItem={onUpdateItem}
+                    err401={prop.err401}
+                    setErr401={prop.setErr401}
+                  />
                 </Modal.Content>
               </Suspense>
             </Segment>
