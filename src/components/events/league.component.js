@@ -652,9 +652,15 @@ class LeagueSection extends Component {
                               {current_brackets[i]?.prize &&
                                 (item.status == "InPlay" ||
                                   item.status == "Finished") &&
-                                _set.length >= _minMatch &&
                                 player.totalScore > 0 && (
-                                  <>
+                                  <span
+                                    style={
+                                      _set.length < _minMatch &&
+                                      item.status == "InPlay"
+                                        ? { opacity: 0.4 }
+                                        : null
+                                    }
+                                  >
                                     {getGroupBadgeBlock(
                                       item.outSign,
                                       current_brackets[i]?.prize,
@@ -662,11 +668,12 @@ class LeagueSection extends Component {
                                       "left hide",
                                       "green"
                                     )}
-                                  </>
+                                  </span>
                                 )}
                             </span>
                             <span style={{ float: "right", marginLeft: 5 }}>
-                              {item.status != "Finished" && (
+                              {(item.status != "Finished" ||
+                                _set.length > 0) && (
                                 <Label
                                   size="mini"
                                   color={

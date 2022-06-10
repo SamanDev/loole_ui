@@ -46,30 +46,67 @@ function Tracking(prop) {
             </List.Content>
           </List.Item>
           {RuleTrack.map((win, i) => {
-            return (
-              <List.Item key={i.toString()}>
-                <List.Content style={{ textAlign: "left" }}>
-                  <span style={{ fontSize: 17 }}>
-                    <Label>{win.text}</Label>
-                  </span>
-                  <span style={{ float: "right", marginLeft: 5 }}>
-                    <Label color="red">
-                      {isNumeric(win.weight) ? (
-                        <CurrencyFormat
-                          value={win.weight}
-                          displayType={"text"}
-                          thousandSeparator={true}
-                          prefix={""}
-                          renderText={(value) => value}
-                        />
-                      ) : (
-                        win.weight
-                      )}
-                    </Label>
-                  </span>
-                </List.Content>
-              </List.Item>
-            );
+            if (
+              win.text.indexOf(" Trophy") > -1 ||
+              win.text.indexOf("Min Play Time") > -1
+            ) {
+              return (
+                <List.Item key={i.toString()}>
+                  <List.Content style={{ textAlign: "left" }}>
+                    <span style={{ fontSize: 17 }}>
+                      <Label>{win.text}</Label>
+                    </span>
+                    <span style={{ float: "right", marginLeft: 5 }}>
+                      <Label color="teal">
+                        {isNumeric(win.weight) ? (
+                          <CurrencyFormat
+                            value={win.weight}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={""}
+                            renderText={(value) => value}
+                          />
+                        ) : (
+                          win.weight
+                        )}
+                        {win.text.indexOf("Min Play Time") > -1 && " Hours"}
+                      </Label>
+                    </span>
+                  </List.Content>
+                </List.Item>
+              );
+            }
+          })}
+          {RuleTrack.map((win, i) => {
+            if (
+              win.text.indexOf(" Trophy") == -1 &&
+              win.text.indexOf("Min Play Time") == -1
+            ) {
+              return (
+                <List.Item key={i.toString()}>
+                  <List.Content style={{ textAlign: "left" }}>
+                    <span style={{ fontSize: 17 }}>
+                      <Label>{win.text}</Label>
+                    </span>
+                    <span style={{ float: "right", marginLeft: 5 }}>
+                      <Label color="red">
+                        {isNumeric(win.weight) ? (
+                          <CurrencyFormat
+                            value={win.weight}
+                            displayType={"text"}
+                            thousandSeparator={true}
+                            prefix={""}
+                            renderText={(value) => value}
+                          />
+                        ) : (
+                          win.weight
+                        )}
+                      </Label>
+                    </span>
+                  </List.Content>
+                </List.Item>
+              );
+            }
           })}
         </List>
       </Message>
