@@ -22,7 +22,7 @@ function CrDeposit(prop) {
   const { currentUser } = context.uList;
   const [myState, setMyState] = useState({
     list: [
-      { id: "amount", val: "10" },
+      { id: "amount", val: "20" },
       { id: "coin", val: "BTC" },
       { id: "wallet", val: "" },
       { id: "hasError", val: null },

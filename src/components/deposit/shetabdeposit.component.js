@@ -522,7 +522,7 @@ class ShetabDeposit extends Component {
         });
       }
     });
-    if (currentUser2.cardsdef.length > 1) {
+    if (currentUser2.cardsdef.length > 0) {
       var _newval = {
         value: currentUser2.cardsdef[1].value,
         text: currentUser2.cardsdef[1].value,

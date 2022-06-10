@@ -63,7 +63,7 @@ class ShetabCashout extends Component {
     this.state = {
       cartSelected: {},
 
-      Amount: "10",
+      Amount: "20",
 
       CardNo: "",
 
@@ -129,10 +129,10 @@ class ShetabCashout extends Component {
         .createCashoutShetab(this.state.CardNo, this.state.Amount)
         .then(
           (response) => {
-            if (response == "Create event successful") {
+            if (response.data == "Create event successful") {
               Swal.fire("", "Data saved successfully.", "success").then(
                 (result) => {
-                  this.props.history.push("/panel/dashboard");
+                  //this.props.history.push("/panel/dashboard");
                 }
               );
             } else {
@@ -141,6 +141,11 @@ class ShetabCashout extends Component {
                 message: "",
                 submit: false,
                 loading: false,
+              });
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.data,
               });
             }
           },
@@ -181,9 +186,6 @@ class ShetabCashout extends Component {
           key: item.id.toString(),
           value: item.cardNumber,
           text: cartSpace,
-          CardNo: cartSpace,
-          Expiration: item.expiration,
-          cvv: item.cvv,
         });
       }
     });
@@ -202,7 +204,7 @@ class ShetabCashout extends Component {
         </Header>
 
         <Form
-          onSubmit={this.handleShetabDeposit}
+          onSubmit={this.handleShetabCashout}
           ref={(c) => {
             this.form = c;
           }}
@@ -230,16 +232,23 @@ class ShetabCashout extends Component {
             />
           </div>
           {currentUser2?.cardsdef.length > 0 && (
-            <div className="form-group form-group-lg2">
-              <label>Cart Number</label>
-              <Select
-                placeholder="Select Cart"
-                fluid
+            <>
+              <div className="form-group form-group-lg2">
+                <label>Cart Number</label>
+                <Select
+                  placeholder="Select Cart"
+                  fluid
+                  value={this.state.cartSelected.value}
+                  onChange={this.handleSelectCard}
+                  options={currentUser2?.cardsdef}
+                />
+              </div>
+              <Input
+                type="hidden"
                 value={this.state.cartSelected.value}
-                onChange={this.handleSelectCard}
-                options={currentUser2?.cardsdef}
+                validations={[required]}
               />
-            </div>
+            </>
           )}
 
           <Divider />

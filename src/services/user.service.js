@@ -457,7 +457,7 @@ class UserService {
   createCashoutShetab(cardNumber, amount) {
     return axios
       .post(
-        API_URL_TEST + "createDepositShetabDoTransaction",
+        API_URL_TEST + "createCashoutShetab",
         { cardNumber, amount },
         { headers: authHeader() }
       )

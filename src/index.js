@@ -344,8 +344,8 @@ function Main(prop) {
 
   useEffect(() => {
     if (userReports) {
-      //xxwqueryClient.setQueryData(["userReports"], userReports);
-      //updateNot(userReports);
+      queryClient.setQueryData(["userReports"], userReports);
+      updateNot(userReports);
     }
   }, [userReports]);
   useEffect(() => {

@@ -21,7 +21,7 @@ function CrDeposit(prop) {
   const { currentUser } = context.uList;
   const [myState, setMyState] = useState({
     list: [
-      { id: "amount", val: "10" },
+      { id: "amount", val: "20" },
 
       { id: "hasError", val: null },
       { id: "loading", val: false },
