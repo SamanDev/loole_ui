@@ -1,6 +1,6 @@
 {
   "name": "loole",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "dependencies": {
     "3d-react-carousal": "^5.0.0",
