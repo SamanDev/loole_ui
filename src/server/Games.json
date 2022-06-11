@@ -98,29 +98,7 @@
         }
       ]
     },
-    {
-      "name": "RainbowSix",
-      "active": false,
-      "haveMatch": false,
-      "haveTournament": false,
-      "haveLeague": true,
-      "gameconsole": [
-        {
-          "consolename": "PS4"
-        },
-        {
-          "consolename": "PC"
-        }
-      ],
-      "modes": [
-        {
-          "modename": "KillRace"
-        },
-        {
-          "modename": "Duel"
-        }
-      ]
-    },
+    
     {
       "name": "CallOfDuty",
       "active": true,
@@ -141,6 +119,149 @@
     {
       "id": 8,
       "name": "Fortnite",
+      "active": false,
+      "haveMatch": false,
+      "haveTournament": false,
+      "haveLeague": true,
+      "gameconsole": [
+        {
+          "consolename": "All"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "KillRace"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Valorant",
+      "active": false,
+      "haveMatch": false,
+      "haveTournament": false,
+      "haveLeague": true,
+      "gameconsole": [
+        {
+          "consolename": "All"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "KillRace"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "RocketLeague",
+      "active": false,
+      "haveMatch": false,
+      "haveTournament": false,
+      "haveLeague": true,
+      "gameconsole": [
+        {
+          "consolename": "All"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "KillRace"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "LeagueOfLegends",
+      "active": false,
+      "haveMatch": false,
+      "haveTournament": false,
+      "haveLeague": true,
+      "gameconsole": [
+        {
+          "consolename": "All"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "KillRace"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "DOTA2",
+      "active": false,
+      "haveMatch": false,
+      "haveTournament": false,
+      "haveLeague": true,
+      "gameconsole": [
+        {
+          "consolename": "All"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "KillRace"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Brwalhalla",
+      "active": false,
+      "haveMatch": false,
+      "haveTournament": false,
+      "haveLeague": true,
+      "gameconsole": [
+        {
+          "consolename": "All"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "KillRace"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "CSGO",
+      "active": false,
+      "haveMatch": false,
+      "haveTournament": false,
+      "haveLeague": true,
+      "gameconsole": [
+        {
+          "consolename": "All"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "KillRace"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "ApexLegends",
+      "active": false,
+      "haveMatch": false,
+      "haveTournament": false,
+      "haveLeague": true,
+      "gameconsole": [
+        {
+          "consolename": "All"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "KillRace"
+        }
+      ]
+    },{
+      "id": 16,
+      "name": "PubG",
       "active": false,
       "haveMatch": false,
       "haveTournament": false,

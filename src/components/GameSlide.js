@@ -11,7 +11,7 @@ export default function GameSlide(prop) {
       <>
         <h5
           className="header-text"
-          style={{ marginBottom: 5, width: 180, color: "#fff", fontSize: 25 }}
+          style={{ marginBottom: 5, width: 180, color: "#fff", fontSize: 18 }}
         >
           {item.name}
         </h5>

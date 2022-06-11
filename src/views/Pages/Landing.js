@@ -1,6 +1,6 @@
 import React, { lazy } from "react";
 const EventsFilter = lazy(() => import("components/blocks/eventsFilter"));
-const GameSlide = lazy(() => import("components/GameSlide"));
+const GameSlide3d = lazy(() => import("components/GameSlide3d"));
 const HowIt = lazy(() => import("components/howit"));
 const LandStat = lazy(() => import("components/landstat.component"));
 const Footer = lazy(() => import("components/Navbars/Footer"));
@@ -100,7 +100,21 @@ function Landing(prop) {
             <Helpblog {...prop} />
           </div>
         </div>
-
+        <div className="section " style={{ padding: 0 }}>
+          <div
+            className={
+              " filter-gradient " +
+              themeColors[day].replace("grey", "gray") +
+              " "
+            }
+            data-color="orange"
+            style={{ position: "static" }}
+          >
+            <div className="container">
+              <GameSlide3d style={{ zIndex: 2, height: 400 }} />
+            </div>
+          </div>
+        </div>
         <div
           className="section section-presentation   section-no-padding"
           style={{ padding: 0, margin: 0, overflow: "visible" }}

@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 // react-bootstrap components
 const GameSlide = lazy(() => import("components/GameSlide"));
+const GameSlide3d = lazy(() => import("components/GameSlide3d"));
 import Games from "server/Games";
 import { themeColors } from "const.js";
 
@@ -244,7 +245,7 @@ const Landing = (prop) => {
           </div>
         </Segment>
 
-        <div className="section " style={{ padding: 0, overflow: "auto" }}>
+        <div className="section " style={{ padding: 0 }}>
           <div
             className={
               " filter-gradient " +
@@ -255,6 +256,7 @@ const Landing = (prop) => {
             style={{ position: "static" }}
           >
             <div className="container">
+              <GameSlide3d style={{ zIndex: 2 }} />
               <GameSlide size="3" />
             </div>
           </div>

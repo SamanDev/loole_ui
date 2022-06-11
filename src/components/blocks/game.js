@@ -9,7 +9,7 @@ const GameBlock = ({ item, i }) => {
       <>
         <h5
           className="header-text"
-          style={{ marginBottom: 5, width: 180, color: "#fff", fontSize: 25 }}
+          style={{ marginBottom: 5, width: 180, color: "#fff", fontSize: 18 }}
         >
           {item.name}
         </h5>
@@ -53,8 +53,8 @@ const GameBlock = ({ item, i }) => {
         ribbon: true,
         color: Colors[i].toLowerCase(),
       }}
-      style={item.active ? {} : { filter: "grayscale(90%)" }}
-      to={"/game/" + item.name}
+      style={item.active ? {} : { filter: "grayscale(50%)", opacity: 0.7 }}
+      to={!item.active ? "#" : "/game/" + item.name}
     />
   );
 };
