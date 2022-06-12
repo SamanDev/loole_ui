@@ -228,7 +228,8 @@ function Panel(props) {
                         <Segment inverted padded="very">
                           {cashierMethod == "CryptoCurrenciesDeposit" && (
                             <>
-                              {!myNotificationItem ? (
+                              {!myNotificationItem ||
+                              myNotificationItem.gateway != "CoinPayments" ? (
                                 <CrDeposit coins={coins} {...props} />
                               ) : (
                                 <CrCode note={myNotificationItem} {...props} />
@@ -255,7 +256,8 @@ function Panel(props) {
                           )}
                           {cashierMethod == "PaparaDeposit" && (
                             <>
-                              {!myNotificationItem ? (
+                              {!myNotificationItem ||
+                              myNotificationItem.gateway != "Papara" ? (
                                 <PaparaDeposit coins={coins} {...props} />
                               ) : (
                                 <PaparaCode

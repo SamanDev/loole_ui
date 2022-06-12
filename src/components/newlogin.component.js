@@ -161,8 +161,9 @@ function FormExampleFieldErrorLabel(prop) {
               history.push("/panel/dashboard");
             } else {
               prop.onUpdateItem("openModalLogin", false);
-
-              $(".joineventbtn:visible").trigger("click");
+              try {
+                $(".joineventbtn:visible").trigger("click");
+              } catch (e) {}
             }
           } else {
             Swal.fire({

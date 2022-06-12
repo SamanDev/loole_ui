@@ -13,7 +13,11 @@ const EventsFilter = ({
   findStateId,
   myState,
 }) => {
-  const events = findStateId(myState, "eventsUser");
+  var events = findStateId(myState, "eventsUser");
+  useEffect(() => {
+    events = findStateId(myState, "eventsUser");
+  }, [myState]);
+
   var newItem = [];
   events?.sort(function (a, b) {
     if (a === b || (a.status === b.status && a.id === b.id)) return 0;

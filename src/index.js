@@ -204,6 +204,30 @@ function Main(prop) {
       onUpdateItem("NotificationsItem", myNot[0]);
     } catch (e) {}
   };
+  const updateNotBlock = (cashierMethod) => {
+    var myNot = [];
+    try {
+      //console.log(userReports);
+      userReports?.sort((a, b) => (a.id > b.id ? 1 : -1));
+      userReports?.map((item, i) => {
+        if (cashierMethod == "PaparaDeposit" && item.status === "Pending") {
+          myNot.push(item);
+        }
+        if (
+          cashierMethod == "cashierMethod" &&
+          item.coinValue &&
+          item.status === "Pending" &&
+          myNot.length < 3
+        ) {
+          myNot.push(item);
+        }
+      });
+      myNot.sort((a, b) => (a.id < b.id ? 1 : -1));
+      //console.log(myNot);
+
+      onUpdateItem("NotificationsItem", myNot[0]);
+    } catch (e) {}
+  };
   const logOut = () => {
     setUList({ currentUser: defUser });
     localStorage.setItem("user", JSON.stringify(defUser));
@@ -324,6 +348,7 @@ function Main(prop) {
   var openModalSoket = findStateId(myState, "openModalSoket");
   var openModalVideo = findStateId(myState, "openModalVideo");
   var openModalVideoSRC = findStateId(myState, "openModalVideoSRC");
+  var cashierMethod = findStateId(myState, "cashierMethod");
   const { data: looleInfo } = useInfo();
 
   useEffect(() => {
@@ -342,6 +367,11 @@ function Main(prop) {
   }
   const { data: userReports } = useUserReports(userGet?.id);
 
+  useEffect(() => {
+    if (cashierMethod) {
+      updateNotBlock(cashierMethod);
+    }
+  }, [cashierMethod]);
   useEffect(() => {
     if (userReports) {
       queryClient.setQueryData(["userReports"], userReports);
