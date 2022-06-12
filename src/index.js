@@ -282,7 +282,7 @@ function Main(prop) {
     }
     if (key === "UserRefresh") {
       if (data) {
-        queryClient.setQueryData(["User"], data);
+        //queryClient.setQueryData(["User"], data);
       }
 
       queryClient.resetQueries(["User"]);

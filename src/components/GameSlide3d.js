@@ -77,9 +77,9 @@ export default function GameSlide(prop) {
         <div style={{ height: 300 }}>
           <Carousel
             slides={slides}
-            autoplay={true}
+            autoplay={false}
             arrows={false}
-            interval={1000}
+            interval={3000}
           />
         </div>
       </div>
