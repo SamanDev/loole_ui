@@ -25,19 +25,13 @@ class CreateMatch extends Component {
       <>
         {(haveAdmin(currentUser.roles) || haveModerator(currentUser.roles)) && (
           <>
-            <Tab.Container id="plain-tabs-example" defaultActiveKey="warzone">
+            <Tab.Container id="plain-tabs-example" defaultActiveKey="league">
               <Nav role="tablist" variant="tabs">
                 <Nav.Item>
                   <Nav.Link eventKey="tournsment">Tournament</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                   <Nav.Link eventKey="league">League</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="clashroyale">ClashRoyale</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="warzone">Warzone</Nav.Link>
                 </Nav.Item>
               </Nav>
               <Card>
@@ -54,18 +48,6 @@ class CreateMatch extends Component {
                       className="ui  segment  tab basic"
                     >
                       <AddLeague token={currentUser} {...this.props} />
-                    </Tab.Pane>
-                    <Tab.Pane
-                      eventKey="clashroyale"
-                      className="ui  segment  tab basic"
-                    >
-                      <AddClashRoyale token={currentUser} {...this.props} />
-                    </Tab.Pane>
-                    <Tab.Pane
-                      eventKey="warzone"
-                      className="ui  segment  tab basic"
-                    >
-                      <AddWarzone token={currentUser} {...this.props} />
                     </Tab.Pane>
                   </Tab.Content>
                 </Card.Body>

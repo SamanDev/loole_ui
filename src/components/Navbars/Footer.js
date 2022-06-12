@@ -21,49 +21,8 @@ const LandNavbar = (prop) => {
             <Grid.Row>
               <Grid.Column
                 mobile={16}
-                tablet={8}
-                computer={4}
-                style={{ textAlign: "center", minHeight: 120 }}
-              >
-                <Link
-                  to="/home"
-                  onClick={() => prop.scrollTo("homes")}
-                  style={{ color: "#fff" }}
-                >
-                  <img
-                    src={"/assets/img/logoloole.svg"}
-                    alt="loole.gg logo"
-                    style={{
-                      height: 85,
-                      width: 85,
-
-                      margin: "0 10px",
-                    }}
-                    className="ui"
-                  />
-                  Loole.gg
-                </Link>
-              </Grid.Column>
-              <Grid.Column
-                mobile={16}
-                tablet={8}
-                computer={4}
-                style={{ minHeight: 150 }}
-              >
-                <List>
-                  <List.Header as="h5">Platform</List.Header>
-                  <List.Item as="a">1 vs 1 Match</List.Item>
-                  <List.Item as="a">Tournaments</List.Item>
-                  <List.Item as="a">League</List.Item>
-                  <List.Item to="/home#games" as={Link}>
-                    Games
-                  </List.Item>
-                </List>
-              </Grid.Column>
-              <Grid.Column
-                mobile={16}
-                tablet={8}
-                computer={4}
+                tablet={6}
+                computer={5}
                 style={{ minHeight: 150 }}
               >
                 <List>
@@ -94,9 +53,19 @@ const LandNavbar = (prop) => {
                   </List.Item>
                 </List>
               </Grid.Column>
-              <Grid.Column mobile={16} tablet={8} computer={4}>
+              <Grid.Column mobile={16} tablet={6} computer={5}>
                 <List>
                   <List.Header as="h5">Other</List.Header>
+                  <List.Item
+                    href="https://looleblog.blogspot.com"
+                    as="a"
+                    target="_blank"
+                  >
+                    Blog
+                  </List.Item>
+                  <List.Item to="/games" as={Link}>
+                    Games
+                  </List.Item>
                   <List.Item as={Link} to="/content/terms-and-conditions">
                     Terms Conditions
                   </List.Item>
@@ -104,6 +73,31 @@ const LandNavbar = (prop) => {
                     Privacy policy
                   </List.Item>
                 </List>
+              </Grid.Column>
+              <Grid.Column
+                mobile={16}
+                tablet={4}
+                computer={4}
+                style={{ textAlign: "center", minHeight: 120 }}
+              >
+                <Link
+                  to="/home"
+                  onClick={() => prop.scrollTo("homes")}
+                  style={{ color: "#fff" }}
+                >
+                  <img
+                    src={"/assets/img/logoloole.svg"}
+                    alt="loole.gg logo"
+                    style={{
+                      height: 85,
+                      width: 85,
+
+                      margin: "0 10px",
+                    }}
+                    className="ui"
+                  />
+                  Loole.gg
+                </Link>
               </Grid.Column>
             </Grid.Row>
           </Grid>

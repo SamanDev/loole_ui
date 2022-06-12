@@ -31,6 +31,32 @@ import {
   isJson,
 } from "components/include";
 
+const getModeGames = (game) => {
+  var gamemap = [];
+  try {
+    Games.games.map((gameitem) => {
+      if (gameitem.name == game.value.split(" - ")[0]) {
+        var _game = gameitem;
+        _game?.modes.map((item) => {
+          gamemap.push({
+            value: item.name + " - Top Average",
+            label: item.name + " - Top Average",
+            track: item.track,
+            reg: item.reg,
+          });
+          gamemap.push({
+            value: item.name + " - First Matches",
+            label: item.name + " - First Matches",
+            track: item.track,
+            reg: item.reg,
+          });
+        });
+      }
+    });
+  } catch (e) {}
+
+  return gamemap;
+};
 const getBlockGames = (filtermode) => {
   var gamemap = [];
   Games.games.map((item) => {
@@ -50,7 +76,12 @@ const getBlockGames = (filtermode) => {
           });
         }
       } else if (filtermode == "League") {
-        if (item.haveLeague == true) {
+        if (
+          item.haveLeague == true &&
+          item.name != "BrawlStars" &&
+          item.name != "RocketLeague" &&
+          item.name != "Brwalhalla"
+        ) {
           gamemap.push({
             value: item.name + " - " + consoles.consolename,
             label: item.name + " - " + consoles.consolename,
@@ -74,29 +105,6 @@ const getBlockGames = (filtermode) => {
   return gamemap;
 };
 
-const getBlockGameModesVal = (filtermode) => {
-  var gamemaplocal = [];
-
-  if (filtermode != "") {
-    var filter = filtermode.value.split(" - ")[0];
-
-    Games.games.map((item) => {
-      if (item.name == filter) {
-        item.modes.map((mode, j) => {
-          if (j == 0) {
-            gamemaplocal.push({
-              value: mode.modename,
-              label: mode.modename,
-            });
-          }
-        });
-      }
-    });
-  }
-
-  return gamemaplocal[0];
-};
-
 var moment = require("moment");
 var now = new Date();
 
@@ -114,31 +122,36 @@ function editTime(date) {
   end = moment(end).utc().format();
   return end;
 }
-function getRules(mode, minMatch, MinTime, hp, tc, w3, w2, w1) {
+
+function getRules(mode, minMatch, track, reg) {
   var TrackMode = "Average of Top " + minMatch + "";
   if (mode.value.split(" - ")[1] == "First Matches") {
     TrackMode = "Average of First " + minMatch + "";
   }
-  if (mode.value.split(" ")[0] == "Team") {
-    tc = 0;
-  }
+  var _pointing = [];
+  var _reg = [
+    { text: "Mode Track", weight: "" + mode.value.split(" - ")[0] + "" },
+    { text: "Min Match", weight: "" + minMatch + "" },
+  ];
+  track.map((gameitem, i) => {
+    _pointing.push({
+      text: gameitem.name,
+      weight: " " + gameitem.sign + " " + gameitem.value,
+    });
+  });
+  reg.map((gameitem, i) => {
+    _reg.push({
+      text: gameitem.name,
+      weight: gameitem.value,
+    });
+  });
+  _reg.push({ text: "Total Score", weight: TrackMode });
   var _rules = {
-    RuleTrack: [
-      { text: "Mode Track", weight: "" + mode.value.split(" - ")[0] + "" },
-      { text: "Min Match", weight: "" + minMatch + "" },
-      { text: "Min Play Time", weight: "" + MinTime + "" },
+    RuleTrack: _reg,
 
-      { text: "Total Score", weight: TrackMode },
-    ],
-
-    pointTrack: [
-      { text: "Damage Done", weight: " x " + hp + "" },
-      { text: "Kills", weight: " x " + tc + "" },
-      { text: "1st Place", weight: " + " + w3 + "" },
-      { text: "2nd or 3rd Place", weight: " + " + w2 + "" },
-      { text: "4th to 8th Place", weight: " + " + w1 + "" },
-    ],
+    pointTrack: _pointing,
   };
+
   return JSON.stringify(_rules);
 }
 
@@ -160,26 +173,19 @@ class AddTour extends Component {
     this.setOutSign = this.setOutSign.bind(this);
     this.setTournamentPayout = this.setTournamentPayout.bind(this);
     this.setRules = this.setRules.bind(this);
-    this.setTournamentMode = this.setTournamentMode.bind(this);
-    this.getBlockTournamentVal = this.getBlockTournamentVal.bind(this);
+
     this.setStartTimeLeague = this.setStartTimeLeague.bind(this);
     this.setEndTimeLeague = this.setEndTimeLeague.bind(this);
     this.setPrize = this.setPrize.bind(this);
     this.setRMinMatch = this.setRMinMatch.bind(this);
     this.setRMode = this.setRMode.bind(this);
-    this.setRMinCup = this.setRMinCup.bind(this);
-    this.setRMaxCup = this.setRMaxCup.bind(this);
-    this.setRHP = this.setRHP.bind(this);
-    this.setRTC = this.setRTC.bind(this);
-    this.setRW3 = this.setRW3.bind(this);
-    this.setRW2 = this.setRW2.bind(this);
-    this.setRW1 = this.setRW1.bind(this);
-    this.setRDrow = this.setRDrow.bind(this);
+
+    this.findStateId = this.findStateId.bind(this);
+    this.onUpdateItem = this.onUpdateItem.bind(this);
 
     this.state = {
       GName: { value: "CallOfDuty - All", label: "Warzone - All" },
-      GameMode: { value: "Duel", label: "Duel" },
-      TournamentMode: { value: "4", label: "4 Players" },
+
       iteem: {},
       currentUser: this.props.token,
       gamemaplocal: [],
@@ -193,6 +199,8 @@ class AddTour extends Component {
       EndTimeLeague: endFormat,
       loading: false,
       submit: false,
+      track: [],
+      reg: [],
       GameTag: "",
       message: "",
       Rules: "",
@@ -204,19 +212,7 @@ class AddTour extends Component {
       gamePlatform: "",
       gameName: "",
       rMinMatch: 10,
-      rMode: {
-        value: "Rebirth - Top Average",
-        label: "Rebirth - Top Average",
-      },
-
-      rMinCup: 100,
-      rMaxCup: 10000,
-      rHP: 0.06,
-      rTC: 20,
-      rW3: 240,
-      rW2: 100,
-      rW1: 50,
-      rDrow: 50,
+      rMode: {},
     };
   }
   componentDidMount() {
@@ -239,28 +235,55 @@ class AddTour extends Component {
     this.setState({
       EndTimeLeague: endFormat,
     });
-    this.setRules();
+    var gameData = getModeGames(this.state.GName);
+    console.log(gameData[0]);
+    this.setState({
+      rMode: gameData[0],
+      track: JSON.parse(JSON.stringify(gameData[0].track)),
+      reg: JSON.parse(JSON.stringify(gameData[0].reg)),
+    });
   }
-  getBlockTournamentVal = () => {
-    var tourmap = {
-      value: this.state.TournamentMode.value,
-      label:
-        this.state.TournamentMode.value +
-        " Players - Prize: " +
-        (this.state.TournamentMode.value * this.state.BetAmount * 90) / 100,
-    };
 
-    return tourmap;
+  findStateId = (st, val) => {
+    return st.filter(function (v) {
+      return v.name === val;
+    })[0].value;
+  };
+  onUpdateItem = (state, key, val, name) => {
+    if (this.findStateId(state, key) != val) {
+      const list = state.map((item) => {
+        if (item.name === key) {
+          item.value = val;
+        }
+        return item;
+      });
+      if (name == "track") {
+        this.setState({
+          track: list,
+        });
+      }
+      if (name == "reg") {
+        this.setState({
+          reg: list,
+        });
+      }
+    }
   };
   setGameName(e) {
+    var gameData = getModeGames(e);
+
     this.setState({
+      rMode: gameData[0],
+      track: JSON.parse(JSON.stringify(gameData[0].track)),
+      reg: JSON.parse(JSON.stringify(gameData[0].reg)),
       GName: e,
-      GameMode: getBlockGameModesVal(e),
     });
+    this.setRules();
   }
   setRMode(e) {
     this.setState({
       rMode: e,
+      track: JSON.parse(JSON.stringify(e.track)),
     });
   }
   setInSign(e) {
@@ -280,20 +303,11 @@ class AddTour extends Component {
     });
   }
   setRules(e) {
-    if (this.state.rMode.value.split(" ")[0] == "Team") {
-      this.setRTC(0);
-    }
-
     var _R = getRules(
       this.state.rMode,
       this.state.rMinMatch,
-      this.state.rMinCup,
-
-      this.state.rHP,
-      this.state.rTC,
-      this.state.rW3,
-      this.state.rW2,
-      this.state.rW1
+      this.state.track,
+      this.state.reg
     );
     this.setState({
       Rules: _R,
@@ -315,51 +329,7 @@ class AddTour extends Component {
       rMinMatch: e,
     });
   }
-  setRMinCup(e) {
-    this.setState({
-      rMinCup: e,
-    });
-  }
-  setRMaxCup(e) {
-    this.setState({
-      rMaxCup: e,
-    });
-  }
-  setRHP(e) {
-    this.setState({
-      rHP: e,
-    });
-  }
-  setRTC(e) {
-    this.setState({
-      rTC: e,
-    });
-  }
-  setRW3(e) {
-    this.setState({
-      rW3: e,
-    });
-  }
-  setRW2(e) {
-    this.setState({
-      rW2: e,
-    });
-  }
-  setRW1(e) {
-    this.setState({
-      rW1: e,
-    });
-  }
-  setRDrow(e) {
-    this.setState({
-      rDrow: e,
-    });
-  }
-  setTournamentMode(e) {
-    this.setState({
-      TournamentMode: e,
-    });
-  }
+
   setGameMode(e) {
     this.setState({
       GameMode: e,
@@ -369,8 +339,6 @@ class AddTour extends Component {
     this.setState({
       BetAmount: e,
     });
-
-    //this.setTournamentMode(getBlockTournamentVal(e, this.state.TournamentMode));
   }
   setAvalableFor(e) {
     this.setState({
@@ -564,7 +532,7 @@ class AddTour extends Component {
 
     return (
       <>
-        <Header as="h3">Create a ClashRoyale League</Header>
+        <Header as="h3">Create a League</Header>
         <Row style={{ marginRight: 0 }}>
           <Col md="8" sm="6">
             <Form
@@ -574,6 +542,19 @@ class AddTour extends Component {
               }}
             >
               <Segment secondary>
+                <div className="form-group hide2">
+                  <label>Game</label>
+                  <Select
+                    className="react-select default"
+                    classNamePrefix="react-select"
+                    name="GName"
+                    value={this.state.GName}
+                    onChange={this.setGameName}
+                    options={getBlockGames("League")}
+                    placeholder=""
+                    onBlur={this.setRules}
+                  />
+                </div>
                 <Grid columns={3} relaxed>
                   <Grid.Row style={{ marginRight: 0, marginLeft: 0 }}>
                     <Grid.Column>
@@ -691,6 +672,7 @@ class AddTour extends Component {
                           type="datetime-local"
                           className="form-control"
                           name="EndTime"
+                          disabled="disabled"
                           value={this.state.EndTimeLeague}
                           onChange={this.setEndTimeLeague}
                           onBlur={this.updateEnd}
@@ -745,30 +727,39 @@ class AddTour extends Component {
                           name="InSign"
                           value={this.state.rMode}
                           onChange={this.setRMode}
-                          options={[
-                            {
-                              value: "Rebirth - Top Average",
-                              label: "Rebirth - Top Average",
-                            },
-                            {
-                              value: "Rebirth - First Matches",
-                              label: "Rebirth - First Matches",
-                            },
-                            {
-                              value: "BattleRoyale - Top Average",
-                              label: "BattleRoyale - Top Average",
-                            },
-                            {
-                              value: "BattleRoyale - First Matches",
-                              label: "BattleRoyale - First Matches",
-                            },
-                          ]}
+                          options={getModeGames(this.state.GName)}
                           placeholder=""
                           isSearchable={false}
                           onBlur={this.setRules}
                         />
                       </div>
-
+                    </Grid.Column>
+                    {this.state.track.map((gameitem, i) => {
+                      if (gameitem.value != 0) {
+                        return (
+                          <Grid.Column key={i}>
+                            <div className="form-group">
+                              <label>{gameitem.name}</label>
+                              <NumericInput
+                                min={1}
+                                className="form-control"
+                                value={gameitem.value}
+                                onChange={(evt) =>
+                                  this.onUpdateItem(
+                                    this.state.track,
+                                    gameitem.name,
+                                    evt,
+                                    "track"
+                                  )
+                                }
+                                onBlur={this.setRules}
+                              />
+                            </div>
+                          </Grid.Column>
+                        );
+                      }
+                    })}
+                    <Grid.Column>
                       <div className="form-group">
                         <label>Min Match</label>
                         <NumericInput
@@ -781,96 +772,35 @@ class AddTour extends Component {
                           onBlur={this.setRules}
                         />
                       </div>
-                      <div className="form-group">
-                        <label>1st Place</label>
-                        <NumericInput
-                          min={0}
-                          step={1}
-                          max={50000}
-                          className="form-control"
-                          value={this.state.rW3}
-                          onChange={this.setRW3}
-                          onBlur={this.setRules}
-                        />
-                      </div>
                     </Grid.Column>
-                    <Grid.Column>
-                      <div className="form-group">
-                        <label>Min Play Time</label>
-                        <NumericInput
-                          min={0}
-                          step={1}
-                          max={50000}
-                          className="form-control"
-                          value={this.state.rMinCup}
-                          onChange={this.setRMinCup}
-                          onBlur={this.setRules}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>Damage Done</label>
-                        <NumericInput
-                          min={0}
-                          step={1}
-                          max={50}
-                          className="form-control"
-                          value={this.state.rHP}
-                          onChange={this.setRHP}
-                          onBlur={this.setRules}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>2nd or 3rd Place</label>
-                        <NumericInput
-                          min={2}
-                          step={1}
-                          max={50000}
-                          className="form-control"
-                          value={this.state.rW2}
-                          onChange={this.setRW2}
-                          onBlur={this.setRules}
-                        />
-                      </div>
-                    </Grid.Column>
-                    <Grid.Column>
-                      <div className="form-group">
-                        <label>Kills</label>
-                        <NumericInput
-                          min={0}
-                          max={10}
-                          className="form-control"
-                          value={this.state.rTC}
-                          onChange={this.setRTC}
-                          onBlur={this.setRules}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>4th to 8th Place</label>
-                        <NumericInput
-                          min={2}
-                          step={1}
-                          max={50}
-                          className="form-control"
-                          value={this.state.rW1}
-                          onChange={this.setRW1}
-                          onBlur={this.setRules}
-                        />
-                      </div>
-                    </Grid.Column>
+                    {this.state.reg.map((gameitem, i) => {
+                      if (this.state.Rules == "") {
+                        this.setRules();
+                      }
+                      return (
+                        <Grid.Column key={i}>
+                          <div className="form-group">
+                            <label>{gameitem.name}</label>
+                            <NumericInput
+                              min={1}
+                              className="form-control"
+                              value={gameitem.value}
+                              onChange={(evt) =>
+                                this.onUpdateItem(
+                                  this.state.reg,
+                                  gameitem.name,
+                                  evt,
+                                  "reg"
+                                )
+                              }
+                              onBlur={this.setRules}
+                            />
+                          </div>
+                        </Grid.Column>
+                      );
+                    })}
                   </Grid.Row>
                 </Grid>
-                <div className="form-group hide">
-                  <label>Game</label>
-                  <Select
-                    className="react-select default"
-                    classNamePrefix="react-select"
-                    name="GName"
-                    value={this.state.GName}
-                    onChange={this.setGameName}
-                    options={getBlockGames("League")}
-                    placeholder=""
-                  />
-                </div>
               </Segment>
               <Segment secondary>
                 <div className="form-group">

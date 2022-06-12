@@ -30,7 +30,54 @@
       ],
       "modes": [
         {
-          "modename": "Duel"
+          "name": "Ladder Battles",
+          "track": [
+            {
+              "name": "HP",
+              "value": 0.006,
+              "sign": "x"
+            },
+            { "name": "TrophyChange", "value": 1, "sign": "x" },
+            { "name": "3 - 0 Win", "value": 240, "sign": "+" },
+            { "name": "+2 Win", "value": 100, "sign": "+" },
+            { "name": "+1 Win", "value": 40, "sign": "+" },
+            { "name": "Draw", "value": 80, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Trophy",
+              "value": "100"
+            },
+            {
+              "name": "Max Trophy",
+              "value": "10000"
+            }
+          ]
+        },
+        {
+          "name": "Team Battles",
+          "track": [
+            {
+              "name": "HP",
+              "value": 0.006,
+              "sign": "x"
+            },
+            { "name": "TrophyChange", "value": 0, "sign": "x" },
+            { "name": "3 - 0 Win", "value": 240, "sign": "+" },
+            { "name": "+2 Win", "value": 100, "sign": "+" },
+            { "name": "+1 Win", "value": 40, "sign": "+" },
+            { "name": "Draw", "value": 80, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Trophy",
+              "value": "100"
+            },
+            {
+              "name": "Max Trophy",
+              "value": "10000"
+            }
+          ]
         }
       ]
     },
@@ -98,7 +145,7 @@
         }
       ]
     },
-    
+
     {
       "name": "CallOfDuty",
       "active": true,
@@ -112,7 +159,44 @@
       ],
       "modes": [
         {
-          "modename": "KillRace"
+          "name": "Rebirth",
+          "track": [
+            {
+              "name": "Damage Done",
+              "value": 0.006,
+              "sign": "x"
+            },
+            { "name": "Kills", "value": 20, "sign": "x" },
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 8th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
+        },
+        {
+          "name": "BattleRoyale",
+          "track": [
+            {
+              "name": "Damage Done",
+              "value": 0.006,
+              "sign": "x"
+            },
+            { "name": "Kills", "value": 20, "sign": "x" },
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 8th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
         }
       ]
     },
@@ -130,7 +214,34 @@
       ],
       "modes": [
         {
-          "modename": "KillRace"
+          "name": "Public",
+          "track": [
+            { "name": "Kills", "value": 20, "sign": "x" },
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 8th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
+        },
+        {
+          "name": "Ranked",
+          "track": [
+            { "name": "Kills", "value": 20, "sign": "x" },
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 8th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
         }
       ]
     },
@@ -164,11 +275,7 @@
           "consolename": "All"
         }
       ],
-      "modes": [
-        {
-          "modename": "KillRace"
-        }
-      ]
+      "modes": ["Rebirth", "BattleRoyale"]
     },
     {
       "id": 11,
@@ -184,7 +291,19 @@
       ],
       "modes": [
         {
-          "modename": "KillRace"
+          "name": "Ranked",
+          "track": [
+            { "name": "Kills", "value": 20, "sign": "x" },
+
+            { "name": "Assists", "value": 5, "sign": "x" },
+            { "name": "Win", "value": 100, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
         }
       ]
     },
@@ -200,9 +319,22 @@
           "consolename": "All"
         }
       ],
+
       "modes": [
         {
-          "modename": "KillRace"
+          "name": "Ranked",
+          "track": [
+            { "name": "Kills", "value": 20, "sign": "x" },
+
+            { "name": "Assists", "value": 5, "sign": "x" },
+            { "name": "Win", "value": 100, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
         }
       ]
     },
@@ -220,7 +352,44 @@
       ],
       "modes": [
         {
-          "modename": "KillRace"
+          "name": "Unranked",
+          "track": [
+            {
+              "name": "Damage Done",
+              "value": 0.006,
+              "sign": "x"
+            },
+            { "name": "Kills", "value": 20, "sign": "x" },
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 8th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
+        },
+        {
+          "name": "Ranked",
+          "track": [
+            {
+              "name": "Damage Done",
+              "value": 0.006,
+              "sign": "x"
+            },
+            { "name": "Kills", "value": 20, "sign": "x" },
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 8th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
         }
       ]
     },
@@ -238,7 +407,44 @@
       ],
       "modes": [
         {
-          "modename": "KillRace"
+          "name": "Unranked",
+          "track": [
+            {
+              "name": "Damage Done",
+              "value": 0.006,
+              "sign": "x"
+            },
+            { "name": "Kills", "value": 20, "sign": "x" },
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 8th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
+        },
+        {
+          "name": "Ranked",
+          "track": [
+            {
+              "name": "Damage Done",
+              "value": 0.006,
+              "sign": "x"
+            },
+            { "name": "Kills", "value": 20, "sign": "x" },
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 8th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
         }
       ]
     },
@@ -256,10 +462,48 @@
       ],
       "modes": [
         {
-          "modename": "KillRace"
+          "name": "Unranked",
+          "track": [
+            {
+              "name": "Damage Done",
+              "value": 0.006,
+              "sign": "x"
+            },
+            { "name": "Kills", "value": 20, "sign": "x" },
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 8th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
+        },
+        {
+          "name": "Ranked",
+          "track": [
+            {
+              "name": "Damage Done",
+              "value": 0.006,
+              "sign": "x"
+            },
+            { "name": "Kills", "value": 20, "sign": "x" },
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 8th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
         }
       ]
-    },{
+    },
+    {
       "id": 16,
       "name": "PubG",
       "active": false,
@@ -273,7 +517,45 @@
       ],
       "modes": [
         {
-          "modename": "KillRace"
+          "name": "Unranked",
+          "track": [
+            {
+              "name": "Damage Done",
+              "value": 0.1,
+              "sign": "x"
+            },
+            { "name": "Kills", "value": 20, "sign": "x" },
+            { "name": "Assists", "value": 10, "sign": "x" },
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 8th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
+        },
+        {
+          "name": "Ranked",
+          "track": [
+            {
+              "name": "Damage Done",
+              "value": 0.006,
+              "sign": "x"
+            },
+            { "name": "Kills", "value": 20, "sign": "x" },
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 8th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Play Time",
+              "value": "100"
+            }
+          ]
         }
       ]
     }
