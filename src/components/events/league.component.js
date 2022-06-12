@@ -189,7 +189,7 @@ class LeagueSection extends Component {
             loading: false,
           });
 
-          if (response?.message.indexOf(" 401") > -1) {
+          if (response?.message?.indexOf(" 401") > -1) {
             this.printErr(response);
           } else {
             if (response?.data?.accessToken) {

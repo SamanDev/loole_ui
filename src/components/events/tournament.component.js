@@ -54,6 +54,10 @@ var matchLevelFind = null;
 var icEnd = 0;
 var icStart = 0;
 var defaultActiveIndex = 0;
+var current_brackets = [];
+var potential_brackets = [];
+var totalPay = 0;
+var tournamentPayout = false;
 class TournamentSection extends Component {
   static contextType = UserContext;
   constructor(props) {
@@ -86,6 +90,10 @@ class TournamentSection extends Component {
   }
   static getDerivedStateFromProps(props, state) {
     if (props.event !== state.item) {
+      tournamentPayout = false;
+      current_brackets = [];
+      potential_brackets = [];
+      totalPay = props.event.prize;
       return {
         myState: props.myState,
         item: props.event,
@@ -152,7 +160,7 @@ class TournamentSection extends Component {
       .joinEvent(this.state.item.id)
       .then(
         (response) => {
-          if (response?.message.indexOf(" 401") > -1) {
+          if (response?.message?.indexOf(" 401") > -1) {
             this.printErr(response);
           } else {
             if (response?.data?.accessToken) {
@@ -204,7 +212,8 @@ class TournamentSection extends Component {
     if (
       error?.response?.data?.status == 401 ||
       error?.data?.status == 401 ||
-      error?.response?.data?.details[0] == "Access is denied"
+      error?.response?.data?.details[0] == "Access is denied" ||
+      error?.message.indexOf(" 401") > -1
     ) {
       this.props.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
@@ -342,21 +351,19 @@ class TournamentSection extends Component {
           item.matchLevel.push(genMatch(8, 1, "Final"));
         }
       }
-      var potential_brackets = [];
-      var current_brackets = [];
 
-      var tournamentPayout = false;
+      totalPay = item.prize;
       if (item.tournamentPayout && !tournamentPayout) {
         tournamentPayout = item.tournamentPayout
-          .replace("4,", "1-4,")
+          .replace("4,", "0-4,")
           .replace("8,", "5-8,")
           .replace("16,", "9-16,")
           .replace("32,", "17-32,")
           .replace("64,", "33-64,")
-          .replace("128,", "65-128,")
+          .replace("128,", "33-128,")
           .replace("256,", "129-256,");
         var payArr = tournamentPayout.split("@");
-        var totalPay = item.prize;
+
         for (var i = 0; i < payArr.length; i++) {
           var paylvl = payArr[i].split(",");
           var payplyer = paylvl[0].split("-");
@@ -371,6 +378,7 @@ class TournamentSection extends Component {
                 paylvl[j] = paylvl[j] + "x1";
               }
               var intX = paylvl[j].split("x");
+
               potential_brackets.push({
                 prize: (intX[0] * totalPay) / 100,
                 percent: intX[0],
@@ -384,20 +392,25 @@ class TournamentSection extends Component {
           var paylvl = payArr[i].split(",");
           var payplyer = paylvl[0].split("-");
           var tItem = item.players.length;
-          var totalPay2 = (totalPay / item.totalPlayer) * tItem;
 
+          if (item.inSign != item.outSign) {
+            var totalPay2 = (totalPay / item.totalPlayer) * item.players.length;
+          } else {
+            var totalPay2 = (totalPay * item.players.length) / item.totalPlayer;
+          }
           if (
             parseInt(payplyer[0]) <= tItem &&
             parseInt(payplyer[1]) >= tItem
           ) {
-            //totalPay2 = totalPay2 / tItem / parseInt(payplyer[1]);
             for (var j = 1; j < paylvl.length; j++) {
               if (paylvl[j].indexOf("x") == -1) {
                 paylvl[j] = paylvl[j] + "x1";
               }
+
               var intX = paylvl[j].split("x");
+
               current_brackets.push({
-                prize: (intX[0] * totalPay2) / 100,
+                prize: (parseInt(intX[0]) * totalPay2) / 100,
                 percent: intX[0],
                 number: intX[1],
               });
@@ -649,7 +662,7 @@ class TournamentSection extends Component {
             <>
               <Divider style={{ opacity: 0 }} />
               <Accordion
-                defaultActiveIndex={[matchLevelFind.level - 1]}
+                //defaultActiveIndex={[matchLevelFind.level - 1]}
                 panels={panels}
                 exclusive={false}
                 fluid
@@ -695,7 +708,7 @@ class TournamentSection extends Component {
                 </Segment>
               )}
             <Segment inverted color="blue">
-              {item.status == "Pending" && (
+              {(item.status == "Pending" || item.status == "InPlay") && (
                 <>
                   <Header as="h2">
                     Potential Prize
@@ -770,88 +783,94 @@ class TournamentSection extends Component {
                         );
                       })}
                     </List>
-                  </Message>{" "}
+                  </Message>
                   <Divider clearing />
                 </>
               )}
-              <Header as="h2">
-                Current Prize
-                <div
-                  style={{
-                    position: "relative",
-                    zIndex: 1,
-                    marginTop: 20,
-                    transform: "scale(1.3 )",
-                  }}
-                >
-                  {getGroupBadgeBlock(
-                    item.outSign,
-                    totalPay2,
-                    "Current Prize",
-                    "left",
-                    "green"
-                  )}
-                </div>
-                <p style={{ margin: "20px 0" }}>
-                  Current Prize Pool represents how much are players in specific
-                  positions are currently getting paid. When the Tournament is
-                  full, the current prize and potential prize pools will be
-                  equal.
-                </p>
-                <Invite />
-              </Header>{" "}
-              <Message>
-                <List divided inverted relaxed>
-                  {current_brackets.map((win, i) => {
-                    if (i == 0) {
-                      icStart = 0;
-                      icEnd = 0;
-                    }
-                    icStart = icStart + 1;
-                    icEnd = icEnd + parseInt(win.number);
-
-                    var icShow = "#" + icStart;
-                    if (icStart != icEnd) {
-                      icShow = icShow + " - #" + icEnd;
-                      icStart = icEnd;
-                    }
-
-                    return (
-                      <List.Item
-                        key={i.toString()}
-                        style={
-                          item.players.length < parseInt(i + 1)
-                            ? { opacity: 0.4 }
-                            : { opacity: 1 }
+              {item.players.length > 0 && (
+                <>
+                  <Header as="h2">
+                    Current Prize
+                    <div
+                      style={{
+                        position: "relative",
+                        zIndex: 1,
+                        marginTop: 20,
+                        transform: "scale(1.3 )",
+                      }}
+                    >
+                      {getGroupBadgeBlock(
+                        item.outSign,
+                        (totalPay * item.players.length) / item.totalPlayer,
+                        "Current Prize",
+                        "left",
+                        "green"
+                      )}
+                    </div>
+                    <p style={{ margin: "20px 0" }}>
+                      Current Prize Pool represents how much are players in
+                      specific positions are currently getting paid. When the
+                      Tournament is full, the current prize and potential prize
+                      pools will be equal.
+                    </p>
+                    <Invite />
+                  </Header>{" "}
+                  <Message>
+                    <List divided inverted relaxed>
+                      {current_brackets.map((win, i) => {
+                        if (i == 0) {
+                          icStart = 0;
+                          icEnd = 0;
                         }
-                      >
-                        <List.Content>
-                          <span style={{ fontSize: 17 }}>
-                            <Label color="green">%{win.percent}</Label>
-                            <Label
-                              pointing="left"
-                              size="mini"
-                              basic
-                              color="blue"
-                            >
-                              {icShow}
-                            </Label>
-                          </span>
-                          <span style={{ textAlign: "left", marginLeft: 5 }}>
-                            {getGroupBadgeBlock(
-                              item.outSign,
-                              win.prize,
-                              "Current",
-                              "right",
-                              "green"
-                            )}
-                          </span>
-                        </List.Content>
-                      </List.Item>
-                    );
-                  })}
-                </List>
-              </Message>
+                        icStart = icStart + 1;
+                        icEnd = icEnd + parseInt(win.number);
+
+                        var icShow = "#" + icStart;
+                        if (icStart != icEnd) {
+                          icShow = icShow + " - #" + icEnd;
+                          icStart = icEnd;
+                        }
+
+                        return (
+                          <List.Item
+                            key={i.toString()}
+                            style={
+                              item.players.length < parseInt(i + 1)
+                                ? { opacity: 0.4 }
+                                : { opacity: 1 }
+                            }
+                          >
+                            <List.Content>
+                              <span style={{ fontSize: 17 }}>
+                                <Label color="green">%{win.percent}</Label>
+                                <Label
+                                  pointing="left"
+                                  size="mini"
+                                  basic
+                                  color="blue"
+                                >
+                                  {icShow}
+                                </Label>
+                              </span>
+                              <span
+                                style={{ textAlign: "left", marginLeft: 5 }}
+                              >
+                                {getGroupBadgeBlock(
+                                  item.outSign,
+                                  win.prize,
+                                  "Current",
+                                  "right",
+                                  "green"
+                                )}
+                              </span>
+                            </List.Content>
+                          </List.Item>
+                        );
+                      })}
+                    </List>
+                  </Message>
+                </>
+              )}
             </Segment>
 
             <Segment inverted color="purple" className="hide">

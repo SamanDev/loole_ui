@@ -88,7 +88,7 @@ function LockScreenPage(prop) {
 
   const title = params.title;
 
-  _arrTit = title.split("-");
+  _arrTit = title.replace("+", " ").split("-");
   var _desc =
     title.replace(/-/g, " ") +
     ". Loole.gg is an online global platform where you can compete for real cash and coins in your " +

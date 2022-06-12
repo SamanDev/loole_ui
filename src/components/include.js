@@ -2173,7 +2173,7 @@ export const genLink = (item, match, num) => {
     "/" +
     item.gameMode +
     " " +
-    item.gameName +
+    item.gameName.replace(" ", "+") +
     " for " +
     item.prize +
     item.outSign.replace("Dollar", " USD").replace("Point", " Diamonds") +
