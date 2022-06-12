@@ -269,7 +269,7 @@ function Main(prop) {
     }
   };
   const onReset = (key, data) => {
-    console.log(key);
+    //console.log(key);
     if (key === "Reports") {
       queryClient.resetQueries(["UserReports"]);
     }
