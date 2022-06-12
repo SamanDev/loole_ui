@@ -264,7 +264,7 @@ export const printJoinalerts = (
       p = "XBOX";
     }
 
-    setSelectedTag(e.replace(" Warzone", ""), p, currentUser);
+    setSelectedTag(e.replace(" Warzone", "").split(" ")[0], p, currentUser);
   } else {
     Swal.fire({
       title: "Error!",
