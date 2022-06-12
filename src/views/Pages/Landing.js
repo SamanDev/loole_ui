@@ -101,17 +101,34 @@ function Landing(prop) {
           </div>
         </div>
         <div className="section " style={{ padding: 0 }}>
-          <div
-            className={
-              " filter-gradient " +
-              themeColors[day].replace("grey", "gray") +
-              " "
-            }
-            data-color="orange"
-            style={{ position: "static" }}
-          >
-            <div className="container">
-              <GameSlide3d style={{ zIndex: 2, height: 400 }} />
+          <div className={" filter-gradient gray "} data-color="orange">
+            <div className="container" style={{ height: 500, paddingTop: 30 }}>
+              <h4
+                className="header-text text-center"
+                style={{
+                  color: "#fff",
+                  position: "relative",
+                  zIndex: 2,
+                  margin: 0,
+                  fontWeight: 400,
+                }}
+              >
+                GAMES YOU CAN PLAY
+              </h4>
+              <p
+                className="header-text text-center"
+                style={{
+                  color: "#fff",
+                  position: "relative",
+                  zIndex: 2,
+                  marginTop: 5,
+                  fontWeight: 400,
+                  marginBottom: 100,
+                }}
+              >
+                1 vs 1, Tournament, League
+              </p>
+              <GameSlide3d style={{ zIndex: 2 }} />
             </div>
           </div>
         </div>
