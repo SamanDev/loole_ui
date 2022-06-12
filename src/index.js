@@ -379,7 +379,7 @@ function Main(prop) {
     }
   }, [userReports]);
   useEffect(() => {
-    if (!userLoading && userGet?.accessToken) {
+    if (!userLoading && userGet?.accessToken && currentUser?.accessToken) {
       setUList({ currentUser: userGet });
 
       localStorage.setItem("user", JSON.stringify(userGet));
@@ -392,7 +392,7 @@ function Main(prop) {
       if (!userLoading && findStateId(myState, "openModalLogin")) {
         setUList({ currentUser: defUser });
         localStorage.setItem("user", JSON.stringify(defUser));
-        queryClient.setQueryData(["User"], defUser);
+        //queryClient.setQueryData(["User"], defUser);
       }
     }
   }, [userGet, userLoading]);
@@ -452,7 +452,7 @@ function Main(prop) {
         setEList({ event: { status: "Deleted" } });
       }
     } else {
-      if (myList.events) {
+      if (myList.events && !eventsLoading) {
         forceLobby(myList.events, currentUser.username);
       }
     }
