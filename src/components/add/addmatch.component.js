@@ -306,7 +306,8 @@ class AddMatch extends Component {
       .createEvent(
         this.state.GName.value.split(" - ")[0],
         this.state.GName.value.split(" - ")[1],
-        this.state.GameMode.value,
+        //this.state.GameMode.value,
+        "Duel",
         this.state.BetAmount,
         this.state.inSign.value,
         this.state.inSign.value,
