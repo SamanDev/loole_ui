@@ -143,90 +143,6 @@ const conditionalRowStyles = [
     },
   },
 ];
-const columns = [
-  {
-    name: "Date",
-    selector: (row) => row.createDate,
-    format: (row) => <small>{date_edit_report(row.createDate)}</small>,
-    width: "100px",
-    sortable: true,
-  },
-  {
-    name: "Action",
-
-    selector: (row) => (
-      <>
-        <span style={{ opacity: 0, position: "absolute" }}>
-          {getGroupBadgeBlock("Dollar", row.startBalance, "small left ")} +
-        </span>
-        {getGroupBadgeBlock("Dollar", row.startBalance, "small left")}
-        {row.endBalance < row.startBalance ? " - " : " + "}
-        {getGroupBadgeBlock("Dollar", row.amount, "small left")} {" = "}
-        {row.status != "Pending"
-          ? getGroupBadgeBlock("Dollar", row.endBalance, "small left")
-          : row.status}
-      </>
-    ),
-
-    width: "300px",
-  },
-
-  {
-    name: "Description",
-    selector: (row) => (
-      <>
-        {row.eventId ? (
-          <>
-            <Link to={genLink(row)}>
-              {row.description
-                .split("&")[0]
-                .split(" - ")[0]
-                .replace("Event Id", "EID")}
-            </Link>
-
-            {" - "}
-            {row.description.split(" - ")[1]?.replace("Dollar", "") +
-              " - " +
-              row.mode
-
-                .replace("Point", "")
-                .replace("Duel", "")
-                .replace("Registered", " Join")
-                .replace("Unregistered", " Leave")}
-          </>
-        ) : (
-          <>
-            {row.mode == "Deposit" || row.mode == "Cashout" ? (
-              <>
-                {row.mode}
-
-                {" - "}
-                {row.coin ? row.coin : row.gateway}
-              </>
-            ) : (
-              <>
-                {row.description
-                  .replace("Event Id", "EID")
-                  .replaceAll('","', " ")
-                  .replace("Point", "Diamonds") +
-                  " " +
-                  row.mode
-                    .replace("Point", "")
-                    .replace("Duel", "")
-                    .replace("Registered", " Join")
-                    .replace("Unregistered", " Leave")}
-              </>
-            )}
-          </>
-        )}
-      </>
-    ),
-
-    grow: 4,
-    minWidth: "200px",
-    maxWidth: "600px",
-  },
-];
 
 const noDataComponent = (
   <div
@@ -261,7 +177,102 @@ const noDataComponent = (
 function Report(prop) {
   const [myData, setMydata] = useState();
   const { data: userReports, isLoading } = useUserReports(prop.user.id);
+  const columns = [
+    {
+      name: "Date",
+      selector: (row) => row.createDate,
+      format: (row) => <small>{date_edit_report(row.createDate)}</small>,
+      width: "100px",
+      sortable: true,
+    },
+    {
+      name: "Action",
 
+      selector: (row) => (
+        <>
+          <span style={{ opacity: 0, position: "absolute" }}>
+            {getGroupBadgeBlock("Dollar", row.startBalance, "small left ")} +
+          </span>
+          {getGroupBadgeBlock("Dollar", row.startBalance, "small left")}
+          {row.endBalance < row.startBalance ? " - " : " + "}
+          {getGroupBadgeBlock("Dollar", row.amount, "small left")} {" = "}
+          {row.status != "Pending"
+            ? getGroupBadgeBlock("Dollar", row.endBalance, "small left")
+            : row.status}
+        </>
+      ),
+
+      width: "300px",
+    },
+
+    {
+      name: "Description",
+      selector: (row) => (
+        <>
+          {row.eventId ? (
+            <>
+              <Link to={genLink(row)}>
+                {row.description
+                  .split("&")[0]
+                  .split(" - ")[0]
+                  .replace("Event Id", "EID")}
+              </Link>
+
+              {" - "}
+              {row.description.split(" - ")[1]?.replace("Dollar", "") +
+                " - " +
+                row.mode
+
+                  .replace("Point", "")
+                  .replace("Duel", "")
+                  .replace("Registered", " Join")
+                  .replace("Unregistered", " Leave")}
+            </>
+          ) : (
+            <>
+              {row.mode == "Deposit" || row.mode == "Cashout" ? (
+                <>
+                  <div
+                    onClick={() => {
+                      prop.onUpdateItem("NotificationsItem", row);
+                      prop.onUpdateItem(
+                        "cashierMethod",
+                        row.gateway.replace(
+                          "CoinPayments",
+                          "CryptoCurrencies"
+                        ) + "Deposit"
+                      );
+                      prop.onUpdateItem("openModalCashier", true);
+                    }}
+                  >
+                    {row.mode} {" - "}
+                    {row.coin ? row.coin : row.gateway}
+                  </div>
+                </>
+              ) : (
+                <>
+                  {row.description
+                    .replace("Event Id", "EID")
+                    .replaceAll('","', " ")
+                    .replace("Point", "Diamonds") +
+                    " " +
+                    row.mode
+                      .replace("Point", "")
+                      .replace("Duel", "")
+                      .replace("Registered", " Join")
+                      .replace("Unregistered", " Leave")}
+                </>
+              )}
+            </>
+          )}
+        </>
+      ),
+
+      grow: 4,
+      minWidth: "200px",
+      maxWidth: "600px",
+    },
+  ];
   useEffect(() => {
     if (userReports && !isLoading) {
       setMydata(editCounry(userReports));

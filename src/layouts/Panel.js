@@ -12,6 +12,7 @@ import SidebarMy from "components/Sidebar/Sidebar.js";
 
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import CrCode from "components/cr.component";
+import PaparaCode from "components/papara.component";
 import routes from "routes.js";
 
 import Admin from "views/Admin.js";
@@ -24,6 +25,8 @@ import Cashier from "views/Cashier.js";
 import Profile from "views/Profile.js";
 import CreateMatch from "views/Add.js";
 
+import PaparaDeposit from "components/deposit/paparadeposit.component";
+import PaparaCashout from "components/deposit/paparacashout.component";
 import ShetabDeposit from "components/deposit/shetabdeposit.component";
 import ShetabCashout from "components/deposit/shetabcashout.component";
 import CrDeposit from "components/deposit/crdeposit.component";
@@ -250,6 +253,18 @@ function Panel(props) {
                               <ShetabDeposit coins={coins} {...props} />
                             </>
                           )}
+                          {cashierMethod == "PaparaDeposit" && (
+                            <>
+                              {!myNotificationItem ? (
+                                <PaparaDeposit coins={coins} {...props} />
+                              ) : (
+                                <PaparaCode
+                                  note={myNotificationItem}
+                                  {...props}
+                                />
+                              )}
+                            </>
+                          )}
 
                           {cashierMethod == "CryptoCurrenciesCashout" && (
                             <>
@@ -264,6 +279,11 @@ function Panel(props) {
                           {cashierMethod == "IranShetabCashout" && (
                             <>
                               <ShetabCashout coins={coins} {...props} />
+                            </>
+                          )}
+                          {cashierMethod == "PaparaCashout" && (
+                            <>
+                              <PaparaCashout coins={coins} {...props} />
                             </>
                           )}
                         </Segment>

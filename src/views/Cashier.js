@@ -50,9 +50,14 @@ function Cashier(prop) {
     if (cashierGateway.mode == "PerfectMoney") {
       _img = "pm.svg";
     }
+
     if (cashierGateway.mode == "IranShetab") {
       _img = "iran.png";
       _limit = "Max: $100";
+    }
+    if (cashierGateway.mode == "Papara") {
+      _img = "tr.png";
+      _limit = "Max: $300";
     }
     if (cashierGateway.mode == "VisaGiftCode") {
       _img = "iran.png";
@@ -192,7 +197,7 @@ function Cashier(prop) {
       render: () => (
         <Tab.Pane>
           <Segment secondary>
-            <Report user={currentUser} />
+            <Report user={currentUser} {...prop} />
           </Segment>
         </Tab.Pane>
       ),
