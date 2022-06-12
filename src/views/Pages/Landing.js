@@ -100,7 +100,7 @@ function Landing(prop) {
             <Helpblog {...prop} />
           </div>
         </div>
-        <div className="section " style={{ padding: 0 }}>
+        <div className="section hide" style={{ padding: 0 }}>
           <div className={" filter-gradient gray "} data-color="orange">
             <div className="container" style={{ height: 500, paddingTop: 30 }}>
               <h4

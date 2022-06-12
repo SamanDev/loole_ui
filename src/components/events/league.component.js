@@ -14,6 +14,7 @@ import {
   List,
   Message,
 } from "semantic-ui-react";
+import { defUser } from "const.js";
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
 import userService from "services/user.service";
@@ -187,23 +188,28 @@ class LeagueSection extends Component {
           this.setState({
             loading: false,
           });
-          //alert(response)
-          if (response.data.accessToken) {
-            this.props.onUpdateItem("currentUser", response.data);
 
-            Toast.fire({
-              icon: "success",
-              title: "Joined.",
-            });
+          if (response?.message.indexOf(" 401") > -1) {
+            this.printErr(response);
           } else {
-            {
-              printJoinalerts(
-                response.data,
-                GName,
-                this.context.uList.currentUser,
-                handleTagForm,
-                this.props
-              );
+            if (response?.data?.accessToken) {
+              this.context.setUList({ currentUser: response.data });
+              localStorage.setItem("user", JSON.stringify(response.data));
+
+              Toast.fire({
+                icon: "success",
+                title: "Joined.",
+              });
+            } else {
+              {
+                printJoinalerts(
+                  response.data,
+                  GName,
+                  this.context.uList.currentUser,
+                  handleTagForm,
+                  this.props
+                );
+              }
             }
           }
         },
@@ -227,18 +233,23 @@ class LeagueSection extends Component {
       submit: false,
       loading: false,
     });
+    console.log(error);
     if (
+      error?.message.indexOf(" 401") > -1 ||
       error?.response?.data?.status == 401 ||
       error?.data?.status == 401 ||
       error?.response?.data?.details[0] == "Access is denied"
     ) {
       this.props.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
-      this.props.onUpdateItem("currentUser", defUser);
+      this.context.setUList({ currentUser: defUser });
     } else {
       const resMessage = error?.response?.data || error.toString();
 
-      if (resMessage.indexOf("Error") > -1) {
+      if (
+        resMessage.indexOf("Error") > -1 &&
+        resMessage.indexOf(" 401") == -1
+      ) {
         {
           printJoinalerts(
             resMessage,

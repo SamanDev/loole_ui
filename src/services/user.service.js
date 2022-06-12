@@ -142,6 +142,9 @@ class UserService {
       .put(API_URL_TEST + "joinEvent", { id }, { headers: authHeader() })
       .then((response) => {
         return response;
+      })
+      .catch((error) => {
+        return error;
       });
   }
   loseEvent(id, idMatch) {

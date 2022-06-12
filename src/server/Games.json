@@ -1,6 +1,74 @@
 {
   "games": [
     {
+      "name": "Plato Pool",
+      "active": true,
+      "haveMatch": true,
+      "haveTournament": true,
+      "haveLeague": false,
+      "gameconsole": [
+        {
+          "consolename": "Mobile"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "Duel"
+        }
+      ]
+    },
+    {
+      "name": "Plato Soccer",
+      "active": true,
+      "haveMatch": true,
+      "haveTournament": true,
+      "haveLeague": false,
+      "gameconsole": [
+        {
+          "consolename": "Mobile"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "Duel"
+        }
+      ]
+    },
+    {
+      "name": "Plato Backgammon",
+      "active": true,
+      "haveMatch": true,
+      "haveTournament": true,
+      "haveLeague": false,
+      "gameconsole": [
+        {
+          "consolename": "Mobile"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "Duel"
+        }
+      ]
+    },
+    {
+      "name": "Plato Chess",
+      "active": true,
+      "haveMatch": true,
+      "haveTournament": true,
+      "haveLeague": false,
+      "gameconsole": [
+        {
+          "consolename": "Mobile"
+        }
+      ],
+      "modes": [
+        {
+          "modename": "Duel"
+        }
+      ]
+    },
+    {
       "name": "8Pool",
       "active": true,
       "haveMatch": true,

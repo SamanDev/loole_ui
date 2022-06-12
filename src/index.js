@@ -282,7 +282,7 @@ function Main(prop) {
     }
     if (key === "UserRefresh") {
       if (data) {
-        //queryClient.setQueryData(["User"], data);
+        queryClient.setQueryData(["User"], data);
       }
 
       queryClient.resetQueries(["User"]);
@@ -379,7 +379,7 @@ function Main(prop) {
     }
   }, [userReports]);
   useEffect(() => {
-    if (!userLoading && userGet?.accessToken && currentUser?.accessToken) {
+    if (!userLoading && userGet?.accessToken) {
       setUList({ currentUser: userGet });
 
       localStorage.setItem("user", JSON.stringify(userGet));

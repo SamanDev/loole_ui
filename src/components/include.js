@@ -1403,7 +1403,8 @@ export const getModalTag = (filtermode) => {
     controlname == "PS4" ||
     controlname == "PS5" ||
     controlname == "PSN" ||
-    controlname == "XBOX"
+    controlname == "XBOX" ||
+    controlname == "Plato"
   ) {
     if (controlname == "PS4" || controlname == "PS5" || controlname == "PSN") {
       var accMode = "PSN Account";
@@ -1413,6 +1414,11 @@ export const getModalTag = (filtermode) => {
     if (controlname == "XBOX") {
       var accMode = "XBOX Account";
       var tagMode = "XBOX ID";
+      var holderMode = "";
+    }
+    if (controlname == "Plato") {
+      var accMode = "Plato Account";
+      var tagMode = "Plato ID";
       var holderMode = "";
     }
 

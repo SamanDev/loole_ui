@@ -14,6 +14,7 @@ import {
   List,
   Message,
 } from "semantic-ui-react";
+import { defUser } from "const.js";
 import Invite from "components/invite.component";
 import { withRouter } from "react-router-dom";
 import $ from "jquery";
@@ -151,27 +152,30 @@ class TournamentSection extends Component {
       .joinEvent(this.state.item.id)
       .then(
         (response) => {
-          //alert(response)
-          if (response.data.accessToken) {
-            this.context.setUList({ currentUser: response.data });
-            localStorage.setItem("user", JSON.stringify(response.data));
-            Toast.fire({
-              icon: "success",
-              title: "Joined.",
-            });
+          if (response?.message.indexOf(" 401") > -1) {
+            this.printErr(response);
           } else {
-            this.setState({
-              loading: false,
-            });
+            if (response?.data?.accessToken) {
+              this.context.setUList({ currentUser: response.data });
+              localStorage.setItem("user", JSON.stringify(response.data));
+              Toast.fire({
+                icon: "success",
+                title: "Joined.",
+              });
+            } else {
+              this.setState({
+                loading: false,
+              });
 
-            {
-              printJoinalerts(
-                response.data,
-                GName,
-                this.context.uList.currentUser,
-                handleTagForm,
-                this.props
-              );
+              {
+                printJoinalerts(
+                  response.data,
+                  GName,
+                  this.context.uList.currentUser,
+                  handleTagForm,
+                  this.props
+                );
+              }
             }
           }
         },
@@ -189,6 +193,7 @@ class TournamentSection extends Component {
       value: this.state.item.gameName + " - " + this.state.item.gameConsole,
       label: this.state.item.gameName + " - " + this.state.item.gameConsole,
     };
+    console.log(error);
     this.setState({
       successful: false,
       message: "",
@@ -203,7 +208,7 @@ class TournamentSection extends Component {
     ) {
       this.props.onUpdateItem("openModalLogin", true);
       localStorage.setItem("user", JSON.stringify(defUser));
-      this.props.onUpdateItem("currentUser", defUser);
+      this.context.setUList({ currentUser: defUser });
     } else {
       const resMessage = error?.response?.data || error.toString();
 

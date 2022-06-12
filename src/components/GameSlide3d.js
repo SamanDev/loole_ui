@@ -63,7 +63,7 @@ export default function GameSlide(prop) {
       );
     });
   }
-  return (
+  return null; /* (
     <div
       style={{
         height: 300,
@@ -84,5 +84,5 @@ export default function GameSlide(prop) {
         </div>
       </div>
     </div>
-  );
+  ); */
 }

@@ -17,6 +17,7 @@ import userService from "services/user.service";
 var arrLogos = [
   "psn.svg",
   "xbox.svg",
+  "plato.png",
   "8pool.png",
   "clashroyale.png",
   "Brawlstars.png",
@@ -29,6 +30,7 @@ var arrLogos = [
 var arrTagMode = [
   "PSN",
   "XBOX",
+  "Plato",
   "8Pool",
   "ClashRoyale",
   "BrawlStars",
