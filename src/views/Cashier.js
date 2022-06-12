@@ -56,7 +56,7 @@ function Cashier(prop) {
       _limit = "Max: $100";
     }
     if (cashierGateway.mode == "Papara") {
-      _img = "tr.png";
+      _img = "tr2.png";
       _limit = "Max: $300";
     }
     if (cashierGateway.mode == "VisaGiftCode") {
