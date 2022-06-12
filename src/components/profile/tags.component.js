@@ -19,16 +19,24 @@ var arrLogos = [
   "xbox.svg",
   "8pool.png",
   "clashroyale.png",
+  "Brawlstars.png",
   "activition.png",
   "epic.svg",
+  "pubg.svg",
+  "dota2.svg",
+  "lol.svg",
 ];
 var arrTagMode = [
   "PSN",
   "XBOX",
   "8Pool",
   "ClashRoyale",
+  "BrawlStars",
   "CallOfDuty",
   "Fortnite",
+  "PubG",
+  "Dota2",
+  "LeagueOfLegends",
 ];
 var arrPlatform = ["PSN", "XBOX", "Mobile", "Mobile", "Activition", "All"];
 function TagsForm(prop) {

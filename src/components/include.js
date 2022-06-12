@@ -1493,6 +1493,48 @@ export const getModalTag = (filtermode) => {
       allowOutsideClick: () => !Swal.isLoading(),
     };
   }
+  if (filter == "BrawlStars") {
+    var accMode = "BrawlStars Account";
+    var tagMode = "BrawlStars PlayerTag";
+    var holderMode = "#123456";
+
+    tagsof = {
+      customClass: "tag",
+      title: "Connect Your " + accMode + "",
+      focusConfirm: false,
+
+      html:
+        `<div class="card-plain card text-left" >
+              <ol><li>Open player profile in BrawlStars</li> <li>Long-press on your player tag</li> <li>Tap “Copy Tag”</li><li>Paste the Player Tag below
+              <div className="form-group">
+              <label>BrawlStars Player Tag</label>
+                <input class="form-control" id="tagid" type="text" placeholder="` +
+        holderMode +
+        `" /></div>
+                </div>
+       </li></ol>
+       
+              
+              `,
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonColor: "grey",
+      confirmButtonText: "Connect",
+
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        if (document.getElementById("tagid").value) {
+          return {
+            tagid: document.getElementById("tagid").value,
+          };
+        } else {
+          Swal.showValidationMessage(`All fields are required!!`);
+        }
+      },
+
+      allowOutsideClick: () => !Swal.isLoading(),
+    };
+  }
   if (filter == "CallOfDuty" || filter == "CallOfDuty Warzone") {
     tagsof = {
       customClass: "tag",
@@ -1514,6 +1556,170 @@ export const getModalTag = (filtermode) => {
       allowOutsideClick: () => !Swal.isLoading(),
     };
   }
+  if (filter == "LeagueOfLegends") {
+    var reg = [
+      {
+        id: "41cf1a5d-0132-11e6-80f4-1c6f6530855d",
+        name: "Brazil",
+        regionCode: "br1",
+        enabled: true,
+        gameService: {
+          gameServiceKey: "riot",
+          name: "Riot Games",
+          banner: null,
+        },
+      },
+      {
+        id: "41cef07a-0132-11e6-80f4-1c6f6530855d",
+        name: "EU Nordic & East",
+        regionCode: "eun1",
+        enabled: true,
+        gameService: {
+          gameServiceKey: "riot",
+          name: "Riot Games",
+          banner: null,
+        },
+      },
+      {
+        id: "41cee1b0-0132-11e6-80f4-1c6f6530855d",
+        name: "EU West",
+        regionCode: "euw1",
+        enabled: true,
+        gameService: {
+          gameServiceKey: "riot",
+          name: "Riot Games",
+          banner: null,
+        },
+      },
+      {
+        id: "45973855-6a38-11ea-a003-021c3aab9490",
+        name: "Japan",
+        regionCode: "jp1",
+        enabled: true,
+        gameService: {
+          gameServiceKey: "riot",
+          name: "Riot Games",
+          banner: null,
+        },
+      },
+      {
+        id: "41cefe72-0132-11e6-80f4-1c6f6530855d",
+        name: "Latin America North",
+        regionCode: "la1",
+        enabled: true,
+        gameService: {
+          gameServiceKey: "riot",
+          name: "Riot Games",
+          banner: null,
+        },
+      },
+      {
+        id: "41cf0c4b-0132-11e6-80f4-1c6f6530855d",
+        name: "Latin America South",
+        regionCode: "la2",
+        enabled: true,
+        gameService: {
+          gameServiceKey: "riot",
+          name: "Riot Games",
+          banner: null,
+        },
+      },
+      {
+        id: "41ced32d-0132-11e6-80f4-1c6f6530855d",
+        name: "North America",
+        regionCode: "na1",
+        enabled: true,
+        gameService: {
+          gameServiceKey: "riot",
+          name: "Riot Games",
+          banner: null,
+        },
+      },
+      {
+        id: "41cf454f-0132-11e6-80f4-1c6f6530855d",
+        name: "Oceania",
+        regionCode: "oc1",
+        enabled: true,
+        gameService: {
+          gameServiceKey: "riot",
+          name: "Riot Games",
+          banner: null,
+        },
+      },
+      {
+        id: "41cf537f-0132-11e6-80f4-1c6f6530855d",
+        name: "Republic of Korea",
+        regionCode: "kr",
+        enabled: true,
+        gameService: {
+          gameServiceKey: "riot",
+          name: "Riot Games",
+          banner: null,
+        },
+      },
+      {
+        id: "41cf28af-0132-11e6-80f4-1c6f6530855d",
+        name: "Russia",
+        regionCode: "ru",
+        enabled: true,
+        gameService: {
+          gameServiceKey: "riot",
+          name: "Riot Games",
+          banner: null,
+        },
+      },
+      {
+        id: "41cf3747-0132-11e6-80f4-1c6f6530855d",
+        name: "Turkey",
+        regionCode: "tr1",
+        enabled: true,
+        gameService: {
+          gameServiceKey: "riot",
+          name: "Riot Games",
+          banner: null,
+        },
+      },
+    ];
+    var regOOption = reg.map((item, i) => {
+      return `<option value=${item.regionCode}>${item.name}</option>`;
+    });
+    tagsof = {
+      customClass: "tag",
+
+      title: "Connect Your LeagueOfLegends Account",
+      focusConfirm: false,
+      html: `<div class="card-plain card text-left" ><ol><li>Log into the <span data-ignore="true">League of Legends</span> game client</li><li>Find your <span data-ignore="true">summoner</span> name in the top right-hand corner. Note that this is different to your <span data-ignore="true">Riot</span> username.</li><li>Paste your ID below
+      <div className="form-group">
+      <label>Summoner name</label>
+      <input class="form-control" id="tagid" type="text" placeholder="Summoner name" /></div>
+      <div className="form-group">
+      <label>Region</label>
+      <select class="form-control" id="tagplatform">
+      ${regOOption}
+   
+      </select>
+      </div>
+      </li></ol></div>`,
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonColor: "grey",
+      confirmButtonText: "Connect",
+
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        if (document.getElementById("tagid").value) {
+          return {
+            tagid: document.getElementById("tagid").value.replace("#", "%23"),
+            tagplatform: document.getElementById("tagplatform").value,
+          };
+        } else {
+          Swal.showValidationMessage(`All fields are required!!`);
+        }
+      },
+
+      allowOutsideClick: () => !Swal.isLoading(),
+    };
+  }
   if (filter == "Fortnite") {
     tagsof = {
       customClass: "tag",
@@ -1530,6 +1736,50 @@ export const getModalTag = (filtermode) => {
         return {
           tagid: filter + "2",
         };
+      },
+
+      allowOutsideClick: () => !Swal.isLoading(),
+    };
+  }
+  if (filter == "Dota2") {
+    tagsof = {
+      customClass: "tag",
+      title: "Connect Your Dota2 Account",
+      focusConfirm: false,
+      html: `<div class="4BAFA5321A30-repeatApp-704 4BAFA5321A30-repeatApp-705" data-step-name="connect-steam"><div class="4BAFA5321A30-repeatApp-708"><svg height="110" viewBox="0 0 86 87" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="css-qok3e"><path d="M28.2883 67.2229L19.8276 63.9557C20.9584 68.4983 25.0605 71.8641 29.958 71.8641C35.7234 71.8641 40.404 67.19 40.404 61.4181C40.404 55.6594 35.7234 50.9788 29.958 50.9788C27.8807 50.9788 25.948 51.5901 24.3242 52.6354L32.6796 55.8566C35.8154 57.0728 37.38 60.5964 36.1704 63.7322C34.9542 66.8745 31.4306 68.4457 28.2883 67.2229Z"></path><path d="M60.52 42.8271C67.6593 42.8271 73.464 37.0223 73.464 29.883C73.464 22.7437 67.6593 16.939 60.52 16.939C53.3873 16.939 47.5759 22.7437 47.5759 29.883C47.5759 37.0157 53.3873 42.8271 60.52 42.8271ZM60.52 20.765C65.5556 20.765 69.6446 24.854 69.6446 29.883C69.6446 34.9121 65.5556 39.001 60.52 39.001C55.4909 39.001 51.4019 34.9121 51.4019 29.883C51.4019 24.854 55.4909 20.765 60.52 20.765Z"></path><path d="M74.7257 0.99707H11.2743C5.0422 0.99707 0 6.04584 0 12.2713V43.2279L16.4019 49.5652C19.5771 45.8904 24.2315 43.5369 29.4512 43.4514L39.3055 30.3036C39.3055 18.648 48.7588 9.20132 60.4077 9.20132C72.0633 9.20132 81.51 18.648 81.51 30.3036C81.51 36.7 78.6569 42.4325 74.1604 46.3045C70.4593 49.4797 65.6603 51.4059 60.4077 51.4059C59.8555 51.4059 59.3099 51.3796 58.7708 51.3336L47.3191 59.9651C47.3454 60.3267 47.3585 60.6948 47.3585 61.063C47.3585 70.7924 39.4698 78.6942 29.7404 78.6942C20.011 78.6942 12.1223 70.7989 12.1223 61.063C12.1223 61.0367 12.1223 60.9972 12.1223 60.9644L0 56.2837V75.7097C0 81.9352 5.04877 86.9839 11.2743 86.9839H74.7257C80.9512 86.9839 86 81.9352 86 75.7097V12.2779C86 6.05241 80.9512 0.99707 74.7257 0.99707Z"></path></svg></div><h2 data-ignore="true"><span>Connect&nbsp;<span data-ignore="true">Steam</span></span></h2><section><p>You'll be redirected to the <span data-ignore="true">Steam</span> Login page in order to complete this process</p></section></div>`,
+      icon: "warning",
+      showCancelButton: true,
+
+      cancelButtonColor: "grey",
+      confirmButtonText: "Login to Steam",
+
+      allowOutsideClick: () => !Swal.isLoading(),
+    };
+  }
+  if (filter == "PubG") {
+    tagsof = {
+      customClass: "tag",
+      title: "Connect Your PubG Account",
+      focusConfirm: false,
+      html: `<ol><li>Login to the game</li><li>Find your player name and copy it.</li><li>Paste it below</li></ol><div class="card-plain card text-left" >
+      <div className="form-group">
+      <label>Enter your Player Name</label>
+        <input class="form-control" id="tagid" type="text" placeholder="Player Name" /></div>
+        </div>`,
+      icon: "warning",
+      showCancelButton: true,
+
+      cancelButtonColor: "grey",
+      confirmButtonText: "Connect",
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        if (document.getElementById("tagid").value) {
+          return {
+            tagid: document.getElementById("tagid").value,
+          };
+        } else {
+          Swal.showValidationMessage(`All fields are required!!`);
+        }
       },
 
       allowOutsideClick: () => !Swal.isLoading(),
