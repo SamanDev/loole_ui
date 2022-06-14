@@ -80,7 +80,6 @@ function CrDeposit(prop) {
     return _error;
   };
   const handleSubmit = () => {
-    console.log(myState);
     var Coin = findStateId(myState, "coin");
     var Amount = findStateId(myState, "amount");
     onUpdateItem("submit", true);

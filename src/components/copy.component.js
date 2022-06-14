@@ -41,7 +41,8 @@ function copyText(prop) {
         position="top center"
         trigger={
           <Label as="a" {...prop} onClick={() => copyDo(item)}>
-            {item} {alter && <Label.Detail>{alter}</Label.Detail>}
+            {item}
+            {alter && <Label.Detail>{alter}</Label.Detail>}
           </Label>
         }
       />

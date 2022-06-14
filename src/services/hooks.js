@@ -50,6 +50,18 @@ const useAdminUsers = () => {
 
   return result;
 };
+const usePapara = (action) => {
+  if (action == "getDeposit") {
+    const result = useQuery(["PaparaDeposit"], api.getPaparaDeposit);
+
+    return result;
+  }
+  if (action == "getCashout") {
+    const result = useQuery(["PaparaCashoout"], api.getPaparaCashout);
+
+    return result;
+  }
+};
 const useAdminCosts = () => {
   const result = useQuery(["AdminCosts"], api.getAdminCosts);
 
@@ -95,4 +107,5 @@ export {
   useUserReports,
   useAdminCosts,
   useAllGetways,
+  usePapara,
 };

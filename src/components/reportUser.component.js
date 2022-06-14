@@ -117,6 +117,8 @@ function editCounry(options) {
     const z = filteredArr.find((item) => item.id == itemdelete.id);
     if (!z) {
       newArrayDelete.push(itemdelete.id);
+    } else {
+      newArrayDelete.push(itemdelete.id);
     }
   });
 
@@ -133,6 +135,12 @@ const conditionalRowStyles = [
     when: (row) => row.endBalance < row.startBalance,
     style: {
       backgroundColor: "rgba(255,0,0,.1)",
+    },
+  },
+  {
+    when: (row) => row.endBalance == row.startBalance && row.status == "Done",
+    style: {
+      backgroundColor: "rgba(0,255,0,.1)",
     },
   },
   // You can also pass a callback to style for additional customization
@@ -197,7 +205,13 @@ function Report(prop) {
           {row.endBalance < row.startBalance ? " - " : " + "}
           {getGroupBadgeBlock("Dollar", row.amount, "small left")} {" = "}
           {row.status != "Pending"
-            ? getGroupBadgeBlock("Dollar", row.endBalance, "small left")
+            ? getGroupBadgeBlock(
+                "Dollar",
+                row.endBalance == row.startBalance
+                  ? row.startBalance + row.amount
+                  : row.endBalance,
+                "small left"
+              )
             : row.status}
         </>
       ),
@@ -230,7 +244,8 @@ function Report(prop) {
             </>
           ) : (
             <>
-              {row.mode == "Deposit" || row.mode == "Cashout" ? (
+              {(row.mode == "Deposit" || row.mode == "Cashout") &&
+              row.status == "Pending" ? (
                 <>
                   <div
                     onClick={() => {
@@ -251,16 +266,39 @@ function Report(prop) {
                 </>
               ) : (
                 <>
-                  {row.description
-                    .replace("Event Id", "EID")
-                    .replaceAll('","', " ")
-                    .replace("Point", "Diamonds") +
-                    " " +
-                    row.mode
-                      .replace("Point", "")
-                      .replace("Duel", "")
-                      .replace("Registered", " Join")
-                      .replace("Unregistered", " Leave")}
+                  {row.mode == "Deposit" || row.mode == "Cashout" ? (
+                    <>
+                      <div
+                        onClick={() => {
+                          prop.onUpdateItem("NotificationsItem", row);
+                          prop.onUpdateItem(
+                            "cashierMethod",
+                            row.gateway.replace(
+                              "CoinPayments",
+                              "CryptoCurrencies"
+                            ) + "Deposit"
+                          );
+                          prop.onUpdateItem("openModalCashier", true);
+                        }}
+                      >
+                        {row.mode} {" - "}
+                        {row.coin ? row.coin : row.gateway}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {row.description
+                        .replace("Event Id", "EID")
+                        .replaceAll('","', " ")
+                        .replace("Point", "Diamonds") +
+                        " " +
+                        row.mode
+                          .replace("Point", "")
+                          .replace("Duel", "")
+                          .replace("Registered", " Join")
+                          .replace("Unregistered", " Leave")}
+                    </>
+                  )}
                 </>
               )}
             </>

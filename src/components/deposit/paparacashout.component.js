@@ -92,11 +92,11 @@ function CrDeposit(prop) {
     onUpdateItem("loading", true);
 
     if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
-      userService.createCashoutPapara(Amount, Wallet).then(
+      userService.createPapara("cashout", Amount, Wallet).then(
         (response) => {
           onUpdateItem("loading", false);
 
-          if (response.data.status === 1) {
+          if (response.data.accessToken) {
             Swal.fire("", "Cashout saved successfully.", "success").then(
               (result) => {
                 prop.onUpdateItem("openModalCashier", false);

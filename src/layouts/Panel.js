@@ -17,6 +17,8 @@ import routes from "routes.js";
 
 import Admin from "views/Admin.js";
 import AdminEvents from "views/AdminEvents.js";
+import AdminPapara from "views/AdminPapara.js";
+//import AdminEvents from "views/AdminCashout.js";
 import AdminController from "views/AdminController.js";
 import Dashboard from "views/Dashboard.js";
 import Rewards from "views/Rewards.js";
@@ -61,10 +63,10 @@ function Panel(props) {
   const { currentUser } = context.uList;
 
   const open = props.findStateId(myState, "openModalAdd");
-  const openCashier = props.findStateId(myState, "openModalCashier");
-  const cashierMethod = props.findStateId(myState, "cashierMethod");
+  const openCashier = props.findStateId(props.myState, "openModalCashier");
+  const cashierMethod = props.findStateId(props.myState, "cashierMethod");
   const coins = props.findStateId(myState, "coins");
-  const myNotification = props.findStateId(myState, "Notifications");
+  const myNotification = props.findStateId(props.myState, "Notifications");
   const myNotificationItem = props.findStateId(myState, "NotificationsItem");
   const profileUser = props.findStateId(myState, "profileUser");
   useEffect(() => {
@@ -100,6 +102,7 @@ function Panel(props) {
               <>
                 {prop.component == "Admin" && <Admin {...props} />}
                 {prop.component == "AdminEvents" && <AdminEvents {...props} />}
+                {prop.component == "AdminPapara" && <AdminPapara {...props} />}
                 {prop.component == "AdminController" && (
                   <AdminController {...props} />
                 )}

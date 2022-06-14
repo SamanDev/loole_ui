@@ -87,11 +87,11 @@ function CrDeposit(prop) {
     onUpdateItem("loading", true);
 
     if (!findStateId(myState, "hasError") && findStateId(myState, "submit")) {
-      userService.createDepositPapara(Amount).then(
+      userService.createPapara("deposit", Amount).then(
         (response) => {
           onUpdateItem("loading", false);
-
-          if (response.data?.address) {
+          console.log(response);
+          if (response?.data?.result == "ok") {
             //prop.onUpdateItem("openModalCashier", false);
             prop.onReset("Reports");
             //history.push("/panel/dashboard");

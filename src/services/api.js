@@ -106,6 +106,26 @@ const getUserAnalyses = async (ids) => {
   });
   return data;
 };
+const getPaparaDeposit = async () => {
+  const { data } = await clientAdmin.get(
+    `/getPaparaPendingDeposit
+  `,
+    {
+      headers: authHeader(),
+    }
+  );
+  return data;
+};
+const getPaparaCashout = async () => {
+  const { data } = await clientAdmin.get(
+    `/getPaparaPendingCashout
+  `,
+    {
+      headers: authHeader(),
+    }
+  );
+  return data;
+};
 const getUserReports = async (ids) => {
   const id = ids.queryKey[1];
   if (id > 0) {
@@ -139,4 +159,6 @@ export {
   getUserReports,
   getAdminCosts,
   getAllGetways,
+  getPaparaDeposit,
+  getPaparaCashout,
 };

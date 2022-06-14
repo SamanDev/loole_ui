@@ -190,16 +190,27 @@ function Main(prop) {
 
   const updateNot = (userReports) => {
     var myNot = [];
+    console.log(cashierMethod);
     try {
-      //console.log(userReports);
       userReports?.sort((a, b) => (a.id > b.id ? 1 : -1));
       userReports?.map((item, i) => {
-        if (item.coinValue && item.status === "Pending" && myNot.length < 3) {
+        if (
+          item.coinValue &&
+          item.status === "Pending" &&
+          cashierMethod != "PaparaDeposit"
+        ) {
+          myNot.push(item);
+        }
+        if (
+          item.getway == "Papara" &&
+          item.status === "Pending" &&
+          cashierMethod == "PaparaDeposit"
+        ) {
           myNot.push(item);
         }
       });
       myNot.sort((a, b) => (a.id < b.id ? 1 : -1));
-      //console.log(myNot);
+      console.log(myNot);
       onUpdateItem("Notifications", myNot);
       onUpdateItem("NotificationsItem", myNot[0]);
     } catch (e) {}
@@ -207,23 +218,22 @@ function Main(prop) {
   const updateNotBlock = (cashierMethod) => {
     var myNot = [];
     try {
-      //console.log(userReports);
+      console.log(cashierMethod);
       userReports?.sort((a, b) => (a.id > b.id ? 1 : -1));
       userReports?.map((item, i) => {
         if (cashierMethod == "PaparaDeposit" && item.status === "Pending") {
           myNot.push(item);
         }
         if (
-          cashierMethod == "cashierMethod" &&
+          cashierMethod == "CryptoCurrenciesDeposit" &&
           item.coinValue &&
-          item.status === "Pending" &&
-          myNot.length < 3
+          item.status === "Pending"
         ) {
           myNot.push(item);
         }
       });
       myNot.sort((a, b) => (a.id < b.id ? 1 : -1));
-      //console.log(myNot);
+      console.log(myNot);
 
       onUpdateItem("NotificationsItem", myNot[0]);
     } catch (e) {}
@@ -349,6 +359,7 @@ function Main(prop) {
   var openModalVideo = findStateId(myState, "openModalVideo");
   var openModalVideoSRC = findStateId(myState, "openModalVideoSRC");
   var cashierMethod = findStateId(myState, "cashierMethod");
+  var openModalCashier = findStateId(myState, "openModalCashier");
   const { data: looleInfo } = useInfo();
 
   useEffect(() => {
@@ -365,7 +376,9 @@ function Main(prop) {
     var _i = window.location.pathname.toString().split("/i/")[1];
     localStorage.setItem("reffer", _i);
   }
-  const { data: userReports } = useUserReports(userGet?.id);
+  const { data: userReports, isLoading: repLoading } = useUserReports(
+    userGet?.id
+  );
 
   useEffect(() => {
     if (cashierMethod) {
@@ -373,11 +386,19 @@ function Main(prop) {
     }
   }, [cashierMethod]);
   useEffect(() => {
-    if (userReports) {
+    if (userReports && !repLoading) {
       queryClient.setQueryData(["userReports"], userReports);
-      updateNot(userReports);
+      updateNotBlock(cashierMethod);
     }
   }, [userReports]);
+  useEffect(() => {
+    if (!openModalCashier) {
+      onUpdateItem("cashierMethod", null);
+    } else {
+      //updateNot(userReports);
+    }
+    //updateNot(userReports);
+  }, [openModalCashier, cashierMethod]);
   useEffect(() => {
     if (!userLoading && userGet?.accessToken) {
       setUList({ currentUser: userGet });

@@ -41,6 +41,18 @@ class AdminService {
         return response;
       });
   };
+  changeReportStatus = (action, id, value) => {
+    var u = "editPaparaPendingDeposit";
+    if (action === "cashout") {
+      u = "editPaparaPendingCashout";
+    }
+
+    return axios
+      .post(API_URL_TEST + u, { id, value }, { headers: authHeader() })
+      .then((response) => {
+        return response;
+      });
+  };
   deleteEvent(id) {
     return (
       axios

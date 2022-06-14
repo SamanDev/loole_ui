@@ -446,6 +446,17 @@ class UserService {
         return response;
       });
   }
+  createPapara(action, dollarAmount, papara) {
+    return axios
+      .post(
+        API_URL_TEST + "papara",
+        { action, dollarAmount, papara },
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
+      });
+  }
   createDepositVisaCode(voucherCode) {
     return axios
       .post(

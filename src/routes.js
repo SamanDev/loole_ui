@@ -24,6 +24,14 @@ var routes = [
     show: false,
   },
   {
+    path: "/adminpapara",
+    layout: "/panel",
+    name: "AdminPapara",
+    icon: "nc-icon nc-circle-09",
+    component: "AdminPapara",
+    show: false,
+  },
+  {
     path: "/admincontroller",
     layout: "/panel",
     name: "AdminController",
