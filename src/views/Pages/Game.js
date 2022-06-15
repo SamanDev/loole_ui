@@ -245,19 +245,15 @@ const Landing = (prop) => {
           </div>
         </Segment>
 
-        <div className="section " style={{ padding: 0 }}>
+        <div className="section " style={{ padding: 0, paddingTop: 10 }}>
           <div
-            className={
-              " filter-gradient " +
-              themeColors[day].replace("grey", "gray") +
-              " "
-            }
+            className={" filter-gradient gray"}
             data-color="orange"
             style={{ position: "static" }}
           >
             <div className="container">
               <GameSlide3d style={{ zIndex: 2 }} />
-              <GameSlide size="3" />
+              <GameSlide size="2" />
             </div>
           </div>
         </div>

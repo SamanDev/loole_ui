@@ -222,7 +222,6 @@ function FormExampleFieldErrorLabel(prop) {
       <Form.Button
         loading={loading}
         disabled={loading}
-        inverted
         color="green"
         onClick={() => onUpdateItem("submit", true)}
         fluid

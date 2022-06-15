@@ -15,7 +15,7 @@ function FormExampleFieldErrorLabel(prop) {
       { id: "password", val: "" },
       { id: "email", val: "" },
       { id: "reffer", val: "" },
-      { id: "accept", val: false },
+      { id: "accept", val: true },
       { id: "hasError", val: false },
       { id: "loading", val: false },
       { id: "submit", val: false },
@@ -204,7 +204,6 @@ function FormExampleFieldErrorLabel(prop) {
         loading={loading}
         onClick={() => onUpdateItem("submit", true)}
         disabled={loading}
-        inverted
         color="orange"
         fluid
         size="small"

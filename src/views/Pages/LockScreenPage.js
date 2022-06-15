@@ -475,6 +475,12 @@ function LockScreenPage(prop) {
                 </Container>
                 <div style={{ height: "calc(100% - 90px)", overflow: "auto" }}>
                   <Container style={{ paddingBottom: 50 }}>
+                    <div
+                      className="text-center"
+                      style={{ maxWidth: 493, margin: "0 auto 20px auto" }}
+                    >
+                      <Helpblog {...prop} game={eventDef.gameName} />
+                    </div>
                     {eventDef.gameMode == "League" ? (
                       <LeagueSection
                         {...prop}

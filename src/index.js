@@ -496,7 +496,7 @@ function Main(prop) {
       queryClient.resetQueries(["Events"]);
     });
     eventBus.on("eventsDataUser", (userGet) => {
-      queryClient.resetQueries(["User"]);
+      // queryClient.resetQueries(["User"]);
     });
     eventBus.on("eventsDC", () => {
       if (
@@ -577,7 +577,12 @@ function Main(prop) {
     ) {
       queryClient.resetQueries(["Events"]);
       queryClient.resetQueries(["UserEvent"]);
+    } else {
+      if (!currentUser?.accessToken) {
+        onUpdateItem("eventsUser", []);
+      }
     }
+
     var newEID = location.pathname.split("/")[2];
     var newMID = location.pathname.split("/")[4];
     //alert(newEID);
@@ -716,16 +721,15 @@ function Main(prop) {
                         className="togllehide togllehideforget"
                         style={{ marginTop: 10 }}
                       >
-                        <Button
-                          size="mini"
-                          fluid
+                        <a
+                          href="#"
                           onClick={() =>
                             myFunction("togllehideforget", "Password Recovery")
                           }
-                          color="black"
-                          content="Password Recovery"
-                        />
-                        <Divider horizontal inverted style={{ marginTop: 10 }}>
+                        >
+                          Forgot Password?
+                        </a>
+                        <Divider horizontal inverted section>
                           Or
                         </Divider>
                         <Button
@@ -750,17 +754,6 @@ function Main(prop) {
                         </Header>
 
                         <Register onUpdateItem={onUpdateItem} />
-                        <Divider horizontal inverted style={{ marginTop: 20 }}>
-                          Or
-                        </Divider>
-                        <Button
-                          size="small"
-                          fluid
-                          inverted
-                          onClick={() => myFunction("togllehide", "Login")}
-                          color="blue"
-                          content="Login to your account"
-                        />
                       </div>
 
                       <span>
@@ -771,11 +764,7 @@ function Main(prop) {
 
                           <Forget onUpdateItem={onUpdateItem} />
 
-                          <Divider
-                            horizontal
-                            inverted
-                            style={{ marginTop: 20 }}
-                          >
+                          <Divider horizontal inverted section>
                             Or
                           </Divider>
                           <Button
@@ -786,7 +775,7 @@ function Main(prop) {
                               myFunction("togllehideforget", "Login")
                             }
                             color="blue"
-                            content="Login to your account"
+                            content="Back"
                           />
                         </div>
                       </span>

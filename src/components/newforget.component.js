@@ -162,11 +162,10 @@ function FormExampleFieldErrorLabel(prop) {
         loading={loading}
         onClick={() => onUpdateItem("submit", true)}
         disabled={loading}
-        inverted
         color="red"
         fluid
         size="small"
-        content="Submit"
+        content="Send Verification email"
       />
     </Form>
   );

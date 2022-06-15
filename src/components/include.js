@@ -189,11 +189,16 @@ export const getIcon = (name) => {
 };
 export const getTagName = (game, console) => {
   if (console == "Mobile") {
-    return game;
+    if (game.indexOf("Plato") > -1) {
+      return "Plato";
+    } else {
+      return game;
+    }
   }
   if (console == "PS4" || console == "PS5") {
     return "PSN";
   }
+
   if (console == "XBOX") {
     return console;
   }
@@ -805,7 +810,8 @@ export const vsComponentPlayer = (
 
                   <Statistic.Value className="nnick">
                     {isPlayerInMatch(matchidFind, currentUser.username) ||
-                    haveAdmin(currentUser.roles)
+                    haveAdmin(currentUser.roles) ||
+                    haveModerator(currentUser.roles)
                       ? _p.nickName
                       : "**********"}
                   </Statistic.Value>
@@ -2261,6 +2267,17 @@ export const isPlayerInMatch = (match, username) => {
   match?.matchPlayers?.map(function (user) {
     if (user.username == username) {
       _is = true;
+    }
+  });
+
+  return _is;
+};
+export const isPlayerInMatchReady = (match, username) => {
+  var _is = false;
+  match?.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
+  match?.matchPlayers?.map(function (user, i) {
+    if (i == username) {
+      _is = user.ready;
     }
   });
 

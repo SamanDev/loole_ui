@@ -24,6 +24,7 @@ import {
   rendererBig,
   date_edit,
   date_edit_card,
+  isPlayerInMatchReady,
 } from "components/include.js";
 import { Divider, Segment, Grid, Statistic, Button } from "semantic-ui-react";
 import { POSTURLTest } from "const";
@@ -55,7 +56,7 @@ class MatchSection extends Component {
     this.state = {
       myState: this.props.myState,
       item: this.props.event,
-
+      myUser: null,
       eventid: this.props.event.id,
       progress: 0,
       selectedFile: null,
@@ -70,8 +71,18 @@ class MatchSection extends Component {
   }
   static getDerivedStateFromProps(props, state, handlechangeReadyEvent) {
     if (props.event !== state.item) {
-      if (state.item.status == "Pending" && props.event.status == "Ready") {
-        userService.changeReadyEvent(props.event.id);
+      if (props.event.status == "Ready" && state.item.status == "Pending") {
+        if (!isPlayerInMatchReady(props.event.matchTables[0], 2)) {
+          userService.changeReadyEvent(props.event.id);
+        }
+      }
+      if (props.event.status == "Ready") {
+        if (
+          !isPlayerInMatchReady(props.event.matchTables[0], 1) &&
+          isPlayerInMatchReady(props.event.matchTables[0], 2)
+        ) {
+          userService.changeReadyEvent(props.event.id);
+        }
       }
       return {
         myState: props.myState,
