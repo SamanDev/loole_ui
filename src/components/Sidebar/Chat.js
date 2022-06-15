@@ -282,8 +282,10 @@ function mycreateChats(
 class Chatbar extends Component {
   constructor(props) {
     super(props);
-    this.changeMessageBox = this.changeMessageBox.bind(this);
+
+    this.changeMessageBoxChat = this.changeMessageBoxChat.bind(this);
     this.handleChat = this.handleChat.bind(this);
+    this.handleChatHand = this.handleChatHand.bind(this);
 
     this.state = {
       messageBox: "",
@@ -323,8 +325,16 @@ class Chatbar extends Component {
     }
     return null;
   }
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.messageBox !== prevProps.messageBox) {
+      if (this.props.messageBox.indexOf("http://") > -1) {
+        this.handleChatHand();
+      }
+    }
+  }
 
-  changeMessageBox(e) {
+  changeMessageBoxChat(e) {
     var _t = e.target.value;
 
     this.setState({
@@ -332,6 +342,68 @@ class Chatbar extends Component {
     });
   }
 
+  handleChatHand() {
+    console.log(this.state);
+    if (!this.state.isLoading) {
+      if (this.props.messageBox == "") {
+        return false;
+      }
+      this.setState({
+        isLoading: true,
+      });
+      if (this.state.matchID) {
+        userService
+          .sendChatMatch(
+            this.props.messageBox,
+            parseInt(this.state.eventID),
+            parseInt(this.state.matchID)
+          )
+          .then(
+            (response) => {
+              this.setState({
+                messageBox: "",
+                isLoading: false,
+              });
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+              });
+
+              Toast.fire({
+                icon: "success",
+                title: "Saved.",
+              });
+            },
+            (error) => {
+              alert(error.message);
+              this.setState({
+                isLoading: false,
+              });
+            }
+          );
+      } else {
+        userService
+          .sendChat(this.props.messageBox, parseInt(this.state.eventID))
+          .then(
+            (response) => {
+              this.setState({
+                messageBox: "",
+                isLoading: false,
+              });
+            },
+            (error) => {
+              alert(error.message);
+              this.setState({
+                isLoading: false,
+              });
+            }
+          );
+      }
+    }
+  }
   handleChat(e) {
     e.preventDefault();
     if (!this.state.isLoading) {
@@ -465,10 +537,7 @@ class Chatbar extends Component {
                   fluid
                   value={messageBox && messageBox}
                   placeholder="type something..."
-                  onChange={this.changeMessageBox}
-                  onFocus={this.changeMessageBox}
-                  onBlur={this.handleChat}
-                  id="chatinput"
+                  onChange={this.changeMessageBoxChat}
                 />
 
                 <Row>

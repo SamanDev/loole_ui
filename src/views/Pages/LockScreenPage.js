@@ -82,7 +82,9 @@ function LockScreenPage(prop) {
   const params = useParams();
   const [myState, setMyState] = useState(prop.myState);
   const matchIDQ = params.matchid;
-
+  useEffect(() => {
+    setMyState(prop.myState);
+  }, [prop.myState]);
   const context = useContext(UserContext);
   const Econtext = useContext(EventContext);
 

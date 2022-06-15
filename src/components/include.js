@@ -549,6 +549,25 @@ export const printTag = (game, tag) => {
   }
   return _tag;
 };
+function readClipboardFromDevTools() {
+  return new Promise((resolve, reject) => {
+    const _asyncCopyFn = async () => {
+      try {
+        const value = await navigator.clipboard.readText();
+        console.log(`${value} is read!`);
+        resolve(value);
+      } catch (e) {
+        reject(e);
+      }
+      window.removeEventListener("focus", _asyncCopyFn);
+    };
+
+    window.addEventListener("focus", _asyncCopyFn);
+    console.log(
+      "Hit <Tab> to give focus back to document (or we will face a DOMException);"
+    );
+  });
+}
 export const vsComponentPlayer = (
   item,
   matchidFind,
@@ -763,7 +782,8 @@ export const vsComponentPlayer = (
           haveAdmin(currentUser.roles) ||
           haveModerator(currentUser.roles)) && (
           <>
-            {item.gameName != "ClashRoyale" ? (
+            {item.gameName != "ClashRoyale" &&
+            item.gameName.indexOf("Plato") == -1 ? (
               <>
                 {_p.tagId && (
                   <Statistic inverted color="red" size="mini">
@@ -822,21 +842,23 @@ export const vsComponentPlayer = (
                     <div
                       style={{ padding: 10 }}
                       onClick={() => {
-                        navigator.clipboard.readText().then((clipText) => {
-                          if (clipText.indexOf("http") > -1) {
-                            setVisible(true);
-                            setMessageBox(clipText);
-
-                            document.getElementById("chatinput").focus();
-                            document.getElementById("chatinput").blur();
-                            setMessageBox("");
-                          } else {
-                            setVisible(true);
-                          }
-                        });
+                        try {
+                          navigator.clipboard.readText().then((clipText) => {
+                            if (clipText.indexOf("http") > -1) {
+                              setVisible(true);
+                              setMessageBox(clipText);
+                              setMessageBox("");
+                            } else {
+                              setVisible(true);
+                            }
+                          });
+                        } catch (e) {
+                          setVisible(true);
+                        }
                       }}
                     >
-                      Paste your ClashRoyale Invite link in chat bar.
+                      Paste your {item.gameName.split(" ")[0]} Invite link in
+                      chat bar.
                     </div>
                   }
                   animation="flash"

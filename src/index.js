@@ -478,7 +478,7 @@ function Main(prop) {
         forceLobby(myList.events, currentUser.username);
       }
     }
-  }, [eventIDQ, myList.events, currentUser]);
+  }, [eventIDQ, myList.events, currentUser.username]);
   useEffect(() => {
     //onUpdateItem("matchIDQ", matchIDQ);
     if (eventDef?.matchTables) {
