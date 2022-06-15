@@ -165,12 +165,7 @@ function Cashier(prop) {
                 style={{ marginBottom: 20, textAlign: "left" }}
               >
                 {userMethods.map(function (cashierGateway, u) {
-                  if (
-                    (cashierGateway.name != "VisaGiftCode" &&
-                      cashierGateway.mode != "IranShetab") ||
-                    (cashierGateway.mode == "IranShetab" &&
-                      currentUser.bankInfos.length > 0)
-                  ) {
+                  if (cashierGateway.name != "VisaGiftCode") {
                     return (
                       <Card
                         fluid

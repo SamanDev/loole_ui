@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Popup, Label, Segment } from "semantic-ui-react";
 import Swal from "sweetalert2";
+import copy from "copy-to-clipboard";
+
 const Toast = Swal.mixin({
   toast: false,
   position: "center",
@@ -9,7 +11,9 @@ const Toast = Swal.mixin({
   timerProgressBar: false,
 });
 function copyDo(txxt) {
-  navigator.clipboard.writeText(txxt);
+  //alert();
+  copy(txxt);
+  //navigator.clipboard.writeText(txxt.toString());
   Toast.fire({
     icon: "success",
     title: "Text Copied.",

@@ -108,7 +108,7 @@ if (localStorage.getItem("user")) {
 var _defEvents = null;
 if (localStorage.getItem("_defEvents")) {
   try {
-    _defEvents = JSON.parse(localStorage.getItem("_defEvents"));
+    // _defEvents = JSON.parse(localStorage.getItem("_defEvents"));
   } catch (e) {}
 }
 var _defEvent = {};
@@ -303,6 +303,8 @@ function Main(prop) {
   };
   const forceLobby = (events, username) => {
     var UserEvents = [];
+    console.log(events);
+    console.log(username);
     events?.map((_item, i) => {
       var item = JSON.parse(JSON.stringify(_item));
 
@@ -429,7 +431,6 @@ function Main(prop) {
       _defEvents = eventsGet;
       setMyList({ events: eventsGet });
       localStorage.setItem("_defEvents", JSON.stringify(_defEvents));
-      //forceLobby(eventsGet, currentUser.username);
     }
   }, [eventsGet]);
 
@@ -473,11 +474,11 @@ function Main(prop) {
         setEList({ event: { status: "Deleted" } });
       }
     } else {
-      if (myList.events && !eventsLoading) {
+      if (myList.events) {
         forceLobby(myList.events, currentUser.username);
       }
     }
-  }, [eventIDQ, myList.events]);
+  }, [eventIDQ, myList.events, currentUser]);
   useEffect(() => {
     //onUpdateItem("matchIDQ", matchIDQ);
     if (eventDef?.matchTables) {
