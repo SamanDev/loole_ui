@@ -2386,6 +2386,7 @@ export const isPlayerInMatch = (match, username) => {
 };
 export const isPlayerInMatchReady = (match, username) => {
   var _is = false;
+
   match?.matchPlayers.sort((a, b) => (a.id > b.id ? 1 : -1));
   match?.matchPlayers?.map(function (user, i) {
     if (i == username) {

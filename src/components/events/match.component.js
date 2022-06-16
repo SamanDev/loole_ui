@@ -72,18 +72,11 @@ class MatchSection extends Component {
   static getDerivedStateFromProps(props, state, handlechangeReadyEvent) {
     if (props.event !== state.item) {
       if (props.event.status == "Ready" && state.item.status == "Pending") {
-        if (!isPlayerInMatchReady(props.event.matchTables[0], 2)) {
+        if (!isPlayerInMatchReady(props.event.matchTables[0], 1)) {
           userService.changeReadyEvent(props.event.id);
         }
       }
-      if (props.event.status == "Ready") {
-        if (
-          !isPlayerInMatchReady(props.event.matchTables[0], 1) &&
-          isPlayerInMatchReady(props.event.matchTables[0], 2)
-        ) {
-          userService.changeReadyEvent(props.event.id);
-        }
-      }
+
       return {
         myState: props.myState,
         item: props.event,
@@ -94,6 +87,17 @@ class MatchSection extends Component {
     }
     return null;
   }
+  componentDidMount() {
+    if (this.state.item.status == "Ready") {
+      if (
+        !isPlayerInMatchReady(this.state.item.matchTables[0], 0) &&
+        isPlayerInMatchReady(this.state.item.matchTables[0], 1)
+      ) {
+        userService.changeReadyEvent(this.state.item.id);
+      }
+    }
+  }
+
   handleClashFinished(e) {
     e.preventDefault();
     this.setState({
