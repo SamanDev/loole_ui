@@ -57,6 +57,7 @@ var defaultActiveIndex = 0;
 var current_brackets = [];
 var potential_brackets = [];
 var totalPay = 0;
+var totalPay2 = 0;
 var tournamentPayout = false;
 class TournamentSection extends Component {
   static contextType = UserContext;
@@ -394,9 +395,13 @@ class TournamentSection extends Component {
           var tItem = item.players.length;
 
           if (item.inSign != item.outSign) {
-            var totalPay2 = (totalPay / item.totalPlayer) * item.players.length;
+            if (item.status == "Pending") {
+              totalPay2 = (totalPay / item.totalPlayer) * item.players.length;
+            } else {
+              totalPay2 = totalPay;
+            }
           } else {
-            var totalPay2 = (totalPay * item.players.length) / item.totalPlayer;
+            totalPay2 = (totalPay * item.players.length) / item.totalPlayer;
           }
           if (
             parseInt(payplyer[0]) <= tItem &&
@@ -662,7 +667,7 @@ class TournamentSection extends Component {
             <>
               <Divider style={{ opacity: 0 }} />
               <Accordion
-                //defaultActiveIndex={[matchLevelFind.level - 1]}
+                defaultActiveIndex={[matchLevelFind.level - 1]}
                 panels={panels}
                 exclusive={false}
                 fluid
@@ -708,7 +713,7 @@ class TournamentSection extends Component {
                 </Segment>
               )}
             <Segment inverted color="blue">
-              {(item.status == "Pending" || item.status == "InPlay") && (
+              {item.status == "Pending" && (
                 <>
                   <Header as="h2">
                     Potential Prize
@@ -801,7 +806,7 @@ class TournamentSection extends Component {
                     >
                       {getGroupBadgeBlock(
                         item.outSign,
-                        (totalPay * item.players.length) / item.totalPlayer,
+                        totalPay2,
                         "Current Prize",
                         "left",
                         "green"
