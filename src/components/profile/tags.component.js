@@ -83,14 +83,20 @@ function TagsForm(prop) {
           resName = tag.nickName;
           resID = tag.id;
           resPlatform = tag.gamePlatform;
-          if (resName == "" || resName.indexOf("http") > -1)
+          if (resName == "") {
             resName = "Connected";
+          }
+          if (resName.indexOf("https:") > -1) {
+            resName = "Connected";
+          }
+
           if (res != "" && game == "ClashRoyale") res = "#" + res;
           if (res != "" && game == "CallOfDuty") {
             res = printTag(game, res);
           }
           if (res != "" && game == "8Pool") res = printTag(game, res);
-          if (game == "8Pool" || game == "ClashRoyale") resPlatform = "mobile";
+          if (game == "8Pool" || game == "ClashRoyale" || game == "Plato")
+            resPlatform = "mobile";
           if (game == "PSN") resPlatform = "psn";
           if (game == "XBOX") resPlatform = "xbl";
         }
