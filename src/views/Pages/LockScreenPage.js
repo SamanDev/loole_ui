@@ -462,14 +462,16 @@ function LockScreenPage(prop) {
                         >
                           Delet Match
                         </Button>
-                        <Button
-                          floated="right"
-                          inverted
-                          color="yellow"
-                          onClick={handleCount}
-                        >
-                          Count
-                        </Button>
+                        {eventDef.gameMode == "League" && (
+                          <Button
+                            floated="right"
+                            inverted
+                            color="yellow"
+                            onClick={handleCount}
+                          >
+                            Count
+                          </Button>
+                        )}
                       </>
                     )}
                     <Breadcrumb icon="right angle" sections={sections} />

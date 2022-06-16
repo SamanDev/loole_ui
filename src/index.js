@@ -497,7 +497,7 @@ function Main(prop) {
       queryClient.resetQueries(["Events"]);
     });
     eventBus.on("eventsDataUser", (userGet) => {
-      // queryClient.resetQueries(["User"]);
+      queryClient.resetQueries(["User"]);
     });
     eventBus.on("eventsDC", () => {
       if (

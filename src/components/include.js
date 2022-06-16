@@ -825,45 +825,78 @@ export const vsComponentPlayer = (
             ) : (
               <>
                 <Divider fitted style={{ opacity: 0 }} />
-                <Statistic inverted color="olive" size="mini">
-                  <Statistic.Label>Nickname</Statistic.Label>
 
-                  <Statistic.Value className="nnick">
-                    {isPlayerInMatch(matchidFind, currentUser.username) ||
-                    haveAdmin(currentUser.roles) ||
-                    haveModerator(currentUser.roles)
-                      ? _p.nickName
-                      : "**********"}
-                  </Statistic.Value>
-                </Statistic>
+                {item.gameName == "ClashRoyale" ? (
+                  <>
+                    <Statistic inverted color="olive" size="mini">
+                      <Statistic.Label>Nickname</Statistic.Label>
 
-                <TransitionExampleTransitionExplorer
-                  objanim={
-                    <div
-                      style={{ padding: 10 }}
-                      onClick={() => {
-                        try {
-                          navigator.clipboard.readText().then((clipText) => {
-                            if (clipText.indexOf("http") > -1) {
-                              setVisible(true);
-                              setMessageBox(clipText);
-                              setMessageBox("");
-                            } else {
+                      <Statistic.Value className="nnick">
+                        {isPlayerInMatch(matchidFind, currentUser.username) ||
+                        haveAdmin(currentUser.roles) ||
+                        haveModerator(currentUser.roles)
+                          ? _p.nickName
+                          : "**********"}
+                      </Statistic.Value>
+                    </Statistic>
+                    <TransitionExampleTransitionExplorer
+                      objanim={
+                        <div
+                          style={{ padding: 10 }}
+                          onClick={() => {
+                            try {
+                              navigator.clipboard
+                                .readText()
+                                .then((clipText) => {
+                                  if (clipText.indexOf("http") > -1) {
+                                    setVisible(true);
+                                    setMessageBox(clipText);
+                                    setMessageBox("");
+                                  } else {
+                                    setVisible(true);
+                                  }
+                                });
+                            } catch (e) {
                               setVisible(true);
                             }
-                          });
-                        } catch (e) {
-                          setVisible(true);
-                        }
-                      }}
-                    >
-                      Paste your {item.gameName.split(" ")[0]} Invite link in
-                      chat bar.
-                    </div>
-                  }
-                  animation="flash"
-                  duration={1500}
-                />
+                          }}
+                        >
+                          Paste your {item.gameName.split(" ")[0]} Invite link
+                          in chat bar.
+                        </div>
+                      }
+                      animation="flash"
+                      duration={1500}
+                    />
+                  </>
+                ) : (
+                  <>
+                    {_p.tagId && (
+                      <Statistic inverted color="red" size="mini">
+                        <Statistic.Label>
+                          {getTagName(item.gameName, item.gameConsole)} iD
+                        </Statistic.Label>
+                        <Statistic.Value>
+                          {isPlayerInMatch(matchidFind, currentUser.username) ||
+                          haveAdmin(currentUser.roles) ||
+                          haveModerator(currentUser.roles) ? (
+                            <CopyText
+                              color="red"
+                              size="small"
+                              myid={printTag(item.gameName, _p.tagId)}
+                            />
+                          ) : (
+                            "**********"
+                          )}
+                        </Statistic.Value>
+                      </Statistic>
+                    )}
+                    <Divider fitted style={{ opacity: 0 }} />
+                    <Button as="a" href={_p.nickName} color="red">
+                      Open Plato
+                    </Button>
+                  </>
+                )}
               </>
             )}
           </>
@@ -1387,6 +1420,50 @@ export const getModalTag = (filtermode) => {
       allowOutsideClick: () => !Swal.isLoading(),
     };
   }
+  if (filter == "Plato") {
+    tagsof = {
+      customClass: "tag",
+      title: "Connect Your Plato ID",
+      focusConfirm: false,
+      html: `<div class="card-plain card text-left" >
+              <ol><li>Open player profile in Plato</li><li>Copy Plato ID</li><li>Paste the Plato ID below
+              <div className="form-group">
+              <label>Enter your Plato ID</label>
+                <input class="form-control" id="tagid" type="text" /></div>
+       </li><li>and then enter your Plato Invite Friends Link below
+       <div className="form-group">
+       <label>Enter Plato Invite Friends Link</label>
+       <textarea class="form-control" id="tagname" type="text"></textarea></div>
+    </li></ol>
+       
+              
+              `,
+
+      icon: "warning",
+      showCancelButton: true,
+      cancelButtonColor: "grey",
+      confirmButtonText: "Connect",
+
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        if (
+          document.getElementById("tagid").value &&
+          document.getElementById("tagname").value
+        ) {
+          return {
+            tagid: document.getElementById("tagid").value,
+            tagname:
+              "http" +
+              document.getElementById("tagname").value.split("http")[1],
+          };
+        } else {
+          Swal.showValidationMessage(`All fields are required!!`);
+        }
+      },
+
+      allowOutsideClick: () => !Swal.isLoading(),
+    };
+  }
   if (filter == "Social") {
     var accMode = controlname + " Account";
     var tagMode = controlname + " ID";
@@ -1431,8 +1508,7 @@ export const getModalTag = (filtermode) => {
     controlname == "PS4" ||
     controlname == "PS5" ||
     controlname == "PSN" ||
-    controlname == "XBOX" ||
-    controlname == "Plato"
+    controlname == "XBOX"
   ) {
     if (controlname == "PS4" || controlname == "PS5" || controlname == "PSN") {
       var accMode = "PSN Account";
@@ -1442,11 +1518,6 @@ export const getModalTag = (filtermode) => {
     if (controlname == "XBOX") {
       var accMode = "XBOX Account";
       var tagMode = "XBOX ID";
-      var holderMode = "";
-    }
-    if (controlname == "Plato") {
-      var accMode = "Plato Account";
-      var tagMode = "Plato ID";
       var holderMode = "";
     }
 
