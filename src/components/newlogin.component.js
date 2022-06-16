@@ -99,7 +99,7 @@ function FormExampleFieldErrorLabel(prop) {
       !findStateId(myStateLocal, "hasError") &&
       findStateId(myStateLocal, "submit")
     ) {
-      AuthService.login(username.trim(), password, token).then(
+      AuthService.login(username.trim(), password).then(
         (response) => {
           onUpdateItem("loading", false);
 
