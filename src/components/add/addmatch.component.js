@@ -137,7 +137,7 @@ class AddMatch extends Component {
     this.setInSign = this.setInSign.bind(this);
     this.setMax = this.setMax.bind(this);
     this.state = {
-      GName: { value: "8Pool - Mobile", text: "8Pool - Mobile" },
+      GName: { value: "Plato Pool - Mobile", text: "Plato Pool - Mobile" },
       GameMode: { value: "Duel", text: "Duel" },
 
       gamemaplocal: [],

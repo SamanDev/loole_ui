@@ -18,7 +18,7 @@ var arrLogos = [
   "psn.svg",
   "xbox.svg",
   "plato.png",
-  "8pool.png",
+
   "clashroyale.png",
   "Brawlstars.png",
   "activition.png",
@@ -31,7 +31,7 @@ var arrTagMode = [
   "PSN",
   "XBOX",
   "Plato",
-  "8Pool",
+
   "ClashRoyale",
   "BrawlStars",
   "CallOfDuty",
