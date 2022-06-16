@@ -13,6 +13,8 @@ import {
 } from "firebase/messaging";
 import $ from "jquery";
 import { initializeApp } from "firebase/app";
+const defusername = localStorage.getItem("username");
+const defpassword = localStorage.getItem("password");
 function FormExampleFieldErrorLabel(prop) {
   const history = useHistory();
   let location = useLocation();
@@ -24,8 +26,8 @@ function FormExampleFieldErrorLabel(prop) {
   }, [prop.myState]);
   const [myStateLocal, setMyStateLocal] = useState({
     list: [
-      { id: "username", val: "" },
-      { id: "password", val: "" },
+      { id: "username", val: defusername },
+      { id: "password", val: defpassword },
       { id: "token", val: "" },
       { id: "hasError", val: null },
       { id: "loading", val: false },
@@ -150,6 +152,8 @@ function FormExampleFieldErrorLabel(prop) {
 
           if (response.data.accessToken) {
             localStorage.setItem("user", JSON.stringify(response.data));
+            localStorage.setItem("username", username.trim());
+            localStorage.setItem("password", password);
             setUList({ currentUser: response.data });
             prop.onReset("UserRefresh", response.data);
             UserWebsocket.connect(

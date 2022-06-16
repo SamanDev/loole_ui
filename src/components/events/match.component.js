@@ -643,7 +643,7 @@ class MatchSection extends Component {
           </>
 
           <Divider hidden />
-          <div className="ui cards fours centered">
+          <div className="ui cards doubling stackable fours centered">
             <MatchCard item={item} matchidFind={match} />
           </div>
         </Col>

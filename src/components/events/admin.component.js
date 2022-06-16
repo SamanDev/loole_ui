@@ -205,7 +205,7 @@ class MatchSection extends Component {
         {(haveAdmin(currentUser.roles) || haveModerator(currentUser.roles)) &&
           match.status == "InPlay" && (
             <>
-              <Button.Group size="big" widths="3">
+              <Button.Group size="big" widths="3" className="hides adminbtn">
                 <Button
                   color={item.matchTables.length > 1 ? "green" : "red"}
                   inverted
