@@ -891,10 +891,21 @@ export const vsComponentPlayer = (
                         </Statistic.Value>
                       </Statistic>
                     )}
-                    <Divider fitted style={{ opacity: 0 }} />
-                    <Button as="a" href={_p.nickName} color="red">
-                      Open Plato
-                    </Button>
+                    {currentUser.username != _p.username ? (
+                      <>
+                        <Divider fitted style={{ opacity: 0 }} />
+                        <Button as="a" href={_p.nickName} color="red">
+                          Open Plato
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Divider fitted style={{ opacity: 0 }} />
+                        <Button as="a" href="" disabled color="grey">
+                          Open Plato
+                        </Button>
+                      </>
+                    )}
                   </>
                 )}
               </>
