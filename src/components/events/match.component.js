@@ -156,7 +156,7 @@ class MatchSection extends Component {
           progressLable: "I win",
           isUpLoading: false,
         });
-        document.documentElement.classList.toggle("nav-open");
+        this.props.setVisible(true);
       })
       .catch(() => {
         this.setState({
