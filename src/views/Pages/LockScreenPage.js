@@ -321,7 +321,7 @@ function LockScreenPage(prop) {
               {eventDef?.status == "Deleted" ||
               (!match && eventDef?.gameMode != "League") ? (
                 <>
-                  {!match && eventDef?.gameMode != "League" ? (
+                  {!match && eventDef?.gameMode != "League" && matchIDQ ? (
                     <>
                       {history.push("/lobby/" + params.id + "/" + title + "")}
                     </>

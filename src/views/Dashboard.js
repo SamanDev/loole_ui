@@ -3,6 +3,7 @@ import { printBlockChallenge, genLink } from "components/include.js";
 import { Tab, Card, Menu, Label, Dimmer, Loader } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import Active from "components/active.component";
+import PushNot from "components/pushNot.component";
 import DashStat from "components/dashstat.component";
 import GlobalContext from "context/GlobalState";
 import UserContext from "context/UserState";
@@ -308,6 +309,7 @@ function Dashboard(prop) {
         <title>Dashboard</title>
       </Helmet>
       <Active {...prop} />
+      <PushNot {...prop} />
       <DashStat {...prop} />
       <Tab
         panes={panes}
