@@ -1461,12 +1461,20 @@ export const getModalTag = (filtermode) => {
           document.getElementById("tagid").value &&
           document.getElementById("tagname").value
         ) {
-          return {
-            tagid: document.getElementById("tagid").value,
-            tagname:
-              "http" +
-              document.getElementById("tagname").value.split("http")[1],
-          };
+          if (
+            document
+              .getElementById("tagname")
+              .value.indexOf("https://plato.app/") > -1
+          ) {
+            return {
+              tagid: document.getElementById("tagid").value,
+              tagname:
+                "http" +
+                document.getElementById("tagname").value.split("http")[1],
+            };
+          } else {
+            Swal.showValidationMessage(`Enter Plato Invite Friends Link!`);
+          }
         } else {
           Swal.showValidationMessage(`All fields are required!!`);
         }
