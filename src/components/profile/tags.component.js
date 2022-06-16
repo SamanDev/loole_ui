@@ -83,7 +83,8 @@ function TagsForm(prop) {
           resName = tag.nickName;
           resID = tag.id;
           resPlatform = tag.gamePlatform;
-          if (resName == "") resName = "Connected";
+          if (resName == "" || resName.indexOf("http") > -1)
+            resName = "Connected";
           if (res != "" && game == "ClashRoyale") res = "#" + res;
           if (res != "" && game == "CallOfDuty") {
             res = printTag(game, res);
