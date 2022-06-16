@@ -209,6 +209,7 @@ function Admin(prop) {
   const [cashAmuont, setCashAmount] = React.useState(10);
   const [cashName, setCashName] = React.useState("add");
   const [cashBankModel, setCashBankModel] = React.useState("Dollar");
+  const [notMessage, setNotMessage] = React.useState("");
 
   const OpenChashier = (open, user, id) => {
     setFirstOpen(open);
@@ -217,6 +218,9 @@ function Admin(prop) {
   };
   const setCashAmountVal = (e) => {
     setCashAmount(e.target.value);
+  };
+  const setNotMessageVal = (e) => {
+    setNotMessage(e.target.value);
   };
   const updateUserObj = (e, data) => {
     console.log(data);
@@ -302,6 +306,27 @@ function Admin(prop) {
     }
     setCashLoad(true);
     adminService.deleteUser(cashId).then((response) => {
+      if (response) {
+        Swal.fire({
+          title: "Success",
+          text: "Saved",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: `Ok`,
+        }).then(() => {
+          prop.onReset("AdminUsers");
+          setFirstOpen(false);
+          setCashLoad(false);
+        });
+      }
+    });
+  };
+  const sendNot = (e, data) => {
+    if (notMessage == "") {
+      return false;
+    }
+    setCashLoad(true);
+    adminService.notification(cashUser, notMessage, "test").then((response) => {
       if (response) {
         Swal.fire({
           title: "Success",
@@ -673,6 +698,21 @@ function Admin(prop) {
                 style={{ marginTop: 20 }}
               >
                 DeletUser
+              </Button>
+              <Form.Field>
+                <label>Meessage</label>
+                <input value={notMessage} onChange={setNotMessageVal} />
+              </Form.Field>
+              <Button
+                type="submit"
+                loading={cashLoad}
+                disabled={cashLoad}
+                color="red"
+                fluid
+                onClick={sendNot}
+                style={{ marginTop: 20 }}
+              >
+                Send
               </Button>
             </Form>
           </Modal.Content>

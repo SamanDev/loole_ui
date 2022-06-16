@@ -77,6 +77,18 @@ class AdminService {
         return response;
       });
   };
+  notification = (username, message, title) => {
+    return axios
+      .post(
+        API_URL_TEST + "notification",
+        { username, message, title },
+
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
+      });
+  };
   addGateway = (name, mode) => {
     return axios
       .post(
