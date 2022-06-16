@@ -318,15 +318,24 @@ function LockScreenPage(prop) {
               <Breadcrumb icon="right angle" sections={sections} />
             </Container>
             <Dimmer active style={{ background: "transparent" }}>
-              {eventDef?.status == "Deleted" ? (
-                <p>
-                  <Icon name="recycle" color="red" size="huge" inverted />
-                  <br />
-                  Event deleted
-                  <br />
-                  <br />
-                  {BackBTC()}
-                </p>
+              {eventDef?.status == "Deleted" ||
+              (!match && eventDef?.gameMode != "League") ? (
+                <>
+                  {!match && eventDef?.gameMode != "League" ? (
+                    <>
+                      {history.push("/lobby/" + params.id + "/" + title + "")}
+                    </>
+                  ) : (
+                    <p>
+                      <Icon name="recycle" color="red" size="huge" inverted />
+                      <br />
+                      Event deleted
+                      <br />
+                      <br />
+                      {BackBTC()}
+                    </p>
+                  )}
+                </>
               ) : (
                 <Loader size="large">Loading</Loader>
               )}
