@@ -401,8 +401,10 @@ class AddTour extends Component {
       successful: false,
       loading: true,
     });
-    var a = editTime(moment(this.state.StartTimeLeague).format());
-    var b = editTime(moment(this.state.EndTimeLeague).format());
+    //var a = editTime(moment(this.state.StartTimeLeague).format());
+    var a = moment(this.state.StartTimeLeague).utc().format();
+    //var b = editTime(moment(this.state.EndTimeLeague).format());
+    var b = moment(this.state.EndTimeLeague).utc().format();
 
     //return false;
     userService

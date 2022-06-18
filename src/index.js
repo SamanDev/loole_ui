@@ -117,9 +117,9 @@ if (localStorage.getItem("_defEvent")) {
     _defEvent = JSON.parse(localStorage.getItem("_defEvent"));
   } catch (e) {}
 }
-const renderLoader = (inverted) => (
+const renderLoader = (inverted, componentName) => (
   <Dimmer active inverted={inverted}>
-    <Loader size="large">Loading</Loader>
+    <Loader size="large">Loading {componentName}</Loader>
   </Dimmer>
 );
 
@@ -626,7 +626,7 @@ function Main(prop) {
         >
           <Modal size="mini" basic open={openModalSoket}>
             <Segment inverted padded="very">
-              <Suspense fallback={renderLoader(false)}>
+              <Suspense fallback={renderLoader(false, "DC")}>
                 <Modal.Header className="text-center">
                   <Icon.Group size="huge">
                     <Icon size="big" color="red" name="dont" />
@@ -813,7 +813,7 @@ function Main(prop) {
             <Route
               path="/panel"
               render={(props) => (
-                <Suspense fallback={renderLoader(true)}>
+                <Suspense fallback={renderLoader(true, "/panle")}>
                   <PanelLayout
                     {...props}
                     myState={myState}
@@ -963,7 +963,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient} contextSharing={true}>
-      <Suspense fallback={renderLoader(true)}>
+      <Suspense fallback={renderLoader(true, "Main")}>
         <Main err401={err401} setErr401={setErr401} />
       </Suspense>
     </QueryClientProvider>
@@ -972,7 +972,7 @@ function App() {
 
 ReactDOM.render(
   <BrowserRouter>
-    <Suspense fallback={renderLoader(true)}>
+    <Suspense fallback={renderLoader(true, "App")}>
       <ConfigProvider cache={cache}>
         <div className="application">
           <App />

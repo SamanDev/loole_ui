@@ -252,7 +252,8 @@ class AddTour extends Component {
       loading: true,
     });
 
-    var _Start = editTime(moment(this.state.StartTime).format());
+    // var _Start = editTime(moment(this.state.StartTime).format());
+    var _Start = moment(this.state.StartTime).utc().format();
 
     userService
       .createTournament(

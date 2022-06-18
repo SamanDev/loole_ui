@@ -17,9 +17,9 @@ import routes from "routes";
 //import LockScreenPage from "views/Pages/LockScreenPage.js";
 
 import { getOffset } from "components/include";
-const renderLoader = (inverted) => (
+const renderLoader = (inverted, componentName) => (
   <Dimmer active inverted={inverted}>
-    <Loader size="large">Loading</Loader>
+    <Loader size="large">Loading {componentName}</Loader>
   </Dimmer>
 );
 function scrollTo(elem) {
@@ -49,7 +49,7 @@ function Auth(props) {
             render={() => (
               <>
                 {prop.component == "Landing" && (
-                  <Suspense fallback={renderLoader(true)}>
+                  <Suspense fallback={renderLoader(true, "Landing")}>
                     <Landing {...props} scrollTo={scrollTo} />
                   </Suspense>
                 )}
@@ -119,7 +119,7 @@ function Auth(props) {
 
   return (
     <>
-      <Suspense fallback={renderLoader(true)}>
+      <Suspense fallback={renderLoader(true, "land")}>
         <ConfigProvider colors={DEFCOLORS}>
           {getPage(routes).indexOf("Match Lobby") > -1 ? (
             <Switch>{getRoutes(routes)}</Switch>
