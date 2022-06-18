@@ -88,11 +88,11 @@ class UserWebsocket {
 
           //alert((msg.Command))
           if (msg.Command === "event") {
-            eventBus.dispatch("eventsData", msg.data);
+            eventBus.dispatch("updateAllEvents", msg.data);
           } else if (msg.Command === "updateUser") {
             eventBus.dispatch("eventsDataUser", msg.data);
           } else if (msg.Command === "eventId") {
-            eventBus.dispatch("eventsDataEventDo", msg.data);
+            eventBus.dispatch("updateEventId", msg.data);
           } else if (msg.Command === "startTick") {
             // setYvalStart(msg.tick);
           }

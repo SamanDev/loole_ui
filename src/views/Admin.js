@@ -23,6 +23,7 @@ import ReportDiamond from "components/reportdiamond.component";
 import CheckboxToggle from "components/toggle.component";
 import ButtonGroupColored from "components/adminUseraction.component";
 import adminService from "services/admin.service";
+import userService from "services/user.service";
 import Swal from "sweetalert2";
 import { setAvatar, printBlockChallenge, isJson } from "components/include";
 import UserEvents from "components/events/user.component";

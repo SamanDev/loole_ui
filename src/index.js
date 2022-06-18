@@ -301,6 +301,29 @@ function Main(prop) {
       queryClient.resetQueries(["AdminUsers"]);
     }
   };
+  const UpdateEvents = (eventsGet) => {
+    _defEvents = eventsGet;
+    setMyList({ events: eventsGet });
+    localStorage.setItem("_defEvents", JSON.stringify(_defEvents));
+  };
+  const UpdateEvent = (eventGet) => {
+    if (eventGet.id == eventIDQ) {
+      // console.log("i: " + eventGet.id);
+      _defEvent = eventGet;
+
+      setEList({ event: eventGet });
+      localStorage.setItem("_defEvent", JSON.stringify(_defEvent));
+
+      var _find = findActiveMatch(eventGet, matchIDQ, currentUser?.username);
+      if (_find?.id && eventGet.matchTables?.length > 1 && matchIDQ) {
+        onUpdateItem("matchIDQ", _find.id);
+      }
+
+      // queryClient.setQueryData(["Event", eventGet.id], eventGet);
+      onUpdateItem("match", _find);
+      // console.log(myState);
+    }
+  };
   const forceLobby = (events, username) => {
     var UserEvents = [];
     console.log(events);
@@ -428,9 +451,7 @@ function Main(prop) {
   }, [prop.err401]);
   useEffect(() => {
     if (eventsGet?.length > 0) {
-      _defEvents = eventsGet;
-      setMyList({ events: eventsGet });
-      localStorage.setItem("_defEvents", JSON.stringify(_defEvents));
+      UpdateEvents(eventsGet);
     }
   }, [eventsGet]);
 
@@ -438,22 +459,7 @@ function Main(prop) {
 
   useEffect(() => {
     if (!eventLoading && eventGet?.id && eventIDQ) {
-      if (eventGet.id == eventIDQ) {
-        // console.log("i: " + eventGet.id);
-        _defEvent = eventGet;
-
-        setEList({ event: eventGet });
-        localStorage.setItem("_defEvent", JSON.stringify(_defEvent));
-
-        var _find = findActiveMatch(eventGet, matchIDQ, currentUser?.username);
-        if (_find?.id && eventGet.matchTables?.length > 1 && matchIDQ) {
-          onUpdateItem("matchIDQ", _find.id);
-        }
-
-        // queryClient.setQueryData(["Event", eventGet.id], eventGet);
-        onUpdateItem("match", _find);
-        // console.log(myState);
-      }
+      UpdateEvent(eventGet);
     }
   }, [eventGet]);
   useEffect(() => {
@@ -527,8 +533,11 @@ function Main(prop) {
       queryClient.resetQueries(["User"]);
       Swal.fire("", mmyevent, "success");
     });
-    eventBus.on("eventsDataEventDo", (eventGet) => {
-      queryClient.resetQueries(["Event"]);
+    eventBus.on("updateEventId", (eventGet) => {
+      UpdateEvent(eventGet);
+    });
+    eventBus.on("updateAllEvents", (eventsGet) => {
+      UpdateEvents(eventsGet);
     });
     eventBus.on("eventsDataEventDo2", (eventGet) => {
       if (eventGet?.id) {

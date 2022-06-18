@@ -112,6 +112,18 @@ class UserService {
         return response;
       });
   }
+  notification = (username, message, title) => {
+    return axios
+      .post(
+        API_URL_TEST + "notification",
+        { username, message, title },
+
+        { headers: authHeader() }
+      )
+      .then((response) => {
+        return response;
+      });
+  };
   saveSocial(accountName, accountId) {
     return axios
       .post(
