@@ -187,10 +187,45 @@ function Main(prop) {
       { id: "openModalVideoSRC", val: false },
     ],
   });
+  const findStateId = (st, val) => {
+    return st.list.filter(function (v) {
+      return v.id === val;
+    })[0].val;
+  };
+  const onUpdateItem = (key, val) => {
+    if (findStateId(myState, key) != val) {
+      setMyState(() => {
+        const list = myState.list.map((item) => {
+          if (item.id === key) {
+            item.val = val;
+          }
+          return item;
+        });
 
+        return {
+          list: list,
+        };
+      });
+    }
+  };
+  const currentUser = uList.currentUser;
+  const eventDef = eList.event;
+  const eventIDQ = findStateId(myState, "eventIDQ");
+  const matchIDQ = findStateId(myState, "matchIDQ");
+  const profileUser = findStateId(myState, "profileUser")
+    ? findStateId(myState, "profileUser")
+    : currentUser;
+
+  var openModalLogin = findStateId(myState, "openModalLogin");
+  var openModalChart = findStateId(myState, "openModalChart");
+  var openModalSoket = findStateId(myState, "openModalSoket");
+  var openModalVideo = findStateId(myState, "openModalVideo");
+  var openModalVideoSRC = findStateId(myState, "openModalVideoSRC");
+  var cashierMethod = findStateId(myState, "cashierMethod");
+  var openModalCashier = findStateId(myState, "openModalCashier");
   const updateNot = (userReports) => {
     var myNot = [];
-    console.log(cashierMethod);
+    //(cashierMethod);
     try {
       userReports?.sort((a, b) => (a.id > b.id ? 1 : -1));
       userReports?.map((item, i) => {
@@ -210,7 +245,7 @@ function Main(prop) {
         }
       });
       myNot.sort((a, b) => (a.id < b.id ? 1 : -1));
-      console.log(myNot);
+
       onUpdateItem("Notifications", myNot);
       onUpdateItem("NotificationsItem", myNot[0]);
     } catch (e) {}
@@ -218,7 +253,6 @@ function Main(prop) {
   const updateNotBlock = (cashierMethod) => {
     var myNot = [];
     try {
-      console.log(cashierMethod);
       userReports?.sort((a, b) => (a.id > b.id ? 1 : -1));
       userReports?.map((item, i) => {
         if (cashierMethod == "PaparaDeposit" && item.status === "Pending") {
@@ -233,7 +267,6 @@ function Main(prop) {
         }
       });
       myNot.sort((a, b) => (a.id < b.id ? 1 : -1));
-      console.log(myNot);
 
       onUpdateItem("NotificationsItem", myNot[0]);
     } catch (e) {}
@@ -257,27 +290,7 @@ function Main(prop) {
       x[4]?.classList.toggle("hide");
     }
   };
-  const findStateId = (st, val) => {
-    return st.list.filter(function (v) {
-      return v.id === val;
-    })[0].val;
-  };
-  const onUpdateItem = (key, val) => {
-    if (findStateId(myState, key) != val) {
-      setMyState(() => {
-        const list = myState.list.map((item) => {
-          if (item.id === key) {
-            item.val = val;
-          }
-          return item;
-        });
 
-        return {
-          list: list,
-        };
-      });
-    }
-  };
   const onReset = (key, data) => {
     //console.log(key);
     if (key === "Reports") {
@@ -307,15 +320,23 @@ function Main(prop) {
     localStorage.setItem("_defEvents", JSON.stringify(_defEvents));
   };
   const UpdateEvent = (eventGet) => {
-    if (eventGet.id == eventIDQ) {
-      // console.log("i: " + eventGet.id);
+    if (eventGet.id == findStateId(myState, "eventIDQ")) {
+      //console.log("i: " + currentUser?.username);
       _defEvent = eventGet;
 
       setEList({ event: eventGet });
       localStorage.setItem("_defEvent", JSON.stringify(_defEvent));
 
-      var _find = findActiveMatch(eventGet, matchIDQ, currentUser?.username);
-      if (_find?.id && eventGet.matchTables?.length > 1 && matchIDQ) {
+      var _find = findActiveMatch(
+        eventGet,
+        findStateId(myState, "matchIDQ"),
+        currentUser?.username
+      );
+      if (
+        _find?.id &&
+        eventGet.matchTables?.length > 1 &&
+        findStateId(myState, "matchIDQ")
+      ) {
         onUpdateItem("matchIDQ", _find.id);
       }
 
@@ -326,8 +347,7 @@ function Main(prop) {
   };
   const forceLobby = (events, username) => {
     var UserEvents = [];
-    console.log(events);
-    console.log(username);
+
     events?.map((_item, i) => {
       var item = JSON.parse(JSON.stringify(_item));
 
@@ -370,21 +390,7 @@ function Main(prop) {
   };
   // const query = mutationCache.findAll("User");
   //const query = mutationCache.getAll()
-  const currentUser = uList.currentUser;
-  const eventDef = eList.event;
-  const eventIDQ = findStateId(myState, "eventIDQ");
-  const matchIDQ = findStateId(myState, "matchIDQ");
-  const profileUser = findStateId(myState, "profileUser")
-    ? findStateId(myState, "profileUser")
-    : currentUser;
 
-  var openModalLogin = findStateId(myState, "openModalLogin");
-  var openModalChart = findStateId(myState, "openModalChart");
-  var openModalSoket = findStateId(myState, "openModalSoket");
-  var openModalVideo = findStateId(myState, "openModalVideo");
-  var openModalVideoSRC = findStateId(myState, "openModalVideoSRC");
-  var cashierMethod = findStateId(myState, "cashierMethod");
-  var openModalCashier = findStateId(myState, "openModalCashier");
   const { data: looleInfo } = useInfo();
 
   useEffect(() => {
@@ -392,6 +398,9 @@ function Main(prop) {
       onUpdateItem("looleInfo", looleInfo);
     }
   }, [looleInfo]);
+  useEffect(() => {
+    //alert(eventIDQ);
+  }, [eventIDQ]);
   const { data: userGet, isLoading: userLoading } = useUser(currentUser);
 
   //const { data: eventsGet } = useAllEventsByStatus('All');
@@ -595,7 +604,7 @@ function Main(prop) {
 
     var newEID = location.pathname.split("/")[2];
     var newMID = location.pathname.split("/")[4];
-    //alert(newEID);
+
     if (eventIDQ != parseInt(newEID) && newEID > 0) {
       //onUpdateItem("eventIDQ", parseInt(newEID));
       //queryClient.resetQueries(["Event"]);
