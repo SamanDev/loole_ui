@@ -162,6 +162,7 @@ function FormExampleFieldErrorLabel(prop) {
         fluid
         inverted
         name="username"
+        value={username}
         label="Username"
         placeholder="Username"
         onChange={updateHandler}
@@ -171,6 +172,7 @@ function FormExampleFieldErrorLabel(prop) {
         fluid
         name="password"
         type="password"
+        value={password}
         label="Password"
         placeholder="Password"
         onChange={updateHandler}
