@@ -508,6 +508,7 @@ class LeagueSection extends Component {
                       position: "relative",
                       maxWidth: 300,
                       margin: "auto",
+                      zIndex: 55,
                     }}
                   >
                     <AddToCal item={item} tit={tit} desc={desc} match={null} />

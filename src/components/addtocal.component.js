@@ -27,7 +27,7 @@ class Example extends React.Component {
 
   render() {
     var startTime = getchatTime(this.props.item.startTime);
-    if (this.props.item.timeMinute) {
+    if (this.props.item.timeMinute && this.props.item.gameMode != "League") {
       var endTime = moment(startTime)
         .add(this.props.item.timeMinute * this.props.item.eventLevel, "minutes")
         .format("YYYYMMDDTHHmmss");
