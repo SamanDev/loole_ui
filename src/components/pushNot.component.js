@@ -28,7 +28,7 @@ function Active(prop) {
       storageBucket: "loole-b974f.appspot.com",
       messagingSenderId: "30488129618",
       appId: "1:30488129618:web:99f67dea2fe2823b332f8b",
-      measurementId: "G-56RR0GT32B",
+      measurementId: "G-56RR0GT32B"
     };
 
     try {
@@ -37,7 +37,7 @@ function Active(prop) {
       var token;
       getToken(messaging, {
         vapidKey:
-          "BFj8seYu2V-U2yWrmRyG4zdiX08epdYDYhAL5x6DSoxOLsE_9q3hn7QjrSPthUkp6XBRzSpRdOoF3P3pZfiCnw8",
+          "BEIgQbQRnWKcVNc_Bd433T_MiTKNDTrRjOit7GDDxvSvpQ2wEafBtLxw37jCJ9vVf56A4COIDy3WymYoEOoYZrw",
       })
         .then((currentToken) => {
           if (currentToken) {
