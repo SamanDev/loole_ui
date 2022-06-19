@@ -44,13 +44,15 @@ function Dashboard(prop) {
           <Message.Content>
             <Message.Header>Invite A Friend</Message.Header>
             <div style={{ margin: "10px 0" }}>
+              When a friend you have invited active his/her account you will
+              receive {getGroupBadgeBlock("Point", 500, "")}.
+              <br />
               When a friend you have invited plays their first challenge you
               will receive {getGroupBadgeBlock("Point", 500, "")}
               and they will receive{" "}
               {getGroupBadgeBlock("Point", 500, "small left")}. Then for every
-              challenge they play on the site you get an extra{" "}
-              {getGroupBadgeBlock("Point", 20, "small left")} per game they play
-              for life.
+              challenge they play on the site you get 10% per game they play for
+              life.
             </div>
 
             <Message
@@ -121,7 +123,11 @@ function Dashboard(prop) {
 
                   <Message.Item>
                     Compete in a real money Event{" "}
-                    {getGroupBadgeBlock("Point", 100, "small left")}
+                    {getGroupBadgeBlock("Point", 500, "small left")}
+                  </Message.Item>
+                  <Message.Item>
+                    Invite each friends{" "}
+                    {getGroupBadgeBlock("Point", 500, "small left")}
                   </Message.Item>
                 </Message.List>
               </Message.Content>
