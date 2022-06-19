@@ -430,10 +430,10 @@ class LeagueSection extends Component {
         return 0;
       if (a.totalScore > b.totalScore) return -1;
       if (a.totalScore < b.totalScore) return 1;
+      if (a.ranking > b.ranking) return 1;
+      if (a.ranking < b.ranking) return -1;
       if (a.startTime > b.startTime) return 1;
       if (a.startTime < b.startTime) return -1;
-      //if (a.ranking > b.ranking) return 1;
-      //if (a.ranking < b.ranking) return -1;
     });
     icEnd = 0;
     icStart = 0;
