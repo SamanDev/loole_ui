@@ -17,8 +17,8 @@ import { useAdminUsers, useAllGetways } from "services/hooks";
 import CurrencyFormat from "react-currency-format";
 import { Col } from "react-bootstrap";
 
-import Report from "components/report.component";
-import ReportDiamond from "components/reportdiamond.component";
+import Report from "components/reportUser.component";
+import ReportDiamond from "components/reportdiamondUser.component";
 
 import CheckboxToggle from "components/toggle.component";
 import ButtonGroupColored from "components/adminUseraction.component";
@@ -327,7 +327,7 @@ function Admin(prop) {
       return false;
     }
     setCashLoad(true);
-    adminService.notification(cashUser, notMessage, "test").then((response) => {
+    userService.notification(cashUser, notMessage, "test").then((response) => {
       if (response) {
         Swal.fire({
           title: "Success",

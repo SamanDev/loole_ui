@@ -63,6 +63,7 @@ const ExpandedComponent = (props) => {
     <Segment>
       <Table
         celled
+        unstackable
         color="red"
         renderBodyRow={renderBodyRow}
         tableData={jdata[0]}
@@ -76,51 +77,11 @@ function editCounry(options) {
   options?.sort((a, b) => (a.id > b.id ? 1 : -1));
   try {
     options?.map((item, w) => {
-      if (
-        item.coin != "Point" &&
-        item.mode != "Point" &&
-        item.status != "Canceled"
-      ) {
+      if (item.coin != "Point" && item.mode != "Point") {
         newArray.push(item);
       }
     });
   } catch (e) {}
-
-  const filteredArr = newArray.reduce((itm, current) => {
-    const x = itm.find(
-      (item) =>
-        item.startBalance === current.endBalance &&
-        item.description.split(" - ")[0] == current.description.split(" - ")[0]
-    );
-    const y = itm.find(
-      (item) =>
-        item.description.split(" - ")[0] ==
-          current.description.split(" - ")[0] &&
-        (item.mode.indexOf("Expired") > -1 ||
-          current.mode.indexOf("Expired") > -1)
-    );
-    if (!x || 1 == 1) {
-      if (!y || 1 == 1) {
-        return itm.concat([current]);
-      } else {
-        return itm.filter(function (item) {
-          return item.id !== current.id && item.id !== y.id;
-        });
-      }
-    } else {
-      return itm.filter(function (item) {
-        return item.id !== current.id && item.id !== x.id;
-      });
-    }
-  }, []);
-  newArray?.map((itemdelete, w) => {
-    const z = filteredArr.find((item) => item.id == itemdelete.id);
-    if (!z) {
-      newArrayDelete.push(itemdelete.id);
-    } else {
-      newArrayDelete.push(itemdelete.id);
-    }
-  });
 
   return newArray;
 }
@@ -190,7 +151,7 @@ function Report(prop) {
       name: "Date",
       selector: (row) => row.createDate,
       format: (row) => <small>{date_edit_report(row.createDate)}</small>,
-      width: "100px",
+      width: "90px",
       sortable: true,
     },
     {
