@@ -179,6 +179,8 @@ class AddTour extends Component {
     this.setPrize = this.setPrize.bind(this);
     this.setRMinMatch = this.setRMinMatch.bind(this);
     this.setRMode = this.setRMode.bind(this);
+    this.setTimeMinute = this.setTimeMinute.bind(this);
+    this.setRepeatMinute = this.setRepeatMinute.bind(this);
 
     this.findStateId = this.findStateId.bind(this);
     this.onUpdateItem = this.onUpdateItem.bind(this);
@@ -191,6 +193,8 @@ class AddTour extends Component {
       gamemaplocal: [],
       BetAmount: 10,
       Prize: 0,
+      repeatMinute: 0,
+      timeMinute: 10,
       AvalableFor: { value: "60", label: "1 Hour" },
       TotalPlayer: 200,
       StartTimeLeague: startFrmat,
@@ -317,6 +321,21 @@ class AddTour extends Component {
       Prize: e,
     });
   }
+  setRepeatMinute(e) {
+    this.setState({
+      repeatMinute: e,
+    });
+  }
+  setTimeMinute(e) {
+    this.setState({
+      timeMinute: e,
+    });
+  }
+  setPrize(e) {
+    this.setState({
+      Prize: e,
+    });
+  }
   setRMinMatch(e) {
     this.setState({
       rMinMatch: e,
@@ -417,12 +436,13 @@ class AddTour extends Component {
         b,
         this.state.TotalPlayer,
         this.state.tournamentPayout,
-        10,
+        this.state.timeMinute,
         this.state.inSign.value,
         this.state.outSign.value,
         this.state.outSign.value,
         this.state.Rules,
-        this.state.Prize
+        this.state.Prize,
+        this.state.repeatMinute
       )
 
       .then(
@@ -762,6 +782,29 @@ class AddTour extends Component {
                             value={this.state.rMinMatch}
                             onChange={this.setRMinMatch}
                             onBlur={this.setRules}
+                          />
+                        </div>
+                      </Grid.Column>
+                      <Grid.Column>
+                        <div className="form-group">
+                          <label>Count Minutes</label>
+                          <NumericInput
+                            min={5}
+                            step={1}
+                            max={120}
+                            className="form-control"
+                            value={this.state.timeMinute}
+                            onChange={this.setTimeMinute}
+                          />
+                        </div>
+                      </Grid.Column>
+                      <Grid.Column>
+                        <div className="form-group">
+                          <label>Repeat Minutes</label>
+                          <NumericInput
+                            className="form-control"
+                            value={this.state.repeatMinute}
+                            onChange={this.setRepeatMinute}
                           />
                         </div>
                       </Grid.Column>
