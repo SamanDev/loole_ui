@@ -547,6 +547,9 @@ export const printTag = (game, tag) => {
   if (game == "CallOfDuty") {
     _tag = _tag.replace("%23", "#");
   }
+  if (game.split(" ")[0] == "Plato") {
+    localStorage.setItem(game.split(" ")[0], _tag);
+  }
   return _tag;
 };
 function readClipboardFromDevTools() {
@@ -1432,6 +1435,7 @@ export const getModalTag = (filtermode) => {
     };
   }
   if (filter == "Plato") {
+    var _id = localStorage.getItem("Plato");
     tagsof = {
       customClass: "tag",
       title: "Connect Your Plato ID",
@@ -1440,7 +1444,7 @@ export const getModalTag = (filtermode) => {
               <ol><li>Open player profile in Plato</li><li>Copy Plato ID</li><li>Paste the Plato ID below
               <div className="form-group">
               <label>Enter your Plato ID</label>
-                <input class="form-control" id="tagid" type="text" /></div>
+                <input class="form-control" id="tagid" value="${_id}" type="text" /></div>
        </li><li>and then enter your Plato Invite Friends Link below
        <div className="form-group">
        <label>Enter Plato Invite Friends Link</label>

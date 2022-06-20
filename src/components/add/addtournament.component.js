@@ -467,7 +467,7 @@ class AddTour extends Component {
                   value={this.state.StartTimePeriod}
                   onChange={this.setStartTimePeriod}
                   options={[
-                    { value: "15", label: "15 Minutes" },
+                    { value: "3", label: "15 Minutes" },
                     { value: "30", label: "30 Minutes" },
                     { value: "60", label: "21Hour" },
                     { value: "120", label: "2 Hours" },
