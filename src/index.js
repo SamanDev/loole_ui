@@ -76,7 +76,7 @@ const PanelLayout = lazy(() => import("layouts/Panel"));
 //const Chart = lazy(() => import("components/chart.component"));
 const cache = new Cache({
   // Keep cached source failures for up to 7 days
-  sourceTTL: 7 * 24 * 3600 * 1000,
+  sourceTTL: 30 * 24 * 3600 * 1000,
 
   // Keep a maximum of 20 entries in the source cache
   sourceSize: 20,
@@ -86,7 +86,7 @@ ReactGA.initialize(TrackingID);
 var myInterval;
 function myTimer() {
   try {
-    var el = document.getElementsByTagName("iframe")[0];
+    var el = document.getElementsByTagName("iframe")[1];
     el.remove();
   } catch (e) {}
 }
