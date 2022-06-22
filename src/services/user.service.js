@@ -310,7 +310,7 @@ class UserService {
     currency,
     rules,
     prize,
-    repeatMinute
+    repeatEvent
   ) {
     return axios
       .post(
@@ -330,7 +330,7 @@ class UserService {
           currency,
           rules,
           prize,
-          repeatMinute,
+          repeatEvent,
         },
         { headers: authHeader() }
       )
