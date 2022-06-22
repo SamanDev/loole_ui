@@ -73,20 +73,18 @@ const getInfo = async () => {
   return data;
 };
 const getUser = async () => {
-  // alert(JSON.stringify(authHeader()))
+  const id = JSON.stringify(authHeader());
 
-  const { data } = await client.get("/getUser", { headers: authHeader() });
+  if (id != "{}" && typeof id !== "undefined") {
+    const { data } = await client.get("/getUser", { headers: authHeader() });
 
-  if (data?.accessToken) {
-    localStorage.setItem("user", JSON.stringify(data));
-    //alert(JSON.stringify(data.accessToken));
-    var loc = window.location.href;
+    if (data?.accessToken) {
+      localStorage.setItem("user", JSON.stringify(data));
 
-    //eventBus.dispatch("eventsDataUser", usr);
-    if (loc.indexOf("/user") == -1) {
-      //UserWebsocket.connect(data.accessToken+"&user="+data.username);
+      return data;
     }
-    return data;
+  } else {
+    return null;
   }
 };
 const getUserProfile = async (username) => {

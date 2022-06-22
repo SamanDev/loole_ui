@@ -10,7 +10,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { Cache, ConfigProvider } from "react-avatar";
-
+import authHeader from "services/auth-header";
 //import Swal from "sweetalert2";
 import { defUser, TrackingID, startServiceWorker } from "const.js";
 import "assets/css/landing-page.css";
@@ -292,7 +292,7 @@ function Main(prop) {
   };
 
   const onReset = (key, data) => {
-    //console.log(key);
+    console.log(key);
     if (key === "Reports") {
       queryClient.resetQueries(["UserReports"]);
     }
@@ -434,20 +434,29 @@ function Main(prop) {
     //updateNot(userReports);
   }, [openModalCashier, cashierMethod]);
   useEffect(() => {
-    if (!userLoading && userGet?.accessToken) {
-      setUList({ currentUser: userGet });
+    var id = JSON.stringify(authHeader());
 
-      localStorage.setItem("user", JSON.stringify(userGet));
+    if (id != "{}" && typeof id !== "undefined") {
+      if (!userLoading && userGet?.accessToken) {
+        if (userGet?.userBlock == true) {
+          setUList({ currentUser: defUser });
+          localStorage.setItem("user", JSON.stringify(defUser));
+        } else {
+          setUList({ currentUser: userGet });
 
-      UserWebsocket.connect(
-        userGet.accessToken + "&user=" + userGet.username,
-        userGet
-      );
-    } else {
-      if (!userLoading && findStateId(myState, "openModalLogin")) {
-        setUList({ currentUser: defUser });
-        localStorage.setItem("user", JSON.stringify(defUser));
-        //queryClient.setQueryData(["User"], defUser);
+          localStorage.setItem("user", JSON.stringify(userGet));
+
+          UserWebsocket.connect(
+            userGet.accessToken + "&user=" + userGet.username,
+            userGet
+          );
+        }
+      } else {
+        if (!userLoading && findStateId(myState, "openModalLogin")) {
+          setUList({ currentUser: defUser });
+          localStorage.setItem("user", JSON.stringify(defUser));
+          //queryClient.setQueryData(["User"], defUser);
+        }
       }
     }
   }, [userGet, userLoading]);

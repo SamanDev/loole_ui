@@ -17,6 +17,7 @@ import { useAdminUsers, useAllGetways } from "services/hooks";
 import CurrencyFormat from "react-currency-format";
 import { Col } from "react-bootstrap";
 
+import TableAdmin from "components/adminTable.component";
 import Report from "components/reportUser.component";
 import ReportDiamond from "components/reportdiamondUser.component";
 
@@ -25,7 +26,13 @@ import ButtonGroupColored from "components/adminUseraction.component";
 import adminService from "services/admin.service";
 import userService from "services/user.service";
 import Swal from "sweetalert2";
-import { setAvatar, printBlockChallenge, isJson } from "components/include";
+import {
+  setAvatar,
+  printBlockChallenge,
+  isJson,
+  haveAdmin,
+  haveModerator,
+} from "components/include";
 import UserEvents from "components/events/user.component";
 import UserContext from "context/UserState";
 const conditionalRowStyles = [
@@ -54,36 +61,7 @@ const noDataComponent = (
 );
 var dataTransaction = [];
 var moment = require("moment");
-function isDate(name, myDate, user) {
-  if (name === "country") {
-    var res = (
-      <td>
-        <img src={"/assets/images/famfamfam_flag_icons/png/" + user + ".png"} />{" "}
-        {myDate}
-      </td>
-    );
-  } else {
-    var res = myDate;
-    if (
-      myDate?.toString().indexOf(":") > -1 &&
-      myDate?.toString().indexOf("T") > -1 &&
-      myDate?.toString().indexOf(":00:00") == -1
-    )
-      res = moment(myDate).startOf("second").fromNow();
-    if (
-      myDate?.toString().indexOf(":") > -1 &&
-      myDate?.toString().indexOf("T") > -1 &&
-      myDate?.toString().indexOf(":00:00") > -1
-    )
-      res =
-        moment(myDate).format("MM-DD-YYYY") +
-        " (" +
-        moment(myDate).startOf("second").fromNow() +
-        ")";
-  }
 
-  return res;
-}
 function getPathOfKey(object, keys, getwaysList) {
   var newO = JSON.parse(JSON.stringify(object));
   var newOb = {};
@@ -165,7 +143,7 @@ function getPathOfKey(object, keys, getwaysList) {
       });
     }
   });
-  console.log(finalObj);
+  //console.log(finalObj);
   //finalObj.push({'data':newOb})
 
   return finalObj;
@@ -183,13 +161,12 @@ const FilterComponent = ({ filterText, onFilter, onClear, setExMode }) => (
       value={filterText}
       onChange={onFilter}
     />
-    <ButtonGroupColored setExMode={setExMode} />
   </>
 );
 
 function Admin(prop) {
   const { data: usersList, isLoading } = useAdminUsers();
-  const { data: getwaysList } = useAllGetways();
+  const { data: getwaysList, isLoading: getwaysListLoading } = useAllGetways();
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
   const [filterText, setFilterText] = React.useState("");
@@ -200,9 +177,11 @@ function Admin(prop) {
   const filteredItems = dataTransaction.filter(
     (item) =>
       item.username &&
-      item.username.toLowerCase().indexOf("test") == -1 &&
       item.username.toLowerCase().includes(filterText.toLowerCase())
   );
+  const [userOpen, setUserOpen] = React.useState(false);
+  const [userData, setUserData] = React.useState();
+  const [user, setUser] = React.useState();
   const [firstOpen, setFirstOpen] = React.useState(false);
   const [cashId, setCashId] = React.useState();
   const [cashUser, setCashUser] = React.useState(false);
@@ -224,12 +203,12 @@ function Admin(prop) {
     setNotMessage(e.target.value);
   };
   const updateUserObj = (e, data) => {
-    console.log(data);
+    //console.log(data);
     var _key = data.userkey;
     var curU = JSON.parse(JSON.stringify(data.user));
     //curU[''+_key+'']=data.checked
 
-    console.log(data);
+    //console.log(data);
     adminService
       .updateUserByAdmin(curU.id, _key, data.checked)
       .then((response) => {
@@ -245,7 +224,7 @@ function Admin(prop) {
       });
   };
   const updateUserDC = (e, data) => {
-    console.log(data);
+    //.log(data);
     var _key = data.userkey;
     var curU = JSON.parse(JSON.stringify(data.user));
     //curU[''+_key+'']=data.checked
@@ -343,78 +322,21 @@ function Admin(prop) {
       }
     });
   };
-  const headerRow = ["Name", "Value"];
-  const renderBodyRow = ({ name, value, user }, i) => ({
-    key: name || `row-${i}`,
-    cells: [
-      name,
-      typeof value == "boolean" ? (
-        <CheckboxToggle
-          check={value}
-          user={user}
-          userkey={name}
-          onChange={updateUserObj}
-        />
-      ) : (
-        isDate(name, value, user)
+
+  const ExpandedComponent = (data) => {
+    setUserOpen(true);
+
+    var newdata = [
+      getPathOfKey(
+        data,
+        ",email,country,fullName,reffer,birthday,bankInfos,firstLogin,lastLogin,cashierGateways,",
+        getwaysList
       ),
-    ],
-  });
-  const ExpandedComponent = (props) => {
-    if (exMode == "") {
-      return <pre>hi</pre>;
-    }
-    var data = props.data;
+    ];
 
-    if (exMode == "Data") {
-      var newdata = [
-        getPathOfKey(
-          data,
-          ",email,country,fullName,reffer,birthday,bankInfos,firstLogin,lastLogin,cashierGateways,",
-          getwaysList
-        ),
-      ];
-
-      var jdata = JSON.parse(JSON.stringify(newdata));
-
-      return (
-        <Segment>
-          <Table
-            renderBodyRow={renderBodyRow}
-            celled
-            color="red"
-            tableData={jdata[0]}
-          />
-        </Segment>
-      );
-    }
-    if (exMode == "Report") {
-      return (
-        <Segment>
-          <div style={{ height: "calc(40vh - 150px)", overflow: "auto" }}>
-            <Report user={data} />
-          </div>
-        </Segment>
-      );
-    }
-    if (exMode == "Reward") {
-      return (
-        <Segment>
-          <div style={{ height: "calc(40vh - 150px)", overflow: "auto" }}>
-            <ReportDiamond user={data} />
-          </div>
-        </Segment>
-      );
-    }
-    if (exMode == "Events") {
-      return (
-        <Segment>
-          <div style={{ height: "calc(40vh - 150px)", overflow: "auto" }}>
-            <UserEvents {...prop} user={data} myStateLoc={true} />
-          </div>
-        </Segment>
-      );
-    }
+    var jdata = JSON.parse(JSON.stringify(newdata));
+    setUser(data);
+    setUserData(jdata);
   };
 
   const columns = [
@@ -442,17 +364,15 @@ function Admin(prop) {
         </>
       ),
       sortable: true,
+      grow: 2,
     },
     {
       name: "Action",
       selector: (row) => row.username,
       format: (row) => (
         <>
-          <Button
-            size="mini"
-            onClick={() => OpenChashier(true, row.username, row.id)}
-          >
-            -/+
+          <Button size="mini" onClick={() => ExpandedComponent(row)}>
+            see
           </Button>
         </>
       ),
@@ -463,7 +383,7 @@ function Admin(prop) {
       selector: (row) => row.refer,
       format: (row) => (
         <>
-          {row.refer ? (
+          {row.refer && (
             <a href={"/user/" + row.refer} target="_blank">
               <Avatar
                 size="20"
@@ -473,7 +393,7 @@ function Admin(prop) {
               />{" "}
               {row.refer.toUpperCase()}
             </a>
-          ) : null}
+          )}
         </>
       ),
       sortable: true,
@@ -556,24 +476,15 @@ function Admin(prop) {
       sortable: true,
     },
     {
-      name: "DC",
-      selector: (row) => row.roles,
-      format: (row) => (
-        <Button onClick={updateUserDC} user={row} userkey="userBlock">
-          DC
-        </Button>
-      ),
-      sortable: true,
-    },
-    {
       name: "Admin",
       selector: (row) => row.roles,
       format: (row) => (
         <CheckboxToggle
-          check={row.roles[0]?.name.match("ROLE_ADMIN")}
+          check={haveAdmin(row.roles)}
           user={row}
           userkey="Roles"
           onChange={updateUserObj}
+          disabled={true}
         />
       ),
       sortable: true,
@@ -583,10 +494,11 @@ function Admin(prop) {
       selector: (row) => row.roles,
       format: (row) => (
         <CheckboxToggle
-          check={row.roles[0]?.name.match("ROLE_MODERATOR")}
+          check={haveModerator(row.roles)}
           user={row}
           userkey="Roles"
           onChange={updateUserObj}
+          disabled={true}
         />
       ),
       sortable: true,
@@ -611,11 +523,10 @@ function Admin(prop) {
   }, [filterText, resetPaginationToggle, dataTransaction]);
   useEffect(() => {
     if (usersList) {
-      console.log(usersList);
       setDataTransaction(usersList);
     }
   }, [usersList]);
-  if (isLoading) {
+  if (isLoading || getwaysListLoading) {
     return (
       <>
         <Segment style={{ height: "calc(100vh - 150px)", overflow: "auto" }}>
@@ -718,6 +629,50 @@ function Admin(prop) {
             </Form>
           </Modal.Content>
         </Modal>
+        <Modal
+          onClose={() => setUserOpen(false)}
+          onOpen={() => setUserOpen(true)}
+          open={userOpen}
+          size="large"
+          style={{ height: "auto" }}
+        >
+          <Modal.Header>{user?.username}</Modal.Header>
+          <Modal.Content>
+            <ButtonGroupColored setExMode={setExMode} />
+            <Button
+              color="red"
+              onClick={() => OpenChashier(true, user.username, user.id)}
+            >
+              -/+
+            </Button>
+            {exMode == "Data" && (
+              <Segment>
+                <TableAdmin data={userData} updateUserObj={updateUserObj} />
+              </Segment>
+            )}
+            {exMode == "Report" && (
+              <Segment>
+                <div style={{ height: "calc(80vh - 150px)", overflow: "auto" }}>
+                  <Report user={user} />
+                </div>
+              </Segment>
+            )}
+            {exMode == "Reward" && (
+              <Segment>
+                <div style={{ height: "calc(80vh - 150px)", overflow: "auto" }}>
+                  <ReportDiamond user={user} />
+                </div>
+              </Segment>
+            )}
+            {exMode == "Events" && (
+              <Segment>
+                <div style={{ height: "calc(80vh - 150px)", overflow: "auto" }}>
+                  <UserEvents {...prop} user={user} myStateLoc={true} />
+                </div>
+              </Segment>
+            )}
+          </Modal.Content>
+        </Modal>
         <div style={{ height: "calc(100vh - 150px)", overflow: "auto" }}>
           <DataTable
             columns={columns}
@@ -728,8 +683,6 @@ function Admin(prop) {
             expandOnRowClicked={true}
             expandableRowsHideExpander={true}
             conditionalRowStyles={conditionalRowStyles}
-            expandableRows
-            expandableRowsComponent={ExpandedComponent}
             noDataComponent={noDataComponent}
             pagination
             paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1

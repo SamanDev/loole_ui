@@ -104,23 +104,31 @@ function FormExampleFieldErrorLabel(prop) {
           onUpdateItem("loading", false);
 
           if (response.data.accessToken) {
-            localStorage.setItem("user", JSON.stringify(response.data));
-            localStorage.setItem("username", username.trim());
-            localStorage.setItem("password", password);
-            setUList({ currentUser: response.data });
-            prop.onReset("UserRefresh", response.data);
-            UserWebsocket.connect(
-              response.data.accessToken + "&user=" + response.data.username,
-              response.data
-            );
-            if (location.pathname.indexOf("home") > -1) {
-              // prop.onUpdateItem("openModalLogin", false);
-              history.push("/panel/dashboard");
+            if (response.data.userBlock) {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Your account is baned.",
+              });
             } else {
-              prop.onUpdateItem("openModalLogin", false);
-              try {
-                $(".joineventbtn:visible").trigger("click");
-              } catch (e) {}
+              localStorage.setItem("user", JSON.stringify(response.data));
+              localStorage.setItem("username", username.trim());
+              localStorage.setItem("password", password);
+              setUList({ currentUser: response.data });
+              prop.onReset("UserRefresh", response.data);
+              UserWebsocket.connect(
+                response.data.accessToken + "&user=" + response.data.username,
+                response.data
+              );
+              if (location.pathname.indexOf("home") > -1) {
+                // prop.onUpdateItem("openModalLogin", false);
+                history.push("/panel/dashboard");
+              } else {
+                prop.onUpdateItem("openModalLogin", false);
+                try {
+                  $(".joineventbtn:visible").trigger("click");
+                } catch (e) {}
+              }
             }
           } else {
             Swal.fire({
@@ -164,6 +172,8 @@ function FormExampleFieldErrorLabel(prop) {
         name="username"
         value={username}
         label="Username"
+        minLength="5"
+        maxLength="20"
         placeholder="Username"
         onChange={updateHandler}
       />
@@ -172,6 +182,8 @@ function FormExampleFieldErrorLabel(prop) {
         fluid
         name="password"
         type="password"
+        minLength="8"
+        maxLength="20"
         value={password}
         label="Password"
         placeholder="Password"

@@ -160,6 +160,8 @@ function FormExampleFieldErrorLabel(prop) {
         fluid
         name="username"
         label="Username"
+        minLength="5"
+        maxLength="20"
         autoComplete="off"
         placeholder="Username"
         onChange={updateHandler}
@@ -170,6 +172,8 @@ function FormExampleFieldErrorLabel(prop) {
         name="password"
         type="password"
         label="Password"
+        minLength="8"
+        maxLength="20"
         placeholder="Password"
         onChange={updateHandler}
       />
