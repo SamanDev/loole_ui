@@ -4,7 +4,7 @@ import Form from "react-validation/build/form";
 import { withRouter } from "react-router-dom";
 import userService from "services/user.service";
 import { Message, Button, Divider } from "semantic-ui-react";
-import Swal from "sweetalert2";
+
 import UserContext from "context/UserState";
 import {
   getMessaging,
@@ -12,14 +12,28 @@ import {
   onMessage,
   onBackgroundMessage,
 } from "firebase/messaging";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
+const MySwal = withReactContent(Swal);
 import { initializeApp } from "firebase/app";
+const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 20000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
+  },
+});
 function Active(prop) {
   const [token, setToken] = useState(null);
 
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
-
+  var notification = { title: "test", body: "Your match is ow started" };
   const handleResend = () => {
     const firebaseConfig = {
       apiKey: "AIzaSyCGTpxJqdzeBpgV2Uq8KniTQWLHb69DONM",
@@ -28,7 +42,7 @@ function Active(prop) {
       storageBucket: "loole-b974f.appspot.com",
       messagingSenderId: "30488129618",
       appId: "1:30488129618:web:99f67dea2fe2823b332f8b",
-      measurementId: "G-56RR0GT32B"
+      measurementId: "G-56RR0GT32B",
     };
 
     try {
@@ -62,6 +76,11 @@ function Active(prop) {
           // ...
         });
       onMessage(getMessaging(), (message) => {
+        Toast.fire({
+          icon: "success",
+          title: message.notification.body,
+        });
+
         console.log(
           "New foreground notification from Firebase Messaging!",
           message.notification
@@ -74,15 +93,18 @@ function Active(prop) {
     if (token) userService.sendPushToken(token);
   }, [token]);
   useEffect(() => {
-    try{Notification.requestPermission().then(function (result) {
-      if (result === "default") {
-        setToken(null);
-        return;
-      }
+    try {
+      Notification.requestPermission().then(function (result) {
+        if (result === "default") {
+          setToken(null);
+          return;
+        }
 
-      handleResend();
-    });}catch(e){ setToken("err");}
-    
+        handleResend();
+      });
+    } catch (e) {
+      setToken("err");
+    }
   }, []);
   if (token == null) {
     return (
