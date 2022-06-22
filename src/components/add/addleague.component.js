@@ -376,6 +376,8 @@ class AddTour extends Component {
     this.setState({
       EndTimeLeague: endFormat,
     });
+
+    // 1
   }
   setSelectedTag(e, p, currentUser) {
     if (p == "PS4" || e == "PS4") {
@@ -420,11 +422,14 @@ class AddTour extends Component {
       successful: false,
       loading: true,
     });
-    //var a = editTime(moment(this.state.StartTimeLeague).format());
+    var aa = moment(this.state.StartTimeLeague);
     var a = moment(this.state.StartTimeLeague).utc().format();
-    //var b = editTime(moment(this.state.EndTimeLeague).format());
+    var bb = moment(this.state.EndTimeLeague);
     var b = moment(this.state.EndTimeLeague).utc().format();
-
+    var c = 0;
+    if (this.state.repeatMinute > 0) {
+      c = this.state.repeatMinute + bb.diff(aa, "minutes");
+    }
     //return false;
     userService
       .createLeague(
@@ -442,7 +447,7 @@ class AddTour extends Component {
         this.state.outSign.value,
         this.state.Rules,
         this.state.Prize,
-        this.state.repeatMinute
+        c
       )
 
       .then(
