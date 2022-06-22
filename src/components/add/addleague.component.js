@@ -426,9 +426,10 @@ class AddTour extends Component {
     var a = moment(this.state.StartTimeLeague).utc().format();
     var bb = moment(this.state.EndTimeLeague);
     var b = moment(this.state.EndTimeLeague).utc().format();
-    var c = 0;
-    if (this.state.repeatMinute > 0) {
-      c = this.state.repeatMinute + bb.diff(aa, "minutes");
+    var c = this.state.repeatMinute;
+    var d = bb.diff(aa, "minutes");
+    if (c > 0 && c <= d) {
+      c = c + d;
     }
     //return false;
     userService
