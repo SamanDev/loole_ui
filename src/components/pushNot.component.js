@@ -1,21 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
-import Form from "react-validation/build/form";
 
 import { withRouter } from "react-router-dom";
 import userService from "services/user.service";
-import { Message, Button, Divider } from "semantic-ui-react";
+import { Message, Divider } from "semantic-ui-react";
 
 import UserContext from "context/UserState";
-import {
-  getMessaging,
-  getToken,
-  onMessage,
-  onBackgroundMessage,
-} from "firebase/messaging";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
 
-const MySwal = withReactContent(Swal);
 import { initializeApp } from "firebase/app";
 const Toast = Swal.mixin({
   toast: true,
@@ -29,7 +21,7 @@ const Toast = Swal.mixin({
   },
 });
 function Active(prop) {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState("err");
 
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
@@ -44,11 +36,11 @@ function Active(prop) {
       appId: "1:30488129618:web:99f67dea2fe2823b332f8b",
       measurementId: "G-56RR0GT32B",
     };
-
+    var token = "";
     try {
       const app = initializeApp(firebaseConfig);
       const messaging = getMessaging(app);
-      var token;
+
       getToken(messaging, {
         vapidKey:
           "BEIgQbQRnWKcVNc_Bd433T_MiTKNDTrRjOit7GDDxvSvpQ2wEafBtLxw37jCJ9vVf56A4COIDy3WymYoEOoYZrw",
@@ -90,12 +82,12 @@ function Active(prop) {
   };
 
   useEffect(() => {
-    if (token) userService.sendPushToken(token);
+    if (token && token != "err") userService.sendPushToken(token);
   }, [token]);
   useEffect(() => {
     try {
       Notification.requestPermission().then(function (result) {
-        if (result === "default") {
+        if (result === "default" && token == "err") {
           setToken(null);
           return;
         }
