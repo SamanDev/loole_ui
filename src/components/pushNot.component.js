@@ -74,14 +74,15 @@ function Active(prop) {
     if (token) userService.sendPushToken(token);
   }, [token]);
   useEffect(() => {
-    Notification.requestPermission().then(function (result) {
+    try{Notification.requestPermission().then(function (result) {
       if (result === "default") {
         setToken(null);
         return;
       }
 
       handleResend();
-    });
+    });}catch(e){ setToken("err");}
+    
   }, []);
   if (token == null) {
     return (
