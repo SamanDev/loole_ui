@@ -361,7 +361,7 @@ class TournamentSection extends Component {
           .replace("16,", "9-16,")
           .replace("32,", "17-32,")
           .replace("64,", "33-64,")
-          .replace("128,", "33-128,")
+          .replace("128,", "65-128,")
           .replace("256,", "129-256,");
         var payArr = tournamentPayout.split("@");
 
