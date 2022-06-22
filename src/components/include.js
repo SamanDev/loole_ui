@@ -1436,6 +1436,9 @@ export const getModalTag = (filtermode) => {
   }
   if (filter == "Plato") {
     var _id = localStorage.getItem("Plato");
+    if (!_id) {
+      _id = "";
+    }
     tagsof = {
       customClass: "tag",
       title: "Connect Your Plato ID",
