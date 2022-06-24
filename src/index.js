@@ -840,7 +840,7 @@ function Main(prop) {
             <Route
               path="/panel"
               render={(props) => (
-                <Suspense fallback={renderLoader(true, "/panle")}>
+                <Suspense fallback={renderLoader(true, "panel")}>
                   <PanelLayout
                     {...props}
                     myState={myState}
@@ -857,7 +857,7 @@ function Main(prop) {
             <Route
               path="/lobby/:id/:title"
               render={(props) => (
-                <Suspense fallback={renderLoader(true)}>
+                <Suspense fallback={renderLoader(true, "Event")}>
                   <LandLayout
                     {...props}
                     myState={myState}
@@ -872,7 +872,7 @@ function Main(prop) {
             <Route
               path="/game/:gamename"
               render={(props) => (
-                <Suspense fallback={renderLoader(true)}>
+                <Suspense fallback={renderLoader(true, "Game")}>
                   <LandLayout
                     {...props}
                     myState={myState}
@@ -887,7 +887,7 @@ function Main(prop) {
             <Route
               path="/home"
               render={(props) => (
-                <Suspense fallback={renderLoader(true)}>
+                <Suspense fallback={renderLoader(true, "Home")}>
                   <LandLayout
                     {...props}
                     myState={myState}
@@ -901,7 +901,7 @@ function Main(prop) {
             <Route
               path="/user/:username"
               render={(props) => (
-                <Suspense fallback={renderLoader(true)}>
+                <Suspense fallback={renderLoader(true, "Profile")}>
                   <LandLayout
                     {...props}
                     myState={myState}
@@ -915,7 +915,7 @@ function Main(prop) {
             <Route
               path="/marketplace"
               render={(props) => (
-                <Suspense fallback={renderLoader(true)}>
+                <Suspense fallback={renderLoader(true, "MarketPlace")}>
                   <LandLayout
                     {...props}
                     myState={myState}
@@ -929,7 +929,7 @@ function Main(prop) {
             <Route
               path="/games"
               render={(props) => (
-                <Suspense fallback={renderLoader(true)}>
+                <Suspense fallback={renderLoader(true, "Games")}>
                   <LandLayout
                     {...props}
                     myState={myState}
@@ -943,7 +943,7 @@ function Main(prop) {
             <Route
               path="/content"
               render={(props) => (
-                <Suspense fallback={renderLoader(true)}>
+                <Suspense fallback={renderLoader(true, "Content")}>
                   <LandLayout
                     {...props}
                     myState={myState}

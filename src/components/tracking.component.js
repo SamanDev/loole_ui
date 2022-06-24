@@ -17,7 +17,7 @@ function getchatTime(date) {
 function addMinutes(date, add) {
   var startdate = moment(date).format();
   var newD = moment(startdate).add(add, "minutes").format();
-  console.log(add);
+
   return newD;
 }
 function Tracking(prop) {
