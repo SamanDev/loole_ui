@@ -49,37 +49,37 @@ function Auth(props) {
             render={() => (
               <>
                 {prop.component == "Landing" && (
-                  <Suspense fallback={renderLoader(true, "Landing")}>
+                  <Suspense fallback={renderLoader(true, prop.component)}>
                     <Landing {...props} scrollTo={scrollTo} />
                   </Suspense>
                 )}
                 {prop.component == "User" && (
-                  <Suspense fallback={renderLoader(true)}>
+                  <Suspense fallback={renderLoader(true, prop.component)}>
                     <User {...props} scrollTo={scrollTo} />
                   </Suspense>
                 )}
                 {prop.component == "Game" && (
-                  <Suspense fallback={renderLoader(true)}>
+                  <Suspense fallback={renderLoader(true, prop.component)}>
                     <Game {...props} scrollTo={scrollTo} />
                   </Suspense>
                 )}
                 {prop.component == "Games" && (
-                  <Suspense fallback={renderLoader(true)}>
+                  <Suspense fallback={renderLoader(true, prop.component)}>
                     <Games {...props} scrollTo={scrollTo} />
                   </Suspense>
                 )}
                 {prop.component == "Market" && (
-                  <Suspense fallback={renderLoader(true)}>
+                  <Suspense fallback={renderLoader(true, prop.component)}>
                     <Market {...props} scrollTo={scrollTo} />
                   </Suspense>
                 )}
                 {prop.component == "Content" && (
-                  <Suspense fallback={renderLoader(true)}>
+                  <Suspense fallback={renderLoader(true, prop.component)}>
                     <Content {...props} scrollTo={scrollTo} />
                   </Suspense>
                 )}
                 {prop.component == "LockScreenPage" && (
-                  <Suspense fallback={renderLoader(true)}>
+                  <Suspense fallback={renderLoader(true, prop.component)}>
                     <LockScreenPage {...props} scrollTo={scrollTo} />
                   </Suspense>
                 )}
