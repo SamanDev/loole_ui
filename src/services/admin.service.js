@@ -3,7 +3,7 @@ import authHeader from "./auth-header";
 import uploadHeader from "./upload-header";
 
 import UserWebsocket from "services/user.websocket";
-import { POSTURLAdmin, defUser } from "const";
+import { POSTURLAdmin, defUser, POSTURLTest } from "const";
 
 const API_URL_TEST = POSTURLAdmin;
 
@@ -19,6 +19,20 @@ class AdminService {
         return response;
       });
   };
+  joinEvent(id, user) {
+    return axios
+      .put(
+        POSTURLTest + "joinEvent",
+        { id },
+        { headers: { Authorization: "LooLe  " + user.accessToken } }
+      )
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        return error;
+      });
+  }
   loseEventMatch = (id, idMatch, username) => {
     return axios
       .put(

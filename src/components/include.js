@@ -8,7 +8,6 @@ import {
   faYoutube,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import { useParams } from "react-router";
 import {
   faDesktop,
   faMobileAlt,
@@ -32,7 +31,6 @@ const CopyText = lazy(() => import("components/copy.component"));
 const ReadySection = lazy(() => import("components/ready.component"));
 import eventBus from "views/eventBus";
 //import CopyText from "components/copy.component";
-import Moment from "moment";
 //import ReadySection from "components/ready.component";
 import {
   Statistic,
@@ -547,30 +545,9 @@ export const printTag = (game, tag) => {
   if (game == "CallOfDuty") {
     _tag = _tag.replace("%23", "#");
   }
-  if (game.split(" ")[0] == "Plato") {
-    localStorage.setItem(game.split(" ")[0], _tag);
-  }
+
   return _tag;
 };
-function readClipboardFromDevTools() {
-  return new Promise((resolve, reject) => {
-    const _asyncCopyFn = async () => {
-      try {
-        const value = await navigator.clipboard.readText();
-        console.log(`${value} is read!`);
-        resolve(value);
-      } catch (e) {
-        reject(e);
-      }
-      window.removeEventListener("focus", _asyncCopyFn);
-    };
-
-    window.addEventListener("focus", _asyncCopyFn);
-    console.log(
-      "Hit <Tab> to give focus back to document (or we will face a DOMException);"
-    );
-  });
-}
 export const vsComponentPlayer = (
   item,
   matchidFind,
@@ -1014,8 +991,6 @@ export const printMatchBTN = (
                       <Button
                         animated
                         className="mobile hidden joineventbtn"
-                        size="small"
-                        inverted
                         onClick={handleJoinMatch}
                         color="green"
                         disabled={isloading || !currentUser.userActivate}
@@ -1071,8 +1046,7 @@ export const printEventBTN = (
             <>
               <Button
                 animated
-                size="big"
-                inverted
+                size="huge"
                 onClick={handleJoinMatch}
                 loading={isloading}
                 color="green"
@@ -1398,7 +1372,7 @@ export const getModalTag = (filtermode) => {
       title: "Connect Your 8Pool Account",
       focusConfirm: false,
       html: `<div class="card-plain card text-left" >
-              <ol><li>Open player profile in 8BallPool</li><li>Copy Unique ID</li><li>Paste the Unique ID below
+              <ol><li>Open player profile in 8BallPool</li><li>Open player profile in 8BallPool</li><li>Copy Unique ID</li><li>Paste the Unique ID below
               <div className="form-group">
               <label>Enter your Unique ID</label>
                 <input class="form-control" id="tagid" type="tel" pattern="[0-9]" /></div>
@@ -1444,7 +1418,7 @@ export const getModalTag = (filtermode) => {
       title: "Connect Your Plato ID",
       focusConfirm: false,
       html: `<div class="card-plain card text-left" >
-              <ol><li>Open player profile in Plato</li><li>Copy Plato ID</li><li>Paste the Plato ID below
+              <ol><li>Install <a href="https://www.platoapp.com" target="_blank">Plato App</a></li><li>Open player profile in Plato</li><li>Copy Plato ID</li><li>Paste the Plato ID below
               <div className="form-group">
               <label>Enter your Plato ID</label>
                 <input class="form-control" id="tagid" value="${_id}" type="text" /></div>
@@ -1628,25 +1602,24 @@ export const getModalTag = (filtermode) => {
     var accMode = "BrawlStars Account";
     var tagMode = "BrawlStars PlayerTag";
     var holderMode = "#123456";
-
+    var _id = localStorage.getItem("BrawlStars");
+    if (!_id) {
+      _id = "";
+    }
     tagsof = {
-      customClass: "tag",
+      ustomClass: "tag",
       title: "Connect Your " + accMode + "",
       focusConfirm: false,
-
-      html:
-        `<div class="card-plain card text-left" >
-              <ol><li>Open player profile in BrawlStars</li> <li>Long-press on your player tag</li> <li>Tap “Copy Tag”</li><li>Paste the Player Tag below
-              <div className="form-group">
-              <label>BrawlStars Player Tag</label>
-                <input class="form-control" id="tagid" type="text" placeholder="` +
-        holderMode +
-        `" /></div>
-                </div>
-       </li></ol>
+      html: `<div class="card-plain card text-left" >
+      <ol><li>Open player profile in BrawlStars</li><li>and then enter your Invite Friends Link below
+       <div className="form-group">
+       <label>Enter Invite Friends Link</label>
+       <textarea class="form-control" id="tagname" type="text"></textarea></div>
+    </li></ol>
        
               
               `,
+
       icon: "warning",
       showCancelButton: true,
       cancelButtonColor: "grey",
@@ -1654,10 +1627,24 @@ export const getModalTag = (filtermode) => {
 
       showLoaderOnConfirm: true,
       preConfirm: () => {
-        if (document.getElementById("tagid").value) {
-          return {
-            tagid: document.getElementById("tagid").value,
-          };
+        if (document.getElementById("tagname").value) {
+          if (
+            document
+              .getElementById("tagname")
+              .value.indexOf("https://link.brawlstars.com/invite/friend/") > -1
+          ) {
+            return {
+              tagid: document
+                .getElementById("tagname")
+                .value.split("tag=")[1]
+                .split("&")[0],
+              tagname:
+                "http" +
+                document.getElementById("tagname").value.split("http")[1],
+            };
+          } else {
+            Swal.showValidationMessage(`Enter Invite Friends Link!`);
+          }
         } else {
           Swal.showValidationMessage(`All fields are required!!`);
         }
@@ -2555,6 +2542,9 @@ export const haveGameTag = (game, userTags) => {
       if (tag.gameName == game) {
         res = tag.tagId;
         res = res.split("@@")[0];
+        if (game.split(" ")[0] == "Plato") {
+          localStorage.setItem(game.split(" ")[0], tag.tagId);
+        }
       }
     });
   }

@@ -501,7 +501,7 @@ class LeagueSection extends Component {
                 this.props.onUpdateItem
               )}
               <Divider style={{ opacity: 0 }} />
-              {_s > _d && item.status == "Pending" && (
+              {_s > _d && item.status == "Pending" && isJoin && (
                 <>
                   <div
                     style={{
@@ -730,6 +730,7 @@ class LeagueSection extends Component {
                 <Invite />
               </Segment>
             )}
+
             <Tracking item={item} rules={item.rules} />
 
             {item.status != "Canceled" &&

@@ -78,7 +78,6 @@ const getBlockGames = (filtermode) => {
       } else if (filtermode == "League") {
         if (
           item.haveLeague == true &&
-          item.name != "BrawlStars" &&
           item.name != "RocketLeague" &&
           item.name != "Brwalhalla"
         ) {
@@ -503,6 +502,7 @@ class AddTour extends Component {
         : (this.state.BetAmount * this.state.TotalPlayer * 90) / 100,
       tournamentPayout: null,
       amount: this.state.BetAmount,
+      repeatEvent: this.state.repeatMinute,
       winner: null,
       inSign: this.state.inSign.value,
       outSign: this.state.outSign.value,

@@ -1,11 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 
-import AuthService from "services/auth.service";
-
-import { useHistory } from "react-router-dom";
 import { Menu, Icon } from "semantic-ui-react";
 
-import { defUser } from "const";
 import UserContext from "context/UserState";
 const LandNavbar = (prop) => {
   const context = useContext(UserContext);

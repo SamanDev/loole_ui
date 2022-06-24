@@ -190,6 +190,7 @@ function Admin(prop) {
   const [cashName, setCashName] = React.useState("add");
   const [cashBankModel, setCashBankModel] = React.useState("Dollar");
   const [notMessage, setNotMessage] = React.useState("");
+  const [joinId, setJoinId] = React.useState("");
 
   const OpenChashier = (open, user, id) => {
     setFirstOpen(open);
@@ -201,6 +202,9 @@ function Admin(prop) {
   };
   const setNotMessageVal = (e) => {
     setNotMessage(e.target.value);
+  };
+  const setJoinIdVal = (e) => {
+    setJoinId(e.target.value);
   };
   const updateUserObj = (e, data) => {
     //console.log(data);
@@ -307,6 +311,27 @@ function Admin(prop) {
     }
     setCashLoad(true);
     userService.notification(cashUser, notMessage, "test").then((response) => {
+      if (response) {
+        Swal.fire({
+          title: "Success",
+          text: "Saved",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: `Ok`,
+        }).then(() => {
+          prop.onReset("AdminUsers");
+          setFirstOpen(false);
+          setCashLoad(false);
+        });
+      }
+    });
+  };
+  const joinEvent = (e, data) => {
+    if (joinId == "" && !user.accessToken) {
+      return false;
+    }
+    setCashLoad(true);
+    adminService.joinEvent(joinId, user).then((response) => {
       if (response) {
         Swal.fire({
           title: "Success",
@@ -610,6 +635,21 @@ function Admin(prop) {
                 style={{ marginTop: 20 }}
               >
                 DeletUser
+              </Button>
+              <Form.Field>
+                <label>eventID</label>
+                <input value={joinId} onChange={setJoinIdVal} />
+              </Form.Field>
+              <Button
+                type="submit"
+                loading={cashLoad}
+                disabled={cashLoad}
+                color="red"
+                fluid
+                onClick={joinEvent}
+                style={{ marginTop: 20 }}
+              >
+                joinEvent
               </Button>
               <Form.Field>
                 <label>Meessage</label>

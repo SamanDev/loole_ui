@@ -14,6 +14,12 @@ function getchatTime(date) {
 
   return dateExpired;
 }
+function addMinutes(date, add) {
+  var startdate = moment(date).format();
+  var newD = moment(startdate).add(add, "minutes").format();
+  console.log(add);
+  return newD;
+}
 function Tracking(prop) {
   const rules = JSON.parse(prop.rules);
 
@@ -31,7 +37,12 @@ function Tracking(prop) {
                 <Label>Start</Label>
               </span>
               <span style={{ float: "right", marginLeft: 5 }}>
-                <Label color="blue">{getchatTime(prop.item.startTime)}</Label>
+                <Label
+                  title={addMinutes(prop.item.startTime, prop.item.repeatEvent)}
+                  color="blue"
+                >
+                  {getchatTime(prop.item.startTime)}
+                </Label>
               </span>
             </List.Content>
           </List.Item>
@@ -41,14 +52,19 @@ function Tracking(prop) {
                 <Label>End</Label>
               </span>
               <span style={{ float: "right", marginLeft: 5 }}>
-                <Label color="blue">{getchatTime(prop.item.finished)}</Label>
+                <Label
+                  title={addMinutes(prop.item.finished, prop.item.repeatEvent)}
+                  color="blue"
+                >
+                  {getchatTime(prop.item.finished)}
+                </Label>
               </span>
             </List.Content>
           </List.Item>
           {RuleTrack.map((win, i) => {
             if (
               win.text.indexOf(" Trophy") > -1 ||
-              win.text.indexOf("Min Play Time") > -1
+              win.text.indexOf("Min Play Time2") > -1
             ) {
               return (
                 <List.Item key={i.toString()}>

@@ -135,8 +135,8 @@
     },
     {
       "name": "BrawlStars",
-      "active": false,
-      "haveMatch": true,
+      "active": true,
+      "haveMatch": false,
       "haveTournament": false,
       "haveLeague": true,
       "gameconsole": [
@@ -146,7 +146,74 @@
       ],
       "modes": [
         {
-          "modename": "Duel"
+          "name": "Solo BR Ranked",
+          "track": [
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd or 3rd Place", "value": 100, "sign": "+" },
+            { "name": "4th to 5th Place", "value": 40, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Trophy",
+              "value": "100"
+            },
+            {
+              "name": "Max Trophy",
+              "value": "10000"
+            }
+          ]
+        },
+        {
+          "name": "Duo BR Ranked",
+          "track": [
+            { "name": "1st Place", "value": 240, "sign": "+" },
+            { "name": "2nd Place", "value": 100, "sign": "+" },
+            { "name": "3rd Place", "value": 100, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Trophy",
+              "value": "100"
+            },
+            {
+              "name": "Max Trophy",
+              "value": "10000"
+            }
+          ]
+        },
+        {
+          "name": "Solo Ball Ranked",
+          "track": [
+            { "name": "Victory", "value": 240, "sign": "+" },
+            { "name": "StarPlayer", "value": 1000, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Trophy",
+              "value": "100"
+            },
+            {
+              "name": "Max Trophy",
+              "value": "10000"
+            }
+          ]
+        },
+        {
+          "name": "Team Ball Ranked",
+          "track": [
+            { "name": "Victory", "value": 240, "sign": "+" },
+            { "name": "StarPlayer", "value": 1000, "sign": "+" }
+          ],
+          "reg": [
+            {
+              "name": "Min Trophy",
+              "value": "100"
+            },
+            {
+              "name": "Max Trophy",
+              "value": "10000"
+            }
+          ]
         }
       ]
     },

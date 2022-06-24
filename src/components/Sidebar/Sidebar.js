@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Avatar from "react-avatar";
 import AuthService from "services/auth.service";
 import { haveAdmin, haveModerator } from "components/include";
@@ -8,28 +8,28 @@ import { setAvatar } from "components/include";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import { defUser } from "const.js";
 import UserContext from "context/UserState";
+var str, res;
 function Sidebar({ routes, image, background, token, onUpdateItem }) {
   const context = useContext(UserContext);
   const { setUList } = context;
   const history = useHistory();
   // to check for active links and opened collapses
   let location = useLocation();
-  // this is for the user collapse
-  var [userCollapseState, setUserCollapseState] = React.useState(false);
-  // this is for the rest of the collapses
-  var [state, setState] = React.useState({});
 
-  if (token?.accessToken) {
-    var str = token.username;
-    var res = str.substring(0, 1);
-    // onUpdateItem("openModalLogin", false)
-  } else {
-    var str = "Guest User";
-    var res = str.substring(0, 1);
-    //onUpdateItem("openModalLogin", true)
-  }
+  useEffect(() => {
+    if (token?.accessToken) {
+      str = token.username;
+      res = str.substring(0, 1);
+      // onUpdateItem("openModalLogin", false)
+    } else {
+      str = "Guest User";
+      res = str.substring(0, 1);
+      //onUpdateItem("openModalLogin", true)
+    }
 
-  res = setAvatar(str);
+    res = setAvatar(str);
+  }, [token]);
+
   const logOut = () => {
     setUList({ currentUser: defUser });
     localStorage.setItem("user", JSON.stringify(defUser));
