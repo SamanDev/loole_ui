@@ -62,6 +62,34 @@ const usePapara = (action) => {
     return result;
   }
 };
+const useCashier = (action) => {
+  if (action == "getDeposit") {
+    const result = useQuery(["CashierDeposit"], api.getCashierDeposit);
+
+    return result;
+  }
+  if (action == "getCashout") {
+    const result = useQuery(["CashierCashoout"], api.getCashierCashout);
+
+    return result;
+  }
+  if (action == "getAdminDeposit") {
+    const result = useQuery(
+      ["CashierAdminDeposit"],
+      api.getCashierAdminDeposit
+    );
+
+    return result;
+  }
+  if (action == "getAdminCashout") {
+    const result = useQuery(
+      ["CashierAdminCashoout"],
+      api.getCashierAdminCashout
+    );
+
+    return result;
+  }
+};
 const useAdminCosts = () => {
   const result = useQuery(["AdminCosts"], api.getAdminCosts);
 
@@ -108,4 +136,5 @@ export {
   useAdminCosts,
   useAllGetways,
   usePapara,
+  useCashier,
 };

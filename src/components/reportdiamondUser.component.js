@@ -55,6 +55,13 @@ function CleanData(options) {
   return newArray;
 }
 const headerRow = ["Name", "Value"];
+const CustomLoader = () => (
+  <Segment style={{ height: 300, width: "100%" }}>
+    <Dimmer active inverted>
+      <Loader size="large">Loading...</Loader>
+    </Dimmer>
+  </Segment>
+);
 const renderBodyRow = ({ name, value }, i) => ({
   key: name || `row-${i}`,
   cells: [name, value],
@@ -245,16 +252,15 @@ const noDataComponent = (
     </Dimmer>
   </div>
 );
-var dataTransaction = [];
 
 function Report(prop) {
-  const [myData, setMydata] = useState();
+  const [myData, setMydata] = useState([]);
   const { data: userReports, isLoading } = useUserReports(prop.user.id);
   const context = useContext(UserContext);
   const { currentUser } = context.uList;
-  dataTransaction = userReports;
+
   useEffect(() => {
-    if (userReports && !isLoading) {
+    if (userReports) {
       setMydata(editCounry(userReports));
     }
   }, [userReports]);
@@ -297,6 +303,8 @@ function Report(prop) {
           paginationPerPage={_perPage}
           conditionalRowStyles={conditionalRowStyles}
           expandableRows
+          progressPending={isLoading}
+          progressComponent={<CustomLoader />}
           expandableRowsHideExpander={true}
           expandableRowsComponent={ExpandedComponent}
           noDataComponent={noDataComponent}

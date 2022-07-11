@@ -88,7 +88,12 @@ function myTimer() {
   try {
     var el = document.getElementsByTagName("iframe")[1];
     el.remove();
-  } catch (e) {}
+  } catch (e) {
+    try {
+      var el = document.getElementsByTagName("iframe")[0];
+      el.remove();
+    } catch (e) {}
+  }
 }
 
 function myStopFunction() {

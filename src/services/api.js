@@ -114,6 +114,42 @@ const getPaparaDeposit = async () => {
   );
   return data;
 };
+const getCashierDeposit = async () => {
+  const { data } = await clientAdmin.get(
+    `/getAllDepositCashout?page=0&mode=deposit`,
+    {
+      headers: authHeader(),
+    }
+  );
+  return data;
+};
+const getCashierCashout = async () => {
+  const { data } = await clientAdmin.get(
+    `/getAllDepositCashout?page=0&mode=cashout`,
+    {
+      headers: authHeader(),
+    }
+  );
+  return data;
+};
+const getCashierAdminDeposit = async () => {
+  const { data } = await clientAdmin.get(
+    `/getAllAdminDepositCashout?page=0&mode=deposit`,
+    {
+      headers: authHeader(),
+    }
+  );
+  return data;
+};
+const getCashierAdminCashout = async () => {
+  const { data } = await clientAdmin.get(
+    `/getAllAdminDepositCashout?page=0&mode=cashout`,
+    {
+      headers: authHeader(),
+    }
+  );
+  return data;
+};
 const getPaparaCashout = async () => {
   const { data } = await clientAdmin.get(
     `/getPaparaPendingCashout
@@ -159,4 +195,8 @@ export {
   getAllGetways,
   getPaparaDeposit,
   getPaparaCashout,
+  getCashierDeposit,
+  getCashierCashout,
+  getCashierAdminDeposit,
+  getCashierAdminCashout,
 };

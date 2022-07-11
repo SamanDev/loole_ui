@@ -1,34 +1,110 @@
 import React, { useEffect, useState, useContext } from "react";
 import DataTable from "react-data-table-component";
-import { Input, Segment } from "semantic-ui-react";
+import { Input } from "semantic-ui-react";
 import CurrencyFormat from "react-currency-format";
 import { Col } from "react-bootstrap";
-import { usePapara } from "services/hooks";
-import { Header, Dimmer, Button } from "semantic-ui-react";
+import { useCashier } from "services/hooks";
+import {
+  Header,
+  Dimmer,
+  Button,
+  Segment,
+  Table,
+  Loader,
+} from "semantic-ui-react";
 import { genLink, getMatchTitle, setAvatar } from "components/include.js";
 import Avatar from "react-avatar";
 import GlobalContext from "context/GlobalState";
 import adminService from "services/admin.service";
+import {
+  date_edit_report,
+  getGroupBadgeBlock,
+  isJson,
+} from "components/include.js";
 import Swal from "sweetalert2";
-function editCounry(options) {
-  var pay = JSON.parse(options);
-  var user = "salar";
-  try {
-    user = pay.username;
-  } catch (err) {}
-  if (!user) {
-    user = "salar";
+function CleanData(options) {
+  var newArray = [];
+
+  if (options) {
+    var getC = options;
+
+    //options.map((item, w) => {
+    Object.keys(getC).map(function (key) {
+      var _obj = getC[key];
+      var _val = key;
+      if (_obj) {
+        newArray.push({
+          name: key,
+
+          value: _obj,
+        });
+      }
+    });
   }
-  var res = pay.TRY;
+
+  return newArray;
+}
+function editUser(user) {
   return (
     <>
       <a href={"/user/" + user} target="_blank">
         <Avatar size="20" title={user} round={true} name={setAvatar(user)} />{" "}
         {user.toUpperCase()}
       </a>{" "}
-      |<b>{res}</b> TL
     </>
   );
+}
+const headerRow = ["Name", "Value"];
+const renderBodyRow = ({ name, value }, i) => ({
+  key: name || `row-${i}`,
+  cells: [name, value],
+});
+const ExpandedComponent = (props) => {
+  var data = props.data;
+  if (isJson(data)) {
+    var _data = [CleanData(data)];
+
+    var jdata = JSON.parse(JSON.stringify(_data));
+
+    return (
+      <Segment>
+        <Table
+          celled
+          color="red"
+          renderBodyRow={renderBodyRow}
+          tableData={jdata[0]}
+        />
+      </Segment>
+    );
+  } else {
+    return <Segment>{data}</Segment>;
+  }
+};
+function editCounry(options) {
+  if (isJson(options)) {
+    var newArray = [];
+    var newArrayDelete = [];
+    //options?.sort((a, b) => (a.id > b.id ? 1 : -1));
+    try {
+      options?.map((item, w) => {
+        if (
+          item.coin != "Point" &&
+          item.mode != "Point" &&
+          item.status != "Canceled"
+        ) {
+          newArray.push(item);
+        }
+      });
+    } catch (e) {}
+
+    newArray?.map((itemdelete, w) => {
+      newArrayDelete.push(itemdelete.id);
+    });
+
+    return newArray;
+  } else {
+    return options;
+  }
 }
 const conditionalRowStyles = [
   {
@@ -103,10 +179,17 @@ const FilterComponent = ({ filterText, onFilter }) => (
     />
   </>
 );
+const CustomLoader = () => (
+  <Segment style={{ height: 300, width: "100%" }}>
+    <Dimmer active inverted>
+      <Loader size="large">Loading...</Loader>
+    </Dimmer>
+  </Segment>
+);
 
 function Admin(prop) {
   const context = useContext(GlobalContext);
-  const { data: papara } = usePapara("getDeposit");
+  const { isLoading, data: papara } = useCashier(prop.mode);
   const [myState, setMyState] = useState(prop.myState);
   useEffect(() => {
     setMyState(prop.myState);
@@ -140,58 +223,53 @@ function Admin(prop) {
       name: "ID",
       selector: (row) => row.id,
       sortable: true,
+      width: "80px",
     },
-
     {
-      name: "info",
-      selector: (row) => row.description,
-      format: (row) => <>{editCounry(row.description)}</>,
+      name: "Date",
+      selector: (row) => row.createDate,
+      format: (row) => moment(row.createDate).format("YYYY-MM-DD hh:mm"),
+      sortable: true,
+      width: "150px",
+    },
+    {
+      name: "user",
+      selector: (row) => row.username,
+      format: (row) => <>{editUser(row.username)}</>,
+      width: "200px",
     },
     {
       name: "Amount",
       selector: (row) => row.amount,
       format: (row) => (
         <>
-          ${" "}
-          <CurrencyFormat
-            value={Number.parseFloat(row.amount).toFixed(2)}
-            displayType={"text"}
-            thousandSeparator={true}
-            prefix={""}
-            renderText={(value) => value}
-          />
+          {getGroupBadgeBlock(
+            row.coin && prop.mode.indexOf("Admin") >= 1 ? "Point" : "Dollar",
+            row.amount,
+            "small left"
+          )}
         </>
       ),
-      sortable: true,
+      sortable: false,
+      width: "150px",
     },
     {
       name: "Status",
       selector: (row) => row.status,
       format: (row) => row.status,
       sortable: true,
+      width: "150px",
     },
     {
-      name: "Action",
-      selector: (row) => row.id,
+      name: "Gateway",
+      selector: (row) => row.gateway,
       format: (row) => (
         <>
-          <Button
-            size="mini"
-            color="green"
-            onClick={() => updateStatus(row, "Done")}
-          >
-            Done
-          </Button>{" "}
-          <Button
-            size="mini"
-            color="red"
-            onClick={() => updateStatus(row, "Canceled")}
-          >
-            Canceled
-          </Button>
+          {row.gateway} {row.coin && "-" + row.coin}
         </>
       ),
-      sortable: false,
+      sortable: true,
+      width: "350px",
     },
   ];
   const subHeaderComponentMemo = React.useMemo(() => {
@@ -226,13 +304,17 @@ function Admin(prop) {
             data={filteredItems}
             defaultSortFieldId={1}
             defaultSortAsc={false}
-            title="Papara List"
+            title={prop.mode.replace("get", "") + " List"}
             noDataComponent={noDataComponent}
             pagination
             paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
             subHeader
             subHeaderComponent={subHeaderComponentMemo}
+            expandableRows
+            expandableRowsComponent={ExpandedComponent}
             persistTableHead
+            progressPending={isLoading}
+            progressComponent={<CustomLoader />}
           />
         </div>
       </Segment>

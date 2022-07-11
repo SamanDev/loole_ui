@@ -3,6 +3,8 @@ import React, { useEffect, useState, useContext } from "react";
 import Active from "components/active.component";
 import AdminDeposit from "views/AdminDeposit.js";
 import AdminCashout from "views/AdminCashout.js";
+import AdminPDeposit from "views/AdminPaparaDeposit.js";
+import AdminPCashout from "views/AdminPaparaCashout.js";
 import CostList from "components/CostList.component";
 import GetwaysList from "components/GetwaysList.component";
 import SocialForm from "components/profile/social.component";
@@ -28,22 +30,66 @@ function profile(prop) {
   const panes = [
     {
       id: 1,
-      menuItem: "Deposit",
+      menuItem: "All Deposit",
       render: () => (
         <Tab.Pane>
           <Segment secondary padded>
-            <AdminDeposit {...prop} />
+            <AdminDeposit {...prop} mode="getDeposit" />
           </Segment>
         </Tab.Pane>
       ),
     },
     {
       id: 2,
-      menuItem: "Cashout",
+      menuItem: "All Cashout ",
       render: () => (
         <Tab.Pane>
           <Segment secondary padded>
-            <AdminCashout {...prop} />
+            <AdminDeposit {...prop} mode="getCashout" />
+          </Segment>
+        </Tab.Pane>
+      ),
+    },
+    {
+      id: 3,
+      menuItem: "Papara Deposit",
+      render: () => (
+        <Tab.Pane>
+          <Segment secondary padded>
+            <AdminPDeposit {...prop} />
+          </Segment>
+        </Tab.Pane>
+      ),
+    },
+    {
+      id: 4,
+      menuItem: "Papara Cashout",
+      render: () => (
+        <Tab.Pane>
+          <Segment secondary padded>
+            <AdminPCashout {...prop} />
+          </Segment>
+        </Tab.Pane>
+      ),
+    },
+    {
+      id: 5,
+      menuItem: "Admin Deposit",
+      render: () => (
+        <Tab.Pane>
+          <Segment secondary padded>
+            <AdminCashout {...prop} mode="getAdminDeposit" />
+          </Segment>
+        </Tab.Pane>
+      ),
+    },
+    {
+      id: 6,
+      menuItem: "Admin Cashout ",
+      render: () => (
+        <Tab.Pane>
+          <Segment secondary padded>
+            <AdminCashout {...prop} mode="getAdminCashout" />
           </Segment>
         </Tab.Pane>
       ),

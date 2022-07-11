@@ -25,6 +25,13 @@ const genLink = (row) => {
     "";
   return _link.replace(/ /g, "-").replace("-Noundefined", "");
 };
+const CustomLoader = () => (
+  <Segment style={{ height: 300, width: "100%" }}>
+    <Dimmer active inverted>
+      <Loader size="large">Loading...</Loader>
+    </Dimmer>
+  </Segment>
+);
 function CleanData(options) {
   var newArray = [];
 
@@ -144,8 +151,10 @@ const noDataComponent = (
 );
 
 function Report(prop) {
-  const [myData, setMydata] = useState();
-  const { data: userReports, isLoading } = useUserReports(prop.user.id);
+  const [myData, setMydata] = useState([]);
+  const { isLoading: repLoading, data: userReports } = useUserReports(
+    prop.user.id
+  );
   const columns = [
     {
       name: "Date",
@@ -273,26 +282,11 @@ function Report(prop) {
     },
   ];
   useEffect(() => {
-    if (userReports && !isLoading) {
+    if (userReports) {
       setMydata(editCounry(userReports));
     }
   }, [userReports]);
-  if (isLoading) {
-    return (
-      <>
-        <Header as="h2">
-          <Icon name="dollar" />
-          <Header.Content>
-            Transactions
-            <Header.Subheader>See your Bank Transactions</Header.Subheader>
-          </Header.Content>
-        </Header>
-        <Dimmer active inverted>
-          <Loader size="large">Loading</Loader>
-        </Dimmer>
-      </>
-    );
-  }
+
   return (
     <>
       <Header as="h2">
@@ -318,6 +312,8 @@ function Report(prop) {
           expandableRows
           expandableRowsHideExpander={true}
           expandableRowsComponent={ExpandedComponent}
+          progressPending={repLoading}
+          progressComponent={<CustomLoader />}
           noDataComponent={noDataComponent}
         />
       </Segment>
